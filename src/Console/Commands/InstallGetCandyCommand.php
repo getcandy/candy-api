@@ -161,12 +161,11 @@ class InstallGetCandyCommand extends Command
             'email' => $email
         ]);
 
+        $user->assignRole('admin');
+
         $user->save();
 
         $this->user = $user;
-
-        $user->assignRole('admin');
-        $user->save();
     }
 
     /**
