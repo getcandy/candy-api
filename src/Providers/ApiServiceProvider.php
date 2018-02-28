@@ -47,6 +47,9 @@ class ApiServiceProvider extends ServiceProvider
             __DIR__ . '/../../config/getcandy.php' => config_path('getcandy.php'),
             __DIR__ . '/../../config/hashids.php' => config_path('hashids.php'),
             __DIR__ . '/../../config/assets.php' => config_path('assets.php'),
+            __DIR__ . '/../../config/permission.php' => config_path('permission.php'),
+            __DIR__ . '/../../config/search.php' => config_path('search.php'),
+            __DIR__ . '/../../config/tags.php' => config_path('tags.php'),
         ]);
     }
 
