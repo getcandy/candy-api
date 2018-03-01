@@ -161,9 +161,10 @@ class InstallGetCandyCommand extends Command
             'email' => $email
         ]);
 
+        $user->save();
+
         $user->assignRole('admin');
 
-        $user->save();
 
         $this->user = $user;
     }
@@ -431,6 +432,25 @@ class InstallGetCandyCommand extends Command
             'name' => 'Alternate',
             'handle' => 'alternate'
         ]);
+
+
+        $countries = json_decode(file_get_contents(__DIR__ . '/../../../countries.json'), true);
+
+        foreach ($countries as $country) {
+            $name = ['en' => $country['name']['common']];
+
+            foreach ($country['translations'] as $code => $data) {
+                $name[$code] = $data['common'];
+            }
+            \GetCandy\Api\Countries\Models\Country::create([
+                'name' => json_encode($name),
+                'iso_a_2' => $country['cca2'],
+                'iso_a_3' => $country['cca3'],
+                'iso_numeric' => $country['ccn3'],
+                'region' => $country['region'],
+                'sub_region' => $country['subregion']
+            ]);
+        }
 
         $this->call('passport:install');
     }
