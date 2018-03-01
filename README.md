@@ -92,7 +92,7 @@ The API uses passport for authentication, so make sure your `config/auth.php` co
 The API needs some _bare minimum_ data to get going, for now we've just made a console command to get going:
 
 ```
-php artisan getcandy:install
+php artisan candy:install
 ```
 
 Follow the installation steps and you'll be able to log in and start adding products!
