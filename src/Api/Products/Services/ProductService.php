@@ -203,7 +203,7 @@ class ProductService extends BaseService
     {
         $results = $this->model->channel($channel);
 
-        if (count($ids)) {
+        if (!empty($ids)) {
             $realIds = $this->getDecodedIds($ids);
             $results->whereIn('id', $realIds);
         }

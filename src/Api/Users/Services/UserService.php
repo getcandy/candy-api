@@ -53,7 +53,7 @@ class UserService extends BaseService implements UserContract
                 ->orWhere('email', 'LIKE', '%' . $keywords . '%');
         }
 
-        if (count($ids)) {
+        if (!empty($ids)) {
             $realIds = $this->getDecodedIds($ids);
             $query = $query->whereIn('id', $realIds);
         }
