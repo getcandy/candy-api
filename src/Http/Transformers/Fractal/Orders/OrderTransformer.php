@@ -19,10 +19,11 @@ class OrderTransformer extends BaseTransformer
     {
         $data = [
             'id' => $order->encodedId(),
+            'sub_total' => round($order->total + $order->shipping_total - $order->vat, 2),
             'total' => round($order->total, 2),
+            'vat' => round($order->vat, 2),
             'reference' => $order->ref,
             'invoice_reference' => $order->invoice_reference,
-            'vat' => round($order->vat, 2),
             'vat_no' => $order->vat_no,
             'tracking_no' => $order->tracking_no,
             'dispatched_at' => $order->dispatched_at,

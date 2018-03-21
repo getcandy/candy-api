@@ -78,10 +78,10 @@ class ProductVariantTransformer extends BaseTransformer
 
     protected function getThumbnail($variant)
     {
-        $asset = $variant->image;
+        $asset = $variant->image()->count();
 
         if (!$asset) {
-            return $this->null();
+            return null;
         }
 
         $data = $this->item($variant->image, new AssetTransformer);

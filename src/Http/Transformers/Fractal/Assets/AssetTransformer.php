@@ -10,8 +10,11 @@ use Storage;
 
 class AssetTransformer extends BaseTransformer
 {
+    protected $defaultIncludes = [
+        'tags'
+    ];
     protected $availableIncludes = [
-        'transforms', 'tags'
+        'transforms',
     ];
 
     /**
@@ -51,7 +54,16 @@ class AssetTransformer extends BaseTransformer
 
     protected function getThumbnail($asset)
     {
-        $path = $asset->location . '/thumbnails/' . 'thumbnail_' . $asset->filename;
+//      return $asset->transforms
+        $transform = $asset->transforms->filter(function ($transform) {
+            return $transform->transform->handle == 'thumbnail';
+        })->first();
+
+        if (!$transform) {
+            return null;
+        }
+
+        $path = $transform->location . '/' . $transform->filename;
         return Storage::disk($asset->source->disk)->url($path);
     }
 

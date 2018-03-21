@@ -17,17 +17,19 @@ class CategoryTransformer extends BaseTransformer
     protected $attributeGroups;
 
     protected $availableIncludes = [
-        'attribute_groups','assets', 'channels', 'customer_groups', 'products', 'routes', 'descendantants'
+        'attribute_groups','assets', 'channels', 'customer_groups', 'products', 'routes'
     ];
 
     public function transform(Category $category)
     {
         $data = [
             'id' => $category->encodedId(),
+            'sort' => $category->sort,
             'attribute_data' => $category->attribute_data,
             'depth' => $category->depth ?: 0,
             'thumbnail' => $this->getThumbnail($category),
-            'parent_id' => app('api')->categories()->getEncodedId($category->parent_id)
+            'parent_id' => app('api')->categories()->getEncodedId($category->parent_id),
+            'descendants' => $category->descendants
         ];
 
         if (!is_null($category->aggregate_selected)) {
@@ -35,12 +37,6 @@ class CategoryTransformer extends BaseTransformer
         }
         return $data;
     }
-
-    public function includeDescendants(Category $category)
-    {
-        return $category->descendants;
-    }
-
     public function includeChildren(Category $category)
     {
         $desc = $category->descendants()->withDepth()->having('depth', '<', 3)->get();

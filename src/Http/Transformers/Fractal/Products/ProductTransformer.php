@@ -46,8 +46,9 @@ class ProductTransformer extends BaseTransformer
     public function transform(Product $product)
     {
         // clock()->startEvent('apply_' . $product->id . 'discounts', 'Applying Discounts');
-        // $this->applyDiscounts($product);
+        $this->applyDiscounts($product);
         // clock()->endEvent('apply_' . $product->id . 'discounts');
+
         $response = [
             'id' => $product->encodedId(),
             'attribute_data' => $product->attribute_data,
@@ -58,11 +59,43 @@ class ProductTransformer extends BaseTransformer
             'variant_count' => $product->variants->count()
         ];
 
-        if ($product->pivot && $product->pivot->type) {
+        if ($product->pivot) {
             $response['type'] = $product->pivot->type;
+            $response['position'] = $product->pivot->position;
         }
 
         return $response;
+    }
+
+    protected function applyDiscounts(Product $product)
+    {
+        // $discounts = app('api')->discounts()->get();
+        // $sets = app('api')->discounts()->parse($discounts);
+
+        $product->max_price = 0;
+        $product->min_price = 0;
+        $product->original_max_price = 0;
+        $product->original_min_price = 0;
+
+        foreach ($product->variants as $variant) {
+
+            $variantPrice = $variant->total_price;
+
+            $product->max_price = $variantPrice > $product->max_price ? $variantPrice : $product->max_price;
+            $product->original_max_price = $variant->original_price > $product->original_max_price ? $variant->original_price : $product->original_max_price;
+            if ($product->min_price) {
+                $product->min_price = $variantPrice < $product->min_price ? $variantPrice : $product->min_price;
+                $product->original_min_price = $variant->original_price < $product->original_min_price ? $variant->original_price : $product->original_min_price;
+            } else {
+                $product->min_price = $product->max_price;
+                $product->original_min_price = $variant->original_price;
+            }
+        }
+
+        // $applied = \Facades\GetCandy\Api\Discounts\Factory::getApplied($sets, \Auth::user(), $product);
+
+        // \Facades\GetCandy\Api\Discounts\Factory::apply($applied, $product);
+        return $product;
     }
 
     protected function parseOptionData($data)
@@ -136,7 +169,7 @@ class ProductTransformer extends BaseTransformer
      */
     public function includeAssets(Product $product)
     {
-        return $this->collection($product->assets->sortBy('position'), new AssetTransformer);
+        return $this->collection($product->assets()->orderBy('position', 'asc')->get(), new AssetTransformer);
     }
 
     /**
@@ -200,7 +233,6 @@ class ProductTransformer extends BaseTransformer
      */
     public function includeFirstVariant(Product $product)
     {
-        // return null;
-        return $this->item($product->firstVariant, new ProductVariantTransformer);
+        return $this->item($product->variants->first(), new ProductVariantTransformer);
     }
 }

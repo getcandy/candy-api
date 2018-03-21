@@ -17,50 +17,45 @@ class UserTransformer extends BaseTransformer
     ];
 
     protected $availableIncludes = [
-        'store', 'addresses', 'groups', 'roles', 'orders', 'details'
+        'store', 'addresses', 'groups', 'roles', 'orders'
     ];
 
-    public function transform($user)
+    public function transform(User $user)
     {
         return [
             'id' => $user->encodedId(),
+            'title' => $user->title,
+            'firstname' => $user->firstname,
+            'lastname' => $user->lastname,
+            'company_name' => $user->company_name,
+            'contact_number' => $user->contact_number,
+            'vat_no' => $user->vat_no,
             'email' => $user->email
         ];
     }
 
-    public function includeLanguage($user)
+    public function includeLanguage(User $user)
     {
-        if (!$user->language) {
-            return $this->null();
-        }
         return $this->item($user->language, new LanguageTransformer);
     }
 
-    public function includeAddresses($user)
+    public function includeAddresses(User $user)
     {
         return $this->collection($user->addresses, new AddressTransformer);
     }
 
-    public function includeGroups($user)
+    public function includeGroups(User $user)
     {
         return $this->collection($user->groups, new CustomerGroupTransformer);
     }
 
-    public function includeRoles($user)
+    public function includeRoles(User $user)
     {
         return $this->collection($user->roles, new UserRoleTransformer);
     }
 
-    public function includeOrders($user)
+    public function includeOrders(User $user)
     {
         return $this->collection($user->orders, new OrderTransformer);
-    }
-
-    public function includeDetails($user)
-    {
-        if (!$user->details) {
-            return null;
-        }
-        return $this->item($user->details, new UserDetailsTransformer);
     }
 }

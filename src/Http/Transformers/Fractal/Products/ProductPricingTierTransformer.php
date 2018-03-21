@@ -14,10 +14,11 @@ class ProductPricingTierTransformer extends BaseTransformer
 
     public function transform(ProductPricingTier $model)
     {
+        $pricing = PriceCalculator::get($model->price, 20);
         return [
             'id' => $model->encodedId(),
             'lower_limit' => $model->lower_limit,
-            'price' => $model->price
+            'price' => $pricing->amount
         ];
     }
 
