@@ -24,7 +24,7 @@ class CheckClientCredentials extends BaseMiddleware
      *
      * @var \League\OAuth2\Server\ResourceServer
      */
-    private $server;
+    protected $server;
 
     private $encrypter;
 

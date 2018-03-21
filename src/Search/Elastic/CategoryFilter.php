@@ -1,6 +1,6 @@
 <?php
 
-namespace GetCandy\Search\Elastic;
+namespace GetCandy\Api\Search\Elastic;
 
 use Elastica\Query\Term;
 use Elastica\Query\Nested;

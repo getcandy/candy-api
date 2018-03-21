@@ -2,25 +2,21 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Users;
 
-use GetCandy\Api\Auth\Models\User;
 use League\Fractal\TransformerAbstract;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Orders\OrderTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Addresses\AddressTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Languages\LanguageTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Customers\CustomerGroupTransformer;
+use Illuminate\Database\Eloquent\Model;
 
 class UserTransformer extends BaseTransformer
 {
-    protected $defaultIncludes = [
-        'language'
-    ];
-
     protected $availableIncludes = [
-        'store', 'addresses', 'groups', 'roles', 'orders'
+        'store', 'addresses', 'groups', 'roles', 'orders', 'language'
     ];
 
-    public function transform(User $user)
+    public function transform(Model $user)
     {
         return [
             'id' => $user->encodedId(),
@@ -34,27 +30,27 @@ class UserTransformer extends BaseTransformer
         ];
     }
 
-    public function includeLanguage(User $user)
+    public function includeLanguage(Model $user)
     {
         return $this->item($user->language, new LanguageTransformer);
     }
 
-    public function includeAddresses(User $user)
+    public function includeAddresses(Model $user)
     {
         return $this->collection($user->addresses, new AddressTransformer);
     }
 
-    public function includeGroups(User $user)
+    public function includeGroups(Model $user)
     {
         return $this->collection($user->groups, new CustomerGroupTransformer);
     }
 
-    public function includeRoles(User $user)
+    public function includeRoles(Model $user)
     {
         return $this->collection($user->roles, new UserRoleTransformer);
     }
 
-    public function includeOrders(User $user)
+    public function includeOrders(Model $user)
     {
         return $this->collection($user->orders, new OrderTransformer);
     }
