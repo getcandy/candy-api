@@ -39,7 +39,6 @@ class Indexer extends AbstractProvider implements IndexContract
             $index = $this->getIndex($indexable->getIndex());
 
             $elasticaType = $index->getType($this->indexer->type);
-
             $document = new Document(
                 $indexable->getId(),
                 $indexable->getData()
@@ -48,6 +47,27 @@ class Indexer extends AbstractProvider implements IndexContract
             $response = $elasticaType->addDocument($document);
         }
         return true;
+    }
+
+    public function updateDocument($model, $field)
+    {
+        $this->against($model);
+        $index = $this->getIndex(
+            $this->indexer->getIndexName()
+        );
+        $this->indexer->getUpdatedDocument($model, $field, $index);
+        $elasticaType = $index->getType($this->indexer->type);
+        $elasticaType->addDocument($document);
+    }
+
+    public function updateDocuments($models, $field)
+    {
+        $this->against($models->first());
+        $index = $this->getIndex(
+            $this->indexer->getIndexName()
+        );
+        $documents = $this->indexer->getUpdatedDocuments($models, $field, $index);
+        $index->addDocuments($documents);
     }
 
     public function reset($index)

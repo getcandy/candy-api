@@ -36,10 +36,10 @@ class ProductIndexer extends BaseIndexer
                 $indexable->setData($item['data']);
                 $indexable->set('objectID', $indexable->getId());
 
-                if (isset($product->primaryAsset()->thumbnail)) {
-                    $transform = $product->primaryAsset()->thumbnail->first();
+                if (isset($product->primaryAsset->first()->thumbnail)) {
+                    $transform = $product->primaryAsset->first()->thumbnail->first();
                     $path = $transform->location . '/' . $transform->filename;
-                    $url = \Storage::disk($product->primaryAsset()->disk)->url($path);
+                    $url = \Storage::disk($product->primaryAsset->first()->disk)->url($path);
                     $indexable->set('image', url($url));
                 }
 

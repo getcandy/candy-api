@@ -22,6 +22,11 @@ abstract class AbstractProvider
     protected $client;
 
     /**
+     * @var CategoryFilter
+     */
+    protected $categoryFilter;
+
+    /**
      * @var string
      */
     protected $lang = 'en';
@@ -34,9 +39,10 @@ abstract class AbstractProvider
         Category::class => CategoryIndexer::class
     ];
 
-    public function __construct(Client $client)
+    public function __construct(Client $client, CategoryFilter $categoryFilter)
     {
         $this->client = $client;
+        $this->categoryFilter = $categoryFilter;
     }
 
     public function language($lang = 'en')

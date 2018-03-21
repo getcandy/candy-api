@@ -23,6 +23,7 @@ abstract class BaseIndexer
     {
         $attributes = $this->attributeMapping($model);
 
+        $customerGroups = app('api')->customerGroups->all();
         $indexables = collect();
 
         foreach ($attributes as $attribute) {
@@ -39,6 +40,7 @@ abstract class BaseIndexer
                 $indexable->set('customer_groups', $this->getCustomerGroups($model));
                 $indexable->set('channels', $this->getChannels($model));
 
+                $groupPricing = [];
 
                 if (!empty($item['data'])) {
                     foreach ($item['data'] as $field => $value) {
@@ -47,6 +49,28 @@ abstract class BaseIndexer
                 }
 
                 if ($model->variants) {
+
+                    $pricing = [];
+                    foreach ($customerGroups as $customerGroup) {
+                        $prices = [];
+                        $i = 0;
+                        foreach ($model->variants as $variant) {
+                            $price = $variant->customerPricing->filter(function ($item) use ($customerGroup) {
+                                return $customerGroup->id == $item->group->id;
+                            })->first();
+                            $prices[] = $price ? $price->price : $variant->price;
+                            $i++;
+                        }
+                        $pricing[] = [
+                            'id' => $customerGroup->encodedId(),
+                            'name' => $customerGroup->name,
+                            'min' => min($prices),
+                            'max' => max($prices)
+                        ];
+                    }
+
+                    $indexable->set('pricing', $pricing);
+
                     $skus = [];
                     foreach ($model->variants as $variant) {
                         $skus[] = $variant->sku;
@@ -127,10 +151,10 @@ abstract class BaseIndexer
     protected function getThumbnail(Model $model)
     {
         $url = null;
-        if (isset($model->primaryAsset()->thumbnail)) {
-            $transform = $model->primaryAsset()->thumbnail->first();
+        if ($asset = $model->primaryAsset->first()) {
+            $transform = $asset->first();
             $path = $transform->location . '/' . $transform->filename;
-            $url = \Storage::disk($model->primaryAsset()->disk)->url($path);
+            $url = \Storage::disk($transform->disk)->url($path);
         }
         return $url;
     }
@@ -143,7 +167,7 @@ abstract class BaseIndexer
      */
     protected function getCategories(Model $model, $lang = 'en')
     {
-        $categories = $model->categories()->get();
+        $categories = $model->categories;
 
         foreach ($categories as $category) {
             $parent = $category->parent;
@@ -156,14 +180,17 @@ abstract class BaseIndexer
         return $categories->map(function ($item) use ($lang) {
             return [
                 'id' => $item->encodedId(),
-                'name' => $item->attribute('name', null, $lang)
+                'name' => $item->attribute('name', null, $lang),
+                'position' => $item->pivot->position ?? 1
             ];
         })->toArray();
     }
 
     protected function getCustomerGroups(Model $model, $lang = 'en')
     {
-        return $model->customerGroups()->where('visible', '=', true)->where('purchasable', '=', true)->get()->map(function ($item) use ($lang) {
+        return $model->customerGroups->filter(function ($group) {
+            return $group->pivot->purchasable && $group->pivot->visible;
+        })->map(function ($item) {
             return [
                 'id' => $item->encodedId(),
                 'handle' => $item->handle,
@@ -174,7 +201,9 @@ abstract class BaseIndexer
 
     protected function getChannels(Model $model, $lang = 'en')
     {
-        return $model->channels()->whereDate('published_at', '<=', Carbon::now())->get()->map(function ($item) use ($lang) {
+        return $model->channels->filter(function ($channel) {
+            return $channel->published_at <= Carbon::now();
+        })->map(function ($item) use ($lang) {
             return [
                 'id' => $item->encodedId(),
                 'handle' => $item->handle,

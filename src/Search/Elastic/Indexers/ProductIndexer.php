@@ -27,6 +27,53 @@ class ProductIndexer extends BaseIndexer
         return $this->getIndexables($product);
     }
 
+    public function getUpdatedDocument($model, $field, $index)
+    {
+        $method = 'update' . camel_case($field);
+        if (method_exists($this, $method)) {
+            return $this->{$method}($model, $index);
+        }
+    }
+
+    public function getUpdatedDocuments($models, $field, $index)
+    {
+        $method = 'update' . camel_case($field);
+        $collection = [];
+        if (method_exists($this, $method)) {
+            foreach ($models as $model) {
+                $collection[] = $this->{$method}($model, $index);
+            }
+        }
+        return $collection;
+    }
+
+    protected function updateCategories($model, $index)
+    {
+        $type = $index->getType(
+            $this->type
+        );
+
+        $document = $type->getDocument($model->encodedId());
+
+        $categories = $this->getCategories($model);
+
+        $document->set('departments', $categories);
+
+        return $document;
+    }
+
+    public function getIndexDocuments($products)
+    {
+        $collection = collect();
+        foreach ($products as $product) {
+            $indexables = $this->getIndexDocument($product);
+            foreach ($indexables as $document) {
+                $collection->push($document);
+            }
+        }
+        return $collection;
+    }
+
     public function rankings()
     {
         return [
@@ -64,6 +111,9 @@ class ProductIndexer extends BaseIndexer
                     ],
                     'name' => [
                         'type' => 'text'
+                    ],
+                    'position' => [
+                        'type' => 'integer'
                     ]
                 ]
             ],
@@ -101,6 +151,26 @@ class ProductIndexer extends BaseIndexer
             ],
             'thumbnail' => [
                 'type' => 'text'
+            ],
+            'pricing' => [
+                'type' => 'nested',
+                'properties' => [
+                    'id' => [
+                        'type' => 'keyword',
+                        'index' => true
+                    ],
+                    'name' => [
+                        'type' => 'text'
+                    ],
+                    'max' => [
+                        'type' => 'scaled_float',
+                        'scaling_factor' => 100
+                    ],
+                    'min' => [
+                        'type' => 'scaled_float' ,
+                        'scaling_factor' => 100
+                    ]
+                ]
             ],
             'min_price' => [
                 "type" => "scaled_float",
