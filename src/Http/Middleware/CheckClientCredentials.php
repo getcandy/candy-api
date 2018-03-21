@@ -24,7 +24,7 @@ class CheckClientCredentials extends BaseMiddleware
      *
      * @var \League\OAuth2\Server\ResourceServer
      */
-    protected $server;
+    private $server;
 
     private $encrypter;
 
@@ -62,7 +62,6 @@ class CheckClientCredentials extends BaseMiddleware
         $cookies = $psr->getCookieParams();
 
         if (!empty($cookies[Passport::cookie()])) {
-
             try {
                 $token = $this->decodeJwtTokenCookie($cookies[Passport::cookie()]);
             } catch (DecryptException $e) {
@@ -77,13 +76,11 @@ class CheckClientCredentials extends BaseMiddleware
             }
         }
 
-
         try {
             $psr = $this->server->validateAuthenticatedRequest($psr);
         } catch (OAuthServerException $e) {
             throw new AuthenticationException;
         }
-
 
         if ($user = $this->provider->retrieveById($psr->getAttribute('oauth_user_id'))) {
             Auth::login($user);

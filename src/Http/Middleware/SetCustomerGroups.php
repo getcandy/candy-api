@@ -4,11 +4,9 @@ namespace GetCandy\Api\Http\Middleware;
 
 use Closure;
 use GetCandy;
-use CurrencyConverter;
 
 class SetCustomerGroups
 {
-
     /**
      * Handle an incoming request.
      *
