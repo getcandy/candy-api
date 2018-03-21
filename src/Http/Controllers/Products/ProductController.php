@@ -46,8 +46,6 @@ class ProductController extends BaseController
             return $this->errorNotFound();
         }
 
-        event(new ProductViewedEvent($product));
-
         return $this->respondWithItem($product, new ProductTransformer);
     }
 

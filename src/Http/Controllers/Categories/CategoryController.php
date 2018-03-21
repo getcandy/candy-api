@@ -1,18 +1,19 @@
 <?php
 
-namespace GetCandy\Api\Http\Controllers\Categories;
+namespace GetCandy\Http\Controllers\Api\Categories;
 
-use GetCandy\Api\Http\Controllers\BaseController;
-use GetCandy\Api\Http\Requests\Categories\CreateRequest;
-use GetCandy\Api\Http\Requests\Categories\ReorderRequest;
-use GetCandy\Api\Http\Requests\Categories\UpdateRequest;
-use GetCandy\Api\Http\Requests\Categories\DeleteRequest;
-use GetCandy\Api\Http\Transformers\Fractal\Categories\CategoryFancytreeTransformer;
-use GetCandy\Api\Http\Transformers\Fractal\Categories\CategoryTreeTransformer;
-use GetCandy\Api\Http\Transformers\Fractal\Categories\CategoryTransformer;
+use GetCandy\Http\Controllers\Api\BaseController;
+use GetCandy\Http\Requests\Api\Categories\CreateRequest;
+use GetCandy\Http\Requests\Api\Categories\ReorderRequest;
+use GetCandy\Http\Requests\Api\Categories\UpdateRequest;
+use GetCandy\Http\Requests\Api\Categories\DeleteRequest;
+use GetCandy\Http\Transformers\Fractal\Categories\CategoryFancytreeTransformer;
+use GetCandy\Http\Transformers\Fractal\Categories\CategoryTreeTransformer;
+use GetCandy\Http\Transformers\Fractal\Categories\CategoryTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Intervention\Image\Exception\NotFoundException;
 
 class CategoryController extends BaseController
 {
@@ -67,7 +68,7 @@ class CategoryController extends BaseController
         }
 
         if ($response){
-            return $this->respondWithItem($response, new CategoryTransformer);
+            return response()->json('Successful Created',201);
         }
         return response()->json('Error',500);
     }
@@ -111,6 +112,16 @@ class CategoryController extends BaseController
         try {
             $result = app('api')->categories()->update($id, $request->all());
         } catch (NotFoundHttpException $e) {
+            return $this->errorNotFound();
+        }
+        return $this->respondWithItem($result, new CategoryTransformer);
+    }
+
+    public function putProducts($id, Request $request)
+    {
+        try {
+            $result = app('api')->categories()->updateProducts($id, $request->all());
+        } catch (NotFoundException $e) {
             return $this->errorNotFound();
         }
         return $this->respondWithItem($result, new CategoryTransformer);

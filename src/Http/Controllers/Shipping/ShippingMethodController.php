@@ -76,4 +76,14 @@ class ShippingMethodController extends BaseController
         $method = app('api')->shippingMethods()->deleteUser($methodId, $userId);
         return $this->respondWithItem($method, new ShippingMethodTransformer);
     }
+
+    public function destroy($methodId)
+    {
+        try {
+            $result = app('api')->shippingMethods()->delete($methodId);
+        } catch (NotFoundHttpException $e) {
+            return $this->errorNotFound();
+        }
+        return $this->respondWithSuccess();
+    }
 }
