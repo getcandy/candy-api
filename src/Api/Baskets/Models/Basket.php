@@ -15,6 +15,7 @@ class Basket extends BaseModel
 
     protected $hashids = 'basket';
 
+
     protected $fillable = [
         'lines', 'completed_at', 'merged_id'
     ];
@@ -32,6 +33,11 @@ class Basket extends BaseModel
     public function discounts()
     {
         return $this->belongsToMany(Discount::class)->withPivot('coupon');
+    }
+
+    public function getExVatAttribute()
+    {
+        return round($this->total - $this->tax, 2);
     }
 
     /**

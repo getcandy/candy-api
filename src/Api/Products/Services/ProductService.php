@@ -268,24 +268,28 @@ class ProductService extends BaseService
 
         // If the user is an admin, fall through
         if (!$user || ($user && !$user->hasRole('admin'))) {
-            $query->with(['primaryAsset', 'primaryAsset.transforms', 'primaryAsset.source', 'variants' => function ($q1) use ($ids) {
-                $q1->with(['customerPricing' => function ($q2) use ($ids) {
-                    $q2->whereIn('customer_group_id', $ids)
-                        ->orderBy('price', 'asc')
-                        ->first();
-                }]);
-            }, 'firstVariant.image']);
+            $query->with([
+                'variants.product',
+                'routes',
+                'primaryAsset.transforms',
+                'primaryAsset.source',
+                'primaryAsset',
+                'variants.tax',
+                'variants' => function ($q1) use ($ids) {
+                    $q1->with(['customerPricing' => function ($q2) use ($ids) {
+                        $q2->whereIn('customer_group_id', $ids)
+                            ->orderBy('price', 'asc')
+                            ->first();
+                    }]);
+                }
+            ]);
         }
 
         if (count($parsedIds)) {
             $query = $query->orderByRaw("field(id,{$placeholders})", $parsedIds);
         }
 
-        clock()->startEvent('p_ids', 'Get searched Product ids');
-        $results = $query->get();
-        clock()->endEvent('p_ids');
-
-        return $results;
+        return $query->get();
     }
 
     /**

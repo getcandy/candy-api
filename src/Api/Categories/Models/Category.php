@@ -35,7 +35,7 @@ class Category extends BaseModel
     {
         return array_merge(parent::toArray(), [
             'id' => $this->encodedId(),
-            'thumbnail' => $this->primaryAsset(),
+            'thumbnail' => $this->primaryAsset->first(),
             'parent_id' => $this->encode($this->parent_id),
             'routes' => [
                 'data' => $this->routes
@@ -69,7 +69,7 @@ class Category extends BaseModel
 
     public function products()
     {
-        return $this->belongsToMany(Product::class, 'product_categories');
+        return $this->belongsToMany(Product::class, 'product_categories')->withPivot('position')->orderBy('product_categories.position', 'asc');
     }
 
     public function channels()

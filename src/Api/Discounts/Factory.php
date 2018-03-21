@@ -5,6 +5,7 @@ namespace GetCandy\Api\Discounts;
 use GetCandy\Api\Discounts\Criteria\ProductIn;
 use GetCandy\Api\Discounts\Criteria\Coupon;
 use TaxCalculator;
+use Facades\GetCandy\Api\Pricing\PriceCalculator;
 
 class Factory
 {
@@ -56,7 +57,7 @@ class Factory
 
     protected function setTotalAndTax($basket)
     {
-
+        $basket->total = 0;
         foreach ($basket->lines as $line) {
             $basket->total += $line->current_total;
 
@@ -69,10 +70,8 @@ class Factory
                 if ($tieredPrice) {
                     $basket->tax += $tieredPrice->tax * $line->quantity;
                 } else {
-                    // TODO: Move to tax calculator
                     if ($line->variant->tax) {
-                        $exVat = $line->current_total / (($line->variant->tax->percentage + 100) / 100);
-                        $basket->tax += $line->current_total - $exVat;
+                        $basket->tax += $line->variant->taxTotal * $line->quantity;
                     } else {
                         $basket->tax += 0;
                     }
@@ -80,6 +79,8 @@ class Factory
             }
 
         }
+
+        $basket->sub_total = $basket->total;
     }
 
     public function applyToBasket($discounts, $basket)

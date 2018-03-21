@@ -152,4 +152,21 @@ class ShippingMethodService extends BaseService
         $method->users()->detach($user);
         return $method;
     }
+
+    public function delete($methodId)
+    {
+        $method = $this->getByHashedId($methodId);
+
+        $method->zones()->detach();
+        $method->users()->detach();
+        
+        foreach ($method->prices as $price) {
+            $price->customerGroups()->detach();
+            $price->delete();
+        }
+
+        $method->channels()->detach();
+        $method->delete();
+        return true;
+    }
 }

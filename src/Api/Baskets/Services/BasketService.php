@@ -39,6 +39,12 @@ class BasketService extends BaseService
             $basket = $userBasket;
         }
 
+        if ($user && !$basket->user) {
+            $basket->user()->associate($user);
+        }
+
+        $basket->save();
+
         return $basket;
     }
 
@@ -110,11 +116,6 @@ class BasketService extends BaseService
             $basket->currency = $data['currency'];
         }
 
-        $basket->save();
-
-        if ($user && !$basket->user) {
-            $basket->user()->associate($user);
-        }
 
         $basket->lines()->delete();
 
@@ -134,6 +135,7 @@ class BasketService extends BaseService
 
         $variants = collect($variants)->map(function ($item) use ($service) {
             $variant = $service->getByHashedId($item['id']);
+
 
             $tieredPrice = $service->getTieredPrice($variant, $item['quantity'], \Auth::user());
 

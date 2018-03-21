@@ -27,7 +27,7 @@ class SearchService
      *
      * @return array
      */
-    public function getResults(ResultSet $results, $type, $includes = null, $page = 1)
+    public function getResults(ResultSet $results, $type, $includes = null, $page = 1, $category = false)
     {
         $ids = [];
 
@@ -49,6 +49,8 @@ class SearchService
         $resource = new Collection($collection, $transformer);
 
         $resource->setMeta([
+            'sort' => $this->getSort($results),
+            'category_page' => (bool) $category,
             'pagination' => $this->getPagination($results, $page),
             'aggregation' => $this->getSearchAggregator($results),
             'suggestions' => $this->getSuggestions($results)
@@ -57,6 +59,48 @@ class SearchService
         $data = app()->fractal->createData($resource)->toArray();
 
         return $data;
+    }
+
+    /**
+     * Maps the search sorting used to something we can use
+     *
+     * @param ResultSet $results
+     *
+     * @return array
+     */
+    protected function getSort($results)
+    {
+        try {
+            $params = $results->getQuery()->getParam('sort');
+        } catch (InvalidException $e) {
+            return null;
+        }
+
+        $sorting = [];
+
+
+        foreach ($params as $param) {
+            foreach ($param as $key => $value) {
+                $sort = $key;
+                $order = $value;
+                if (is_iterable($value)) {
+                    $field = explode('.', $sort);
+
+                    if (!empty($field[1])) {
+                        $sort = $field[1] . '_' . str_replace('ing', 'e', $field[0]);
+                    } else {
+                        $sort = $field[0];
+                    }
+                    $order = $value['order'];
+                }
+            }
+            $sorting[] = [
+                'sort' => $sort,
+                'order' => $order
+            ];
+        }
+
+        return $sorting;
     }
 
     /**

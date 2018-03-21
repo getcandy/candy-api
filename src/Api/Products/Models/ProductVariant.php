@@ -13,16 +13,15 @@ use Facades\GetCandy\Api\Taxes\TaxCalculator;
 class ProductVariant extends BaseModel
 {
     use HasAttributes;
-
-    protected $pricing;
-
     /**
      * The Hashid Channel for encoding the id
      * @var string
      */
     protected $hashids = 'product';
 
-    protected $fillable = ['options', 'price', 'sku', 'stock'];
+    protected $fillable = ['options', 'price', 'sku', 'stock', 'backorder'];
+
+    protected $pricing;
 
 
     public function product()
@@ -61,22 +60,19 @@ class ProductVariant extends BaseModel
         return $values;
     }
 
-    protected function getPricing($type)
+    protected function getPricing()
     {
-        if (!$this->pricing) {
-            $this->pricing = app('api')->productVariants()->getVariantPrice($this, app('auth')->user());
-        }
-        return $this->pricing;
+        return app('api')->productVariants()->getVariantPrice($this, app('auth')->user());
     }
 
     public function getTotalPriceAttribute()
     {
-        return $this->getPricing('price')->amount;
+        return $this->getPricing()->amount;
     }
 
     public function getTaxTotalAttribute()
     {
-        return $this->getPricing('tax')->tax;
+        return $this->getPricing()->tax;
     }
 
     public function setOptionsAttribute($val)

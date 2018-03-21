@@ -19,6 +19,11 @@ class BasketLine extends BaseModel
         return $this->quantity * $this->variant->total_price;
     }
 
+    public function getCurrentTaxAttribute()
+    {
+        return $this->quantity * $this->variant->tax_total;
+    }
+
     public function variant()
     {
         return $this->belongsTo(ProductVariant::class, 'product_variant_id');

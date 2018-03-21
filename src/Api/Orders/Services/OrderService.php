@@ -15,6 +15,7 @@ use Carbon\Carbon;
 use PDF;
 use DB;
 use CurrencyConverter;
+use PriceCalculator;
 
 class OrderService extends BaseService
 {
@@ -56,14 +57,20 @@ class OrderService extends BaseService
             }
         }
 
-        $order->total = $basket->total;
-
         $order->conversion = CurrencyConverter::rate();
 
+        $order->total = $basket->total;
         $order->vat = $basket->tax;
 
-        $order->shipping_total = 0;
-        $order->shipping_method = '';
+
+        if (!$order->shipping_total) {
+            $order->shipping_total = 0;
+            $order->shipping_method = '';
+        } else {
+            $shippingTax = TaxCalculator::amount($order->shipping_total);
+            $order->vat += $shippingTax;
+            $order->total += $order->shipping_total + $shippingTax;
+        }
 
         $order->currency = $basket->currency;
 
@@ -131,6 +138,20 @@ class OrderService extends BaseService
         );
     }
 
+    public function refresh($orderId)
+    {
+        $order = $this->getByHashedId($orderId);
+
+        $shippingTotal = $order->shipping_total;
+        $shippingMethod = $order->shipping_method;
+
+        $refreshedOrder = $this->store(
+            $order->basket->encodedId()
+        );
+
+        $refreshedOrder->save();
+    }
+
      /**
      * Set the delivery details
      *
@@ -141,6 +162,7 @@ class OrderService extends BaseService
      */
     public function setBilling($id, array $data, $user = null)
     {
+        $this->refresh($id);
         return $this->addAddress(
             $id,
             $data,
@@ -212,12 +234,17 @@ class OrderService extends BaseService
      *
      * @return void
      */
-    protected function setFields($order, array $fields, $prefix)
+    protected function setFields($order, $fields, $prefix)
     {
+        $attributes = $order->getAttributes();
         foreach ($fields as $handle => $value) {
-            if($handle == 'channel'){continue;}
+            if ($handle == 'channel') {
+                continue;
+            }
             $field = $prefix . '_' . $handle;
-            $order->setAttribute($field, $value);
+            if (array_key_exists($field, $attributes)) {
+                $order->setAttribute($field, $value);
+            }
         }
     }
 
@@ -493,21 +520,18 @@ class OrderService extends BaseService
 
         // Take off any previous shipping costs
         if ($order->shipping_total) {
-            $shippingTax = TaxCalculator::set(20)->amount($order->shipping_total);
-            $order->total -= $order->shipping_total;
+            $shippingTax = TaxCalculator::amount($order->shipping_total);
             $order->vat -= $shippingTax;
-            $order->total -= $shippingTax;
+            $order->total -= $order->shipping_total + $shippingTax;
         }
 
         $order->shipping_total = round($price->rate, 2);
         $order->shipping_method = $price->method->attribute('name');
-        $order->total += round($price->rate, 2);
 
-        //TODO: Remove hard coded VAT amount
-        $shippingTax = TaxCalculator::set(20)->amount($order->shipping_total);
+        $shippingTax = TaxCalculator::amount($order->shipping_total);
 
         $order->vat += $shippingTax;
-        $order->total += round($shippingTax, 2);
+        $order->total += $order->shipping_total + $shippingTax;
 
         $order->save();
 

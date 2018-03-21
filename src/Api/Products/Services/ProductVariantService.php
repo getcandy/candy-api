@@ -117,6 +117,12 @@ class ProductVariantService extends BaseService
         return PriceCalculator::get($price->price, $tax);
     }
 
+    public function canAddToBasket($variantId, $quantity)
+    {
+        $variant = $this->getByHashedId($variantId);
+        return $variant->backorder || $quantity <= $variant->stock;
+    }
+
     /**
      * Gets the variants true price
      *
@@ -127,7 +133,7 @@ class ProductVariantService extends BaseService
      */
     public function getVariantPrice($variant, $user = null)
     {
-        clock()->startEvent($variant->encodedId(), "Getting variant [{$variant->encodedId()}] price");
+        // clock()->startEvent($variant->encodedId(), "Getting variant [{$variant->encodedId()}] price");
         $groups = \GetCandy::getGroups();
 
         $ids = [];
@@ -136,7 +142,15 @@ class ProductVariantService extends BaseService
             $ids[] = $group->id;
         }
 
-        $pricing = $variant->customerPricing->sortBy('price')->first();
+        $pricing = null;
+
+        // If the user is an admin, fall through
+        if (!$user || ($user && !$user->hasRole('admin'))) {
+            $pricing = $variant->customerPricing()
+                ->whereIn('customer_group_id', $ids)
+                ->orderBy('price', 'asc')
+                ->first();
+        }
 
         if ($pricing) {
             $tax = $pricing->tax ? $pricing->tax->percentage : 0;
@@ -150,8 +164,6 @@ class ProductVariantService extends BaseService
         }
 
         $price = PriceCalculator::get($price, $tax);
-
-        clock()->endEvent($variant->encodedId());
         return $price;
     }
 

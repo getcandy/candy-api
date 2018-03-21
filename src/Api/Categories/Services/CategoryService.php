@@ -102,6 +102,39 @@ class CategoryService extends BaseService
         return $model;
     }
 
+    public function updateProducts($id, array $data)
+    {
+        $category = $this->getByHashedId($id);
+        $category->sort = $data['sort_type'];
+        $category->save();
+
+        $existingProducts = $category->products;
+
+        $category->products()->detach();
+
+        if ($existingProducts->count()) {
+            app(SearchContract::class)->indexer()->updateDocuments(
+                $existingProducts,
+                'categories'
+            );
+        }
+
+        foreach ($data['products'] as $item) {
+            $product = app('api')->products()->getByHashedId($item['id']);
+            $product = $category->products()->save(
+                $product,
+                ['position' => $item['position']]
+            );
+        }
+
+        app(SearchContract::class)->indexer()->updateDocuments(
+            $category->products()->get(),
+            'categories'
+        );
+
+        return $category;
+    }
+
     public function reorder(array $data)
     {
         $response = false;

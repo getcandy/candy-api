@@ -33,9 +33,7 @@ class TaxCalculator
     public function set($rate)
     {
         try {
-            if (!is_object($rate) && $rate == 0) {
-                $this->percent = 0;
-            } elseif (is_numeric($rate)) {
+            if (is_numeric($rate)) {
                 $this->percent = $rate;
             } elseif ($rate instanceof Tax) {
                 $this->percent = $rate->percentage;
@@ -61,6 +59,7 @@ class TaxCalculator
         if (!$this->taxable) {
             return 0;
         }
+
         $exVat = $price * (($this->percent + 100) / 100);
         $amount =  $exVat - $price;
         return $amount;

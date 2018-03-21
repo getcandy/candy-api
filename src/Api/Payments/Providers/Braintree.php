@@ -151,14 +151,24 @@ class Braintree extends AbstractProvider
 
     public function updateTransaction($transaction)
     {
+        if (!$transaction->transaction_id) {
+            return;
+        }
         $remote = Braintree_Transaction::find($transaction->transaction_id);
         $transaction->update([
             'status' => $remote->status
         ]);
-        if ($transaction->status == 'settled' && $transaction->order->status == 'payment-processing') {
-            $order = $transaction->order;
-            $order->status = 'payment-received';
-            $order->save();
+
+        if ($transaction->order->status == 'payment-processing') {
+            if ($transaction->status == 'settled') {
+                $order = $transaction->order;
+                $order->status = 'payment-received';
+                $order->save();
+            } elseif ($transaction->status == 'gateway_rejected' || $transaction->status == 'processor_declined') {
+                $order = $transaction->order;
+                $order->status = 'failed';
+                $order->save();
+            }
         }
     }
 

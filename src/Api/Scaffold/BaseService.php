@@ -284,7 +284,6 @@ abstract class BaseService
 
     public function getSearchedIds($ids = [])
     {
-
         $parsedIds = [];
         foreach ($ids as $hash) {
             $parsedIds[] = $this->model->decodeId($hash);
@@ -292,18 +291,15 @@ abstract class BaseService
 
         $placeholders = implode(',', array_fill(0, count($parsedIds), '?')); // string for the query
 
-
-        $query = $this->model->with('primaryAsset')
+        $query = $this->model->with([
+            'routes'
+        ])
             ->withoutGlobalScopes()
             ->whereIn('id', $parsedIds);
 
         if (count($parsedIds)) {
             $query = $query->orderByRaw("field(id,{$placeholders})", $parsedIds);
         }
-
-        clock()->startEvent('s_ids', 'Get searched ' . get_class($this->model) .  ' ids');
-        $results = $query->get();
-        clock()->endEvent('s_ids');
 
         return $query->get();
     }
