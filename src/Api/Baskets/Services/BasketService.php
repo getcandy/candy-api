@@ -33,6 +33,8 @@ class BasketService extends BaseService
     {
         $basket = new Basket();
 
+        $basket->currency = app('api')->currencies()->getDefaultRecord()->code;
+
         if ($id) {
             $basket = $this->getByHashedId($id);
         } elseif ($user && $userBasket = $this->getCurrentForUser($user)) {
@@ -200,7 +202,7 @@ class BasketService extends BaseService
      */
     public function getCurrentForUser($user)
     {
-        if (!$user || !is_string($user) && !$user instanceof User) {
+        if (!$user) {
             return null;
         }
 

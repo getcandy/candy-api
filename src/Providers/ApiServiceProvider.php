@@ -92,6 +92,7 @@ class ApiServiceProvider extends ServiceProvider
         Validator::extend('asset_url', 'GetCandy\Api\Http\Validators\AssetValidator@validAssetUrl');
         Validator::extend('valid_discount', 'GetCandy\Api\Discounts\Validators\DiscountValidator@validate');
         Validator::extend('unique_lines', 'GetCandy\Api\Baskets\Validators\BasketValidator@uniqueLines');
+        Validator::extend('in_stock', 'GetCandy\Api\Baskets\Validators\BasketValidator@inStock');
         Validator::extend('valid_payment_token', 'GetCandy\Api\Payments\Validators\PaymentTokenValidator@validate');
         Validator::extend('valid_order', 'GetCandy\Api\Orders\Validators\OrderIsActiveValidator@validate');
     }
