@@ -1,15 +1,15 @@
 <?php
 
-namespace GetCandy\Http\Controllers\Api\Categories;
+namespace GetCandy\Api\Http\Controllers\Categories;
 
-use GetCandy\Http\Controllers\Api\BaseController;
-use GetCandy\Http\Requests\Api\Categories\CreateRequest;
-use GetCandy\Http\Requests\Api\Categories\ReorderRequest;
-use GetCandy\Http\Requests\Api\Categories\UpdateRequest;
-use GetCandy\Http\Requests\Api\Categories\DeleteRequest;
-use GetCandy\Http\Transformers\Fractal\Categories\CategoryFancytreeTransformer;
-use GetCandy\Http\Transformers\Fractal\Categories\CategoryTreeTransformer;
-use GetCandy\Http\Transformers\Fractal\Categories\CategoryTransformer;
+use GetCandy\Api\Http\Controllers\BaseController;
+use GetCandy\Api\Http\Requests\Categories\CreateRequest;
+use GetCandy\Api\Http\Requests\Categories\ReorderRequest;
+use GetCandy\Api\Http\Requests\Categories\UpdateRequest;
+use GetCandy\Api\Http\Requests\Categories\DeleteRequest;
+use GetCandy\Api\Http\Transformers\Fractal\Categories\CategoryFancytreeTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\Categories\CategoryTreeTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\Categories\CategoryTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
