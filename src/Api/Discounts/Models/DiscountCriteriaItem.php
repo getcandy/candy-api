@@ -56,6 +56,6 @@ class DiscountCriteriaItem extends BaseModel
      */
     public function users()
     {
-        return $this->morphedByMany(User::class, 'eligible', 'discount_criteria_models');
+        return $this->morphedByMany(config('auth.providers.users.model'), 'eligible', 'discount_criteria_models');
     }
 }

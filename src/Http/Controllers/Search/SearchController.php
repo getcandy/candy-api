@@ -1,12 +1,12 @@
 <?php
 
-namespace GetCandy\Http\Controllers\Api\Search;
+namespace GetCandy\Api\Http\Controllers\Search;
 
 use GetCandy\Api\Categories\Models\Category;
 use GetCandy\Api\Products\Models\Product;
-use GetCandy\Http\Controllers\Api\BaseController;
-use GetCandy\Http\Requests\Api\Search\SearchRequest;
-use GetCandy\Search\SearchContract;
+use GetCandy\Api\Http\Controllers\BaseController;
+use GetCandy\Api\Http\Requests\Search\SearchRequest;
+use GetCandy\Api\Search\SearchContract;
 use Illuminate\Http\Request;
 
 class SearchController extends BaseController
