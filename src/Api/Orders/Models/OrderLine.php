@@ -8,7 +8,7 @@ class OrderLine extends BaseModel
 {
     protected $hashids = 'order';
 
-    protected $fillable = ['quantity', 'product', 'variant', 'total', 'sku'];
+    protected $fillable = ['quantity', 'product', 'variant', 'total', 'sku', 'tax', 'tax_rate', 'discount'];
 
     public function variant()
     {

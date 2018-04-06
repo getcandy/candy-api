@@ -347,8 +347,15 @@ class OrderService extends BaseService
         $lines = [];
 
         foreach ($basket->lines as $line) {
+            $tax = $line->current_tax;
+            $currentTotal = $line->current_total;
+            $withoutTax = $currentTotal - $tax;
+
             array_push($lines, [
                 'sku' => $line->variant->sku,
+                'tax' => $line->current_tax,
+                'tax_rate' => -($withoutTax - $currentTotal) / $withoutTax * 100,
+                'discount' => 0.00,
                 'total' => $line->current_total,
                 'quantity' => $line->quantity,
                 'product' => $line->variant->product->attribute('name'),
