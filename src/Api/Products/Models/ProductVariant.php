@@ -29,6 +29,11 @@ class ProductVariant extends BaseModel
         return $this->belongsTo(Product::class)->withoutGlobalScopes();
     }
 
+    public function basketLines()
+    {
+        return $this->hasMany(BasketLine::class);
+    }
+
     public function getNameAttribute()
     {
         //TODO: Figure out a more dynamic way to do this
