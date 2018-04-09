@@ -66,7 +66,11 @@ class ProductVariantService extends BaseService
                 $variant->tax()->associate(
                     app('api')->taxes()->getByHashedId($newVariant['tax_id'])
                 );
-            }
+            } else {
+            $variant->tax()->associate(
+                app('api')->taxes()->getDefaultRecord()
+            );
+        }
 
             $this->setMeasurements($variant, $newVariant);
 
