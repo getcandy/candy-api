@@ -72,6 +72,7 @@ class UserService extends BaseService implements UserContract
     {
         $user = $this->model;
 
+        $user->name = $data['name'];
         $user->email = $data['email'];
         $user->password = bcrypt($data['password']);
 
