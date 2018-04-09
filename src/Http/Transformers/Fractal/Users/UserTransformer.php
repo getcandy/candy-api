@@ -13,19 +13,13 @@ use Illuminate\Database\Eloquent\Model;
 class UserTransformer extends BaseTransformer
 {
     protected $availableIncludes = [
-        'store', 'addresses', 'groups', 'roles', 'orders', 'language'
+        'store', 'addresses', 'groups', 'roles', 'orders', 'language', 'details'
     ];
 
     public function transform(Model $user)
     {
         return [
             'id' => $user->encodedId(),
-            'title' => $user->title,
-            'firstname' => $user->firstname,
-            'lastname' => $user->lastname,
-            'company_name' => $user->company_name,
-            'contact_number' => $user->contact_number,
-            'vat_no' => $user->vat_no,
             'email' => $user->email
         ];
     }
@@ -53,5 +47,13 @@ class UserTransformer extends BaseTransformer
     public function includeOrders(Model $user)
     {
         return $this->collection($user->orders, new OrderTransformer);
+    }
+
+    public function includeDetails(Model $user)
+    {
+        if (!$user->details) {
+            return $this->null();
+        }
+        return $this->item($user->details, new UserDetailsTransformer);
     }
 }
