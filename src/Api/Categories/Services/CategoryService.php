@@ -174,19 +174,9 @@ class CategoryService extends BaseService
         return true;
     }
 
-    public function getPaginatedData($length = 50, $page = null, $depth = null)
-    {
-        if ($depth) {
-            $results = Category::withDepth()->having('depth', '<', $depth)->get();
-        } else {
-            $results = Category::paginate($length, ['*'], 'page', $page);
-        }
-        return $results;
-    }
-
     public function getCategoryTree($channel = null)
     {
-        return Category::channel($channel)->defaultOrder()->get()->toTree();
+        return Category::channel($channel)->withCount('products')->defaultOrder()->get()->toTree();
     }
 
     /**
