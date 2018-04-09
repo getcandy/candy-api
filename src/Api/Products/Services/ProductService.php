@@ -325,4 +325,23 @@ class ProductService extends BaseService
         $product->collections()->sync($ids);
         return $product;
     }
+
+    /**
+     * Get products by a stock threshold
+     *
+     * @param integer $limit
+     *
+     * @return Collection
+     */
+    public function getByStockThreshold($limit = 15)
+    {
+        return $this->model
+            ->with('variants')
+            ->withoutGlobalScope(CustomerGroupScope::class)
+            ->with(['variants' => function ($q) use ($limit) {
+                return $q->where('stock', '<=', $limit);
+            }])->whereHas('variants', function ($q2) use ($limit) {
+                return $q2->where('stock', '<=', $limit);
+            })->get();
+    }
 }
