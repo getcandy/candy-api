@@ -19,8 +19,17 @@ class CategoryController extends BaseController
 {
     public function index(Request $request)
     {
-        $collection = app('api')->categories()->getCategoryTree($request->channel);
-        return $this->respondWithItem($collection, new CategoryTreeTransformer);
+        if ($request->tree) {
+            $collection = app('api')->categories()->getCategoryTree($request->channel);
+            return $this->respondWithItem($collection, new CategoryTreeTransformer);
+        }
+
+        $collection = app('api')->categories()->getPaginatedData(
+            $request->per_page,
+            $request->current_page
+        );
+        return $this->respondWithCollection($collection, new CategoryTransformer);
+
     }
 
     public function show($id)
