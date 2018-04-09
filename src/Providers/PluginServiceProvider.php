@@ -16,19 +16,23 @@ class PluginServiceProvider extends ServiceProvider
     {
         $loader = require base_path() . '/vendor/autoload.php';
 
-        $list = File::directories(base_path('plugins'));
+        $pluginsDir = base_path('plugins');
 
-        foreach ($list as $dir) {
-            $config = require($dir . '/candy.php');
+        if (File::exists($pluginsDir)) {
+            $list = File::directories($pluginsDir);
+            foreach ($list as $dir) {
+                $config = require($dir . '/candy.php');
 
-            $namespace = "GetCandy\\Plugins\\" . $config['namespace_suffix'] . "\\";
+                $namespace = "GetCandy\\Plugins\\" . $config['namespace_suffix'] . "\\";
 
-            $loader->setPsr4($namespace, $dir . "/src/");
+                $loader->setPsr4($namespace, $dir . "/src/");
 
-            $serviceProvider = $namespace . $config['service_provider'];
+                $serviceProvider = $namespace . $config['service_provider'];
 
-            $this->app->register($serviceProvider);
+                $this->app->register($serviceProvider);
+            }
         }
+
     }
 
     /**
