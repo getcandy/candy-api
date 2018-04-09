@@ -27,6 +27,7 @@ class CategoryTransformer extends BaseTransformer
             'sort' => $category->sort,
             'attribute_data' => $category->attribute_data,
             'depth' => $category->depth ?: 0,
+            'products_count' => $category->products()->count(),
             'thumbnail' => $this->getThumbnail($category),
             'parent_id' => app('api')->categories()->getEncodedId($category->parent_id),
             'descendants' => $category->descendants
