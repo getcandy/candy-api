@@ -11,14 +11,18 @@ Route::group([
     'prefix' => 'api/' . config('app.api_version', 'v1'),
     'namespace' => 'GetCandy\Api\Http\Controllers'
 ], function ($router) {
+
+    // Address Route
+    $router->delete('addresses/{id}', 'Addresses\AddressController@destroy');
+    $router->put('addresses/{id}', 'Addresses\AddressController@update');
     /*
-|--------------------------------------------------------------------------
-| API Client Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API Client routes for GetCandy
-| These are READ ONLY routes
-|
+        |--------------------------------------------------------------------------
+        | API Client Routes
+        |--------------------------------------------------------------------------
+        |
+        | Here is where you can register API Client routes for GetCandy
+        | These are READ ONLY routes
+        |
      */
 // $router->get('channels', 'Channels\ChannelController@index');
     $router->get('channels/{id}', 'Channels\ChannelController@show');

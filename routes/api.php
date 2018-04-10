@@ -26,6 +26,7 @@ Route::group([
         'uses' => 'Auth\AccountController@resetPassword'
     ]);
 
+    $router->post('addresses', 'Addresses\AddressController@store');
     $router->post('auth/impersonate', [
         'as' => 'auth.impersonate',
         'uses' => 'Auth\ImpersonateController@process'

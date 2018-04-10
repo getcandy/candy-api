@@ -18,7 +18,7 @@ class AddressService extends BaseService
      * @param string $user
      * @param array $details
      * @param string $type
-     * 
+     *
      * @return boolean
      */
     public function exists($user, array $details, $type = 'billing')
@@ -43,7 +43,7 @@ class AddressService extends BaseService
      *
      * @param User $user
      * @param array $data
-     * 
+     *
      * @return Address
      */
     public function create($user, array $data)
@@ -53,5 +53,19 @@ class AddressService extends BaseService
         $address->user()->associate($user);
         $address->save();
         return $address;
+    }
+
+    public function update($id, array $data)
+    {
+        $address = $this->getByHashedId($id);
+        $address->fill($data);
+        $address->save();
+        return $address;
+    }
+
+    public function delete($address)
+    {
+        $address = $this->getByHashedId($address);
+        return $address->delete();
     }
 }
