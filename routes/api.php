@@ -195,6 +195,11 @@ Route::group([
     $router->get('saved-searches/{type}', 'Search\SavedSearchController@getByType');
 
     /**
+     * Settings
+     */
+    $router->get('settings/{handle}', 'Settings\SettingController@show');
+
+    /**
      * Shipping
      */
     $router->resource('shipping/zones', 'Shipping\ShippingZoneController', [
