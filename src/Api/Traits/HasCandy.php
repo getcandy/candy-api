@@ -58,7 +58,7 @@ trait HasCandy
 
     public function orders()
     {
-        return $this->hasMany(Order::class)->withoutGlobalScope('open')->withoutGlobalScope('not_expired');
+        return $this->hasMany(Order::class)->orderBy('reference', 'desc')->withoutGlobalScope('open')->withoutGlobalScope('not_expired');
     }
 
     public function details()
