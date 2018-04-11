@@ -17,6 +17,7 @@ class AssetSource extends BaseModel
         'name',
         'handle',
         'disk',
+        'path',
         'default'
     ];
 
