@@ -2,12 +2,13 @@
 
 namespace GetCandy\Api\Products\Services;
 
+use GetCandy\Api\Scaffold\BaseService;
+use GetCandy\Search\Algolia\Indexable;
+use GetCandy\Api\Search\SearchContract;
 use GetCandy\Api\Products\Models\Product;
 use GetCandy\Api\Products\Models\ProductFamily;
-use GetCandy\Api\Scaffold\BaseService;
-use GetCandy\Api\Search\Events\IndexableSavedEvent;
 use GetCandy\Exceptions\InvalidLanguageException;
-use GetCandy\Search\Algolia\Indexable;
+use GetCandy\Api\Search\Events\IndexableSavedEvent;
 
 class ProductCategoryService extends BaseService
 {
@@ -23,6 +24,21 @@ class ProductCategoryService extends BaseService
         $product->categories()->sync($category_ids);
         event(new IndexableSavedEvent($product));
         return $product->categories;
+    }
+
+    public function attach($category, array $products)
+    {
+        $category = app('api')->categories()->getByHashedId($category);
+
+        $id = $this->getDecodedIds($products);
+
+        $category->products()->attach($id);
+
+        foreach($this->getByHashedIds($products) as $product) {
+            app(SearchContract::class)->indexer()->indexObject($product);
+        }
+
+        return $category;
     }
 
     public function delete($productId, $categoryId)
