@@ -26,6 +26,7 @@ Route::group([
         'uses' => 'Auth\AccountController@resetPassword'
     ]);
 
+    $router->post('addresses', 'Addresses\AddressController@store');
     $router->post('auth/impersonate', [
         'as' => 'auth.impersonate',
         'uses' => 'Auth\ImpersonateController@process'
@@ -192,6 +193,11 @@ Route::group([
     $router->post('saved-searches', 'Search\SavedSearchController@store');
     $router->delete('saved-searches/{id}', 'Search\SavedSearchController@destroy');
     $router->get('saved-searches/{type}', 'Search\SavedSearchController@getByType');
+
+    /**
+     * Settings
+     */
+    $router->get('settings/{handle}', 'Settings\SettingController@show');
 
     /**
      * Shipping

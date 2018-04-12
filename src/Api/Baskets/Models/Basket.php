@@ -1,7 +1,6 @@
 <?php
 namespace GetCandy\Api\Baskets\Models;
 
-use GetCandy\Api\Auth\Models\User;
 use GetCandy\Api\Scaffold\BaseModel;
 use GetCandy\Api\Orders\Models\Order;
 use GetCandy\Api\Traits\HasCompletion;
@@ -47,7 +46,7 @@ class Basket extends BaseModel
      */
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(config('auth.providers.users.model'));
     }
 
     public function order()

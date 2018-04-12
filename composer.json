@@ -41,7 +41,8 @@
         "laravel": {
             "providers": [
                 "GetCandy\\Api\\Providers\\ApiServiceProvider",
-                "GetCandy\\Api\\Providers\\EventServiceProvider"
+                "GetCandy\\Api\\Providers\\EventServiceProvider",
+                "GetCandy\\Api\\Providers\\PluginServiceProvider"
             ],
             "aliases": {
                 "CurrencyConverter" : "GetCandy\\Api\\Currencies\\Facades\\CurrencyConverter",

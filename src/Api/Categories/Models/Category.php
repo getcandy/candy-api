@@ -25,7 +25,7 @@ class Category extends BaseModel
 
     protected $hashids = 'main';
 
-    protected $settings = 'products';
+    protected $settings = 'categories';
 
     protected $fillable = [
         'attribute_data', 'parent_id'

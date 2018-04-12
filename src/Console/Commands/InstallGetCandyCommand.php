@@ -333,6 +333,15 @@ class InstallGetCandyCommand extends Command
             ]
         ]);
 
+        \GetCandy\Api\Settings\Models\Setting::forceCreate([
+            'name' => 'Categories',
+            'handle' => 'categories',
+            'content' => [
+                'asset_source' => 'categories',
+                'transforms' => ['large_thumbnail']
+            ]
+        ]);
+
         $this->info('Setting up some customer groups');
 
         CustomerGroup::forceCreate([
@@ -390,6 +399,12 @@ class InstallGetCandyCommand extends Command
                 'handle' => 'products',
                 'disk' => 'public',
                 'path' => 'products'
+            ],
+            [
+                'name' => 'Category images',
+                'handle' => 'categories',
+                'disk' => 'public',
+                'path' => 'categories'
             ],
             [
                 'name' => 'Channel images',

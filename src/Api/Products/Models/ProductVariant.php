@@ -2,13 +2,14 @@
 
 namespace GetCandy\Api\Products\Models;
 
-use GetCandy\Api\Attributes\Models\Attribute;
-use GetCandy\Api\Scaffold\BaseModel;
-use GetCandy\Api\Traits\HasAttributes;
-use GetCandy\Api\Assets\Models\Asset;
-use GetCandy\Api\Taxes\Models\Tax;
-use PriceCalculator;
 use Facades\GetCandy\Api\Taxes\TaxCalculator;
+use GetCandy\Api\Assets\Models\Asset;
+use GetCandy\Api\Attributes\Models\Attribute;
+use GetCandy\Api\Baskets\Models\BasketLine;
+use GetCandy\Api\Scaffold\BaseModel;
+use GetCandy\Api\Taxes\Models\Tax;
+use GetCandy\Api\Traits\HasAttributes;
+use PriceCalculator;
 
 class ProductVariant extends BaseModel
 {
@@ -27,6 +28,11 @@ class ProductVariant extends BaseModel
     public function product()
     {
         return $this->belongsTo(Product::class)->withoutGlobalScopes();
+    }
+
+    public function basketLines()
+    {
+        return $this->hasMany(BasketLine::class);
     }
 
     public function getNameAttribute()

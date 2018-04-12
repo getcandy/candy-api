@@ -2,12 +2,13 @@
 
 namespace GetCandy\Api\Search\Services;
 
-use GetCandy\Api\Scaffold\BaseService;
+use Elastica\Exception\InvalidException;
 use Elastica\ResultSet;
+use GetCandy\Api\Http\Transformers\Fractal\Categories\CategoryTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Products\ProductTransformer;
+use GetCandy\Api\Scaffold\BaseService;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use League\Fractal\Resource\Collection;
-use GetCandy\Api\Http\Transformers\Fractal\Categories\CategoryTransformer;
 
 class SearchService
 {

@@ -61,23 +61,20 @@ class Factory
         foreach ($basket->lines as $line) {
             $basket->total += $line->current_total;
 
-            if ($line->variant->tax) {
-                $tieredPrice = app('api')->productVariants()->getTieredPrice(
-                    $line->variant,
-                    $line->quantity,
-                    $basket->user
-                );
-                if ($tieredPrice) {
-                    $basket->tax += $tieredPrice->tax * $line->quantity;
+            $tieredPrice = app('api')->productVariants()->getTieredPrice(
+                $line->variant,
+                $line->quantity,
+                $basket->user
+            );
+            if ($tieredPrice) {
+                $basket->tax += $tieredPrice->tax * $line->quantity;
+            } else {
+                if ($line->current_tax) {
+                    $basket->tax += $line->variant->taxTotal * $line->quantity;
                 } else {
-                    if ($line->variant->tax) {
-                        $basket->tax += $line->variant->taxTotal * $line->quantity;
-                    } else {
-                        $basket->tax += 0;
-                    }
+                    $basket->tax += 0;
                 }
             }
-
         }
 
         $basket->sub_total = $basket->total;

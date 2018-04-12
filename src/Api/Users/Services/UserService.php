@@ -70,16 +70,13 @@ class UserService extends BaseService implements UserContract
      */
     public function create($data)
     {
-        $user = new User();
+        $user = $this->model;
 
+        $user->name = $data['name'];
         $user->email = $data['email'];
         $user->password = bcrypt($data['password']);
 
         // $user->title = $data['title'];
-
-        if (!empty($data['details'])) {
-            $user->details()->create($data['details']);
-        }
 
         if (empty($data['language'])) {
             $lang = app('api')->languages()->getDefaultRecord();
@@ -90,6 +87,11 @@ class UserService extends BaseService implements UserContract
         $user->language()->associate($lang);
 
         $user->save();
+
+        if (!empty($data['details'])) {
+            $data['details']['user_id'] = $user->id;
+            $user->details()->create($data['details']);
+        }
 
         if (!empty($data['customer_groups'])) {
             $groupData = app('api')->customerGroups()->getDecodedIds($data['customer_groups']);

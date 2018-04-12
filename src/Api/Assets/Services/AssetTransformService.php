@@ -51,7 +51,7 @@ class AssetTransformService extends BaseService
         if ($asset->external) {
             $driver = $asset->uploader();
             $id = $driver->hashName();
-            $path = 'products/' . substr($id, 0, 2);
+            $path = $source->path .'/'. substr($id, 0, 2);
         } else {
             $path = $asset->location;
         }

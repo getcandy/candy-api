@@ -28,16 +28,21 @@ class ProductVariantService extends BaseService
         // If we are adding a new set of variants, get rid.
 
         if ($product->variants->count() == 1) {
+            foreach ($product->variants as $variant) {
+                $variant->basketLines()->delete();
+                $variant->customerPricing()->delete();
+                $variant->tiers()->delete();
+            }
             $product->variants()->delete();
         }
 
         $options = $product->option_data;
 
-        // If the option data is empty, set it to our option data;
         if (empty($options)) {
             $product->update([
                 'option_data' => $data['options']
             ]);
+            $options = $data['options'];
         }
 
         foreach ($data['variants'] as $newVariant) {
@@ -61,7 +66,11 @@ class ProductVariantService extends BaseService
                 $variant->tax()->associate(
                     app('api')->taxes()->getByHashedId($newVariant['tax_id'])
                 );
-            }
+            } else {
+            $variant->tax()->associate(
+                app('api')->taxes()->getDefaultRecord()
+            );
+        }
 
             $this->setMeasurements($variant, $newVariant);
 
@@ -76,7 +85,11 @@ class ProductVariantService extends BaseService
             }
         }
 
-        $product->update(['option_data' => $options]);
+        if (empty($data['options'])) {
+            $product->update([
+                'option_data' => $options
+            ]);
+        }
 
         return $product;
     }
@@ -327,6 +340,7 @@ class ProductVariantService extends BaseService
 
         $variant->customerPricing()->delete();
         $variant->tiers()->delete();
+        $variant->basketLines()->delete();
 
         return $variant->delete();
     }

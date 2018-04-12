@@ -3,18 +3,19 @@
 namespace GetCandy\Api\Products\Services;
 
 use Carbon\Carbon;
-use GetCandy\Api\Attributes\Events\AttributableSavedEvent;
-use GetCandy\Api\Categories\Models\Category;
-use GetCandy\Api\Products\Events\ProductCreatedEvent;
-use GetCandy\Api\Products\Events\ProductSavedEvent;
-use GetCandy\Api\Products\Models\Product;
-use GetCandy\Api\Products\Models\ProductVariant;
 use GetCandy\Api\Scaffold\BaseService;
-use GetCandy\Exceptions\InvalidLanguageException;
-use GetCandy\Exceptions\MinimumRecordRequiredException;
 use GetCandy\Api\Search\SearchContract;
 use Illuminate\Database\Eloquent\Model;
+use GetCandy\Api\Products\Models\Product;
+use GetCandy\Api\Scopes\CustomerGroupScope;
+use GetCandy\Api\Categories\Models\Category;
+use GetCandy\Api\Products\Models\ProductVariant;
+use GetCandy\Exceptions\InvalidLanguageException;
+use GetCandy\Api\Products\Events\ProductSavedEvent;
 use GetCandy\Api\Search\Events\IndexableSavedEvent;
+use GetCandy\Api\Products\Events\ProductCreatedEvent;
+use GetCandy\Exceptions\MinimumRecordRequiredException;
+use GetCandy\Api\Attributes\Events\AttributableSavedEvent;
 
 class ProductService extends BaseService
 {
@@ -324,5 +325,24 @@ class ProductService extends BaseService
 
         $product->collections()->sync($ids);
         return $product;
+    }
+
+    /**
+     * Get products by a stock threshold
+     *
+     * @param integer $limit
+     *
+     * @return Collection
+     */
+    public function getByStockThreshold($limit = 15)
+    {
+        return $this->model
+            ->with('variants')
+            ->withoutGlobalScope(CustomerGroupScope::class)
+            ->with(['variants' => function ($q) use ($limit) {
+                return $q->where('stock', '<=', $limit);
+            }])->whereHas('variants', function ($q2) use ($limit) {
+                return $q2->where('stock', '<=', $limit);
+            })->get();
     }
 }
