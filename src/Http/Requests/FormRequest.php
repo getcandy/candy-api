@@ -2,11 +2,11 @@
 
 namespace GetCandy\Api\Http\Requests;
 
-use GetCandy\Api\Exceptions\AuthorizationException;
-use GetCandy\Api\Exceptions\ValidationException;
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Foundation\Http\FormRequest as IlluminateFormRequest;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Contracts\Validation\Validator;
+use GetCandy\Api\Exceptions\ValidationException;
+use GetCandy\Api\Exceptions\AuthorizationException;
+use Illuminate\Foundation\Http\FormRequest as IlluminateFormRequest;
 
 abstract class FormRequest extends IlluminateFormRequest
 {

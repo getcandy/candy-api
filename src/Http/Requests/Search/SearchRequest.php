@@ -26,7 +26,7 @@ class SearchRequest extends FormRequest
     {
         return [
             'type' => 'required',
-            'category' => 'hashid_is_valid:categories'
+            'category' => 'hashid_is_valid:categories',
         ];
     }
 }

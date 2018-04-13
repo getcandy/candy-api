@@ -2,8 +2,6 @@
 
 namespace GetCandy\Api\Assets\Drivers;
 
-use GetCandy\Api\Assets\Models\Asset;
-
 class YouTube extends BaseUrlDriver
 {
     /**
@@ -27,7 +25,7 @@ class YouTube extends BaseUrlDriver
     }
 
     /**
-     * Get the video unique id
+     * Get the video unique id.
      *
      * @param string $url
      *
@@ -39,7 +37,7 @@ class YouTube extends BaseUrlDriver
     }
 
     /**
-     * Get the video info
+     * Get the video info.
      *
      * @param string $url
      *
@@ -47,12 +45,13 @@ class YouTube extends BaseUrlDriver
      */
     public function getInfo($url)
     {
-        if (!$this->info) {
+        if (! $this->info) {
             return $this->info = $this->getOemData([
                 'format' => 'json',
-                'url' => $url
+                'url' => $url,
             ]);
         }
+
         return $this->info;
     }
 }

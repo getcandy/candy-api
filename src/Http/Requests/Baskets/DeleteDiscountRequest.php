@@ -1,4 +1,5 @@
 <?php
+
 namespace GetCandy\Api\Http\Requests\Baskets;
 
 use GetCandy\Api\Http\Requests\FormRequest;
@@ -24,7 +25,7 @@ class DeleteDiscountRequest extends FormRequest
     public function rules()
     {
         return [
-            'discount_id' => 'required|hashid_is_valid:discounts'
+            'discount_id' => 'required|hashid_is_valid:discounts',
         ];
     }
 }

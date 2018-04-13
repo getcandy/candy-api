@@ -3,11 +3,11 @@
 namespace GetCandy\Exceptions;
 
 use Exception;
-use Illuminate\Auth\AuthenticationException;
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use GetCandy\Api\Traits\Fractal;
-use Symfony\Component\HttpKernel\Exception\HttpException;
+use Illuminate\Auth\AuthenticationException;
 use GetCandy\Exceptions\Api\AuthorizationException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
 {
@@ -71,10 +71,12 @@ class Handler extends ExceptionHandler
                     $response = $this->setStatusCode($statusCode)->respondWithError($exception->getMessage());
                     break;
             }
+
             return $response;
         } elseif ($exception instanceof AuthorizationException) {
             return $this->errorUnauthorized();
         }
+
         return parent::render($request, $exception);
     }
 

@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Languages\Services;
 
-use GetCandy\Api\Languages\Models\Language;
 use GetCandy\Api\Scaffold\BaseService;
+use GetCandy\Api\Languages\Models\Language;
 use GetCandy\Exceptions\MinimumRecordRequiredException;
 
 class LanguageService extends BaseService
@@ -14,7 +14,7 @@ class LanguageService extends BaseService
     }
 
     /**
-     * Creates a resource from the given data
+     * Creates a resource from the given data.
      *
      * @param  array  $data
      *
@@ -26,7 +26,7 @@ class LanguageService extends BaseService
         $language->name = $data['name'];
         $language->lang = $data['lang'];
         $language->iso = $data['iso'];
-        if ((empty($data['default']) && !$this->model->count()) || !empty($data['default'])) {
+        if ((empty($data['default']) && ! $this->model->count()) || ! empty($data['default'])) {
             $this->setNewDefault($language);
         }
 
@@ -41,11 +41,12 @@ class LanguageService extends BaseService
         if (is_array($lang)) {
             return $query->whereIn('lang', $lang)->first();
         }
+
         return $query->where('lang', '=', $lang)->first();
     }
 
     /**
-     * Updates a resource from the given data
+     * Updates a resource from the given data.
      *
      * @param  string $id
      * @param  array  $data
@@ -59,26 +60,26 @@ class LanguageService extends BaseService
     {
         $language = $this->getByHashedId($hashedId);
 
-        if (!$language) {
+        if (! $language) {
             abort(404);
         }
 
-        if (!empty($data['name'])) {
+        if (! empty($data['name'])) {
             $language->name = $data['name'];
         }
 
-        if (!empty($data['lang'])) {
+        if (! empty($data['lang'])) {
             $language->lang = $data['lang'];
         }
-        if (!empty($data['iso'])) {
+        if (! empty($data['iso'])) {
             $language->iso = $data['iso'];
         }
 
-        if (!empty($data['default'])) {
+        if (! empty($data['default'])) {
             $this->setNewDefault($language);
         }
 
-        if ((isset($data['enabled']) && !$data['enabled']) && $language->default) {
+        if ((isset($data['enabled']) && ! $data['enabled']) && $language->default) {
             // If we only have one record and we are trying to disable it, throw an exception
             if ($this->model->enabled()->count() == 1) {
                 throw new MinimumRecordRequiredException(
@@ -96,20 +97,20 @@ class LanguageService extends BaseService
     }
 
     /**
-     * Deletes a resource by its given hashed ID
+     * Deletes a resource by its given hashed ID.
      *
      * @param  string $id
      *
      * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @throws GetCandy\Api\Exceptions\MinimumRecordRequiredException
      *
-     * @return Boolean
+     * @return bool
      */
     public function delete($id)
     {
         $language = $this->getByHashedId($id);
 
-        if (!$language) {
+        if (! $language) {
             abort(404);
         }
 
@@ -118,7 +119,6 @@ class LanguageService extends BaseService
                 trans('response.error.minimum_record')
             );
         }
-
 
         if ($language->default && $newDefault = $this->getNewSuggestedDefault()) {
             $newDefault->default = true;
@@ -129,9 +129,9 @@ class LanguageService extends BaseService
     }
 
     /**
-     * Checks all locales in the array exist
+     * Checks all locales in the array exist.
      * @param  array  $locales
-     * @return boolean
+     * @return bool
      */
     public function allLocalesExist(array $locales)
     {

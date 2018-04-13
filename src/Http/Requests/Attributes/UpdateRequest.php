@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Http\Requests\Attributes;
 
-use Auth;
 use GetCandy\Api\Http\Requests\FormRequest;
 
 class UpdateRequest extends FormRequest
@@ -12,16 +11,18 @@ class UpdateRequest extends FormRequest
         // return $this->user()->can('update', AttributeGroup::class);
         return $this->user()->hasRole('admin');
     }
+
     public function rules()
     {
         $decodedId = app('api')->attributes()->getDecodedId($this->attribute);
+
         return [
             'name' => 'required|array|valid_locales',
             'filterable' => 'boolean',
             'searchable' => 'boolean',
             'position' => 'integer',
             'variant' => 'boolean',
-            'handle' => 'unique:attributes,handle,'.$decodedId
+            'handle' => 'unique:attributes,handle,'.$decodedId,
         ];
     }
 }

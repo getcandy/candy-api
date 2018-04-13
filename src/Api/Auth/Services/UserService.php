@@ -21,9 +21,10 @@ class UserService extends BaseService
     {
         return $this->model->where('email', '=', $email)->first();
     }
+
     /**
-     * Gets paginated data for the record
-     * @param  integer $length How many results per page
+     * Gets paginated data for the record.
+     * @param  int $length How many results per page
      * @param  int  $page   The page to start
      * @return Illuminate\Pagination\LengthAwarePaginator
      */
@@ -34,8 +35,8 @@ class UserService extends BaseService
             $query = $query
                 ->where('firstname', 'LIKE', '%'.$keywords.'%')
                 ->orWhere('lastname', 'LIKE', '%'.$keywords.'%')
-                ->orWhere('company_name', 'LIKE', '%' . $keywords . '%')
-                ->orWhere('email', 'LIKE', '%' . $keywords . '%');
+                ->orWhere('company_name', 'LIKE', '%'.$keywords.'%')
+                ->orWhere('email', 'LIKE', '%'.$keywords.'%');
         }
 
         if (count($ids)) {
@@ -47,7 +48,7 @@ class UserService extends BaseService
     }
 
     /**
-     * Creates a resource from the given data
+     * Creates a resource from the given data.
      *
      * @param  array  $data
      *
@@ -56,7 +57,6 @@ class UserService extends BaseService
     public function create($data)
     {
         $user = new User();
-
 
         if (isset($data['id'])) {
             $user->id = $data['id'];
@@ -78,13 +78,13 @@ class UserService extends BaseService
             $lang = app('api')->languages()->getEnabledByLang($data['language']);
         }
 
-        if (!empty($data['fields'])) {
+        if (! empty($data['fields'])) {
             $user->fields = $data['fields'];
         }
 
         $user->save();
 
-        if (!empty($data['customer_groups'])) {
+        if (! empty($data['customer_groups'])) {
             $groupData = app('api')->customerGroups()->getDecodedIds($data['customer_groups']);
             $user->groups()->sync($groupData);
         } else {
@@ -105,15 +105,15 @@ class UserService extends BaseService
 
         $user->email = $data['email'];
 
-        if (!empty($data['firstname'])) {
+        if (! empty($data['firstname'])) {
             $user->firstname = $data['firstname'];
         }
 
-        if (!empty($data['lastname'])) {
+        if (! empty($data['lastname'])) {
             $user->lastname = $data['lastname'];
         }
 
-        if (!empty($data['title'])) {
+        if (! empty($data['title'])) {
             $user->title = $data['title'];
         }
 
@@ -135,11 +135,11 @@ class UserService extends BaseService
             $user->vat_no = null;
         }
 
-        if (!empty($data['password'])) {
+        if (! empty($data['password'])) {
             $user->password = bcrypt($data['password']);
         }
 
-        if (!empty($data['customer_groups'])) {
+        if (! empty($data['customer_groups'])) {
             $groupData = app('api')->customerGroups()->getDecodedIds($data['customer_groups']);
             $user->groups()->sync($groupData);
         } else {
@@ -154,7 +154,7 @@ class UserService extends BaseService
 
     public function resetPassword($old, $new, $user)
     {
-        if (!\Hash::check($old, $user->password)) {
+        if (! \Hash::check($old, $user->password)) {
             return false;
         }
 
@@ -165,7 +165,7 @@ class UserService extends BaseService
     }
 
     /**
-     * Creates a user token
+     * Creates a user token.
      *
      * @param string $userId
      *
@@ -174,6 +174,7 @@ class UserService extends BaseService
     public function getImpersonationToken($userId)
     {
         $user = $this->getByHashedId($userId);
+
         return $user->createToken(str_random(25));
     }
 }

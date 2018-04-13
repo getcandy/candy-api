@@ -3,7 +3,6 @@
 namespace GetCandy\Api\Http\Requests\Products;
 
 use GetCandy\Api\Http\Requests\FormRequest;
-use GetCandy\Api\Products\Models\Product;
 
 class UpdateCategoriesRequest extends FormRequest
 {
@@ -16,14 +15,14 @@ class UpdateCategoriesRequest extends FormRequest
     {
         return [
             'categories' => 'required|array|min:1',
-            'categories.*' => 'required|hashid_is_valid:categories'
+            'categories.*' => 'required|hashid_is_valid:categories',
         ];
     }
 
     public function attributes()
     {
         return [
-            'categories.*' => 'category'
+            'categories.*' => 'category',
         ];
     }
 }

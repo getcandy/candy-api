@@ -6,7 +6,6 @@ use GetCandy\Api\Auth\Models\User;
 use GetCandy\Api\Scaffold\BaseService;
 use GetCandy\Api\Users\Contracts\UserContract;
 
-
 class UserService extends BaseService implements UserContract
 {
     public function __construct()
@@ -21,7 +20,7 @@ class UserService extends BaseService implements UserContract
     }
 
     /**
-     * Returns model by a given hashed id
+     * Returns model by a given hashed id.
      * @param  string $id
      * @throws  Illuminate\Database\Eloquent\ModelNotFoundException
      * @return Illuminate\Database\Eloquent\Model
@@ -29,6 +28,7 @@ class UserService extends BaseService implements UserContract
     public function getByHashedId($id)
     {
         $id = $this->model->decodeId($id);
+
         return $this->model->with('details')->findOrFail($id);
     }
 
@@ -36,9 +36,10 @@ class UserService extends BaseService implements UserContract
     {
         return $this->model->where('email', '=', $email)->first();
     }
+
     /**
-     * Gets paginated data for the record
-     * @param  integer $length How many results per page
+     * Gets paginated data for the record.
+     * @param  int $length How many results per page
      * @param  int  $page   The page to start
      * @return Illuminate\Pagination\LengthAwarePaginator
      */
@@ -47,13 +48,13 @@ class UserService extends BaseService implements UserContract
         $query = $this->model;
         if ($keywords) {
             $query = $query
-                ->where('firstname', 'LIKE', '%' . $keywords . '%')
-                ->orWhere('lastname', 'LIKE', '%' . $keywords . '%')
-                ->orWhere('company_name', 'LIKE', '%' . $keywords . '%')
-                ->orWhere('email', 'LIKE', '%' . $keywords . '%');
+                ->where('firstname', 'LIKE', '%'.$keywords.'%')
+                ->orWhere('lastname', 'LIKE', '%'.$keywords.'%')
+                ->orWhere('company_name', 'LIKE', '%'.$keywords.'%')
+                ->orWhere('email', 'LIKE', '%'.$keywords.'%');
         }
 
-        if (!empty($ids)) {
+        if (! empty($ids)) {
             $realIds = $this->getDecodedIds($ids);
             $query = $query->whereIn('id', $realIds);
         }
@@ -62,7 +63,7 @@ class UserService extends BaseService implements UserContract
     }
 
     /**
-     * Creates a resource from the given data
+     * Creates a resource from the given data.
      *
      * @param  array  $data
      *
@@ -88,19 +89,18 @@ class UserService extends BaseService implements UserContract
 
         $user->save();
 
-        if (!empty($data['details'])) {
+        if (! empty($data['details'])) {
             $data['details']['user_id'] = $user->id;
             $user->details()->create($data['details']);
         }
 
-        if (!empty($data['customer_groups'])) {
+        if (! empty($data['customer_groups'])) {
             $groupData = app('api')->customerGroups()->getDecodedIds($data['customer_groups']);
             $user->groups()->sync($groupData);
         } else {
             $default = app('api')->customerGroups()->getDefaultRecord();
             $user->groups()->attach($default);
         }
-
 
         $user->save();
 
@@ -113,9 +113,9 @@ class UserService extends BaseService implements UserContract
 
         $user->email = $data['email'];
 
-        if (!empty($data['details'])) {
+        if (! empty($data['details'])) {
             $details = $user->details;
-            if (!$details) {
+            if (! $details) {
                 $user->details()->create($data['details']);
             } else {
                 $details->fill($data['details']);
@@ -123,11 +123,11 @@ class UserService extends BaseService implements UserContract
             }
         }
 
-        if (!empty($data['password'])) {
+        if (! empty($data['password'])) {
             $user->password = bcrypt($data['password']);
         }
 
-        if (!empty($data['customer_groups'])) {
+        if (! empty($data['customer_groups'])) {
             $groupData = app('api')->customerGroups()->getDecodedIds($data['customer_groups']);
             $user->groups()->sync($groupData);
         } else {
@@ -142,7 +142,7 @@ class UserService extends BaseService implements UserContract
 
     public function resetPassword($old, $new, $user)
     {
-        if (!\Hash::check($old, $user->password)) {
+        if (! \Hash::check($old, $user->password)) {
             return false;
         }
 
@@ -153,7 +153,7 @@ class UserService extends BaseService implements UserContract
     }
 
     /**
-     * Creates a user token
+     * Creates a user token.
      *
      * @param string $userId
      *
@@ -162,6 +162,7 @@ class UserService extends BaseService implements UserContract
     public function getImpersonationToken($userId)
     {
         $user = $this->getByHashedId($userId);
+
         return $user->createToken(str_random(25));
     }
 }

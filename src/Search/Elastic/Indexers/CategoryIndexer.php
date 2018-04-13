@@ -3,8 +3,8 @@
 namespace GetCandy\Api\Search\Elastic\Indexers;
 
 use Elastica\Document;
-use GetCandy\Api\Categories\Models\Category;
 use Illuminate\Database\Eloquent\Model;
+use GetCandy\Api\Categories\Models\Category;
 
 class CategoryIndexer extends BaseIndexer
 {
@@ -19,7 +19,7 @@ class CategoryIndexer extends BaseIndexer
     public $type = 'categories';
 
     /**
-     * Returns the Index document ready to be added
+     * Returns the Index document ready to be added.
      * @param  Product $product
      * @return Document
      */
@@ -31,66 +31,66 @@ class CategoryIndexer extends BaseIndexer
     public function rankings()
     {
         return [
-            "name^5", "name.english^3", "description^1"
+            'name^5', 'name.english^3', 'description^1',
         ];
     }
 
     /**
-     * Returns the mapping used by elastic search
+     * Returns the mapping used by elastic search.
      * @return array
      */
     public function mapping()
     {
         return [
             'id' => [
-                'type' => 'text'
+                'type' => 'text',
             ],
             'departments' => [
                 'type' => 'nested',
                 'properties' => [
                     'id' => [
                         'type' => 'keyword',
-                        'index' => true
+                        'index' => true,
                     ],
                     'name' => [
-                        'type' => 'text'
-                    ]
-                ]
+                        'type' => 'text',
+                    ],
+                ],
             ],
             'customer_groups' => [
                 'type' => 'nested',
                 'properties' => [
                     'id' => [
                         'type' => 'keyword',
-                        'index' => true
+                        'index' => true,
                     ],
                     'name' => [
-                        'type' => 'text'
+                        'type' => 'text',
                     ],
                     'handle' => [
                         'type' => 'keyword',
-                        'index' => true
-                    ]
-                ]
+                        'index' => true,
+                    ],
+                ],
             ],
             'channels' => [
                 'type' => 'nested',
                 'properties' => [
                     'id' => [
                         'type' => 'keyword',
-                        'index' => true
+                        'index' => true,
                     ],
                     'name' => [
-                        'type' => 'text'
+                        'type' => 'text',
                     ],
                     'handle' => [
                         'type' => 'keyword',
-                        'index' => true
-                    ]
-                ]
+                        'index' => true,
+                    ],
+                ],
             ],
             'thumbnail' => [
-                'type' => 'text'
+                'type' => 'text',
             ],
             'name' => [
                 'type' => 'text',
@@ -98,14 +98,14 @@ class CategoryIndexer extends BaseIndexer
                 'fields' => [
                     'en' => [
                         'type' => 'text',
-                        'analyzer' => 'english'
+                        'analyzer' => 'english',
                     ],
                     'trigram' => [
                         'type' => 'text',
-                        'analyzer' => 'trigram'
-                    ]
-                ]
-            ]
+                        'analyzer' => 'trigram',
+                    ],
+                ],
+            ],
         ];
     }
 
@@ -114,7 +114,7 @@ class CategoryIndexer extends BaseIndexer
         return $model->children()->get()->map(function ($item) use ($lang) {
             return [
                 'id' => $item->encodedId(),
-                'name' => $item->attribute('name', null, $lang)
+                'name' => $item->attribute('name', null, $lang),
             ];
         })->toArray();
     }

@@ -27,7 +27,7 @@ class StoreRequest extends FormRequest
         return [
             'keywords' => 'required_without:filters',
             'type' => 'required',
-            'filters' => 'required_without:keywords'
+            'filters' => 'required_without:keywords',
         ];
     }
 }

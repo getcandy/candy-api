@@ -14,7 +14,7 @@ class Tag extends BaseModel
      * @var array
      */
     protected $fillable = [
-        'name'
+        'name',
     ];
 
     public function setNameAttribute($value)

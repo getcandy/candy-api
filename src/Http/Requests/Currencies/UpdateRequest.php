@@ -12,10 +12,11 @@ class UpdateRequest extends FormRequest
         // return $this->user()->can('update', Currency::class);
         return $this->user()->hasRole('admin');
     }
+
     public function rules(Currency $currency)
     {
         return [
-            'code' => 'unique:currencies,code,'. $currency->decodeId($this->currency)
+            'code' => 'unique:currencies,code,'.$currency->decodeId($this->currency),
         ];
     }
 }

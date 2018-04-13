@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Http\Requests\Channels;
 
-use GetCandy\Api\Http\Requests\FormRequest;
 use GetCandy\Api\Channels\Models\Channel;
+use GetCandy\Api\Http\Requests\FormRequest;
 
 class DeleteRequest extends FormRequest
 {

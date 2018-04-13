@@ -7,7 +7,6 @@ use CurrencyConverter;
 
 class SetCurrencyMiddleware
 {
-
     /**
      * Handle an incoming request.
      *
@@ -18,6 +17,7 @@ class SetCurrencyMiddleware
     public function handle($request, Closure $next)
     {
         CurrencyConverter::set($request->currency);
+
         return $next($request);
     }
 }

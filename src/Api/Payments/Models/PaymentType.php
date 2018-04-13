@@ -1,8 +1,8 @@
 <?php
+
 namespace GetCandy\Api\Payments\Models;
 
 use GetCandy\Api\Scaffold\BaseModel;
-use GetCandy\Api\Orders\Models\Order;
 use GetCandy\Api\Traits\HasCustomerGroups;
 use GetCandy\Api\Customers\Models\CustomerGroup;
 

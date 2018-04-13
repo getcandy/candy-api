@@ -3,7 +3,6 @@
 namespace GetCandy\Api\Traits;
 
 use GetCandy\Api\Assets\Models\Asset;
-use GetCandy\Api\Assets\Models\Placeholder;
 
 trait Assetable
 {

@@ -2,9 +2,6 @@
 
 namespace GetCandy\Api\Helpers;
 
-use Illuminate\Support\Manager;
-
-
 class GetCandy
 {
     protected $groups = [];
@@ -12,6 +9,7 @@ class GetCandy
     public function setGroups($groups)
     {
         $this->groups = $groups;
+
         return $this;
     }
 

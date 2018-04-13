@@ -1,11 +1,12 @@
 <?php
+
 namespace GetCandy\Api\Shipping\Models;
 
+use GetCandy\Api\Auth\Models\User;
 use GetCandy\Api\Scaffold\BaseModel;
 use GetCandy\Api\Traits\HasChannels;
 use GetCandy\Api\Traits\HasAttributes;
 use GetCandy\Api\Channels\Models\Channel;
-use GetCandy\Api\Auth\Models\User;
 
 class ShippingMethod extends BaseModel
 {
@@ -19,7 +20,7 @@ class ShippingMethod extends BaseModel
 
     protected $fillable = [
         'attribute_data',
-        'type'
+        'type',
     ];
 
     public function zones()
@@ -38,7 +39,7 @@ class ShippingMethod extends BaseModel
     }
 
     /**
-     * Get the attributes associated to the product
+     * Get the attributes associated to the product.
      * @return Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function channels()

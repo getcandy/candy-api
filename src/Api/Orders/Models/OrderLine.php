@@ -1,8 +1,9 @@
 <?php
+
 namespace GetCandy\Api\Orders\Models;
 
-use GetCandy\Api\Products\Models\ProductVariant;
 use GetCandy\Api\Scaffold\BaseModel;
+use GetCandy\Api\Products\Models\ProductVariant;
 
 class OrderLine extends BaseModel
 {

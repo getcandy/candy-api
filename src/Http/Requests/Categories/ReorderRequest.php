@@ -3,7 +3,6 @@
 namespace GetCandy\Api\Http\Requests\Categories;
 
 use GetCandy\Api\Http\Requests\FormRequest;
-use GetCandy\Api\Categories\Models\Category;
 
 class ReorderRequest extends FormRequest
 {
@@ -17,7 +16,7 @@ class ReorderRequest extends FormRequest
         return [
             'node'          => 'required',
             'moved-node'    => 'required',
-            'action'        => 'required'
+            'action'        => 'required',
         ];
     }
 }

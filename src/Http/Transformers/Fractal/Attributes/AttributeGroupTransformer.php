@@ -8,7 +8,7 @@ use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 class AttributeGroupTransformer extends BaseTransformer
 {
     protected $availableIncludes = [
-        'attributes'
+        'attributes',
     ];
 
     public function transform(AttributeGroup $group)
@@ -17,7 +17,7 @@ class AttributeGroupTransformer extends BaseTransformer
             'id' => $group->encodedId(),
             'name' => $this->getLocalisedName($group->name),
             'handle' => $group->handle,
-            'position' => (string) $group->position
+            'position' => (string) $group->position,
         ];
     }
 
