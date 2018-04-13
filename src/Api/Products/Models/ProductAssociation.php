@@ -2,21 +2,19 @@
 
 namespace GetCandy\Api\Products\Models;
 
-use GetCandy\Api\Associations\Models\AssociationGroup;
-use GetCandy\Api\Products\Models\Product;
 use GetCandy\Api\Scaffold\BaseModel;
+use GetCandy\Api\Associations\Models\AssociationGroup;
 
 class ProductAssociation extends BaseModel
 {
-
     /**
-     * The Hashid Channel for encoding the id
+     * The Hashid Channel for encoding the id.
      * @var string
      */
     protected $hashids = 'product';
 
     /**
-     * Get the attributes associated to the product
+     * Get the attributes associated to the product.
      * @return Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function parent()

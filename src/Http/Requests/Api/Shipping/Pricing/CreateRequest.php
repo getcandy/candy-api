@@ -1,4 +1,5 @@
 <?php
+
 namespace GetCandy\Api\Http\Requests\Shipping\Pricing;
 
 use GetCandy\Api\Http\Requests\FormRequest;
@@ -24,7 +25,7 @@ class CreateRequest extends FormRequest
     {
         return [
             'rate' => 'required|numeric',
-            'currency_id' => 'required|hashid_is_valid:currencies'
+            'currency_id' => 'required|hashid_is_valid:currencies',
         ];
     }
 }

@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Attributes\Models;
 
-use GetCandy\Api\Products\Models\Product;
 use GetCandy\Api\Scaffold\BaseModel;
 use GetCandy\Api\Traits\HasTranslations;
 
@@ -23,7 +22,7 @@ class Attribute extends BaseModel
         'position',
         'variant',
         'searchable',
-        'filterable'
+        'filterable',
     ];
 
     public function group()
@@ -40,7 +39,7 @@ class Attribute extends BaseModel
     }
 
     /**
-     * Sets the name attribute to a json string
+     * Sets the name attribute to a json string.
      * @param array $value
      */
     public function setLookupsAttribute(array $value)

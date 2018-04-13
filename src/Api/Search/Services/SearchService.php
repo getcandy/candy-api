@@ -2,27 +2,25 @@
 
 namespace GetCandy\Api\Search\Services;
 
-use GetCandy\Api\Scaffold\BaseService;
 use Elastica\ResultSet;
-use GetCandy\Api\Http\Transformers\Fractal\Products\ProductTransformer;
-use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use League\Fractal\Resource\Collection;
+use GetCandy\Api\Http\Transformers\Fractal\Products\ProductTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Categories\CategoryTransformer;
 
 class SearchService
 {
     protected $types = [
         'product' => ProductTransformer::class,
-        'category' => CategoryTransformer::class
+        'category' => CategoryTransformer::class,
     ];
 
     /**
-     * Gets the search results from the result set
+     * Gets the search results from the result set.
      *
      * @param ResultSet $results
      * @param string $type
-     * @param integer $page
-     * @param integer $perpage
+     * @param int $page
+     * @param int $perpage
      * @param mixed $includes
      *
      * @return array
@@ -51,7 +49,7 @@ class SearchService
         $resource->setMeta([
             'pagination' => $this->getPagination($results, $page),
             'aggregation' => $this->getSearchAggregator($results),
-            'suggestions' => $this->getSuggestions($results)
+            'suggestions' => $this->getSuggestions($results),
         ]);
 
         $data = app()->fractal->createData($resource)->toArray();
@@ -60,7 +58,7 @@ class SearchService
     }
 
     /**
-     * Get the pagination for the results
+     * Get the pagination for the results.
      *
      * @param array $results
      *
@@ -76,13 +74,14 @@ class SearchService
             'count' => $results->count(),
             'per_page' => (int) $query->getParam('size'),
             'current_page' => (int) $page,
-            'total_pages' => (int) ($totalPages <= 0 ? 1 : $totalPages)
+            'total_pages' => (int) ($totalPages <= 0 ? 1 : $totalPages),
         ];
+
         return $pagination;
     }
 
     /**
-     * Get the search suggestions
+     * Get the search suggestions.
      *
      * @param ResultSet $results
      *
@@ -106,7 +105,7 @@ class SearchService
     }
 
     /**
-     * Gets the aggregation fields for the results
+     * Gets the aggregation fields for the results.
      *
      * @param array $results
      *
@@ -114,12 +113,11 @@ class SearchService
      */
     protected function getSearchAggregator($results)
     {
-        if (!$results->hasAggregations()) {
+        if (! $results->hasAggregations()) {
             return [];
         }
 
         $aggs = $results->getAggregations();
-
 
         $results = [];
 
@@ -131,7 +129,8 @@ class SearchService
                 foreach ($agg['categories_after_filter']['categories_post_inner']['buckets'] as $bucket) {
                     $selected[] = $bucket['key'];
                 }
-            } if ($handle == 'categories_before') {
+            }
+            if ($handle == 'categories_before') {
                 foreach ($agg['categories_before_inner']['buckets'] as $bucket) {
                     $all[] = $bucket['key'];
                 }

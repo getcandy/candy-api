@@ -2,10 +2,8 @@
 
 namespace GetCandy\Api\Products\Listeners;
 
-use GetCandy\Api\Products\Events\ProductCreatedEvent;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use GetCandy\Api\Search\SearchContract;
+use GetCandy\Api\Products\Events\ProductCreatedEvent;
 
 class AddToIndexListener
 {

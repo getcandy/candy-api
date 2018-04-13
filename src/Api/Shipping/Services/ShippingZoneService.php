@@ -1,4 +1,5 @@
 <?php
+
 namespace GetCandy\Api\Shipping\Services;
 
 use GetCandy\Api\Scaffold\BaseService;
@@ -12,7 +13,7 @@ class ShippingZoneService extends BaseService
     }
 
     /**
-     * Create a shipping method
+     * Create a shipping method.
      *
      * @param array $data
      *
@@ -24,7 +25,7 @@ class ShippingZoneService extends BaseService
         $shipping->fill($data);
         $shipping->save();
 
-        if (!empty($data['countries'])) {
+        if (! empty($data['countries'])) {
             $shipping->countries()->attach(
                 app('api')->countries()->getDecodedIds($data['countries'])
             );
@@ -34,7 +35,7 @@ class ShippingZoneService extends BaseService
     }
 
     /**
-     * Updates a shipping zone
+     * Updates a shipping zone.
      *
      * @param string $id
      * @param array $data
@@ -48,21 +49,23 @@ class ShippingZoneService extends BaseService
 
         $shipping->countries()->detach();
 
-        if (!empty($data['countries'])) {
+        if (! empty($data['countries'])) {
             $shipping->countries()->attach(
                 app('api')->countries()->getDecodedIds($data['countries'])
             );
         }
 
         $shipping->save();
+
         return $shipping;
     }
 
     public function getByCountryName($name, $locale = 'en')
     {
         $result = ShippingZone::with(['methods', 'methods.prices'])->whereHas('countries', function ($query) use ($name, $locale) {
-            $query->where('name->' . $locale, $name);
+            $query->where('name->'.$locale, $name);
         })->get();
+
         return $result;
     }
 

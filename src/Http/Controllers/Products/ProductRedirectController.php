@@ -4,7 +4,6 @@ namespace GetCandy\Api\Http\Controllers\Products;
 
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Products\CreateUrlRequest;
-use Illuminate\Http\Request;
 
 class ProductRedirectController extends BaseController
 {
@@ -17,6 +16,7 @@ class ProductRedirectController extends BaseController
     public function store($product, CreateUrlRequest $request)
     {
         $result = app('api')->products()->createUrl($product, $request->all());
+
         return $this->respondWithNoContent();
     }
 }

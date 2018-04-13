@@ -11,6 +11,7 @@ class DeleteRequest extends FormRequest
         // return $this->user()->can('create', Language::class);
         return $this->user()->hasRole('admin');
     }
+
     public function rules()
     {
         return [

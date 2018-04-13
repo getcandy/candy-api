@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Search\Listeners;
 
-use GetCandy\Api\Search\Events\IndexableSavedEvent;
 use GetCandy\Api\Search\SearchContract;
+use GetCandy\Api\Search\Events\IndexableSavedEvent;
 
 class IndexObjectListener
 {

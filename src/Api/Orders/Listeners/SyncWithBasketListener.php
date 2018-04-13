@@ -1,9 +1,9 @@
 <?php
+
 namespace GetCandy\Api\Orders\Listeners;
 
-use GetCandy\Api\Attributes\Events\AttributableSavedEvent;
-use GetCandy\Api\Baskets\Events\BasketStoredEvent;
 use GetCandy\Api\Discounts\Factory;
+use GetCandy\Api\Baskets\Events\BasketStoredEvent;
 
 class SyncWithBasketListener
 {
@@ -22,7 +22,7 @@ class SyncWithBasketListener
      */
     public function handle(BasketStoredEvent $event)
     {
-        if (!$event->basket->order) {
+        if (! $event->basket->order) {
             return true;
         }
         app('api')->orders()->syncWithBasket($event->basket->order, $event->basket);

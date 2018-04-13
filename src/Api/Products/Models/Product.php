@@ -2,20 +2,19 @@
 
 namespace GetCandy\Api\Products\Models;
 
-use GetCandy\Api\Traits\Indexable;
 use GetCandy\Api\Traits\Assetable;
 use GetCandy\Api\Traits\HasRoutes;
+use GetCandy\Api\Traits\Indexable;
 use GetCandy\Api\Pages\Models\Page;
-use GetCandy\Api\Traits\HasChannels;
 use GetCandy\Api\Scaffold\BaseModel;
+use GetCandy\Api\Traits\HasChannels;
 use GetCandy\Api\Traits\HasAttributes;
 use GetCandy\Api\Layouts\Models\Layout;
-use GetCandy\Api\Traits\HasTranslations;
 use GetCandy\Api\Traits\HasCustomerGroups;
 use GetCandy\Api\Discounts\Models\Discount;
 use GetCandy\Api\Categories\Models\Category;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use GetCandy\Api\Attributes\Models\Attribute;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use GetCandy\Api\Collections\Models\Collection;
 use GetCandy\Api\Http\Transformers\Fractal\Products\ProductTransformer;
 
@@ -36,7 +35,7 @@ class Product extends BaseModel
     public $transformer = ProductTransformer::class;
 
     /**
-     * The Hashid Channel for encoding the id
+     * The Hashid Channel for encoding the id.
      * @var string
      */
     protected $hashids = 'product';
@@ -47,7 +46,7 @@ class Product extends BaseModel
      * @var array
      */
     protected $fillable = [
-        'id', 'name', 'price', 'attribute_data', 'option_data'
+        'id', 'name', 'price', 'attribute_data', 'option_data',
     ];
 
     /**
@@ -67,7 +66,7 @@ class Product extends BaseModel
      *             ]
      *         ]
      *     ]
-     * ]
+     * ].
      * @param array $value [description]
      */
     public function setOptionDataAttribute($value)
@@ -100,7 +99,7 @@ class Product extends BaseModel
     }
 
     /**
-     * Get the attributes associated to the product
+     * Get the attributes associated to the product.
      * @return Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function collections()
@@ -109,7 +108,7 @@ class Product extends BaseModel
     }
 
     /**
-     * Get the related family
+     * Get the related family.
      * @return Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function family()
@@ -118,7 +117,7 @@ class Product extends BaseModel
     }
 
     /**
-     * Get the products page
+     * Get the products page.
      * @return Illuminate\Database\Eloquent\Relations\MorphOne
      */
     public function page()

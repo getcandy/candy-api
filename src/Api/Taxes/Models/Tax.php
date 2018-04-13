@@ -16,6 +16,6 @@ class Tax extends BaseModel
     protected $fillable = [
         'name',
         'default',
-        'percentage'
+        'percentage',
     ];
 }

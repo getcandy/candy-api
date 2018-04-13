@@ -2,9 +2,8 @@
 
 namespace GetCandy\Api\Associations\Services;
 
-use GetCandy\Api\Associations\Models\AssociationGroup;
 use GetCandy\Api\Scaffold\BaseService;
-use Illuminate\Database\Eloquent\Model;
+use GetCandy\Api\Associations\Models\AssociationGroup;
 
 class AssociationGroupService extends BaseService
 {

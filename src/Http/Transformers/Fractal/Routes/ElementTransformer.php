@@ -2,14 +2,13 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Routes;
 
-use GetCandy\Api\Routes\Models\Route;
-use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use Illuminate\Database\Eloquent\Model;
+use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 
 class ElementTransformer extends BaseTransformer
 {
     protected $availableIncludes = [
-        'element'
+        'element',
     ];
 
     public function transform(Model $model)

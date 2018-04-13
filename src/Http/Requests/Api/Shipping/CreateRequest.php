@@ -25,7 +25,7 @@ class CreateRequest extends FormRequest
     {
         return [
             'type' => 'required|in:standard,dhl',
-            'name' => 'required|valid_structure:shipping_methods'
+            'name' => 'required|valid_structure:shipping_methods',
         ];
     }
 }

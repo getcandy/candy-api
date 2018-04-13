@@ -2,19 +2,18 @@
 
 namespace GetCandy\Api\Orders\Services;
 
+use DB;
+use PDF;
+use Carbon\Carbon;
 use TaxCalculator;
-use GetCandy\Api\Factory;
+use CurrencyConverter;
 use GetCandy\Api\Auth\Models\User;
 use GetCandy\Api\Orders\Models\Order;
 use GetCandy\Api\Scaffold\BaseService;
 use GetCandy\Api\Baskets\Models\Basket;
-use GetCandy\Api\Orders\Events\OrderBeforeSavedEvent;
 use GetCandy\Api\Orders\Events\OrderProcessedEvent;
+use GetCandy\Api\Orders\Events\OrderBeforeSavedEvent;
 use GetCandy\Api\Orders\Exceptions\IncompleteOrderException;
-use Carbon\Carbon;
-use PDF;
-use DB;
-use CurrencyConverter;
 
 class OrderService extends BaseService
 {
@@ -29,7 +28,7 @@ class OrderService extends BaseService
     }
 
     /**
-     * Stores an order
+     * Stores an order.
      *
      * @param string $basketId
      *
@@ -84,7 +83,7 @@ class OrderService extends BaseService
     }
 
     /**
-     * Update an order
+     * Update an order.
      *
      * @param string $orderId
      * @param array $data
@@ -95,11 +94,11 @@ class OrderService extends BaseService
     {
         $order = $this->getByHashedId($orderId);
 
-        if (!empty($data['tracking_no'])) {
+        if (! empty($data['tracking_no'])) {
             $order->tracking_no = $data['tracking_no'];
         }
 
-        if (!empty($data['status'])) {
+        if (! empty($data['status'])) {
             $order->status = $data['status'];
         }
 
@@ -114,7 +113,7 @@ class OrderService extends BaseService
     }
 
     /**
-     * Set the delivery details
+     * Set the delivery details.
      *
      * @param string $id
      * @param array $data
@@ -131,8 +130,8 @@ class OrderService extends BaseService
         );
     }
 
-     /**
-     * Set the delivery details
+    /**
+     * Set the delivery details.
      *
      * @param string $id
      * @param array $data
@@ -150,7 +149,7 @@ class OrderService extends BaseService
     }
 
     /**
-     * Adds an address for an order
+     * Adds an address for an order.
      *
      * @param string $id
      * @param array $data
@@ -162,7 +161,7 @@ class OrderService extends BaseService
     {
         $order = $this->getByHashedId($id);
 
-        if (!empty($data['vat_no'])) {
+        if (! empty($data['vat_no'])) {
             $order->vat_no = $data['vat_no'];
             unset($data['vat_no']);
         }
@@ -170,7 +169,7 @@ class OrderService extends BaseService
         $order->save();
 
         // If this address doesn't exist, create it.
-        if (!empty($data['address_id'])) {
+        if (! empty($data['address_id'])) {
             $shipping = app('api')->addresses()->getByHashedId($data['address_id']);
             $data = $shipping->toArray();
         } elseif ($user) {
@@ -191,7 +190,7 @@ class OrderService extends BaseService
     }
 
     /**
-     * Sets the delivery price on an
+     * Sets the delivery price on an.
      *
      * @param string $orderId
      * @param string $priceId
@@ -204,7 +203,7 @@ class OrderService extends BaseService
     }
 
     /**
-     * Sets the fields for contact info on the order
+     * Sets the fields for contact info on the order.
      *
      * @param string $order
      * @param array $fields
@@ -215,14 +214,16 @@ class OrderService extends BaseService
     protected function setFields($order, array $fields, $prefix)
     {
         foreach ($fields as $handle => $value) {
-            if($handle == 'channel'){continue;}
-            $field = $prefix . '_' . $handle;
+            if ($handle == 'channel') {
+                continue;
+            }
+            $field = $prefix.'_'.$handle;
             $order->setAttribute($field, $value);
         }
     }
 
     /**
-     * Expires an order
+     * Expires an order.
      *
      * @param string $orderId
      *
@@ -242,44 +243,44 @@ class OrderService extends BaseService
     {
         $id = $this->model->decodeId($id);
         $query = $this->model->withoutGlobalScope('open')->withoutGlobalScope('not_expired');
+
         return $query->findOrFail($id);
     }
 
     /**
-     * Get the next invoice reference
+     * Get the next invoice reference.
      *
      * @return string
      */
     protected function getNextInvoiceReference($year = null, $month = null)
     {
-        if (!$year) {
+        if (! $year) {
             $year = Carbon::now()->year;
         }
 
-        if (!$month) {
+        if (! $month) {
             $month = Carbon::now()->format('m');
         }
 
         $order = DB::table('orders')->select(
             DB::RAW('MAX(reference) as reference')
-        )->whereRaw('YEAR(placed_at) = ' . $year)
-            ->whereRaw('MONTH(placed_at) = ' . $month)
+        )->whereRaw('YEAR(placed_at) = '.$year)
+            ->whereRaw('MONTH(placed_at) = '.$month)
             ->whereRaw("reference REGEXP '^([0-9]*-[0-9]*-[0-9]*)'")
             ->first();
 
-        if (!$order->reference) {
+        if (! $order->reference) {
             $increment = 1;
         } else {
             $segments = explode('-', $order->reference);
             $increment = $segments[2] + 1;
         }
 
-        return $year . '-' . $month . '-' . str_pad($increment, 4, 0, STR_PAD_LEFT);
+        return $year.'-'.$month.'-'.str_pad($increment, 4, 0, STR_PAD_LEFT);
     }
 
-
     /**
-     * Syncs a given basket with its order
+     * Syncs a given basket with its order.
      *
      * @param Order $order
      * @param Basket $basket
@@ -309,7 +310,7 @@ class OrderService extends BaseService
     }
 
     /**
-     * Maps the order lines from a basket
+     * Maps the order lines from a basket.
      *
      * @param Basket $basket
      *
@@ -325,7 +326,7 @@ class OrderService extends BaseService
                 'total' => $line->current_total,
                 'quantity' => $line->quantity,
                 'product' => $line->variant->product->attribute('name'),
-                'variant' => $line->variant->name
+                'variant' => $line->variant->name,
             ]);
         }
 
@@ -333,7 +334,7 @@ class OrderService extends BaseService
     }
 
     /**
-     * Maps an orders discounts from a basket
+     * Maps an orders discounts from a basket.
      *
      * @param Basket $basket
      *
@@ -351,7 +352,7 @@ class OrderService extends BaseService
                     'name' => $discount->attribute('name'),
                     'description' => $discount->attribute('description'),
                     'type' => $reward->type,
-                    'amount' => $reward->value
+                    'amount' => $reward->value,
                 ]);
             }
         }
@@ -360,35 +361,37 @@ class OrderService extends BaseService
     }
 
     /**
-     * Determines whether an active order exists with this id
+     * Determines whether an active order exists with this id.
      *
      * @param string $orderId
      *
-     * @return boolean
+     * @return bool
      */
     public function isActive($orderId)
     {
         $realId = $this->getDecodedId($orderId);
+
         return (bool) $this->model->where('id', '=', $realId)->where('status', '=', 'awaiting-payment')->exists();
     }
 
     /**
-     * Checks whether an order is processable
+     * Checks whether an order is processable.
      *
      * @param Order $order
      *
-     * @return boolean
+     * @return bool
      */
     protected function isProcessable(Order $order)
     {
         $fields = $order->required->filter(function ($field) use ($order) {
             return $order->getAttribute($field);
         });
+
         return $fields->count() === $order->required->count();
     }
 
     /**
-     * Process an order for payment
+     * Process an order for payment.
      *
      * @param array $data
      * @return mixed
@@ -397,16 +400,16 @@ class OrderService extends BaseService
     {
         $order = $this->getByHashedId($data['order_id']);
 
-        if (!$this->isProcessable($order)) {
+        if (! $this->isProcessable($order)) {
             throw new IncompleteOrderException;
         }
 
-        if (!empty($data['notes'])) {
+        if (! empty($data['notes'])) {
             $order->notes = $data['notes'];
         }
 
         $type = null;
-        if (!empty($data['payment_type_id'])) {
+        if (! empty($data['payment_type_id'])) {
             $type = app('api')->paymentTypes()->getByHashedId($data['payment_type_id']);
         }
 
@@ -436,9 +439,9 @@ class OrderService extends BaseService
     }
 
     /**
-     * Get paginated orders
+     * Get paginated orders.
      *
-     * @param integer $length
+     * @param int $length
      * @param int $page
      * @param User $user
      * @return void
@@ -449,7 +452,7 @@ class OrderService extends BaseService
             ->withoutGlobalScope('open')
             ->withoutGlobalScope('not_expired');
 
-        if (!$status || $status == 'processed') {
+        if (! $status || $status == 'processed') {
             $query = $query->whereNotIn('status', ['open', 'awaiting-payment']);
         } else {
             $query = $query->where('status', '=', $status);
@@ -465,11 +468,12 @@ class OrderService extends BaseService
             $query = $query->search($keywords);
         }
 
-        if (!app('auth')->user()->hasRole('admin')) {
+        if (! app('auth')->user()->hasRole('admin')) {
             $query = $query->whereHas('user', function ($q) use ($user) {
                 $q->whereId($user->id);
             });
         }
+
         return $query->paginate($length, ['*'], 'page', $page);
     }
 
@@ -479,7 +483,7 @@ class OrderService extends BaseService
     }
 
     /**
-     * Set the shipping cost and method on an order
+     * Set the shipping cost and method on an order.
      *
      * @param string $orderId
      * @param string $priceId
@@ -515,7 +519,7 @@ class OrderService extends BaseService
     }
 
     /**
-     * Set the contact details on an order
+     * Set the contact details on an order.
      *
      * @param string $orderId
      * @param array $data
@@ -526,27 +530,28 @@ class OrderService extends BaseService
     {
         $order = $this->getByHashedId($orderId);
 
-        if (!empty($data['email'])) {
+        if (! empty($data['email'])) {
             $order->contact_email = $data['email'];
         }
 
-        if (!empty($data['phone'])) {
+        if (! empty($data['phone'])) {
             $order->contact_phone = $data['phone'];
         }
 
         $order->save();
+
         return $order;
     }
 
     public function getPdf($order)
     {
-        $settings['address'] =  app('api')->settings()->get('address')['content'];
+        $settings['address'] = app('api')->settings()->get('address')['content'];
         $settings['tax'] = app('api')->settings()->get('tax')['content'];
         $settings['contact'] = app('api')->settings()->get('contact')['content'];
 
         $data = [
             'order' => $order->load(['lines', 'discounts']),
-            'settings' => $settings
+            'settings' => $settings,
         ];
 
         //TODO: This is bad mmkay, refactor when orders are re engineered
@@ -564,6 +569,7 @@ class OrderService extends BaseService
         }
 
         $pdf = PDF::loadView('pdf.order-invoice', $data);
+
         return $pdf;
     }
 }

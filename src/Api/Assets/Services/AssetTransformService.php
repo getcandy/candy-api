@@ -2,13 +2,13 @@
 
 namespace GetCandy\Api\Assets\Services;
 
-use GetCandy\Api\Assets\Models\Asset;
-use GetCandy\Api\Assets\Models\AssetTransform;
-use GetCandy\Api\Assets\Models\Transform;
-use GetCandy\Api\Scaffold\BaseService;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Image;
 use Storage;
+use GetCandy\Api\Assets\Models\Asset;
+use GetCandy\Api\Scaffold\BaseService;
+use GetCandy\Api\Assets\Models\Transform;
+use GetCandy\Api\Assets\Models\AssetTransform;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 class AssetTransformService extends BaseService
 {
@@ -51,14 +51,14 @@ class AssetTransformService extends BaseService
         if ($asset->external) {
             $driver = $asset->uploader();
             $id = $driver->hashName();
-            $path = 'products/' . substr($id, 0, 2);
+            $path = 'products/'.substr($id, 0, 2);
         } else {
             $path = $asset->location;
         }
 
         $image = $this->getImage($asset);
 
-        if (!$image) {
+        if (! $image) {
             return false;
         }
 
@@ -89,20 +89,20 @@ class AssetTransformService extends BaseService
         }
 
         // Determine where to put this puppy...
-        $thumbPath = $path . '/' . str_plural($transformer->handle);
+        $thumbPath = $path.'/'.str_plural($transformer->handle);
 
         $assetTransform = new AssetTransform;
         $assetTransform->asset()->associate($asset);
         $assetTransform->transform()->associate($transformer);
 
         $assetTransform->location = $thumbPath;
-        $assetTransform->filename = $transformer->handle . '_' . ($asset->external ? $id . '.jpg' : $asset->filename);
+        $assetTransform->filename = $transformer->handle.'_'.($asset->external ? $id.'.jpg' : $asset->filename);
         $assetTransform->file_exists = true;
 
         $assetTransform->save();
 
         Storage::disk($source->disk)->put(
-            $assetTransform->location . '/' . $assetTransform->filename,
+            $assetTransform->location.'/'.$assetTransform->filename,
             $image->stream()->getContents()
         );
     }
@@ -129,7 +129,7 @@ class AssetTransformService extends BaseService
     }
 
     /**
-     * Get the image
+     * Get the image.
      *
      * @param [type] $asset
      * @return void
@@ -141,7 +141,7 @@ class AssetTransformService extends BaseService
         }
 
         try {
-            $file = Storage::disk($asset->source->disk)->get($asset->location . '/'  . $asset->filename);
+            $file = Storage::disk($asset->source->disk)->get($asset->location.'/'.$asset->filename);
         } catch (FileNotFoundException $e) {
             return false;
         }

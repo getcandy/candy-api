@@ -8,6 +8,6 @@ return [
         'application' => GetCandy\Api\Assets\Drivers\File::class,
         'youtube' => GetCandy\Api\Assets\Drivers\YouTube::class,
         'image' => GetCandy\Api\Assets\Drivers\Image::class,
-        'external' => GetCandy\Api\Assets\Drivers\ExternalImage::class
-    ]
+        'external' => GetCandy\Api\Assets\Drivers\ExternalImage::class,
+    ],
 ];

@@ -2,22 +2,22 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Categories;
 
-use GetCandy\Api\Attributes\Models\AttributeGroup;
 use GetCandy\Api\Categories\Models\Category;
-use GetCandy\Api\Http\Transformers\Fractal\Assets\AssetTransformer;
-use GetCandy\Api\Http\Transformers\Fractal\Products\ProductTransformer;
-use GetCandy\Api\Http\Transformers\Fractal\Attributes\AttributeGroupTransformer;
+use GetCandy\Api\Attributes\Models\AttributeGroup;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
-use GetCandy\Api\Http\Transformers\Fractal\Channels\ChannelTransformer;
-use GetCandy\Api\Http\Transformers\Fractal\Customers\CustomerGroupTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\Assets\AssetTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Routes\RouteTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\Channels\ChannelTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\Products\ProductTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\Customers\CustomerGroupTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\Attributes\AttributeGroupTransformer;
 
 class CategoryTransformer extends BaseTransformer
 {
     protected $attributeGroups;
 
     protected $availableIncludes = [
-        'attribute_groups','assets', 'channels', 'customer_groups', 'products', 'routes', 'descendantants'
+        'attribute_groups', 'assets', 'channels', 'customer_groups', 'products', 'routes', 'descendantants',
     ];
 
     public function transform(Category $category)
@@ -27,12 +27,13 @@ class CategoryTransformer extends BaseTransformer
             'attribute_data' => $category->attribute_data,
             'depth' => $category->depth ?: 0,
             'thumbnail' => $this->getThumbnail($category),
-            'parent_id' => app('api')->categories()->getEncodedId($category->parent_id)
+            'parent_id' => app('api')->categories()->getEncodedId($category->parent_id),
         ];
 
-        if (!is_null($category->aggregate_selected)) {
+        if (! is_null($category->aggregate_selected)) {
             $data['aggregate_selected'] = $category->aggregate_selected;
         }
+
         return $data;
     }
 
@@ -67,6 +68,7 @@ class CategoryTransformer extends BaseTransformer
     public function includeChannels(Category $category)
     {
         $channels = app('api')->channels()->getChannelsWithAvailability($category, 'categories');
+
         return $this->collection($channels, new ChannelTransformer);
     }
 
@@ -75,12 +77,14 @@ class CategoryTransformer extends BaseTransformer
      */
     public function getAttributeGroups()
     {
-        if (!$this->attributeGroups) {
+        if (! $this->attributeGroups) {
             $this->attributeGroups = AttributeGroup::select('id', 'name', 'handle', 'position')
                 ->orderBy('position', 'asc')->with(['attributes'])->get();
         }
+
         return $this->attributeGroups;
     }
+
     /**
      * @param \GetCandy\Api\Products\Models\Product $product
      *
@@ -102,6 +106,7 @@ class CategoryTransformer extends BaseTransformer
                 return $group;
             }
         });
+
         return $this->collection($attributeGroups, new AttributeGroupTransformer);
     }
 
@@ -118,6 +123,7 @@ class CategoryTransformer extends BaseTransformer
     public function includeCustomerGroups(Category $category)
     {
         $groups = app('api')->customerGroups()->getGroupsWithAvailability($category, 'categories');
+
         return $this->collection($groups, new CustomerGroupTransformer);
     }
 }

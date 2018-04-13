@@ -26,7 +26,7 @@ class SearchRequest extends FormRequest
     {
         return [
             'type' => 'required',
-            'filters.*.values' => 'required|array'
+            'filters.*.values' => 'required|array',
         ];
     }
 }

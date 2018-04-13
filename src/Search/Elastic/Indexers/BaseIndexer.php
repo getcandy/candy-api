@@ -2,19 +2,19 @@
 
 namespace GetCandy\Api\Search\Elastic\Indexers;
 
-use Illuminate\Database\Eloquent\Model;
-use GetCandy\Api\Search\Indexable;
 use Carbon\Carbon;
+use GetCandy\Api\Search\Indexable;
+use Illuminate\Database\Eloquent\Model;
 
 abstract class BaseIndexer
 {
     public function getIndexName($lang = 'en')
     {
-        return config('getcandy.search.index_prefix') . '_' . $this->type . '_' . $lang;
+        return config('getcandy.search.index_prefix').'_'.$this->type.'_'.$lang;
     }
 
     /**
-     * Gets a collection of indexables, based on a model
+     * Gets a collection of indexables, based on a model.
      *
      * @param [type] $product
      * @return void
@@ -39,8 +39,7 @@ abstract class BaseIndexer
                 $indexable->set('customer_groups', $this->getCustomerGroups($model));
                 $indexable->set('channels', $this->getChannels($model));
 
-
-                if (!empty($item['data'])) {
+                if (! empty($item['data'])) {
                     foreach ($item['data'] as $field => $value) {
                         $indexable->set($field, $value);
                     }
@@ -50,10 +49,10 @@ abstract class BaseIndexer
                     $skus = [];
                     foreach ($model->variants as $variant) {
                         $skus[] = $variant->sku;
-                        if (!$indexable->min_price || $indexable->min_price > $variant->price) {
+                        if (! $indexable->min_price || $indexable->min_price > $variant->price) {
                             $indexable->set('min_price', $variant->price);
                         }
-                        if (!$indexable->max_price || $indexable->max_price < $variant->price) {
+                        if (! $indexable->max_price || $indexable->max_price < $variant->price) {
                             $indexable->set('max_price', $variant->price);
                         }
                     }
@@ -68,10 +67,10 @@ abstract class BaseIndexer
     }
 
     /**
-     * Gets the attribute mapping for a model to be indexed
+     * Gets the attribute mapping for a model to be indexed.
      *
      * @param Model $model
-     * @return Array
+     * @return array
      */
     public function attributeMapping(Model $model)
     {
@@ -79,7 +78,7 @@ abstract class BaseIndexer
         $searchable = $this->getIndexableAttributes($model);
 
         foreach ($model->attribute_data as $field => $channel) {
-            if (!$searchable->contains($field)) {
+            if (! $searchable->contains($field)) {
                 continue;
             }
             foreach ($channel as $channelName => $locales) {
@@ -88,11 +87,12 @@ abstract class BaseIndexer
                 }
             }
         }
+
         return $mapping;
     }
 
     /**
-     * Gets any attributes which are marked as searchable
+     * Gets any attributes which are marked as searchable.
      *
      * @param Model $model
      * @return void
@@ -105,7 +105,7 @@ abstract class BaseIndexer
     }
 
     /**
-     * Gets an indexable object
+     * Gets an indexable object.
      *
      * @param array $attributes
      * @return Indexable
@@ -115,31 +115,33 @@ abstract class BaseIndexer
         $indexable = new Indexable(
             $model->encodedId()
         );
+
         return $indexable;
     }
 
     /**
-     * Gets the thumbnail for a model
+     * Gets the thumbnail for a model.
      *
      * @param Model $model
-     * @return String
+     * @return string
      */
     protected function getThumbnail(Model $model)
     {
         $url = null;
         if (isset($model->primaryAsset()->thumbnail)) {
             $transform = $model->primaryAsset()->thumbnail->first();
-            $path = $transform->location . '/' . $transform->filename;
+            $path = $transform->location.'/'.$transform->filename;
             $url = \Storage::disk($model->primaryAsset()->disk)->url($path);
         }
+
         return $url;
     }
 
     /**
-     * Gets the category mapping for an indexable
+     * Gets the category mapping for an indexable.
      *
      * @param Model $model
-     * @return Array
+     * @return array
      */
     protected function getCategories(Model $model, $lang = 'en')
     {
@@ -156,7 +158,7 @@ abstract class BaseIndexer
         return $categories->map(function ($item) use ($lang) {
             return [
                 'id' => $item->encodedId(),
-                'name' => $item->attribute('name', null, $lang)
+                'name' => $item->attribute('name', null, $lang),
             ];
         })->toArray();
     }
@@ -167,7 +169,7 @@ abstract class BaseIndexer
             return [
                 'id' => $item->encodedId(),
                 'handle' => $item->handle,
-                'name' => $item->name
+                'name' => $item->name,
             ];
         })->toArray();
     }
@@ -178,7 +180,7 @@ abstract class BaseIndexer
             return [
                 'id' => $item->encodedId(),
                 'handle' => $item->handle,
-                'name' => $item->name
+                'name' => $item->name,
             ];
         })->toArray();
     }

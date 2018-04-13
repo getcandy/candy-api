@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Currencies\Services;
 
-use GetCandy\Api\Currencies\Models\Currency;
 use GetCandy\Api\Scaffold\BaseService;
+use GetCandy\Api\Currencies\Models\Currency;
 use GetCandy\Exceptions\MinimumRecordRequiredException;
 
 class CurrencyService extends BaseService
@@ -14,7 +14,7 @@ class CurrencyService extends BaseService
     }
 
     /**
-     * Creates a resource from the given data
+     * Creates a resource from the given data.
      *
      * @param  array  $data
      *
@@ -30,18 +30,18 @@ class CurrencyService extends BaseService
         $currency->format = $data['format'];
         $currency->exchange_rate = $data['exchange_rate'];
 
-        if (!empty($data['decimal_point'])) {
+        if (! empty($data['decimal_point'])) {
             $currency->decimal_point = $data['decimal_point'];
         }
-        if (!empty($data['thousand_point'])) {
+        if (! empty($data['thousand_point'])) {
             $currency->thousand_point = $data['thousand_point'];
         }
 
-        if (empty($data['default']) && !$this->model->count()) {
+        if (empty($data['default']) && ! $this->model->count()) {
             $currency->default = true;
         }
 
-        if (!empty($data['default'])) {
+        if (! empty($data['default'])) {
             $this->setNewDefault($currency);
         }
 
@@ -51,7 +51,7 @@ class CurrencyService extends BaseService
     }
 
     /**
-     * Updates a resource from the given data
+     * Updates a resource from the given data.
      *
      * @param  string $id
      * @param  array  $data
@@ -65,17 +65,17 @@ class CurrencyService extends BaseService
     {
         $currency = $this->getByHashedId($id);
 
-        if (!$currency) {
+        if (! $currency) {
             abort(404);
         }
 
         $currency->fill($data);
 
-        if (!empty($data['default'])) {
+        if (! empty($data['default'])) {
             $this->setNewDefault($currency);
         }
 
-        if ((isset($data['enabled']) && !$data['enabled']) && $currency->default) {
+        if ((isset($data['enabled']) && ! $data['enabled']) && $currency->default) {
             // If we only have one record and we are trying to disable it, throw an exception
             if ($this->getEnabled()->count() == 1) {
                 throw new MinimumRecordRequiredException(
@@ -92,26 +92,26 @@ class CurrencyService extends BaseService
         return $currency;
     }
 
-    public function getByCode($code) 
+    public function getByCode($code)
     {
         return $this->model->where('code', '=', $code)->firstOrFail();
     }
 
     /**
-     * Deletes a resource by its given hashed ID
+     * Deletes a resource by its given hashed ID.
      *
      * @param  string $id
      *
      * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @throws GetCandy\Api\Exceptions\MinimumRecordRequiredException
      *
-     * @return Boolean
+     * @return bool
      */
     public function delete($id)
     {
         $currency = $this->getByHashedId($id);
 
-        if (!$currency) {
+        if (! $currency) {
             abort(404);
         }
 

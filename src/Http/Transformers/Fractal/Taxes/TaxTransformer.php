@@ -15,7 +15,7 @@ class TaxTransformer extends BaseTransformer
             'id' => $tax->encodedId(),
             'name' => $tax->name,
             'percentage' => $tax->percentage,
-            'default' => (bool) $tax->default
+            'default' => (bool) $tax->default,
         ];
     }
 }

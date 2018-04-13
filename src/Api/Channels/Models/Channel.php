@@ -21,21 +21,24 @@ class Channel extends BaseModel
     protected $fillable = [
         'name',
         'handle',
-        'default'
+        'default',
     ];
 
     public function products()
     {
         return $this->belongsToMany(Product::class)->withPivot('published_at');
     }
+
     public function categories()
     {
         return $this->belongsToMany(Category::class)->withPivot('published_at');
     }
+
     public function collections()
     {
         return $this->belongsToMany(Collection::class)->withPivot('published_at');
     }
+
     public function discounts()
     {
         return $this->belongsToMany(Discount::class)->withPivot('published_at');

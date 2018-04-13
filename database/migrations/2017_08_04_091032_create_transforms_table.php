@@ -32,7 +32,7 @@ class CreateTransformsTable extends Migration
                 'center-right',
                 'bottom-left',
                 'bottom-center',
-                'bottom-right'
+                'bottom-right',
             ])->default('center-center');
             $table->timestamps();
         });

@@ -1,15 +1,15 @@
 <?php
+
 namespace GetCandy\Api\Http\Transformers\Fractal\Payments;
 
+use GetCandy\Api\Payments\Models\Transaction;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Orders\OrderTransformer;
-use GetCandy\Api\Payments\Providers\AbstractProvider;
-use GetCandy\Api\Payments\Models\Transaction;
 
 class TransactionTransformer extends BaseTransformer
 {
     protected $availableIncludes = [
-        'order'
+        'order',
     ];
 
     public function transform(Transaction $transaction)
@@ -24,7 +24,7 @@ class TransactionTransformer extends BaseTransformer
             'provider' => $transaction->provider,
             'success' => (bool) $transaction->success,
             'status' => $transaction->status,
-            'notes' => $transaction->notes
+            'notes' => $transaction->notes,
         ];
     }
 

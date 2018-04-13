@@ -2,23 +2,23 @@
 
 namespace GetCandy\Api\Http\Controllers\Pages;
 
-use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
-use GetCandy\Api\Http\Controllers\BaseController;
-use GetCandy\Api\Http\Transformers\Fractal\Pages\PageTransformer;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use GetCandy\Api\Http\Controllers\BaseController;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use GetCandy\Api\Http\Transformers\Fractal\Pages\PageTransformer;
 
 class PageController extends BaseController
 {
     public function index()
     {
         $pages = app('api')->pages()->getPaginatedData();
+
         return $this->respondWithCollection($pages, new PageTransformer);
     }
+
     /**
-     * Handles the request to show a currency based on it's hashed ID
-     * @param  String $id
+     * Handles the request to show a currency based on it's hashed ID.
+     * @param  string $id
      * @return Json
      */
     public function show($channel, $lang, $slug = null)
@@ -28,6 +28,7 @@ class PageController extends BaseController
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
+
         return $this->respondWithItem($currency, new PageTransformer);
     }
 }
