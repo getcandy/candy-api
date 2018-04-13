@@ -31,7 +31,7 @@ class ProductCategoryService extends BaseService
 
         $category->products()->attach($id);
 
-        foreach($this->getByHashedIds($products) as $product) {
+        foreach ($this->getByHashedIds($products) as $product) {
             app(SearchContract::class)->indexer()->indexObject($product);
         }
 

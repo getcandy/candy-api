@@ -20,7 +20,7 @@ class ProductCategoryController extends BaseController
 
         return $this->respondWithCollection($categories, new CategoryTransformer);
     }
-  
+
     /**
      * Deletes a products category.
      * @param  int        $productId
