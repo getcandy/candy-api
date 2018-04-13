@@ -1,4 +1,5 @@
 <?php
+
 namespace GetCandy\Api\Http\Requests\Orders;
 
 use GetCandy\Api\Http\Requests\FormRequest;
@@ -24,7 +25,7 @@ class CreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'basket_id' => 'required|hashid_is_valid:baskets'
+            'basket_id' => 'required|hashid_is_valid:baskets',
         ];
     }
 }

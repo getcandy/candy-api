@@ -9,10 +9,10 @@ class SavedSearch extends BaseModel
     protected $hashids = 'main';
 
     /**
-     * Sets the payload attribute
+     * Sets the payload attribute.
      *
      * @param json $val
-     * 
+     *
      * @return void
      */
     public function setPayloadAttribute($val)
@@ -21,10 +21,10 @@ class SavedSearch extends BaseModel
     }
 
     /**
-     * Mutator for payload attribute
+     * Mutator for payload attribute.
      *
      * @param string $val
-     * 
+     *
      * @return void
      */
     public function getPayLoadAttribute($val)

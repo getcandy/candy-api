@@ -1,10 +1,11 @@
 <?php
+
 namespace GetCandy\Api\Search\Elastic;
 
-use GetCandy\Api\Search\IndexContract;
-use Illuminate\Database\Eloquent\Model;
 use Elastica\Document;
 use Elastica\Type\Mapping;
+use GetCandy\Api\Search\IndexContract;
+use Illuminate\Database\Eloquent\Model;
 
 class Indexer extends AbstractProvider implements IndexContract
 {
@@ -19,9 +20,11 @@ class Indexer extends AbstractProvider implements IndexContract
     protected $categories = [];
 
     /**
-     * Adds a model to the index
-     * @param  Model  $model
-     * @return boolean
+     * Adds a model to the index.
+     *
+     * @param Model $model
+     *
+     * @return bool
      */
     public function indexObject(Model $model)
     {
@@ -47,6 +50,7 @@ class Indexer extends AbstractProvider implements IndexContract
 
             $response = $elasticaType->addDocument($document);
         }
+
         return true;
     }
 
@@ -58,8 +62,10 @@ class Indexer extends AbstractProvider implements IndexContract
     }
 
     /**
-     * Updates the mappings for the model
-     * @param  Elastica\Index $index
+     * Updates the mappings for the model.
+     *
+     * @param Elastica\Index $index
+     *
      * @return void
      */
     public function updateMappings($index)
@@ -74,7 +80,8 @@ class Indexer extends AbstractProvider implements IndexContract
     }
 
     /**
-     * Create an index based on the model
+     * Create an index based on the model.
+     *
      * @return void
      */
     public function createIndex()
@@ -84,7 +91,8 @@ class Indexer extends AbstractProvider implements IndexContract
     }
 
     /**
-     * Returns the index for the model
+     * Returns the index for the model.
+     *
      * @return Elastica\Index
      */
     public function getIndex($name = null)
@@ -96,28 +104,29 @@ class Indexer extends AbstractProvider implements IndexContract
                 'analysis' => [
                     'analyzer' => [
                         'trigram' => [
-                            'type' => 'custom',
+                            'type'      => 'custom',
                             'tokenizer' => 'standard',
-                            'filter' => ['standard', 'shingle']
+                            'filter'    => ['standard', 'shingle'],
                         ],
                         'candy' => [
                             'tokenizer' => 'standard',
-                            'filter' => ["standard", "lowercase", "stop", "porter_stem"]
-                        ]
+                            'filter'    => ['standard', 'lowercase', 'stop', 'porter_stem'],
+                        ],
                     ],
                     'filter' => [
                         'shingle' => [
-                            'type' => 'shingle',
+                            'type'             => 'shingle',
                             'min_shingle_size' => 2,
-                            'max_shingle_size' => 3
-                        ]
-                    ]
-                ]
+                            'max_shingle_size' => 3,
+                        ],
+                    ],
+                ],
             ]);
-            $index->addAlias($name . '_alias');
+            $index->addAlias($name.'_alias');
             // ...and update the mappings
             $this->updateMappings($index);
         }
+
         return $index;
     }
 }

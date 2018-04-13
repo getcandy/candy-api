@@ -10,9 +10,11 @@ use Illuminate\Http\Request;
 class ProductAssetController extends BaseController
 {
     /**
-     * Gets all assets for a product
-     * @param  int  $id
-     * @param  Request $request
+     * Gets all assets for a product.
+     *
+     * @param int     $id
+     * @param Request $request
+     *
      * @return array|\Illuminate\Http\Response
      */
     public function index($id, Request $request)
@@ -20,17 +22,18 @@ class ProductAssetController extends BaseController
         $product = app('api')->products()->getByHashedId($id);
         $assets = app('api')->assets()->getAssets($product, $request->all());
 
-        return $this->respondWithCollection($assets, new AssetTransformer);
+        return $this->respondWithCollection($assets, new AssetTransformer());
     }
 
     /**
-     * Uploads an asset for a product
-     * @param  int        $id
-     * @param  UploadRequest $request
+     * Uploads an asset for a product.
+     *
+     * @param int           $id
+     * @param UploadRequest $request
+     *
      * @return array|\Illuminate\Http\Response
      */
     public function upload($id, UploadRequest $request)
     {
-
     }
 }

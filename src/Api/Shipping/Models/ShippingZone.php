@@ -1,8 +1,9 @@
 <?php
+
 namespace GetCandy\Api\Shipping\Models;
 
-use GetCandy\Api\Scaffold\BaseModel;
 use GetCandy\Api\Countries\Models\Country;
+use GetCandy\Api\Scaffold\BaseModel;
 
 class ShippingZone extends BaseModel
 {
@@ -12,7 +13,7 @@ class ShippingZone extends BaseModel
     protected $hashids = 'main';
 
     protected $fillable = [
-        'name'
+        'name',
     ];
 
     public function methods()

@@ -9,24 +9,27 @@ use Illuminate\Http\Request;
 
 class ProductCategoryController extends BaseController
 {
-
     /**
-     * Handles the request to update a products categories
-     * @param  String        $id
-     * @param  DeleteRequest $request
+     * Handles the request to update a products categories.
+     *
+     * @param string        $id
+     * @param DeleteRequest $request
+     *
      * @return Json
      */
     public function update($product, UpdateCategoriesRequest $request)
     {
         $categories = app('api')->productCategories()->update($product, $request->all());
-        return $this->respondWithCollection($categories, new CategoryTransformer);
+
+        return $this->respondWithCollection($categories, new CategoryTransformer());
     }
 
-
     /**
-     * Deletes a products category
-     * @param  int        $productId
-     * @param  int        $categoryId
+     * Deletes a products category.
+     *
+     * @param int $productId
+     * @param int $categoryId
+     *
      * @return array|\Illuminate\Http\Response
      */
     public function destroy($productId, $categoryId)
@@ -35,10 +38,11 @@ class ProductCategoryController extends BaseController
 
         if ($result) {
             return response()->json([
-                'message' => 'Successfully removed category from product',
-                'categoryName' => 'test'
+                'message'      => 'Successfully removed category from product',
+                'categoryName' => 'test',
             ], 202);
         }
+
         return response()->json('Error', 500);
     }
 }

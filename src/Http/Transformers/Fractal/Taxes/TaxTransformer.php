@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Taxes;
 
-use GetCandy\Api\Taxes\Models\Tax;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
+use GetCandy\Api\Taxes\Models\Tax;
 
 class TaxTransformer extends BaseTransformer
 {
@@ -12,10 +12,10 @@ class TaxTransformer extends BaseTransformer
     public function transform(Tax $tax)
     {
         return [
-            'id' => $tax->encodedId(),
-            'name' => $tax->name,
+            'id'         => $tax->encodedId(),
+            'name'       => $tax->name,
             'percentage' => $tax->percentage,
-            'default' => (bool) $tax->default
+            'default'    => (bool) $tax->default,
         ];
     }
 }

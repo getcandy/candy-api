@@ -1,4 +1,5 @@
 <?php
+
 namespace GetCandy\Api\Shipping\Services;
 
 use GetCandy\Api\Scaffold\BaseService;
@@ -12,7 +13,7 @@ class ShippingPriceService extends BaseService
     }
 
     /**
-     * Create a shipping price
+     * Create a shipping price.
      *
      * @param array $data
      *
@@ -22,7 +23,7 @@ class ShippingPriceService extends BaseService
     {
         $method = app('api')->shippingMethods()->getByHashedId($shippingMethodId);
         $currency = app('api')->currencies()->getByHashedId($data['currency_id']);
-        $price = new ShippingPrice;
+        $price = new ShippingPrice();
         $price->fill($data);
         $price->method()->associate($method);
         $price->currency()->associate($currency);
@@ -37,10 +38,10 @@ class ShippingPriceService extends BaseService
     }
 
     /**
-     * Updates a shipping price
+     * Updates a shipping price.
      *
      * @param string $id
-     * @param array $data
+     * @param array  $data
      *
      * @return ShippingPrice
      */
@@ -59,12 +60,15 @@ class ShippingPriceService extends BaseService
         $price->currency()->associate($currency);
         $price->fill($data);
         $price->save();
+
         return $price;
     }
 
     /**
-     * Maps customer group data for a model
-     * @param  array $groups
+     * Maps customer group data for a model.
+     *
+     * @param array $groups
+     *
      * @return array
      */
     protected function mapCustomerGroupData($groups)
@@ -73,22 +77,24 @@ class ShippingPriceService extends BaseService
         foreach ($groups as $group) {
             $groupModel = app('api')->customerGroups()->getByHashedId($group['id']);
             $groupData[$groupModel->id] = [
-                'visible' => $group['visible']
+                'visible' => $group['visible'],
             ];
         }
+
         return $groupData;
     }
 
     /**
-     * Delete a price
+     * Delete a price.
      *
      * @param string $id
      *
-     * @return boolean
+     * @return bool
      */
     public function delete($id)
     {
         $price = $this->getByHashedId($id);
+
         return $price->delete();
     }
 }

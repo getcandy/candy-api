@@ -4,7 +4,6 @@ namespace GetCandy\Api\Http\Controllers\Auth;
 
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Auth\ImpersonateRequest;
-use Passport;
 
 class ImpersonateController extends BaseController
 {
@@ -13,7 +12,7 @@ class ImpersonateController extends BaseController
         $token = app('api')->users()->getImpersonationToken($request->customer_id);
 
         return response()->json([
-            'access_token' => $token->accessToken
+            'access_token' => $token->accessToken,
         ]);
     }
 }

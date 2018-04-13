@@ -1,4 +1,5 @@
 <?php
+
 namespace GetCandy\Api\Discounts\Criteria;
 
 use GetCandy\Api\Discounts\Contracts\DiscountCriteriaContract;
@@ -32,6 +33,7 @@ class Products implements DiscountCriteriaContract
         foreach ($basket->lines as $line) {
             $check = $this->getValue()->contains($line->variant->product->id);
         }
+
         return $check;
     }
 }

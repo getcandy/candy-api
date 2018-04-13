@@ -25,8 +25,8 @@ class SearchRequest extends FormRequest
     public function rules()
     {
         return [
-            'type' => 'required',
-            'filters.*.values' => 'required|array'
+            'type'             => 'required',
+            'filters.*.values' => 'required|array',
         ];
     }
 }

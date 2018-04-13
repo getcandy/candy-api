@@ -27,6 +27,7 @@ trait HasChannels
             $query->whereHandle($channel)->whereDate('published_at', '<=', Carbon::now());
         });
     }
+
     protected function getCustomerGroups()
     {
         // If there is a user, get their groups.
@@ -37,9 +38,9 @@ trait HasChannels
         }
     }
 
-
     /**
-     * Get the attributes associated to the product
+     * Get the attributes associated to the product.
+     *
      * @return Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function channels()

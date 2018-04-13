@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Console\Commands;
 
-use Illuminate\Console\Command;
-use GetCandy\Api\Search\SearchContract;
-use GetCandy\Api\Products\Models\Product;
 use GetCandy\Api\Categories\Models\Category;
+use GetCandy\Api\Products\Models\Product;
+use GetCandy\Api\Search\SearchContract;
+use Illuminate\Console\Command;
 
 class ElasticIndexCommand extends Command
 {
@@ -25,7 +25,7 @@ class ElasticIndexCommand extends Command
 
     protected $indexables = [
         Product::class,
-        Category::class
+        Category::class,
     ];
 
     /**
@@ -49,10 +49,9 @@ class ElasticIndexCommand extends Command
 
         //TODO: DO this dynamically.
         foreach ($this->indexables as $indexable) {
+            $this->info('Indexing '.$indexable);
 
-            $this->info('Indexing ' . $indexable);
-
-            $model = new $indexable;
+            $model = new $indexable();
 
             if (!$search->indexer()->hasIndexer($model)) {
                 $this->error("No Indexer found for {$model}");
@@ -66,7 +65,6 @@ class ElasticIndexCommand extends Command
             }
 
             $items = $model->withoutGlobalScopes()->get();
-
 
             $bar = $this->output->createProgressBar($items->count());
 

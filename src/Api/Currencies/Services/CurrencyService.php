@@ -14,9 +14,9 @@ class CurrencyService extends BaseService
     }
 
     /**
-     * Creates a resource from the given data
+     * Creates a resource from the given data.
      *
-     * @param  array  $data
+     * @param array $data
      *
      * @return GetCandy\Api\Models\Currency
      */
@@ -51,10 +51,10 @@ class CurrencyService extends BaseService
     }
 
     /**
-     * Updates a resource from the given data
+     * Updates a resource from the given data.
      *
-     * @param  string $id
-     * @param  array  $data
+     * @param string $id
+     * @param array  $data
      *
      * @throws Symfony\Component\HttpKernel\Exception
      * @throws GetCandy\Api\Exceptions\MinimumRecordRequiredException
@@ -92,20 +92,20 @@ class CurrencyService extends BaseService
         return $currency;
     }
 
-    public function getByCode($code) 
+    public function getByCode($code)
     {
         return $this->model->where('code', '=', $code)->firstOrFail();
     }
 
     /**
-     * Deletes a resource by its given hashed ID
+     * Deletes a resource by its given hashed ID.
      *
-     * @param  string $id
+     * @param string $id
      *
      * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @throws GetCandy\Api\Exceptions\MinimumRecordRequiredException
      *
-     * @return Boolean
+     * @return bool
      */
     public function delete($id)
     {

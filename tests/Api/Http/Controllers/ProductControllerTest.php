@@ -6,12 +6,8 @@ use Event;
 use GetCandy\Api\Attributes\Models\Attribute;
 use GetCandy\Api\Collections\Models\Collection;
 use GetCandy\Api\Layouts\Models\Layout;
-use GetCandy\Api\Pages\Models\Page;
 use GetCandy\Api\Products\Models\Product;
 use GetCandy\Api\Products\Models\ProductFamily;
-use GetCandy\Events\General\AttributesUpdatedEvent;
-use GetCandy\Events\ProductCreatedEvent;
-use GetCandy\Events\ProductUpdatedEvent;
 
 /**
  * @group controllers
@@ -22,18 +18,18 @@ class ProductControllerTest extends TestCase
 {
     protected $baseStructure = [
         'id',
-        'attribute_data' => ['name']
+        'attribute_data' => ['name'],
     ];
 
     public function testIndex()
     {
         $response = $this->get($this->url('products'), [
-            'Authorization' => 'Bearer ' . $this->accessToken()
+            'Authorization' => 'Bearer '.$this->accessToken(),
         ]);
 
         $response->assertJsonStructure([
             'data' => [$this->baseStructure],
-            'meta' => ['pagination']
+            'meta' => ['pagination'],
         ]);
 
         $this->assertEquals(200, $response->status());
@@ -42,30 +38,30 @@ class ProductControllerTest extends TestCase
     public function testIndexWithAttributes()
     {
         $url = $this->url('products', [
-            'includes' => 'attribute_groups,attribute_groups.attributes'
+            'includes' => 'attribute_groups,attribute_groups.attributes',
         ]);
 
         $response = $this->get($url, [
-            'Authorization' => 'Bearer ' . $this->accessToken()
+            'Authorization' => 'Bearer '.$this->accessToken(),
         ]);
 
         $response->assertJsonStructure([
             'data' => [[
                 'id',
-                'attribute_data' => ['name'],
+                'attribute_data'   => ['name'],
                 'attribute_groups' => [
                     'data' => [
                         [
                             'id', 'attributes' => [
                                 'data' => [
-                                    ['id']
-                                ]
-                            ]
-                        ]
-                    ]
+                                    ['id'],
+                                ],
+                            ],
+                        ],
+                    ],
                 ],
             ]],
-            'meta' => ['pagination']
+            'meta' => ['pagination'],
         ]);
 
         $this->assertEquals(200, $response->status());
@@ -76,7 +72,7 @@ class ProductControllerTest extends TestCase
         $url = $this->url('products');
 
         $response = $this->get($url, [
-            'Authorization' => 'Bearer ' . $this->accessToken()
+            'Authorization' => 'Bearer '.$this->accessToken(),
         ]);
         $data = json_decode($response->getContent(), true);
 
@@ -98,12 +94,12 @@ class ProductControllerTest extends TestCase
         }
 
         $response = $this->post(
-            $this->url('products/' . $product->encodedId() . '/attributes'),
+            $this->url('products/'.$product->encodedId().'/attributes'),
             [
-                'attributes' =>  $ids,
+                'attributes' => $ids,
             ],
             [
-                'Authorization' => 'Bearer ' . $this->accessToken()
+                'Authorization' => 'Bearer '.$this->accessToken(),
             ]
         );
 
@@ -125,12 +121,12 @@ class ProductControllerTest extends TestCase
         }
 
         $response = $this->post(
-            $this->url('products/' . $product->encodedId() . '/collections'),
+            $this->url('products/'.$product->encodedId().'/collections'),
             [
-                'collections' =>  $ids,
+                'collections' => $ids,
             ],
             [
-                'Authorization' => 'Bearer ' . $this->accessToken()
+                'Authorization' => 'Bearer '.$this->accessToken(),
             ]
         );
 
@@ -142,20 +138,20 @@ class ProductControllerTest extends TestCase
     public function testIndexWithFamily()
     {
         $url = $this->url('products', [
-            'includes' => 'family'
+            'includes' => 'family',
         ]);
 
         $response = $this->get($url, [
-            'Authorization' => 'Bearer ' . $this->accessToken()
+            'Authorization' => 'Bearer '.$this->accessToken(),
         ]);
 
         $response->assertJsonStructure([
             'data' => [[
                 'id',
                 'attribute_data' => ['name'],
-                'family' => ['data' => ['id']]
+                'family'         => ['data' => ['id']],
             ]],
-            'meta' => ['pagination']
+            'meta' => ['pagination'],
         ]);
 
         $this->assertEquals(200, $response->status());
@@ -164,31 +160,31 @@ class ProductControllerTest extends TestCase
     public function testIndexWithFamilyAndAttributes()
     {
         $url = $this->url('products', [
-            'includes' => 'family,attribute_groups,attribute_groups.attributes'
+            'includes' => 'family,attribute_groups,attribute_groups.attributes',
         ]);
 
         $response = $this->get($url, [
-            'Authorization' => 'Bearer ' . $this->accessToken()
+            'Authorization' => 'Bearer '.$this->accessToken(),
         ]);
 
         $response->assertJsonStructure([
             'data' => [[
                 'id',
-                'attribute_data' => ['name'],
+                'attribute_data'   => ['name'],
                 'attribute_groups' => [
                     'data' => [
                         [
                             'id', 'attributes' => [
                                 'data' => [
-                                    ['id']
-                                ]
-                            ]
-                        ]
-                    ]
+                                    ['id'],
+                                ],
+                            ],
+                        ],
+                    ],
                 ],
-                'family' => ['data' => ['id']]
+                'family' => ['data' => ['id']],
             ]],
-            'meta' => ['pagination']
+            'meta' => ['pagination'],
         ]);
 
         $this->assertEquals(200, $response->status());
@@ -198,7 +194,7 @@ class ProductControllerTest extends TestCase
     {
         $response = $this->get($this->url('products'), [
             'Authorization' => 'Bearer foo.bar.bing',
-            'Accept' => 'application/json'
+            'Accept'        => 'application/json',
         ]);
         $this->assertEquals(401, $response->getStatusCode());
     }
@@ -208,12 +204,12 @@ class ProductControllerTest extends TestCase
         // Get a channel
         $id = Product::first()->encodedId();
 
-        $response = $this->get($this->url('products/' . $id), [
-            'Authorization' => 'Bearer ' . $this->accessToken()
+        $response = $this->get($this->url('products/'.$id), [
+            'Authorization' => 'Bearer '.$this->accessToken(),
         ]);
 
         $response->assertJsonStructure([
-            'data' => $this->baseStructure
+            'data' => $this->baseStructure,
         ]);
 
         $this->assertEquals(200, $response->status());
@@ -222,7 +218,7 @@ class ProductControllerTest extends TestCase
     public function testMissingShow()
     {
         $response = $this->get($this->url('products/123456'), [
-            'Authorization' => 'Bearer ' . $this->accessToken()
+            'Authorization' => 'Bearer '.$this->accessToken(),
         ]);
 
         $this->assertHasErrorFormat($response);
@@ -242,22 +238,22 @@ class ProductControllerTest extends TestCase
             $this->url('products'),
             [
                 'name' => [
-                    "en" => "Spring water"
+                    'en' => 'Spring water',
                 ],
-                'url' => 'spring-water',
-                'sku' => 'Foo',
-                'stock' => 1,
-                'price' => 29.99,
+                'url'       => 'spring-water',
+                'sku'       => 'Foo',
+                'stock'     => 1,
+                'price'     => 29.99,
                 'family_id' => $family->encodedId(),
                 'layout_id' => $layout,
             ],
             [
-                'Authorization' => 'Bearer ' . $this->accessToken()
+                'Authorization' => 'Bearer '.$this->accessToken(),
             ]
         );
 
         $response->assertJsonStructure([
-            'data' => $this->baseStructure
+            'data' => $this->baseStructure,
         ]);
 
         $this->assertEquals(200, $response->status());
@@ -269,12 +265,12 @@ class ProductControllerTest extends TestCase
             $this->url('products'),
             [],
             [
-                'Authorization' => 'Bearer ' . $this->accessToken()
+                'Authorization' => 'Bearer '.$this->accessToken(),
             ]
         );
 
         $response->assertJsonStructure([
-            'name', 'family_id'
+            'name', 'family_id',
         ]);
 
         $this->assertEquals(422, $response->status());
@@ -292,24 +288,24 @@ class ProductControllerTest extends TestCase
                 'name' => [
                     'ecommerce' => [
                         'ecommerce' => [
-                            'en' => 'Foo'
-                        ]
-                    ]
+                            'en' => 'Foo',
+                        ],
+                    ],
                 ],
-                'url' => 'Foo',
-                'stock' => 1,
-                'price' => 19.99,
-                'sku' => 'Foo',
+                'url'       => 'Foo',
+                'stock'     => 1,
+                'price'     => 19.99,
+                'sku'       => 'Foo',
                 'family_id' => $family->encodedId(),
                 'layout_id' => $layout,
             ],
             [
-                'Authorization' => 'Bearer ' . $this->accessToken()
+                'Authorization' => 'Bearer '.$this->accessToken(),
             ]
         );
 
         $response->assertJsonStructure([
-            'name'
+            'name',
         ]);
 
         $this->assertEquals(422, $response->status());
@@ -347,7 +343,6 @@ class ProductControllerTest extends TestCase
     //     $this->assertEquals(422, $response->status());
     // }
 
-
     public function testUpdate()
     {
         Event::fake();
@@ -360,7 +355,6 @@ class ProductControllerTest extends TestCase
 
         $data = [];
 
-
         foreach ($attributes as $attribute) {
             if ($attribute->required) {
                 $data[$attribute->handle][$defaultChannel->handle][$defaultLanguage->lang] = 'Foo';
@@ -368,13 +362,13 @@ class ProductControllerTest extends TestCase
         }
 
         $response = $this->put(
-            $this->url('products/' . $productId),
+            $this->url('products/'.$productId),
             [
                 'attributes' => $data,
-                'default' => true
+                'default'    => true,
             ],
             [
-                'Authorization' => 'Bearer ' . $this->accessToken()
+                'Authorization' => 'Bearer '.$this->accessToken(),
             ]
         );
 
@@ -395,14 +389,14 @@ class ProductControllerTest extends TestCase
         $attribute->save();
 
         $response = $this->post(
-            $this->url('products/' . $product->encodedId() . '/attributes'),
+            $this->url('products/'.$product->encodedId().'/attributes'),
             [
                 'attributes' => [
-                    $attribute->encodedId()
+                    $attribute->encodedId(),
                 ],
             ],
             [
-                'Authorization' => 'Bearer ' . $this->accessToken()
+                'Authorization' => 'Bearer '.$this->accessToken(),
             ]
         );
         $this->assertTrue($product->attributes->count() == 1);
@@ -414,13 +408,13 @@ class ProductControllerTest extends TestCase
             $this->url('products/123123'),
             [
                 'attributes' => [
-                    'name' =>  [
-                        'en' => 'Foo'
-                    ]
+                    'name' => [
+                        'en' => 'Foo',
+                    ],
                 ],
             ],
             [
-                'Authorization' => 'Bearer ' . $this->accessToken()
+                'Authorization' => 'Bearer '.$this->accessToken(),
             ]
         );
 
@@ -431,16 +425,16 @@ class ProductControllerTest extends TestCase
     {
         $product = Product::create([
             'attribute_data' => [
-                'name' =>  [
-                    'en' => 'Foo'
-                ]
-            ]
+                'name' => [
+                    'en' => 'Foo',
+                ],
+            ],
         ]);
 
         $response = $this->delete(
-            $this->url('products/' . $product->encodedId()),
+            $this->url('products/'.$product->encodedId()),
             [],
-            ['Authorization' => 'Bearer ' . $this->accessToken()]
+            ['Authorization' => 'Bearer '.$this->accessToken()]
         );
 
         $this->assertEquals(204, $response->status());

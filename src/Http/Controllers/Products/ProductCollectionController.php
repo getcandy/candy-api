@@ -4,16 +4,14 @@ namespace GetCandy\Api\Http\Controllers\Products;
 
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Products\UpdateCollectionsRequest;
-use GetCandy\Api\Http\Transformers\Fractal\Products\ProductTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Collections\CollectionTransformer;
-use Illuminate\Http\Request;
 
 class ProductCollectionController extends BaseController
 {
-
     /**
      * @param $product
      * @param UpdateCollectionsRequest $request
+     *
      * @return array|\Illuminate\Http\Response
      */
     public function update($product, UpdateCollectionsRequest $request)
@@ -25,13 +23,16 @@ class ProductCollectionController extends BaseController
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
-        return $this->respondWithCollection($collections, new CollectionTransformer);
+
+        return $this->respondWithCollection($collections, new CollectionTransformer());
     }
 
     /**
-     * Deletes a products collection
-     * @param  int        $productId
-     * @param  int        $collectionId
+     * Deletes a products collection.
+     *
+     * @param int $productId
+     * @param int $collectionId
+     *
      * @return array|\Illuminate\Http\Response
      */
     public function destroy($productId, $collectionId)
@@ -40,9 +41,10 @@ class ProductCollectionController extends BaseController
 
         if ($result) {
             return response()->json([
-                'message' => 'Successfully removed collection from product'
+                'message' => 'Successfully removed collection from product',
             ], 202);
         }
+
         return response()->json('Error', 500);
     }
 }

@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Taxes\Services;
 
-use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
 use GetCandy\Api\Scaffold\BaseService;
 use GetCandy\Api\Taxes\Models\Tax;
 
@@ -14,9 +13,9 @@ class TaxService extends BaseService
     }
 
     /**
-     * Creates a resource from the given data
+     * Creates a resource from the given data.
      *
-     * @param  array  $data
+     * @param array $data
      *
      * @return GetCandy\Api\Models\Tax
      */
@@ -37,6 +36,7 @@ class TaxService extends BaseService
         }
 
         $tax->save();
+
         return $tax;
     }
 
@@ -46,10 +46,10 @@ class TaxService extends BaseService
     }
 
     /**
-     * Updates a resource from the given data
+     * Updates a resource from the given data.
      *
-     * @param  string $id
-     * @param  array  $data
+     * @param string $id
+     * @param array  $data
      *
      * @throws Symfony\Component\HttpKernel\Exception
      *
@@ -69,18 +69,19 @@ class TaxService extends BaseService
 
         $tax->fill($data);
         $tax->save();
+
         return $tax;
     }
 
     /**
-     * Deletes a resource by its given hashed ID
+     * Deletes a resource by its given hashed ID.
      *
-     * @param  string $id
+     * @param string $id
      *
      * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @throws GetCandy\Api\Exceptions\MinimumRecordRequiredException
      *
-     * @return Boolean
+     * @return bool
      */
     public function delete($id)
     {

@@ -9,6 +9,6 @@ class AssetSourceService extends BaseService
 {
     public function __construct()
     {
-        $this->model = new AssetSource;
+        $this->model = new AssetSource();
     }
 }

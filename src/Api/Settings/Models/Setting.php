@@ -7,9 +7,8 @@ use GetCandy\Api\Scaffold\BaseModel;
 class Setting extends BaseModel
 {
     protected $fillable = [
-        'name'
+        'name',
     ];
-
 
     public function setContentAttribute($value)
     {

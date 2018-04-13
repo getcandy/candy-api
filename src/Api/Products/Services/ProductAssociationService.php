@@ -12,14 +12,16 @@ class ProductAssociationService extends BaseService
 
     public function __construct()
     {
-        $this->model = new Product;
-        $this->associations = new ProductAssociation;
+        $this->model = new Product();
+        $this->associations = new ProductAssociation();
     }
 
     /**
-     * Stores a product association
-     * @param  string $product
-     * @param  array $data
+     * Stores a product association.
+     *
+     * @param string $product
+     * @param array  $data
+     *
      * @return mixed
      */
     public function store($product, $data)
@@ -27,11 +29,11 @@ class ProductAssociationService extends BaseService
         $product = $this->getByHashedId($product);
 
         $product->associations()->delete();
-    
+
         foreach ($data['relations'] as $index => $relation) {
             $relation['association'] = $this->getByHashedId($relation['association_id']);
             $relation['type'] = app('api')->associationGroups()->getByHashedId($relation['type']);
-            $assoc = new ProductAssociation;
+            $assoc = new ProductAssociation();
             $assoc->group()->associate($relation['type']);
             $assoc->association()->associate($relation['association']);
             $assoc->parent()->associate($product);
@@ -42,10 +44,12 @@ class ProductAssociationService extends BaseService
     }
 
     /**
-     * Destroys product association/s
-     * @param  string $product
-     * @param  array/string $association
-     * @return boolean
+     * Destroys product association/s.
+     *
+     * @param string       $product
+     * @param array/string $association
+     *
+     * @return bool
      */
     public function destroy($product, $association)
     {

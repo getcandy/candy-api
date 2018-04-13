@@ -6,10 +6,9 @@ use Carbon\Carbon;
 use GetCandy\Api\Attributes\Events\AttributableSavedEvent;
 use GetCandy\Api\Discounts\Discount as DiscountFactory;
 use GetCandy\Api\Discounts\Models\Discount;
-use GetCandy\Api\Discounts\Models\DiscountReward;
+use GetCandy\Api\Discounts\Models\DiscountCriteriaItem;
 use GetCandy\Api\Discounts\RewardSet;
 use GetCandy\Api\Scaffold\BaseService;
-use GetCandy\Api\Discounts\Models\DiscountCriteriaItem;
 
 class DiscountService extends BaseService
 {
@@ -19,7 +18,7 @@ class DiscountService extends BaseService
     }
 
     /**
-     * Create a discount
+     * Create a discount.
      *
      * @param array $data
      *
@@ -27,7 +26,7 @@ class DiscountService extends BaseService
      */
     public function create(array $data)
     {
-        $discount = new Discount;
+        $discount = new Discount();
         $discount->attribute_data = $data;
 
         if (!empty($data['start_at'])) {
@@ -56,10 +55,10 @@ class DiscountService extends BaseService
     }
 
     /**
-     * Update an existing discount
+     * Update an existing discount.
      *
      * @param string $id
-     * @param array $data
+     * @param array  $data
      *
      * @return Discount
      */
@@ -95,10 +94,10 @@ class DiscountService extends BaseService
     }
 
     /**
-     * Set up sets and rewards with a discount
+     * Set up sets and rewards with a discount.
      *
      * @param Discount $discount
-     * @param array $sets
+     * @param array    $sets
      *
      * @return Discount
      */
@@ -109,8 +108,8 @@ class DiscountService extends BaseService
 
         foreach ($sets as $set) {
             $groupModel = $discount->sets()->create([
-                'scope' => $set['scope'],
-                'outcome' => (bool) $set['outcome']
+                'scope'   => $set['scope'],
+                'outcome' => (bool) $set['outcome'],
             ]);
             if (!empty($set['items']['data'])) {
                 $set['items'] = $set['items']['data'];
@@ -129,10 +128,10 @@ class DiscountService extends BaseService
     }
 
     /**
-     * Sync up rewards for a discount
+     * Sync up rewards for a discount.
      *
      * @param Discount $discount
-     * @param array $rewards
+     * @param array    $rewards
      *
      * @return void
      */
@@ -146,11 +145,12 @@ class DiscountService extends BaseService
                 }
             }
         }
+
         return $discount;
     }
 
     /**
-     * Get All the discounts
+     * Get All the discounts.
      *
      * @return array
      */
@@ -172,19 +172,19 @@ class DiscountService extends BaseService
             $factory->setModel($discount);
             $factory->stop = $discount->stop_rules;
 
-            $rewardSet = new RewardSet;
+            $rewardSet = new RewardSet();
 
             foreach ($discount->rewards as $reward) {
                 $rewardSet->add([
-                    'type' => $reward->type,
-                    'value' => $reward->value
+                    'type'  => $reward->type,
+                    'value' => $reward->value,
                 ]);
             }
 
             $factory->setReward($rewardSet);
 
             foreach ($discount->sets as $set) {
-                $criteriaSet = new \GetCandy\Api\Discounts\CriteriaSet;
+                $criteriaSet = new \GetCandy\Api\Discounts\CriteriaSet();
                 $criteriaSet->scope = $set['scope'];
                 $criteriaSet->outcome = $set['outcome'];
                 foreach ($set->items as $item) {
@@ -193,6 +193,7 @@ class DiscountService extends BaseService
                 $sets[] = $factory->addCriteria($criteriaSet);
             }
         }
+
         return collect($sets);
     }
 
@@ -202,19 +203,19 @@ class DiscountService extends BaseService
         $factory->setModel($discount);
         $factory->stop = $discount->stop_rules;
 
-        $rewardSet = new RewardSet;
+        $rewardSet = new RewardSet();
 
         foreach ($discount->rewards as $reward) {
             $rewardSet->add([
-                'type' => $reward->type,
-                'value' => $reward->value
+                'type'  => $reward->type,
+                'value' => $reward->value,
             ]);
         }
 
         $factory->setReward($rewardSet);
 
         foreach ($discount->sets as $set) {
-            $criteriaSet = new \GetCandy\Api\Discounts\CriteriaSet;
+            $criteriaSet = new \GetCandy\Api\Discounts\CriteriaSet();
             $criteriaSet->scope = $set['scope'];
             $criteriaSet->outcome = $set['outcome'];
             foreach ($set->items as $item) {

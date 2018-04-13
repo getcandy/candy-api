@@ -4,7 +4,6 @@ namespace GetCandy\Api\Products\Services;
 
 use GetCandy\Api\Products\Models\ProductFamily;
 use GetCandy\Api\Scaffold\BaseService;
-use GetCandy\Exceptions\InvalidLanguageException;
 
 class ProductFamilyService extends BaseService
 {
@@ -14,7 +13,7 @@ class ProductFamilyService extends BaseService
     }
 
     /**
-     * Creates a resource from the given data
+     * Creates a resource from the given data.
      *
      * @param array $data
      *
@@ -25,14 +24,15 @@ class ProductFamilyService extends BaseService
         $family = $this->model;
         $family->attribute_data = $data;
         $family->save();
+
         return $family;
     }
 
     /**
-     * Updates a resource from the given data
+     * Updates a resource from the given data.
      *
-     * @param  string $hashedId
-     * @param  array  $data
+     * @param string $hashedId
+     * @param array  $data
      *
      * @throws Symfony\Component\HttpKernel\Exception
      *
@@ -43,17 +43,18 @@ class ProductFamilyService extends BaseService
         $family = $this->getByHashedId($hashedId);
         $family->attribute_data = $data['attributes'];
         $family->save();
+
         return $family;
     }
 
     /**
-     * Deletes a resource by its given hashed ID
+     * Deletes a resource by its given hashed ID.
      *
-     * @param  string $id
+     * @param string $id
      *
      * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      *
-     * @return Boolean
+     * @return bool
      */
     public function delete($hashedId)
     {
@@ -61,6 +62,7 @@ class ProductFamilyService extends BaseService
         if (!$productFamily) {
             abort(404);
         }
+
         return $productFamily->delete();
     }
 }

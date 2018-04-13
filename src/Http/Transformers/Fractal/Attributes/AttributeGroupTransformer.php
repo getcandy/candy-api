@@ -8,21 +8,21 @@ use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 class AttributeGroupTransformer extends BaseTransformer
 {
     protected $availableIncludes = [
-        'attributes'
+        'attributes',
     ];
 
     public function transform(AttributeGroup $group)
     {
         return [
-            'id' => $group->encodedId(),
-            'name' => $this->getLocalisedName($group->name),
-            'handle' => $group->handle,
-            'position' => (string) $group->position
+            'id'       => $group->encodedId(),
+            'name'     => $this->getLocalisedName($group->name),
+            'handle'   => $group->handle,
+            'position' => (string) $group->position,
         ];
     }
 
     public function includeAttributes(AttributeGroup $group)
     {
-        return $this->collection($group->attributes, new AttributeTransformer);
+        return $this->collection($group->attributes, new AttributeTransformer());
     }
 }

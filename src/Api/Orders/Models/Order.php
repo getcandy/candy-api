@@ -1,19 +1,19 @@
 <?php
+
 namespace GetCandy\Api\Orders\Models;
 
-use GetCandy\Api\Scaffold\BaseModel;
 use GetCandy\Api\Auth\Models\User;
-use GetCandy\Api\Traits\HasCompletion;
 use GetCandy\Api\Baskets\Models\Basket;
-use Illuminate\Database\Eloquent\Builder;
 use GetCandy\Api\Payments\Models\Transaction;
+use GetCandy\Api\Scaffold\BaseModel;
+use Illuminate\Database\Eloquent\Builder;
 
 class Order extends BaseModel
 {
     protected $hashids = 'order';
 
     protected $fillable = [
-        'lines'
+        'lines',
     ];
 
     protected $required = [
@@ -24,7 +24,7 @@ class Order extends BaseModel
         'billing_address',
         'billing_city',
         'billing_country',
-        'billing_zip'
+        'billing_zip',
     ];
 
     public function getRequiredAttribute()
@@ -66,11 +66,12 @@ class Order extends BaseModel
         foreach ($transactions as $amount) {
             $total += $amount;
         }
+
         return $total;
     }
 
     /**
-     * Gets the shipping details
+     * Gets the shipping details.
      *
      * @return array
      */
@@ -80,7 +81,7 @@ class Order extends BaseModel
     }
 
     /**
-     * Gets back the billing details
+     * Gets back the billing details.
      *
      * @return array
      */
@@ -90,7 +91,7 @@ class Order extends BaseModel
     }
 
     /**
-     * Gets the details, mainly for contact info
+     * Gets the details, mainly for contact info.
      *
      * @param string $type
      *
@@ -99,24 +100,24 @@ class Order extends BaseModel
     protected function getDetails($type)
     {
         return collect($this->attributes)->filter(function ($value, $key) use ($type) {
-            return strpos($key, $type . '_') === 0;
+            return strpos($key, $type.'_') === 0;
         })->mapWithKeys(function ($item, $key) use ($type) {
-            $newkey = str_replace($type . '_', '', $key);
+            $newkey = str_replace($type.'_', '', $key);
+
             return [$newkey => $item];
         })->toArray();
     }
 
     public function getRefAttribute()
     {
-        return '#ORD-' . str_pad($this->id, 4, 0, STR_PAD_LEFT);
+        return '#ORD-'.str_pad($this->id, 4, 0, STR_PAD_LEFT);
     }
 
     public function getInvoiceReferenceAttribute()
     {
         if ($this->reference) {
-            return '#INV-' . str_pad($this->reference, 4, 0, STR_PAD_LEFT);
+            return '#INV-'.str_pad($this->reference, 4, 0, STR_PAD_LEFT);
         }
-        return null;
     }
 
     public function getCustomerNameAttribute()
@@ -124,7 +125,7 @@ class Order extends BaseModel
         $name = null;
 
         if ($billing = $this->getDetails('billing')) {
-            $name = $billing['firstname'] . ' ' . $billing['lastname'];
+            $name = $billing['firstname'].' '.$billing['lastname'];
         }
 
         if ($this->user) {
@@ -138,11 +139,12 @@ class Order extends BaseModel
         if (!$name || $name == ' ') {
             return 'Guest Checkout';
         }
+
         return $name;
     }
 
     /**
-     * Get the basket lines
+     * Get the basket lines.
      *
      * @return void
      */
@@ -157,7 +159,7 @@ class Order extends BaseModel
     }
 
     /**
-     * Get the basket user
+     * Get the basket user.
      *
      * @return User
      */

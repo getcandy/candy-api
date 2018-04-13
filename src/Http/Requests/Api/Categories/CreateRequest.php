@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Http\Requests\Categories;
 
-use GetCandy\Api\Http\Requests\FormRequest;
 use GetCandy\Api\Categories\Models\Category;
+use GetCandy\Api\Http\Requests\FormRequest;
 
 class CreateRequest extends FormRequest
 {
@@ -27,7 +27,7 @@ class CreateRequest extends FormRequest
     {
         return [
             'attributes.*.value' => 'required|unique_category_attribute:name',
-            'url' => 'required|unique_route',
+            'url'                => 'required|unique_route',
         ];
     }
 
@@ -35,7 +35,7 @@ class CreateRequest extends FormRequest
     {
         return [
             'attributes.*.value.unique_category_attribute' => 'The name must be unique',
-            'routes.*.slug.unique_route' => 'The slug must be unique',
+            'routes.*.slug.unique_route'                   => 'The slug must be unique',
         ];
     }
 }

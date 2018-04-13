@@ -1,4 +1,5 @@
 <?php
+
 namespace GetCandy\Api\Http\Controllers\Shipping;
 
 use GetCandy\Api\Http\Controllers\BaseController;
@@ -12,18 +13,22 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class ShippingZoneController extends BaseController
 {
     /**
-     * Returns a listing of channels
+     * Returns a listing of channels.
+     *
      * @return Json
      */
     public function index(Request $request)
     {
         $orders = app('api')->shippingZones()->getPaginatedData($request->per_page, $request->current_page);
-        return $this->respondWithCollection($orders, new ShippingZoneTransformer);
+
+        return $this->respondWithCollection($orders, new ShippingZoneTransformer());
     }
 
     /**
-     * Handles the request to show a channel based on it's hashed ID
-     * @param  String $id
+     * Handles the request to show a channel based on it's hashed ID.
+     *
+     * @param string $id
+     *
      * @return Json
      */
     public function show($id)
@@ -33,18 +38,22 @@ class ShippingZoneController extends BaseController
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
-        return $this->respondWithItem($channel, new ShippingZoneTransformer);
+
+        return $this->respondWithItem($channel, new ShippingZoneTransformer());
     }
 
     /**
-     * Handles the request to create a new channel
-     * @param  CreateRequest $request
+     * Handles the request to create a new channel.
+     *
+     * @param CreateRequest $request
+     *
      * @return Json
      */
     public function store(CreateRequest $request)
     {
         $result = app('api')->shippingZones()->create($request->all());
-        return $this->respondWithItem($result, new ShippingZoneTransformer);
+
+        return $this->respondWithItem($result, new ShippingZoneTransformer());
     }
 
     public function update($id, UpdateRequest $request)
@@ -54,6 +63,7 @@ class ShippingZoneController extends BaseController
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
-        return $this->respondWithItem($result, new ShippingZoneTransformer);
+
+        return $this->respondWithItem($result, new ShippingZoneTransformer());
     }
 }

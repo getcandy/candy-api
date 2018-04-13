@@ -1,10 +1,11 @@
 <?php
+
 namespace GetCandy\Api\Shipping\Models;
 
-use GetCandy\Api\Scaffold\BaseModel;
-use GetCandy\Api\Traits\HasCustomerGroups;
 use GetCandy\Api\Currencies\Models\Currency;
 use GetCandy\Api\Customers\Models\CustomerGroup;
+use GetCandy\Api\Scaffold\BaseModel;
+use GetCandy\Api\Traits\HasCustomerGroups;
 
 class ShippingPrice extends BaseModel
 {
@@ -28,7 +29,7 @@ class ShippingPrice extends BaseModel
         'min_depth',
         'depth_unit',
         'volume_unit',
-        'min_volume'
+        'min_volume',
     ];
 
     public function method()

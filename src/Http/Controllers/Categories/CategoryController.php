@@ -4,12 +4,12 @@ namespace GetCandy\Api\Http\Controllers\Categories;
 
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Categories\CreateRequest;
+use GetCandy\Api\Http\Requests\Categories\DeleteRequest;
 use GetCandy\Api\Http\Requests\Categories\ReorderRequest;
 use GetCandy\Api\Http\Requests\Categories\UpdateRequest;
-use GetCandy\Api\Http\Requests\Categories\DeleteRequest;
 use GetCandy\Api\Http\Transformers\Fractal\Categories\CategoryFancytreeTransformer;
-use GetCandy\Api\Http\Transformers\Fractal\Categories\CategoryTreeTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Categories\CategoryTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\Categories\CategoryTreeTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -19,7 +19,8 @@ class CategoryController extends BaseController
     public function index(Request $request)
     {
         $collection = app('api')->categories()->getCategoryTree($request->channel);
-        return $this->respondWithItem($collection, new CategoryTreeTransformer);
+
+        return $this->respondWithItem($collection, new CategoryTreeTransformer());
     }
 
     public function show($id)
@@ -29,27 +30,32 @@ class CategoryController extends BaseController
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
-        return $this->respondWithItem($category, new CategoryTransformer);
+
+        return $this->respondWithItem($category, new CategoryTransformer());
     }
 
     public function getNested()
     {
         $categories = app('api')->categories()->getNestedList();
-        return $this->respondWithCollection($categories, new CategoryTransformer);
+
+        return $this->respondWithCollection($categories, new CategoryTransformer());
     }
 
     public function getByParent($parentID = null)
     {
         $categories = app('api')->categories()->getByParentID($parentID);
-        return $this->respondWithCollection($categories, new CategoryFancytreeTransformer);
+
+        return $this->respondWithCollection($categories, new CategoryFancytreeTransformer());
     }
 
     /**
-     * Create new category from basic information
+     * Create new category from basic information.
+     *
      * @param $request
      * @request String name
      * @request String slug
      * @request String parent_id (Optional)
+     *
      * @return array|\Illuminate\Http\Response
      */
     public function store(CreateRequest $request)
@@ -66,18 +72,21 @@ class CategoryController extends BaseController
             return $this->errorUnprocessable($e->getMessage());
         }
 
-        if ($response){
-            return $this->respondWithItem($response, new CategoryTransformer);
+        if ($response) {
+            return $this->respondWithItem($response, new CategoryTransformer());
         }
-        return response()->json('Error',500);
+
+        return response()->json('Error', 500);
     }
 
     /**
-     * Handles the request to reorder the categories
+     * Handles the request to reorder the categories.
+     *
      * @param $request
      * @request String id
      * @request String siblings
      * @request String parent_id (Optional)
+     *
      * @return array \Illuminate\Http\Response
      */
     public function reorder(ReorderRequest $request)
@@ -93,17 +102,19 @@ class CategoryController extends BaseController
         } catch (InvalidLanguageException $e) {
             return $this->errorUnprocessable($e->getMessage());
         }
-        if ($response){
-            return response()->json(['status' => 'success'],200);
+        if ($response) {
+            return response()->json(['status' => 'success'], 200);
         }
-        return response()->json(['status' => 'error'],500);
+
+        return response()->json(['status' => 'error'], 500);
     }
 
-
     /**
-     * Handles the request to update  a channel
-     * @param  String        $id
-     * @param  UpdateRequest $request
+     * Handles the request to update  a channel.
+     *
+     * @param string        $id
+     * @param UpdateRequest $request
+     *
      * @return Json
      */
     public function update($id, UpdateRequest $request)
@@ -113,13 +124,16 @@ class CategoryController extends BaseController
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
-        return $this->respondWithItem($result, new CategoryTransformer);
+
+        return $this->respondWithItem($result, new CategoryTransformer());
     }
 
     /**
-     * Handles the request to delete a category
-     * @param  String        $id
-     * @param  DeleteRequest $request
+     * Handles the request to delete a category.
+     *
+     * @param string        $id
+     * @param DeleteRequest $request
+     *
      * @return Json
      */
     public function destroy($id, Request $request)
@@ -129,6 +143,7 @@ class CategoryController extends BaseController
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
+
         return $this->respondWithNoContent();
     }
 }

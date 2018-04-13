@@ -11,6 +11,7 @@ class Factory
         if (empty($indexables[$indexable])) {
             return $this->create($indexable);
         }
+
         return $this->indexables[$indexable];
     }
 

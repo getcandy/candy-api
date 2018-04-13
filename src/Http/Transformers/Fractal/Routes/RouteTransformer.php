@@ -2,25 +2,25 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Routes;
 
-use GetCandy\Api\Routes\Models\Route;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
+use GetCandy\Api\Routes\Models\Route;
 
 class RouteTransformer extends BaseTransformer
 {
     protected $availableIncludes = [
-        'element'
+        'element',
     ];
 
     public function transform(Route $route)
     {
         return [
-            'id' => $route->encodedId(),
-            'default' => (bool) $route->default,
-            'redirect' => (bool) $route->redirect,
-            'locale' => $route->locale,
-            'slug' => $route->slug,
+            'id'          => $route->encodedId(),
+            'default'     => (bool) $route->default,
+            'redirect'    => (bool) $route->redirect,
+            'locale'      => $route->locale,
+            'slug'        => $route->slug,
             'description' => $route->description,
-            'type' => str_slug(class_basename($route->element_type)),
+            'type'        => str_slug(class_basename($route->element_type)),
         ];
     }
 
@@ -29,6 +29,7 @@ class RouteTransformer extends BaseTransformer
         if (!$route->element) {
             return $this->null();
         }
-        return $this->item($route->element, new ElementTransformer);
+
+        return $this->item($route->element, new ElementTransformer());
     }
 }

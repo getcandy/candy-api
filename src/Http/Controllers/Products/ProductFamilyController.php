@@ -2,13 +2,13 @@
 
 namespace GetCandy\Api\Http\Controllers\Products;
 
-use GetCandy\Exceptions\InvalidLanguageException;
-use GetCandy\Exceptions\MinimumRecordRequiredException;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\ProductFamilies\CreateRequest;
 use GetCandy\Api\Http\Requests\ProductFamilies\DeleteRequest;
 use GetCandy\Api\Http\Requests\ProductFamilies\UpdateRequest;
 use GetCandy\Api\Http\Transformers\Fractal\Products\ProductFamilyTransformer;
+use GetCandy\Exceptions\InvalidLanguageException;
+use GetCandy\Exceptions\MinimumRecordRequiredException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -16,20 +16,24 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class ProductFamilyController extends BaseController
 {
     /**
-     * Handles the request to show all product families
-     * @param  Request $request
+     * Handles the request to show all product families.
+     *
+     * @param Request $request
+     *
      * @return Json
      */
     public function index(Request $request)
     {
         $paginator = app('api')->productFamilies()->getPaginatedData($request->per_page);
         // event(new ViewProductEvent(['hello' => 'there']));
-        return $this->respondWithCollection($paginator, new ProductFamilyTransformer);
+        return $this->respondWithCollection($paginator, new ProductFamilyTransformer());
     }
 
     /**
-     * Handles the request to show a product family based on hashed ID
-     * @param  String $id
+     * Handles the request to show a product family based on hashed ID.
+     *
+     * @param string $id
+     *
      * @return Json
      */
     public function show($id)
@@ -39,12 +43,15 @@ class ProductFamilyController extends BaseController
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
-        return $this->respondWithItem($product, new ProductFamilyTransformer);
+
+        return $this->respondWithItem($product, new ProductFamilyTransformer());
     }
 
     /**
-     * Handles the request to create a new product family
-     * @param  CreateRequest $request
+     * Handles the request to create a new product family.
+     *
+     * @param CreateRequest $request
+     *
      * @return Json
      */
     public function store(CreateRequest $request)
@@ -54,13 +61,16 @@ class ProductFamilyController extends BaseController
         } catch (InvalidLanguageException $e) {
             return $this->errorUnprocessable($e->getMessage());
         }
-        return $this->respondWithItem($result, new ProductFamilyTransformer);
+
+        return $this->respondWithItem($result, new ProductFamilyTransformer());
     }
 
     /**
-     * Handles the request to update a product family
-     * @param  String        $id
-     * @param  UpdateRequest $request
+     * Handles the request to update a product family.
+     *
+     * @param string        $id
+     * @param UpdateRequest $request
+     *
      * @return Json
      */
     public function update($id, UpdateRequest $request)
@@ -74,13 +84,16 @@ class ProductFamilyController extends BaseController
         } catch (InvalidLanguageException $e) {
             return $this->errorUnprocessable($e->getMessage());
         }
-        return $this->respondWithItem($result, new ProductFamilyTransformer);
+
+        return $this->respondWithItem($result, new ProductFamilyTransformer());
     }
 
     /**
-     * Handles the request to delete a product family
-     * @param  String        $id
-     * @param  DeleteRequest $request
+     * Handles the request to delete a product family.
+     *
+     * @param string        $id
+     * @param DeleteRequest $request
+     *
      * @return Json
      */
     public function destroy($id, DeleteRequest $request)
@@ -92,6 +105,7 @@ class ProductFamilyController extends BaseController
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
+
         return $this->respondWithNoContent();
     }
 }

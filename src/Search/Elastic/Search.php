@@ -7,7 +7,6 @@ use Elastica\Aggregation\Nested as NestedAggregation;
 use Elastica\Aggregation\Terms;
 use Elastica\Query;
 use Elastica\Query\BoolQuery;
-use Elastica\Query\Match;
 use Elastica\Query\Nested as NestedQuery;
 use Elastica\Query\Term;
 use Elastica\Suggest;
@@ -28,17 +27,18 @@ class Search extends AbstractProvider implements ClientContract
 
     protected function getSearchIndex($indexer)
     {
-        return config('search.index_prefix') . $this->lang;
+        return config('search.index_prefix').$this->lang;
     }
 
     public function user($user = null)
     {
         $this->authUser = $user;
+
         return $this;
     }
 
     /**
-     * Set the channel to filter on
+     * Set the channel to filter on.
      *
      * @return void
      */
@@ -49,6 +49,7 @@ class Search extends AbstractProvider implements ClientContract
         } else {
             $this->channel = $channel;
         }
+
         return $this;
     }
 
@@ -56,13 +57,14 @@ class Search extends AbstractProvider implements ClientContract
     {
         $channel = app('api')->channels()->getDefaultRecord()->handle;
         $this->channel = $channel;
+
         return $this;
     }
 
     /**
-     * Searches the index
+     * Searches the index.
      *
-     * @param  string $keywords
+     * @param string $keywords
      *
      * @return array
      */
@@ -92,7 +94,7 @@ class Search extends AbstractProvider implements ClientContract
             $query->addSort($sortable);
         }
 
-        $boolQuery = new BoolQuery;
+        $boolQuery = new BoolQuery();
 
         if ($keywords) {
             $disMaxQuery = $this->generateDisMax($keywords);
@@ -146,11 +148,12 @@ class Search extends AbstractProvider implements ClientContract
         $search->setQuery($query);
 
         $results = $search->search();
+
         return $results;
     }
 
     /**
-     * Get the suggester
+     * Get the suggester.
      *
      * @return Suggest
      */
@@ -171,14 +174,14 @@ class Search extends AbstractProvider implements ClientContract
         $phrase->addCandidateGenerator($generator);
 
         $phrase->setHighlight('<strong>', '</strong>');
-        $suggest = new Suggest;
+        $suggest = new Suggest();
         $suggest->addSuggestion($phrase);
 
         return $suggest;
     }
 
     /**
-     * Gets the category post aggregation
+     * Gets the category post aggregation.
      *
      * @return NestedAggregation
      */
@@ -195,7 +198,7 @@ class Search extends AbstractProvider implements ClientContract
         $postBool = new BoolQuery();
 
         foreach ($this->categories as $category) {
-            $term = new Term;
+            $term = new Term();
             $term->setTerm('departments.id', $category);
             $postBool->addMust($term);
         }
@@ -214,7 +217,7 @@ class Search extends AbstractProvider implements ClientContract
     }
 
     /**
-     * Returns the category before aggregation
+     * Returns the category before aggregation.
      *
      * @return NestedAggregation
      */
@@ -235,16 +238,16 @@ class Search extends AbstractProvider implements ClientContract
     }
 
     /**
-     * Gets the highlight for the search query
+     * Gets the highlight for the search query.
      *
      * @return array
      */
     protected function getHighlight()
     {
         return [
-            'pre_tags' => ['<em class="highlight">'],
+            'pre_tags'  => ['<em class="highlight">'],
             'post_tags' => ['</em>'],
-            'fields' => [
+            'fields'    => [
                 'name' => [
                     'number_of_fragments' => 0,
                 ],
@@ -256,7 +259,7 @@ class Search extends AbstractProvider implements ClientContract
     }
 
     /**
-     * Gets the category post filter
+     * Gets the category post filter.
      *
      * @param array $categories
      *
@@ -264,13 +267,13 @@ class Search extends AbstractProvider implements ClientContract
      */
     protected function getCategoryFilter($categories = [])
     {
-        $filter = new BoolQuery;
+        $filter = new BoolQuery();
 
         foreach ($categories as $value) {
             $cat = new NestedQuery();
             $cat->setPath('departments');
 
-            $term = new Term;
+            $term = new Term();
             $term->setTerm('departments.id', $value);
 
             $cat->setQuery($term);
@@ -284,7 +287,7 @@ class Search extends AbstractProvider implements ClientContract
 
     protected function getCustomerGroupFilter()
     {
-        $filter = new BoolQuery;
+        $filter = new BoolQuery();
 
         if ($user = $this->authUser) {
             // Set to empty array as we don't want to filter any out.
@@ -300,7 +303,7 @@ class Search extends AbstractProvider implements ClientContract
         foreach ($groups as $model) {
             $cat = new NestedQuery();
             $cat->setPath('customer_groups');
-            $term = new Term;
+            $term = new Term();
             $term->setTerm('customer_groups.id', $model->encodedId());
 
             $cat->setQuery($term);
@@ -313,11 +316,11 @@ class Search extends AbstractProvider implements ClientContract
 
     protected function getChannelFilter()
     {
-        $filter = new BoolQuery;
+        $filter = new BoolQuery();
 
         $cat = new NestedQuery();
         $cat->setPath('channels');
-        $term = new Term;
+        $term = new Term();
         $term->setTerm('channels.handle', $this->channel);
 
         $cat->setQuery($term);
@@ -328,7 +331,7 @@ class Search extends AbstractProvider implements ClientContract
     }
 
     /**
-     * Generates the DisMax query
+     * Generates the DisMax query.
      *
      * @param string $keywords
      *
@@ -359,7 +362,7 @@ class Search extends AbstractProvider implements ClientContract
     }
 
     /**
-     * Gets an array of mapped sortable fields
+     * Gets an array of mapped sortable fields.
      *
      * @param array $sorts
      *
@@ -385,7 +388,7 @@ class Search extends AbstractProvider implements ClientContract
                 }
                 foreach ($map['fields'] as $handle => $subField) {
                     if ($subField['type'] != 'text') {
-                        $sortables[] = [$field . '.' . $handle => $dir];
+                        $sortables[] = [$field.'.'.$handle => $dir];
                     }
                 }
             } else {
