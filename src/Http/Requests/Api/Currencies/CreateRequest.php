@@ -30,7 +30,7 @@ class CreateRequest extends FormRequest
             'code' => 'required|unique:currencies,code',
             'enabled' => 'required',
             'exchange_rate' => 'required',
-            'format' => 'required'
+            'format' => 'required',
         ];
     }
 }

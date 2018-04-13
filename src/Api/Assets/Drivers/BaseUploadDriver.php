@@ -2,9 +2,7 @@
 
 namespace GetCandy\Api\Assets\Drivers;
 
-use GetCandy\Api\Assets\Contracts\AssetDriverContract;
 use GetCandy\Api\Assets\Models\Asset;
-use Illuminate\Database\Eloquent\Model;
 
 abstract class BaseUploadDriver
 {
@@ -25,7 +23,7 @@ abstract class BaseUploadDriver
         $mimeType = explode('/', $file->getClientMimeType());
         $extension = $file->clientExtension();
 
-        if (!$extension) {
+        if (! $extension) {
             $extension = pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
         }
 
@@ -36,12 +34,13 @@ abstract class BaseUploadDriver
             'original_filename' => $file->getClientOriginalName(),
             'title' => $file->getClientOriginalName(),
             'filename' => $file->hashName(),
-            'extension' => $extension
+            'extension' => $extension,
         ]);
 
         $asset->source()->associate($source);
-        $path = $source->path . '/' . substr($asset->filename, 0, 2);
+        $path = $source->path.'/'.substr($asset->filename, 0, 2);
         $asset->location = $path;
+
         return $asset;
     }
 
@@ -57,6 +56,7 @@ abstract class BaseUploadDriver
         $asset = $this->prepare($data, $source);
         $data['file']->storeAs($asset->location, $asset->filename, $source->disk);
         $model->assets()->save($asset);
+
         return $asset;
     }
 }

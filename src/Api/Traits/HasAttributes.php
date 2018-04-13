@@ -25,28 +25,26 @@ trait HasAttributes
         $defaultChannel = app('api')->channels()->getDefaultRecord();
         $userLocale = app()->getLocale();
 
-        if (!$locale) {
+        if (! $locale) {
             $locale = app('api')->languages()->getDefaultRecord()->lang;
         }
 
-        if (!$channel) {
+        if (! $channel) {
             $channel = $defaultChannel->handle;
         }
 
-        if (!empty($this->attribute_data[$handle][$channel][$locale])) {
+        if (! empty($this->attribute_data[$handle][$channel][$locale])) {
             return $this->attribute_data[$handle][$channel][$locale];
         }
 
-        if (!empty($this->attribute_data[$handle][$channel][$userLocale])) {
+        if (! empty($this->attribute_data[$handle][$channel][$userLocale])) {
             return $this->attribute_data[$handle][$channel][$userLocale];
         } elseif (empty($this->attribute_data[$handle][$channel][$userLocale])) {
-            return null;
+            return;
         } elseif (is_null($this->attribute_data[$handle][$channel][$userLocale])) {
             $channel = $defaultChannel->handle;
             $locale = $locale->lang;
         }
-
-        return null;
     }
 
     public function getNameAttribute()
@@ -61,7 +59,7 @@ trait HasAttributes
 
     public function setAttributeDataAttribute($val)
     {
-        if (!$this->id) {
+        if (! $this->id) {
             $this->attributes['attribute_data'] = json_encode($this->mapAttributes($val));
         } else {
             // dd(json_encode($val));
@@ -70,7 +68,7 @@ trait HasAttributes
     }
 
     /**
-     * Prepares the attribute data for saving to the database
+     * Prepares the attribute data for saving to the database.
      * @param  array  $data
      * @return array
      */
@@ -92,14 +90,14 @@ trait HasAttributes
                     array_set($newData[$attribute], $map, $value);
                 }
             }
-
         }
+
         return $newData;
     }
 
     /**
-     * Gets the current attribute data mapping
-     * @return Array
+     * Gets the current attribute data mapping.
+     * @return array
      */
     public function getDataMapping()
     {
@@ -115,6 +113,7 @@ trait HasAttributes
         foreach ($channels as $channel) {
             $structure[$channel->handle] = $languagesArray;
         }
+
         return $structure;
     }
 
@@ -126,7 +125,7 @@ trait HasAttributes
         $attributeData = [];
         $assigned = [];
         foreach ($attributes as $attribute) {
-            if (!empty($data[$attribute['handle']])) {
+            if (! empty($data[$attribute['handle']])) {
                 foreach ($mapping as $key => $map) {
                     foreach ($data[$attribute['handle']] as $locale => $value) {
                         $mapping[$key][$locale] = $value;

@@ -1,4 +1,5 @@
 <?php
+
 namespace GetCandy\Api\Shipping\Models;
 
 use GetCandy\Api\Scaffold\BaseModel;
@@ -28,7 +29,7 @@ class ShippingPrice extends BaseModel
         'min_depth',
         'depth_unit',
         'volume_unit',
-        'min_volume'
+        'min_volume',
     ];
 
     public function method()

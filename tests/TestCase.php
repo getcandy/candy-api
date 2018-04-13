@@ -2,10 +2,9 @@
 
 namespace Tests;
 
-use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
-
-use Laravel\Passport\Client;
 use Artisan;
+use Laravel\Passport\Client;
+use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -34,7 +33,8 @@ abstract class TestCase extends BaseTestCase
 
     protected function url($path, $query = null)
     {
-        $url = '/api/' . config('getcandy_api.version', 'v1') . '/' . $path . ($query ? '?' . http_build_query($query) : null);
+        $url = '/api/'.config('getcandy_api.version', 'v1').'/'.$path.($query ? '?'.http_build_query($query) : null);
+
         return $url;
     }
 
@@ -52,7 +52,7 @@ abstract class TestCase extends BaseTestCase
             'password' => 'password',
             'client_id' => $client->id,
             'client_secret' => $client->secret,
-            'grant_type' => 'password'
+            'grant_type' => 'password',
         ], ['Accept' => 'application/json']);
 
         $content = $this->getContent($response);
@@ -60,11 +60,10 @@ abstract class TestCase extends BaseTestCase
         $response->assertJsonStructure([
             'token_type',
             'expires_in',
-            'access_token'
+            'access_token',
         ]);
 
         $this->assertEquals(200, $response->getStatusCode());
-
 
         return $content['access_token'];
     }
@@ -72,7 +71,7 @@ abstract class TestCase extends BaseTestCase
     protected function assertHasErrorFormat($response)
     {
         $response->assertJsonStructure([
-            'error' => ['http_code', 'message']
+            'error' => ['http_code', 'message'],
         ]);
     }
 }

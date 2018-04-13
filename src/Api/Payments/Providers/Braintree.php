@@ -2,12 +2,12 @@
 
 namespace GetCandy\Api\Payments\Providers;
 
-use Braintree_Configuration;
 use Braintree_ClientToken;
-use Braintree_PaymentMethodNonce;
-use Braintree_Exception_NotFound;
 use Braintree_Transaction;
+use Braintree_Configuration;
 use Braintree_Test_Transaction;
+use Braintree_Exception_NotFound;
+use Braintree_PaymentMethodNonce;
 use GetCandy\Api\Payments\Models\Transaction;
 
 class Braintree extends AbstractProvider
@@ -30,6 +30,7 @@ class Braintree extends AbstractProvider
     protected function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -46,9 +47,10 @@ class Braintree extends AbstractProvider
     //TODO: REMOVE BEFORE LIVE
     private function settle($sale)
     {
-        if (!app()->isLocal()) {
+        if (! app()->isLocal()) {
             return $sale;
         }
+
         return Braintree_Test_Transaction::settle($sale->transaction->id);
     }
 
@@ -61,7 +63,7 @@ class Braintree extends AbstractProvider
                 $this->setName($token->description);
             }
 
-            if (!property_exists($token, 'threeDSecureInfo')) {
+            if (! property_exists($token, 'threeDSecureInfo')) {
                 $info = [];
             } else {
                 $info = $token->threeDSecureInfo;
@@ -73,13 +75,14 @@ class Braintree extends AbstractProvider
         } catch (Braintree_Exception_NotFound $e) {
             return false;
         }
+
         return true;
     }
 
     protected function getMerchant($currency)
     {
         return config(
-            'services.braintree.merchants.' . strtolower($currency),
+            'services.braintree.merchants.'.strtolower($currency),
             config('services.braintree.merchants.default')
         );
     }
@@ -97,7 +100,7 @@ class Braintree extends AbstractProvider
             'merchantAccountId' => $merchant,
             'customer' => [
                 'firstName' => $billing['firstname'],
-                'lastName' => $billing['lastname']
+                'lastName' => $billing['lastname'],
             ],
             'billing' => [
                 'firstName' => $billing['firstname'],
@@ -105,26 +108,25 @@ class Braintree extends AbstractProvider
                 'locality' => $billing['city'],
                 'region' =>   $billing['county'] ?: $billing['state'],
                 'postalCode' =>   $billing['zip'],
-                'streetAddress' => $billing['address']
+                'streetAddress' => $billing['address'],
             ],
             'shipping' => [
                 'firstName' => $shipping['firstname'],
                 'lastName' => $shipping['lastname'],
                 'locality' => $shipping['city'],
-                'region' => $shipping['county'] ? : $shipping['state'],
+                'region' => $shipping['county'] ?: $shipping['state'],
                 'postalCode' =>   $shipping['zip'],
-                'streetAddress' => $shipping['address']
+                'streetAddress' => $shipping['address'],
             ],
             'options' => [
-                'submitForSettlement' => true
-            ]
+                'submitForSettlement' => true,
+            ],
         ]);
 
         $transaction = $this->createTransaction($sale, $order);
 
         return $transaction->success;
     }
-
 
     protected function createTransaction($result, $order)
     {
@@ -153,7 +155,7 @@ class Braintree extends AbstractProvider
     {
         $remote = Braintree_Transaction::find($transaction->transaction_id);
         $transaction->update([
-            'status' => $remote->status
+            'status' => $remote->status,
         ]);
         if ($transaction->status == 'settled' && $transaction->order->status == 'payment-processing') {
             $order = $transaction->order;
@@ -165,12 +167,14 @@ class Braintree extends AbstractProvider
     public function refund($token, $amount = null)
     {
         $transaction = Braintree_Transaction::refund($token, $amount);
+
         return $transaction;
     }
 
     public function void($token)
     {
         $result = Braintree_Transaction::void($token);
+
         return $result;
     }
 }

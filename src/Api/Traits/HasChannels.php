@@ -14,12 +14,12 @@ trait HasChannels
         $user = app('auth')->user();
         $channels = app('api')->channels();
 
-        if (!$channel && ($user && $user->hasAnyRole($roles))) {
+        if (! $channel && ($user && $user->hasAnyRole($roles))) {
             return $query;
         }
 
         // If no channel is set, we need to get the default one.
-        if (!$channel) {
+        if (! $channel) {
             $channel = $channels->getDefaultRecord()->handle;
         }
 
@@ -27,6 +27,7 @@ trait HasChannels
             $query->whereHandle($channel)->whereDate('published_at', '<=', Carbon::now());
         });
     }
+
     protected function getCustomerGroups()
     {
         // If there is a user, get their groups.
@@ -37,9 +38,8 @@ trait HasChannels
         }
     }
 
-
     /**
-     * Get the attributes associated to the product
+     * Get the attributes associated to the product.
      * @return Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function channels()

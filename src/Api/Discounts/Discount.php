@@ -22,18 +22,21 @@ class Discount
     public function setReward(RewardSet $reward)
     {
         $this->reward = $reward;
+
         return $this;
     }
 
     public function addCriteria(CriteriaSet $criteria)
     {
         $this->criteria->push($criteria);
+
         return $this;
     }
 
     public function setModel($model)
     {
         $this->model = $model;
+
         return $this;
     }
 

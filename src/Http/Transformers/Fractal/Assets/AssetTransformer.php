@@ -2,20 +2,19 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Assets;
 
+use Storage;
 use GetCandy\Api\Assets\Models\Asset;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Tags\TagTransformer;
-use Storage;
-
 
 class AssetTransformer extends BaseTransformer
 {
     protected $availableIncludes = [
-        'transforms', 'tags'
+        'transforms', 'tags',
     ];
 
     /**
-     * Decorates the attribute object for viewing
+     * Decorates the attribute object for viewing.
      * @param  Attribute $product
      * @return array
      */
@@ -29,10 +28,10 @@ class AssetTransformer extends BaseTransformer
             'external' => (bool) $asset->external,
             'thumbnail' => $this->getThumbnail($asset),
             'position' => (int) $asset->position,
-            'primary' => (bool) $asset->primary
+            'primary' => (bool) $asset->primary,
         ];
 
-        if (!$asset->external) {
+        if (! $asset->external) {
             $data = array_merge($data, [
                 'sub_kind' => $asset->sub_kind,
                 'extension' => $asset->extension,
@@ -40,7 +39,7 @@ class AssetTransformer extends BaseTransformer
                 'size' => $asset->size,
                 'width' => $asset->width,
                 'height' => $asset->height,
-                'url' => $this->getUrl($asset)
+                'url' => $this->getUrl($asset),
             ]);
         } else {
             $data['url'] = $asset->location;
@@ -51,13 +50,15 @@ class AssetTransformer extends BaseTransformer
 
     protected function getThumbnail($asset)
     {
-        $path = $asset->location . '/thumbnails/' . 'thumbnail_' . $asset->filename;
+        $path = $asset->location.'/thumbnails/'.'thumbnail_'.$asset->filename;
+
         return Storage::disk($asset->source->disk)->url($path);
     }
 
     protected function getUrl($asset)
     {
-        $path = $asset->location . '/' . $asset->filename;
+        $path = $asset->location.'/'.$asset->filename;
+
         return Storage::disk($asset->source->disk)->url($path);
     }
 

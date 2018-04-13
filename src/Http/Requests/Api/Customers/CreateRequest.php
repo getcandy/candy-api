@@ -23,7 +23,6 @@ class CreateRequest extends FormRequest
      */
     public function rules()
     {
-        
         return [
             'email' => 'required|unique:users,email',
             'firstname' => 'required',
@@ -31,7 +30,7 @@ class CreateRequest extends FormRequest
             'password' => 'required|confirmed',
             'language' => 'required|exists:languages,lang|enabled:languages,lang',
             'group' => 'exists:customer_groups,handle',
-            'fields' => 'array'
+            'fields' => 'array',
         ];
     }
 }

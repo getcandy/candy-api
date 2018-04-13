@@ -2,18 +2,17 @@
 
 namespace GetCandy\Api\Search\Elastic;
 
+use Elastica\Query;
+use Elastica\Suggest;
+use Elastica\Query\Term;
+use Elastica\Suggest\Phrase;
+use Elastica\Query\BoolQuery;
+use Elastica\Aggregation\Terms;
+use GetCandy\Api\Search\ClientContract;
+use Elastica\Query\Nested as NestedQuery;
 use Elastica\Aggregation\Filter as FilterAggregation;
 use Elastica\Aggregation\Nested as NestedAggregation;
-use Elastica\Aggregation\Terms;
-use Elastica\Query;
-use Elastica\Query\BoolQuery;
-use Elastica\Query\Match;
-use Elastica\Query\Nested as NestedQuery;
-use Elastica\Query\Term;
-use Elastica\Suggest;
 use Elastica\Suggest\CandidateGenerator\DirectGenerator;
-use Elastica\Suggest\Phrase;
-use GetCandy\Api\Search\ClientContract;
 
 class Search extends AbstractProvider implements ClientContract
 {
@@ -28,27 +27,29 @@ class Search extends AbstractProvider implements ClientContract
 
     protected function getSearchIndex($indexer)
     {
-        return config('search.index_prefix') . $this->lang;
+        return config('search.index_prefix').$this->lang;
     }
 
     public function user($user = null)
     {
         $this->authUser = $user;
+
         return $this;
     }
 
     /**
-     * Set the channel to filter on
+     * Set the channel to filter on.
      *
      * @return void
      */
     public function on($channel = null)
     {
-        if (!$channel) {
+        if (! $channel) {
             $this->setChannelDefault();
         } else {
             $this->channel = $channel;
         }
+
         return $this;
     }
 
@@ -56,11 +57,12 @@ class Search extends AbstractProvider implements ClientContract
     {
         $channel = app('api')->channels()->getDefaultRecord()->handle;
         $this->channel = $channel;
+
         return $this;
     }
 
     /**
-     * Searches the index
+     * Searches the index.
      *
      * @param  string $keywords
      *
@@ -68,14 +70,14 @@ class Search extends AbstractProvider implements ClientContract
      */
     public function search($keywords, $filters = [], $sorts = [], $page = 1, $perPage = 25)
     {
-        if (!$this->indexer) {
+        if (! $this->indexer) {
             abort(400, 'You need to set an indexer first');
         }
 
         $roles = app('api')->roles()->getHubAccessRoles();
         $user = app('auth')->user();
 
-        if (!$this->channel) {
+        if (! $this->channel) {
             $this->setChannelDefault();
         }
 
@@ -103,13 +105,13 @@ class Search extends AbstractProvider implements ClientContract
 
         $boolQuery->addFilter($filter);
 
-        if ($user && !$user->hasAnyRole($roles)) {
+        if ($user && ! $user->hasAnyRole($roles)) {
             $boolQuery->addFilter(
                 $this->getChannelFilter()
             );
         }
 
-        if (!empty($filters['categories'])) {
+        if (! empty($filters['categories'])) {
             $categories = $filters['categories']['values'];
             $filter = $this->getCategoryFilter($categories);
 
@@ -146,11 +148,12 @@ class Search extends AbstractProvider implements ClientContract
         $search->setQuery($query);
 
         $results = $search->search();
+
         return $results;
     }
 
     /**
-     * Get the suggester
+     * Get the suggester.
      *
      * @return Suggest
      */
@@ -178,7 +181,7 @@ class Search extends AbstractProvider implements ClientContract
     }
 
     /**
-     * Gets the category post aggregation
+     * Gets the category post aggregation.
      *
      * @return NestedAggregation
      */
@@ -214,7 +217,7 @@ class Search extends AbstractProvider implements ClientContract
     }
 
     /**
-     * Returns the category before aggregation
+     * Returns the category before aggregation.
      *
      * @return NestedAggregation
      */
@@ -235,7 +238,7 @@ class Search extends AbstractProvider implements ClientContract
     }
 
     /**
-     * Gets the highlight for the search query
+     * Gets the highlight for the search query.
      *
      * @return array
      */
@@ -256,7 +259,7 @@ class Search extends AbstractProvider implements ClientContract
     }
 
     /**
-     * Gets the category post filter
+     * Gets the category post filter.
      *
      * @param array $categories
      *
@@ -328,7 +331,7 @@ class Search extends AbstractProvider implements ClientContract
     }
 
     /**
-     * Generates the DisMax query
+     * Generates the DisMax query.
      *
      * @param string $keywords
      *
@@ -359,7 +362,7 @@ class Search extends AbstractProvider implements ClientContract
     }
 
     /**
-     * Gets an array of mapped sortable fields
+     * Gets an array of mapped sortable fields.
      *
      * @param array $sorts
      *
@@ -385,7 +388,7 @@ class Search extends AbstractProvider implements ClientContract
                 }
                 foreach ($map['fields'] as $handle => $subField) {
                     if ($subField['type'] != 'text') {
-                        $sortables[] = [$field . '.' . $handle => $dir];
+                        $sortables[] = [$field.'.'.$handle => $dir];
                     }
                 }
             } else {

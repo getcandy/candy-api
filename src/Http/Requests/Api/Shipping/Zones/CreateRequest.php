@@ -1,4 +1,5 @@
 <?php
+
 namespace GetCandy\Api\Http\Requests\Shipping\Zones;
 
 use GetCandy\Api\Http\Requests\FormRequest;
@@ -23,7 +24,7 @@ class CreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required'
+            'name' => 'required',
         ];
     }
 }

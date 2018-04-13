@@ -11,8 +11,10 @@ class CurrencyConverter
     public function setDefault()
     {
         $this->currency = app('api')->currencies()->getDefaultRecord();
+
         return $this;
     }
+
     public function get()
     {
         return $this->currency;
@@ -30,6 +32,7 @@ class CurrencyConverter
         } catch (ModelNotFoundException $e) {
             $this->setDefault();
         }
+
         return $this;
     }
 

@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Http\Controllers\Auth;
 
+use Illuminate\Support\Facades\Password;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Auth\ResetPasswordRequest;
-use Illuminate\Support\Facades\Password;
 
 class ResetPasswordController extends BaseController
 {
@@ -47,7 +47,6 @@ class ResetPasswordController extends BaseController
                     ? $this->sendResetResponse($response)
                     : $this->sendResetFailedResponse($request, $response);
     }
-
 
     /**
      * Get the response for a successful password reset.

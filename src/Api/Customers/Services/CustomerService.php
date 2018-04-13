@@ -3,7 +3,6 @@
 namespace GetCandy\Api\Customers\Services;
 
 use GetCandy\Api\Scaffold\BaseService;
-use GetCandy\Api\Auth\Models\User;
 
 class CustomerService extends BaseService
 {
@@ -14,7 +13,7 @@ class CustomerService extends BaseService
     }
 
     /**
-     * Registers a new customer
+     * Registers a new customer.
      * @param  array  $data
      * @return [type]       [description]
      */
@@ -24,6 +23,7 @@ class CustomerService extends BaseService
         $user->assignRole('customer');
         $retail = app('api')->customerGroups()->getDefaultRecord();
         $user->groups()->sync([$retail->id]);
+
         return $user;
     }
 
@@ -31,7 +31,7 @@ class CustomerService extends BaseService
     {
         $user = app('api')->users()->getByHashedId($id);
 
-        if (!empty($data['customer_groups'])) {
+        if (! empty($data['customer_groups'])) {
             $groups = app('api')->customerGroups()->getDecodedIds($data['customer_groups']);
             dd($groups);
             $user->groups()->sync($groups);
@@ -47,7 +47,7 @@ class CustomerService extends BaseService
         if ($keywords) {
             $query = $query->orWhere('email', 'LIKE', '%'.$keywords.'%')
                         ->orWhere('firstname', 'LIKE', '%'.$keywords.'%')
-                        ->orWhere('lastname', 'LIKE', '%' . $keywords . '%');
+                        ->orWhere('lastname', 'LIKE', '%'.$keywords.'%');
         }
 
         return $query->paginate($length, ['*'], 'page', $page);

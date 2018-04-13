@@ -1,4 +1,5 @@
 <?php
+
 namespace GetCandy\Api\Countries\Services;
 
 use GetCandy\Api\Scaffold\BaseService;
@@ -18,7 +19,7 @@ class CountryService extends BaseService
         $countries = $countries->sort(function ($a, $b) {
             return strcmp($a->translation('name'), $b->translation('name'));
         })->groupBy('region');
-        
+
         return $countries;
     }
 }

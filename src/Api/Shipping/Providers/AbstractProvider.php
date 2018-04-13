@@ -5,7 +5,7 @@ namespace GetCandy\Api\Shipping\Providers;
 abstract class AbstractProvider
 {
     /**
-     * Order
+     * Order.
      *
      * @var Order
      */

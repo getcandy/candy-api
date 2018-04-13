@@ -1,13 +1,13 @@
 <?php
+
 namespace GetCandy\Api\Baskets\Models;
 
+use PriceCalculator;
 use GetCandy\Api\Auth\Models\User;
 use GetCandy\Api\Scaffold\BaseModel;
 use GetCandy\Api\Orders\Models\Order;
 use GetCandy\Api\Traits\HasCompletion;
-use Illuminate\Database\Eloquent\Scope;
 use GetCandy\Api\Discounts\Models\Discount;
-use PriceCalculator;
 
 class Basket extends BaseModel
 {
@@ -16,11 +16,11 @@ class Basket extends BaseModel
     protected $hashids = 'basket';
 
     protected $fillable = [
-        'lines', 'completed_at', 'merged_id'
+        'lines', 'completed_at', 'merged_id',
     ];
 
     /**
-     * Get the basket lines
+     * Get the basket lines.
      *
      * @return void
      */
@@ -35,7 +35,7 @@ class Basket extends BaseModel
     }
 
     /**
-     * Get the basket user
+     * Get the basket user.
      *
      * @return User
      */
@@ -53,7 +53,6 @@ class Basket extends BaseModel
     {
         return $this->hasOne(Order::class)->withoutGlobalScope('open');
     }
-
 
     // protected function getTotalWithoutDiscountAttribute()
     // {
@@ -84,6 +83,7 @@ class Basket extends BaseModel
         foreach ($this->lines as $line) {
             $weight += (float) $line->variant->weight_value;
         }
+
         return $weight;
     }
 }

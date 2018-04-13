@@ -35,7 +35,7 @@ class Coupon implements DiscountCriteriaContract
 
     public function check($user = null, $product = null, $basket = null)
     {
-        if (!$basket) {
+        if (! $basket) {
             return false;
         }
 
@@ -45,6 +45,6 @@ class Coupon implements DiscountCriteriaContract
             return $item->pivot->coupon;
         });
 
-        return !$coupons->contains($this->value);
+        return ! $coupons->contains($this->value);
     }
 }

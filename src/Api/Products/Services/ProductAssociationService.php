@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Products\Services;
 
+use GetCandy\Api\Scaffold\BaseService;
 use GetCandy\Api\Products\Models\Product;
 use GetCandy\Api\Products\Models\ProductAssociation;
-use GetCandy\Api\Scaffold\BaseService;
 
 class ProductAssociationService extends BaseService
 {
@@ -17,7 +17,7 @@ class ProductAssociationService extends BaseService
     }
 
     /**
-     * Stores a product association
+     * Stores a product association.
      * @param  string $product
      * @param  array $data
      * @return mixed
@@ -27,7 +27,7 @@ class ProductAssociationService extends BaseService
         $product = $this->getByHashedId($product);
 
         $product->associations()->delete();
-    
+
         foreach ($data['relations'] as $index => $relation) {
             $relation['association'] = $this->getByHashedId($relation['association_id']);
             $relation['type'] = app('api')->associationGroups()->getByHashedId($relation['type']);
@@ -42,10 +42,10 @@ class ProductAssociationService extends BaseService
     }
 
     /**
-     * Destroys product association/s
+     * Destroys product association/s.
      * @param  string $product
      * @param  array/string $association
-     * @return boolean
+     * @return bool
      */
     public function destroy($product, $association)
     {

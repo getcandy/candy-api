@@ -3,8 +3,8 @@
 namespace GetCandy\Api\Scaffold;
 
 use GetCandy\Api\Traits\Hashids;
-use Illuminate\Database\Eloquent\Model;
 use GetCandy\Api\Routes\Models\Route;
+use Illuminate\Database\Eloquent\Model;
 
 abstract class BaseModel extends Model
 {
@@ -13,9 +13,10 @@ abstract class BaseModel extends Model
     public function getSettingsAttribute()
     {
         $settings = app('api')->settings()->get($this->settings);
-        if (!$settings) {
+        if (! $settings) {
             return [];
         }
+
         return $settings->content;
     }
 

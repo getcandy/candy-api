@@ -2,9 +2,8 @@
 
 namespace GetCandy\Api\Taxes\Services;
 
-use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
-use GetCandy\Api\Scaffold\BaseService;
 use GetCandy\Api\Taxes\Models\Tax;
+use GetCandy\Api\Scaffold\BaseService;
 
 class TaxService extends BaseService
 {
@@ -14,7 +13,7 @@ class TaxService extends BaseService
     }
 
     /**
-     * Creates a resource from the given data
+     * Creates a resource from the given data.
      *
      * @param  array  $data
      *
@@ -26,17 +25,18 @@ class TaxService extends BaseService
         $tax->name = $data['name'];
         $tax->percentage = $data['percentage'];
 
-        if (empty($data['default']) && !$this->count()) {
+        if (empty($data['default']) && ! $this->count()) {
             $tax->default = true;
         } else {
             $tax->default = false;
         }
 
-        if (!empty($data['default'])) {
+        if (! empty($data['default'])) {
             $this->setNewDefault($tax);
         }
 
         $tax->save();
+
         return $tax;
     }
 
@@ -46,7 +46,7 @@ class TaxService extends BaseService
     }
 
     /**
-     * Updates a resource from the given data
+     * Updates a resource from the given data.
      *
      * @param  string $id
      * @param  array  $data
@@ -59,34 +59,35 @@ class TaxService extends BaseService
     {
         $tax = $this->getByHashedId($id);
 
-        if (!$tax) {
+        if (! $tax) {
             abort(404);
         }
 
-        if (!empty($data['default'])) {
+        if (! empty($data['default'])) {
             $this->setNewDefault($tax);
         }
 
         $tax->fill($data);
         $tax->save();
+
         return $tax;
     }
 
     /**
-     * Deletes a resource by its given hashed ID
+     * Deletes a resource by its given hashed ID.
      *
      * @param  string $id
      *
      * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @throws GetCandy\Api\Exceptions\MinimumRecordRequiredException
      *
-     * @return Boolean
+     * @return bool
      */
     public function delete($id)
     {
         $tax = $this->getByHashedId($id);
 
-        if (!$tax) {
+        if (! $tax) {
             abort(404);
         }
 

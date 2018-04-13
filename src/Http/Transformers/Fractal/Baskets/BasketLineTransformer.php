@@ -1,7 +1,7 @@
 <?php
+
 namespace GetCandy\Api\Http\Transformers\Fractal\Baskets;
 
-use Carbon\Carbon;
 use GetCandy\Api\Baskets\Models\BasketLine;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Products\ProductVariantTransformer;
@@ -9,7 +9,7 @@ use GetCandy\Api\Http\Transformers\Fractal\Products\ProductVariantTransformer;
 class BasketLineTransformer extends BaseTransformer
 {
     protected $availableIncludes = [
-        'variant'
+        'variant',
     ];
 
     public function transform(BasketLine $line)
@@ -19,8 +19,9 @@ class BasketLineTransformer extends BaseTransformer
             'quantity' => $line->quantity,
             'total' => $line->current_total,
             'total_when_added' => $line->total,
-            'original_price' => $line->total / $line->quantity
+            'original_price' => $line->total / $line->quantity,
         ];
+
         return $data;
     }
 

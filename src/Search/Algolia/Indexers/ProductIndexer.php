@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Search\Algolia\Indexers;
 
-use GetCandy\Api\Products\Models\Product;
 use Elastica\Document;
+use GetCandy\Api\Products\Models\Product;
 use GetCandy\Api\Search\Algolia\Indexable;
 
 class ProductIndexer extends BaseIndexer
@@ -19,7 +19,7 @@ class ProductIndexer extends BaseIndexer
     public $type = 'products';
 
     /**
-     * Returns the Index document ready to be added
+     * Returns the Index document ready to be added.
      * @param  Product $product
      * @return Document
      */
@@ -38,25 +38,25 @@ class ProductIndexer extends BaseIndexer
 
                 if (isset($product->primaryAsset()->thumbnail)) {
                     $transform = $product->primaryAsset()->thumbnail->first();
-                    $path = $transform->location . '/' . $transform->filename;
+                    $path = $transform->location.'/'.$transform->filename;
                     $url = \Storage::disk($product->primaryAsset()->disk)->url($path);
                     $indexable->set('image', url($url));
                 }
 
                 $productCategories = $product->categories()->get();
-                $indexable->set('categories', [$productCategories[0]->name]);// Just en for the mo! TODO Need to make better
+                $indexable->set('categories', [$productCategories[0]->name]); // Just en for the mo! TODO Need to make better
                 $productRoute = $product->route()->get();
                 $indexable->set('slug', $productRoute[0]['slug']); // Just en for the mo! TODO Need to make better
 
                 foreach ($product->variants as $variant) {
-                    if (!$indexable->min_price || $indexable->min_price > $variant->price) {
+                    if (! $indexable->min_price || $indexable->min_price > $variant->price) {
                         $indexable->set('min_price', $variant->price);
                     }
-                    if (!$indexable->max_price || $indexable->max_price > $variant->price) {
+                    if (! $indexable->max_price || $indexable->max_price > $variant->price) {
                         $indexable->set('max_price', $variant->price);
                     }
                     foreach ($variant->options as $handle => $option) {
-                        if (!empty($option[$lang])) {
+                        if (! empty($option[$lang])) {
                             $indexable->add($handle, $option[$lang]);
                         }
                     }
@@ -64,18 +64,19 @@ class ProductIndexer extends BaseIndexer
                 $indexables->push($indexable);
             }
         }
+
         return $indexables;
     }
 
     public function rankings()
     {
         return [
-            "name^5", "name.english^4"
+            'name^5', 'name.english^4',
         ];
     }
 
     /**
-     * Returns the mapping used by elastic search
+     * Returns the mapping used by elastic search.
      * @return array
      */
     public function mapping()
@@ -87,10 +88,10 @@ class ProductIndexer extends BaseIndexer
                 'fields' => [
                     'english' => [
                         'type' => 'string',
-                        'analyzer' => 'english'
-                    ]
-                ]
-            ]
+                        'analyzer' => 'english',
+                    ],
+                ],
+            ],
         ];
     }
 }

@@ -6,6 +6,6 @@ return [
     'index' => env('SEARCH_INDEX'),
     'algolia' => [
         'app_key' => env('ALGOLIA_KEY'),
-        'app_id' => env('ALGOLIA_ID')
-    ]
+        'app_id' => env('ALGOLIA_ID'),
+    ],
 ];

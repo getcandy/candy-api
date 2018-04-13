@@ -7,23 +7,23 @@ abstract class AbstractProvider
     protected $billing;
 
     /**
-     * Gets the name of the provider
+     * Gets the name of the provider.
      *
      * @return string
      */
     abstract public function getName();
 
     /**
-     * Validates a payment token
+     * Validates a payment token.
      *
      * @param string $token
      *
-     * @return boolean
+     * @return bool
      */
     abstract public function validateToken($token);
 
     /**
-     * Create a charge for a payment token
+     * Create a charge for a payment token.
      *
      * @param string $token
      *
@@ -32,7 +32,7 @@ abstract class AbstractProvider
     abstract public function charge($token, $order);
 
     /**
-     * Refund a transaction
+     * Refund a transaction.
      *
      * @param string $token
      * @param mixed $amount

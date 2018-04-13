@@ -1,4 +1,5 @@
 <?php
+
 namespace GetCandy\Api\Http\Requests\Orders;
 
 use GetCandy\Api\Http\Requests\FormRequest;
@@ -26,7 +27,7 @@ class ProcessRequest extends FormRequest
         return [
             'order_id' => 'required',
             'payment_token' => 'valid_payment_token|required_without:payment_type_id',
-            'payment_type_id' => 'required_without:payment_token|hashid_is_valid:payment_types'
+            'payment_type_id' => 'required_without:payment_token|hashid_is_valid:payment_types',
         ];
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace GetCandy\Api\Http\Requests\Payments;
 
 use GetCandy\Api\Http\Requests\FormRequest;

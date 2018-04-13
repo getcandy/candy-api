@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Http\Requests\Routes;
 
-use GetCandy\Api\Http\Requests\FormRequest;
 use GetCandy\Api\Routes\Models\Route;
+use GetCandy\Api\Http\Requests\FormRequest;
 
 class UpdateRequest extends FormRequest
 {
@@ -26,7 +26,7 @@ class UpdateRequest extends FormRequest
     public function rules(Route $route)
     {
         return [
-            'slug' => 'required|unique:routes,slug,' . $route->decodeId($this->route)
+            'slug' => 'required|unique:routes,slug,'.$route->decodeId($this->route),
         ];
     }
 }
