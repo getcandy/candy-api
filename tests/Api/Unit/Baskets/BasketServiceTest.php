@@ -1,22 +1,22 @@
 <?php
+
 namespace Tests;
 
-use GetCandy\Api\Products\Models\ProductVariant;
-use GetCandy\Api\Baskets\Models\Basket;
 use Auth;
+use GetCandy\Api\Baskets\Models\Basket;
+use GetCandy\Api\Products\Models\ProductVariant;
 
 /**
  * @group services
  */
 class BasketServiceTest extends TestCase
 {
-
     public function testResolveWithoutMerge()
     {
         // Create a basket as a guest
         $guestBasket = $this->createGuestBasket();
 
-        dump('Guest: ' . $guestBasket->id);
+        dump('Guest: '.$guestBasket->id);
 
         $user = \Auth::loginUsingId(1);
 
@@ -28,7 +28,7 @@ class BasketServiceTest extends TestCase
         // dd($user->basket);
         // echo '---';
         // dump($user->basket->id, $guestBasket->id);
-        
+
         // $this->assertTrue($user->basket->encodedId() == $guestBasket->encodedId());
     }
 
@@ -38,14 +38,15 @@ class BasketServiceTest extends TestCase
             return [
                 'id' => $item->encodedId(),
                 'price' => $item->price,
-                'quantity' => 1
+                'quantity' => 1,
             ];
         });
         $basket = app('api')->baskets()->create([
-            'variants' => $lines->toArray()
+            'variants' => $lines->toArray(),
         ]);
         $this->assertTrue($basket instanceof Basket);
         $this->assertNull($basket->user);
+
         return $basket;
     }
 
@@ -55,13 +56,14 @@ class BasketServiceTest extends TestCase
             return [
                 'id' => $item->encodedId(),
                 'price' => $item->price,
-                'quantity' => 2
+                'quantity' => 2,
             ];
         });
         $basket = app('api')->baskets()->create([
-            'variants' => $lines->toArray()
+            'variants' => $lines->toArray(),
         ], Auth::user());
         $this->assertTrue($basket instanceof Basket);
+
         return $basket;
     }
 }

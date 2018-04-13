@@ -1,4 +1,5 @@
 <?php
+
 namespace GetCandy\Exceptions;
 
 use Exception;

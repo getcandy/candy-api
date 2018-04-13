@@ -2,13 +2,12 @@
 
 namespace GetCandy\Api\Assets\Jobs;
 
-use GetCandy\Api\Assets\Models\Asset;
+use Storage;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Storage;
 
 class CleanUpAssetFiles implements ShouldQueue
 {
@@ -26,7 +25,7 @@ class CleanUpAssetFiles implements ShouldQueue
      */
     public function __construct($assets)
     {
-        if (!is_array($assets)) {
+        if (! is_array($assets)) {
             $assets = [$assets];
         }
         $this->assets = collect($assets);
@@ -46,10 +45,10 @@ class CleanUpAssetFiles implements ShouldQueue
 
             $assets = [];
 
-            $assets[] = $asset->location . '/' . $asset->filename;
+            $assets[] = $asset->location.'/'.$asset->filename;
 
             foreach ($asset->transforms as $transform) {
-                $assets[] = $transform->location . '/' . $transform->filename;
+                $assets[] = $transform->location.'/'.$transform->filename;
             }
 
             $disk->delete($assets);

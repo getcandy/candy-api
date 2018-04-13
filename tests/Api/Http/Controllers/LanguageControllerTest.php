@@ -10,23 +10,22 @@ use GetCandy\Api\Languages\Models\Language;
  */
 class LanguageControllerTest extends TestCase
 {
-
     protected $baseStructure = [
         'id',
         'name',
         'iso',
-        'lang'
+        'lang',
     ];
 
     public function testIndex()
     {
         $response = $this->get($this->url('languages'), [
-            'Authorization' => 'Bearer ' . $this->accessToken()
+            'Authorization' => 'Bearer '.$this->accessToken(),
         ]);
 
         $response->assertJsonStructure([
             'data' => [$this->baseStructure],
-            'meta' => ['pagination']
+            'meta' => ['pagination'],
         ]);
 
         $this->assertEquals(200, $response->status());
@@ -36,7 +35,7 @@ class LanguageControllerTest extends TestCase
     {
         $response = $this->get($this->url('languages'), [
             'Authorization' => 'Bearer foo.bar.bing',
-            'Accept' => 'application/json'
+            'Accept' => 'application/json',
         ]);
 
         $this->assertEquals(401, $response->getStatusCode());
@@ -47,12 +46,12 @@ class LanguageControllerTest extends TestCase
         // Get a channel
         $id = Language::first()->encodedId();
 
-        $response = $this->get($this->url('languages/' . $id), [
-            'Authorization' => 'Bearer ' . $this->accessToken()
+        $response = $this->get($this->url('languages/'.$id), [
+            'Authorization' => 'Bearer '.$this->accessToken(),
         ]);
 
         $response->assertJsonStructure([
-            'data' => $this->baseStructure
+            'data' => $this->baseStructure,
         ]);
 
         $this->assertEquals(200, $response->status());
@@ -61,7 +60,7 @@ class LanguageControllerTest extends TestCase
     public function testMissingShow()
     {
         $response = $this->get($this->url('languages/123456'), [
-            'Authorization' => 'Bearer ' . $this->accessToken()
+            'Authorization' => 'Bearer '.$this->accessToken(),
         ]);
 
         $this->assertHasErrorFormat($response);
@@ -74,18 +73,18 @@ class LanguageControllerTest extends TestCase
         $response = $this->post(
             $this->url('languages'),
             [
-                'name' =>  "Spanish",
-                'lang' =>  "es",
-                'iso' =>  "es",
-                'default' =>  false
+                'name' =>  'Spanish',
+                'lang' =>  'es',
+                'iso' =>  'es',
+                'default' =>  false,
             ],
             [
-                'Authorization' => 'Bearer ' . $this->accessToken()
+                'Authorization' => 'Bearer '.$this->accessToken(),
             ]
         );
 
         $response->assertJsonStructure([
-            'data' => $this->baseStructure
+            'data' => $this->baseStructure,
         ]);
 
         $this->assertEquals(200, $response->status());
@@ -97,14 +96,14 @@ class LanguageControllerTest extends TestCase
             $this->url('languages'),
             [],
             [
-                'Authorization' => 'Bearer ' . $this->accessToken()
+                'Authorization' => 'Bearer '.$this->accessToken(),
             ]
         );
 
         $response->assertJsonStructure([
-            'name', 'iso', 'lang'
+            'name', 'iso', 'lang',
         ]);
-        
+
         $this->assertEquals(422, $response->status());
     }
 
@@ -115,15 +114,15 @@ class LanguageControllerTest extends TestCase
             [
                 'lang' => 'en',
                 'iso' => 'gb',
-                'name' => 'English'
+                'name' => 'English',
             ],
             [
-                'Authorization' => 'Bearer ' . $this->accessToken()
+                'Authorization' => 'Bearer '.$this->accessToken(),
             ]
         );
 
         $response->assertJsonStructure([
-            'iso'
+            'iso',
         ]);
 
         $this->assertEquals(422, $response->status());
@@ -133,44 +132,43 @@ class LanguageControllerTest extends TestCase
     {
         $id = Language::first()->encodedId();
         $response = $this->put(
-            $this->url('languages/' . $id),
+            $this->url('languages/'.$id),
             [
                 'name' => 'Español',
                 'lang' => 'es',
                 'iso' => 'es',
-                'default' => true
+                'default' => true,
             ],
             [
-                'Authorization' => 'Bearer ' . $this->accessToken()
+                'Authorization' => 'Bearer '.$this->accessToken(),
             ]
         );
         $this->assertEquals(200, $response->status());
     }
-
 
     public function testUpdateUniqueCode()
     {
         Language::create([
             'name' => 'Foo',
             'iso' => 'foo',
-            'lang' => 'foo'
+            'lang' => 'foo',
         ]);
 
         $id = Language::first()->encodedId();
         $response = $this->put(
-            $this->url('languages/' . $id),
+            $this->url('languages/'.$id),
             [
                 'name' => 'Bar',
                 'lang' => 'foo',
-                'iso' => 'foo'
+                'iso' => 'foo',
             ],
             [
-                'Authorization' => 'Bearer ' . $this->accessToken()
+                'Authorization' => 'Bearer '.$this->accessToken(),
             ]
         );
 
         $response->assertJsonStructure([
-            'iso'
+            'iso',
         ]);
 
         $this->assertEquals(422, $response->status());
@@ -184,10 +182,10 @@ class LanguageControllerTest extends TestCase
                 'name' => 'Español',
                 'lang' => 'es',
                 'iso' => 'es',
-                'default' => true
+                'default' => true,
             ],
             [
-                'Authorization' => 'Bearer ' . $this->accessToken()
+                'Authorization' => 'Bearer '.$this->accessToken(),
             ]
         );
 
@@ -197,16 +195,16 @@ class LanguageControllerTest extends TestCase
     public function testDestroy()
     {
         $currency = Language::create([
-            'name' =>  "Spanish",
+            'name' =>  'Spanish',
             'lang' => 'es',
             'iso' => 'es',
-            'default' =>  false
+            'default' =>  false,
         ]);
 
         $response = $this->delete(
-            $this->url('languages/' . $currency->encodedId()),
+            $this->url('languages/'.$currency->encodedId()),
             [],
-            ['Authorization' => 'Bearer ' . $this->accessToken()]
+            ['Authorization' => 'Bearer '.$this->accessToken()]
         );
 
         $this->assertEquals(204, $response->status());
@@ -216,16 +214,16 @@ class LanguageControllerTest extends TestCase
     {
         $id = Language::first()->encodedId();
         $response = $this->delete(
-            $this->url('languages/' . $id),
+            $this->url('languages/'.$id),
             [],
-            ['Authorization' => 'Bearer ' . $this->accessToken()]
+            ['Authorization' => 'Bearer '.$this->accessToken()]
         );
 
         $id = Language::first()->encodedId();
         $response = $this->delete(
-            $this->url('languages/' . $id),
+            $this->url('languages/'.$id),
             [],
-            ['Authorization' => 'Bearer ' . $this->accessToken()]
+            ['Authorization' => 'Bearer '.$this->accessToken()]
         );
         $this->assertEquals(422, $response->status());
     }

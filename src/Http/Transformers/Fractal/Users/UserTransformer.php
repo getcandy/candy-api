@@ -2,25 +2,24 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Users;
 
-use League\Fractal\TransformerAbstract;
+use Illuminate\Database\Eloquent\Model;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Orders\OrderTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Addresses\AddressTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Languages\LanguageTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Customers\CustomerGroupTransformer;
-use Illuminate\Database\Eloquent\Model;
 
 class UserTransformer extends BaseTransformer
 {
     protected $availableIncludes = [
-        'store', 'addresses', 'groups', 'roles', 'orders', 'language', 'details'
+        'store', 'addresses', 'groups', 'roles', 'orders', 'language', 'details',
     ];
 
     public function transform(Model $user)
     {
         return [
             'id' => $user->encodedId(),
-            'email' => $user->email
+            'email' => $user->email,
         ];
     }
 
@@ -51,9 +50,10 @@ class UserTransformer extends BaseTransformer
 
     public function includeDetails(Model $user)
     {
-        if (!$user->details) {
+        if (! $user->details) {
             return $this->null();
         }
+
         return $this->item($user->details, new UserDetailsTransformer);
     }
 }

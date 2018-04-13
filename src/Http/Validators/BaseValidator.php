@@ -2,17 +2,15 @@
 
 namespace GetCandy\Api\Http\Validators;
 
-use InvalidArgumentException;
-
 class BaseValidator
 {
     /**
-     * Validates the name for an attribute doesn't exist in the same group
-     * @param  String $attribute
-     * @param  String $value
-     * @param  Array $parameters
+     * Validates the name for an attribute doesn't exist in the same group.
+     * @param  string $attribute
+     * @param  string $value
+     * @param  array $parameters
      * @param  Validator $validator
-     * @return Bool
+     * @return bool
      */
     public function enabled($attribute, $value, $parameters, $validator)
     {
@@ -22,7 +20,7 @@ class BaseValidator
 
         $method = str_plural($parameters[0]);
 
-        if (!property_exists(app('api'), $method)) {
+        if (! property_exists(app('api'), $method)) {
             return false;
         }
 

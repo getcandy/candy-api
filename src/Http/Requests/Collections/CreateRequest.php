@@ -3,7 +3,6 @@
 namespace GetCandy\Api\Http\Requests\Collections;
 
 use GetCandy\Api\Http\Requests\FormRequest;
-use GetCandy\Api\Collections\Models\Collection;
 
 class CreateRequest extends FormRequest
 {
@@ -11,11 +10,12 @@ class CreateRequest extends FormRequest
     {
         return $this->user()->hasRole('admin');
     }
+
     public function rules()
     {
         return [
             'name' => 'required|valid_structure:collections',
-            'url' => 'required'
+            'url' => 'required',
         ];
     }
 }

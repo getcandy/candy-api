@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Assets\Models;
 
-use GetCandy\Api\Categories\Models\Category;
-use GetCandy\Api\Products\Models\Product;
-use GetCandy\Api\Scaffold\BaseModel;
 use GetCandy\Api\Tags\Models\Tag;
+use GetCandy\Api\Scaffold\BaseModel;
+use GetCandy\Api\Products\Models\Product;
+use GetCandy\Api\Categories\Models\Category;
 
 class Asset extends BaseModel
 {
@@ -30,7 +30,7 @@ class Asset extends BaseModel
         'kind',
         'position',
         'external',
-        'primary'
+        'primary',
     ];
 
     /**
@@ -62,7 +62,6 @@ class Asset extends BaseModel
         return $this->transforms()->whereHas('transform', function ($q) {
             $q->whereHandle('thumbnail');
         });
-
     }
 
     /**

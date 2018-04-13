@@ -1,4 +1,5 @@
 <?php
+
 namespace GetCandy\Api\Discounts\Criteria;
 
 use GetCandy\Api\Discounts\Contracts\DiscountCriteriaContract;
@@ -11,6 +12,7 @@ class CustomerGroup implements DiscountCriteriaContract
     {
         $this->value = $value;
     }
+
     public function setCriteria($criteria)
     {
         $this->criteria = json_decode($criteria, true);

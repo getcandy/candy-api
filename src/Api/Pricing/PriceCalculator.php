@@ -25,8 +25,9 @@ class PriceCalculator
 
         $this->pricing = [
             'amount' => round($converted + $taxamount, 2),
-            'tax' => $taxamount
+            'tax' => $taxamount,
         ];
+
         return $this;
     }
 }

@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Scopes;
 
+use Auth;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
-use Auth;
 
 class CustomerGroupScope implements Scope
 {
@@ -21,7 +21,7 @@ class CustomerGroupScope implements Scope
         $roles = app('api')->roles()->getHubAccessRoles();
         $groups = $this->getCustomerGroups();
         $user = app('auth')->user();
-        if (!$user || !$user->hasAnyRole($roles)) {
+        if (! $user || ! $user->hasAnyRole($roles)) {
             $builder->whereHas('customerGroups', function ($q) use ($groups) {
                 $q->whereIn('customer_groups.id', $groups)->where('visible', '=', true);
             });

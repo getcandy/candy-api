@@ -2,32 +2,32 @@
 
 namespace GetCandy\Api\Http\Controllers\Attributes;
 
+use Illuminate\Http\Request;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Attributes\CreateRequest;
 use GetCandy\Api\Http\Requests\Attributes\DeleteRequest;
-use GetCandy\Api\Http\Requests\Attributes\ReorderRequest;
 use GetCandy\Api\Http\Requests\Attributes\UpdateRequest;
-use GetCandy\Api\Http\Transformers\Fractal\Attributes\AttributeTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
+use GetCandy\Api\Http\Requests\Attributes\ReorderRequest;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use GetCandy\Api\Http\Transformers\Fractal\Attributes\AttributeTransformer;
 
 class AttributeController extends BaseController
 {
-
     /**
-     * Returns a listing of channels
+     * Returns a listing of channels.
      * @return Json
      */
     public function index(Request $request)
     {
         $attributes = app('api')->attributes()->getPaginatedData($request->per_page);
+
         return $this->respondWithCollection($attributes, new AttributeTransformer);
     }
 
     /**
-     * Handles the request to show a channel based on it's hashed ID
-     * @param  String $id
+     * Handles the request to show a channel based on it's hashed ID.
+     * @param  string $id
      * @return Json
      */
     public function show($id)
@@ -37,17 +37,19 @@ class AttributeController extends BaseController
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
+
         return $this->respondWithItem($attribute, new AttributeTransformer);
     }
 
     /**
-     * Handles the request to create a new channel
+     * Handles the request to create a new channel.
      * @param  CreateRequest $request
      * @return Json
      */
     public function store(CreateRequest $request)
     {
         $result = app('api')->attributes()->create($request->all());
+
         return $this->respondWithItem($result, new AttributeTransformer);
     }
 
@@ -60,12 +62,13 @@ class AttributeController extends BaseController
         } catch (DuplicateValueException $e) {
             return $this->errorWrongArgs($e->getMessage());
         }
+
         return $this->respondWithNoContent();
     }
 
     /**
-     * Handles the request to update  a channel
-     * @param  String        $id
+     * Handles the request to update  a channel.
+     * @param  string        $id
      * @param  UpdateRequest $request
      * @return Json
      */
@@ -78,12 +81,13 @@ class AttributeController extends BaseController
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
+
         return $this->respondWithItem($result, new AttributeTransformer);
     }
 
     /**
-     * Handles the request to delete a channel
-     * @param  String        $id
+     * Handles the request to delete a channel.
+     * @param  string        $id
      * @param  DeleteRequest $request
      * @return Json
      */
@@ -94,6 +98,7 @@ class AttributeController extends BaseController
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
+
         return $this->respondWithNoContent();
     }
 }

@@ -1,11 +1,11 @@
 <?php
+
 namespace GetCandy\Api\Shipping\Services;
 
-use GetCandy\Api\Attributes\Events\AttributableSavedEvent;
 use GetCandy\Api\Scaffold\BaseService;
-use GetCandy\Api\Shipping\Models\ShippingMethod;
-use GetCandy\Api\Shipping\Models\ShippingZone;
 use GetCandy\Api\Shipping\ShippingCalculator;
+use GetCandy\Api\Shipping\Models\ShippingMethod;
+use GetCandy\Api\Attributes\Events\AttributableSavedEvent;
 
 class ShippingMethodService extends BaseService
 {
@@ -15,7 +15,7 @@ class ShippingMethodService extends BaseService
     }
 
     /**
-     * Create a shipping method
+     * Create a shipping method.
      *
      * @param array $data
      *
@@ -28,19 +28,20 @@ class ShippingMethodService extends BaseService
         $shipping->type = $data['type'];
 
         $shipping->save();
-        
-        if (!empty($data['channels']['data'])) {
+
+        if (! empty($data['channels']['data'])) {
             $shipping->channels()->sync(
                 $this->getChannelMapping($data['channels']['data'])
             );
         }
 
         event(new AttributableSavedEvent($shipping));
+
         return $shipping;
     }
 
     /**
-     * Update a shipping method
+     * Update a shipping method.
      *
      * @param string $id
      * @param array $data
@@ -53,21 +54,22 @@ class ShippingMethodService extends BaseService
         $shipping->attribute_data = $data['attribute_data'];
         $shipping->type = $data['type'];
 
-        if (!empty($data['channels']['data'])) {
+        if (! empty($data['channels']['data'])) {
             $shipping->channels()->sync(
                 $this->getChannelMapping($data['channels']['data'])
             );
         }
 
         $shipping->save();
+
         return $shipping;
     }
 
     /**
-     * Gets shipping methods for an order
+     * Gets shipping methods for an order.
      *
      * @param string $orderId
-     * 
+     *
      * @return ArrayCollection
      */
     public function getForOrder($orderId)
@@ -80,21 +82,22 @@ class ShippingMethodService extends BaseService
         $calculator = new ShippingCalculator(app());
 
         $options = [];
-        
+
         foreach ($zones as $zone) {
             foreach ($zone->methods as $index => $method) {
                 $option = $calculator->with($method)->calculate($basket);
-                if (!$option) {
+                if (! $option) {
                     continue;
                 }
                 $options[$index] = $calculator->with($method)->calculate($basket);
             }
         }
+
         return collect($options);
     }
 
     /**
-     * Updates zones for a shipping method
+     * Updates zones for a shipping method.
      *
      * @param string $methodId
      * @param array $data
@@ -107,7 +110,7 @@ class ShippingMethodService extends BaseService
 
         $method->zones()->detach();
 
-        if (!empty($data['zones'])) {
+        if (! empty($data['zones'])) {
             $method->zones()->attach(
                 app('api')->shippingZones()->getDecodedIds($data['zones'])
             );
@@ -117,11 +120,11 @@ class ShippingMethodService extends BaseService
     }
 
     /**
-     * Update users for a shipping method
+     * Update users for a shipping method.
      *
      * @param string $methodId
      * @param array $users
-     * 
+     *
      * @return ShippingMethod
      */
     public function updateUsers($methodId, $users = [])
@@ -138,11 +141,11 @@ class ShippingMethodService extends BaseService
     }
 
     /**
-     * Remove a user from a shipping method
+     * Remove a user from a shipping method.
      *
      * @param string $methodId
      * @param string $userId
-     * 
+     *
      * @return ShippingMethod
      */
     public function deleteUser($methodId, $userId)
@@ -150,6 +153,7 @@ class ShippingMethodService extends BaseService
         $user = app('api')->users()->getDecodedId($userId);
         $method = $this->getByHashedId($methodId);
         $method->users()->detach($user);
+
         return $method;
     }
 
@@ -159,7 +163,7 @@ class ShippingMethodService extends BaseService
 
         $method->zones()->detach();
         $method->users()->detach();
-        
+
         foreach ($method->prices as $price) {
             $price->customerGroups()->detach();
             $price->delete();
@@ -167,6 +171,7 @@ class ShippingMethodService extends BaseService
 
         $method->channels()->detach();
         $method->delete();
+
         return true;
     }
 }

@@ -12,12 +12,13 @@ class DiscountValidator
         foreach ($value as $criteria) {
             $previous = [];
             foreach ($criteria as $item) {
-                if (!count(array_diff($item, $previous))) {
+                if (! count(array_diff($item, $previous))) {
                     return false;
                 }
                 $previous = $item;
             }
         }
+
         return true;
     }
 
@@ -27,7 +28,7 @@ class DiscountValidator
         $basket = app('api')->baskets()->getByHashedId($parameters[0]);
 
         // First off, if the coupon doesn't exist, then no..
-        if (!$coupon = app('api')->discounts()->getByCoupon($value)) {
+        if (! $coupon = app('api')->discounts()->getByCoupon($value)) {
             return false;
         }
 
@@ -38,7 +39,7 @@ class DiscountValidator
             return false;
         }
 
-        if (!$discount->status) {
+        if (! $discount->status) {
             return false;
         }
 
@@ -50,11 +51,11 @@ class DiscountValidator
             $basket
         );
 
-        if (!$check) {
+        if (! $check) {
             return false;
         }
 
-        return !$basket->discounts->filter(function ($discount) use ($value) {
+        return ! $basket->discounts->filter(function ($discount) use ($value) {
             if ($discount->stop_rules || ($discount->pivot->coupon === $value)) {
                 return true;
             }

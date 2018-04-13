@@ -2,13 +2,12 @@
 
 namespace GetCandy\Api\Assets\Drivers;
 
-use GetCandy\Api\Assets\Contracts\AssetDriverContract;
-use GetCandy\Api\Assets\Jobs\GenerateTransforms;
-use GetCandy\Api\Assets\Models\Asset;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use GetCandy\Api\Assets\Models\Asset;
+use Illuminate\Database\Eloquent\Model;
+use GuzzleHttp\Exception\ClientException;
+use GetCandy\Api\Assets\Jobs\GenerateTransforms;
 use Intervention\Image\Exception\NotReadableException;
 
 abstract class BaseUrlDriver
@@ -60,7 +59,7 @@ abstract class BaseUrlDriver
         if ($model->assets()->count()) {
             // Get anything that isn't an "application";
             $image = $model->assets()->where('kind', '!=', 'application')->first();
-            if (!$image) {
+            if (! $image) {
                 $asset->primary = true;
             }
         } else {
@@ -68,11 +67,12 @@ abstract class BaseUrlDriver
         }
         $model->assets()->save($asset);
         dispatch(new GenerateTransforms($asset));
+
         return $asset;
     }
 
     /**
-     * Prepares the asset
+     * Prepares the asset.
      * @param  array $data
      * @param  Model $model
      * @return Asset
@@ -83,14 +83,15 @@ abstract class BaseUrlDriver
             'location' => $this->data['url'],
             'title' => $this->info['title'],
             'kind' => $this->handle,
-            'external' => true
+            'external' => true,
         ]);
         $asset->source()->associate($this->source);
+
         return $asset;
     }
 
     /**
-     * Generates a hashed name
+     * Generates a hashed name.
      */
     public function hashName()
     {
@@ -98,18 +99,19 @@ abstract class BaseUrlDriver
     }
 
     /**
-     * Get the thumbnail for the video
+     * Get the thumbnail for the video.
      * @param  string $url
      * @return Intervention\Image
      */
     public function getThumbnail()
     {
         $thumbnail = $this->getImageFromUrl($this->info['thumbnail_url']);
+
         return $thumbnail ?: null;
     }
 
     /**
-     * Gets an image from a given url
+     * Gets an image from a given url.
      * @param  string $url
      * @return Intervention\Image
      */
@@ -120,14 +122,15 @@ abstract class BaseUrlDriver
         } catch (NotReadableException $e) {
             $image = null;
         }
+
         return $image;
     }
 
     /**
-     * Get the OEM data
+     * Get the OEM data.
      *
      * @param array $params
-     * 
+     *
      * @return mixed
      */
     protected function getOemData($params = [])
@@ -135,12 +138,12 @@ abstract class BaseUrlDriver
         $client = new Client();
         try {
             $response = $client->request('GET', $this->oemUrl, [
-                'query' => $params
+                'query' => $params,
             ]);
+
             return json_decode($response->getBody()->getContents(), true);
         } catch (ClientException $e) {
             //
         }
-        return null;
     }
 }

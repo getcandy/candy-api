@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Channels\Services;
 
-use GetCandy\Api\Channels\Models\Channel;
 use GetCandy\Api\Scaffold\BaseService;
+use GetCandy\Api\Channels\Models\Channel;
 use GetCandy\Exceptions\MinimumRecordRequiredException;
 
 class ChannelService extends BaseService
@@ -19,7 +19,7 @@ class ChannelService extends BaseService
     }
 
     /**
-     * Creates a resource from the given data
+     * Creates a resource from the given data.
      *
      * @param  array  $data
      *
@@ -32,11 +32,11 @@ class ChannelService extends BaseService
         $channel->handle = str_slug($channel->name);
 
         // If this is the first channel, make it default
-        if (empty($data['default']) && !$this->count()) {
+        if (empty($data['default']) && ! $this->count()) {
             $channel->default = true;
         }
 
-        if (!empty($data['default'])) {
+        if (! empty($data['default'])) {
             $this->setNewDefault($channel);
         } else {
             $channel->default = false;
@@ -48,7 +48,7 @@ class ChannelService extends BaseService
     }
 
     /**
-     * Updates a resource from the given data
+     * Updates a resource from the given data.
      *
      * @param  string $id
      * @param  array  $data
@@ -62,13 +62,13 @@ class ChannelService extends BaseService
     {
         $channel = $this->getByHashedId($hashedId);
 
-        if (!$channel) {
-            return null;
+        if (! $channel) {
+            return;
         }
 
         $channel->fill($data);
 
-        if (!empty($data['default'])) {
+        if (! empty($data['default'])) {
             $this->setNewDefault($channel);
         }
 
@@ -76,7 +76,6 @@ class ChannelService extends BaseService
 
         return $channel;
     }
-
 
     /**
      * @param $id
@@ -87,7 +86,7 @@ class ChannelService extends BaseService
     {
         $channel = $this->getByHashedId($id);
 
-        if (!$channel) {
+        if (! $channel) {
             abort(404);
         }
 
@@ -115,12 +114,13 @@ class ChannelService extends BaseService
     public function getChannelsWithAvailability($model, $relation)
     {
         $channels = $this->model->with([camel_case($relation) => function ($q) use ($model, $relation) {
-            $q->where($relation . '.id', $model->id);
+            $q->where($relation.'.id', $model->id);
         }])->get();
         foreach ($channels as $channel) {
             $model = $channel->{camel_case($relation)}->first();
             $channel->published_at = $model ? $model->pivot->published_at : null;
         }
+
         return $channels;
     }
 }

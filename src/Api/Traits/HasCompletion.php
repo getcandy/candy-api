@@ -1,4 +1,5 @@
 <?php
+
 namespace GetCandy\Api\Traits;
 
 use GetCandy\Api\Scopes\CompletedScope;

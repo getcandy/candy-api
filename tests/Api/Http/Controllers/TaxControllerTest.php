@@ -14,17 +14,17 @@ class TaxControllerTest extends TestCase
     protected $baseStructure = [
         'id',
         'name',
-        'percentage'
+        'percentage',
     ];
 
     public function testIndex()
     {
         $response = $this->get($this->url('taxes'), [
-            'Authorization' => 'Bearer ' . $this->accessToken()
+            'Authorization' => 'Bearer '.$this->accessToken(),
         ]);
         $response->assertJsonStructure([
             'data',
-            'meta' => ['pagination']
+            'meta' => ['pagination'],
         ]);
 
         $this->assertEquals(200, $response->status());
@@ -34,7 +34,7 @@ class TaxControllerTest extends TestCase
     {
         $response = $this->get($this->url('taxes'), [
             'Authorization' => 'Bearer foo.bar.bing',
-            'Accept' => 'application/json'
+            'Accept' => 'application/json',
         ]);
         $this->assertEquals(401, $response->getStatusCode());
     }
@@ -44,12 +44,12 @@ class TaxControllerTest extends TestCase
         // Get a channel
         $id = Tax::first()->encodedId();
 
-        $response = $this->get($this->url('taxes/' . $id), [
-            'Authorization' => 'Bearer ' . $this->accessToken()
+        $response = $this->get($this->url('taxes/'.$id), [
+            'Authorization' => 'Bearer '.$this->accessToken(),
         ]);
 
         $response->assertJsonStructure([
-            'data' => $this->baseStructure
+            'data' => $this->baseStructure,
         ]);
 
         $this->assertEquals(200, $response->status());
@@ -58,7 +58,7 @@ class TaxControllerTest extends TestCase
     public function testMissingShow()
     {
         $response = $this->get($this->url('taxes/123456'), [
-            'Authorization' => 'Bearer ' . $this->accessToken()
+            'Authorization' => 'Bearer '.$this->accessToken(),
         ]);
 
         $this->assertHasErrorFormat($response);
@@ -71,16 +71,16 @@ class TaxControllerTest extends TestCase
         $response = $this->post(
             $this->url('taxes'),
             [
-                'name' =>  "EU",
-                'percentage' =>  "5"
+                'name' =>  'EU',
+                'percentage' =>  '5',
             ],
             [
-                'Authorization' => 'Bearer ' . $this->accessToken()
+                'Authorization' => 'Bearer '.$this->accessToken(),
             ]
         );
 
         $response->assertJsonStructure([
-            'data' => $this->baseStructure
+            'data' => $this->baseStructure,
         ]);
 
         $this->assertEquals(200, $response->status());
@@ -91,23 +91,23 @@ class TaxControllerTest extends TestCase
         Tax::create([
             'name' => 'Foo',
             'default' => false,
-            'percentage' => 5
+            'percentage' => 5,
         ]);
 
         $response = $this->post(
             $this->url('taxes'),
             [
-                'name' =>  "Foo",
-                'percentage' =>  "5",
-                'default' => false
+                'name' =>  'Foo',
+                'percentage' =>  '5',
+                'default' => false,
             ],
             [
-                'Authorization' => 'Bearer ' . $this->accessToken()
+                'Authorization' => 'Bearer '.$this->accessToken(),
             ]
         );
 
         $response->assertJsonStructure([
-            'name'
+            'name',
         ]);
 
         $this->assertEquals(422, $response->status());
@@ -119,12 +119,12 @@ class TaxControllerTest extends TestCase
             $this->url('taxes'),
             [],
             [
-                'Authorization' => 'Bearer ' . $this->accessToken()
+                'Authorization' => 'Bearer '.$this->accessToken(),
             ]
         );
 
         $response->assertJsonStructure([
-            'name', 'percentage'
+            'name', 'percentage',
         ]);
 
         $this->assertEquals(422, $response->status());
@@ -134,13 +134,13 @@ class TaxControllerTest extends TestCase
     {
         $id = Tax::first()->encodedId();
         $response = $this->put(
-            $this->url('taxes/' . $id),
+            $this->url('taxes/'.$id),
             [
                 'name' => 'VAT',
-                'percentage' => 20
+                'percentage' => 20,
             ],
             [
-                'Authorization' => 'Bearer ' . $this->accessToken()
+                'Authorization' => 'Bearer '.$this->accessToken(),
             ]
         );
         $this->assertEquals(200, $response->status());
@@ -155,25 +155,25 @@ class TaxControllerTest extends TestCase
         $new = Tax::create([
             'name' => 'Foo',
             'default' => false,
-            'percentage' => 50
+            'percentage' => 50,
         ]);
 
         $response = $this->put(
-            $this->url('taxes/' . $new->encodedId()),
+            $this->url('taxes/'.$new->encodedId()),
             [
                 'name' => $existing->name,
                 'default' => false,
-                'percentage' => 20
+                'percentage' => 20,
             ],
             [
-                'Authorization' => 'Bearer ' . $this->accessToken()
+                'Authorization' => 'Bearer '.$this->accessToken(),
             ]
         );
 
         $this->assertEquals(422, $response->status());
 
         $response->assertJsonStructure([
-            'name'
+            'name',
         ]);
     }
 
@@ -183,10 +183,10 @@ class TaxControllerTest extends TestCase
             $this->url('taxes/123123'),
             [
                 'name' => 'FOOBAR',
-                'percentage' => 15
+                'percentage' => 15,
             ],
             [
-                'Authorization' => 'Bearer ' . $this->accessToken()
+                'Authorization' => 'Bearer '.$this->accessToken(),
             ]
         );
 
@@ -196,15 +196,15 @@ class TaxControllerTest extends TestCase
     public function testDestroy()
     {
         $tax = Tax::create([
-            'name' =>  "RIB",
+            'name' =>  'RIB',
             'percentage' =>  5000,
-            'default' =>  false
+            'default' =>  false,
         ]);
 
         $response = $this->delete(
-            $this->url('taxes/' . $tax->encodedId()),
+            $this->url('taxes/'.$tax->encodedId()),
             [],
-            ['Authorization' => 'Bearer ' . $this->accessToken()]
+            ['Authorization' => 'Bearer '.$this->accessToken()]
         );
 
         $this->assertEquals(204, $response->status());

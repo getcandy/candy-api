@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Http\Requests\AttributeGroups;
 
-use Auth;
 use GetCandy\Api\Http\Requests\FormRequest;
 
 class DeleteRequest extends FormRequest
@@ -12,6 +11,7 @@ class DeleteRequest extends FormRequest
         // return $this->user()->can('create', Attribute::class);
         return $this->user()->hasRole('admin');
     }
+
     public function rules()
     {
         return [

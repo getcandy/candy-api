@@ -1,7 +1,7 @@
 <?php
+
 namespace GetCandy\Api\Discounts\Models;
 
-use GetCandy\Api\Auth\Models\User;
 use GetCandy\Api\Scaffold\BaseModel;
 use GetCandy\Api\Products\Models\Product;
 use GetCandy\Api\Customers\Models\CustomerGroup;

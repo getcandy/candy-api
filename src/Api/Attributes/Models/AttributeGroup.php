@@ -22,7 +22,7 @@ class AttributeGroup extends BaseModel
     ];
 
     /**
-     * Get the attributes associated to the group
+     * Get the attributes associated to the group.
      * @return Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function attributes()
