@@ -14,20 +14,23 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class AttributeController extends BaseController
 {
-
     /**
-     * Returns a listing of channels
+     * Returns a listing of channels.
+     *
      * @return Json
      */
     public function index(Request $request)
     {
         $attributes = app('api')->attributes()->getPaginatedData($request->per_page);
-        return $this->respondWithCollection($attributes, new AttributeTransformer);
+
+        return $this->respondWithCollection($attributes, new AttributeTransformer());
     }
 
     /**
-     * Handles the request to show a channel based on it's hashed ID
-     * @param  String $id
+     * Handles the request to show a channel based on it's hashed ID.
+     *
+     * @param string $id
+     *
      * @return Json
      */
     public function show($id)
@@ -37,18 +40,22 @@ class AttributeController extends BaseController
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
-        return $this->respondWithItem($attribute, new AttributeTransformer);
+
+        return $this->respondWithItem($attribute, new AttributeTransformer());
     }
 
     /**
-     * Handles the request to create a new channel
-     * @param  CreateRequest $request
+     * Handles the request to create a new channel.
+     *
+     * @param CreateRequest $request
+     *
      * @return Json
      */
     public function store(CreateRequest $request)
     {
         $result = app('api')->attributes()->create($request->all());
-        return $this->respondWithItem($result, new AttributeTransformer);
+
+        return $this->respondWithItem($result, new AttributeTransformer());
     }
 
     public function reorder(ReorderRequest $request)
@@ -60,13 +67,16 @@ class AttributeController extends BaseController
         } catch (DuplicateValueException $e) {
             return $this->errorWrongArgs($e->getMessage());
         }
+
         return $this->respondWithNoContent();
     }
 
     /**
-     * Handles the request to update  a channel
-     * @param  String        $id
-     * @param  UpdateRequest $request
+     * Handles the request to update  a channel.
+     *
+     * @param string        $id
+     * @param UpdateRequest $request
+     *
      * @return Json
      */
     public function update($id, UpdateRequest $request)
@@ -78,13 +88,16 @@ class AttributeController extends BaseController
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
-        return $this->respondWithItem($result, new AttributeTransformer);
+
+        return $this->respondWithItem($result, new AttributeTransformer());
     }
 
     /**
-     * Handles the request to delete a channel
-     * @param  String        $id
-     * @param  DeleteRequest $request
+     * Handles the request to delete a channel.
+     *
+     * @param string        $id
+     * @param DeleteRequest $request
+     *
      * @return Json
      */
     public function destroy($id, DeleteRequest $request)
@@ -94,6 +107,7 @@ class AttributeController extends BaseController
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
+
         return $this->respondWithNoContent();
     }
 }

@@ -2,11 +2,7 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Products;
 
-use GetCandy\Api\Attributes\Models\AttributeGroup;
-use GetCandy\Api\Products\Models\Product;
-use GetCandy\Api\Traits\IncludesAttributes;
 use GetCandy\Api\Http\Transformers\Fractal\Assets\AssetTransformer;
-use GetCandy\Api\Http\Transformers\Fractal\Attributes\AttributeGroupTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Categories\CategoryTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Channels\ChannelTransformer;
@@ -14,7 +10,8 @@ use GetCandy\Api\Http\Transformers\Fractal\Collections\CollectionTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Customers\CustomerGroupTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Layouts\LayoutTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Routes\RouteTransformer;
-use PriceCalculator;
+use GetCandy\Api\Products\Models\Product;
+use GetCandy\Api\Traits\IncludesAttributes;
 
 class ProductTransformer extends BaseTransformer
 {
@@ -35,7 +32,7 @@ class ProductTransformer extends BaseTransformer
         'layout',
         'routes',
         'variants',
-        'first_variant'
+        'first_variant',
     ];
 
     /**
@@ -50,13 +47,13 @@ class ProductTransformer extends BaseTransformer
         // clock()->endEvent('apply_' . $product->id . 'discounts');
 
         $response = [
-            'id' => $product->encodedId(),
+            'id'             => $product->encodedId(),
             'attribute_data' => $product->attribute_data,
-            'option_data' => $this->parseOptionData($product->option_data),
-            'thumbnail' => $this->getThumbnail($product),
-            'max_price' => $product->max_price,
-            'min_price' => $product->min_price,
-            'variant_count' => $product->variants->count()
+            'option_data'    => $this->parseOptionData($product->option_data),
+            'thumbnail'      => $this->getThumbnail($product),
+            'max_price'      => $product->max_price,
+            'min_price'      => $product->min_price,
+            'variant_count'  => $product->variants->count(),
         ];
 
         if ($product->pivot) {
@@ -78,7 +75,6 @@ class ProductTransformer extends BaseTransformer
         $product->original_min_price = 0;
 
         foreach ($product->variants as $variant) {
-
             $variantPrice = $variant->total_price;
 
             $product->max_price = $variantPrice > $product->max_price ? $variantPrice : $product->max_price;
@@ -102,9 +98,10 @@ class ProductTransformer extends BaseTransformer
     {
         $data = $this->sortOptions($data);
         foreach ($data as $optionKey => $option) {
-            $sorted =  $this->sortOptions($option['options']);
+            $sorted = $this->sortOptions($option['options']);
             $data[$optionKey]['options'] = $sorted;
         }
+
         return $data;
     }
 
@@ -113,6 +110,7 @@ class ProductTransformer extends BaseTransformer
         uasort($options, function ($a, $b) {
             return $a['position'] < $b['position'] ? -1 : 1;
         });
+
         return $options;
     }
 
@@ -124,9 +122,10 @@ class ProductTransformer extends BaseTransformer
     public function includeLayout(Product $product)
     {
         if (!$product->layout) {
-            return null;
+            return;
         }
-        return $this->item($product->layout, new LayoutTransformer);
+
+        return $this->item($product->layout, new LayoutTransformer());
     }
 
     /**
@@ -137,9 +136,10 @@ class ProductTransformer extends BaseTransformer
     public function includeFamily(Product $product)
     {
         if (!$product->family) {
-            return null;
+            return;
         }
-        return $this->item($product->family, new ProductFamilyTransformer);
+
+        return $this->item($product->family, new ProductFamilyTransformer());
     }
 
     /**
@@ -149,7 +149,7 @@ class ProductTransformer extends BaseTransformer
      */
     public function includeCollections(Product $product)
     {
-        return $this->collection($product->collections, new CollectionTransformer);
+        return $this->collection($product->collections, new CollectionTransformer());
     }
 
     /**
@@ -159,7 +159,7 @@ class ProductTransformer extends BaseTransformer
      */
     public function includeAssociations(Product $product)
     {
-        return $this->collection($product->associations, new ProductAssociationTransformer);
+        return $this->collection($product->associations, new ProductAssociationTransformer());
     }
 
     /**
@@ -169,19 +169,19 @@ class ProductTransformer extends BaseTransformer
      */
     public function includeAssets(Product $product)
     {
-        return $this->collection($product->assets()->orderBy('position', 'asc')->get(), new AssetTransformer);
+        return $this->collection($product->assets()->orderBy('position', 'asc')->get(), new AssetTransformer());
     }
 
     /**
-     * Includes any product variants
+     * Includes any product variants.
      *
-     * @param  Product $product
+     * @param Product $product
      *
      * @return \League\Fractal\Resource\Collection
      */
     public function includeVariants(Product $product)
     {
-        return $this->collection($product->variants, new ProductVariantTransformer);
+        return $this->collection($product->variants, new ProductVariantTransformer());
     }
 
     /**
@@ -191,7 +191,7 @@ class ProductTransformer extends BaseTransformer
      */
     public function includeRoutes(Product $product)
     {
-        return $this->collection($product->routes, new RouteTransformer);
+        return $this->collection($product->routes, new RouteTransformer());
     }
 
     /**
@@ -202,7 +202,8 @@ class ProductTransformer extends BaseTransformer
     public function includeChannels(Product $product)
     {
         $channels = app('api')->channels()->getChannelsWithAvailability($product, 'products');
-        return $this->collection($channels, new ChannelTransformer);
+
+        return $this->collection($channels, new ChannelTransformer());
     }
 
     /**
@@ -213,7 +214,8 @@ class ProductTransformer extends BaseTransformer
     public function includeCustomerGroups(Product $product)
     {
         $groups = app('api')->customerGroups()->getGroupsWithAvailability($product, 'products');
-        return $this->collection($groups, new CustomerGroupTransformer);
+
+        return $this->collection($groups, new CustomerGroupTransformer());
     }
 
     /**
@@ -223,7 +225,7 @@ class ProductTransformer extends BaseTransformer
      */
     public function includeCategories(Product $product)
     {
-        return $this->collection($product->categories, new CategoryTransformer);
+        return $this->collection($product->categories, new CategoryTransformer());
     }
 
     /**
@@ -233,6 +235,6 @@ class ProductTransformer extends BaseTransformer
      */
     public function includeFirstVariant(Product $product)
     {
-        return $this->item($product->variants->first(), new ProductVariantTransformer);
+        return $this->item($product->variants->first(), new ProductVariantTransformer());
     }
 }

@@ -12,12 +12,13 @@ class CreateRequest extends FormRequest
         // return $this->user()->can('create', Language::class);
         return $this->user()->hasRole('admin');
     }
+
     public function rules()
     {
         return [
             'name' => 'required',
             'lang' => 'required',
-            'iso' => 'required|unique:languages,iso'
+            'iso'  => 'required|unique:languages,iso',
         ];
     }
 }

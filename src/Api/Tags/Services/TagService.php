@@ -2,9 +2,8 @@
 
 namespace GetCandy\Api\Tags\Services;
 
-use GetCandy\Api\Tags\Models\Tag;
 use GetCandy\Api\Scaffold\BaseService;
-use GetCandy\Exceptions\DuplicateValueException;
+use GetCandy\Api\Tags\Models\Tag;
 
 class TagService extends BaseService
 {
@@ -16,9 +15,9 @@ class TagService extends BaseService
     }
 
     /**
-     * Creates a resource from the given data
+     * Creates a resource from the given data.
      *
-     * @param  array  $data
+     * @param array $data
      *
      * @return GetCandy\Api\Models\Tag
      */
@@ -27,14 +26,15 @@ class TagService extends BaseService
         $tag = new Tag();
         $tag->name = $data['name'];
         $tag->save();
+
         return $tag;
     }
 
     /**
-     * Updates a resource from the given data
+     * Updates a resource from the given data.
      *
-     * @param  string $id
-     * @param  array  $data
+     * @param string $id
+     * @param array  $data
      *
      * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      *
@@ -55,18 +55,17 @@ class TagService extends BaseService
     }
 
     /**
-     * Deletes a resource by its given hashed ID
+     * Deletes a resource by its given hashed ID.
      *
-     * @param  string $id
+     * @param string $id
      *
      * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      *
-     * @return Boolean
+     * @return bool
      */
     public function delete($id)
     {
         $tag = $this->getByHashedId($id);
-
 
         if (!$tag) {
             abort(404);
@@ -87,12 +86,15 @@ class TagService extends BaseService
                 $query->where('taggable_type', '=', $type);
             }, 'taggables.records']);
         }
+
         return $query->find($ids);
     }
 
     /**
-     * Either returns an existing tag or makes a new one
-     * @param  string $value
+     * Either returns an existing tag or makes a new one.
+     *
+     * @param string $value
+     *
      * @return Tag
      */
     public function getOrCreateTag($value)
@@ -103,14 +105,17 @@ class TagService extends BaseService
             return $result->toArray();
         }
         $tag = $this->create([
-            'name' => $value
+            'name' => $value,
         ]);
+
         return $tag->toArray();
     }
 
     /**
-     * Returns an array of tag ids, ready for syncing
-     * @param  array  $tags
+     * Returns an array of tag ids, ready for syncing.
+     *
+     * @param array $tags
+     *
      * @return array
      */
     public function getSyncableIds(array $tags)
@@ -122,12 +127,15 @@ class TagService extends BaseService
             }
             $ids[] = $this->model->decodeId($tag['id']) ?: $tag['id'];
         }
+
         return $ids;
     }
 
     /**
-     * Gets the tag name, formatted, ready to go
-     * @param  string $value
+     * Gets the tag name, formatted, ready to go.
+     *
+     * @param string $value
+     *
      * @return string
      */
     public function getFormattedTagName($value)
@@ -140,6 +148,7 @@ class TagService extends BaseService
         foreach ($format as $callable) {
             $value = call_user_func($callable, $value);
         }
+
         return $value;
     }
 }

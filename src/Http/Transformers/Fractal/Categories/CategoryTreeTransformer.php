@@ -4,8 +4,8 @@ namespace GetCandy\Api\Http\Transformers\Fractal\Categories;
 
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use Illuminate\Support\Collection;
-use League\Fractal\Resource\Item;
 use League\Fractal\Resource\Collection as FractalCollection;
+use League\Fractal\Resource\Item;
 
 class CategoryTreeTransformer extends BaseTransformer
 {
@@ -21,15 +21,17 @@ class CategoryTreeTransformer extends BaseTransformer
 
     protected function includeCategory($category)
     {
-        $resource = new Item($category, new CategoryTransformer);
+        $resource = new Item($category, new CategoryTransformer());
         $rootScope = app()->fractal->createData($resource);
+
         return $rootScope->toArray();
     }
 
     protected function includeCategories($categories)
     {
-        $resource = new FractalCollection($categories, new CategoryTransformer);
+        $resource = new FractalCollection($categories, new CategoryTransformer());
         $rootScope = app()->fractal->createData($resource);
+
         return $rootScope->toArray();
     }
 }

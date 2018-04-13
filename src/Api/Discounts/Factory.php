@@ -2,10 +2,8 @@
 
 namespace GetCandy\Api\Discounts;
 
-use GetCandy\Api\Discounts\Criteria\ProductIn;
 use GetCandy\Api\Discounts\Criteria\Coupon;
-use TaxCalculator;
-use Facades\GetCandy\Api\Pricing\PriceCalculator;
+use GetCandy\Api\Discounts\Criteria\ProductIn;
 
 class Factory
 {
@@ -19,23 +17,24 @@ class Factory
                 break;
             }
         }
+
         return collect($discounts)->filter(function ($discount) {
             return $discount->applied;
         });
     }
 
     /**
-     * Checks the criteria
+     * Checks the criteria.
      *
      * @param Discount $discount
-     * @param mixed $uesr
-     * @param Basket $basket
+     * @param mixed    $uesr
+     * @param Basket   $basket
+     *
      * @return void
      */
     public function checkCriteria($discount, $user = null, $basket = null, $product = null)
     {
         foreach ($discount->getCriteria() as $criteria) {
-
             $fail = 0;
             $pass = 0;
 
@@ -122,6 +121,7 @@ class Factory
                 }
             }
         }
+
         return $basket;
     }
 
@@ -132,12 +132,11 @@ class Factory
         $labels = [];
 
         foreach ($discounts as $index => $discount) {
-
             $model = $discount->getModel();
 
             $labels[] = [
-                'name' => $model->name,
-                'description' => $model->description
+                'name'        => $model->name,
+                'description' => $model->description,
             ];
 
             foreach ($discount->getRewards() as $reward) {
@@ -161,12 +160,12 @@ class Factory
         }
 
         $product->setAttribute('discounts', $labels);
-
     }
 
     protected function applyPercentage($price, $amount)
     {
         $result = ($price / 100) * $amount;
+
         return round($price - $result, 2);
     }
 
@@ -175,6 +174,7 @@ class Factory
         if ($price > $amount) {
             return round($price - $amount, 2);
         }
+
         return $price;
     }
 

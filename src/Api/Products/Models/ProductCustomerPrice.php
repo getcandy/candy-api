@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Products\Models;
 
-use GetCandy\Api\Scaffold\BaseModel;
 use GetCandy\Api\Customers\Models\CustomerGroup;
+use GetCandy\Api\Scaffold\BaseModel;
 use GetCandy\Api\Taxes\Models\Tax;
 
 class ProductCustomerPrice extends BaseModel
@@ -12,11 +12,12 @@ class ProductCustomerPrice extends BaseModel
         'customer_group_id',
         'tax_id',
         'price',
-        'compare_at_price'
+        'compare_at_price',
     ];
 
     /**
-     * The Hashid Channel for encoding the id
+     * The Hashid Channel for encoding the id.
+     *
      * @var string
      */
     protected $hashids = 'product_family';

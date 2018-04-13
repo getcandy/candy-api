@@ -3,11 +3,10 @@
 namespace GetCandy\Api\Jobs;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
 class SyncAttributeDataJob implements ShouldQueue
 {
@@ -20,7 +19,7 @@ class SyncAttributeDataJob implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param array $ids
+     * @param array  $ids
      * @param string $type
      *
      * @return void

@@ -3,7 +3,6 @@
 namespace GetCandy\Api\Http\Requests\Products;
 
 use GetCandy\Api\Http\Requests\FormRequest;
-use GetCandy\Api\Products\Models\Product;
 
 class UpdateAttributesRequest extends FormRequest
 {
@@ -15,7 +14,7 @@ class UpdateAttributesRequest extends FormRequest
     public function rules()
     {
         return [
-            'attributes' => 'required|array'
+            'attributes' => 'required|array',
         ];
     }
 }

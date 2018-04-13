@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Layouts\Services;
 
-use GetCandy\Api\Scaffold\BaseService;
 use GetCandy\Api\Layouts\Models\Layout;
+use GetCandy\Api\Scaffold\BaseService;
 
 class LayoutService extends BaseService
 {

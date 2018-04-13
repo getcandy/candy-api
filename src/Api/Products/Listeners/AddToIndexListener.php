@@ -3,8 +3,6 @@
 namespace GetCandy\Api\Products\Listeners;
 
 use GetCandy\Api\Products\Events\ProductCreatedEvent;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use GetCandy\Api\Search\SearchContract;
 
 class AddToIndexListener
@@ -21,7 +19,8 @@ class AddToIndexListener
     /**
      * Handle the event.
      *
-     * @param  ProductCreatedEvent  $event
+     * @param ProductCreatedEvent $event
+     *
      * @return void
      */
     public function handle(ProductCreatedEvent $event)

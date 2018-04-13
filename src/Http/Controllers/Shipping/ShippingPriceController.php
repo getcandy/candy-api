@@ -1,4 +1,5 @@
 <?php
+
 namespace GetCandy\Api\Http\Controllers\Shipping;
 
 use GetCandy\Api\Http\Controllers\BaseController;
@@ -11,18 +12,22 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class ShippingPriceController extends BaseController
 {
     /**
-     * Returns a listing of channels
+     * Returns a listing of channels.
+     *
      * @return Json
      */
     public function index(Request $request)
     {
         $orders = app('api')->shippingPrices()->getPaginatedData($request->per_page, $request->current_page);
-        return $this->respondWithCollection($orders, new ShippingPriceTransformer);
+
+        return $this->respondWithCollection($orders, new ShippingPriceTransformer());
     }
 
     /**
-     * Handles the request to show a channel based on it's hashed ID
-     * @param  String $id
+     * Handles the request to show a channel based on it's hashed ID.
+     *
+     * @param string $id
+     *
      * @return Json
      */
     public function show($id)
@@ -32,18 +37,22 @@ class ShippingPriceController extends BaseController
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
-        return $this->respondWithItem($channel, new ShippingPriceTransformer);
+
+        return $this->respondWithItem($channel, new ShippingPriceTransformer());
     }
 
     /**
-     * Handles the request to create a new channel
-     * @param  CreateRequest $request
+     * Handles the request to create a new channel.
+     *
+     * @param CreateRequest $request
+     *
      * @return Json
      */
     public function store($id, CreateRequest $request)
     {
         $result = app('api')->shippingPrices()->create($id, $request->all());
-        return $this->respondWithItem($result, new ShippingPriceTransformer);
+
+        return $this->respondWithItem($result, new ShippingPriceTransformer());
     }
 
     public function update($id, Request $request)
@@ -53,13 +62,16 @@ class ShippingPriceController extends BaseController
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
-        return $this->respondWithItem($result, new ShippingPriceTransformer);
+
+        return $this->respondWithItem($result, new ShippingPriceTransformer());
     }
 
     /**
-     * Handles the request to delete a channel
-     * @param  String        $id
-     * @param  DeleteRequest $request
+     * Handles the request to delete a channel.
+     *
+     * @param string        $id
+     * @param DeleteRequest $request
+     *
      * @return Json
      */
     public function destroy($id)
@@ -69,6 +81,7 @@ class ShippingPriceController extends BaseController
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
+
         return $this->respondWithNoContent();
     }
 }

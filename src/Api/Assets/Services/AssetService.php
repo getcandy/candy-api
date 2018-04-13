@@ -3,37 +3,40 @@
 namespace GetCandy\Api\Assets\Services;
 
 use GetCandy\Api\Assets\Jobs\CleanUpAssetFiles;
-use GetCandy\Api\Assets\Jobs\GenerateTransforms;
 use GetCandy\Api\Assets\Models\Asset;
 use GetCandy\Api\Scaffold\BaseService;
 use Illuminate\Database\Eloquent\Model;
 use Image;
-use Intervention\Image\Exception\NotReadableException;
 
 class AssetService extends BaseService
 {
     public function __construct()
     {
-        $this->model = new Asset;
+        $this->model = new Asset();
     }
 
     /**
-     * Gets the driver for the upload
-     * @param  string $mimeType
+     * Gets the driver for the upload.
+     *
+     * @param string $mimeType
+     *
      * @return mixed
      *
      **/
     public function getDriver($mimeType)
     {
         $kind = explode('/', $mimeType);
+
         return app("{$kind[0]}.driver");
     }
 
     /**
-     * Uploads an asset
-     * @param  array  $data
-     * @param  Model   $model
-     * @param  integer $position
+     * Uploads an asset.
+     *
+     * @param array $data
+     * @param Model $model
+     * @param int   $position
+     *
      * @return Asset
      */
     public function upload($data, Model $model, $position = 0)
@@ -50,17 +53,17 @@ class AssetService extends BaseService
         );
 
         $asset->update([
-            'position' => $position
+            'position' => $position,
         ]);
 
         return $asset;
     }
 
     /**
-     * Update all the assets
+     * Update all the assets.
      *
      * @param array $assets
-     * 
+     *
      * @return void
      */
     public function updateAll($assets)
@@ -73,15 +76,16 @@ class AssetService extends BaseService
                 $model->tags()->sync($tagIds);
             }
         }
+
         return true;
     }
 
     /**
-     * Update an asset
+     * Update an asset.
      *
      * @param string $id
-     * @param array $data
-     * 
+     * @param array  $data
+     *
      * @return Asset
      */
     public function update($id, array $data)
@@ -89,15 +93,16 @@ class AssetService extends BaseService
         $asset = $this->getByHashedId($id);
         $asset->fill($data);
         $asset->save();
+
         return $asset;
     }
 
     /**
-     * Get some assets
+     * Get some assets.
      *
      * @param Model $assetable
      * @param array $params
-     * 
+     *
      * @return Collection
      */
     public function getAssets(Model $assetable, $params = [])
@@ -110,21 +115,23 @@ class AssetService extends BaseService
                 $assets = $assets->where('kind', '!=', 'image');
             }
         }
+
         return $assets->get();
     }
 
     /**
-     * Delete an asset
+     * Delete an asset.
      *
      * @param string $id
-     * 
-     * @return boolean
+     *
+     * @return bool
      */
     public function delete($id)
     {
         $asset = $this->getByHashedId($id);
         dispatch(new CleanUpAssetFiles($asset));
         $asset->delete();
+
         return true;
     }
 }

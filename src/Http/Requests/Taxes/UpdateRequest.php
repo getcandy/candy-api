@@ -12,10 +12,11 @@ class UpdateRequest extends FormRequest
         // return $this->user()->can('update', Tax::class);
         return $this->user()->hasRole('admin');
     }
+
     public function rules(Tax $tax)
     {
         return [
-            'name' => 'unique:taxes,name,'. $tax->decodeId($this->tax)
+            'name' => 'unique:taxes,name,'.$tax->decodeId($this->tax),
         ];
     }
 }

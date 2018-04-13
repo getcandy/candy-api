@@ -5,11 +5,11 @@ namespace GetCandy\Api\Http\Transformers\Fractal\Categories;
 use GetCandy\Api\Attributes\Models\AttributeGroup;
 use GetCandy\Api\Categories\Models\Category;
 use GetCandy\Api\Http\Transformers\Fractal\Assets\AssetTransformer;
-use GetCandy\Api\Http\Transformers\Fractal\Products\ProductTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Attributes\AttributeGroupTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Channels\ChannelTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Customers\CustomerGroupTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\Products\ProductTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Routes\RouteTransformer;
 
 class CategoryTransformer extends BaseTransformer
@@ -17,27 +17,29 @@ class CategoryTransformer extends BaseTransformer
     protected $attributeGroups;
 
     protected $availableIncludes = [
-        'attribute_groups','assets', 'channels', 'customer_groups', 'products', 'routes'
+        'attribute_groups', 'assets', 'channels', 'customer_groups', 'products', 'routes',
     ];
 
     public function transform(Category $category)
     {
         $data = [
-            'id' => $category->encodedId(),
-            'sort' => $category->sort,
+            'id'             => $category->encodedId(),
+            'sort'           => $category->sort,
             'attribute_data' => $category->attribute_data,
-            'depth' => $category->depth ?: 0,
+            'depth'          => $category->depth ?: 0,
             'products_count' => $category->products()->count(),
-            'thumbnail' => $this->getThumbnail($category),
-            'parent_id' => app('api')->categories()->getEncodedId($category->parent_id),
-            'descendants' => $category->descendants
+            'thumbnail'      => $this->getThumbnail($category),
+            'parent_id'      => app('api')->categories()->getEncodedId($category->parent_id),
+            'descendants'    => $category->descendants,
         ];
 
         if (!is_null($category->aggregate_selected)) {
             $data['aggregate_selected'] = $category->aggregate_selected;
         }
+
         return $data;
     }
+
     public function includeChildren(Category $category)
     {
         $desc = $category->descendants()->withDepth()->having('depth', '<', 3)->get();
@@ -48,12 +50,12 @@ class CategoryTransformer extends BaseTransformer
 
     public function includeProducts(Category $category)
     {
-        return $this->collection($category->products, new ProductTransformer);
+        return $this->collection($category->products, new ProductTransformer());
     }
 
     public function includeRoutes(Category $category)
     {
-        return $this->collection($category->routes, new RouteTransformer);
+        return $this->collection($category->routes, new RouteTransformer());
     }
 
     /**
@@ -64,7 +66,8 @@ class CategoryTransformer extends BaseTransformer
     public function includeChannels(Category $category)
     {
         $channels = app('api')->channels()->getChannelsWithAvailability($category, 'categories');
-        return $this->collection($channels, new ChannelTransformer);
+
+        return $this->collection($channels, new ChannelTransformer());
     }
 
     /**
@@ -76,8 +79,10 @@ class CategoryTransformer extends BaseTransformer
             $this->attributeGroups = AttributeGroup::select('id', 'name', 'handle', 'position')
                 ->orderBy('position', 'asc')->with(['attributes'])->get();
         }
+
         return $this->attributeGroups;
     }
+
     /**
      * @param \GetCandy\Api\Products\Models\Product $product
      *
@@ -99,12 +104,13 @@ class CategoryTransformer extends BaseTransformer
                 return $group;
             }
         });
-        return $this->collection($attributeGroups, new AttributeGroupTransformer);
+
+        return $this->collection($attributeGroups, new AttributeGroupTransformer());
     }
 
     public function includeAssets(Category $category)
     {
-        return $this->collection($category->assets()->orderBy('position', 'asc')->get(), new AssetTransformer);
+        return $this->collection($category->assets()->orderBy('position', 'asc')->get(), new AssetTransformer());
     }
 
     /**
@@ -115,6 +121,7 @@ class CategoryTransformer extends BaseTransformer
     public function includeCustomerGroups(Category $category)
     {
         $groups = app('api')->customerGroups()->getGroupsWithAvailability($category, 'categories');
-        return $this->collection($groups, new CustomerGroupTransformer);
+
+        return $this->collection($groups, new CustomerGroupTransformer());
     }
 }

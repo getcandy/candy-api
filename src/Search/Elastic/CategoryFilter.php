@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Search\Elastic;
 
-use Elastica\Query\Term;
-use Elastica\Query\Nested;
 use Elastica\Query\BoolQuery;
+use Elastica\Query\Nested;
+use Elastica\Query\Term;
 
 class CategoryFilter
 {
@@ -28,13 +28,13 @@ class CategoryFilter
 
     public function getFilter()
     {
-        $filter = new BoolQuery;
+        $filter = new BoolQuery();
 
         foreach ($this->categories as $value) {
             $cat = new Nested();
             $cat->setPath('departments');
 
-            $term = new Term;
+            $term = new Term();
             $term->setTerm('departments.id', $value);
 
             $cat->setQuery($term);

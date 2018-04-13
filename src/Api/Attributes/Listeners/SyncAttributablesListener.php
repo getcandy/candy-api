@@ -9,7 +9,8 @@ class SyncAttributablesListener
     /**
      * Handle the event.
      *
-     * @param  OrderShipped  $event
+     * @param OrderShipped $event
+     *
      * @return void
      */
     public function handle(AttributableSavedEvent $event)

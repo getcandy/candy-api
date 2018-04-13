@@ -13,12 +13,12 @@ class CollectionControllerTest extends TestCase
     public function testIndex()
     {
         $response = $this->get($this->url('collections'), [
-            'Authorization' => 'Bearer ' . $this->accessToken()
+            'Authorization' => 'Bearer '.$this->accessToken(),
         ]);
 
         $response->assertJsonStructure([
             'data' => [['id', 'attribute_data']],
-            'meta' => ['pagination']
+            'meta' => ['pagination'],
         ]);
 
         $this->assertEquals(200, $response->status());
@@ -28,7 +28,7 @@ class CollectionControllerTest extends TestCase
     {
         $response = $this->get($this->url('collections'), [
             'Authorization' => 'Bearer foo.bar.bing',
-            'Accept' => 'application/json'
+            'Accept'        => 'application/json',
         ]);
         $this->assertEquals(401, $response->getStatusCode());
     }
@@ -38,12 +38,12 @@ class CollectionControllerTest extends TestCase
         // Get a channel
         $id = Collection::first()->encodedId();
 
-        $response = $this->get($this->url('collections/' . $id), [
-            'Authorization' => 'Bearer ' . $this->accessToken()
+        $response = $this->get($this->url('collections/'.$id), [
+            'Authorization' => 'Bearer '.$this->accessToken(),
         ]);
 
         $response->assertJsonStructure([
-            'data' => ['id', 'attribute_data']
+            'data' => ['id', 'attribute_data'],
         ]);
 
         $this->assertEquals(200, $response->status());
@@ -52,7 +52,7 @@ class CollectionControllerTest extends TestCase
     public function testMissingShow()
     {
         $response = $this->get($this->url('collections/123456'), [
-            'Authorization' => 'Bearer ' . $this->accessToken()
+            'Authorization' => 'Bearer '.$this->accessToken(),
         ]);
 
         $this->assertHasErrorFormat($response);
@@ -66,17 +66,17 @@ class CollectionControllerTest extends TestCase
             $this->url('collections'),
             [
                 'name' => [
-                    'en' =>'Neon'
+                    'en' => 'Neon',
                 ],
-                'url' => 'neon'
+                'url' => 'neon',
             ],
             [
-                'Authorization' => 'Bearer ' . $this->accessToken()
+                'Authorization' => 'Bearer '.$this->accessToken(),
             ]
         );
 
         $response->assertJsonStructure([
-            'data' => ['id', 'attribute_data']
+            'data' => ['id', 'attribute_data'],
         ]);
 
         $this->assertEquals(200, $response->status());
@@ -88,12 +88,12 @@ class CollectionControllerTest extends TestCase
             $this->url('collections'),
             [],
             [
-                'Authorization' => 'Bearer ' . $this->accessToken()
+                'Authorization' => 'Bearer '.$this->accessToken(),
             ]
         );
 
         $response->assertJsonStructure([
-            'name', 'url'
+            'name', 'url',
         ]);
 
         $this->assertEquals(422, $response->status());
@@ -107,19 +107,19 @@ class CollectionControllerTest extends TestCase
                 'name' => [
                     'ecommerce' => [
                         'ecommerce' => [
-                            'en' => 'Foo'
-                        ]
-                    ]
+                            'en' => 'Foo',
+                        ],
+                    ],
                 ],
-                'url' => 'foo'
+                'url' => 'foo',
             ],
             [
-                'Authorization' => 'Bearer ' . $this->accessToken()
+                'Authorization' => 'Bearer '.$this->accessToken(),
             ]
         );
 
         $response->assertJsonStructure([
-            'name'
+            'name',
         ]);
 
         $this->assertEquals(422, $response->status());
@@ -130,26 +130,26 @@ class CollectionControllerTest extends TestCase
         $id = Collection::first()->encodedId();
 
         $response = $this->put(
-            $this->url('collections/' . $id),
+            $this->url('collections/'.$id),
             [
                 'attributes' => [
                     'name' => [
                         'ecommerce' => [
                             'en' => 'Neon',
-                            'sv' => 'Noen'
-                        ]
-                    ]
+                            'sv' => 'Noen',
+                        ],
+                    ],
                 ],
-                'neon' => 'neon',
-                'default' => true
+                'neon'    => 'neon',
+                'default' => true,
             ],
             [
-                'Authorization' => 'Bearer ' . $this->accessToken()
+                'Authorization' => 'Bearer '.$this->accessToken(),
             ]
         );
 
         $response->assertJsonStructure([
-            'data' => ['id', 'attribute_data']
+            'data' => ['id', 'attribute_data'],
         ]);
 
         $this->assertEquals(200, $response->status());
@@ -164,13 +164,13 @@ class CollectionControllerTest extends TestCase
                     'name' => [
                         'ecommerce' => [
                             'en' => 'Neon',
-                            'sv' => 'Noen'
-                        ]
-                    ]
-                ]
+                            'sv' => 'Noen',
+                        ],
+                    ],
+                ],
             ],
             [
-                'Authorization' => 'Bearer ' . $this->accessToken()
+                'Authorization' => 'Bearer '.$this->accessToken(),
             ]
         );
         $this->assertEquals(404, $response->status());
@@ -182,16 +182,16 @@ class CollectionControllerTest extends TestCase
             'attribute_data' => [
                 'name' => [
                     'ecommerce' => [
-                        'en' => 'Winter sales'
-                    ]
-                ]
-            ]
+                        'en' => 'Winter sales',
+                    ],
+                ],
+            ],
         ]);
 
         $response = $this->delete(
-            $this->url('collections/' . $collection->encodedId()),
+            $this->url('collections/'.$collection->encodedId()),
             [],
-            ['Authorization' => 'Bearer ' . $this->accessToken()]
+            ['Authorization' => 'Bearer '.$this->accessToken()]
         );
         $this->assertEquals(204, $response->status());
     }

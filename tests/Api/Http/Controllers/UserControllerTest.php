@@ -3,6 +3,7 @@
 namespace Tests;
 
 use GetCandy\Api\Auth\Models\User;
+
 /**
  * @group controllers
  * @group api
@@ -13,18 +14,18 @@ class UserControllerTest extends TestCase
     protected $baseStructure = [
         'id',
         'name',
-        'email'
+        'email',
     ];
 
     public function testIndex()
     {
         $response = $this->get($this->url('users'), [
-            'Authorization' => 'Bearer ' . $this->accessToken()
+            'Authorization' => 'Bearer '.$this->accessToken(),
         ]);
 
         $response->assertJsonStructure([
             'data' => [$this->baseStructure],
-            'meta' => ['pagination']
+            'meta' => ['pagination'],
         ]);
 
         $this->assertEquals(200, $response->status());
@@ -33,84 +34,84 @@ class UserControllerTest extends TestCase
     public function testStore()
     {
         $response = $this->post($this->url('users'), [
-                'email' => 'dom@neondigital.co.uk',
-                'password' => 'password',
-                'name' => 'Dom',
-                'password_confirmation' => 'password'
+                'email'                 => 'dom@neondigital.co.uk',
+                'password'              => 'password',
+                'name'                  => 'Dom',
+                'password_confirmation' => 'password',
             ], [
-                'Authorization' => 'Bearer ' . $this->accessToken()
+                'Authorization' => 'Bearer '.$this->accessToken(),
             ]);
 
         $this->assertEquals(200, $response->status());
 
         $response->assertJsonStructure([
-            'data' => $this->baseStructure
+            'data' => $this->baseStructure,
         ]);
     }
 
     public function testPasswordConfirmationFails()
     {
         $response = $this->post($this->url('users'), [
-                'email' => 'dom@neondigital.co.uk',
-                'password' => 'passwosrd',
-                'name' => 'Dom',
-                'password_confirmation' => 'password'
+                'email'                 => 'dom@neondigital.co.uk',
+                'password'              => 'passwosrd',
+                'name'                  => 'Dom',
+                'password_confirmation' => 'password',
             ], [
-                'Authorization' => 'Bearer ' . $this->accessToken()
+                'Authorization' => 'Bearer '.$this->accessToken(),
             ]);
 
         $this->assertEquals(422, $response->status());
 
         $response->assertJsonStructure([
-            'password'
+            'password',
         ]);
     }
 
     public function testValidationFailedStore()
     {
         $response = $this->post($this->url('users'), [], [
-                'Authorization' => 'Bearer ' . $this->accessToken()
+                'Authorization' => 'Bearer '.$this->accessToken(),
             ]);
 
         $this->assertEquals(422, $response->status());
 
         $response->assertJsonStructure([
-            'password', 'email', 'name'
+            'password', 'email', 'name',
         ]);
     }
 
     public function testDuplicateEmailValidationErrorStore()
     {
         User::create([
-            'email' => 'person@neondigital.co.uk',
+            'email'    => 'person@neondigital.co.uk',
             'password' => 'password',
-            'name' => 'Person',
+            'name'     => 'Person',
         ]);
 
         $response = $this->post($this->url('users'), [
-                'email' => 'person@neondigital.co.uk',
-                'password' => 'password',
-                'name' => 'Person',
-                'password_confirmation' => 'password'
+                'email'                 => 'person@neondigital.co.uk',
+                'password'              => 'password',
+                'name'                  => 'Person',
+                'password_confirmation' => 'password',
             ], [
-                'Authorization' => 'Bearer ' . $this->accessToken()
+                'Authorization' => 'Bearer '.$this->accessToken(),
             ]);
 
         $this->assertEquals(422, $response->status());
 
         $response->assertJsonStructure([
-            'email'
+            'email',
         ]);
     }
 
     public function testCurrentUser()
     {
         $response = $this->get($this->url('users/current'), [
-            'Authorization' => 'Bearer ' . $this->accessToken()
+            'Authorization' => 'Bearer '.$this->accessToken(),
         ]);
 
         $response->assertJsonStructure([
-            'data' => $this->baseStructure
+            'data' => $this->baseStructure,
         ]);
 
         $this->assertEquals(200, $response->status());

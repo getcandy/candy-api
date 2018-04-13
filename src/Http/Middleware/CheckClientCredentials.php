@@ -10,15 +10,13 @@ use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Contracts\Encryption\Encrypter;
 use Laravel\Passport\Http\Middleware\CheckClientCredentials as BaseMiddleware;
 use Laravel\Passport\Passport;
-use Laravel\Passport\TransientToken;
+use Laravel\Passport\TokenRepository;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\ResourceServer;
 use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
-use Laravel\Passport\TokenRepository;
 
 class CheckClientCredentials extends BaseMiddleware
 {
-
     /**
      * The Resource Server instance.
      *
@@ -35,7 +33,8 @@ class CheckClientCredentials extends BaseMiddleware
     /**
      * Create a new middleware instance.
      *
-     * @param  \League\OAuth2\Server\ResourceServer  $server
+     * @param \League\OAuth2\Server\ResourceServer $server
+     *
      * @return void
      */
     public function __construct(ResourceServer $server, Encrypter $encrypter, TokenRepository $tokens)
@@ -49,15 +48,17 @@ class CheckClientCredentials extends BaseMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @param  mixed  ...$scopes
-     * @return mixed
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
+     * @param mixed                    ...$scopes
+     *
      * @throws \Illuminate\Auth\AuthenticationException
+     *
+     * @return mixed
      */
     public function handle($request, Closure $next, ...$scopes)
     {
-        $psr = (new DiactorosFactory)->createRequest($request);
+        $psr = (new DiactorosFactory())->createRequest($request);
 
         $cookies = $psr->getCookieParams();
 
@@ -65,25 +66,27 @@ class CheckClientCredentials extends BaseMiddleware
             try {
                 $token = $this->decodeJwtTokenCookie($cookies[Passport::cookie()]);
             } catch (DecryptException $e) {
-                throw new AuthenticationException;
+                throw new AuthenticationException();
             }
 
             if ($user = $this->provider->retrieveById($token['sub'])) {
                 Auth::login($user);
+
                 return $next($request);
             } else {
-                throw new AuthenticationException;
+                throw new AuthenticationException();
             }
         }
 
         try {
             $psr = $this->server->validateAuthenticatedRequest($psr);
         } catch (OAuthServerException $e) {
-            throw new AuthenticationException;
+            throw new AuthenticationException();
         }
 
         if ($user = $this->provider->retrieveById($psr->getAttribute('oauth_user_id'))) {
             Auth::login($user);
+
             return $next($request);
         }
 
@@ -95,7 +98,8 @@ class CheckClientCredentials extends BaseMiddleware
     /**
      * Decode and decrypt the JWT token cookie.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     protected function decodeJwtTokenCookie($cookie)
@@ -110,8 +114,9 @@ class CheckClientCredentials extends BaseMiddleware
     /**
      * Determine if the CSRF / header are valid and match.
      *
-     * @param  array  $token
-     * @param  \Illuminate\Http\Request  $request
+     * @param array                    $token
+     * @param \Illuminate\Http\Request $request
+     *
      * @return bool
      */
     protected function validCsrf($token, $request)

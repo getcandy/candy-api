@@ -1,4 +1,5 @@
 <?php
+
 namespace Tests;
 
 use GetCandy\Api\Channels\Models\Channel;
@@ -14,18 +15,16 @@ class BasketControllerTest extends TestCase
     public function testIndex()
     {
         $response = $this->get($this->url('baskets'), [
-            'Authorization' => 'Bearer ' . $this->accessToken()
+            'Authorization' => 'Bearer '.$this->accessToken(),
         ]);
 
         $response->assertJsonStructure([
             'data',
-            'meta' => ['pagination']
+            'meta' => ['pagination'],
         ]);
-
 
         $this->assertEquals(200, $response->status());
     }
-
 
     public function testBasketCreationUpdateFunctionality()
     {
@@ -38,27 +37,26 @@ class BasketControllerTest extends TestCase
             'variants' => [
                 [
                     'quantity' => 1,
-                    'price' => 10.99,
-                    'id' => $variants->first()->encodedId()
-                ]
-            ]
-        ],[
-            'Authorization' => 'Bearer ' . $this->accessToken()
+                    'price'    => 10.99,
+                    'id'       => $variants->first()->encodedId(),
+                ],
+            ],
+        ], [
+            'Authorization' => 'Bearer '.$this->accessToken(),
         ]);
 
         $response->assertJsonStructure([
-            'data' => ['id']
+            'data' => ['id'],
         ]);
 
-
         $data = json_decode($response->getContent(), true);
-    
+
         // Store this for checks later
         $originalBasketId = $data['data']['id'];
-        
+
         // Get our basket from the api...
-        $response = $this->get($this->url('baskets/' . $originalBasketId . '?includes=lines'), [
-            'Authorization' => 'Bearer ' . $this->accessToken()
+        $response = $this->get($this->url('baskets/'.$originalBasketId.'?includes=lines'), [
+            'Authorization' => 'Bearer '.$this->accessToken(),
         ]);
 
         $this->assertEquals(200, $response->getStatusCode());
@@ -69,28 +67,28 @@ class BasketControllerTest extends TestCase
 
         $response = $this->post($this->url('baskets'), [
             'basket_id' => $originalBasketId,
-            'variants' => [
+            'variants'  => [
                 [
                     'quantity' => 1,
-                    'price' => 10.99,
-                    'id' => $variants->first()->encodedId()
+                    'price'    => 10.99,
+                    'id'       => $variants->first()->encodedId(),
                 ],
                 [
                     'quantity' => 1,
-                    'price' => 10.99,
-                    'id' => $variants->nth(2, 1)->first()->encodedId()
-                ]
-            ]
+                    'price'    => 10.99,
+                    'id'       => $variants->nth(2, 1)->first()->encodedId(),
+                ],
+            ],
         ], [
-            'Authorization' => 'Bearer ' . $this->accessToken()
+            'Authorization' => 'Bearer '.$this->accessToken(),
         ]);
 
         $basket = json_decode($response->getContent(), true);
 
         $this->assertEquals($basket['data']['id'], $originalBasketId);
 
-        $response = $this->get($this->url('baskets/' . $originalBasketId . '?includes=lines'), [
-            'Authorization' => 'Bearer ' . $this->accessToken()
+        $response = $this->get($this->url('baskets/'.$originalBasketId.'?includes=lines'), [
+            'Authorization' => 'Bearer '.$this->accessToken(),
         ]);
 
         $this->assertEquals(200, $response->getStatusCode());
@@ -98,7 +96,6 @@ class BasketControllerTest extends TestCase
         $basket = json_decode($response->getContent(), true);
 
         $this->assertEquals(2, count($basket['data']['lines']['data']));
-
     }
 
     // public function testUnauthorisedIndex()
@@ -228,7 +225,6 @@ class BasketControllerTest extends TestCase
     //     );
     //     $this->assertEquals(204, $response->status());
     // }
-
 
     // public function testCannotDestroyLastChannel()
     // {

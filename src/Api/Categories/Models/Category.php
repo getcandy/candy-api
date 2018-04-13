@@ -3,9 +3,8 @@
 namespace GetCandy\Api\Categories\Models;
 
 use GetCandy\Api\Channels\Models\Channel;
-use GetCandy\Api\Products\Models\Product;
 use GetCandy\Api\Customers\Models\CustomerGroup;
-use GetCandy\Api\Routes\Models\Route;
+use GetCandy\Api\Products\Models\Product;
 use GetCandy\Api\Scaffold\BaseModel;
 use GetCandy\Api\Traits\Assetable;
 use GetCandy\Api\Traits\HasAttributes;
@@ -28,18 +27,18 @@ class Category extends BaseModel
     protected $settings = 'categories';
 
     protected $fillable = [
-        'attribute_data', 'parent_id'
+        'attribute_data', 'parent_id',
     ];
 
     public function toArray()
     {
         return array_merge(parent::toArray(), [
-            'id' => $this->encodedId(),
+            'id'        => $this->encodedId(),
             'thumbnail' => $this->primaryAsset->first(),
             'parent_id' => $this->encode($this->parent_id),
-            'routes' => [
-                'data' => $this->routes
-            ]
+            'routes'    => [
+                'data' => $this->routes,
+            ],
         ]);
     }
 
@@ -47,6 +46,7 @@ class Category extends BaseModel
     {
         return $val;
     }
+
     public function hasChildren()
     {
         return (bool) $this->children()->count();
@@ -54,7 +54,7 @@ class Category extends BaseModel
 
     public function children()
     {
-        return $this->hasMany(Category::class, 'parent_id');
+        return $this->hasMany(self::class, 'parent_id');
     }
 
     public function parent()

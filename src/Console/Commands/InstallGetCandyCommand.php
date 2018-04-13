@@ -2,12 +2,9 @@
 
 namespace GetCandy\Api\Console\Commands;
 
+use GetCandy\Api\Associations\Models\AssociationGroup;
 use GetCandy\Api\Attributes\Models\Attribute;
 use GetCandy\Api\Attributes\Models\AttributeGroup;
-use GetCandy\Api\Assets\Models\Asset;
-use GetCandy\Api\Assets\Models\AssetSource;
-use GetCandy\Api\Assets\Models\AssetTransform;
-use GetCandy\Api\Assets\Models\Transform;
 use GetCandy\Api\Auth\Models\User;
 use GetCandy\Api\Categories\Models\Category;
 use GetCandy\Api\Currencies\Models\Currency;
@@ -15,12 +12,10 @@ use GetCandy\Api\Customers\Models\CustomerGroup;
 use GetCandy\Api\Languages\Models\Language;
 use GetCandy\Api\Products\Models\Product;
 use GetCandy\Api\Taxes\Models\Tax;
-use GetCandy\Api\Search\SearchContract;
-use GetCandy\Api\Associations\Models\AssociationGroup;
+use Hash;
 use Illuminate\Console\Command;
 use Laravel\Passport\Client;
 use Spatie\Permission\Models\Role;
-use Hash;
 
 class InstallGetCandyCommand extends Command
 {
@@ -76,11 +71,11 @@ class InstallGetCandyCommand extends Command
             ['Username / Email', $this->user->email],
             ['Password', '[hidden]'],
             ['CMS Login', route('hub.login')],
-            ['API URL', url('api/' . config('app.api_version', 'v1'))],
+            ['API URL', url('api/'.config('app.api_version', 'v1'))],
             ['CMS Docs', 'https://getcandy.io/documentation/hub'],
             ['CMS Docs', 'https://getcandy.io/documentation/api'],
             ['OAuth Client ID', $client->id],
-            ['OAuth Secret', $client->secret]
+            ['OAuth Secret', $client->secret],
         ]);
     }
 
@@ -106,7 +101,7 @@ class InstallGetCandyCommand extends Command
     }
 
     /**
-     * Step one
+     * Step one.
      *
      * @return void
      */
@@ -153,24 +148,23 @@ class InstallGetCandyCommand extends Command
 
         $model = config('auth.providers.users.model');
 
-        $user = new $model;
+        $user = new $model();
 
         $user->fill([
             'password' => Hash::make($password),
-            'name' => $name,
-            'email' => $email
+            'name'     => $name,
+            'email'    => $email,
         ]);
 
         $user->save();
 
         $user->assignRole('admin');
 
-
         $this->user = $user;
     }
 
     /**
-     * Set up the channel and product families
+     * Set up the channel and product families.
      *
      * @return void
      */
@@ -185,8 +179,8 @@ class InstallGetCandyCommand extends Command
         $this->info('Sounds good to me, lets get that set up...');
 
         app('api')->channels()->create([
-            'name' => $channel,
-            'default' => true
+            'name'    => $channel,
+            'default' => true,
         ]);
 
         $productFamily = $this->ask('We need to set up an initial product family name');
@@ -195,16 +189,13 @@ class InstallGetCandyCommand extends Command
 
         app('api')->productFamilies()->create([
             'name' => [
-                'en' => $productFamily
-            ]
+                'en' => $productFamily,
+            ],
         ]);
-
-
-
     }
 
     /**
-     * Do some behind the scenes stuff first
+     * Do some behind the scenes stuff first.
      *
      * @return void
      */
@@ -219,26 +210,26 @@ class InstallGetCandyCommand extends Command
         $this->info('Adding base languages');
 
         Language::create([
-            'lang' => 'en',
-            'iso' => 'gb',
-            'name' => 'English',
-            'default' => true
+            'lang'    => 'en',
+            'iso'     => 'gb',
+            'name'    => 'English',
+            'default' => true,
         ]);
 
         $this->info('Adding VAT...');
 
         Tax::create([
             'percentage' => 20,
-            'name' => 'VAT',
-            'default' => true
+            'name'       => 'VAT',
+            'default'    => true,
         ]);
 
         $this->info('Adding Attributes');
 
         $group = AttributeGroup::forceCreate([
-            'name' => ['en' => 'Marketing'],
-            'handle' => 'marketing',
-            'position' => 1
+            'name'     => ['en' => 'Marketing'],
+            'handle'   => 'marketing',
+            'position' => 1,
         ]);
 
         $attribute = new Attribute();
@@ -282,9 +273,9 @@ class InstallGetCandyCommand extends Command
         // ]);
 
         $group = AttributeGroup::forceCreate([
-            'name' => ['en' => 'SEO', 'sv' => 'SEO'],
-            'handle' => 'seo',
-            'position' => 3
+            'name'     => ['en' => 'SEO', 'sv' => 'SEO'],
+            'handle'   => 'seo',
+            'position' => 3,
         ]);
 
         $attribute = new Attribute();
@@ -321,96 +312,95 @@ class InstallGetCandyCommand extends Command
         $attribute->searchable = 1;
         $attribute->save();
 
-
         $this->info('Adding some base settings');
 
         \GetCandy\Api\Settings\Models\Setting::forceCreate([
-            'name' => 'Products',
-            'handle' => 'products',
+            'name'    => 'Products',
+            'handle'  => 'products',
             'content' => [
                 'asset_source' => 'products',
-                'transforms' => ['large_thumbnail']
-            ]
+                'transforms'   => ['large_thumbnail'],
+            ],
         ]);
 
         \GetCandy\Api\Settings\Models\Setting::forceCreate([
-            'name' => 'Categories',
-            'handle' => 'categories',
+            'name'    => 'Categories',
+            'handle'  => 'categories',
             'content' => [
                 'asset_source' => 'categories',
-                'transforms' => ['large_thumbnail']
-            ]
+                'transforms'   => ['large_thumbnail'],
+            ],
         ]);
 
         $this->info('Setting up some customer groups');
 
         CustomerGroup::forceCreate([
-            'name' => 'Retail',
-            'handle' => 'retail',
+            'name'    => 'Retail',
+            'handle'  => 'retail',
             'default' => true,
-            'system' => true
+            'system'  => true,
         ]);
 
         CustomerGroup::forceCreate([
-            'name' => 'Guest',
-            'handle' => 'guest',
+            'name'    => 'Guest',
+            'handle'  => 'guest',
             'default' => false,
-            'system' => true
+            'system'  => true,
         ]);
 
         $this->info('Adding some currencies');
 
         Currency::create([
-            'code' => 'GBP',
-            'name' => 'British Pound',
-            'enabled' => true,
-            'exchange_rate' => 1,
-            'format' => '&#xa3;{price}',
-            'decimal_point' => '.',
+            'code'           => 'GBP',
+            'name'           => 'British Pound',
+            'enabled'        => true,
+            'exchange_rate'  => 1,
+            'format'         => '&#xa3;{price}',
+            'decimal_point'  => '.',
             'thousand_point' => ',',
-            'default' => true
+            'default'        => true,
         ]);
 
         Currency::create([
-            'code' => 'EUR',
-            'name' => 'Euro',
-            'enabled' => true,
-            'exchange_rate' => 0.87260,
-            'format' => '&euro;{price}',
-            'decimal_point' => '.',
-            'thousand_point' => ','
+            'code'           => 'EUR',
+            'name'           => 'Euro',
+            'enabled'        => true,
+            'exchange_rate'  => 0.87260,
+            'format'         => '&euro;{price}',
+            'decimal_point'  => '.',
+            'thousand_point' => ',',
         ]);
 
         Currency::create([
-            'code' => 'USD',
-            'name' => 'US Dollars',
-            'enabled' => true,
-            'exchange_rate' => 0.71,
-            'format' => '${price}',
-            'decimal_point' => '.',
-            'thousand_point' => ','
+            'code'           => 'USD',
+            'name'           => 'US Dollars',
+            'enabled'        => true,
+            'exchange_rate'  => 0.71,
+            'format'         => '${price}',
+            'decimal_point'  => '.',
+            'thousand_point' => ',',
         ]);
 
         $this->info('Initialising Assets');
 
         $sources = [
             [
-                'name' => 'Product images',
+                'name'   => 'Product images',
                 'handle' => 'products',
-                'disk' => 'public',
-                'path' => 'products'
+                'disk'   => 'public',
+                'path'   => 'products',
             ],
             [
-                'name' => 'Category images',
+                'name'   => 'Category images',
                 'handle' => 'categories',
-                'disk' => 'public',
-                'path' => 'categories'
+                'disk'   => 'public',
+                'path'   => 'categories',
             ],
             [
-                'name' => 'Channel images',
+                'name'   => 'Channel images',
                 'handle' => 'channels',
-                'disk' => 'public'
-            ]
+                'disk'   => 'public',
+            ],
         ];
 
         foreach ($sources as $source) {
@@ -418,38 +408,37 @@ class InstallGetCandyCommand extends Command
         }
 
         \GetCandy\Api\Assets\Models\Transform::create([
-            'name' => 'Thumbnail',
+            'name'   => 'Thumbnail',
             'handle' => 'thumbnail',
-            'mode' => 'fit',
-            'width' => 250,
-            'height' => 250
+            'mode'   => 'fit',
+            'width'  => 250,
+            'height' => 250,
         ]);
 
         \GetCandy\Api\Assets\Models\Transform::create([
-            'name' => 'Large Thumbnail',
+            'name'   => 'Large Thumbnail',
             'handle' => 'large_thumbnail',
-            'mode' => 'fit',
-            'width' => 485,
-            'height' => 400
+            'mode'   => 'fit',
+            'width'  => 485,
+            'height' => 400,
         ]);
 
         $this->info('Adding association groups');
 
         AssociationGroup::forceCreate([
-            'name' => 'Upsell',
+            'name'   => 'Upsell',
             'handle' => 'upsell',
         ]);
         AssociationGroup::forceCreate([
-            'name' => 'Cross-sell',
-            'handle' => 'cross-sell'
+            'name'   => 'Cross-sell',
+            'handle' => 'cross-sell',
         ]);
         AssociationGroup::forceCreate([
-            'name' => 'Alternate',
-            'handle' => 'alternate'
+            'name'   => 'Alternate',
+            'handle' => 'alternate',
         ]);
 
-
-        $countries = json_decode(file_get_contents(__DIR__ . '/../../../countries.json'), true);
+        $countries = json_decode(file_get_contents(__DIR__.'/../../../countries.json'), true);
 
         foreach ($countries as $country) {
             $name = ['en' => $country['name']['common']];
@@ -458,12 +447,12 @@ class InstallGetCandyCommand extends Command
                 $name[$code] = $data['common'];
             }
             \GetCandy\Api\Countries\Models\Country::create([
-                'name' => json_encode($name),
-                'iso_a_2' => $country['cca2'],
-                'iso_a_3' => $country['cca3'],
+                'name'        => json_encode($name),
+                'iso_a_2'     => $country['cca2'],
+                'iso_a_3'     => $country['cca3'],
                 'iso_numeric' => $country['ccn3'],
-                'region' => $country['region'],
-                'sub_region' => $country['subregion']
+                'region'      => $country['region'],
+                'sub_region'  => $country['subregion'],
             ]);
         }
 
@@ -471,7 +460,7 @@ class InstallGetCandyCommand extends Command
     }
 
     /**
-     * Print the title
+     * Print the title.
      *
      * @return void
      */

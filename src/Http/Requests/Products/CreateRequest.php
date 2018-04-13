@@ -25,12 +25,12 @@ class CreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|valid_structure:products',
-            'url' => 'required|unique:routes,slug',
-            'stock' => 'required|numeric',
+            'name'      => 'required|valid_structure:products',
+            'url'       => 'required|unique:routes,slug',
+            'stock'     => 'required|numeric',
             'family_id' => 'required',
-            'price' => 'required',
-            'sku' => 'required|unique:product_variants,sku'
+            'price'     => 'required',
+            'sku'       => 'required|unique:product_variants,sku',
         ];
     }
 }

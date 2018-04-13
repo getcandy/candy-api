@@ -1,10 +1,10 @@
 <?php
+
 namespace GetCandy\Api\Discounts\Models;
 
-use GetCandy\Api\Auth\Models\User;
-use GetCandy\Api\Scaffold\BaseModel;
-use GetCandy\Api\Products\Models\Product;
 use GetCandy\Api\Customers\Models\CustomerGroup;
+use GetCandy\Api\Products\Models\Product;
+use GetCandy\Api\Scaffold\BaseModel;
 
 class DiscountCriteriaItem extends BaseModel
 {
@@ -22,7 +22,7 @@ class DiscountCriteriaItem extends BaseModel
         $relation = camel_case(str_plural($type));
 
         if (method_exists($this, $relation)) {
-            $realId = (new $type)->decodedId($id);
+            $realId = (new $type())->decodedId($id);
             $this->{$relation}()->attach($realId);
         }
     }

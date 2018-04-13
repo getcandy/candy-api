@@ -9,6 +9,7 @@ class RewardSet
     public function add($reward)
     {
         $this->rewards[] = $reward;
+
         return $this;
     }
 

@@ -15,18 +15,22 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class TaxController extends BaseController
 {
     /**
-     * Returns a listing of currencies
+     * Returns a listing of currencies.
+     *
      * @return Json
      */
     public function index(Request $request)
     {
         $paginator = app('api')->taxes()->getPaginatedData($request->per_page);
-        return $this->respondWithCollection($paginator, new TaxTransformer);
+
+        return $this->respondWithCollection($paginator, new TaxTransformer());
     }
 
     /**
-     * Handles the request to show a currency based on it's hashed ID
-     * @param  String $id
+     * Handles the request to show a currency based on it's hashed ID.
+     *
+     * @param string $id
+     *
      * @return Json
      */
     public function show($id)
@@ -36,24 +40,30 @@ class TaxController extends BaseController
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
-        return $this->respondWithItem($currency, new TaxTransformer);
+
+        return $this->respondWithItem($currency, new TaxTransformer());
     }
 
     /**
-     * Handles the request to create a new channel
-     * @param  CreateRequest $request
+     * Handles the request to create a new channel.
+     *
+     * @param CreateRequest $request
+     *
      * @return Json
      */
     public function store(CreateRequest $request)
     {
         $result = app('api')->taxes()->create($request->all());
-        return $this->respondWithItem($result, new TaxTransformer);
+
+        return $this->respondWithItem($result, new TaxTransformer());
     }
 
     /**
-     * Handles the request to update taxes
-     * @param  String        $id
-     * @param  UpdateRequest $request
+     * Handles the request to update taxes.
+     *
+     * @param string        $id
+     * @param UpdateRequest $request
+     *
      * @return Json
      */
     public function update($id, UpdateRequest $request)
@@ -65,13 +75,16 @@ class TaxController extends BaseController
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
-        return $this->respondWithItem($result, new TaxTransformer);
+
+        return $this->respondWithItem($result, new TaxTransformer());
     }
 
     /**
-     * Handles the request to delete a tax
-     * @param  String        $id
-     * @param  DeleteRequest $request
+     * Handles the request to delete a tax.
+     *
+     * @param string        $id
+     * @param DeleteRequest $request
+     *
      * @return Json
      */
     public function destroy($id, DeleteRequest $request)
@@ -83,6 +96,7 @@ class TaxController extends BaseController
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
+
         return $this->respondWithNoContent();
     }
 }

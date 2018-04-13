@@ -34,20 +34,20 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \GetCandy\Api\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            \Laravel\Passport\Http\Middleware\CreateFreshApiToken::class
+            \Laravel\Passport\Http\Middleware\CreateFreshApiToken::class,
         ],
         'hub' => [
-            \GetCandy\Api\Http\Middleware\Hub\HubAccess::class
+            \GetCandy\Api\Http\Middleware\Hub\HubAccess::class,
         ],
         'api' => [
             'throttle:600,1',
-            'bindings'
+            'bindings',
         ],
         'api:client' => [
             'throttle:600,1',
             'bindings',
-            \GetCandy\Api\Http\Middleware\CheckClientCredentials::class
-        ]
+            \GetCandy\Api\Http\Middleware\CheckClientCredentials::class,
+        ],
     ];
 
     /**
@@ -58,15 +58,15 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        'auth' => \Illuminate\Auth\Middleware\Authenticate::class,
-        'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
-        'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
-        'can' => \Illuminate\Auth\Middleware\Authorize::class,
-        'guest' => \GetCandy\Api\Http\Middleware\RedirectIfAuthenticated::class,
-        'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-        'api.language' => \GetCandy\Api\Http\Middleware\SetLocaleMiddleware::class,
-        'scopes' => \Laravel\Passport\Http\Middleware\CheckScopes::class,
-        'scope' => \Laravel\Passport\Http\Middleware\CheckForAnyScope::class,
-        'customer_groups' => \GetCandy\Api\Http\Middleware\SetCustomerGroups::class
+        'auth'            => \Illuminate\Auth\Middleware\Authenticate::class,
+        'auth.basic'      => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+        'bindings'        => \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        'can'             => \Illuminate\Auth\Middleware\Authorize::class,
+        'guest'           => \GetCandy\Api\Http\Middleware\RedirectIfAuthenticated::class,
+        'throttle'        => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        'api.language'    => \GetCandy\Api\Http\Middleware\SetLocaleMiddleware::class,
+        'scopes'          => \Laravel\Passport\Http\Middleware\CheckScopes::class,
+        'scope'           => \Laravel\Passport\Http\Middleware\CheckForAnyScope::class,
+        'customer_groups' => \GetCandy\Api\Http\Middleware\SetCustomerGroups::class,
     ];
 }

@@ -10,7 +10,8 @@ class IndexObjectListener
     /**
      * Handle the event.
      *
-     * @param  ProductCreatedEvent  $event
+     * @param ProductCreatedEvent $event
+     *
      * @return void
      */
     public function handle(IndexableSavedEvent $event)

@@ -19,6 +19,6 @@ class Transform extends BaseModel
         'width',
         'height',
         'constraint',
-        'quality'
+        'quality',
     ];
 }

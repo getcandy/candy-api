@@ -11,7 +11,7 @@ class PdfTransformer extends BaseTransformer
     {
         return [
             'encoding' => 'base64',
-            'contents' => base64_encode($pdf->output())
+            'contents' => base64_encode($pdf->output()),
         ];
     }
 }

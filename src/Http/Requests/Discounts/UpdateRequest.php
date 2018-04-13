@@ -1,4 +1,5 @@
 <?php
+
 namespace GetCandy\Api\Http\Requests\Discounts;
 
 use GetCandy\Api\Http\Requests\FormRequest;
@@ -33,7 +34,7 @@ class UpdateRequest extends FormRequest
     public function messages()
     {
         return [
-            'valid_discount' => 'You have duplicate items in your criteria'
+            'valid_discount' => 'You have duplicate items in your criteria',
         ];
     }
 }

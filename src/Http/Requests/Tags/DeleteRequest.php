@@ -2,9 +2,7 @@
 
 namespace GetCandy\Api\Http\Requests\Tags;
 
-use Auth;
 use GetCandy\Api\Http\Requests\FormRequest;
-use GetCandy\Api\Tags\Models\Tag;
 
 class DeleteRequest extends FormRequest
 {
@@ -12,6 +10,7 @@ class DeleteRequest extends FormRequest
     {
         return $this->user()->hasRole('admin');
     }
+
     public function rules()
     {
         return [];

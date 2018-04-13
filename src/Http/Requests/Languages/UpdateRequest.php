@@ -12,11 +12,12 @@ class UpdateRequest extends FormRequest
         // return $this->user()->can('update', Language::class);
         return $this->user()->hasRole('admin');
     }
+
     public function rules(Language $language)
     {
         return [
             'name' => 'required',
-            'iso' => 'required|unique:languages,iso,'. $language->decodeId($this->id)
+            'iso'  => 'required|unique:languages,iso,'.$language->decodeId($this->id),
         ];
     }
 }

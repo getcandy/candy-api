@@ -24,9 +24,10 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         $user = app('api')->users()->getDecodedId($this->user);
+
         return [
-            'email' => 'required|unique:users,email,'. $user,
-            'password' => 'confirmed|min:8'
+            'email'    => 'required|unique:users,email,'.$user,
+            'password' => 'confirmed|min:8',
         ];
     }
 }
