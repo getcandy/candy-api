@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Products\Services;
 
-use GetCandy\Api\Scaffold\BaseService;
 use GetCandy\Api\Products\Models\Product;
+use GetCandy\Api\Scaffold\BaseService;
 use GetCandy\Api\Search\Events\IndexableSavedEvent;
 
 class ProductCategoryService extends BaseService
