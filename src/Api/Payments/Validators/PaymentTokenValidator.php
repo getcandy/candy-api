@@ -1,4 +1,5 @@
 <?php
+
 namespace GetCandy\Api\Payments\Validators;
 
 class PaymentTokenValidator

@@ -12,13 +12,13 @@ class CriteriaSet
 
     public function add($set)
     {
-        $classname = config('getcandy.discounters.' . $set->type);
+        $classname = config('getcandy.discounters.'.$set->type);
 
         if (!class_exists($classname)) {
             return $this;
         }
 
-        $criteria = new $classname;
+        $criteria = new $classname();
 
         if ($set->users->count()) {
             $value = $set->users;
@@ -51,6 +51,7 @@ class CriteriaSet
         foreach ($this->sets as $set) {
             $apply = $set->check($user, $product, $basket);
         }
+
         return $apply;
     }
 }

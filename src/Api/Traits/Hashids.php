@@ -12,6 +12,7 @@ trait Hashids
     public function decodeId($value)
     {
         $result = app('hashids')->connection($this->hashids)->decode($value);
+
         return empty($result[0]) ? null : $result[0];
     }
 

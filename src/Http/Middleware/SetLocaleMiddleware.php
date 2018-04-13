@@ -5,23 +5,24 @@ namespace GetCandy\Api\Http\Middleware;
 use Closure;
 use GetCandy\Api\Traits\Fractal;
 use Locale;
-use Illuminate\Foundation\Http\Exceptions\MaintenanceModeException;
 
 class SetLocaleMiddleware
 {
     use Fractal;
+
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
+     *
      * @return mixed
      */
     public function handle($request, Closure $next)
     {
         $locale = $request->header('accept-language');
         $defaultLanguage = app('api')->languages()->getDefaultRecord()->lang;
-        
+
         if (!$locale) {
             $locale = $defaultLanguage;
         } else {
@@ -37,8 +38,9 @@ class SetLocaleMiddleware
                 $locale = $requestedLocale->lang;
             }
         }
-        
+
         app()->setLocale($locale);
+
         return $next($request);
     }
 }

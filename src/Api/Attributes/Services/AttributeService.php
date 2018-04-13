@@ -19,9 +19,9 @@ class AttributeService extends BaseService
     }
 
     /**
-     * Creates a resource from the given data
+     * Creates a resource from the given data.
      *
-     * @param  array  $data
+     * @param array $data
      *
      * @return GetCandy\Api\Models\Attribute
      */
@@ -30,16 +30,16 @@ class AttributeService extends BaseService
         $attributeGroup = app('api')->attributeGroups()->getByHashedId($data['group_id']);
 
         if (!$attributeGroup) {
-            abort(400, 'Attribute group with ID "' . $data['group_id'] . '" doesn\'t exist');
+            abort(400, 'Attribute group with ID "'.$data['group_id'].'" doesn\'t exist');
         }
 
         $result = $attributeGroup->attributes()->create([
-            'name' => $data['name'],
-            'handle' => $data['handle'],
-            'position' => $this->getNewPositionForGroup($attributeGroup->id),
-            'variant' => !empty($data['variant']) ? $data['variant'] : false,
+            'name'       => $data['name'],
+            'handle'     => $data['handle'],
+            'position'   => $this->getNewPositionForGroup($attributeGroup->id),
+            'variant'    => !empty($data['variant']) ? $data['variant'] : false,
             'searchable' => !empty($data['searchable']) ? $data['searchable'] : false,
-            'filterable' => !empty($data['filterable']) ? $data['filterable'] : false
+            'filterable' => !empty($data['filterable']) ? $data['filterable'] : false,
         ]);
 
         return $result;
@@ -48,6 +48,7 @@ class AttributeService extends BaseService
     protected function getNewPositionForGroup($groupId)
     {
         $attribute = $this->getLastItem($groupId);
+
         return $attribute->position + 1;
     }
 
@@ -63,6 +64,7 @@ class AttributeService extends BaseService
                 $query->where('attributable_type', '=', $type);
             }, 'attributables.records']);
         }
+
         return $query->find($ids);
     }
 
@@ -72,13 +74,14 @@ class AttributeService extends BaseService
     }
 
     /**
-     * Updates the positions of attributes
-     * @param  array  $data
+     * Updates the positions of attributes.
+     *
+     * @param array $data
      *
      * @throws Symfony\Component\HttpKernel\Exception\HttpException
      * @throws GetCandy\Api\Exceptions\DuplicateValueException
      *
-     * @return Boolean
+     * @return bool
      */
     public function updateAttributePositions(array $data)
     {
@@ -91,7 +94,7 @@ class AttributeService extends BaseService
         $parsedAttributes = [];
 
         foreach ($data['attributes'] as $attributeId => $position) {
-            $decodedId = (new Attribute)->decodeId($attributeId);
+            $decodedId = (new Attribute())->decodeId($attributeId);
             if (!$decodedId) {
                 abort(422, trans('validation.attributes.groups.invalid_id', ['id' => $attributeId]));
             }
@@ -109,10 +112,10 @@ class AttributeService extends BaseService
     }
 
     /**
-     * Updates a resource from the given data
+     * Updates a resource from the given data.
      *
-     * @param  string $id
-     * @param  array  $data
+     * @param string $id
+     * @param array  $data
      *
      * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      *
@@ -133,18 +136,17 @@ class AttributeService extends BaseService
     }
 
     /**
-     * Deletes a resource by its given hashed ID
+     * Deletes a resource by its given hashed ID.
      *
-     * @param  string $id
+     * @param string $id
      *
      * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      *
-     * @return Boolean
+     * @return bool
      */
     public function delete($id)
     {
         $attribute = $this->getByHashedId($id);
-
 
         if (!$attribute) {
             abort(404);
@@ -154,8 +156,10 @@ class AttributeService extends BaseService
     }
 
     /**
-     * Returns attributes for a group
-     * @param  String $groupId
+     * Returns attributes for a group.
+     *
+     * @param string $groupId
+     *
      * @return Collection
      */
     public function getAttributesForGroup($groupId)
@@ -164,8 +168,10 @@ class AttributeService extends BaseService
     }
 
     /**
-     * Gets the last attribute for a groupo
-     * @param  String $groupId
+     * Gets the last attribute for a groupo.
+     *
+     * @param string $groupId
+     *
      * @return null|Attribute
      */
     public function getLastItem($groupId)
@@ -174,11 +180,13 @@ class AttributeService extends BaseService
     }
 
     /**
-     * Checks whether a attribute name exists in a group
-     * @param  String $value
-     * @param  String $groupId
-     * @param  String $attributeId
-     * @return Boolean
+     * Checks whether a attribute name exists in a group.
+     *
+     * @param string $value
+     * @param string $groupId
+     * @param string $attributeId
+     *
+     * @return bool
      */
     public function nameExistsInGroup($value, $groupId, $attributeId = null)
     {
@@ -191,7 +199,6 @@ class AttributeService extends BaseService
 
         return !$result->exists();
     }
-
 
     public function getByHandles(array $handles)
     {

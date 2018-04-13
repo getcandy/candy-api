@@ -42,82 +42,82 @@ return [
     'connections' => [
         'main' => [
             'alphabet' => $alphabet,
-            'salt' => env('HASHIDS_SALT', 'changeme'),
-            'length' => 8,
+            'salt'     => env('HASHIDS_SALT', 'changeme'),
+            'length'   => 8,
         ],
         'attribute' => [
             'alphabet' => $alphabet,
-            'salt' => env('HASHIDS_ATTRIBUTE_SALT', 'attribute'),
-            'length' => 8,
+            'salt'     => env('HASHIDS_ATTRIBUTE_SALT', 'attribute'),
+            'length'   => 8,
         ],
         'attribute_group' => [
             'alphabet' => $alphabet,
-            'salt' => env('HASHIDS_ATTRIBUTE_GROUP_SALT', 'attribute_group'),
-            'length' => 8,
+            'salt'     => env('HASHIDS_ATTRIBUTE_GROUP_SALT', 'attribute_group'),
+            'length'   => 8,
         ],
         'channel' => [
             'alphabet' => $alphabet,
-            'salt' => env('HASHIDS_CHANNEL_SALT', 'channel'),
-            'length' => 8,
+            'salt'     => env('HASHIDS_CHANNEL_SALT', 'channel'),
+            'length'   => 8,
         ],
         'checkout' => [
             'alphabet' => $alphabet,
-            'salt' => env('HASHIDS_CHECKOUT_SALT', 'checkout')
+            'salt'     => env('HASHIDS_CHECKOUT_SALT', 'checkout'),
         ],
         'basket' => [
             'alphabet' => $alphabet,
-            'length' => 15,
-            'salt' => env('HASHIDS_BASKET_SALT', 'basket')
+            'length'   => 15,
+            'salt'     => env('HASHIDS_BASKET_SALT', 'basket'),
         ],
         'currency' => [
             'alphabet' => $alphabet,
-            'salt' => env('HASHIDS_CURRENCY_SALT', 'currency'),
-            'length' => 8,
+            'salt'     => env('HASHIDS_CURRENCY_SALT', 'currency'),
+            'length'   => 8,
         ],
         'language' => [
             'alphabet' => $alphabet,
-            'salt' => env('HASHIDS_LANGUAGE_SALT', 'language'),
-            'length' => 8,
+            'salt'     => env('HASHIDS_LANGUAGE_SALT', 'language'),
+            'length'   => 8,
         ],
         'order' => [
             'alphabet' => $alphabet,
-            'length' => 15,
-            'salt' => env('HASHIDS_ORDER_SALT', 'order')
+            'length'   => 15,
+            'salt'     => env('HASHIDS_ORDER_SALT', 'order'),
         ],
         'product' => [
             'alphabet' => $alphabet,
-            'salt' => env('HASHIDS_PRODUCT_SALT', 'product'),
-            'length' => 8,
+            'salt'     => env('HASHIDS_PRODUCT_SALT', 'product'),
+            'length'   => 8,
         ],
         'product_attribute' => [
             'alphabet' => $alphabet,
-            'salt' => env('HASHIDS_PRODUCT_ATTRIBUTE_SALT', 'product_attribute'),
-            'length' => 8,
+            'salt'     => env('HASHIDS_PRODUCT_ATTRIBUTE_SALT', 'product_attribute'),
+            'length'   => 8,
         ],
         'product_family' => [
             'alphabet' => $alphabet,
-            'salt' => env('HASHIDS_PRODUCT_FAMILY_SALT', 'product_family'),
-            'length' => 8,
+            'salt'     => env('HASHIDS_PRODUCT_FAMILY_SALT', 'product_family'),
+            'length'   => 8,
         ],
         'product_category' => [
             'alphabet' => $alphabet,
-            'salt' => env('HASHIDS_PRODUCT_CATEGORY_SALT', 'product_category'),
-            'length' => 8,
+            'salt'     => env('HASHIDS_PRODUCT_CATEGORY_SALT', 'product_category'),
+            'length'   => 8,
         ],
         'tag' => [
             'alphabet' => $alphabet,
-            'salt' => env('HASHIDS_ATTRIBUTE_SALT', 'attribute'),
-            'length' => 8,
+            'salt'     => env('HASHIDS_ATTRIBUTE_SALT', 'attribute'),
+            'length'   => 8,
         ],
         'tax' => [
             'alphabet' => $alphabet,
-            'salt' => env('HASHIDS_TAX_SALT', 'tax'),
-            'length' => 8,
+            'salt'     => env('HASHIDS_TAX_SALT', 'tax'),
+            'length'   => 8,
         ],
         'user' => [
             'alphabet' => $alphabet,
-            'salt' => env('HASHIDS_USER_SALT', 'user'),
-            'length' => 8,
-        ]
-    ]
+            'salt'     => env('HASHIDS_USER_SALT', 'user'),
+            'length'   => 8,
+        ],
+    ],
 ];

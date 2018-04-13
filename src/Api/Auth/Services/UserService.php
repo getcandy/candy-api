@@ -21,10 +21,13 @@ class UserService extends BaseService
     {
         return $this->model->where('email', '=', $email)->first();
     }
+
     /**
-     * Gets paginated data for the record
-     * @param  integer $length How many results per page
-     * @param  int  $page   The page to start
+     * Gets paginated data for the record.
+     *
+     * @param int $length How many results per page
+     * @param int $page   The page to start
+     *
      * @return Illuminate\Pagination\LengthAwarePaginator
      */
     public function getPaginatedData($length = 50, $page = null, $keywords = null, $ids = [])
@@ -34,8 +37,8 @@ class UserService extends BaseService
             $query = $query
                 ->where('firstname', 'LIKE', '%'.$keywords.'%')
                 ->orWhere('lastname', 'LIKE', '%'.$keywords.'%')
-                ->orWhere('company_name', 'LIKE', '%' . $keywords . '%')
-                ->orWhere('email', 'LIKE', '%' . $keywords . '%');
+                ->orWhere('company_name', 'LIKE', '%'.$keywords.'%')
+                ->orWhere('email', 'LIKE', '%'.$keywords.'%');
         }
 
         if (count($ids)) {
@@ -47,16 +50,15 @@ class UserService extends BaseService
     }
 
     /**
-     * Creates a resource from the given data
+     * Creates a resource from the given data.
      *
-     * @param  array  $data
+     * @param array $data
      *
      * @return GetCandy\Api\Auth\Models\User
      */
     public function create($data)
     {
         $user = new User();
-
 
         if (isset($data['id'])) {
             $user->id = $data['id'];
@@ -165,7 +167,7 @@ class UserService extends BaseService
     }
 
     /**
-     * Creates a user token
+     * Creates a user token.
      *
      * @param string $userId
      *
@@ -174,6 +176,7 @@ class UserService extends BaseService
     public function getImpersonationToken($userId)
     {
         $user = $this->getByHashedId($userId);
+
         return $user->createToken(str_random(25));
     }
 }

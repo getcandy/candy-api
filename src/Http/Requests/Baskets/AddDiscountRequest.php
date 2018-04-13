@@ -1,4 +1,5 @@
 <?php
+
 namespace GetCandy\Api\Http\Requests\Baskets;
 
 use GetCandy\Api\Http\Requests\FormRequest;
@@ -24,14 +25,14 @@ class AddDiscountRequest extends FormRequest
     public function rules()
     {
         return [
-            'coupon' => 'required|check_coupon:' . $this->id
+            'coupon' => 'required|check_coupon:'.$this->id,
         ];
     }
 
     public function messages()
     {
         return [
-            'check_coupon' => 'The coupon is either invalid, expired or cannot be used'
+            'check_coupon' => 'The coupon is either invalid, expired or cannot be used',
         ];
     }
 }

@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Http\Requests\Currencies;
 
-use GetCandy\Api\Http\Requests\FormRequest;
 use GetCandy\Api\Currencies\Models\Currency;
+use GetCandy\Api\Http\Requests\FormRequest;
 
 class CreateRequest extends FormRequest
 {
@@ -26,11 +26,11 @@ class CreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'code' => 'required|unique:currencies,code',
-            'enabled' => 'required',
+            'name'          => 'required',
+            'code'          => 'required|unique:currencies,code',
+            'enabled'       => 'required',
             'exchange_rate' => 'required',
-            'format' => 'required'
+            'format'        => 'required',
         ];
     }
 }

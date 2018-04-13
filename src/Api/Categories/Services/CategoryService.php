@@ -2,14 +2,11 @@
 
 namespace GetCandy\Api\Categories\Services;
 
-use Carbon\Carbon;
-use GetCandy;
 use GetCandy\Api\Attributes\Events\AttributableSavedEvent;
 use GetCandy\Api\Categories\Models\Category;
 use GetCandy\Api\Routes\Models\Route;
 use GetCandy\Api\Scaffold\BaseService;
 use GetCandy\Api\Search\Events\IndexableSavedEvent;
-use GetCandy\Exceptions\MinimumRecordRequiredException;
 use GetCandy\Api\Search\SearchContract;
 
 class CategoryService extends BaseService
@@ -29,6 +26,7 @@ class CategoryService extends BaseService
     public function getNestedList()
     {
         $categories = $this->model->withDepth()->defaultOrder()->get()->toTree();
+
         return $categories;
     }
 
@@ -171,6 +169,7 @@ class CategoryService extends BaseService
                 return false;
             }
         }
+
         return true;
     }
 
@@ -180,13 +179,13 @@ class CategoryService extends BaseService
     }
 
     /**
-     * Deletes a resource by its given hashed ID
+     * Deletes a resource by its given hashed ID.
      *
-     * @param  string $id
+     * @param string $id
      *
      * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      *
-     * @return Boolean
+     * @return bool
      */
     public function delete($id)
     {

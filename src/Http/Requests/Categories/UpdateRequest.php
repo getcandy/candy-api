@@ -10,10 +10,11 @@ class UpdateRequest extends FormRequest
     {
         return $this->user()->hasRole('admin');
     }
+
     public function rules()
     {
         return [
-            'attributes' => 'required|array'
+            'attributes' => 'required|array',
         ];
     }
 }

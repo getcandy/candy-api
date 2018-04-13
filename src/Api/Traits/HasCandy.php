@@ -7,9 +7,7 @@ use GetCandy\Api\Baskets\Models\Basket;
 use GetCandy\Api\Customers\Models\CustomerGroup;
 use GetCandy\Api\Languages\Models\Language;
 use GetCandy\Api\Orders\Models\Order;
-use GetCandy\Api\Traits\HasCustomerGroups;
 use GetCandy\Api\Users\Models\UserDetail;
-use GetCandy\Plugins\LegacyPassword\Models\LegacyPassword;
 use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 

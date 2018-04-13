@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Pricing;
 
-use TaxCalculator;
 use CurrencyConverter;
 use InvalidArgumentException;
+use TaxCalculator;
 
 class PriceCalculator
 {
@@ -15,6 +15,7 @@ class PriceCalculator
         if (isset($this->pricing[$property])) {
             return $this->pricing[$property];
         }
+
         throw new InvalidArgumentException("Method or Property {$property} doesn't exist");
     }
 
@@ -25,8 +26,9 @@ class PriceCalculator
 
         $this->pricing = [
             'amount' => round($converted + $taxamount, 2),
-            'tax' => $taxamount
+            'tax'    => $taxamount,
         ];
+
         return $this;
     }
 }

@@ -2,21 +2,22 @@
 
 namespace GetCandy\Api\Search\Elastic\Indexers;
 
-use Illuminate\Database\Eloquent\Model;
-use GetCandy\Api\Search\Indexable;
 use Carbon\Carbon;
+use GetCandy\Api\Search\Indexable;
+use Illuminate\Database\Eloquent\Model;
 
 abstract class BaseIndexer
 {
     public function getIndexName($lang = 'en')
     {
-        return config('getcandy.search.index_prefix') . '_' . $this->type . '_' . $lang;
+        return config('getcandy.search.index_prefix').'_'.$this->type.'_'.$lang;
     }
 
     /**
-     * Gets a collection of indexables, based on a model
+     * Gets a collection of indexables, based on a model.
      *
      * @param [type] $product
+     *
      * @return void
      */
     protected function getIndexables(Model $model)
@@ -49,7 +50,6 @@ abstract class BaseIndexer
                 }
 
                 if ($model->variants) {
-
                     $pricing = [];
                     foreach ($customerGroups as $customerGroup) {
                         $prices = [];
@@ -62,10 +62,10 @@ abstract class BaseIndexer
                             $i++;
                         }
                         $pricing[] = [
-                            'id' => $customerGroup->encodedId(),
+                            'id'   => $customerGroup->encodedId(),
                             'name' => $customerGroup->name,
-                            'min' => min($prices),
-                            'max' => max($prices)
+                            'min'  => min($prices),
+                            'max'  => max($prices),
                         ];
                     }
 
@@ -92,10 +92,11 @@ abstract class BaseIndexer
     }
 
     /**
-     * Gets the attribute mapping for a model to be indexed
+     * Gets the attribute mapping for a model to be indexed.
      *
      * @param Model $model
-     * @return Array
+     *
+     * @return array
      */
     public function attributeMapping(Model $model)
     {
@@ -112,13 +113,15 @@ abstract class BaseIndexer
                 }
             }
         }
+
         return $mapping;
     }
 
     /**
-     * Gets any attributes which are marked as searchable
+     * Gets any attributes which are marked as searchable.
      *
      * @param Model $model
+     *
      * @return void
      */
     protected function getIndexableAttributes(Model $model)
@@ -129,9 +132,10 @@ abstract class BaseIndexer
     }
 
     /**
-     * Gets an indexable object
+     * Gets an indexable object.
      *
      * @param array $attributes
+     *
      * @return Indexable
      */
     protected function getIndexable(Model $model)
@@ -139,31 +143,35 @@ abstract class BaseIndexer
         $indexable = new Indexable(
             $model->encodedId()
         );
+
         return $indexable;
     }
 
     /**
-     * Gets the thumbnail for a model
+     * Gets the thumbnail for a model.
      *
      * @param Model $model
-     * @return String
+     *
+     * @return string
      */
     protected function getThumbnail(Model $model)
     {
         $url = null;
         if ($asset = $model->primaryAsset->first()) {
             $transform = $asset->first();
-            $path = $transform->location . '/' . $transform->filename;
+            $path = $transform->location.'/'.$transform->filename;
             $url = \Storage::disk($transform->disk)->url($path);
         }
+
         return $url;
     }
 
     /**
-     * Gets the category mapping for an indexable
+     * Gets the category mapping for an indexable.
      *
      * @param Model $model
-     * @return Array
+     *
+     * @return array
      */
     protected function getCategories(Model $model, $lang = 'en')
     {
@@ -179,9 +187,9 @@ abstract class BaseIndexer
 
         return $categories->map(function ($item) use ($lang) {
             return [
-                'id' => $item->encodedId(),
-                'name' => $item->attribute('name', null, $lang),
-                'position' => $item->pivot->position ?? 1
+                'id'       => $item->encodedId(),
+                'name'     => $item->attribute('name', null, $lang),
+                'position' => $item->pivot->position ?? 1,
             ];
         })->toArray();
     }
@@ -192,9 +200,9 @@ abstract class BaseIndexer
             return $group->pivot->purchasable && $group->pivot->visible;
         })->map(function ($item) {
             return [
-                'id' => $item->encodedId(),
+                'id'     => $item->encodedId(),
                 'handle' => $item->handle,
-                'name' => $item->name
+                'name'   => $item->name,
             ];
         })->toArray();
     }
@@ -205,9 +213,9 @@ abstract class BaseIndexer
             return $channel->published_at <= Carbon::now();
         })->map(function ($item) use ($lang) {
             return [
-                'id' => $item->encodedId(),
+                'id'     => $item->encodedId(),
                 'handle' => $item->handle,
-                'name' => $item->name
+                'name'   => $item->name,
             ];
         })->toArray();
     }

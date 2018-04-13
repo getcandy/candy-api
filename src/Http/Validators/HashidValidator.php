@@ -5,12 +5,14 @@ namespace GetCandy\Api\Http\Validators;
 class HashidValidator
 {
     /**
-     * Determines whether a given hashid correctly decodes for the given model
-     * @param  String $attribute
-     * @param  String $value
-     * @param  Array $parameters
-     * @param  Validator $validator
-     * @return Bool
+     * Determines whether a given hashid correctly decodes for the given model.
+     *
+     * @param string    $attribute
+     * @param string    $value
+     * @param array     $parameters
+     * @param Validator $validator
+     *
+     * @return bool
      */
     public function validForModel($attribute, $value, $parameters, $validator)
     {
@@ -25,6 +27,7 @@ class HashidValidator
         if (is_array($value)) {
             return $result === count($value);
         }
+
         return $result;
     }
 }

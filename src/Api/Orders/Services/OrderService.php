@@ -2,20 +2,18 @@
 
 namespace GetCandy\Api\Orders\Services;
 
-use TaxCalculator;
-use GetCandy\Api\Factory;
+use Carbon\Carbon;
+use CurrencyConverter;
+use DB;
 use GetCandy\Api\Auth\Models\User;
-use GetCandy\Api\Orders\Models\Order;
-use GetCandy\Api\Scaffold\BaseService;
 use GetCandy\Api\Baskets\Models\Basket;
 use GetCandy\Api\Orders\Events\OrderBeforeSavedEvent;
 use GetCandy\Api\Orders\Events\OrderProcessedEvent;
 use GetCandy\Api\Orders\Exceptions\IncompleteOrderException;
-use Carbon\Carbon;
+use GetCandy\Api\Orders\Models\Order;
+use GetCandy\Api\Scaffold\BaseService;
 use PDF;
-use DB;
-use CurrencyConverter;
-use PriceCalculator;
+use TaxCalculator;
 
 class OrderService extends BaseService
 {
@@ -30,7 +28,7 @@ class OrderService extends BaseService
     }
 
     /**
-     * Stores an order
+     * Stores an order.
      *
      * @param string $basketId
      *
@@ -46,7 +44,7 @@ class OrderService extends BaseService
         if ($basket->order) {
             $order = $basket->order;
         } else {
-            $order = new Order;
+            $order = new Order();
             $order->basket()->associate($basket);
         }
 
@@ -61,7 +59,6 @@ class OrderService extends BaseService
 
         $order->total = $basket->total;
         $order->vat = $basket->tax;
-
 
         if (!$order->shipping_total) {
             $order->shipping_total = 0;
@@ -91,10 +88,10 @@ class OrderService extends BaseService
     }
 
     /**
-     * Update an order
+     * Update an order.
      *
      * @param string $orderId
-     * @param array $data
+     * @param array  $data
      *
      * @return Order
      */
@@ -121,10 +118,10 @@ class OrderService extends BaseService
     }
 
     /**
-     * Set the delivery details
+     * Set the delivery details.
      *
      * @param string $id
-     * @param array $data
+     * @param array  $data
      *
      * @return Order
      */
@@ -152,17 +149,18 @@ class OrderService extends BaseService
         $refreshedOrder->save();
     }
 
-     /**
-     * Set the delivery details
+    /**
+     * Set the delivery details.
      *
      * @param string $id
-     * @param array $data
+     * @param array  $data
      *
      * @return Order
      */
     public function setBilling($id, array $data, $user = null)
     {
         $this->refresh($id);
+
         return $this->addAddress(
             $id,
             $data,
@@ -172,10 +170,10 @@ class OrderService extends BaseService
     }
 
     /**
-     * Adds an address for an order
+     * Adds an address for an order.
      *
      * @param string $id
-     * @param array $data
+     * @param array  $data
      * @param string $type
      *
      * @return Order
@@ -213,7 +211,7 @@ class OrderService extends BaseService
     }
 
     /**
-     * Sets the delivery price on an
+     * Sets the delivery price on an.
      *
      * @param string $orderId
      * @param string $priceId
@@ -226,10 +224,10 @@ class OrderService extends BaseService
     }
 
     /**
-     * Sets the fields for contact info on the order
+     * Sets the fields for contact info on the order.
      *
      * @param string $order
-     * @param array $fields
+     * @param array  $fields
      * @param string $prefix
      *
      * @return void
@@ -241,7 +239,7 @@ class OrderService extends BaseService
             if ($handle == 'channel') {
                 continue;
             }
-            $field = $prefix . '_' . $handle;
+            $field = $prefix.'_'.$handle;
             if (array_key_exists($field, $attributes)) {
                 $order->setAttribute($field, $value);
             }
@@ -249,7 +247,7 @@ class OrderService extends BaseService
     }
 
     /**
-     * Expires an order
+     * Expires an order.
      *
      * @param string $orderId
      *
@@ -269,11 +267,12 @@ class OrderService extends BaseService
     {
         $id = $this->model->decodeId($id);
         $query = $this->model->withoutGlobalScope('open')->withoutGlobalScope('not_expired');
+
         return $query->findOrFail($id);
     }
 
     /**
-     * Get the next invoice reference
+     * Get the next invoice reference.
      *
      * @return string
      */
@@ -289,8 +288,8 @@ class OrderService extends BaseService
 
         $order = DB::table('orders')->select(
             DB::RAW('MAX(reference) as reference')
-        )->whereRaw('YEAR(placed_at) = ' . $year)
-            ->whereRaw('MONTH(placed_at) = ' . $month)
+        )->whereRaw('YEAR(placed_at) = '.$year)
+            ->whereRaw('MONTH(placed_at) = '.$month)
             ->whereRaw("reference REGEXP '^([0-9]*-[0-9]*-[0-9]*)'")
             ->first();
 
@@ -301,14 +300,13 @@ class OrderService extends BaseService
             $increment = $segments[2] + 1;
         }
 
-        return $year . '-' . $month . '-' . str_pad($increment, 4, 0, STR_PAD_LEFT);
+        return $year.'-'.$month.'-'.str_pad($increment, 4, 0, STR_PAD_LEFT);
     }
 
-
     /**
-     * Syncs a given basket with its order
+     * Syncs a given basket with its order.
      *
-     * @param Order $order
+     * @param Order  $order
      * @param Basket $basket
      *
      * @return Order
@@ -336,7 +334,7 @@ class OrderService extends BaseService
     }
 
     /**
-     * Maps the order lines from a basket
+     * Maps the order lines from a basket.
      *
      * @param Basket $basket
      *
@@ -352,14 +350,14 @@ class OrderService extends BaseService
             $withoutTax = $currentTotal - $tax;
 
             array_push($lines, [
-                'sku' => $line->variant->sku,
-                'tax' => $line->current_tax,
+                'sku'      => $line->variant->sku,
+                'tax'      => $line->current_tax,
                 'tax_rate' => -($withoutTax - $currentTotal) / $withoutTax * 100,
                 'discount' => 0.00,
-                'total' => $line->current_total,
+                'total'    => $line->current_total,
                 'quantity' => $line->quantity,
-                'product' => $line->variant->product->attribute('name'),
-                'variant' => $line->variant->name
+                'product'  => $line->variant->product->attribute('name'),
+                'variant'  => $line->variant->name,
             ]);
         }
 
@@ -367,7 +365,7 @@ class OrderService extends BaseService
     }
 
     /**
-     * Maps an orders discounts from a basket
+     * Maps an orders discounts from a basket.
      *
      * @param Basket $basket
      *
@@ -381,11 +379,11 @@ class OrderService extends BaseService
             $amount = 0;
             foreach ($discount->rewards as $reward) {
                 array_push($discounts, [
-                    'coupon' => $discount->pivot->coupon,
-                    'name' => $discount->attribute('name'),
+                    'coupon'      => $discount->pivot->coupon,
+                    'name'        => $discount->attribute('name'),
                     'description' => $discount->attribute('description'),
-                    'type' => $reward->type,
-                    'amount' => $reward->value
+                    'type'        => $reward->type,
+                    'amount'      => $reward->value,
                 ]);
             }
         }
@@ -394,37 +392,40 @@ class OrderService extends BaseService
     }
 
     /**
-     * Determines whether an active order exists with this id
+     * Determines whether an active order exists with this id.
      *
      * @param string $orderId
      *
-     * @return boolean
+     * @return bool
      */
     public function isActive($orderId)
     {
         $realId = $this->getDecodedId($orderId);
+
         return (bool) $this->model->where('id', '=', $realId)->where('status', '=', 'awaiting-payment')->exists();
     }
 
     /**
-     * Checks whether an order is processable
+     * Checks whether an order is processable.
      *
      * @param Order $order
      *
-     * @return boolean
+     * @return bool
      */
     protected function isProcessable(Order $order)
     {
         $fields = $order->required->filter(function ($field) use ($order) {
             return $order->getAttribute($field);
         });
+
         return $fields->count() === $order->required->count();
     }
 
     /**
-     * Process an order for payment
+     * Process an order for payment.
      *
      * @param array $data
+     *
      * @return mixed
      */
     public function process(array $data)
@@ -432,7 +433,7 @@ class OrderService extends BaseService
         $order = $this->getByHashedId($data['order_id']);
 
         if (!$this->isProcessable($order)) {
-            throw new IncompleteOrderException;
+            throw new IncompleteOrderException();
         }
 
         if (!empty($data['notes'])) {
@@ -470,11 +471,12 @@ class OrderService extends BaseService
     }
 
     /**
-     * Get paginated orders
+     * Get paginated orders.
      *
-     * @param integer $length
-     * @param int $page
+     * @param int  $length
+     * @param int  $page
      * @param User $user
+     *
      * @return void
      */
     public function getPaginatedData($length = 50, $page = 1, $user = null, $status = null, $keywords = null)
@@ -504,6 +506,7 @@ class OrderService extends BaseService
                 $q->whereId($user->id);
             });
         }
+
         return $query->paginate($length, ['*'], 'page', $page);
     }
 
@@ -513,7 +516,7 @@ class OrderService extends BaseService
     }
 
     /**
-     * Set the shipping cost and method on an order
+     * Set the shipping cost and method on an order.
      *
      * @param string $orderId
      * @param string $priceId
@@ -546,10 +549,10 @@ class OrderService extends BaseService
     }
 
     /**
-     * Set the contact details on an order
+     * Set the contact details on an order.
      *
      * @param string $orderId
-     * @param array $data
+     * @param array  $data
      *
      * @return Order
      */
@@ -566,18 +569,19 @@ class OrderService extends BaseService
         }
 
         $order->save();
+
         return $order;
     }
 
     public function getPdf($order)
     {
-        $settings['address'] =  app('api')->settings()->get('address')['content'];
+        $settings['address'] = app('api')->settings()->get('address')['content'];
         $settings['tax'] = app('api')->settings()->get('tax')['content'];
         $settings['contact'] = app('api')->settings()->get('contact')['content'];
 
         $data = [
-            'order' => $order->load(['lines', 'discounts']),
-            'settings' => $settings
+            'order'    => $order->load(['lines', 'discounts']),
+            'settings' => $settings,
         ];
 
         //TODO: This is bad mmkay, refactor when orders are re engineered
@@ -595,6 +599,7 @@ class OrderService extends BaseService
         }
 
         $pdf = PDF::loadView('pdf.order-invoice', $data);
+
         return $pdf;
     }
 }

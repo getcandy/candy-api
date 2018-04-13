@@ -10,22 +10,27 @@ use GetCandy\Api\Http\Transformers\Fractal\Products\ProductAssociationTransforme
 class ProductAssociationController extends BaseController
 {
     /**
-     * Handles the request to update a products attributes
-     * @param  String        $product
-     * @param  UpdateAttributesRequest $request
-     * @return Mixed
+     * Handles the request to update a products attributes.
+     *
+     * @param string                  $product
+     * @param UpdateAttributesRequest $request
+     *
+     * @return mixed
      */
     public function store($product, CreateRequest $request)
     {
         $result = app('api')->productAssociations()->store($product, $request->all());
-        return $this->respondWithCollection($result, new ProductAssociationTransformer);
+
+        return $this->respondWithCollection($result, new ProductAssociationTransformer());
     }
 
     /**
-     * Handles the request to remove a product association
-     * @param  string        $product
-     * @param  DeleteRequest $request
-     * @return Mixed
+     * Handles the request to remove a product association.
+     *
+     * @param string        $product
+     * @param DeleteRequest $request
+     *
+     * @return mixed
      */
     public function destroy($product, DeleteRequest $request)
     {

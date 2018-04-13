@@ -8,7 +8,7 @@ use GetCandy\Api\Traits\HasTranslations;
 class Country extends BaseModel
 {
     use HasTranslations;
-    
+
     /**
      * @var string
      */
@@ -20,6 +20,6 @@ class Country extends BaseModel
         'iso_a_3',
         'iso_numeric',
         'region',
-        'sub_region'
+        'sub_region',
     ];
 }

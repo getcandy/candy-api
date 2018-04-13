@@ -1,9 +1,9 @@
 <?php
+
 namespace GetCandy\Api\Discounts\Listeners;
 
-use GetCandy\Api\Attributes\Events\AttributableSavedEvent;
-use GetCandy\Api\Products\Events\ProductViewedEvent;
 use GetCandy\Api\Discounts\Factory;
+use GetCandy\Api\Products\Events\ProductViewedEvent;
 
 class AddDiscountToProductListener
 {
@@ -17,7 +17,8 @@ class AddDiscountToProductListener
     /**
      * Handle the event.
      *
-     * @param  OrderShipped  $event
+     * @param OrderShipped $event
+     *
      * @return void
      */
     public function handle(ProductViewedEvent $event)

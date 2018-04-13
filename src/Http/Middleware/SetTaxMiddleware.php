@@ -10,8 +10,9 @@ class SetTaxMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
+     *
      * @return mixed
      */
     public function handle($request, Closure $next)
@@ -19,6 +20,7 @@ class SetTaxMiddleware
         if (!$request->excl_tax) {
             TaxCalculator::setTax('VAT');
         }
+
         return $next($request);
     }
 }

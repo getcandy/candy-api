@@ -1,4 +1,5 @@
 <?php
+
 namespace GetCandy\Api\Http\Requests\Orders;
 
 use GetCandy\Api\Http\Requests\FormRequest;
@@ -25,13 +26,13 @@ class StoreAddressRequest extends FormRequest
     {
         return [
             'address_id' => 'hashid_is_valid:addresses',
-            'address' => 'required_without:address_id',
-            'city' => 'required_without:address_id',
-            'county' => 'required_without_all:address_id,state',
-            'email' => 'email',
-            'state' => 'required_without_all:address_id,county',
-            'zip' => 'required_without:address_id',
-            'country' => 'required_without:address_id'
+            'address'    => 'required_without:address_id',
+            'city'       => 'required_without:address_id',
+            'county'     => 'required_without_all:address_id,state',
+            'email'      => 'email',
+            'state'      => 'required_without_all:address_id,county',
+            'zip'        => 'required_without:address_id',
+            'country'    => 'required_without:address_id',
         ];
     }
 }

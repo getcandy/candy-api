@@ -2,20 +2,13 @@
 
 namespace GetCandy\Api\Products\Services;
 
-use Carbon\Carbon;
-use GetCandy\Api\Scaffold\BaseService;
-use GetCandy\Api\Search\SearchContract;
-use Illuminate\Database\Eloquent\Model;
-use GetCandy\Api\Products\Models\Product;
-use GetCandy\Api\Scopes\CustomerGroupScope;
-use GetCandy\Api\Categories\Models\Category;
-use GetCandy\Api\Products\Models\ProductVariant;
-use GetCandy\Exceptions\InvalidLanguageException;
-use GetCandy\Api\Products\Events\ProductSavedEvent;
-use GetCandy\Api\Search\Events\IndexableSavedEvent;
-use GetCandy\Api\Products\Events\ProductCreatedEvent;
-use GetCandy\Exceptions\MinimumRecordRequiredException;
 use GetCandy\Api\Attributes\Events\AttributableSavedEvent;
+use GetCandy\Api\Products\Events\ProductCreatedEvent;
+use GetCandy\Api\Products\Models\Product;
+use GetCandy\Api\Scaffold\BaseService;
+use GetCandy\Api\Scopes\CustomerGroupScope;
+use GetCandy\Api\Search\Events\IndexableSavedEvent;
+use Illuminate\Database\Eloquent\Model;
 
 class ProductService extends BaseService
 {
@@ -27,10 +20,10 @@ class ProductService extends BaseService
     }
 
     /**
-     * Updates a resource from the given data
+     * Updates a resource from the given data.
      *
-     * @param  string $hashedId
-     * @param  array  $data
+     * @param string $hashedId
+     * @param array  $data
      *
      * @throws \Symfony\Component\HttpKernel\Exception
      * @throws \GetCandy\Exceptions\InvalidLanguageException
@@ -41,13 +34,13 @@ class ProductService extends BaseService
     {
         $product = $this->getByHashedId($hashedId);
 
-        if (! $product) {
+        if (!$product) {
             abort(404);
         }
 
         $product->attribute_data = $data['attributes'];
 
-        if (! empty($data['family_id'])) {
+        if (!empty($data['family_id'])) {
             $family = app('api')->productFamilies()->getByHashedId($data['family_id']);
             $family->products()->save($product);
         } else {
@@ -72,7 +65,7 @@ class ProductService extends BaseService
     }
 
     /**
-     * Creates a resource from the given data
+     * Creates a resource from the given data.
      *
      * @throws \GetCandy\Exceptions\InvalidLanguageException
      *
@@ -102,7 +95,7 @@ class ProductService extends BaseService
         // $layout = app('api')->layouts()->getByHashedId($data['layout_id']);
         // $product->layout()->associate($layout);
 
-        if (! empty($data['family_id'])) {
+        if (!empty($data['family_id'])) {
             $family = app('api')->productFamilies()->getByHashedId($data['family_id']);
             if (!$family) {
                 abort(422);
@@ -131,16 +124,16 @@ class ProductService extends BaseService
         $sku = $data['sku'];
         $i = 1;
         while (app('api')->productVariants()->existsBySku($sku)) {
-            $sku = $sku . $i;
+            $sku = $sku.$i;
             $i++;
         }
 
         $variant = $this->createVariant($product, [
             'options' => [],
-            'stock' => $data['stock'],
-            'sku' => $sku,
-            'price' => $data['price'],
-            'pricing' => $this->getPriceMapping($data['price'])
+            'stock'   => $data['stock'],
+            'sku'     => $sku,
+            'price'   => $data['price'],
+            'pricing' => $this->getPriceMapping($data['price']),
         ]);
 
         if (!empty($data['tax_id'])) {
@@ -156,37 +149,43 @@ class ProductService extends BaseService
         }
 
         event(new ProductCreatedEvent($product));
+
         return $product;
     }
 
     protected function getPriceMapping($price)
     {
         $customerGroups = app('api')->customerGroups()->all();
+
         return $customerGroups->map(function ($group) use ($price) {
             return [
                 $group->handle => [
-                    'price' => $price,
+                    'price'      => $price,
                     'compare_at' => 0,
-                    'tax' => 0
-                ]
+                    'tax'        => 0,
+                ],
             ];
         })->toArray();
     }
 
     /**
-     * Creates a product variant
-     * @param  Product $product
-     * @param  array   $data
+     * Creates a product variant.
+     *
+     * @param Product $product
+     * @param array   $data
+     *
      * @return Model
      */
     public function createVariant(Product $product, array $data = [])
     {
         $data['attribute_data'] = $product->attribute_data;
+
         return $product->variants()->create($data);
     }
 
     /**
      * @param $hashedId
+     *
      * @return mixed
      */
     public function delete($hashedId)
@@ -195,9 +194,11 @@ class ProductService extends BaseService
     }
 
     /**
-     * Gets paginated data for the record
-     * @param  integer $length How many results per page
-     * @param  int  $page   The page to start
+     * Gets paginated data for the record.
+     *
+     * @param int $length How many results per page
+     * @param int $page   The page to start
+     *
      * @return \Illuminate\Pagination\LengthAwarePaginator
      */
     public function getPaginatedData($channel = null, $length = 50, $page = null, $ids = [])
@@ -213,8 +214,10 @@ class ProductService extends BaseService
     }
 
     /**
-     * Gets the attributes from a given products id
-     * @param  string $id
+     * Gets the attributes from a given products id.
+     *
+     * @param string $id
+     *
      * @return array
      */
     public function getAttributes($id)
@@ -229,7 +232,7 @@ class ProductService extends BaseService
         $product = $this->model->with([
             'attributes',
             'family',
-            'family.attributes'
+            'family.attributes',
         ])->find($id);
 
         foreach ($product->family->attributes as $attribute) {
@@ -243,7 +246,6 @@ class ProductService extends BaseService
 
         return $attributes;
     }
-
 
     public function getSearchedIds($ids = [])
     {
@@ -282,7 +284,7 @@ class ProductService extends BaseService
                             ->orderBy('price', 'asc')
                             ->first();
                     }]);
-                }
+                },
             ]);
         }
 
@@ -294,8 +296,10 @@ class ProductService extends BaseService
     }
 
     /**
-     * Gets the attributes from a given products id
-     * @param  string $id
+     * Gets the attributes from a given products id.
+     *
+     * @param string $id
+     *
      * @return array
      */
     public function getCategories(Product $product)
@@ -303,14 +307,18 @@ class ProductService extends BaseService
         $product = $this->model
             ->with(['categories', 'routes'])
             ->find($product->id);
+
         return $product->categories;
     }
 
     /**
-     * Updates the collections for a product
-     * @param  String  $id
-     * @param  array  $data
+     * Updates the collections for a product.
+     *
+     * @param string $id
+     * @param array  $data
+     *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+     *
      * @return Model
      */
     public function updateCollections($id, array $data)
@@ -324,13 +332,14 @@ class ProductService extends BaseService
         }
 
         $product->collections()->sync($ids);
+
         return $product;
     }
 
     /**
-     * Get products by a stock threshold
+     * Get products by a stock threshold.
      *
-     * @param integer $limit
+     * @param int $limit
      *
      * @return Collection
      */

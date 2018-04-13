@@ -2,26 +2,29 @@
 
 namespace GetCandy\Api\Routes\Services;
 
-use GetCandy\Api\Scaffold\BaseService;
 use GetCandy\Api\Routes\Models\Route;
+use GetCandy\Api\Scaffold\BaseService;
 use GetCandy\Exceptions\MinimumRecordRequiredException;
 
 class RouteService extends BaseService
 {
     public function __construct()
     {
-        $this->model = new Route;
+        $this->model = new Route();
     }
 
     /**
-     * Gets a route by a given slug
-     * @param  string $slug
+     * Gets a route by a given slug.
+     *
+     * @param string $slug
+     *
      * @return Route
      */
     public function getBySlug($slug)
     {
         $route = $this->model->where('slug', '=', $slug)->firstOrFail();
         app()->setLocale($route->locale);
+
         return $route;
     }
 
@@ -31,6 +34,7 @@ class RouteService extends BaseService
         $model->slug = $data['slug'];
         $model->default = $data['default'];
         $model->save();
+
         return $model;
     }
 
@@ -41,8 +45,10 @@ class RouteService extends BaseService
 
     /**
      * @param $hashedId
-     * @return mixed
+     *
      * @throws MinimumRecordRequiredException
+     *
+     * @return mixed
      */
     public function delete($hashedId)
     {
@@ -61,12 +67,14 @@ class RouteService extends BaseService
             $newDefault->default = true;
             $newDefault->save();
         }
+
         return $route->delete();
     }
 
     /**
-     * Gets a new suggested default model
-     * @return Mixed
+     * Gets a new suggested default model.
+     *
+     * @return mixed
      */
     public function getNewSuggestedDefault()
     {
@@ -75,7 +83,6 @@ class RouteService extends BaseService
 
     public function uniqueSlug($slug)
     {
-        return !($this->model->where('slug',$slug)->exists());
+        return !($this->model->where('slug', $slug)->exists());
     }
-
 }

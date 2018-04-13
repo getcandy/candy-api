@@ -2,63 +2,66 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Collections;
 
+use GetCandy\Api\Collections\Models\Collection;
+use GetCandy\Api\Http\Transformers\Fractal\Assets\AssetTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\Channels\ChannelTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\Customers\CustomerGroupTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\Products\ProductTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\Routes\RouteTransformer;
 use GetCandy\Api\Products\Models\Product;
 use GetCandy\Api\Traits\IncludesAttributes;
-use GetCandy\Api\Collections\Models\Collection;
-use GetCandy\Api\Attributes\Models\AttributeGroup;
-use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
-use GetCandy\Api\Http\Transformers\Fractal\Assets\AssetTransformer;
-use GetCandy\Api\Http\Transformers\Fractal\Routes\RouteTransformer;
-use GetCandy\Api\Http\Transformers\Fractal\Channels\ChannelTransformer;
-use GetCandy\Api\Http\Transformers\Fractal\Products\ProductTransformer;
-use GetCandy\Api\Http\Transformers\Fractal\Customers\CustomerGroupTransformer;
 
 class CollectionTransformer extends BaseTransformer
 {
     use IncludesAttributes;
 
     protected $defaultIncludes = [
-        'routes'
+        'routes',
     ];
 
     /**
-     * @var Array
+     * @var array
      */
     protected $availableIncludes = [
         'assets',
         'attribute_groups',
         'products',
         'channels',
-        'customer_groups'
+        'customer_groups',
     ];
 
     /**
-     * Decorates the product object for viewing
-     * @param  Collection $collection
-     * @return Array
+     * Decorates the product object for viewing.
+     *
+     * @param Collection $collection
+     *
+     * @return array
      */
     public function transform(Collection $collection)
     {
         return [
-            'id' => $collection->encodedId(),
+            'id'             => $collection->encodedId(),
             'attribute_data' => $collection->attribute_data,
-            'thumbnail' => $this->getThumbnail($collection)
+            'thumbnail'      => $this->getThumbnail($collection),
         ];
     }
 
     /**
-     * Includes the products for the collection
-     * @param  Collection $collection
+     * Includes the products for the collection.
+     *
+     * @param Collection $collection
+     *
      * @return League\Fractal\Resource\Collection
      */
     public function includeProducts(Collection $collection)
     {
-        return $this->collection($collection->products, new ProductTransformer);
+        return $this->collection($collection->products, new ProductTransformer());
     }
 
     public function includeAssets(Collection $collection)
     {
-        return $this->collection($collection->assets()->orderBy('position', 'asc')->get(), new AssetTransformer);
+        return $this->collection($collection->assets()->orderBy('position', 'asc')->get(), new AssetTransformer());
     }
 
     /**
@@ -69,7 +72,8 @@ class CollectionTransformer extends BaseTransformer
     public function includeChannels(Collection $collection)
     {
         $channels = app('api')->channels()->getChannelsWithAvailability($collection, 'collections');
-        return $this->collection($channels, new ChannelTransformer);
+
+        return $this->collection($channels, new ChannelTransformer());
     }
 
     /**
@@ -80,7 +84,8 @@ class CollectionTransformer extends BaseTransformer
     public function includeCustomerGroups(Collection $collection)
     {
         $groups = app('api')->customerGroups()->getGroupsWithAvailability($collection, 'collections');
-        return $this->collection($groups, new CustomerGroupTransformer);
+
+        return $this->collection($groups, new CustomerGroupTransformer());
     }
 
     /**
@@ -90,6 +95,6 @@ class CollectionTransformer extends BaseTransformer
      */
     public function includeRoutes(Collection $collection)
     {
-        return $this->collection($collection->routes, new RouteTransformer);
+        return $this->collection($collection->routes, new RouteTransformer());
     }
 }

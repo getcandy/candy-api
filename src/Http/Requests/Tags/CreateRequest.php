@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Http\Requests\Tags;
 
-use Auth;
 use GetCandy\Api\Http\Requests\FormRequest;
 use GetCandy\Api\Tags\Models\Tag;
 
@@ -12,10 +11,11 @@ class CreateRequest extends FormRequest
     {
         return $this->user()->hasRole('admin');
     }
+
     public function rules(Tag $tag)
     {
         return [
-            'name' => 'array|required|valid_locales'
+            'name' => 'array|required|valid_locales',
         ];
     }
 }

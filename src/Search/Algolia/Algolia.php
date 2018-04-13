@@ -2,11 +2,11 @@
 
 namespace GetCandy\Api\Search\Algolia;
 
+use AlgoliaSearch\Client;
 use GetCandy\Api\Products\Models\Product;
 use GetCandy\Api\Search\Algolia\Indexers\ProductIndexer;
 use GetCandy\Api\Search\SearchContract;
 use Illuminate\Database\Eloquent\Model;
-use AlgoliaSearch\Client;
 
 class Algolia implements SearchContract
 {
@@ -44,25 +44,32 @@ class Algolia implements SearchContract
     public function against($types)
     {
         $this->indexer = $this->getIndexer($types);
+
         return $this;
     }
+
     /**
-     * Checks whether an indexer exists
-     * @param  mixed  $model
-     * @return boolean
+     * Checks whether an indexer exists.
+     *
+     * @param mixed $model
+     *
+     * @return bool
      */
     public function hasIndexer($model)
     {
         if (is_object($model)) {
             $model = get_class($model);
         }
+
         return isset($this->indexers[$model]);
     }
 
     /**
-     * Adds a model to the index
-     * @param  Model  $model
-     * @return boolean
+     * Adds a model to the index.
+     *
+     * @param Model $model
+     *
+     * @return bool
      */
     public function indexObject(Model $model)
     {
@@ -79,7 +86,8 @@ class Algolia implements SearchContract
     }
 
     /**
-     * List indexes available
+     * List indexes available.
+     *
      * @return array
      */
     public function getIndexes()
@@ -88,8 +96,10 @@ class Algolia implements SearchContract
     }
 
     /**
-     * Updates the mappings for the model
-     * @param  Elastica\Index $index
+     * Updates the mappings for the model.
+     *
+     * @param Elastica\Index $index
+     *
      * @return void
      */
     public function updateMappings()
@@ -98,7 +108,8 @@ class Algolia implements SearchContract
     }
 
     /**
-     * Create an index based on the model
+     * Create an index based on the model.
+     *
      * @return void
      */
     public function createIndex()
@@ -107,7 +118,8 @@ class Algolia implements SearchContract
     }
 
     /**
-     * Gets the client for the model
+     * Gets the client for the model.
+     *
      * @return Elastica\Client
      */
     public function client()
@@ -116,12 +128,14 @@ class Algolia implements SearchContract
     }
 
     /**
-     * Returns the index for the model
+     * Returns the index for the model.
+     *
      * @return Elastica\Index
      */
     public function getIndex($type, $lang = 'en')
     {
-        $index = config('search.index_prefix') . '_' . $type . '_' . $lang;
+        $index = config('search.index_prefix').'_'.$type.'_'.$lang;
+
         return $this->client->initIndex($index);
     }
 
@@ -131,8 +145,10 @@ class Algolia implements SearchContract
     }
 
     /**
-     * Searches the index
-     * @param  string $keywords
+     * Searches the index.
+     *
+     * @param string $keywords
+     *
      * @return array
      */
     public function search($keywords)
@@ -142,12 +158,15 @@ class Algolia implements SearchContract
         }
 
         $index = $this->getIndex($this->indexer->type);
+
         return $index->search($keywords);
     }
 
     /**
-     * Gets the indexer for a model
-     * @param  mixed $model
+     * Gets the indexer for a model.
+     *
+     * @param mixed $model
+     *
      * @return mixed
      */
     protected function getIndexer($model)
@@ -158,6 +177,7 @@ class Algolia implements SearchContract
         if (!$this->hasIndexer($model)) {
             abort(400, "No indexer available for {$model}");
         }
-        return new $this->indexers[$model];
+
+        return new $this->indexers[$model]();
     }
 }

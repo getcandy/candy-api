@@ -16,7 +16,7 @@ class Page extends BaseModel
      * @var array
      */
     protected $fillable = [
-        'title', 'slug', 'seo_title', 'seo_description'
+        'title', 'slug', 'seo_title', 'seo_description',
     ];
 
     /**

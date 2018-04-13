@@ -1,4 +1,5 @@
 <?php
+
 namespace GetCandy\Api\Baskets\Models;
 
 use GetCandy\Api\Products\Models\ProductVariant;
@@ -16,6 +17,7 @@ class BasketLine extends BaseModel
         if ($tieredPrice) {
             return $this->quantity * $tieredPrice->amount;
         }
+
         return $this->quantity * $this->variant->total_price;
     }
 

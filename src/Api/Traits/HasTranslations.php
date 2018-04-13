@@ -5,7 +5,8 @@ namespace GetCandy\Api\Traits;
 trait HasTranslations
 {
     /**
-     * Sets the name attribute to a json string
+     * Sets the name attribute to a json string.
+     *
      * @param array $value
      */
     public function setNameAttribute($value)
@@ -27,7 +28,7 @@ trait HasTranslations
         if (is_null($this->name[$locale])) {
             return $this->name['en'];
         } elseif ($this->name[$locale] == '') {
-            return null;
+            return;
         }
 
         return $this->name[$locale];

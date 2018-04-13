@@ -3,9 +3,9 @@
 namespace GetCandy\Api\Http\Controllers\Addresses;
 
 use GetCandy\Api\Http\Controllers\BaseController;
+use GetCandy\Api\Http\Transformers\Fractal\Addresses\AddressTransformer;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use GetCandy\Api\Http\Transformers\Fractal\Addresses\AddressTransformer;
 
 class AddressController extends BaseController
 {
@@ -16,7 +16,8 @@ class AddressController extends BaseController
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
-        return $this->respondWithItem($address, new AddressTransformer);
+
+        return $this->respondWithItem($address, new AddressTransformer());
     }
 
     public function store(Request $request)
@@ -27,7 +28,8 @@ class AddressController extends BaseController
             return $this->errorNotFound();
         }
         $address = app('api')->addresses()->create($user, $request->all());
-        return $this->respondWithItem($address, new AddressTransformer);
+
+        return $this->respondWithItem($address, new AddressTransformer());
     }
 
     public function destroy($id)
@@ -37,6 +39,7 @@ class AddressController extends BaseController
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
+
         return $this->respondWithNoContent();
     }
 }
