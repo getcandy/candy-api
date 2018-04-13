@@ -14,9 +14,9 @@ class LanguageService extends BaseService
     }
 
     /**
-     * Creates a resource from the given data
+     * Creates a resource from the given data.
      *
-     * @param  array  $data
+     * @param array $data
      *
      * @return GetCandy\Api\Models\Language
      */
@@ -41,14 +41,15 @@ class LanguageService extends BaseService
         if (is_array($lang)) {
             return $query->whereIn('lang', $lang)->first();
         }
+
         return $query->where('lang', '=', $lang)->first();
     }
 
     /**
-     * Updates a resource from the given data
+     * Updates a resource from the given data.
      *
-     * @param  string $id
-     * @param  array  $data
+     * @param string $id
+     * @param array  $data
      *
      * @throws Symfony\Component\HttpKernel\Exception
      * @throws GetCandy\Api\Exceptions\MinimumRecordRequiredException
@@ -96,14 +97,14 @@ class LanguageService extends BaseService
     }
 
     /**
-     * Deletes a resource by its given hashed ID
+     * Deletes a resource by its given hashed ID.
      *
-     * @param  string $id
+     * @param string $id
      *
      * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @throws GetCandy\Api\Exceptions\MinimumRecordRequiredException
      *
-     * @return Boolean
+     * @return bool
      */
     public function delete($id)
     {
@@ -119,7 +120,6 @@ class LanguageService extends BaseService
             );
         }
 
-
         if ($language->default && $newDefault = $this->getNewSuggestedDefault()) {
             $newDefault->default = true;
             $newDefault->save();
@@ -129,9 +129,11 @@ class LanguageService extends BaseService
     }
 
     /**
-     * Checks all locales in the array exist
-     * @param  array  $locales
-     * @return boolean
+     * Checks all locales in the array exist.
+     *
+     * @param array $locales
+     *
+     * @return bool
      */
     public function allLocalesExist(array $locales)
     {

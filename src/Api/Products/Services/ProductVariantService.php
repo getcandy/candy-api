@@ -5,7 +5,6 @@ namespace GetCandy\Api\Products\Services;
 use GetCandy\Api\Products\Models\ProductVariant;
 use GetCandy\Api\Scaffold\BaseService;
 use GetCandy\Api\Search\Events\IndexableSavedEvent;
-use GetCandy\Exceptions\InvalidLanguageException;
 use PriceCalculator;
 
 class ProductVariantService extends BaseService
@@ -16,10 +15,12 @@ class ProductVariantService extends BaseService
     }
 
     /**
-     * Creates variants for a product
-     * @param  String $id
-     * @param  array  $variant
-     * @return boolean
+     * Creates variants for a product.
+     *
+     * @param string $id
+     * @param array  $variant
+     *
+     * @return bool
      */
     public function create($id, array $data)
     {
@@ -36,25 +37,24 @@ class ProductVariantService extends BaseService
         // If the option data is empty, set it to our option data;
         if (empty($options)) {
             $product->update([
-                'option_data' => $data['options']
+                'option_data' => $data['options'],
             ]);
         }
 
         foreach ($data['variants'] as $newVariant) {
-
             $options = $this->mapOptions($options, $newVariant['options']);
             $sku = $newVariant['sku'];
             $i = 1;
             while (app('api')->productVariants()->existsBySku($sku)) {
-                $sku = $sku . $i;
+                $sku = $sku.$i;
                 $i++;
             }
 
             $variant = $product->variants()->create([
-                'price' => $newVariant['price'],
-                'sku' => $sku,
-                'stock' => $newVariant['inventory'],
-                'options' => $newVariant['options']
+                'price'   => $newVariant['price'],
+                'sku'     => $sku,
+                'stock'   => $newVariant['inventory'],
+                'options' => $newVariant['options'],
             ]);
 
             if (!empty($newVariant['tax_id'])) {
@@ -85,8 +85,8 @@ class ProductVariantService extends BaseService
      * Gets any tiered pricing for this variant.
      *
      * @param ProductVariant $variant
-     * @param int $quantity
-     * @param mixed $user
+     * @param int            $quantity
+     * @param mixed          $user
      *
      * @return void
      */
@@ -106,7 +106,7 @@ class ProductVariantService extends BaseService
             ->first();
 
         if (!$price) {
-            return null;
+            return;
         }
 
         $tax = 0;
@@ -114,14 +114,15 @@ class ProductVariantService extends BaseService
         if ($variant->tax) {
             $tax = $variant->tax->percentage;
         }
+
         return PriceCalculator::get($price->price, $tax);
     }
 
     /**
-     * Gets the variants true price
+     * Gets the variants true price.
      *
      * @param ProductVariant $variant
-     * @param mixed $user
+     * @param mixed          $user
      *
      * @return void
      */
@@ -152,11 +153,12 @@ class ProductVariantService extends BaseService
         $price = PriceCalculator::get($price, $tax);
 
         clock()->endEvent($variant->encodedId());
+
         return $price;
     }
 
     /**
-     * Checks whether a variant exists by its SKU
+     * Checks whether a variant exists by its SKU.
      *
      * @param string $sku
      *
@@ -168,10 +170,10 @@ class ProductVariantService extends BaseService
     }
 
     /**
-     * Updates a resource from the given data
+     * Updates a resource from the given data.
      *
-     * @param  string $hashedId
-     * @param  array  $data
+     * @param string $hashedId
+     * @param array  $data
      *
      * @throws Symfony\Component\HttpKernel\Exception
      *
@@ -185,7 +187,7 @@ class ProductVariantService extends BaseService
 
         if (!empty($data['options'])) {
             $variant->product->update([
-                'option_data' => $this->mapOptions($options, $data['options'])
+                'option_data' => $this->mapOptions($options, $data['options']),
             ]);
         }
 
@@ -236,9 +238,8 @@ class ProductVariantService extends BaseService
         return $variant;
     }
 
-
     /**
-     * Sets and creates the customer group pricing
+     * Sets and creates the customer group pricing.
      *
      * @param array $variant
      * @param array $prices
@@ -248,7 +249,6 @@ class ProductVariantService extends BaseService
     protected function setGroupPricing($variant, $prices = [])
     {
         $variant->customerPricing()->delete();
-
 
         foreach ($prices as $price) {
             $price['customer_group_id'] = app('api')->customerGroups()->getDecodedId($price['customer_group_id']);
@@ -274,7 +274,7 @@ class ProductVariantService extends BaseService
     }
 
     /**
-     * Map and merge variant options
+     * Map and merge variant options.
      *
      * @param array $options
      * @param array $newOptions
@@ -293,17 +293,18 @@ class ProductVariantService extends BaseService
                 $options[$handle]['options'][$optionKey]['values'][$lang] = $value;
             }
         }
+
         return $options;
     }
 
     /**
-     * Deletes a resource by its given hashed ID
+     * Deletes a resource by its given hashed ID.
      *
-     * @param  string $id
+     * @param string $id
      *
      * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      *
-     * @return Boolean
+     * @return bool
      */
     public function delete($hashedId)
     {
@@ -320,14 +321,15 @@ class ProductVariantService extends BaseService
     }
 
     /**
-     * Maps and sets the measurements for a variant
+     * Maps and sets the measurements for a variant.
+     *
      * @param ProductVariant $variant
-     * [
-     *     'weight' => [
-     *         'cm' => 100
-     *     ]
-     * ]
-     * @param array $data
+     *                                [
+     *                                'weight' => [
+     *                                'cm' => 100
+     *                                ]
+     *                                ]
+     * @param array          $data
      */
     protected function setMeasurements($variant, $data)
     {
@@ -336,7 +338,7 @@ class ProductVariantService extends BaseService
         array_map(function ($x) use ($data, $variant) {
             if (!empty($data[$x])) {
                 foreach ($data[$x] as $label => $value) {
-                    $variant->setAttribute($x . '_' . $label, is_numeric($value) ? $value : $value);
+                    $variant->setAttribute($x.'_'.$label, is_numeric($value) ? $value : $value);
                 }
             }
         }, $measurements);

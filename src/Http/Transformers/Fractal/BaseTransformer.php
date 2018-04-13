@@ -2,20 +2,21 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal;
 
-use League\Fractal\TransformerAbstract;
-use Illuminate\Database\Eloquent\Model;
 use GetCandy\Api\Http\Transformers\Fractal\Assets\AssetTransformer;
+use League\Fractal\TransformerAbstract;
 
 abstract class BaseTransformer extends TransformerAbstract
 {
     /**
-     * Returns the correct translation for a name array
-     * @param  mixed $name
+     * Returns the correct translation for a name array.
+     *
+     * @param mixed $name
+     *
      * @return string
      */
     protected function getLocalisedName($name)
     {
-        if (! is_array($name)) {
+        if (!is_array($name)) {
             $name = json_decode($name, true);
         }
         $locale = app()->getLocale();
@@ -32,6 +33,7 @@ abstract class BaseTransformer extends TransformerAbstract
         } else {
             $name = array_shift($name);
         }
+
         return $name;
     }
 
@@ -39,9 +41,10 @@ abstract class BaseTransformer extends TransformerAbstract
     {
         $asset = $model->primaryAsset->first();
         if (!$asset) {
-            return null;
+            return;
         }
-        $data = $this->item($asset, new AssetTransformer);
+        $data = $this->item($asset, new AssetTransformer());
+
         return app()->fractal->createData($data)->toArray();
     }
 }

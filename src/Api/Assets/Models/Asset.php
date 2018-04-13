@@ -30,7 +30,7 @@ class Asset extends BaseModel
         'kind',
         'position',
         'external',
-        'primary'
+        'primary',
     ];
 
     /**
@@ -62,7 +62,6 @@ class Asset extends BaseModel
         return $this->transforms()->whereHas('transform', function ($q) {
             $q->whereHandle('thumbnail');
         });
-
     }
 
     /**

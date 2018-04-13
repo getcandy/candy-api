@@ -25,7 +25,7 @@ class DeleteRequest extends FormRequest
     public function rules()
     {
         return [
-            'associations' => 'required|hashid_is_valid:products'
+            'associations' => 'required|hashid_is_valid:products',
         ];
     }
 }

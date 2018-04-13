@@ -12,15 +12,15 @@ class CurrencyTransformer extends BaseTransformer
     public function transform(Currency $currency)
     {
         return [
-            'id' => $currency->encodedId(),
-            'name' => $currency->name,
-            'code' => $currency->code,
-            'format' => $currency->format,
-            'decimal' => $currency->decimal_point,
-            'thousand' => $currency->thousand_point,
+            'id'            => $currency->encodedId(),
+            'name'          => $currency->name,
+            'code'          => $currency->code,
+            'format'        => $currency->format,
+            'decimal'       => $currency->decimal_point,
+            'thousand'      => $currency->thousand_point,
             'exchange_rate' => $currency->exchange_rate,
-            'enabled' => (bool) $currency->enabled,
-            'default' => (bool) $currency->default
+            'enabled'       => (bool) $currency->enabled,
+            'default'       => (bool) $currency->default,
         ];
     }
 }

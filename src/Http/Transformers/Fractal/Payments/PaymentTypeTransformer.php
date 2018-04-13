@@ -10,9 +10,9 @@ class PaymentTypeTransformer extends BaseTransformer
     public function transform(PaymentType $type)
     {
         return [
-            'id' => $type->encodedId(),
-            'name' => $type->name,
-            'driver' => $type->driver
+            'id'     => $type->encodedId(),
+            'name'   => $type->name,
+            'driver' => $type->driver,
         ];
     }
 }

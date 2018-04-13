@@ -1,4 +1,5 @@
 <?php
+
 namespace GetCandy\Api\Discounts\Criteria;
 
 use GetCandy\Api\Discounts\Contracts\DiscountCriteriaContract;
@@ -22,6 +23,7 @@ class Users implements DiscountCriteriaContract
         if (!$user) {
             return false;
         }
+
         return $this->value->contains($user->id);
     }
 }

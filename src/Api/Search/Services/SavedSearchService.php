@@ -3,20 +3,21 @@
 namespace GetCandy\Api\Search\Services;
 
 use GetCandy\Api\Scaffold\BaseService;
-use Illuminate\Database\Eloquent\Model;
 use GetCandy\Api\Search\Models\SavedSearch;
+use Illuminate\Database\Eloquent\Model;
 
 class SavedSearchService extends BaseService
 {
     public function __construct()
     {
-        $this->model = new SavedSearch;
+        $this->model = new SavedSearch();
     }
+
     /**
-     * Gets the saved searches for a model
+     * Gets the saved searches for a model.
      *
      * @param mixed $model
-     * 
+     *
      * @return Collection
      */
     public function getByType($type)
@@ -25,10 +26,10 @@ class SavedSearchService extends BaseService
     }
 
     /**
-     * Stores a saved search
+     * Stores a saved search.
      *
      * @param array $data
-     * 
+     *
      * @return void
      */
     public function store($data)
@@ -43,7 +44,7 @@ class SavedSearchService extends BaseService
             $payload['filters'] = $data['filters'];
         }
 
-        $search = new SavedSearch;
+        $search = new SavedSearch();
         $search->payload = $payload;
         $search->type = $data['type'];
         $search->name = $data['keywords'];
@@ -59,6 +60,7 @@ class SavedSearchService extends BaseService
         if (!$search) {
             abort(404);
         }
+
         return $search->delete();
     }
 }

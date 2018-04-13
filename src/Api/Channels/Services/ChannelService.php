@@ -19,9 +19,9 @@ class ChannelService extends BaseService
     }
 
     /**
-     * Creates a resource from the given data
+     * Creates a resource from the given data.
      *
-     * @param  array  $data
+     * @param array $data
      *
      * @return GetCandy\Api\Models\Channel
      */
@@ -48,10 +48,10 @@ class ChannelService extends BaseService
     }
 
     /**
-     * Updates a resource from the given data
+     * Updates a resource from the given data.
      *
-     * @param  string $id
-     * @param  array  $data
+     * @param string $id
+     * @param array  $data
      *
      * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @throws GetCandy\Api\Exceptions\MinimumRecordRequiredException
@@ -63,7 +63,7 @@ class ChannelService extends BaseService
         $channel = $this->getByHashedId($hashedId);
 
         if (!$channel) {
-            return null;
+            return;
         }
 
         $channel->fill($data);
@@ -77,11 +77,12 @@ class ChannelService extends BaseService
         return $channel;
     }
 
-
     /**
      * @param $id
-     * @return mixed
+     *
      * @throws MinimumRecordRequiredException
+     *
+     * @return mixed
      */
     public function delete($id)
     {
@@ -115,12 +116,13 @@ class ChannelService extends BaseService
     public function getChannelsWithAvailability($model, $relation)
     {
         $channels = $this->model->with([camel_case($relation) => function ($q) use ($model, $relation) {
-            $q->where($relation . '.id', $model->id);
+            $q->where($relation.'.id', $model->id);
         }])->get();
         foreach ($channels as $channel) {
             $model = $channel->{camel_case($relation)}->first();
             $channel->published_at = $model ? $model->pivot->published_at : null;
         }
+
         return $channels;
     }
 }

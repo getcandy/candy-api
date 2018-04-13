@@ -2,13 +2,10 @@
 
 namespace GetCandy\Api\Products\Models;
 
-use GetCandy\Api\Attributes\Models\Attribute;
-use GetCandy\Api\Scaffold\BaseModel;
-use GetCandy\Api\Traits\HasAttributes;
 use GetCandy\Api\Assets\Models\Asset;
+use GetCandy\Api\Scaffold\BaseModel;
 use GetCandy\Api\Taxes\Models\Tax;
-use PriceCalculator;
-use Facades\GetCandy\Api\Taxes\TaxCalculator;
+use GetCandy\Api\Traits\HasAttributes;
 
 class ProductVariant extends BaseModel
 {
@@ -17,13 +14,13 @@ class ProductVariant extends BaseModel
     protected $pricing;
 
     /**
-     * The Hashid Channel for encoding the id
+     * The Hashid Channel for encoding the id.
+     *
      * @var string
      */
     protected $hashids = 'product';
 
     protected $fillable = ['options', 'price', 'sku', 'stock'];
-
 
     public function product()
     {
@@ -42,7 +39,7 @@ class ProductVariant extends BaseModel
             if (!empty($option[$locale])) {
                 $localeUsed = $locale;
             }
-            $name .= $option[$localeUsed] . ($i == count($this->options) ? ', ' : '');
+            $name .= $option[$localeUsed].($i == count($this->options) ? ', ' : '');
         }
 
         return $name;
@@ -54,10 +51,11 @@ class ProductVariant extends BaseModel
         $option_data = $this->product->option_data;
 
         foreach (json_decode($val, true) as $option => $value) {
-            if (! empty($data = $option_data[$option])) {
+            if (!empty($data = $option_data[$option])) {
                 $values[$option] = $data['options'][$value]['values'];
             }
         }
+
         return $values;
     }
 
@@ -66,6 +64,7 @@ class ProductVariant extends BaseModel
         if (!$this->pricing) {
             $this->pricing = app('api')->productVariants()->getVariantPrice($this, app('auth')->user());
         }
+
         return $this->pricing;
     }
 

@@ -3,8 +3,8 @@
 namespace GetCandy\Api\Http\Controllers\Auth;
 
 use GetCandy\Api\Http\Controllers\BaseController;
-use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use GetCandy\Api\Http\Requests\Auth\ForgotPasswordRequest;
+use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Support\Facades\Password;
 
 class ForgotPasswordController extends BaseController
@@ -27,11 +27,11 @@ class ForgotPasswordController extends BaseController
         $this->middleware('guest');
     }
 
-
     /**
      * Send a reset link to the given user.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
     public function sendResetLinkEmail(ForgotPasswordRequest $request)
@@ -64,13 +64,14 @@ class ForgotPasswordController extends BaseController
     /**
      * Get the response for a successful password reset link.
      *
-     * @param  string  $response
+     * @param string $response
+     *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
     protected function sendResetLinkResponse($token)
     {
         return $this->respondWithSuccess([
-            'token' => $token
+            'token' => $token,
         ]);
     }
 
@@ -78,7 +79,8 @@ class ForgotPasswordController extends BaseController
      * Get the response for a failed password reset link.
      *
      * @param  \Illuminate\Http\Request
-     * @param  string  $response
+     * @param string $response
+     *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
     protected function sendResetLinkFailedResponse(ForgotPasswordRequest $request, $response)

@@ -25,7 +25,7 @@ class UpdateUrlsRequest extends FormRequest
     public function rules()
     {
         return [
-            'urls.*.slug' => 'required|unique:routes,slug'
+            'urls.*.slug' => 'required|unique:routes,slug',
         ];
     }
 }

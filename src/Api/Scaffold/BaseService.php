@@ -3,9 +3,8 @@
 namespace GetCandy\Api\Scaffold;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
-use GetCandy\Jobs\Attributes\SyncAttributeDataJob;
 use GetCandy\Api\Attributes\Events\AttributableSavedEvent;
+use Illuminate\Database\Eloquent\Model;
 
 abstract class BaseService
 {
@@ -19,24 +18,31 @@ abstract class BaseService
     public function with(array $data)
     {
         $this->with = $data;
+
         return $this;
     }
 
     /**
-     * Returns model by a given hashed id
-     * @param  string $id
-     * @throws  Illuminate\Database\Eloquent\ModelNotFoundException
+     * Returns model by a given hashed id.
+     *
+     * @param string $id
+     *
+     * @throws Illuminate\Database\Eloquent\ModelNotFoundException
+     *
      * @return Illuminate\Database\Eloquent\Model
      */
     public function getByHashedId($id)
     {
         $id = $this->model->decodeId($id);
+
         return $this->model->withoutGlobalScopes()->findOrFail($id);
     }
 
     /**
-     * Get a collection of models from given Hashed IDs
-     * @param  array  $ids
+     * Get a collection of models from given Hashed IDs.
+     *
+     * @param array $ids
+     *
      * @return Illuminate\Database\Eloquent\Collection
      */
     public function getByHashedIds(array $ids)
@@ -45,12 +51,14 @@ abstract class BaseService
         foreach ($ids as $hash) {
             $parsedIds[] = $this->model->decodeId($hash);
         }
+
         return $this->model->withoutGlobalScopes()->with($this->with)->find($parsedIds);
     }
 
     /**
-     * Returns the record count for the model
-     * @return Int
+     * Returns the record count for the model.
+     *
+     * @return int
      */
     public function count()
     {
@@ -63,8 +71,10 @@ abstract class BaseService
     }
 
     /**
-     * Gets the decoded id for the model
-     * @param  string $hash
+     * Gets the decoded id for the model.
+     *
+     * @param string $hash
+     *
      * @return int
      */
     public function getDecodedId($hash)
@@ -88,12 +98,14 @@ abstract class BaseService
         foreach ($ids as $id) {
             $decoded[] = $this->getDecodedId($id);
         }
+
         return $decoded;
     }
 
     /**
-     * Returns the record considered the default
-     * @return Mixed
+     * Returns the record considered the default.
+     *
+     * @return mixed
      */
     public function getDefaultRecord()
     {
@@ -101,8 +113,9 @@ abstract class BaseService
     }
 
     /**
-     * Get a record by it's handle
-     * @return Mixed
+     * Get a record by it's handle.
+     *
+     * @return mixed
      */
     public function getByHandle($handle)
     {
@@ -110,9 +123,11 @@ abstract class BaseService
     }
 
     /**
-     * Gets paginated data for the record
-     * @param  integer $length How many results per page
-     * @param  int  $page   The page to start
+     * Gets paginated data for the record.
+     *
+     * @param int $length How many results per page
+     * @param int $page   The page to start
+     *
      * @return Illuminate\Pagination\LengthAwarePaginator
      */
     public function getPaginatedData($length = 50, $page = null)
@@ -121,8 +136,9 @@ abstract class BaseService
     }
 
     /**
-     * Gets a new suggested default model
-     * @return Mixed
+     * Gets a new suggested default model.
+     *
+     * @return mixed
      */
     public function getNewSuggestedDefault()
     {
@@ -130,7 +146,8 @@ abstract class BaseService
     }
 
     /**
-     * Sets the passed model as the new default
+     * Sets the passed model as the new default.
+     *
      * @param Illuminate\Database\Eloquent\Model &$model
      */
     protected function setNewDefault(&$model)
@@ -143,9 +160,11 @@ abstract class BaseService
     }
 
     /**
-     * Determines whether a record exists by a given code
-     * @param  string $code
-     * @return boolean
+     * Determines whether a record exists by a given code.
+     *
+     * @param string $code
+     *
+     * @return bool
      */
     public function existsByCode($code)
     {
@@ -153,17 +172,21 @@ abstract class BaseService
     }
 
     /**
-     * Checks whether a record exists with the given hashed id
-     * @param  string $hashedId
-     * @return boolean
+     * Checks whether a record exists with the given hashed id.
+     *
+     * @param string $hashedId
+     *
+     * @return bool
      */
     public function existsByHashedId($hashedId)
     {
         if (is_array($hashedId)) {
             $ids = $this->getDecodedIds($hashedId);
+
             return $this->model->whereIn('id', $ids)->count();
         }
         $id = $this->model->decodeId($hashedId);
+
         return $this->model->where('id', '=', $id)->exists();
     }
 
@@ -172,9 +195,9 @@ abstract class BaseService
         return $this->model->get();
     }
 
-
     /**
-     * Gets the attributes related to the model
+     * Gets the attributes related to the model.
+     *
      * @return Collection
      */
     public function getAttributes($id)
@@ -183,10 +206,13 @@ abstract class BaseService
     }
 
     /**
-     * Updates the attributes for a model
-     * @param  String  $model
-     * @param  array  $data
+     * Updates the attributes for a model.
+     *
+     * @param string $model
+     * @param array  $data
+     *
      * @throws Illuminate\Database\Eloquent\ModelNotFoundException
+     *
      * @return Model
      */
     public function updateAttributes($id, array $data)
@@ -198,13 +224,16 @@ abstract class BaseService
             $ids[] = app('api')->attributes()->getDecodedId($attribute);
         }
         $model->attributes()->sync($ids);
+
         return $model;
     }
 
     /**
-     * Validates the integrity of the attribute data
-     * @param  array  $data
-     * @return boolean
+     * Validates the integrity of the attribute data.
+     *
+     * @param array $data
+     *
+     * @return bool
      */
     public function validateAttributeData(array $data)
     {
@@ -213,14 +242,17 @@ abstract class BaseService
                 return false;
             }
         }
+
         return true;
     }
 
     /**
-     * Checks the structure of an array against another
-     * @param  array|null $structure
-     * @param  array|null     $data
-     * @return boolean
+     * Checks the structure of an array against another.
+     *
+     * @param array|null $structure
+     * @param array|null $data
+     *
+     * @return bool
      */
     protected function validateStructure(array $structure = null, $data = null)
     {
@@ -229,11 +261,13 @@ abstract class BaseService
                 if (!is_array($data) || !array_key_exists($key, $data)) {
                     return false;
                 }
+
                 return $this->validateStructure($structure[$key], $data[$key]);
             } else {
                 return isset($data[$key]);
             }
         }
+
         return true;
     }
 
@@ -243,6 +277,7 @@ abstract class BaseService
         if (is_array($value)) {
             return $query->whereIn($column, $value)->first();
         }
+
         return $query->where($column, '=', $value)->first();
     }
 
@@ -255,13 +290,13 @@ abstract class BaseService
             foreach ($urls as $locale => $url) {
                 $i = 1;
                 while (app('api')->routes()->slugExists($url) || $previousUrl == $url) {
-                    $url = $url . '-' . $i;
+                    $url = $url.'-'.$i;
                     $i++;
                 }
                 $unique[] = [
-                    'locale' => $locale,
-                    'slug' => $url,
-                    'default' => $locale == app()->getLocale() ? true : false
+                    'locale'  => $locale,
+                    'slug'    => $url,
+                    'default' => $locale == app()->getLocale() ? true : false,
                 ];
                 $previousUrl = $url;
             }
@@ -269,13 +304,13 @@ abstract class BaseService
             $i = 1;
             $url = $urls;
             while (app('api')->routes()->slugExists($url)) {
-                $url = $url . '-' . $i;
+                $url = $url.'-'.$i;
                 $i++;
             }
             $unique[] = [
-                'locale' => app()->getLocale(),
-                'slug' => $url,
-                'default' => true
+                'locale'  => app()->getLocale(),
+                'slug'    => $url,
+                'default' => true,
             ];
         }
 
@@ -284,14 +319,12 @@ abstract class BaseService
 
     public function getSearchedIds($ids = [])
     {
-
         $parsedIds = [];
         foreach ($ids as $hash) {
             $parsedIds[] = $this->model->decodeId($hash);
         }
 
         $placeholders = implode(',', array_fill(0, count($parsedIds), '?')); // string for the query
-
 
         $query = $this->model->with('primaryAsset')
             ->withoutGlobalScopes()
@@ -301,7 +334,7 @@ abstract class BaseService
             $query = $query->orderByRaw("field(id,{$placeholders})", $parsedIds);
         }
 
-        clock()->startEvent('s_ids', 'Get searched ' . get_class($this->model) .  ' ids');
+        clock()->startEvent('s_ids', 'Get searched '.get_class($this->model).' ids');
         $results = $query->get();
         clock()->endEvent('s_ids');
 
@@ -309,7 +342,7 @@ abstract class BaseService
     }
 
     /**
-     * Gets the mapping for the channel data
+     * Gets the mapping for the channel data.
      *
      * @param array $data
      *
@@ -321,15 +354,18 @@ abstract class BaseService
         foreach ($data as $channel) {
             $channelModel = app('api')->channels()->getByHashedId($channel['id']);
             $channelData[$channelModel->id] = [
-                'published_at' => $channel['published_at'] ? Carbon::parse($channel['published_at']) : null
+                'published_at' => $channel['published_at'] ? Carbon::parse($channel['published_at']) : null,
             ];
         }
+
         return $channelData;
     }
 
     /**
-     * Maps customer group data for a model
-     * @param  array $groups
+     * Maps customer group data for a model.
+     *
+     * @param array $groups
+     *
      * @return array
      */
     protected function mapCustomerGroupData($groups)
@@ -338,18 +374,19 @@ abstract class BaseService
         foreach ($groups as $group) {
             $groupModel = app('api')->customerGroups()->getByHashedId($group['id']);
             $groupData[$groupModel->id] = [
-                'visible' => $group['visible'],
-                'purchasable' => $group['purchasable']
+                'visible'     => $group['visible'],
+                'purchasable' => $group['purchasable'],
             ];
         }
+
         return $groupData;
     }
 
     /**
-     * Update a given resource from data
+     * Update a given resource from data.
      *
      * @param string $hashedId
-     * @param array $data
+     * @param array  $data
      *
      * @return Model
      */
@@ -377,9 +414,11 @@ abstract class BaseService
     }
 
     /**
-     * Creates a URL for a product
-     * @param  string $hashedId
-     * @param  array  $data
+     * Creates a URL for a product.
+     *
+     * @param string $hashedId
+     * @param array  $data
+     *
      * @return Model
      */
     public function createUrl($hashedId, array $data)
@@ -388,22 +427,24 @@ abstract class BaseService
 
         try {
             $existing = app('api')->routes()->getBySlug($data['slug']);
+
             return $model;
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
         }
 
         $model->routes()->create([
-            'locale' => $data['locale'],
-            'slug' => $data['slug'],
+            'locale'      => $data['locale'],
+            'slug'        => $data['slug'],
             'description' => !empty($data['description']) ? $data['description'] : null,
-            'redirect' => !empty($data['redirect']) ? true : false,
-            'default' => false
+            'redirect'    => !empty($data['redirect']) ? true : false,
+            'default'     => false,
         ]);
+
         return $model;
     }
 
     /**
-     * Sets the channel mapping
+     * Sets the channel mapping.
      *
      * @param array $channels
      *
@@ -415,9 +456,10 @@ abstract class BaseService
         foreach ($channels as $channel) {
             $channelModel = app('api')->channels()->getByHashedId($channel['id']);
             $channelData[$channelModel->id] = [
-                'published_at' => $channel['published_at'] ? Carbon::parse($channel['published_at']) : null
+                'published_at' => $channel['published_at'] ? Carbon::parse($channel['published_at']) : null,
             ];
         }
+
         return $channelData;
     }
 }

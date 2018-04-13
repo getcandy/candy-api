@@ -6,9 +6,8 @@ use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Users\CreateRequest;
 use GetCandy\Api\Http\Requests\Users\UpdateRequest;
 use GetCandy\Api\Http\Transformers\Fractal\Users\UserTransformer;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
 use GetCandy\Api\Users\Contracts\UserContract;
+use Illuminate\Http\Request;
 
 class UserController extends BaseController
 {
@@ -18,8 +17,10 @@ class UserController extends BaseController
     {
         $this->users = $users;
     }
+
     /**
-     * Handles the request to show a listing of all users
+     * Handles the request to show a listing of all users.
+     *
      * @return Json
      */
     public function index(Request $request)
@@ -30,12 +31,15 @@ class UserController extends BaseController
             $request->keywords,
             $request->ids
         );
-        return $this->respondWithCollection($paginator, new UserTransformer);
+
+        return $this->respondWithCollection($paginator, new UserTransformer());
     }
 
     /**
-     * Handles the request to show a user based on their hashed ID
-     * @param  String $id
+     * Handles the request to show a user based on their hashed ID.
+     *
+     * @param string $id
+     *
      * @return Json
      */
     public function show($id)
@@ -46,18 +50,21 @@ class UserController extends BaseController
             return $this->errorNotFound('Cannot find user');
         }
 
-        return $this->respondWithItem($user, new UserTransformer);
+        return $this->respondWithItem($user, new UserTransformer());
     }
 
     /**
-     * Handles the request to create a new user
-     * @param  CreateUserRequest $request
+     * Handles the request to create a new user.
+     *
+     * @param CreateUserRequest $request
+     *
      * @return Json
      */
     public function store(CreateRequest $request)
     {
         $user = app('api')->users()->create($request->all());
-        return $this->respondWithItem($user, new UserTransformer);
+
+        return $this->respondWithItem($user, new UserTransformer());
     }
 
     public function getCurrentUser(Request $request)
@@ -65,12 +72,14 @@ class UserController extends BaseController
         $user = $this->users->getByHashedId(
             $request->user()->encodedId()
         );
-        return $this->respondWithItem($user, new UserTransformer);
+
+        return $this->respondWithItem($user, new UserTransformer());
     }
 
     public function update($userId, UpdateRequest $request)
     {
         $user = app('api')->users()->update($userId, $request->all());
-        return $this->respondWithItem($user, new UserTransformer);
+
+        return $this->respondWithItem($user, new UserTransformer());
     }
 }

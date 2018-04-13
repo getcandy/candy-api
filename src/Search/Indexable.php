@@ -21,18 +21,19 @@ class Indexable
         if (isset($this->data[$attribute])) {
             return $this->data[$attribute];
         }
-        return null;
     }
 
     public function setId($id)
     {
         $this->id = $id;
+
         return $this;
     }
 
     public function setIndex($index)
     {
         $this->index = $index;
+
         return $this;
     }
 
@@ -54,11 +55,13 @@ class Indexable
     public function setData(array $data)
     {
         $this->data = $data;
+
         return $this;
     }
 
     /**
-     * Adds an items to an array
+     * Adds an items to an array.
+     *
      * @param [type] $key   [description]
      * @param [type] $value [description]
      */
@@ -72,12 +75,14 @@ class Indexable
             $this->data[$key] = [];
         }
         array_push($this->data[$key], $value);
+
         return $this;
     }
 
     public function set($key, $value)
     {
         $this->data[$key] = $value;
+
         return $this;
     }
 }

@@ -12,12 +12,12 @@ use GetCandy\Api\Installer\Factories\UserFactory;
 class GetCandyInstaller
 {
     protected $factories = [
-        'attributes' => ApiAttributeFactory::class,
-        'currencies' => CurrencyFactory::class,
+        'attributes'      => ApiAttributeFactory::class,
+        'currencies'      => CurrencyFactory::class,
         'customer_groups' => CustomerGroupFactory::class,
-        'language' => LanguageFactory::class,
-        'taxes' => TaxFactory::class,
-        'users' => UserFactory::class
+        'language'        => LanguageFactory::class,
+        'taxes'           => TaxFactory::class,
+        'users'           => UserFactory::class,
     ];
 
     public function install($installer)
@@ -25,6 +25,7 @@ class GetCandyInstaller
         if (!isset($this->factories[$factory])) {
             return false;
         }
+
         return app()->make($this->factories[$installer])->init();
     }
 }

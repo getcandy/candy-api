@@ -26,8 +26,8 @@ class CreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|unique:taxes,name',
-            'percentage' => 'required'
+            'name'       => 'required|unique:taxes,name',
+            'percentage' => 'required',
         ];
     }
 }

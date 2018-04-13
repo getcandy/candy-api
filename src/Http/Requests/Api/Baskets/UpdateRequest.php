@@ -1,4 +1,5 @@
 <?php
+
 namespace GetCandy\Api\Http\Requests\Baskets;
 
 use GetCandy\Api\Http\Requests\FormRequest;
@@ -24,9 +25,9 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'variants' => 'required|array',
-            'variants.*.id' => 'required|hashid_is_valid:product_variants',
-            'variants.*.price' => 'required|numeric',
+            'variants'            => 'required|array',
+            'variants.*.id'       => 'required|hashid_is_valid:product_variants',
+            'variants.*.price'    => 'required|numeric',
             'variants.*.quantity' => 'required|numeric|min:1',
         ];
     }

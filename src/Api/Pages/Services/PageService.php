@@ -15,54 +15,57 @@ class PageService extends BaseService
     }
 
     /**
-     * Creates a page
-     * @param  array                $data
-     * @param  string|Language      $languageCode
-     * @param  string|Layout        $layout
-     * @param  string|Channel       $channel
-     * @param  string               $type
-     * @param  Model|null           $relation
+     * Creates a page.
+     *
+     * @param array           $data
+     * @param string|Language $languageCode
+     * @param string|Layout   $layout
+     * @param string|Channel  $channel
+     * @param string          $type
+     * @param Model|null      $relation
+     *
      * @throws InvalidLanguageException
      * @throws Symfony\Component\HttpKernel\Exception\HttpException
+     *
      * @return Page
      */
     public function create(array $data, $languageCode, $layout, $channel, $type = null, Model $relation = null)
     {
         $page = $this->model;
 
-        /**
+        /*
          * Figure out which language this page belongs to
          */
-        if (! $languageCode instanceof Model) {
+        if (!$languageCode instanceof Model) {
             $language = app('api')->languages()->getEnabledByCode($languageCode);
         } else {
             $language = $languageCode;
         }
 
-        if (! $language) {
+        if (!$language) {
             throw new InvalidLanguageException(trans('response.error.invalid_lang', ['lang' => $languageCode]));
         }
 
         $page->language()->associate($language);
 
-        /**
+        /*
          * Sort out the layout for this page
          */
-        if (! $layout instanceof Model) {
+        if (!$layout instanceof Model) {
             $layout = app('api')->layouts()->getByHashedId($layout);
         }
 
-        if (! $layout) {
+        if (!$layout) {
             abort(400);
         }
 
         $page->layout()->associate($layout);
 
-        /**
+        /*
          * Sort out which channel this page belongs to
          */
 
-        if (! $channel instanceof Model) {
+        if (!$channel instanceof Model) {
             if ($channel) {
                 $channel = app('api')->channels()->getByHashedId($channel);
             } else {
@@ -89,12 +92,15 @@ class PageService extends BaseService
     }
 
     /**
-     * Finds a page based on it's channel, language and slug
-     * @param  string $channel
-     * @param  string $lang
-     * @param  string $slug
+     * Finds a page based on it's channel, language and slug.
+     *
+     * @param string $channel
+     * @param string $lang
+     * @param string $slug
+     *
      * @throws Illuminate\Database\Eloquent\ModelNotFoundException
-     * @return Mixed
+     *
+     * @return mixed
      */
     public function findPage($channel, $lang, $slug = null)
     {
@@ -122,23 +128,26 @@ class PageService extends BaseService
 
         if ($model->language->code != app()->getLocale()) {
             app()->setLocale($model->language->code);
-        };
+        }
 
         return $result->firstOrFail();
     }
 
     /**
-     * Gets a unique slug for a page
-     * @param  string $slug
+     * Gets a unique slug for a page.
+     *
+     * @param string $slug
+     *
      * @return string
      */
     protected function getUniqueSlug($slug)
     {
         $suffixe = '1';
         while ($this->model->where('slug', '=', $slug)->exists()) {
-            $slug = $slug . '-' . $suffixe;
-            ++$suffixe;
+            $slug = $slug.'-'.$suffixe;
+            $suffixe++;
         }
+
         return $slug;
     }
 }

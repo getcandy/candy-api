@@ -12,11 +12,11 @@ class CountryTransformer extends BaseTransformer
     public function transform(Country $country)
     {
         return [
-            'id' => $country->encodedId(),
-            'name' => $country->name,
-            'region' => $country->region,
-            'iso_a_2' => $country->iso_a_2,
-            'iso_a_3' => $country->iso_a_3,
+            'id'          => $country->encodedId(),
+            'name'        => $country->name,
+            'region'      => $country->region,
+            'iso_a_2'     => $country->iso_a_2,
+            'iso_a_3'     => $country->iso_a_3,
             'iso_numeric' => $country->iso_numeric,
         ];
     }

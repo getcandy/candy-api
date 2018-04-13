@@ -20,8 +20,9 @@ class StandardProvider extends AbstractProvider
             }
             if ($total > $item->min_basket && $weight >= $item->min_weight) {
                 return $item;
-            };
+            }
         })->sortBy('rate')->first();
+
         return $price;
     }
 }

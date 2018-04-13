@@ -40,13 +40,11 @@ trait HasAttributes
         if (!empty($this->attribute_data[$handle][$channel][$userLocale])) {
             return $this->attribute_data[$handle][$channel][$userLocale];
         } elseif (empty($this->attribute_data[$handle][$channel][$userLocale])) {
-            return null;
+            return;
         } elseif (is_null($this->attribute_data[$handle][$channel][$userLocale])) {
             $channel = $defaultChannel->handle;
             $locale = $locale->lang;
         }
-
-        return null;
     }
 
     public function getNameAttribute()
@@ -70,8 +68,10 @@ trait HasAttributes
     }
 
     /**
-     * Prepares the attribute data for saving to the database
-     * @param  array  $data
+     * Prepares the attribute data for saving to the database.
+     *
+     * @param array $data
+     *
      * @return array
      */
     public function parseAttributeData(array $data)
@@ -92,14 +92,15 @@ trait HasAttributes
                     array_set($newData[$attribute], $map, $value);
                 }
             }
-
         }
+
         return $newData;
     }
 
     /**
-     * Gets the current attribute data mapping
-     * @return Array
+     * Gets the current attribute data mapping.
+     *
+     * @return array
      */
     public function getDataMapping()
     {
@@ -115,6 +116,7 @@ trait HasAttributes
         foreach ($channels as $channel) {
             $structure[$channel->handle] = $languagesArray;
         }
+
         return $structure;
     }
 

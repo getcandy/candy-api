@@ -1,7 +1,7 @@
 <?php
+
 namespace GetCandy\Api\Orders\Listeners;
 
-use GetCandy\Api\Attributes\Events\AttributableSavedEvent;
 use GetCandy\Api\Baskets\Events\BasketStoredEvent;
 use GetCandy\Api\Discounts\Factory;
 
@@ -17,7 +17,8 @@ class SyncWithBasketListener
     /**
      * Handle the event.
      *
-     * @param  OrderShipped  $event
+     * @param OrderShipped $event
+     *
      * @return void
      */
     public function handle(BasketStoredEvent $event)

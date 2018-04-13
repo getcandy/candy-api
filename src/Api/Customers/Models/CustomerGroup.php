@@ -3,10 +3,10 @@
 namespace GetCandy\Api\Customers\Models;
 
 use GetCandy\Api\Auth\Models\User;
-use GetCandy\Api\Scaffold\BaseModel;
-use GetCandy\Api\Products\Models\Product;
 use GetCandy\Api\Categories\Models\Category;
 use GetCandy\Api\Collections\Models\Collection;
+use GetCandy\Api\Products\Models\Product;
+use GetCandy\Api\Scaffold\BaseModel;
 use GetCandy\Api\Shipping\Models\ShippingPrice;
 
 class CustomerGroup extends BaseModel

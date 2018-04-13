@@ -1,7 +1,8 @@
 <?php
+
 namespace App\Http\Responses;
 
-class PostIndexResponse extends Response
+class ProductResponse extends Response
 {
     public function __construct($posts)
     {
@@ -17,11 +18,11 @@ class PostIndexResponse extends Response
     {
         return $this->posts->map(function ($post) {
             return [
-                'title' => $post->title,
-                'description' => $post->description,
-                'body' => $post->body,
+                'title'          => $post->title,
+                'description'    => $post->description,
+                'body'           => $post->body,
                 'published_date' => $post->published_at->toIso8601String(),
-                'created' => $post->created_at->toIso8601String(),
+                'created'        => $post->created_at->toIso8601String(),
             ];
         });
     }

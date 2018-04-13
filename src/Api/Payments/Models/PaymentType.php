@@ -1,10 +1,10 @@
 <?php
+
 namespace GetCandy\Api\Payments\Models;
 
-use GetCandy\Api\Scaffold\BaseModel;
-use GetCandy\Api\Orders\Models\Order;
-use GetCandy\Api\Traits\HasCustomerGroups;
 use GetCandy\Api\Customers\Models\CustomerGroup;
+use GetCandy\Api\Scaffold\BaseModel;
+use GetCandy\Api\Traits\HasCustomerGroups;
 
 class PaymentType extends BaseModel
 {

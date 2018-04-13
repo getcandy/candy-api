@@ -11,15 +11,16 @@ class AssetTransformTransformer extends BaseTransformer
     public function transform(AssetTransform $transform)
     {
         return [
-            'id' => $transform->encodedId(),
+            'id'     => $transform->encodedId(),
             'handle' => $transform->transform->handle,
-            'url' => $this->getUrl($transform)
+            'url'    => $this->getUrl($transform),
         ];
     }
 
     protected function getUrl($transform)
     {
-        $path = $transform->location . '/' . $transform->filename;
+        $path = $transform->location.'/'.$transform->filename;
+
         return Storage::disk($transform->asset->source->disk)->url($path);
     }
 }

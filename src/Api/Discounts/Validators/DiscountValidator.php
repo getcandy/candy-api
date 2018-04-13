@@ -18,6 +18,7 @@ class DiscountValidator
                 $previous = $item;
             }
         }
+
         return true;
     }
 
@@ -44,7 +45,7 @@ class DiscountValidator
 
         $factory = app('api')->discounts()->getFactory($discount);
 
-        $check = (new Factory)->checkCriteria(
+        $check = (new Factory())->checkCriteria(
             $factory,
             $basket->user,
             $basket

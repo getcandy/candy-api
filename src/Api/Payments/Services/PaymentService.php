@@ -1,10 +1,11 @@
 <?php
+
 namespace GetCandy\Api\Payments\Services;
 
 use GetCandy\Api\Orders\Models\Order;
-use GetCandy\Api\Scaffold\BaseService;
-use GetCandy\Api\Payments\Models\Transaction;
 use GetCandy\Api\Payments\Exceptions\AlreadyRefundedException;
+use GetCandy\Api\Payments\Models\Transaction;
+use GetCandy\Api\Scaffold\BaseService;
 
 class PaymentService extends BaseService
 {
@@ -14,41 +15,43 @@ class PaymentService extends BaseService
 
     public function __construct()
     {
-        $this->model = new Transaction;
+        $this->model = new Transaction();
     }
 
     /**
-     * Gets the payment provider class
+     * Gets the payment provider class.
      *
      * @return void
      */
     public function getProvider()
     {
         if (!$this->provider) {
-            $this->provider = config($this->configPath . '.gateway', 'braintree');
+            $this->provider = config($this->configPath.'.gateway', 'braintree');
         }
 
         $provider = config(
-            $this->configPath . '.providers.' . $this->provider
+            $this->configPath.'.providers.'.$this->provider
         );
 
         return app()->make($provider);
     }
 
     /**
-     * Set the provider
+     * Set the provider.
      *
      * @param string $provider
+     *
      * @return mixed
      */
     public function setProvider($provider)
     {
         $this->provider = $provider;
+
         return $this;
     }
 
     /**
-     * Validates a payment token
+     * Validates a payment token.
      *
      * @param string $token
      *
@@ -60,24 +63,25 @@ class PaymentService extends BaseService
     }
 
     /**
-     * Charge the order
+     * Charge the order.
      *
-     * @param Order $order
+     * @param Order  $order
      * @param string $token
      * @param string $type
      *
-     * @return boolean
+     * @return bool
      */
     public function charge(Order $order, $token = null, $type = null)
     {
         if ($type) {
             $this->setProvider($type->driver);
         }
+
         return $this->getProvider()->charge($token, $order);
     }
 
     /**
-     * Refund a sale
+     * Refund a sale.
      *
      * @param string $token
      *
@@ -97,22 +101,22 @@ class PaymentService extends BaseService
         if ($result->success) {
             $data = [
                 'transaction_id' => $result->transaction->id,
-                'success' => true,
-                'amount' => -abs($result->transaction->amount),
-                'status' => $result->transaction->type,
-                'merchant' => '-',
-                'order' => $order,
-                'notes' => $result->message
+                'success'        => true,
+                'amount'         => -abs($result->transaction->amount),
+                'status'         => $result->transaction->type,
+                'merchant'       => '-',
+                'order'          => $order,
+                'notes'          => $result->message,
             ];
         } else {
             $data = [
                 'transaction_id' => $result->params['id'],
-                'success' => false,
-                'amount' => $result->params['transaction']['amount'],
-                'status' => 'error',
-                'merchant' => $result->params['merchantId'],
-                'order' => $order,
-                'notes' => ''
+                'success'        => false,
+                'amount'         => $result->params['transaction']['amount'],
+                'status'         => 'error',
+                'merchant'       => $result->params['merchantId'],
+                'order'          => $order,
+                'notes'          => '',
             ];
         }
 
@@ -133,7 +137,7 @@ class PaymentService extends BaseService
     }
 
     /**
-     * Creates a transaction
+     * Creates a transaction.
      *
      * @param array $data
      *
@@ -141,7 +145,7 @@ class PaymentService extends BaseService
      */
     protected function createTransaction(array $data)
     {
-        $transaction = new Transaction;
+        $transaction = new Transaction();
         $transaction->success = $data['success'];
         $transaction->status = $data['status'];
         $transaction->amount = $data['amount'];
@@ -150,11 +154,12 @@ class PaymentService extends BaseService
         $transaction->order_id = $data['order']->id;
         $transaction->notes = $data['notes'];
         $transaction->save();
+
         return $transaction;
     }
 
     /**
-     * Voids a transaction
+     * Voids a transaction.
      *
      * @param string $transactionId
      *
@@ -181,6 +186,7 @@ class PaymentService extends BaseService
         }
 
         $transaction->save();
+
         return $transaction;
     }
 }

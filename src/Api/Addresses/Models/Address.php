@@ -1,8 +1,8 @@
 <?php
+
 namespace GetCandy\Api\Addresses\Models;
 
 use GetCandy\Api\Auth\Models\User;
-use GetCandy\Api\Traits\Hashids;
 use GetCandy\Api\Scaffold\BaseModel;
 
 class Address extends BaseModel
@@ -26,7 +26,7 @@ class Address extends BaseModel
         'lastname',
         'shipping',
         'state',
-        'zip'
+        'zip',
     ];
 
     public function getFieldsAttribute()
@@ -41,7 +41,7 @@ class Address extends BaseModel
             'county',
             'state',
             'country',
-            'zip'
+            'zip',
         ]);
     }
 

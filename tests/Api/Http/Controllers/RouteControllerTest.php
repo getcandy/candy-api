@@ -14,12 +14,12 @@ class RouteControllerTest extends TestCase
     public function testIndex()
     {
         $response = $this->get($this->url('routes'), [
-            'Authorization' => 'Bearer ' . $this->accessToken()
+            'Authorization' => 'Bearer '.$this->accessToken(),
         ]);
 
         $response->assertJsonStructure([
             'data' => [['id', 'default', 'locale', 'slug', 'type']],
-            'meta' => ['pagination']
+            'meta' => ['pagination'],
         ]);
 
         $this->assertEquals(200, $response->status());
@@ -29,7 +29,7 @@ class RouteControllerTest extends TestCase
     {
         $response = $this->get($this->url('routes'), [
             'Authorization' => 'Bearer foo.bar.bing',
-            'Accept' => 'application/json'
+            'Accept'        => 'application/json',
         ]);
         $this->assertEquals(401, $response->getStatusCode());
     }
@@ -39,12 +39,12 @@ class RouteControllerTest extends TestCase
         // Get a channel
         $route = Route::first();
 
-        $response = $this->get($this->url('routes/' . $route->slug), [
-            'Authorization' => 'Bearer ' . $this->accessToken()
+        $response = $this->get($this->url('routes/'.$route->slug), [
+            'Authorization' => 'Bearer '.$this->accessToken(),
         ]);
 
         $response->assertJsonStructure([
-            'data' => ['id', 'default', 'locale', 'slug', 'type']
+            'data' => ['id', 'default', 'locale', 'slug', 'type'],
         ]);
 
         $this->assertEquals(200, $response->status());
@@ -55,16 +55,16 @@ class RouteControllerTest extends TestCase
         // Get a channel
         $route = Route::first();
 
-        $url = $this->url('routes/' . $route->slug, [
-            'includes' => 'element'
+        $url = $this->url('routes/'.$route->slug, [
+            'includes' => 'element',
         ]);
 
         $response = $this->get($url, [
-            'Authorization' => 'Bearer ' . $this->accessToken()
+            'Authorization' => 'Bearer '.$this->accessToken(),
         ]);
 
         $response->assertJsonStructure([
-            'data' => ['id', 'default', 'locale', 'slug', 'type']
+            'data' => ['id', 'default', 'locale', 'slug', 'type'],
         ]);
 
         $this->assertEquals(200, $response->status());
@@ -73,7 +73,7 @@ class RouteControllerTest extends TestCase
     public function testMissingShow()
     {
         $response = $this->get($this->url('routes/123456'), [
-            'Authorization' => 'Bearer ' . $this->accessToken()
+            'Authorization' => 'Bearer '.$this->accessToken(),
         ]);
         $this->assertHasErrorFormat($response);
         $this->assertEquals(404, $response->status());

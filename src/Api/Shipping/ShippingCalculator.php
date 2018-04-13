@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Shipping;
 
-use Illuminate\Support\Manager;
 use GetCandy\Api\Shipping\Providers\StandardProvider;
+use Illuminate\Support\Manager;
 
 class ShippingCalculator extends Manager
 {
@@ -12,12 +12,14 @@ class ShippingCalculator extends Manager
     /**
      * Get a driver instance.
      *
-     * @param  string  $driver
+     * @param string $driver
+     *
      * @return mixed
      */
     public function with($method)
     {
         $this->method = $method;
+
         return $this->createDriver($method->type);
     }
 

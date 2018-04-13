@@ -1,10 +1,10 @@
 <?php
+
 namespace GetCandy\Api\Shipping\Services;
 
 use GetCandy\Api\Attributes\Events\AttributableSavedEvent;
 use GetCandy\Api\Scaffold\BaseService;
 use GetCandy\Api\Shipping\Models\ShippingMethod;
-use GetCandy\Api\Shipping\Models\ShippingZone;
 use GetCandy\Api\Shipping\ShippingCalculator;
 
 class ShippingMethodService extends BaseService
@@ -15,7 +15,7 @@ class ShippingMethodService extends BaseService
     }
 
     /**
-     * Create a shipping method
+     * Create a shipping method.
      *
      * @param array $data
      *
@@ -23,12 +23,12 @@ class ShippingMethodService extends BaseService
      */
     public function create(array $data)
     {
-        $shipping = new ShippingMethod;
+        $shipping = new ShippingMethod();
         $shipping->attribute_data = $data;
         $shipping->type = $data['type'];
 
         $shipping->save();
-        
+
         if (!empty($data['channels']['data'])) {
             $shipping->channels()->sync(
                 $this->getChannelMapping($data['channels']['data'])
@@ -36,14 +36,15 @@ class ShippingMethodService extends BaseService
         }
 
         event(new AttributableSavedEvent($shipping));
+
         return $shipping;
     }
 
     /**
-     * Update a shipping method
+     * Update a shipping method.
      *
      * @param string $id
-     * @param array $data
+     * @param array  $data
      *
      * @return ShippingMethod
      */
@@ -60,14 +61,15 @@ class ShippingMethodService extends BaseService
         }
 
         $shipping->save();
+
         return $shipping;
     }
 
     /**
-     * Gets shipping methods for an order
+     * Gets shipping methods for an order.
      *
      * @param string $orderId
-     * 
+     *
      * @return ArrayCollection
      */
     public function getForOrder($orderId)
@@ -80,7 +82,7 @@ class ShippingMethodService extends BaseService
         $calculator = new ShippingCalculator(app());
 
         $options = [];
-        
+
         foreach ($zones as $zone) {
             foreach ($zone->methods as $index => $method) {
                 $option = $calculator->with($method)->calculate($basket);
@@ -90,14 +92,15 @@ class ShippingMethodService extends BaseService
                 $options[$index] = $calculator->with($method)->calculate($basket);
             }
         }
+
         return collect($options);
     }
 
     /**
-     * Updates zones for a shipping method
+     * Updates zones for a shipping method.
      *
      * @param string $methodId
-     * @param array $data
+     * @param array  $data
      *
      * @return ShippingMethod
      */
@@ -117,11 +120,11 @@ class ShippingMethodService extends BaseService
     }
 
     /**
-     * Update users for a shipping method
+     * Update users for a shipping method.
      *
      * @param string $methodId
-     * @param array $users
-     * 
+     * @param array  $users
+     *
      * @return ShippingMethod
      */
     public function updateUsers($methodId, $users = [])
@@ -138,11 +141,11 @@ class ShippingMethodService extends BaseService
     }
 
     /**
-     * Remove a user from a shipping method
+     * Remove a user from a shipping method.
      *
      * @param string $methodId
      * @param string $userId
-     * 
+     *
      * @return ShippingMethod
      */
     public function deleteUser($methodId, $userId)
@@ -150,6 +153,7 @@ class ShippingMethodService extends BaseService
         $user = app('api')->users()->getDecodedId($userId);
         $method = $this->getByHashedId($methodId);
         $method->users()->detach($user);
+
         return $method;
     }
 }

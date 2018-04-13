@@ -2,21 +2,21 @@
 
 namespace GetCandy\Api\Http\Controllers\Countries;
 
-use Illuminate\Http\Request;
 use GetCandy\Api\Http\Controllers\BaseController;
-use GetCandy\Api\Http\Transformers\Fractal\Countries\CountryTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Countries\CountryGroupTransformer;
+use Illuminate\Http\Request;
 
 class CountryController extends BaseController
 {
     /**
-     * Returns a listing of channels
+     * Returns a listing of channels.
+     *
      * @return Json
      */
     public function index(Request $request)
     {
         $collection = app('api')->countries()->getGroupedByRegion();
 
-        return $this->respondWithCollection($collection, new CountryGroupTransformer);
+        return $this->respondWithCollection($collection, new CountryGroupTransformer());
     }
 }

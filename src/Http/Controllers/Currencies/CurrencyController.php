@@ -2,12 +2,12 @@
 
 namespace GetCandy\Api\Http\Controllers\Currencies;
 
-use GetCandy\Exceptions\MinimumRecordRequiredException;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Currencies\CreateRequest;
 use GetCandy\Api\Http\Requests\Currencies\DeleteRequest;
 use GetCandy\Api\Http\Requests\Currencies\UpdateRequest;
 use GetCandy\Api\Http\Transformers\Fractal\Currencies\CurrencyTransformer;
+use GetCandy\Exceptions\MinimumRecordRequiredException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -15,18 +15,22 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class CurrencyController extends BaseController
 {
     /**
-     * Returns a listing of currencies
+     * Returns a listing of currencies.
+     *
      * @return Json
      */
     public function index(Request $request)
     {
         $paginator = app('api')->currencies()->getPaginatedData($request->per_page);
-        return $this->respondWithCollection($paginator, new CurrencyTransformer);
+
+        return $this->respondWithCollection($paginator, new CurrencyTransformer());
     }
 
     /**
-     * Handles the request to show a currency based on it's hashed ID
-     * @param  String $id
+     * Handles the request to show a currency based on it's hashed ID.
+     *
+     * @param string $id
+     *
      * @return Json
      */
     public function show($code)
@@ -36,18 +40,22 @@ class CurrencyController extends BaseController
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
-        return $this->respondWithItem($currency, new CurrencyTransformer);
+
+        return $this->respondWithItem($currency, new CurrencyTransformer());
     }
 
     /**
-     * Handles the request to create a new channel
-     * @param  CreateRequest $request
+     * Handles the request to create a new channel.
+     *
+     * @param CreateRequest $request
+     *
      * @return Json
      */
     public function store(CreateRequest $request)
     {
         $result = app('api')->currencies()->create($request->all());
-        return $this->respondWithItem($result, new CurrencyTransformer);
+
+        return $this->respondWithItem($result, new CurrencyTransformer());
     }
 
     public function update($id, UpdateRequest $request)
@@ -59,13 +67,16 @@ class CurrencyController extends BaseController
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
-        return $this->respondWithItem($result, new CurrencyTransformer);
+
+        return $this->respondWithItem($result, new CurrencyTransformer());
     }
 
     /**
-     * Handles the request to delete a currency
-     * @param  String        $id
-     * @param  DeleteRequest $request
+     * Handles the request to delete a currency.
+     *
+     * @param string        $id
+     * @param DeleteRequest $request
+     *
      * @return Json
      */
     public function destroy($id, DeleteRequest $request)
@@ -77,6 +88,7 @@ class CurrencyController extends BaseController
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
+
         return $this->respondWithNoContent();
     }
 }
