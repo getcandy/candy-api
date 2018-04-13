@@ -1,4 +1,5 @@
 <?php
+
 namespace GetCandy\Api\Http\Controllers\Products;
 
 use Illuminate\Http\Request;
