@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Search\Elastic\Indexers;
 
-use GetCandy\Api\Products\Models\Product;
 use Elastica\Document;
+use GetCandy\Api\Products\Models\Product;
 
 class ProductIndexer extends BaseIndexer
 {
@@ -18,7 +18,7 @@ class ProductIndexer extends BaseIndexer
     public $type = 'products';
 
     /**
-     * Returns the Index document ready to be added
+     * Returns the Index document ready to be added.
      * @param  Product $product
      * @return Document
      */
@@ -29,7 +29,7 @@ class ProductIndexer extends BaseIndexer
 
     public function getUpdatedDocument($model, $field, $index)
     {
-        $method = 'update' . camel_case($field);
+        $method = 'update'.camel_case($field);
         if (method_exists($this, $method)) {
             return $this->{$method}($model, $index);
         }
@@ -37,13 +37,14 @@ class ProductIndexer extends BaseIndexer
 
     public function getUpdatedDocuments($models, $field, $index)
     {
-        $method = 'update' . camel_case($field);
+        $method = 'update'.camel_case($field);
         $collection = [];
         if (method_exists($this, $method)) {
             foreach ($models as $model) {
                 $collection[] = $this->{$method}($model, $index);
             }
         }
+
         return $collection;
     }
 
@@ -71,25 +72,26 @@ class ProductIndexer extends BaseIndexer
                 $collection->push($document);
             }
         }
+
         return $collection;
     }
 
     public function rankings()
     {
         return [
-            "name^5",  "sku^4", "name.english^3", "description^1"
+            'name^5',  'sku^4', 'name.english^3', 'description^1',
         ];
     }
 
     /**
-     * Returns the mapping used by elastic search
+     * Returns the mapping used by elastic search.
      * @return array
      */
     public function mapping()
     {
         return [
             'id' => [
-                'type' => 'text'
+                'type' => 'text',
             ],
             'description' => [
                 'type' => 'text',
@@ -97,106 +99,106 @@ class ProductIndexer extends BaseIndexer
             ],
             'sku' => [
                 'type' => 'text',
-                'analyzer' => 'standard'
+                'analyzer' => 'standard',
             ],
             'created_at'  => [
-                'type' => 'date'
+                'type' => 'date',
             ],
             'departments' => [
                 'type' => 'nested',
                 'properties' => [
                     'id' => [
                         'type' => 'keyword',
-                        'index' => true
+                        'index' => true,
                     ],
                     'name' => [
-                        'type' => 'text'
+                        'type' => 'text',
                     ],
                     'position' => [
-                        'type' => 'integer'
-                    ]
-                ]
+                        'type' => 'integer',
+                    ],
+                ],
             ],
             'customer_groups' => [
                 'type' => 'nested',
                 'properties' => [
                     'id' => [
                         'type' => 'keyword',
-                        'index' => true
+                        'index' => true,
                     ],
                     'name' => [
-                        'type' => 'text'
+                        'type' => 'text',
                     ],
                     'handle' => [
                         'type' => 'keyword',
-                        'index' => true
-                    ]
-                ]
+                        'index' => true,
+                    ],
+                ],
             ],
             'channels' => [
                 'type' => 'nested',
                 'properties' => [
                     'id' => [
                         'type' => 'keyword',
-                        'index' => true
+                        'index' => true,
                     ],
                     'name' => [
-                        'type' => 'text'
+                        'type' => 'text',
                     ],
                     'handle' => [
                         'type' => 'keyword',
-                        'index' => true
-                    ]
-                ]
+                        'index' => true,
+                    ],
+                ],
             ],
             'thumbnail' => [
-                'type' => 'text'
+                'type' => 'text',
             ],
             'pricing' => [
                 'type' => 'nested',
                 'properties' => [
                     'id' => [
                         'type' => 'keyword',
-                        'index' => true
+                        'index' => true,
                     ],
                     'name' => [
-                        'type' => 'text'
+                        'type' => 'text',
                     ],
                     'max' => [
                         'type' => 'scaled_float',
-                        'scaling_factor' => 100
+                        'scaling_factor' => 100,
                     ],
                     'min' => [
-                        'type' => 'scaled_float' ,
-                        'scaling_factor' => 100
-                    ]
-                ]
+                        'type' => 'scaled_float',
+                        'scaling_factor' => 100,
+                    ],
+                ],
             ],
             'min_price' => [
-                "type" => "scaled_float",
-                "scaling_factor" => 100
+                'type' => 'scaled_float',
+                'scaling_factor' => 100,
             ],
             'max_price' => [
-                "type" => "scaled_float",
-                "scaling_factor" => 100
+                'type' => 'scaled_float',
+                'scaling_factor' => 100,
             ],
             'name' => [
                 'type' => 'text',
                 'analyzer' => 'standard',
                 'fields' => [
                     'sortable' => [
-                        'type' => 'keyword'
+                        'type' => 'keyword',
                     ],
                     'en' => [
                         'type' => 'text',
-                        'analyzer' => 'english'
+                        'analyzer' => 'english',
                     ],
                     'trigram' => [
                         'type' => 'text',
-                        'analyzer' => 'trigram'
-                    ]
-                ]
-            ]
+                        'analyzer' => 'trigram',
+                    ],
+                ],
+            ],
         ];
     }
 }

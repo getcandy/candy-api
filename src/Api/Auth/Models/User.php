@@ -9,7 +9,6 @@ use Spatie\Permission\Traits\HasRoles;
 use GetCandy\Api\Baskets\Models\Basket;
 use Illuminate\Notifications\Notifiable;
 use GetCandy\Api\Addresses\Models\Address;
-use GetCandy\Api\Traits\HasCustomerGroups;
 use GetCandy\Api\Languages\Models\Language;
 use GetCandy\Api\Customers\Models\CustomerGroup;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -26,13 +25,15 @@ class User extends Authenticatable
 
     public function getAuthPassword()
     {
-        if (!$this->password) {
+        if (! $this->password) {
             $password = $this->legacypassword;
+
             return [
                 'password' => $password->password,
-                'salt' => $password->salt
+                'salt' => $password->salt,
             ];
         }
+
         return $this->password;
     }
 
@@ -40,13 +41,14 @@ class User extends Authenticatable
     {
         return $this->hasOne(LegacyPassword::class);
     }
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'title', 'firstname', 'lastname', 'email',  'password', 'role', 'company_name'
+        'title', 'firstname', 'lastname', 'email',  'password', 'role', 'company_name',
     ];
 
     /**

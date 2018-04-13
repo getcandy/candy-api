@@ -12,11 +12,12 @@ class SavedSearchService extends BaseService
     {
         $this->model = new SavedSearch;
     }
+
     /**
-     * Gets the saved searches for a model
+     * Gets the saved searches for a model.
      *
      * @param mixed $model
-     * 
+     *
      * @return Collection
      */
     public function getByType($type)
@@ -25,21 +26,21 @@ class SavedSearchService extends BaseService
     }
 
     /**
-     * Stores a saved search
+     * Stores a saved search.
      *
      * @param array $data
-     * 
+     *
      * @return void
      */
     public function store($data)
     {
         $payload = [];
 
-        if (!empty($data['keywords'])) {
+        if (! empty($data['keywords'])) {
             $payload['keywords'] = $data['keywords'];
         }
 
-        if (!empty($data['filters'])) {
+        if (! empty($data['filters'])) {
             $payload['filters'] = $data['filters'];
         }
 
@@ -56,9 +57,10 @@ class SavedSearchService extends BaseService
     public function delete($id)
     {
         $search = $this->getByHashedId($id);
-        if (!$search) {
+        if (! $search) {
             abort(404);
         }
+
         return $search->delete();
     }
 }

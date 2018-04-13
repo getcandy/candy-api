@@ -2,10 +2,8 @@
 
 namespace GetCandy\Api\Collections\Services;
 
-use Carbon\Carbon;
-use GetCandy\Api\Collections\Models\Collection;
 use GetCandy\Api\Scaffold\BaseService;
-use GetCandy\Exceptions\MinimumRecordRequiredException;
+use GetCandy\Api\Collections\Models\Collection;
 use GetCandy\Api\Attributes\Events\AttributableSavedEvent;
 
 class CollectionService extends BaseService
@@ -21,7 +19,7 @@ class CollectionService extends BaseService
     }
 
     /**
-     * Creates a resource from the given data
+     * Creates a resource from the given data.
      *
      * @param  array  $data
      *
@@ -43,24 +41,24 @@ class CollectionService extends BaseService
     }
 
     /**
-     * Deletes a resource by its given hashed ID
+     * Deletes a resource by its given hashed ID.
      *
      * @param  string $id
      *
      * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      *
-     * @return Boolean
+     * @return bool
      */
     public function delete($id)
     {
         $collection = $this->getByHashedId($id);
+
         return $collection->delete();
     }
 
-
     /**
-     * Gets paginated data for the record
-     * @param  integer $length How many results per page
+     * Gets paginated data for the record.
+     * @param  int $length How many results per page
      * @param  int  $page   The page to start
      * @return \Illuminate\Pagination\LengthAwarePaginator
      */
@@ -72,6 +70,7 @@ class CollectionService extends BaseService
         } else {
             $results = $this->model;
         }
+
         return $results->paginate($length, ['*'], 'page', $page);
     }
 }

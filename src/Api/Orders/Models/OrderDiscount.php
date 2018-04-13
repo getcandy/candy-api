@@ -1,4 +1,5 @@
 <?php
+
 namespace GetCandy\Api\Orders\Models;
 
 use GetCandy\Api\Scaffold\BaseModel;

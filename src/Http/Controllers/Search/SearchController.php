@@ -2,27 +2,27 @@
 
 namespace GetCandy\Api\Http\Controllers\Search;
 
-use GetCandy\Api\Categories\Models\Category;
+use Illuminate\Http\Request;
+use GetCandy\Api\Search\SearchContract;
 use GetCandy\Api\Products\Models\Product;
+use GetCandy\Api\Categories\Models\Category;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Search\SearchRequest;
-use GetCandy\Api\Search\SearchContract;
-use Illuminate\Http\Request;
 
 class SearchController extends BaseController
 {
     protected $types = [
         'product' => Product::class,
-        'category' => Category::class
+        'category' => Category::class,
     ];
 
     /**
-     * Performs a search against a type
+     * Performs a search against a type.
      *
      * @param Request $request
      * @param SearchContract $client
      *
-     * @return Array
+     * @return array
      */
     public function search(SearchRequest $request, SearchContract $client)
     {
@@ -63,7 +63,7 @@ class SearchController extends BaseController
             $results,
             $request->type,
             $request->includes,
-            $request->page ? : 1,
+            $request->page ?: 1,
             $request->category
         );
 

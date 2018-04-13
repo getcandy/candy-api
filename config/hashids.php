@@ -62,12 +62,12 @@ return [
         ],
         'checkout' => [
             'alphabet' => $alphabet,
-            'salt' => env('HASHIDS_CHECKOUT_SALT', 'checkout')
+            'salt' => env('HASHIDS_CHECKOUT_SALT', 'checkout'),
         ],
         'basket' => [
             'alphabet' => $alphabet,
             'length' => 15,
-            'salt' => env('HASHIDS_BASKET_SALT', 'basket')
+            'salt' => env('HASHIDS_BASKET_SALT', 'basket'),
         ],
         'currency' => [
             'alphabet' => $alphabet,
@@ -82,7 +82,7 @@ return [
         'order' => [
             'alphabet' => $alphabet,
             'length' => 15,
-            'salt' => env('HASHIDS_ORDER_SALT', 'order')
+            'salt' => env('HASHIDS_ORDER_SALT', 'order'),
         ],
         'product' => [
             'alphabet' => $alphabet,
@@ -118,6 +118,6 @@ return [
             'alphabet' => $alphabet,
             'salt' => env('HASHIDS_USER_SALT', 'user'),
             'length' => 8,
-        ]
-    ]
+        ],
+    ],
 ];

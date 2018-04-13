@@ -11,7 +11,7 @@ class ProductPricingTier extends BaseModel
         'customer_group_id',
         'product_variant_id',
         'lower_limit',
-        'price'
+        'price',
     ];
 
     public function scopeInGroups($query, $groups)
@@ -20,8 +20,9 @@ class ProductPricingTier extends BaseModel
             $q->whereIn('id', $groups);
         });
     }
+
     /**
-     * The Hashid Channel for encoding the id
+     * The Hashid Channel for encoding the id.
      * @var string
      */
     protected $hashids = 'product_family';

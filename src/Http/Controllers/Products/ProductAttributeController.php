@@ -2,22 +2,20 @@
 
 namespace GetCandy\Api\Http\Controllers\Products;
 
-use GetCandy\Api\Http\Controllers\BaseController;
-use GetCandy\Api\Http\Requests\Products\CreateUrlRequest;
-use GetCandy\Api\Http\Requests\Products\UpdateAttributesRequest;
-use GetCandy\Api\Http\Transformers\Fractal\Products\ProductTransformer;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use GetCandy\Api\Http\Controllers\BaseController;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use GetCandy\Api\Http\Requests\Products\UpdateAttributesRequest;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use GetCandy\Api\Http\Transformers\Fractal\Products\ProductTransformer;
 
 class ProductAttributeController extends BaseController
 {
     /**
-     * Handles the request to update a products attributes
-     * @param  String        $product
+     * Handles the request to update a products attributes.
+     * @param  string        $product
      * @param  UpdateAttributesRequest $request
-     * @return Mixed
+     * @return mixed
      */
     public function update($product, UpdateAttributesRequest $request)
     {
@@ -28,6 +26,7 @@ class ProductAttributeController extends BaseController
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
+
         return $this->respondWithItem($result, new ProductTransformer);
     }
 }

@@ -1,17 +1,17 @@
 <?php
 
 return [
-    /**
+    /*
      * List which roles have access to the hub
      */
     'hub_access' => ['editor'],
 
-    /**
+    /*
      * The URL to your storefront
      */
     'storefronturl' => env('STOREFRONT_URL'),
 
-    /**
+    /*
      * Which default customer group to use
      */
     'default_customer_group' => 'retail',
@@ -45,7 +45,7 @@ return [
         'providers' => [
             'offline' => GetCandy\Api\Payments\Providers\OnAccount::class,
             'braintree' => GetCandy\Api\Payments\Providers\Braintree::class,
-        ]
+        ],
     ],
 
     /*
@@ -63,6 +63,6 @@ return [
     'search' => [
         'client' => \GetCandy\Api\Search\Elastic\Elastic::class,
         'index_prefix' => env('SEARCH_INDEX_PREFIX', 'candy'),
-        'index' => env('SEARCH_INDEX', 'candy_products_en')
-    ]
+        'index' => env('SEARCH_INDEX', 'candy_products_en'),
+    ],
 ];

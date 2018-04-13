@@ -3,13 +3,12 @@
 namespace GetCandy\Api\Discounts\Services;
 
 use Carbon\Carbon;
-use GetCandy\Api\Attributes\Events\AttributableSavedEvent;
-use GetCandy\Api\Discounts\Discount as DiscountFactory;
-use GetCandy\Api\Discounts\Models\Discount;
-use GetCandy\Api\Discounts\Models\DiscountReward;
 use GetCandy\Api\Discounts\RewardSet;
 use GetCandy\Api\Scaffold\BaseService;
+use GetCandy\Api\Discounts\Models\Discount;
+use GetCandy\Api\Discounts\Discount as DiscountFactory;
 use GetCandy\Api\Discounts\Models\DiscountCriteriaItem;
+use GetCandy\Api\Attributes\Events\AttributableSavedEvent;
 
 class DiscountService extends BaseService
 {
@@ -19,7 +18,7 @@ class DiscountService extends BaseService
     }
 
     /**
-     * Create a discount
+     * Create a discount.
      *
      * @param array $data
      *
@@ -30,21 +29,21 @@ class DiscountService extends BaseService
         $discount = new Discount;
         $discount->attribute_data = $data;
 
-        if (!empty($data['start_at'])) {
+        if (! empty($data['start_at'])) {
             $discount->start_at = Carbon::parse($data['start_at']);
         }
         if (isset($data['end_at'])) {
             $discount->end_at = Carbon::parse($data['end_at']);
         }
 
-        if (!empty($data['uses'])) {
+        if (! empty($data['uses'])) {
             $discount->uses = $data['uses'];
         }
 
-        $discount->status = !empty($data['status']);
+        $discount->status = ! empty($data['status']);
         $discount->save();
 
-        if (!empty($data['channels']['data'])) {
+        if (! empty($data['channels']['data'])) {
             $discount->channels()->sync(
                 $this->getChannelMapping($data['channels']['data'])
             );
@@ -56,7 +55,7 @@ class DiscountService extends BaseService
     }
 
     /**
-     * Update an existing discount
+     * Update an existing discount.
      *
      * @param string $id
      * @param array $data
@@ -81,13 +80,13 @@ class DiscountService extends BaseService
             $this->syncRewards($discount, $data['rewards']['data']);
         }
 
-        if (!empty($data['channels']['data'])) {
+        if (! empty($data['channels']['data'])) {
             $discount->channels()->sync(
                 $this->getChannelMapping($data['channels']['data'])
             );
         }
 
-        if (!empty($data['sets']['data'])) {
+        if (! empty($data['sets']['data'])) {
             $this->syncSets($discount, $data['sets']['data']);
         }
 
@@ -95,7 +94,7 @@ class DiscountService extends BaseService
     }
 
     /**
-     * Set up sets and rewards with a discount
+     * Set up sets and rewards with a discount.
      *
      * @param Discount $discount
      * @param array $sets
@@ -110,14 +109,14 @@ class DiscountService extends BaseService
         foreach ($sets as $set) {
             $groupModel = $discount->sets()->create([
                 'scope' => $set['scope'],
-                'outcome' => (bool) $set['outcome']
+                'outcome' => (bool) $set['outcome'],
             ]);
-            if (!empty($set['items']['data'])) {
+            if (! empty($set['items']['data'])) {
                 $set['items'] = $set['items']['data'];
             }
             foreach ($set['items'] as $item) {
                 $model = $groupModel->items()->create($item);
-                if (!empty($item['eligibles'])) {
+                if (! empty($item['eligibles'])) {
                     foreach ($item['eligibles'] as $eligible) {
                         $model->saveEligible($item['type'], $eligible);
                     }
@@ -129,7 +128,7 @@ class DiscountService extends BaseService
     }
 
     /**
-     * Sync up rewards for a discount
+     * Sync up rewards for a discount.
      *
      * @param Discount $discount
      * @param array $rewards
@@ -140,17 +139,18 @@ class DiscountService extends BaseService
     {
         foreach ($rewards as $reward) {
             $model = $discount->rewards()->create($reward);
-            if (!empty($reward['products'])) {
+            if (! empty($reward['products'])) {
                 foreach ($reward['products'] as $productReward) {
                     $model->products()->create($productReward);
                 }
             }
         }
+
         return $discount;
     }
 
     /**
-     * Get All the discounts
+     * Get All the discounts.
      *
      * @return array
      */
@@ -177,7 +177,7 @@ class DiscountService extends BaseService
             foreach ($discount->rewards as $reward) {
                 $rewardSet->add([
                     'type' => $reward->type,
-                    'value' => $reward->value
+                    'value' => $reward->value,
                 ]);
             }
 
@@ -193,6 +193,7 @@ class DiscountService extends BaseService
                 $sets[] = $factory->addCriteria($criteriaSet);
             }
         }
+
         return collect($sets);
     }
 
@@ -207,7 +208,7 @@ class DiscountService extends BaseService
         foreach ($discount->rewards as $reward) {
             $rewardSet->add([
                 'type' => $reward->type,
-                'value' => $reward->value
+                'value' => $reward->value,
             ]);
         }
 

@@ -1,28 +1,30 @@
 <?php
+
 namespace GetCandy\Api\Http\Controllers\Shipping;
 
-use GetCandy\Api\Http\Controllers\BaseController;
-use GetCandy\Api\Http\Requests\Shipping\Pricing\CreateRequest;
-use GetCandy\Api\Http\Transformers\Fractal\Shipping\ShippingPriceTransformer;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use GetCandy\Api\Http\Controllers\BaseController;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use GetCandy\Api\Http\Requests\Shipping\Pricing\CreateRequest;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use GetCandy\Api\Http\Transformers\Fractal\Shipping\ShippingPriceTransformer;
 
 class ShippingPriceController extends BaseController
 {
     /**
-     * Returns a listing of channels
+     * Returns a listing of channels.
      * @return Json
      */
     public function index(Request $request)
     {
         $orders = app('api')->shippingPrices()->getPaginatedData($request->per_page, $request->current_page);
+
         return $this->respondWithCollection($orders, new ShippingPriceTransformer);
     }
 
     /**
-     * Handles the request to show a channel based on it's hashed ID
-     * @param  String $id
+     * Handles the request to show a channel based on it's hashed ID.
+     * @param  string $id
      * @return Json
      */
     public function show($id)
@@ -32,17 +34,19 @@ class ShippingPriceController extends BaseController
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
+
         return $this->respondWithItem($channel, new ShippingPriceTransformer);
     }
 
     /**
-     * Handles the request to create a new channel
+     * Handles the request to create a new channel.
      * @param  CreateRequest $request
      * @return Json
      */
     public function store($id, CreateRequest $request)
     {
         $result = app('api')->shippingPrices()->create($id, $request->all());
+
         return $this->respondWithItem($result, new ShippingPriceTransformer);
     }
 
@@ -53,12 +57,13 @@ class ShippingPriceController extends BaseController
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
+
         return $this->respondWithItem($result, new ShippingPriceTransformer);
     }
 
     /**
-     * Handles the request to delete a channel
-     * @param  String        $id
+     * Handles the request to delete a channel.
+     * @param  string        $id
      * @param  DeleteRequest $request
      * @return Json
      */
@@ -69,6 +74,7 @@ class ShippingPriceController extends BaseController
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
+
         return $this->respondWithNoContent();
     }
 }

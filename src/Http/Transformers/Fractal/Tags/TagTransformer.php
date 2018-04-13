@@ -10,7 +10,7 @@ class TagTransformer extends BaseTransformer
     protected $availableIncludes = [];
 
     /**
-     * Decorates the tag object for viewing
+     * Decorates the tag object for viewing.
      * @param  Tag $product
      * @return array
      */
@@ -18,7 +18,7 @@ class TagTransformer extends BaseTransformer
     {
         return [
             'id' => $tag->encodedId(),
-            'name' => $tag->name
+            'name' => $tag->name,
         ];
     }
 }

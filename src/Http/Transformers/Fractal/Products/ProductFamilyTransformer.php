@@ -3,20 +3,20 @@
 namespace GetCandy\Api\Http\Transformers\Fractal\Products;
 
 use GetCandy\Api\Products\Models\ProductFamily;
-use GetCandy\Api\Http\Transformers\Fractal\Attributes\AttributeTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\Attributes\AttributeTransformer;
 
 class ProductFamilyTransformer extends BaseTransformer
 {
     protected $availableIncludes = [
-        'products', 'attributes'
+        'products', 'attributes',
     ];
 
     public function transform(ProductFamily $family)
     {
         return [
             'id' => $family->encodedId(),
-            'attribute_data' => $family->attribute_data
+            'attribute_data' => $family->attribute_data,
         ];
     }
 

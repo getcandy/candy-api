@@ -27,7 +27,6 @@ class MigrateOrderPlacedAtDates extends Migration
 
             $order->placed_at = $paymentDate;
             $order->save();
-
         }
     }
 

@@ -2,10 +2,9 @@
 
 namespace GetCandy\Api\Attributes\Services;
 
-use DB;
-use GetCandy\Api\Attributes\Models\AttributeGroup;
 use GetCandy\Api\Scaffold\BaseService;
 use GetCandy\Exceptions\DuplicateValueException;
+use GetCandy\Api\Attributes\Models\AttributeGroup;
 
 class AttributeGroupService extends BaseService
 {
@@ -20,7 +19,7 @@ class AttributeGroupService extends BaseService
     }
 
     /**
-     * Creates a resource from the given data
+     * Creates a resource from the given data.
      *
      * @param  array  $data
      *
@@ -33,11 +32,12 @@ class AttributeGroupService extends BaseService
         $group->handle = str_slug($data['handle']);
         $group->position = $this->model->count() + 1;
         $group->save();
+
         return $group;
     }
 
     /**
-     * Updates a resource from the given data
+     * Updates a resource from the given data.
      *
      * @param  string $id
      * @param  array  $data
@@ -51,8 +51,8 @@ class AttributeGroupService extends BaseService
     {
         $group = $this->getByHashedId($hashedId);
 
-        if (!$group) {
-            return null;
+        if (! $group) {
+            return;
         }
 
         $group->fill($data);
@@ -62,13 +62,13 @@ class AttributeGroupService extends BaseService
     }
 
     /**
-     * Updates the positions of attribute groups
+     * Updates the positions of attribute groups.
      * @param  array  $data
      *
      * @throws Symfony\Component\HttpKernel\Exception\HttpException
      * @throws GetCandy\Api\Exceptions\DuplicateValueException
      *
-     * @return Boolean
+     * @return bool
      */
     public function updateGroupPositions(array $data)
     {
@@ -81,7 +81,7 @@ class AttributeGroupService extends BaseService
 
         foreach ($data['groups'] as $groupId => $position) {
             $decodedId = $this->getDecodedId($groupId);
-            if (!$decodedId) {
+            if (! $decodedId) {
                 abort(422, trans('validation.attributes.groups.invalid_id', ['id' => $groupId]));
             }
             $parsedGroups[$decodedId] = $position;
@@ -98,26 +98,26 @@ class AttributeGroupService extends BaseService
     }
 
     /**
-     * Deletes a resource by its given hashed ID
+     * Deletes a resource by its given hashed ID.
      *
      * @param  string $id
      *
      * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @throws Symfony\Component\HttpKernel\Exception\HttpException
      *
-     * @return Boolean
+     * @return bool
      */
     public function delete($id, $adopterId = null, $deleteAttributes = false)
     {
         $group = $this->getByHashedId($id);
 
-        if (!$group) {
+        if (! $group) {
             abort(404);
         }
 
         if ($adopterId) {
             $adopter = $this->getByHashedId($adopterId);
-            if (!$adopter) {
+            if (! $adopter) {
                 abort(422);
             }
             $adopter->attributes()->saveMany($group->attributes);
@@ -128,7 +128,6 @@ class AttributeGroupService extends BaseService
         }
 
         $group->delete();
-
 
         \DB::transaction(function () {
             $i = 1;

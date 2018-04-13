@@ -24,7 +24,7 @@ class ImpersonateRequest extends FormRequest
     public function rules()
     {
         return [
-            'customer_id' => 'required|hashid_is_valid:customers'
+            'customer_id' => 'required|hashid_is_valid:customers',
         ];
     }
 }

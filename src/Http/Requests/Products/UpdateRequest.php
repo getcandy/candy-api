@@ -3,7 +3,6 @@
 namespace GetCandy\Api\Http\Requests\Products;
 
 use GetCandy\Api\Http\Requests\FormRequest;
-use GetCandy\Api\Products\Models\Product;
 
 class UpdateRequest extends FormRequest
 {
@@ -16,7 +15,7 @@ class UpdateRequest extends FormRequest
     {
         $ruleset = [
             'family_id' => 'hashid_is_valid:product_families',
-            'attributes' => 'required|array'
+            'attributes' => 'required|array',
         ];
 
         $attributes = app('api')->products()->getAttributes($this->product);
@@ -25,7 +24,7 @@ class UpdateRequest extends FormRequest
 
         foreach ($attributes as $attribute) {
             if ($attribute->required) {
-                $rulestring = 'attributes.' . $attribute->handle . '.' . $defaultChannel->handle . '.' . $defaultLanguage->lang;
+                $rulestring = 'attributes.'.$attribute->handle.'.'.$defaultChannel->handle.'.'.$defaultLanguage->lang;
                 $ruleset[$rulestring] = 'required';
             }
         }

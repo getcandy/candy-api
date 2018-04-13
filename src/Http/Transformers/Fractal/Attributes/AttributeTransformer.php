@@ -8,11 +8,11 @@ use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 class AttributeTransformer extends BaseTransformer
 {
     protected $availableIncludes = [
-        'group'
+        'group',
     ];
 
     /**
-     * Decorates the attribute object for viewing
+     * Decorates the attribute object for viewing.
      * @param  Attribute $product
      * @return array
      */
@@ -31,7 +31,7 @@ class AttributeTransformer extends BaseTransformer
             'localised' => (bool) $attribute->translatable,
             'type' => $attribute->type,
             'required' => (bool) $attribute->required,
-            'lookups' => $attribute->lookups
+            'lookups' => $attribute->lookups,
         ];
     }
 

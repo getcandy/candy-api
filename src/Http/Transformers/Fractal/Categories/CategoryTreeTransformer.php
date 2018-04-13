@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Categories;
 
-use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
-use Illuminate\Support\Collection;
 use League\Fractal\Resource\Item;
+use Illuminate\Support\Collection;
+use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use League\Fractal\Resource\Collection as FractalCollection;
 
 class CategoryTreeTransformer extends BaseTransformer
@@ -23,6 +23,7 @@ class CategoryTreeTransformer extends BaseTransformer
     {
         $resource = new Item($category, new CategoryTransformer);
         $rootScope = app()->fractal->createData($resource);
+
         return $rootScope->toArray();
     }
 
@@ -30,6 +31,7 @@ class CategoryTreeTransformer extends BaseTransformer
     {
         $resource = new FractalCollection($categories, new CategoryTransformer);
         $rootScope = app()->fractal->createData($resource);
+
         return $rootScope->toArray();
     }
 }

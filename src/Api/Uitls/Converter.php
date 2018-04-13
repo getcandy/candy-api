@@ -12,6 +12,7 @@ class Converter
     {
         $this->amount = $amount;
         $this->unit = $unit;
+
         return $this;
     }
 

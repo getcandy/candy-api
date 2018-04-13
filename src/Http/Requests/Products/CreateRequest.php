@@ -30,7 +30,7 @@ class CreateRequest extends FormRequest
             'stock' => 'required|numeric',
             'family_id' => 'required',
             'price' => 'required',
-            'sku' => 'required|unique:product_variants,sku'
+            'sku' => 'required|unique:product_variants,sku',
         ];
     }
 }

@@ -4,8 +4,8 @@ namespace GetCandy\Api\Pages\Services;
 
 use GetCandy\Api\Pages\Models\Page;
 use GetCandy\Api\Scaffold\BaseService;
-use GetCandy\Exceptions\InvalidLanguageException;
 use Illuminate\Database\Eloquent\Model;
+use GetCandy\Exceptions\InvalidLanguageException;
 
 class PageService extends BaseService
 {
@@ -15,7 +15,7 @@ class PageService extends BaseService
     }
 
     /**
-     * Creates a page
+     * Creates a page.
      * @param  array                $data
      * @param  string|Language      $languageCode
      * @param  string|Layout        $layout
@@ -30,7 +30,7 @@ class PageService extends BaseService
     {
         $page = $this->model;
 
-        /**
+        /*
          * Figure out which language this page belongs to
          */
         if (! $languageCode instanceof Model) {
@@ -45,7 +45,7 @@ class PageService extends BaseService
 
         $page->language()->associate($language);
 
-        /**
+        /*
          * Sort out the layout for this page
          */
         if (! $layout instanceof Model) {
@@ -58,7 +58,7 @@ class PageService extends BaseService
 
         $page->layout()->associate($layout);
 
-        /**
+        /*
          * Sort out which channel this page belongs to
          */
 
@@ -70,7 +70,7 @@ class PageService extends BaseService
             }
         }
 
-        if (!$channel) {
+        if (! $channel) {
             abort(400);
         }
 
@@ -89,12 +89,12 @@ class PageService extends BaseService
     }
 
     /**
-     * Finds a page based on it's channel, language and slug
+     * Finds a page based on it's channel, language and slug.
      * @param  string $channel
      * @param  string $lang
      * @param  string $slug
      * @throws Illuminate\Database\Eloquent\ModelNotFoundException
-     * @return Mixed
+     * @return mixed
      */
     public function findPage($channel, $lang, $slug = null)
     {
@@ -122,13 +122,13 @@ class PageService extends BaseService
 
         if ($model->language->code != app()->getLocale()) {
             app()->setLocale($model->language->code);
-        };
+        }
 
         return $result->firstOrFail();
     }
 
     /**
-     * Gets a unique slug for a page
+     * Gets a unique slug for a page.
      * @param  string $slug
      * @return string
      */
@@ -136,9 +136,10 @@ class PageService extends BaseService
     {
         $suffixe = '1';
         while ($this->model->where('slug', '=', $slug)->exists()) {
-            $slug = $slug . '-' . $suffixe;
-            ++$suffixe;
+            $slug = $slug.'-'.$suffixe;
+            $suffixe++;
         }
+
         return $slug;
     }
 }

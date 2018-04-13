@@ -2,23 +2,23 @@
 
 namespace GetCandy\Api\Http\Controllers\Layouts;
 
-use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
-use GetCandy\Api\Http\Controllers\BaseController;
-use GetCandy\Api\Http\Transformers\Fractal\Layouts\LayoutTransformer;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use GetCandy\Api\Http\Controllers\BaseController;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use GetCandy\Api\Http\Transformers\Fractal\Layouts\LayoutTransformer;
 
 class LayoutController extends BaseController
 {
     public function index()
     {
         $pages = app('api')->layouts()->getPaginatedData();
+
         return $this->respondWithCollection($pages, new LayoutTransformer);
     }
+
     /**
-     * Handles the request to show a layout based on it's hashed ID
-     * @param  String $id
+     * Handles the request to show a layout based on it's hashed ID.
+     * @param  string $id
      * @return Json
      */
     public function show($id)
@@ -28,6 +28,7 @@ class LayoutController extends BaseController
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
+
         return $this->respondWithItem($currency, new PageTransformer);
     }
 }

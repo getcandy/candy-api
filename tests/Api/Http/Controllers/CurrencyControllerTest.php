@@ -18,18 +18,18 @@ class CurrencyControllerTest extends TestCase
         'thousand',
         'exchange_rate',
         'enabled',
-        'default'
+        'default',
     ];
 
     public function testIndex()
     {
         $response = $this->get($this->url('currencies'), [
-            'Authorization' => 'Bearer ' . $this->accessToken()
+            'Authorization' => 'Bearer '.$this->accessToken(),
         ]);
 
         $response->assertJsonStructure([
             'data' => [$this->baseStructure],
-            'meta' => ['pagination']
+            'meta' => ['pagination'],
         ]);
 
         $this->assertEquals(200, $response->status());
@@ -39,7 +39,7 @@ class CurrencyControllerTest extends TestCase
     {
         $response = $this->get($this->url('currencies'), [
             'Authorization' => 'Bearer foo.bar.bing',
-            'Accept' => 'application/json'
+            'Accept' => 'application/json',
         ]);
         $this->assertEquals(401, $response->getStatusCode());
     }
@@ -49,12 +49,12 @@ class CurrencyControllerTest extends TestCase
         // Get a channel
         $id = Currency::first()->encodedId();
 
-        $response = $this->get($this->url('currencies/' . $id), [
-            'Authorization' => 'Bearer ' . $this->accessToken()
+        $response = $this->get($this->url('currencies/'.$id), [
+            'Authorization' => 'Bearer '.$this->accessToken(),
         ]);
 
         $response->assertJsonStructure([
-            'data' => $this->baseStructure
+            'data' => $this->baseStructure,
         ]);
 
         $this->assertEquals(200, $response->status());
@@ -63,7 +63,7 @@ class CurrencyControllerTest extends TestCase
     public function testMissingShow()
     {
         $response = $this->get($this->url('currencies/123456'), [
-            'Authorization' => 'Bearer ' . $this->accessToken()
+            'Authorization' => 'Bearer '.$this->accessToken(),
         ]);
 
         $this->assertHasErrorFormat($response);
@@ -76,22 +76,22 @@ class CurrencyControllerTest extends TestCase
         $response = $this->post(
             $this->url('currencies'),
             [
-                'name' =>  "Danish Krone",
-                'code' =>  "DKK",
-                'decimal' =>  ",",
+                'name' =>  'Danish Krone',
+                'code' =>  'DKK',
+                'decimal' =>  ',',
                 'thousand' =>  null,
-                'exchange_rate' =>  "8",
+                'exchange_rate' =>  '8',
                 'format' => '45:price',
                 'enabled' =>  true,
-                'default' =>  false
+                'default' =>  false,
             ],
             [
-                'Authorization' => 'Bearer ' . $this->accessToken()
+                'Authorization' => 'Bearer '.$this->accessToken(),
             ]
         );
 
         $response->assertJsonStructure([
-            'data' => $this->baseStructure
+            'data' => $this->baseStructure,
         ]);
 
         $this->assertEquals(200, $response->status());
@@ -103,12 +103,12 @@ class CurrencyControllerTest extends TestCase
             $this->url('currencies'),
             [],
             [
-                'Authorization' => 'Bearer ' . $this->accessToken()
+                'Authorization' => 'Bearer '.$this->accessToken(),
             ]
         );
 
         $response->assertJsonStructure([
-            'name', 'code', 'enabled', 'exchange_rate', 'format'
+            'name', 'code', 'enabled', 'exchange_rate', 'format',
         ]);
 
         $this->assertEquals(422, $response->status());
@@ -118,13 +118,13 @@ class CurrencyControllerTest extends TestCase
     {
         $id = Currency::first()->encodedId();
         $response = $this->put(
-            $this->url('currencies/' . $id),
+            $this->url('currencies/'.$id),
             [
                 'name' => 'Neon',
-                'default' => true
+                'default' => true,
             ],
             [
-                'Authorization' => 'Bearer ' . $this->accessToken()
+                'Authorization' => 'Bearer '.$this->accessToken(),
             ]
         );
 
@@ -137,10 +137,10 @@ class CurrencyControllerTest extends TestCase
             $this->url('currencies/123123'),
             [
                 'name' => 'Neon',
-                'default' => true
+                'default' => true,
             ],
             [
-                'Authorization' => 'Bearer ' . $this->accessToken()
+                'Authorization' => 'Bearer '.$this->accessToken(),
             ]
         );
 
@@ -157,13 +157,13 @@ class CurrencyControllerTest extends TestCase
             'format' => '&#x20AC;{price}',
             'decimal_point' => '.',
             'thousand_point' => ',',
-            'default' => false
+            'default' => false,
         ]);
 
         $response = $this->delete(
-            $this->url('currencies/' . $currency->encodedId()),
+            $this->url('currencies/'.$currency->encodedId()),
             [],
-            ['Authorization' => 'Bearer ' . $this->accessToken()]
+            ['Authorization' => 'Bearer '.$this->accessToken()]
         );
         $this->assertEquals(204, $response->status());
     }
@@ -172,9 +172,9 @@ class CurrencyControllerTest extends TestCase
     {
         $id = Currency::first()->encodedId();
         $response = $this->delete(
-            $this->url('currencies/' . $id),
+            $this->url('currencies/'.$id),
             [],
-            ['Authorization' => 'Bearer ' . $this->accessToken()]
+            ['Authorization' => 'Bearer '.$this->accessToken()]
         );
         $this->assertEquals(422, $response->status());
     }

@@ -1,4 +1,5 @@
 <?php
+
 namespace GetCandy\Api\Payments\Services;
 
 use GetCandy\Api\Scaffold\BaseService;

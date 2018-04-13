@@ -1,4 +1,5 @@
 <?php
+
 namespace GetCandy\Api\Http\Controllers\Payments;
 
 use Illuminate\Http\Request;
@@ -7,7 +8,6 @@ use GetCandy\Api\Http\Requests\Payments\VoidRequest;
 use GetCandy\Api\Http\Requests\Payments\RefundRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use GetCandy\Api\Payments\Exceptions\AlreadyRefundedException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use GetCandy\Api\Http\Transformers\Fractal\Payments\ProviderTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Payments\TransactionTransformer;
 
@@ -16,11 +16,12 @@ class PaymentController extends BaseController
     public function provider()
     {
         $provider = app('api')->payments()->getProvider();
+
         return $this->respondWithItem($provider, new ProviderTransformer);
     }
 
     /**
-     * Handle the request to refund a transaction
+     * Handle the request to refund a transaction.
      *
      * @param string $id
      * @param RefundRequest $request
@@ -37,7 +38,7 @@ class PaymentController extends BaseController
             return $this->errorNotFound();
         }
 
-        if (!$transaction->success) {
+        if (! $transaction->success) {
             return $this->errorWrongArgs($transaction->notes);
         }
 
@@ -52,7 +53,7 @@ class PaymentController extends BaseController
             return $this->errorNotFound();
         }
 
-        if (!$transaction->success) {
+        if (! $transaction->success) {
             return $this->errorWrongArgs($transaction->notes);
         }
 

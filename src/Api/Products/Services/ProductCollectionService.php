@@ -2,10 +2,8 @@
 
 namespace GetCandy\Api\Products\Services;
 
-use GetCandy\Api\Products\Models\Product;
-use GetCandy\Api\Products\Models\ProductFamily;
 use GetCandy\Api\Scaffold\BaseService;
-use GetCandy\Exceptions\InvalidLanguageException;
+use GetCandy\Api\Products\Models\Product;
 
 class ProductCollectionService extends BaseService
 {
@@ -19,6 +17,7 @@ class ProductCollectionService extends BaseService
         $product = $this->getByHashedId($product);
         $collection_ids = app('api')->collections()->getDecodedIds($data['collections']);
         $product->collections()->sync($collection_ids);
+
         return $product->collections;
     }
 
@@ -27,6 +26,7 @@ class ProductCollectionService extends BaseService
         $product = $this->getByHashedId($productId);
         $collectionId = app('api')->collections()->getDecodedId($collectionId);
         $product->collections()->detach($collectionId);
+
         return $product->collections;
     }
 }

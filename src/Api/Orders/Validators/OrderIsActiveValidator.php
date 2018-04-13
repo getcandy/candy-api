@@ -1,4 +1,5 @@
 <?php
+
 namespace GetCandy\Api\Orders\Validators;
 
 class OrderIsActiveValidator

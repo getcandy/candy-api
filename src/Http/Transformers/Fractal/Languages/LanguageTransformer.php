@@ -18,7 +18,7 @@ class LanguageTransformer extends BaseTransformer
             'iso' => $language->iso,
             'default' => $language->default,
             'enabled' => $language->enabled,
-            'current' => (bool) ($language->code == app()->getLocale())
+            'current' => (bool) ($language->code == app()->getLocale()),
         ];
     }
 }

@@ -12,6 +12,7 @@ class UpdateRequest extends FormRequest
         // return $this->user()->can('create', ProductFamily::class);
         return $this->user()->hasRole('admin');
     }
+
     public function rules(ProductFamily $family)
     {
         return [

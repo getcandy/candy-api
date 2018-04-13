@@ -13,13 +13,13 @@ class AddressService extends BaseService
     }
 
     /**
-     * Checks whether an address already exists
+     * Checks whether an address already exists.
      *
      * @param string $user
      * @param array $details
      * @param string $type
      *
-     * @return boolean
+     * @return bool
      */
     public function exists($user, array $details, $type = 'billing')
     {
@@ -29,17 +29,19 @@ class AddressService extends BaseService
         foreach ($address->fill($details)->toArray() as $column => $value) {
             $query->where($column, '=', $value);
         }
+
         return $query->where($type, '=', true)->exists();
     }
 
     public function addAddress($user, $data, $type)
     {
         $data[$type] = true;
+
         return $this->create($user, $data);
     }
 
     /**
-     * Create a new address
+     * Create a new address.
      *
      * @param User $user
      * @param array $data
@@ -52,6 +54,7 @@ class AddressService extends BaseService
         $address->fill($data);
         $address->user()->associate($user);
         $address->save();
+
         return $address;
     }
 
@@ -60,12 +63,14 @@ class AddressService extends BaseService
         $address = $this->getByHashedId($id);
         $address->fill($data);
         $address->save();
+
         return $address;
     }
 
     public function delete($address)
     {
         $address = $this->getByHashedId($address);
+
         return $address->delete();
     }
 }

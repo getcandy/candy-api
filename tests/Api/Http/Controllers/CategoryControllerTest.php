@@ -2,8 +2,6 @@
 
 namespace Tests;
 
-use GetCandy\Api\Channels\Models\Channel;
-
 /**
  * @group controllers
  * @group new
@@ -14,11 +12,11 @@ class CategoryControllerTest extends TestCase
     public function testIndex()
     {
         $response = $this->get($this->url('categories'), [
-            'Authorization' => 'Bearer ' . $this->accessToken()
+            'Authorization' => 'Bearer '.$this->accessToken(),
         ]);
 
         $response->assertJsonStructure([
-            'data' => [['id', 'attribute_data', 'depth']]
+            'data' => [['id', 'attribute_data', 'depth']],
         ]);
 
         $this->assertEquals(200, $response->status());

@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Http\Requests\Taxes;
 
-use GetCandy\Api\Http\Requests\FormRequest;
 use GetCandy\Api\Taxes\Models\Tax;
+use GetCandy\Api\Http\Requests\FormRequest;
 
 class CreateRequest extends FormRequest
 {
@@ -27,7 +27,7 @@ class CreateRequest extends FormRequest
     {
         return [
             'name' => 'required|unique:taxes,name',
-            'percentage' => 'required'
+            'percentage' => 'required',
         ];
     }
 }

@@ -1,7 +1,7 @@
 <?php
+
 namespace GetCandy\Api\Http\Transformers\Fractal\Orders;
 
-use Carbon\Carbon;
 use GetCandy\Api\Orders\Models\OrderLine;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Products\ProductVariantTransformer;
@@ -9,7 +9,7 @@ use GetCandy\Api\Http\Transformers\Fractal\Products\ProductVariantTransformer;
 class OrderLineTransformer extends BaseTransformer
 {
     protected $availableIncludes = [
-        'variant'
+        'variant',
     ];
 
     public function transform(OrderLine $line)
@@ -20,8 +20,9 @@ class OrderLineTransformer extends BaseTransformer
             'total' => round($line->total, 2),
             'product' => $line->product,
             'sku' => $line->sku,
-            'variant' => $line->variant
+            'variant' => $line->variant,
         ];
+
         return $data;
     }
 
