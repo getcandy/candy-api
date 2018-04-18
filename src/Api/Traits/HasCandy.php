@@ -2,16 +2,14 @@
 
 namespace GetCandy\Api\Traits;
 
-use GetCandy\Api\Addresses\Models\Address;
-use GetCandy\Api\Baskets\Models\Basket;
-use GetCandy\Api\Customers\Models\CustomerGroup;
-use GetCandy\Api\Languages\Models\Language;
-use GetCandy\Api\Orders\Models\Order;
-use GetCandy\Api\Traits\HasCustomerGroups;
-use GetCandy\Api\Users\Models\UserDetail;
-use GetCandy\Plugins\LegacyPassword\Models\LegacyPassword;
 use Laravel\Passport\HasApiTokens;
+use GetCandy\Api\Orders\Models\Order;
 use Spatie\Permission\Traits\HasRoles;
+use GetCandy\Api\Baskets\Models\Basket;
+use GetCandy\Api\Users\Models\UserDetail;
+use GetCandy\Api\Addresses\Models\Address;
+use GetCandy\Api\Languages\Models\Language;
+use GetCandy\Api\Customers\Models\CustomerGroup;
 
 trait HasCandy
 {
@@ -58,7 +56,7 @@ trait HasCandy
 
     public function orders()
     {
-        return $this->hasMany(Order::class)->withoutGlobalScope('open')->withoutGlobalScope('not_expired');
+        return $this->hasMany(Order::class)->orderBy('reference', 'desc')->withoutGlobalScope('open')->withoutGlobalScope('not_expired');
     }
 
     public function details()

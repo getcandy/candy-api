@@ -2,24 +2,23 @@
 
 namespace GetCandy\Api\Providers;
 
+use Validator;
 use Carbon\Carbon;
-use GetCandy\Api\Console\Commands\ElasticIndexCommand;
-use GetCandy\Api\Console\Commands\InstallGetCandyCommand;
-use GetCandy\Api\Currencies\CurrencyConverter;
 use GetCandy\Api\Factory;
-use GetCandy\Api\Http\Middleware\CheckClientCredentials;
-use GetCandy\Api\Http\Middleware\SetCurrencyMiddleware;
+use League\Fractal\Manager;
+use Laravel\Passport\Passport;
+use GetCandy\Api\Search\SearchContract;
+use Illuminate\Support\ServiceProvider;
+use GetCandy\Api\Users\Services\UserService;
+use GetCandy\Api\Currencies\CurrencyConverter;
+use GetCandy\Api\Users\Contracts\UserContract;
+use GetCandy\Api\Http\Middleware\SetTaxMiddleware;
 use GetCandy\Api\Http\Middleware\SetCustomerGroups;
 use GetCandy\Api\Http\Middleware\SetLocaleMiddleware;
-use GetCandy\Api\Http\Middleware\SetTaxMiddleware;
-use GetCandy\Api\Search\SearchContract;
-use GetCandy\Api\Users\Contracts\UserContract;
-use Illuminate\Support\ServiceProvider;
-use Laravel\Passport\Passport;
-use League\Fractal\Manager;
-use Route;
-use Validator;
-use GetCandy\Api\Users\Services\UserService;
+use GetCandy\Api\Console\Commands\ElasticIndexCommand;
+use GetCandy\Api\Http\Middleware\SetCurrencyMiddleware;
+use GetCandy\Api\Http\Middleware\CheckClientCredentials;
+use GetCandy\Api\Console\Commands\InstallGetCandyCommand;
 
 class ApiServiceProvider extends ServiceProvider
 {
@@ -51,31 +50,35 @@ class ApiServiceProvider extends ServiceProvider
             __DIR__ . '/../../config/search.php' => config_path('search.php'),
             __DIR__ . '/../../config/tags.php' => config_path('tags.php'),
         ], 'config');
+
+        $this->mergeConfigFrom(
+            __DIR__.'/../../config/services.php', 'services'
+        );
     }
 
     /**
-     * Get some routes mapped
+     * Get some routes mapped.
      *
      * @return void
      */
     protected function mapRoutes()
     {
-        $this->loadRoutesFrom(__DIR__ . '/../../routes/api.php');
-        $this->loadRoutesFrom(__DIR__ . '/../../routes/api.client.php');
+        $this->loadRoutesFrom(__DIR__.'/../../routes/api.php');
+        $this->loadRoutesFrom(__DIR__.'/../../routes/api.client.php');
     }
 
     /**
-     * Load migrations
+     * Load migrations.
      *
      * @return void
      */
     protected function loadMigrations()
     {
-        $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/../../database/migrations');
     }
 
     /**
-     * Extend our validators
+     * Extend our validators.
      *
      * @return void
      */
@@ -92,6 +95,7 @@ class ApiServiceProvider extends ServiceProvider
         Validator::extend('asset_url', 'GetCandy\Api\Http\Validators\AssetValidator@validAssetUrl');
         Validator::extend('valid_discount', 'GetCandy\Api\Discounts\Validators\DiscountValidator@validate');
         Validator::extend('unique_lines', 'GetCandy\Api\Baskets\Validators\BasketValidator@uniqueLines');
+        Validator::extend('in_stock', 'GetCandy\Api\Baskets\Validators\BasketValidator@inStock');
         Validator::extend('valid_payment_token', 'GetCandy\Api\Payments\Validators\PaymentTokenValidator@validate');
         Validator::extend('valid_order', 'GetCandy\Api\Orders\Validators\OrderIsActiveValidator@validate');
     }
@@ -107,13 +111,12 @@ class ApiServiceProvider extends ServiceProvider
     }
 
     /**
-     * Do our application bindings
+     * Do our application bindings.
      *
      * @return void
      */
     protected function mapBindings()
     {
-
         $this->app->register(
             \Alaouy\Youtube\YoutubeServiceProvider::class
         );
@@ -145,21 +148,21 @@ class ApiServiceProvider extends ServiceProvider
         $mediaDrivers = config('assets.upload_drivers', []);
 
         foreach ($mediaDrivers as $name => $driver) {
-            $this->app->singleton($name . '.driver', function ($app) use ($driver) {
+            $this->app->singleton($name.'.driver', function ($app) use ($driver) {
                 return $app->make($driver);
             });
         }
     }
 
     /**
-     * Fires up Passport
+     * Fires up Passport.
      *
      * @return void
      */
     protected function initPassport()
     {
         Passport::tokensCan([
-            'read' => 'Read API'
+            'read' => 'Read API',
         ]);
         Passport::routes();
 
@@ -168,7 +171,7 @@ class ApiServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register our middleware
+     * Register our middleware.
      *
      * @return void
      */

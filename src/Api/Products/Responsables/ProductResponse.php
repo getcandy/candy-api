@@ -1,7 +1,8 @@
 <?php
+
 namespace App\Http\Responses;
 
-class PostIndexResponse extends Response
+class ProductResponse extends Response
 {
     public function __construct($posts)
     {

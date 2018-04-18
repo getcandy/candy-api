@@ -2,15 +2,12 @@
 
 namespace GetCandy\Api\Categories\Services;
 
-use Carbon\Carbon;
-use GetCandy;
-use GetCandy\Api\Attributes\Events\AttributableSavedEvent;
-use GetCandy\Api\Categories\Models\Category;
 use GetCandy\Api\Routes\Models\Route;
 use GetCandy\Api\Scaffold\BaseService;
-use GetCandy\Api\Search\Events\IndexableSavedEvent;
-use GetCandy\Exceptions\MinimumRecordRequiredException;
 use GetCandy\Api\Search\SearchContract;
+use GetCandy\Api\Categories\Models\Category;
+use GetCandy\Api\Search\Events\IndexableSavedEvent;
+use GetCandy\Api\Attributes\Events\AttributableSavedEvent;
 
 class CategoryService extends BaseService
 {
@@ -29,6 +26,7 @@ class CategoryService extends BaseService
     public function getNestedList()
     {
         $categories = $this->model->withDepth()->defaultOrder()->get()->toTree();
+
         return $categories;
     }
 
@@ -52,12 +50,12 @@ class CategoryService extends BaseService
 
         event(new AttributableSavedEvent($category));
 
-        if (!empty($data['customer_groups'])) {
+        if (! empty($data['customer_groups'])) {
             $groupData = $this->mapCustomerGroupData($data['customer_groups']['data']);
             $category->customerGroups()->sync($groupData);
         }
 
-        if (!empty($data['channels']['data'])) {
+        if (! empty($data['channels']['data'])) {
             $category->channels()->sync(
                 $this->getChannelMapping($data['channels']['data'])
             );
@@ -68,7 +66,7 @@ class CategoryService extends BaseService
         $category->routes()->createMany($urls);
 
         // If a parent id exists then add the category to the parent
-        if (!empty($data['parent']['id'])) {
+        if (! empty($data['parent']['id'])) {
             $parentNode = $this->getByHashedId($data['parent']['id']);
             $parentNode->prependNode($category);
         }
@@ -83,12 +81,12 @@ class CategoryService extends BaseService
         $model = $this->getByHashedId($hashedId);
         $model->attribute_data = $data['attributes'];
 
-        if (!empty($data['customer_groups'])) {
+        if (! empty($data['customer_groups'])) {
             $groupData = $this->mapCustomerGroupData($data['customer_groups']['data']);
             $model->customerGroups()->sync($groupData);
         }
 
-        if (!empty($data['channels']['data'])) {
+        if (! empty($data['channels']['data'])) {
             $model->channels()->sync(
                 $this->getChannelMapping($data['channels']['data'])
             );
@@ -100,6 +98,39 @@ class CategoryService extends BaseService
         event(new IndexableSavedEvent($model));
 
         return $model;
+    }
+
+    public function updateProducts($id, array $data)
+    {
+        $category = $this->getByHashedId($id);
+        $category->sort = $data['sort_type'];
+        $category->save();
+
+        $existingProducts = $category->products;
+
+        $category->products()->detach();
+
+        if ($existingProducts->count()) {
+            app(SearchContract::class)->indexer()->updateDocuments(
+                $existingProducts,
+                'categories'
+            );
+        }
+
+        foreach ($data['products'] as $item) {
+            $product = app('api')->products()->getByHashedId($item['id']);
+            $product = $category->products()->save(
+                $product,
+                ['position' => $item['position']]
+            );
+        }
+
+        app(SearchContract::class)->indexer()->updateDocuments(
+            $category->products()->get(),
+            'categories'
+        );
+
+        return $category;
     }
 
     public function reorder(array $data)
@@ -138,32 +169,23 @@ class CategoryService extends BaseService
                 return false;
             }
         }
-        return true;
-    }
 
-    public function getPaginatedData($length = 50, $page = null, $depth = null)
-    {
-        if ($depth) {
-            $results = Category::withDepth()->having('depth', '<', $depth)->get();
-        } else {
-            $results = Category::paginate($length, ['*'], 'page', $page);
-        }
-        return $results;
+        return true;
     }
 
     public function getCategoryTree($channel = null)
     {
-        return Category::channel($channel)->defaultOrder()->get()->toTree();
+        return Category::channel($channel)->withCount('products')->defaultOrder()->get()->toTree();
     }
 
     /**
-     * Deletes a resource by its given hashed ID
+     * Deletes a resource by its given hashed ID.
      *
      * @param  string $id
      *
      * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      *
-     * @return Boolean
+     * @return bool
      */
     public function delete($id)
     {

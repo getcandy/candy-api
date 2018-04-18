@@ -1,28 +1,28 @@
 <?php
+
 namespace GetCandy\Api\Http\Transformers\Fractal\Orders;
 
-use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use GetCandy\Api\Orders\Models\Order;
-use Carbon\Carbon;
+use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Users\UserTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Baskets\BasketTransformer;
-use GetCandy\Api\Http\Transformers\Fractal\Orders\OrderLineTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Payments\TransactionTransformer;
 
 class OrderTransformer extends BaseTransformer
 {
     protected $availableIncludes = [
-        'lines', 'user', 'basket', 'transactions', 'discounts'
+        'lines', 'user', 'basket', 'transactions', 'discounts',
     ];
 
     public function transform(Order $order)
     {
         $data = [
             'id' => $order->encodedId(),
+            'sub_total' => round($order->total + $order->shipping_total - $order->vat, 2),
             'total' => round($order->total, 2),
+            'vat' => round($order->vat, 2),
             'reference' => $order->ref,
             'invoice_reference' => $order->invoice_reference,
-            'vat' => round($order->vat, 2),
             'vat_no' => $order->vat_no,
             'tracking_no' => $order->tracking_no,
             'dispatched_at' => $order->dispatched_at,
@@ -38,8 +38,9 @@ class OrderTransformer extends BaseTransformer
             'created_at' => $order->created_at,
             'updated_at' => $order->updated_at,
             'placed_at' => $order->placed_at,
-            'notes' => $order->notes
+            'notes' => $order->notes,
         ];
+
         return $data;
     }
 
@@ -60,9 +61,10 @@ class OrderTransformer extends BaseTransformer
 
     protected function includeUser(Order $order)
     {
-        if (!$order->user) {
-            return null;
+        if (! $order->user) {
+            return;
         }
+
         return $this->item($order->user, new UserTransformer);
     }
 

@@ -2,32 +2,33 @@
 
 namespace GetCandy\Api\Products\Models;
 
-use GetCandy\Api\Attributes\Models\Attribute;
-use GetCandy\Api\Scaffold\BaseModel;
-use GetCandy\Api\Traits\HasAttributes;
-use GetCandy\Api\Assets\Models\Asset;
 use GetCandy\Api\Taxes\Models\Tax;
-use PriceCalculator;
-use Facades\GetCandy\Api\Taxes\TaxCalculator;
+use GetCandy\Api\Scaffold\BaseModel;
+use GetCandy\Api\Assets\Models\Asset;
+use GetCandy\Api\Traits\HasAttributes;
+use GetCandy\Api\Baskets\Models\BasketLine;
 
 class ProductVariant extends BaseModel
 {
     use HasAttributes;
-
-    protected $pricing;
-
     /**
-     * The Hashid Channel for encoding the id
+     * The Hashid Channel for encoding the id.
      * @var string
      */
     protected $hashids = 'product';
 
-    protected $fillable = ['options', 'price', 'sku', 'stock'];
+    protected $fillable = ['options', 'price', 'sku', 'stock', 'backorder'];
 
+    protected $pricing;
 
     public function product()
     {
         return $this->belongsTo(Product::class)->withoutGlobalScopes();
+    }
+
+    public function basketLines()
+    {
+        return $this->hasMany(BasketLine::class);
     }
 
     public function getNameAttribute()
@@ -39,10 +40,10 @@ class ProductVariant extends BaseModel
         $i = 0;
 
         foreach ($this->options as $handle => $option) {
-            if (!empty($option[$locale])) {
+            if (! empty($option[$locale])) {
                 $localeUsed = $locale;
             }
-            $name .= $option[$localeUsed] . ($i == count($this->options) ? ', ' : '');
+            $name .= $option[$localeUsed].($i == count($this->options) ? ', ' : '');
         }
 
         return $name;
@@ -58,25 +59,23 @@ class ProductVariant extends BaseModel
                 $values[$option] = $data['options'][$value]['values'];
             }
         }
+
         return $values;
     }
 
-    protected function getPricing($type)
+    protected function getPricing()
     {
-        if (!$this->pricing) {
-            $this->pricing = app('api')->productVariants()->getVariantPrice($this, app('auth')->user());
-        }
-        return $this->pricing;
+        return app('api')->productVariants()->getVariantPrice($this, app('auth')->user());
     }
 
     public function getTotalPriceAttribute()
     {
-        return $this->getPricing('price')->amount;
+        return $this->getPricing()->amount;
     }
 
     public function getTaxTotalAttribute()
     {
-        return $this->getPricing('tax')->tax;
+        return $this->getPricing()->tax;
     }
 
     public function setOptionsAttribute($val)

@@ -3,9 +3,9 @@
 namespace GetCandy\Api\Traits;
 
 use Illuminate\Http\Response;
-use League\Fractal\Pagination\IlluminatePaginatorAdapter;
-use League\Fractal\Resource\Collection;
 use League\Fractal\Resource\Item;
+use League\Fractal\Resource\Collection;
+use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 
 trait Fractal
 {
@@ -17,12 +17,13 @@ trait Fractal
         if ($includes) {
             app()->fractal->parseIncludes($includes);
         }
+
         return $this;
     }
 
     /**
-     * Gets the current status code
-     * @return Int
+     * Gets the current status code.
+     * @return int
      */
     public function getStatusCode()
     {
@@ -30,44 +31,46 @@ trait Fractal
     }
 
     /**
-     * Sets the status code for the response
-     * @param Int $statusCode
+     * Sets the status code for the response.
+     * @param int $statusCode
      */
     public function setStatusCode($statusCode)
     {
         $this->statusCode = $statusCode;
+
         return $this;
     }
 
     /**
-    * Generates a Response with a 403 HTTP header and a given message.
-    * @return  Response
-    */
+     * Generates a Response with a 403 HTTP header and a given message.
+     * @return  Response
+     */
     public function errorForbidden($message = null)
     {
         return $this->setStatusCode(403)->respondWithError(($message ?: trans('response.error.forbidden')));
     }
 
     /**
-     * Generates a response with a 410 HTTP header and a given message
+     * Generates a response with a 410 HTTP header and a given message.
      *
      * @param mixed $message
      * @return void
      */
     public function errorExpired($message = null)
     {
-        return $this->setStatusCode(410)->respondWithError( ($message ? : trans('response.error.expired')));
+        return $this->setStatusCode(410)->respondWithError(($message ?: trans('response.error.expired')));
     }
 
     /**
-    * Generates a Response with a 500 HTTP header and a given message.
-    * @return  Response
-    */
+     * Generates a Response with a 500 HTTP header and a given message.
+     * @return  Response
+     */
     public function errorInternalError($message = null)
     {
         return $this->setStatusCode(500)->respondWithError(($message ?: trans('response.error.internal')));
     }
-     /**
+
+    /**
      * Generates a Response with a 401 HTTP header and a given message.
      *
      * @return  Response
@@ -88,10 +91,10 @@ trait Fractal
     }
 
     /**
-    * Generates a Response with a 404 HTTP header and a given message.
-    *
-    * @return  Response
-    */
+     * Generates a Response with a 404 HTTP header and a given message.
+     *
+     * @return  Response
+     */
     public function errorNotFound($message = null)
     {
         return $this->setStatusCode(404)->respondWithError(($message ?: trans('response.error.not_found')));
@@ -112,8 +115,8 @@ trait Fractal
         return $this->respondWithArray([
             'success' => [
                 'http_code' => $this->statusCode,
-                'message' => $message
-            ]
+                'message' => $message,
+            ],
         ]);
     }
 
@@ -121,11 +124,12 @@ trait Fractal
     {
         return $this->setStatusCode($status)->respondWithArray(['processed' => true]);
     }
+
     /**
-     * Returns an error response
-     * @param  String $message
-     * @param  String $errorCode
-     * @return Array
+     * Returns an error response.
+     * @param  string $message
+     * @param  string $errorCode
+     * @return array
      */
     protected function respondWithError($message = null)
     {
@@ -136,13 +140,13 @@ trait Fractal
         return $this->respondWithArray([
             'error' => [
                 'http_code' => $this->statusCode,
-                'message' => $message
-            ]
+                'message' => $message,
+            ],
         ]);
     }
 
     /**
-     * Respond with an item
+     * Respond with an item.
      * @param  array $item
      * @param  object $callback The transformer to use
      * @return array
@@ -156,7 +160,7 @@ trait Fractal
         $resource = new Item($item, $callback);
 
         $meta = array_merge([
-            'lang' => app()->getLocale()
+            'lang' => app()->getLocale(),
         ], $meta);
 
         $resource->setMeta($meta);
@@ -167,7 +171,7 @@ trait Fractal
     }
 
     /**
-     * Respond with a collection
+     * Respond with a collection.
      * @param  array $paginator
      * @param  object $callback The transformer to use
      * @return array
@@ -187,11 +191,10 @@ trait Fractal
         $resource = new Collection($collection, $callback);
 
         $meta = array_merge([
-            'lang' => app()->getLocale()
+            'lang' => app()->getLocale(),
         ], $meta);
 
         $resource->setMeta($meta);
-
 
         if ($paginator instanceof \Illuminate\Pagination\LengthAwarePaginator) {
             $resource->setPaginator(new IlluminatePaginatorAdapter($paginator));
@@ -203,7 +206,7 @@ trait Fractal
     }
 
     /**
-     * Builds a response array
+     * Builds a response array.
      * @param  array  $array   The array of data
      * @param  array  $headers Any headers to attach to the response
      * @return array

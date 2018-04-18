@@ -5,12 +5,12 @@ namespace GetCandy\Api\Http\Validators;
 class LocaleValidator
 {
     /**
-     * Validates the name for an attribute doesn't exist in the same group
-     * @param  String $attribute
-     * @param  String $value
-     * @param  Array $parameters
+     * Validates the name for an attribute doesn't exist in the same group.
+     * @param  string $attribute
+     * @param  string $value
+     * @param  array $parameters
      * @param  Validator $validator
-     * @return Bool
+     * @return bool
      */
     public function validate($attribute, $value, $parameters, $validator)
     {
@@ -21,6 +21,7 @@ class LocaleValidator
         if (! app('api')->languages()->allLocalesExist($locales)) {
             return false;
         }
+
         return true;
     }
 }

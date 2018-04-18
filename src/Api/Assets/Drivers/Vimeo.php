@@ -27,7 +27,7 @@ class Vimeo extends BaseUrlDriver
     }
 
     /**
-     * Get the vimeo video info
+     * Get the vimeo video info.
      *
      * @param string $url
      *
@@ -35,11 +35,12 @@ class Vimeo extends BaseUrlDriver
      */
     public function getInfo($url)
     {
-        if (!$this->info) {
+        if (! $this->info) {
             return $this->info = $this->getOemData([
-                'url' => $url
+                'url' => $url,
             ]);
         }
+
         return $this->info;
     }
 }

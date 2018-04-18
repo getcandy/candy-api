@@ -1,14 +1,15 @@
 <?php
+
 namespace GetCandy\Api\Orders\Models;
 
-use GetCandy\Api\Products\Models\ProductVariant;
 use GetCandy\Api\Scaffold\BaseModel;
+use GetCandy\Api\Products\Models\ProductVariant;
 
 class OrderLine extends BaseModel
 {
     protected $hashids = 'order';
 
-    protected $fillable = ['quantity', 'product', 'variant', 'total', 'sku'];
+    protected $fillable = ['quantity', 'product', 'variant', 'total', 'sku', 'tax', 'tax_rate', 'discount'];
 
     public function variant()
     {

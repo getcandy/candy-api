@@ -2,10 +2,9 @@
 
 namespace GetCandy\Api\Products\Services;
 
-use GetCandy\Api\Products\Models\Product;
-use GetCandy\Api\Products\Models\ProductFamily;
 use GetCandy\Api\Scaffold\BaseService;
-use GetCandy\Exceptions\InvalidLanguageException;
+use GetCandy\Api\Products\Models\Product;
+use GetCandy\Api\Search\Events\IndexableSavedEvent;
 
 class ProductCategoryService extends BaseService
 {
@@ -19,6 +18,8 @@ class ProductCategoryService extends BaseService
         $product = $this->getByHashedId($product);
         $category_ids = app('api')->categories()->getDecodedIds($data['categories']);
         $product->categories()->sync($category_ids);
+        event(new IndexableSavedEvent($product));
+
         return $product->categories;
     }
 
@@ -27,6 +28,8 @@ class ProductCategoryService extends BaseService
         $product = $this->getByHashedId($productId);
         $categoryId = app('api')->categories()->getDecodedId($categoryId);
         $product->categories()->detach($categoryId);
+        event(new IndexableSavedEvent($product));
+
         return $product->categories;
     }
 }

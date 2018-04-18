@@ -1,7 +1,7 @@
 <?php
+
 namespace GetCandy\Api\Discounts\Models;
 
-use GetCandy\Api\Auth\Models\User;
 use GetCandy\Api\Scaffold\BaseModel;
 use GetCandy\Api\Products\Models\Product;
 use GetCandy\Api\Customers\Models\CustomerGroup;
@@ -56,6 +56,6 @@ class DiscountCriteriaItem extends BaseModel
      */
     public function users()
     {
-        return $this->morphedByMany(User::class, 'eligible', 'discount_criteria_models');
+        return $this->morphedByMany(config('auth.providers.users.model'), 'eligible', 'discount_criteria_models');
     }
 }

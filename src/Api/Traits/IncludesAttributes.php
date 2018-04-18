@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Traits;
 
-use GetCandy\Api\Http\Transformers\Fractal\Attributes\AttributeGroupTransformer;
 use Illuminate\Database\Eloquent\Model;
 use GetCandy\Api\Attributes\Models\AttributeGroup;
+use GetCandy\Api\Http\Transformers\Fractal\Attributes\AttributeGroupTransformer;
 
 trait IncludesAttributes
 {
@@ -18,10 +18,11 @@ trait IncludesAttributes
      */
     public function getAttributeGroups()
     {
-        if (!$this->attributeGroups) {
+        if (! $this->attributeGroups) {
             $this->attributeGroups = AttributeGroup::select('id', 'name', 'handle', 'position')
                 ->orderBy('position', 'asc')->with(['attributes'])->get();
         }
+
         return $this->attributeGroups;
     }
 
@@ -46,6 +47,7 @@ trait IncludesAttributes
                 return $group;
             }
         });
+
         return $this->collection($attributeGroups, new AttributeGroupTransformer);
     }
 }

@@ -2,17 +2,16 @@
 
 namespace GetCandy\Api\Categories\Models;
 
+use Kalnoy\Nestedset\NodeTrait;
+use GetCandy\Api\Traits\Assetable;
+use GetCandy\Api\Traits\HasRoutes;
+use GetCandy\Api\Scaffold\BaseModel;
+use GetCandy\Api\Traits\HasChannels;
+use GetCandy\Api\Traits\HasAttributes;
 use GetCandy\Api\Channels\Models\Channel;
 use GetCandy\Api\Products\Models\Product;
-use GetCandy\Api\Customers\Models\CustomerGroup;
-use GetCandy\Api\Routes\Models\Route;
-use GetCandy\Api\Scaffold\BaseModel;
-use GetCandy\Api\Traits\Assetable;
-use GetCandy\Api\Traits\HasAttributes;
-use GetCandy\Api\Traits\HasChannels;
 use GetCandy\Api\Traits\HasCustomerGroups;
-use GetCandy\Api\Traits\HasRoutes;
-use Kalnoy\Nestedset\NodeTrait;
+use GetCandy\Api\Customers\Models\CustomerGroup;
 
 class Category extends BaseModel
 {
@@ -25,21 +24,21 @@ class Category extends BaseModel
 
     protected $hashids = 'main';
 
-    protected $settings = 'products';
+    protected $settings = 'categories';
 
     protected $fillable = [
-        'attribute_data', 'parent_id'
+        'attribute_data', 'parent_id',
     ];
 
     public function toArray()
     {
         return array_merge(parent::toArray(), [
             'id' => $this->encodedId(),
-            'thumbnail' => $this->primaryAsset(),
+            'thumbnail' => $this->primaryAsset->first(),
             'parent_id' => $this->encode($this->parent_id),
             'routes' => [
-                'data' => $this->routes
-            ]
+                'data' => $this->routes,
+            ],
         ]);
     }
 
@@ -47,6 +46,7 @@ class Category extends BaseModel
     {
         return $val;
     }
+
     public function hasChildren()
     {
         return (bool) $this->children()->count();
@@ -54,7 +54,7 @@ class Category extends BaseModel
 
     public function children()
     {
-        return $this->hasMany(Category::class, 'parent_id');
+        return $this->hasMany(self::class, 'parent_id');
     }
 
     public function parent()
@@ -69,7 +69,7 @@ class Category extends BaseModel
 
     public function products()
     {
-        return $this->belongsToMany(Product::class, 'product_categories');
+        return $this->belongsToMany(Product::class, 'product_categories')->withPivot('position')->orderBy('product_categories.position', 'asc');
     }
 
     public function channels()

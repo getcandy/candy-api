@@ -2,9 +2,8 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Search;
 
-use GetCandy\Api\Routes\Models\Route;
-use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use Illuminate\Database\Eloquent\Model;
+use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 
 class SavedSearchTransformer extends BaseTransformer
 {

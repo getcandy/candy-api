@@ -14,7 +14,7 @@ class LayoutTransformer extends BaseTransformer
         return [
             'id' => $layout->encodedId(),
             'name' => $layout->name,
-            'handle' => $layout->handle
+            'handle' => $layout->handle,
         ];
     }
 }

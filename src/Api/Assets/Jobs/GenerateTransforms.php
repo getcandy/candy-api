@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Assets\Jobs;
 
-use GetCandy\Api\Assets\Models\Asset;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
@@ -25,7 +24,7 @@ class GenerateTransforms implements ShouldQueue
      */
     public function __construct($assets)
     {
-        if (!is_array($assets)) {
+        if (! is_array($assets)) {
             $assets = [$assets];
         }
         $this->assets = collect($assets);

@@ -2,34 +2,34 @@
 
 namespace GetCandy\Api\Http\Controllers\Products;
 
-use GetCandy\Exceptions\InvalidLanguageException;
-use GetCandy\Exceptions\MinimumRecordRequiredException;
+use Illuminate\Http\Request;
 use GetCandy\Api\Http\Controllers\BaseController;
+use GetCandy\Exceptions\InvalidLanguageException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use GetCandy\Api\Http\Requests\ProductVariants\CreateRequest;
 use GetCandy\Api\Http\Requests\ProductVariants\DeleteRequest;
 use GetCandy\Api\Http\Requests\ProductVariants\UpdateRequest;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use GetCandy\Api\Http\Transformers\Fractal\Products\ProductTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Products\ProductVariantTransformer;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ProductVariantController extends BaseController
 {
     /**
-     * Handles the request to show all product families
+     * Handles the request to show all product families.
      * @param  Request $request
      * @return Json
      */
     public function index(Request $request)
     {
         $paginator = app('api')->productVariants()->getPaginatedData($request->per_page);
+
         return $this->respondWithCollection($paginator, new ProductVariantTransformer);
     }
 
     /**
-     * Handles the request to show a product family based on hashed ID
-     * @param  String $id
+     * Handles the request to show a product family based on hashed ID.
+     * @param  string $id
      * @return Json
      */
     public function show($id)
@@ -39,11 +39,12 @@ class ProductVariantController extends BaseController
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
+
         return $this->respondWithItem($product, new ProductVariantTransformer);
     }
 
     /**
-     * Handles the request to create the variants
+     * Handles the request to create the variants.
      * @param  CreateRequest $request
      * @return Json
      */
@@ -56,12 +57,13 @@ class ProductVariantController extends BaseController
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
+
         return $this->respondWithItem($result, new ProductTransformer);
     }
 
     /**
-     * Handles the request to update a product family
-     * @param  String        $id
+     * Handles the request to update a product family.
+     * @param  string        $id
      * @param  UpdateRequest $request
      * @return Json
      */
@@ -76,12 +78,13 @@ class ProductVariantController extends BaseController
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
+
         return $this->respondWithItem($result, new ProductVariantTransformer);
     }
 
     /**
-     * Handles the request to delete a product family
-     * @param  String        $id
+     * Handles the request to delete a product family.
+     * @param  string        $id
      * @param  DeleteRequest $request
      * @return Json
      */
@@ -94,6 +97,7 @@ class ProductVariantController extends BaseController
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
+
         return $this->respondWithNoContent();
     }
 }

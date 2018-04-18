@@ -20,7 +20,7 @@ class CurrencyTransformer extends BaseTransformer
             'thousand' => $currency->thousand_point,
             'exchange_rate' => $currency->exchange_rate,
             'enabled' => (bool) $currency->enabled,
-            'default' => (bool) $currency->default
+            'default' => (bool) $currency->default,
         ];
     }
 }

@@ -25,7 +25,7 @@ class ElasticIndexCommand extends Command
 
     protected $indexables = [
         Product::class,
-        Category::class
+        Category::class,
     ];
 
     /**
@@ -49,12 +49,11 @@ class ElasticIndexCommand extends Command
 
         //TODO: DO this dynamically.
         foreach ($this->indexables as $indexable) {
-
-            $this->info('Indexing ' . $indexable);
+            $this->info('Indexing '.$indexable);
 
             $model = new $indexable;
 
-            if (!$search->indexer()->hasIndexer($model)) {
+            if (! $search->indexer()->hasIndexer($model)) {
                 $this->error("No Indexer found for {$model}");
             }
 
@@ -66,7 +65,6 @@ class ElasticIndexCommand extends Command
             }
 
             $items = $model->withoutGlobalScopes()->get();
-
 
             $bar = $this->output->createProgressBar($items->count());
 

@@ -2,15 +2,15 @@
 
 namespace GetCandy\Api\Http\Controllers\Products;
 
+use Illuminate\Http\Request;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Assets\UploadRequest;
 use GetCandy\Api\Http\Transformers\Fractal\Assets\AssetTransformer;
-use Illuminate\Http\Request;
 
 class ProductAssetController extends BaseController
 {
     /**
-     * Gets all assets for a product
+     * Gets all assets for a product.
      * @param  int  $id
      * @param  Request $request
      * @return array|\Illuminate\Http\Response
@@ -24,13 +24,12 @@ class ProductAssetController extends BaseController
     }
 
     /**
-     * Uploads an asset for a product
+     * Uploads an asset for a product.
      * @param  int        $id
      * @param  UploadRequest $request
      * @return array|\Illuminate\Http\Response
      */
     public function upload($id, UploadRequest $request)
     {
-
     }
 }

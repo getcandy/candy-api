@@ -1,13 +1,14 @@
 <?php
+
 namespace GetCandy\Api\Baskets\Services;
 
 use Carbon\Carbon;
 use GetCandy\Api\Auth\Models\User;
+use GetCandy\Api\Discounts\Factory;
 use GetCandy\Api\Scaffold\BaseService;
 use GetCandy\Api\Baskets\Models\Basket;
 use GetCandy\Api\Baskets\Models\BasketTotal;
 use GetCandy\Api\Baskets\Events\BasketStoredEvent;
-use GetCandy\Api\Discounts\Factory;
 
 class BasketService extends BaseService
 {
@@ -22,7 +23,7 @@ class BasketService extends BaseService
     }
 
     /**
-     * Gets either a new or existing basket for a user
+     * Gets either a new or existing basket for a user.
      *
      * @param mixed $id
      * @param mixed $user
@@ -33,17 +34,25 @@ class BasketService extends BaseService
     {
         $basket = new Basket();
 
+        $basket->currency = app('api')->currencies()->getDefaultRecord()->code;
+
         if ($id) {
             $basket = $this->getByHashedId($id);
         } elseif ($user && $userBasket = $this->getCurrentForUser($user)) {
             $basket = $userBasket;
         }
 
+        if ($user && ! $basket->user) {
+            $basket->user()->associate($user);
+        }
+
+        $basket->save();
+
         return $basket;
     }
 
     /**
-     * Detach a user from a basket
+     * Detach a user from a basket.
      *
      * @param string $basketId
      *
@@ -63,18 +72,19 @@ class BasketService extends BaseService
                     $basket->user,
                     $basket
                 );
-                if (!$check) {
+                if (! $check) {
                     $basket->discounts()->detach($discount);
                 }
             }
         }
 
         $basket->save();
+
         return $basket;
     }
 
     /**
-     * Add a user to a basket
+     * Add a user to a basket.
      *
      * @param string $basketId
      * @param string $userId
@@ -87,11 +97,12 @@ class BasketService extends BaseService
         $user = app('api')->users()->getByHashedId($userId);
         $basket->user()->associate($user);
         $basket->save();
+
         return $basket;
     }
 
     /**
-     * Store a basket
+     * Store a basket.
      *
      * @param array $data
      *
@@ -100,7 +111,7 @@ class BasketService extends BaseService
     public function store(array $data, $user = null)
     {
         $basket = $this->getBasket(
-            !empty($data['basket_id']) ? $data['basket_id'] : null,
+            ! empty($data['basket_id']) ? $data['basket_id'] : null,
             $user
         );
 
@@ -110,15 +121,9 @@ class BasketService extends BaseService
             $basket->currency = $data['currency'];
         }
 
-        $basket->save();
-
-        if ($user && !$basket->user) {
-            $basket->user()->associate($user);
-        }
-
         $basket->lines()->delete();
 
-        if (!empty($data['variants'])) {
+        if (! empty($data['variants'])) {
             $this->remapLines($basket, $data['variants']);
         }
 
@@ -142,10 +147,11 @@ class BasketService extends BaseService
             } else {
                 $price = $variant->total_price;
             }
+
             return [
                 'product_variant_id' => $variant->id,
                 'quantity' => $item['quantity'],
-                'total' => $item['quantity'] * $price
+                'total' => $item['quantity'] * $price,
             ];
         });
 
@@ -153,7 +159,7 @@ class BasketService extends BaseService
     }
 
     /**
-     * Adds a discount to a basket
+     * Adds a discount to a basket.
      *
      * @param string $basketId
      * @param string $coupon
@@ -167,11 +173,12 @@ class BasketService extends BaseService
         $discount = $discountCriteria->set->discount;
         $discount->increment('uses');
         $basket->discounts()->attach($discount->id, ['coupon' => $coupon]);
+
         return $basket;
     }
 
     /**
-     * Delete a discount
+     * Delete a discount.
      *
      * @param string $basketId
      * @param string $discountId
@@ -190,7 +197,7 @@ class BasketService extends BaseService
     }
 
     /**
-     * Get a basket for a user
+     * Get a basket for a user.
      *
      * @param mixed $user
      *
@@ -198,8 +205,8 @@ class BasketService extends BaseService
      */
     public function getCurrentForUser($user)
     {
-        if (!$user || !is_string($user) && !$user instanceof User) {
-            return null;
+        if (! $user) {
+            return;
         }
 
         if (is_string($user)) {
@@ -209,7 +216,7 @@ class BasketService extends BaseService
         $basket = $user->latestBasket;
 
         if ($basket) {
-            if ($basket->order && !$basket->order->placed_at || !$basket->order) {
+            if ($basket->order && ! $basket->order->placed_at || ! $basket->order) {
                 return $basket;
             }
         }
@@ -218,11 +225,11 @@ class BasketService extends BaseService
     }
 
     /**
-     * Resolves a guest basket with an existing basket
+     * Resolves a guest basket with an existing basket.
      *
      * @param User $user
      * @param string $basketId
-     * @param boolean $merge
+     * @param bool $merge
      *
      * @return Basket
      */
@@ -241,11 +248,12 @@ class BasketService extends BaseService
         $basket->resolved_at = Carbon::now();
         $user->basket()->save($basket);
         $basket->save();
+
         return $basket;
     }
 
     /**
-     * Merges two baskets
+     * Merges two baskets.
      *
      * @param Basket $guestBasket
      * @param Basket $userBasket
@@ -256,18 +264,19 @@ class BasketService extends BaseService
         $newLines = $guestBasket->lines;
         $overrides = $newLines->pluck('variant.id');
         $oldLines = $userBasket->lines->filter(function ($line) use ($overrides) {
-            if (!$overrides->contains($line->variant->id)) {
+            if (! $overrides->contains($line->variant->id)) {
                 return $line;
             }
         });
         $guestBasket->update([
             'resolved_at' => Carbon::now(),
-            'merged_id' => $userBasket->id
+            'merged_id' => $userBasket->id,
         ]);
         $userBasket->lines()->delete();
         $userBasket->lines()->createMany(
             $newLines->merge($oldLines)->toArray()
         );
+
         return $userBasket;
     }
 
@@ -284,6 +293,7 @@ class BasketService extends BaseService
         $sets = app('api')->discounts()->parse($basket->discounts);
         $applied = $factory->getApplied($sets, \Auth::user(), null, $basket);
         $factory->applyToBasket($applied, $basket);
+
         return $basket;
     }
 }

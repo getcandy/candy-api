@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Assets\Drivers;
 
-use GetCandy\Api\Assets\Contracts\AssetDriverContract;
-use GetCandy\Api\Assets\Jobs\GenerateTransforms;
 use Image as InterventionImage;
+use GetCandy\Api\Assets\Jobs\GenerateTransforms;
+use GetCandy\Api\Assets\Contracts\AssetDriverContract;
 
 class Image extends BaseUploadDriver implements AssetDriverContract
 {
@@ -30,7 +30,7 @@ class Image extends BaseUploadDriver implements AssetDriverContract
         if ($model->assets()->count()) {
             // Get anything that isn't an "application";
             $image = $model->assets()->where('kind', '!=', 'application')->first();
-            if (!$image) {
+            if (! $image) {
                 $asset->primary = true;
             }
         } else {
@@ -40,7 +40,7 @@ class Image extends BaseUploadDriver implements AssetDriverContract
         $model->assets()->save($asset);
         $data['file']->storeAs($asset->location, $asset->filename, $source->disk);
 
-        if (!empty($image)) {
+        if (! empty($image)) {
             dispatch(new GenerateTransforms($asset));
         }
 

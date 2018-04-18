@@ -14,6 +14,7 @@ class OnAccount extends AbstractProvider
     protected function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 

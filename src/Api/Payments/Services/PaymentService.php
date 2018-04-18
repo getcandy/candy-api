@@ -1,4 +1,5 @@
 <?php
+
 namespace GetCandy\Api\Payments\Services;
 
 use GetCandy\Api\Orders\Models\Order;
@@ -18,25 +19,25 @@ class PaymentService extends BaseService
     }
 
     /**
-     * Gets the payment provider class
+     * Gets the payment provider class.
      *
      * @return void
      */
     public function getProvider()
     {
-        if (!$this->provider) {
-            $this->provider = config($this->configPath . '.gateway', 'braintree');
+        if (! $this->provider) {
+            $this->provider = config($this->configPath.'.gateway', 'braintree');
         }
 
         $provider = config(
-            $this->configPath . '.providers.' . $this->provider
+            $this->configPath.'.providers.'.$this->provider
         );
 
         return app()->make($provider);
     }
 
     /**
-     * Set the provider
+     * Set the provider.
      *
      * @param string $provider
      * @return mixed
@@ -44,11 +45,12 @@ class PaymentService extends BaseService
     public function setProvider($provider)
     {
         $this->provider = $provider;
+
         return $this;
     }
 
     /**
-     * Validates a payment token
+     * Validates a payment token.
      *
      * @param string $token
      *
@@ -60,24 +62,25 @@ class PaymentService extends BaseService
     }
 
     /**
-     * Charge the order
+     * Charge the order.
      *
      * @param Order $order
      * @param string $token
      * @param string $type
      *
-     * @return boolean
+     * @return bool
      */
     public function charge(Order $order, $token = null, $type = null)
     {
         if ($type) {
             $this->setProvider($type->driver);
         }
+
         return $this->getProvider()->charge($token, $order);
     }
 
     /**
-     * Refund a sale
+     * Refund a sale.
      *
      * @param string $token
      *
@@ -102,7 +105,7 @@ class PaymentService extends BaseService
                 'status' => $result->transaction->type,
                 'merchant' => '-',
                 'order' => $order,
-                'notes' => $result->message
+                'notes' => $result->message,
             ];
         } else {
             $data = [
@@ -112,7 +115,7 @@ class PaymentService extends BaseService
                 'status' => 'error',
                 'merchant' => $result->params['merchantId'],
                 'order' => $order,
-                'notes' => ''
+                'notes' => '',
             ];
         }
 
@@ -133,7 +136,7 @@ class PaymentService extends BaseService
     }
 
     /**
-     * Creates a transaction
+     * Creates a transaction.
      *
      * @param array $data
      *
@@ -150,11 +153,12 @@ class PaymentService extends BaseService
         $transaction->order_id = $data['order']->id;
         $transaction->notes = $data['notes'];
         $transaction->save();
+
         return $transaction;
     }
 
     /**
-     * Voids a transaction
+     * Voids a transaction.
      *
      * @param string $transactionId
      *
@@ -170,7 +174,7 @@ class PaymentService extends BaseService
         $transaction->success = $result->success;
         $transaction->status = 'voided';
 
-        if (!$result->success) {
+        if (! $result->success) {
             $transaction->notes = $result->message;
         }
 
@@ -181,6 +185,7 @@ class PaymentService extends BaseService
         }
 
         $transaction->save();
+
         return $transaction;
     }
 }

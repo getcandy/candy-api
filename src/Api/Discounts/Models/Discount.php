@@ -3,8 +3,8 @@
 namespace GetCandy\Api\Discounts\Models;
 
 use GetCandy\Api\Scaffold\BaseModel;
-use GetCandy\Api\Traits\HasAttributes;
 use GetCandy\Api\Traits\HasChannels;
+use GetCandy\Api\Traits\HasAttributes;
 
 class Discount extends BaseModel
 {

@@ -2,31 +2,30 @@
 
 namespace GetCandy\Api\Http\Controllers\Search;
 
-use GetCandy\Api\Categories\Models\Category;
+use Illuminate\Http\Request;
+use GetCandy\Api\Search\SearchContract;
 use GetCandy\Api\Products\Models\Product;
+use GetCandy\Api\Categories\Models\Category;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Search\SearchRequest;
-use GetCandy\Api\Search\SearchContract;
-use Illuminate\Http\Request;
 
 class SearchController extends BaseController
 {
     protected $types = [
         'product' => Product::class,
-        'category' => Category::class
+        'category' => Category::class,
     ];
 
     /**
-     * Performs a search against a type
+     * Performs a search against a type.
      *
      * @param Request $request
      * @param SearchContract $client
      *
-     * @return Array
+     * @return array
      */
     public function search(SearchRequest $request, SearchContract $client)
     {
-        clock()->startEvent('elastica', 'Elastica!');
         if (empty($this->types[$request->type])) {
             return $this->errorWrongArgs('Invalid type');
         }
@@ -46,6 +45,7 @@ class SearchController extends BaseController
                 ->user($request->user())
                 ->search(
                     $request->keywords,
+                    $request->category,
                     $request->filters,
                     $request->sort_by ?: [],
                     $page ?: 1,
@@ -57,20 +57,16 @@ class SearchController extends BaseController
             return $this->errorInternalError($e->getMessage());
         }
 
-        clock()->endEvent('elastica');
-
-        clock()->startEvent('results', 'Getting Search Results');
+        // clock()->startEvent('results', 'Getting Search Results');
 
         $results = app('api')->search()->getResults(
             $results,
             $request->type,
             $request->includes,
-            $request->page ? : 1
+            $request->page ?: 1,
+            $request->category
         );
 
-        clock()->endEvent('results');
-
-        // return 'hi';
         return response($results, 200);
     }
 }

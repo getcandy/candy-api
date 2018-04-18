@@ -2,20 +2,20 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Countries;
 
-use GetCandy\Api\Countries\Models\Country;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 
 class CountryGroupTransformer extends BaseTransformer
 {
     protected $defaultIncludes = [
-        'countries'
+        'countries',
     ];
 
     public function transform($collection)
     {
-        $data =  [
-            'region' => $collection->first()->region ?: 'Rest of world'
+        $data = [
+            'region' => $collection->first()->region ?: 'Rest of world',
         ];
+
         return $data;
     }
 

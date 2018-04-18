@@ -2,18 +2,18 @@
 
 namespace GetCandy\Api\Search\Elastic;
 
+use Elastica\Query;
+use Elastica\Suggest;
+use Elastica\Query\Term;
+use Elastica\Query\Match;
+use Elastica\Suggest\Phrase;
+use Elastica\Query\BoolQuery;
+use Elastica\Aggregation\Terms;
+use GetCandy\Api\Search\ClientContract;
+use Elastica\Query\Nested as NestedQuery;
 use Elastica\Aggregation\Filter as FilterAggregation;
 use Elastica\Aggregation\Nested as NestedAggregation;
-use Elastica\Aggregation\Terms;
-use Elastica\Query;
-use Elastica\Query\BoolQuery;
-use Elastica\Query\Match;
-use Elastica\Query\Nested as NestedQuery;
-use Elastica\Query\Term;
-use Elastica\Suggest;
 use Elastica\Suggest\CandidateGenerator\DirectGenerator;
-use Elastica\Suggest\Phrase;
-use GetCandy\Api\Search\ClientContract;
 
 class Search extends AbstractProvider implements ClientContract
 {
@@ -28,27 +28,29 @@ class Search extends AbstractProvider implements ClientContract
 
     protected function getSearchIndex($indexer)
     {
-        return config('search.index_prefix') . $this->lang;
+        return config('search.index_prefix').$this->lang;
     }
 
     public function user($user = null)
     {
         $this->authUser = $user;
+
         return $this;
     }
 
     /**
-     * Set the channel to filter on
+     * Set the channel to filter on.
      *
      * @return void
      */
     public function on($channel = null)
     {
-        if (!$channel) {
+        if (! $channel) {
             $this->setChannelDefault();
         } else {
             $this->channel = $channel;
         }
+
         return $this;
     }
 
@@ -56,26 +58,27 @@ class Search extends AbstractProvider implements ClientContract
     {
         $channel = app('api')->channels()->getDefaultRecord()->handle;
         $this->channel = $channel;
+
         return $this;
     }
 
     /**
-     * Searches the index
+     * Searches the index.
      *
      * @param  string $keywords
      *
      * @return array
      */
-    public function search($keywords, $filters = [], $sorts = [], $page = 1, $perPage = 25)
+    public function search($keywords, $category = null, $filters = [], $sorts = [], $page = 1, $perPage = 25)
     {
-        if (!$this->indexer) {
+        if (! $this->indexer) {
             abort(400, 'You need to set an indexer first');
         }
 
         $roles = app('api')->roles()->getHubAccessRoles();
         $user = app('auth')->user();
 
-        if (!$this->channel) {
+        if (! $this->channel) {
             $this->setChannelDefault();
         }
 
@@ -92,6 +95,12 @@ class Search extends AbstractProvider implements ClientContract
             $query->addSort($sortable);
         }
 
+        if ($category && empty($sorts)) {
+            $query->setSort(
+                $this->getDefaultCategorySort($category)
+            );
+        }
+
         $boolQuery = new BoolQuery;
 
         if ($keywords) {
@@ -103,23 +112,27 @@ class Search extends AbstractProvider implements ClientContract
 
         $boolQuery->addFilter($filter);
 
-        if ($user && !$user->hasAnyRole($roles)) {
+        if ($user && ! $user->hasAnyRole($roles)) {
             $boolQuery->addFilter(
                 $this->getChannelFilter()
             );
         }
 
-        if (!empty($filters['categories'])) {
-            $categories = $filters['categories']['values'];
-            $filter = $this->getCategoryFilter($categories);
-
-            $boolQuery->addFilter(
-                $filter
-            );
-            $query->setPostFilter(
-                $filter
-            );
+        if (! empty($filters['categories'])) {
+            $this->categoryFilter->add($filters['categories']['values']);
         }
+        if ($category) {
+            $this->categoryFilter->add($category);
+        }
+
+        $filter = $this->categoryFilter->getFilter();
+
+        $boolQuery->addFilter(
+            $filter
+        );
+        $query->setPostFilter(
+            $filter
+        );
 
         $query->setQuery($boolQuery);
 
@@ -146,11 +159,12 @@ class Search extends AbstractProvider implements ClientContract
         $search->setQuery($query);
 
         $results = $search->search();
+
         return $results;
     }
 
     /**
-     * Get the suggester
+     * Get the suggester.
      *
      * @return Suggest
      */
@@ -178,7 +192,7 @@ class Search extends AbstractProvider implements ClientContract
     }
 
     /**
-     * Gets the category post aggregation
+     * Gets the category post aggregation.
      *
      * @return NestedAggregation
      */
@@ -214,7 +228,7 @@ class Search extends AbstractProvider implements ClientContract
     }
 
     /**
-     * Returns the category before aggregation
+     * Returns the category before aggregation.
      *
      * @return NestedAggregation
      */
@@ -235,7 +249,7 @@ class Search extends AbstractProvider implements ClientContract
     }
 
     /**
-     * Gets the highlight for the search query
+     * Gets the highlight for the search query.
      *
      * @return array
      */
@@ -255,37 +269,52 @@ class Search extends AbstractProvider implements ClientContract
         ];
     }
 
+    private function getRealCategoryIds($categories)
+    {
+        return app('api')->categories()->getDecodedIds($categories['values']);
+    }
+
     /**
-     * Gets the category post filter
+     * Gets the default sorting data for categories.
      *
      * @param array $categories
      *
-     * @return void
+     * @return array
      */
-    protected function getCategoryFilter($categories = [])
+    protected function getDefaultCategorySort($category)
     {
-        $filter = new BoolQuery;
+        $category = app('api')->categories()->getByHashedId($category);
 
-        foreach ($categories as $value) {
-            $cat = new NestedQuery();
-            $cat->setPath('departments');
+        $defaultSort = [];
 
-            $term = new Term;
-            $term->setTerm('departments.id', $value);
-
-            $cat->setQuery($term);
-
-            $filter->addMust($cat);
-            $this->categories[] = $value;
+        if ($category->sort == 'custom') {
+            $sort = [
+                'departments.position' => [
+                    'order' => 'asc',
+                    'mode' => 'max',
+                    'nested_path' => 'departments',
+                    'nested_filter' => [
+                        'bool' => [
+                            'must' => [
+                                'match' => [
+                                    'departments.id' => $category->encodedId(),
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ];
+            $defaultSort[] = $sort;
+        } else {
+            $sort = explode(':', $category->sort);
+            $defaultSort = $this->getSorts([$sort[0] => $sort[1]]);
         }
 
-        return $filter;
+        return $defaultSort;
     }
 
-    protected function getCustomerGroupFilter()
+    private function getCustomerGroups()
     {
-        $filter = new BoolQuery;
-
         if ($user = $this->authUser) {
             // Set to empty array as we don't want to filter any out.
             if ($user->hasRole('admin')) {
@@ -297,7 +326,14 @@ class Search extends AbstractProvider implements ClientContract
             $groups = [app('api')->customerGroups()->getGuest()];
         }
 
-        foreach ($groups as $model) {
+        return $groups;
+    }
+
+    protected function getCustomerGroupFilter()
+    {
+        $filter = new BoolQuery;
+
+        foreach ($this->getCustomerGroups() as $model) {
             $cat = new NestedQuery();
             $cat->setPath('customer_groups');
             $term = new Term;
@@ -305,7 +341,7 @@ class Search extends AbstractProvider implements ClientContract
 
             $cat->setQuery($term);
 
-            $filter->addMust($cat);
+            $filter->addShould($cat);
         }
 
         return $filter;
@@ -328,7 +364,7 @@ class Search extends AbstractProvider implements ClientContract
     }
 
     /**
-     * Generates the DisMax query
+     * Generates the DisMax query.
      *
      * @param string $keywords
      *
@@ -359,7 +395,7 @@ class Search extends AbstractProvider implements ClientContract
     }
 
     /**
-     * Gets an array of mapped sortable fields
+     * Gets an array of mapped sortable fields.
      *
      * @param array $sorts
      *
@@ -372,6 +408,11 @@ class Search extends AbstractProvider implements ClientContract
         $sortables = [];
 
         foreach ($sorts as $field => $dir) {
+            $column = $field;
+            if ($field == 'min_price' || $field == 'max_price') {
+                $field = 'pricing';
+            }
+
             if (empty($mapping[$field])) {
                 continue;
             }
@@ -385,9 +426,31 @@ class Search extends AbstractProvider implements ClientContract
                 }
                 foreach ($map['fields'] as $handle => $subField) {
                     if ($subField['type'] != 'text') {
-                        $sortables[] = [$field . '.' . $handle => $dir];
+                        $sortables[] = [$field.'.'.$handle => $dir];
                     }
                 }
+            } elseif ($map['type'] == 'nested') {
+                $column = $field.'.'.str_replace('_price', '', $column);
+                $sort = [
+                    $column => [
+                        'order' => $dir,
+                        'mode' => 'min',
+                        'nested_path' => 'pricing',
+                        'nested_filter' => [
+                            'bool' => [
+                                'must' => [],
+                            ],
+                        ],
+                    ],
+                ];
+                foreach ($this->getCustomerGroups() as $group) {
+                    $sort[$column]['nested_filter']['bool']['must'] = [
+                        'match' => [
+                            $field.'.id' => $group->encodedId(),
+                        ],
+                    ];
+                }
+                $sortables[] = $sort;
             } else {
                 $sortables[] = [$field => $dir];
             }

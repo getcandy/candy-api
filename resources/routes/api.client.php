@@ -18,29 +18,28 @@ $this->get('products/{product}', 'Products\ProductController@show');
 $this->post('customers', 'Customers\CustomerController@store');
 $this->get('products', 'Products\ProductController@index');
 
-/**
+/*
  * Categories
  */
 $this->get('categories', 'Categories\CategoryController@index');
 
-/**
+/*
  * Customers
  */
 $this->resource('customers', 'Customers\CustomerController', [
-    'except' => ['index', 'edit', 'create', 'show']
+    'except' => ['index', 'edit', 'create', 'show'],
 ]);
 $this->get('customers/groups', 'Customers\CustomerGroupController@index');
 
-/**
+/*
  * Users
  */
 $this->post('users/{user}', 'Users\UserController@update');
 
 $this->get('routes', 'Routes\RouteController@index');
 $this->get('routes/{slug}', [
-    'uses' => 'Routes\RouteController@show'
+    'uses' => 'Routes\RouteController@show',
 ])->where(['slug' => '.*']);
-
 
 $this->post('password/reset', 'Auth\ResetPasswordController@reset');
 $this->post('password/reset/request', 'Auth\ForgotPasswordController@sendResetLinkEmail');

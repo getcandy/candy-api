@@ -13,12 +13,12 @@ class ChannelControllerTest extends TestCase
     public function testIndex()
     {
         $response = $this->get($this->url('channels'), [
-            'Authorization' => 'Bearer ' . $this->accessToken()
+            'Authorization' => 'Bearer '.$this->accessToken(),
         ]);
 
         $response->assertJsonStructure([
             'data' => [['id', 'name', 'default']],
-            'meta' => ['pagination']
+            'meta' => ['pagination'],
         ]);
 
         $this->assertEquals(200, $response->status());
@@ -28,7 +28,7 @@ class ChannelControllerTest extends TestCase
     {
         $response = $this->get($this->url('channels'), [
             'Authorization' => 'Bearer foo.bar.bing',
-            'Accept' => 'application/json'
+            'Accept' => 'application/json',
         ]);
         $this->assertEquals(401, $response->getStatusCode());
     }
@@ -38,12 +38,12 @@ class ChannelControllerTest extends TestCase
         // Get a channel
         $id = Channel::first()->encodedId();
 
-        $response = $this->get($this->url('channels/' . $id), [
-            'Authorization' => 'Bearer ' . $this->accessToken()
+        $response = $this->get($this->url('channels/'.$id), [
+            'Authorization' => 'Bearer '.$this->accessToken(),
         ]);
 
         $response->assertJsonStructure([
-            'data' => ['id', 'name', 'default']
+            'data' => ['id', 'name', 'default'],
         ]);
 
         $this->assertEquals(200, $response->status());
@@ -52,7 +52,7 @@ class ChannelControllerTest extends TestCase
     public function testMissingShow()
     {
         $response = $this->get($this->url('channels/123456'), [
-            'Authorization' => 'Bearer ' . $this->accessToken()
+            'Authorization' => 'Bearer '.$this->accessToken(),
         ]);
 
         $this->assertHasErrorFormat($response);
@@ -67,15 +67,15 @@ class ChannelControllerTest extends TestCase
             [
                 'name' => 'Neon',
                 'handle' => 'neon',
-                'default' => true
+                'default' => true,
             ],
             [
-                'Authorization' => 'Bearer ' . $this->accessToken()
+                'Authorization' => 'Bearer '.$this->accessToken(),
             ]
         );
 
         $response->assertJsonStructure([
-            'data' => ['id', 'name', 'default']
+            'data' => ['id', 'name', 'default'],
         ]);
 
         $this->assertEquals(200, $response->status());
@@ -87,12 +87,12 @@ class ChannelControllerTest extends TestCase
             $this->url('channels'),
             [],
             [
-                'Authorization' => 'Bearer ' . $this->accessToken()
+                'Authorization' => 'Bearer '.$this->accessToken(),
             ]
         );
 
         $response->assertJsonStructure([
-            'name', 'handle'
+            'name', 'handle',
         ]);
 
         $this->assertEquals(422, $response->status());
@@ -103,19 +103,19 @@ class ChannelControllerTest extends TestCase
         $id = Channel::first()->encodedId();
 
         $response = $this->put(
-            $this->url('channels/' . $id),
+            $this->url('channels/'.$id),
             [
                 'name' => 'Neon',
                 'neon' => 'neon',
-                'default' => true
+                'default' => true,
             ],
             [
-                'Authorization' => 'Bearer ' . $this->accessToken()
+                'Authorization' => 'Bearer '.$this->accessToken(),
             ]
         );
 
         $response->assertJsonStructure([
-            'data' => ['id', 'name', 'default']
+            'data' => ['id', 'name', 'default'],
         ]);
 
         $this->assertEquals(200, $response->status());
@@ -128,10 +128,10 @@ class ChannelControllerTest extends TestCase
             [
                 'name' => 'Neon',
                 'handle' => 'neon',
-                'default' => true
+                'default' => true,
             ],
             [
-                'Authorization' => 'Bearer ' . $this->accessToken()
+                'Authorization' => 'Bearer '.$this->accessToken(),
             ]
         );
         $this->assertEquals(404, $response->status());
@@ -141,26 +141,25 @@ class ChannelControllerTest extends TestCase
     {
         $channel = Channel::create([
             'name' => 'Etsy',
-            'handle' => 'etsy'
+            'handle' => 'etsy',
         ]);
 
         $response = $this->delete(
-            $this->url('channels/' . $channel->encodedId()),
+            $this->url('channels/'.$channel->encodedId()),
             [],
-            ['Authorization' => 'Bearer ' . $this->accessToken()]
+            ['Authorization' => 'Bearer '.$this->accessToken()]
         );
         $this->assertEquals(204, $response->status());
     }
-
 
     public function testCannotDestroyLastChannel()
     {
         $id = Channel::first()->encodedId();
 
         $response = $this->delete(
-            $this->url('channels/' . $id),
+            $this->url('channels/'.$id),
             [],
-            ['Authorization' => 'Bearer ' . $this->accessToken()]
+            ['Authorization' => 'Bearer '.$this->accessToken()]
         );
 
         $this->assertEquals(422, $response->status());

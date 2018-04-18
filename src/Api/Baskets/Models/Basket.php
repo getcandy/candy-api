@@ -1,13 +1,12 @@
 <?php
+
 namespace GetCandy\Api\Baskets\Models;
 
-use GetCandy\Api\Auth\Models\User;
+use PriceCalculator;
 use GetCandy\Api\Scaffold\BaseModel;
 use GetCandy\Api\Orders\Models\Order;
 use GetCandy\Api\Traits\HasCompletion;
-use Illuminate\Database\Eloquent\Scope;
 use GetCandy\Api\Discounts\Models\Discount;
-use PriceCalculator;
 
 class Basket extends BaseModel
 {
@@ -16,11 +15,11 @@ class Basket extends BaseModel
     protected $hashids = 'basket';
 
     protected $fillable = [
-        'lines', 'completed_at', 'merged_id'
+        'lines', 'completed_at', 'merged_id',
     ];
 
     /**
-     * Get the basket lines
+     * Get the basket lines.
      *
      * @return void
      */
@@ -34,14 +33,19 @@ class Basket extends BaseModel
         return $this->belongsToMany(Discount::class)->withPivot('coupon');
     }
 
+    public function getExVatAttribute()
+    {
+        return round($this->total - $this->tax, 2);
+    }
+
     /**
-     * Get the basket user
+     * Get the basket user.
      *
      * @return User
      */
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(config('auth.providers.users.model'));
     }
 
     public function order()
@@ -53,7 +57,6 @@ class Basket extends BaseModel
     {
         return $this->hasOne(Order::class)->withoutGlobalScope('open');
     }
-
 
     // protected function getTotalWithoutDiscountAttribute()
     // {
@@ -84,6 +87,7 @@ class Basket extends BaseModel
         foreach ($this->lines as $line) {
             $weight += (float) $line->variant->weight_value;
         }
+
         return $weight;
     }
 }

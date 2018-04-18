@@ -8,7 +8,7 @@ return [
         'merchant_id' => env('BRAINTREE_MERCHANT'),
         'merchants' => [
             'default' => env('BRAINTREE_GBP_MERCHANT'),
-            'eur' => env('BRAINTREE_EUR_MERCHANT')
-        ]
-    ]
+            'eur' => env('BRAINTREE_EUR_MERCHANT'),
+        ],
+    ],
 ];

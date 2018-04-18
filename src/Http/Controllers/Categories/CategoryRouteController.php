@@ -4,7 +4,6 @@ namespace GetCandy\Api\Http\Controllers\Categories;
 
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Categories\Routes\CreateRequest;
-use Illuminate\Http\Request;
 
 class CategoryRouteController extends BaseController
 {
@@ -17,6 +16,7 @@ class CategoryRouteController extends BaseController
     public function store($category, CreateRequest $request)
     {
         $result = app('api')->categories()->createUrl($category, $request->all());
+
         return $this->respondWithNoContent();
     }
 }
