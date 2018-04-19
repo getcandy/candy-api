@@ -4,7 +4,6 @@ namespace GetCandy\Api\Products\Models;
 
 use GetCandy\Api\Scaffold\BaseModel;
 use GetCandy\Api\Traits\HasAttributes;
-use GetCandy\Api\Traits\HasTranslations;
 
 class ProductFamily extends BaseModel
 {
