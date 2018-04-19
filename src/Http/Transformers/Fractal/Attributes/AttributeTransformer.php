@@ -20,7 +20,7 @@ class AttributeTransformer extends BaseTransformer
     {
         return [
             'id' => $attribute->encodedId(),
-            'name' => $this->getLocalisedName($attribute->name),
+            'name' => $attribute->name,
             'handle' => $attribute->handle,
             'position' => (string) $attribute->position,
             'filterable' => (bool) $attribute->filterable,
@@ -32,6 +32,7 @@ class AttributeTransformer extends BaseTransformer
             'type' => $attribute->type,
             'required' => (bool) $attribute->required,
             'lookups' => $attribute->lookups,
+            'system' => (bool) $attribute->system,
         ];
     }
 

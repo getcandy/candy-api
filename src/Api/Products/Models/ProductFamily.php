@@ -4,11 +4,11 @@ namespace GetCandy\Api\Products\Models;
 
 use GetCandy\Api\Scaffold\BaseModel;
 use GetCandy\Api\Traits\HasAttributes;
+use GetCandy\Api\Traits\HasTranslations;
 
 class ProductFamily extends BaseModel
 {
     use HasAttributes;
-
     /**
      * The Hashid Channel for encoding the id.
      * @var string
@@ -16,6 +16,11 @@ class ProductFamily extends BaseModel
     protected $hashids = 'product_family';
 
     protected $fillable = ['attribute_data'];
+
+    public function getNameAttribute($value)
+    {
+        return json_decode($value, true);
+    }
 
     public function products()
     {
