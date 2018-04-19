@@ -75,6 +75,8 @@ Route::group([
      */
     $router->get('categories/parent/{parentID?}', 'Categories\CategoryController@getByParent');
     $router->post('categories/reorder', 'Categories\CategoryController@reorder');
+    $router->post('categories/{category}/products/attach', 'Products\ProductCategoryController@attach');
+    $router->put('categories/{category}/products', 'Categories\CategoryController@putProducts');
 
     $router->post('categories/{category}/routes', 'Categories\CategoryRouteController@store');
     $router->resource('categories', 'Categories\CategoryController', [
@@ -161,7 +163,7 @@ Route::group([
     $router->post('products/{product}/collections', 'Products\ProductCollectionController@update');
     $router->post('products/{product}/routes', 'Products\ProductRouteController@store');
     $router->post('products/{product}/categories', 'Products\ProductCategoryController@update');
-    $router->delete('products/{product}/categories/{category}', 'Products\Produ\ctCategoryController@destroy');
+    $router->delete('products/{product}/categories/{category}', 'Products\ProductCategoryController@destroy');
     $router->delete('products/{product}/collections/{collection}', 'Products\ProductCollectionController@destroy');
     $router->post('products/{product}/associations', 'Products\ProductAssociationController@store');
     $router->delete('products/{product}/associations', 'Products\ProductAssociationController@destroy');
