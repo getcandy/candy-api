@@ -4,15 +4,15 @@ namespace GetCandy\Api\Providers;
 
 use Validator;
 use Carbon\Carbon;
-use GetCandy\Api\Factory;
 use League\Fractal\Manager;
+use GetCandy\Api\Core\Factory;
 use Laravel\Passport\Passport;
 use GetCandy\Api\Search\SearchContract;
 use Illuminate\Support\ServiceProvider;
-use GetCandy\Api\Users\Services\UserService;
-use GetCandy\Api\Currencies\CurrencyConverter;
-use GetCandy\Api\Users\Contracts\UserContract;
+use GetCandy\Api\Core\Users\Services\UserService;
 use GetCandy\Api\Http\Middleware\SetTaxMiddleware;
+use GetCandy\Api\Core\Currencies\CurrencyConverter;
+use GetCandy\Api\Core\Users\Contracts\UserContract;
 use GetCandy\Api\Http\Middleware\SetCustomerGroups;
 use GetCandy\Api\Http\Middleware\SetLocaleMiddleware;
 use GetCandy\Api\Console\Commands\ElasticIndexCommand;
@@ -43,12 +43,12 @@ class ApiServiceProvider extends ServiceProvider
     protected function publishConfig()
     {
         $this->publishes([
-            __DIR__ . '/../../config/getcandy.php' => config_path('getcandy.php'),
-            __DIR__ . '/../../config/hashids.php' => config_path('hashids.php'),
-            __DIR__ . '/../../config/assets.php' => config_path('assets.php'),
-            __DIR__ . '/../../config/permission.php' => config_path('permission.php'),
-            __DIR__ . '/../../config/search.php' => config_path('search.php'),
-            __DIR__ . '/../../config/tags.php' => config_path('tags.php'),
+            __DIR__.'/../../config/getcandy.php' => config_path('getcandy.php'),
+            __DIR__.'/../../config/hashids.php' => config_path('hashids.php'),
+            __DIR__.'/../../config/assets.php' => config_path('assets.php'),
+            __DIR__.'/../../config/permission.php' => config_path('permission.php'),
+            __DIR__.'/../../config/search.php' => config_path('search.php'),
+            __DIR__.'/../../config/tags.php' => config_path('tags.php'),
         ], 'config');
 
         $this->mergeConfigFrom(
