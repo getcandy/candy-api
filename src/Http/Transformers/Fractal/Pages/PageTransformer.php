@@ -2,7 +2,7 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Pages;
 
-use GetCandy\Api\Pages\Models\Page;
+use GetCandy\Api\Core\Pages\Models\Page;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 
 class PageTransformer extends BaseTransformer

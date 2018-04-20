@@ -2,7 +2,7 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Tags;
 
-use GetCandy\Api\Tags\Models\Tag;
+use GetCandy\Api\Core\Tags\Models\Tag;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 
 class TagTransformer extends BaseTransformer

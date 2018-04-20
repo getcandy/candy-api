@@ -3,10 +3,6 @@
 namespace GetCandy\Api\Http\Controllers\Tags;
 
 use Illuminate\Http\Request;
-//use GetCandy\Api\Http\Requests\Attributes\CreateRequest;
-//use GetCandy\Api\Http\Requests\Attributes\DeleteRequest;
-//use GetCandy\Api\Http\Requests\Attributes\ReorderRequest;
-//use GetCandy\Api\Http\Requests\Attributes\UpdateRequest;
 use GetCandy\Api\Http\Controllers\BaseController;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use GetCandy\Api\Http\Transformers\Fractal\Tags\TagTransformer;

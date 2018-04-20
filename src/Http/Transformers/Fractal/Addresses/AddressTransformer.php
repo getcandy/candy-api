@@ -2,7 +2,7 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Addresses;
 
-use GetCandy\Api\Addresses\Models\Address;
+use GetCandy\Api\Core\Addresses\Models\Address;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 
 class AddressTransformer extends BaseTransformer

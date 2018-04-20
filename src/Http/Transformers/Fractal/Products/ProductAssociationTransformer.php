@@ -2,7 +2,7 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Products;
 
-use GetCandy\Api\Products\Models\ProductAssociation;
+use GetCandy\Api\Core\Products\Models\ProductAssociation;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Associations\AssociationGroupTransformer;
 

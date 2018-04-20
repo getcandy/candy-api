@@ -4,7 +4,7 @@ namespace GetCandy\Api\Http\Middleware;
 
 use Locale;
 use Closure;
-use GetCandy\Api\Traits\Fractal;
+use GetCandy\Api\Core\Traits\Fractal;
 
 class SetLocaleMiddleware
 {

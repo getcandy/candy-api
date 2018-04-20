@@ -2,7 +2,7 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Orders;
 
-use GetCandy\Api\Orders\Models\OrderDiscount;
+use GetCandy\Api\Core\Orders\Models\OrderDiscount;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 
 class OrderDiscountTransformer extends BaseTransformer

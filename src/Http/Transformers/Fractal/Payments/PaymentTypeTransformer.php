@@ -2,7 +2,7 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Payments;
 
-use GetCandy\Api\Payments\Models\PaymentType;
+use GetCandy\Api\Core\Payments\Models\PaymentType;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 
 class PaymentTypeTransformer extends BaseTransformer

@@ -3,7 +3,7 @@
 namespace GetCandy\Api\Http\Transformers\Fractal\Channels;
 
 use Carbon\Carbon;
-use GetCandy\Api\Channels\Models\Channel;
+use GetCandy\Api\Core\Channels\Models\Channel;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 
 class ChannelTransformer extends BaseTransformer

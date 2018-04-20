@@ -3,8 +3,8 @@
 namespace GetCandy\Api\Http\Controllers\Users;
 
 use Illuminate\Http\Request;
-use GetCandy\Api\Users\Contracts\UserContract;
 use GetCandy\Api\Http\Controllers\BaseController;
+use GetCandy\Api\Core\Users\Contracts\UserContract;
 use GetCandy\Api\Http\Requests\Users\CreateRequest;
 use GetCandy\Api\Http\Requests\Users\UpdateRequest;
 use GetCandy\Api\Http\Transformers\Fractal\Users\UserTransformer;

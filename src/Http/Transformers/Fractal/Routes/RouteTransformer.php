@@ -2,7 +2,7 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Routes;
 
-use GetCandy\Api\Routes\Models\Route;
+use GetCandy\Api\Core\Routes\Models\Route;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 
 class RouteTransformer extends BaseTransformer
