@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Search\Services;
 
-use GetCandy\Api\Core\Scaffold\BaseService;
 use Illuminate\Database\Eloquent\Model;
+use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Search\Models\SavedSearch;
 
 class SavedSearchService extends BaseService

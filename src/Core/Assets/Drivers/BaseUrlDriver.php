@@ -4,9 +4,9 @@ namespace GetCandy\Api\Core\Assets\Drivers;
 
 use GuzzleHttp\Client;
 use Illuminate\Support\Str;
-use GetCandy\Api\Core\Assets\Models\Asset;
 use Illuminate\Database\Eloquent\Model;
 use GuzzleHttp\Exception\ClientException;
+use GetCandy\Api\Core\Assets\Models\Asset;
 use GetCandy\Api\Core\Assets\Jobs\GenerateTransforms;
 use Intervention\Image\Exception\NotReadableException;
 

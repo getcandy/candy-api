@@ -3,8 +3,8 @@
 namespace GetCandy\Api\Core\Scaffold;
 
 use GetCandy\Api\Core\Traits\Hashids;
-use GetCandy\Api\Core\Routes\Models\Route;
 use Illuminate\Database\Eloquent\Model;
+use GetCandy\Api\Core\Routes\Models\Route;
 
 abstract class BaseModel extends Model
 {

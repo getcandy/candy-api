@@ -3,9 +3,9 @@
 namespace GetCandy\Api\Core\Assets\Services;
 
 use Image;
+use Illuminate\Database\Eloquent\Model;
 use GetCandy\Api\Core\Assets\Models\Asset;
 use GetCandy\Api\Core\Scaffold\BaseService;
-use Illuminate\Database\Eloquent\Model;
 use GetCandy\Api\Core\Assets\Jobs\CleanUpAssetFiles;
 
 class AssetService extends BaseService

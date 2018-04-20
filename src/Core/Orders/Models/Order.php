@@ -4,8 +4,8 @@ namespace GetCandy\Api\Core\Orders\Models;
 
 use GetCandy\Api\Core\Auth\Models\User;
 use GetCandy\Api\Core\Scaffold\BaseModel;
-use GetCandy\Api\Core\Baskets\Models\Basket;
 use Illuminate\Database\Eloquent\Builder;
+use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Core\Payments\Models\Transaction;
 
 class Order extends BaseModel

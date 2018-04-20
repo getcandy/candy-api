@@ -3,10 +3,8 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
-use GetCandy\Api\Baskets\Models\Basket;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class ExampleTest extends TestCase
+class OrderTest extends TestCase
 {
     /**
      * A basic test example.

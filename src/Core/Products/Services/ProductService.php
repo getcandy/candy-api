@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Products\Services;
 
-use GetCandy\Api\Core\Scaffold\BaseService;
 use Illuminate\Database\Eloquent\Model;
+use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Scopes\CustomerGroupScope;
 use GetCandy\Api\Core\Search\Events\IndexableSavedEvent;

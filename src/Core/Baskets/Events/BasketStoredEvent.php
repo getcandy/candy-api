@@ -4,8 +4,8 @@ namespace GetCandy\Api\Core\Baskets\Events;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
-use GetCandy\Api\Core\Baskets\Models\Basket;
 use Illuminate\Broadcasting\PrivateChannel;
+use GetCandy\Api\Core\Baskets\Models\Basket;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 

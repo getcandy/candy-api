@@ -3,8 +3,8 @@
 namespace GetCandy\Api\Core\Traits;
 
 use Laravel\Passport\HasApiTokens;
-use GetCandy\Api\Core\Orders\Models\Order;
 use Spatie\Permission\Traits\HasRoles;
+use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Core\Users\Models\UserDetail;
 use GetCandy\Api\Core\Addresses\Models\Address;
