@@ -65,6 +65,11 @@ class Order extends BaseModel
         });
     }
 
+    public function getDiscountAttribute()
+    {
+        return $this->lines->sum('discount');
+    }
+
     public function getTaxAttribute()
     {
         return $this->lines->sum('tax');
