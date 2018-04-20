@@ -16,15 +16,11 @@ class ModifyOrdersAndLines extends Migration
      */
     public function up()
     {
-        // $this->remapDatabaseColumns();
-        // $this->realignOrderLines();
-        // $this->applyDiscountsToOrderLines();
-        // $this->addShippingOrderLines();
+        $this->remapDatabaseColumns();
+        $this->realignOrderLines();
+        $this->applyDiscountsToOrderLines();
+        $this->addShippingOrderLines();
         $this->removeShippingFromOrders();
-        // Schema::table('transactions', function (Blueprint $table) {
-        //     $table->string('driver')->nullable();
-        // });
-        dd('hit');
     }
 
     /**
