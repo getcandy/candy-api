@@ -27,6 +27,7 @@
         </whitelist>
     </filter>
     <php>
+        <env name="DB_FILE" value="database.sqlite"/>
         <env name="APP_ENV" value="testing"/>
         <env name="CACHE_DRIVER" value="array"/>
         <env name="SESSION_DRIVER" value="array"/>

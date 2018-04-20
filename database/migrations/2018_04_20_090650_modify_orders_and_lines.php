@@ -1,9 +1,9 @@
 <?php
 
-use GetCandy\Api\Taxes\Models\Tax;
-use GetCandy\Api\Orders\Models\Order;
+use GetCandy\Api\Core\Taxes\Models\Tax;
+use GetCandy\Api\Core\Orders\Models\Order;
 use Illuminate\Support\Facades\Schema;
-use GetCandy\Api\Orders\Models\OrderLine;
+use GetCandy\Api\Core\Orders\Models\OrderLine;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
@@ -30,24 +30,28 @@ class ModifyOrdersAndLines extends Migration
      */
     protected function remapDatabaseColumns()
     {
-        echo 'Remap database columns' . PHP_EOL;
         Schema::table('order_lines', function (Blueprint $table) {
             $table->renameColumn('total', 'line_amount');
-            $table->string('variant')->nullable()->change();
-            $table->string('sku')->nullable()->change();
-            $table->renameColumn('product', 'description');
-
-            $table->dropColumn('tax_rate');
-            $table->dropColumn('discount');
         });
         Schema::table('order_lines', function (Blueprint $table) {
-            $table->decimal('tax_rate', 10, 2)->after('tax');
+            $table->string('variant')->nullable()->change();
+            $table->string('sku')->nullable()->change();
+        });
+        Schema::table('order_lines', function (Blueprint $table) {
+            $table->renameColumn('product', 'description');
+        });
+
+        Schema::table('order_lines', function (Blueprint $table) {
+            $table->decimal('tax_rate', 10, 2)->default(0)->after('tax');
             $table->decimal('discount', 10, 2)->after('line_amount')->default(0);
             $table->boolean('shipping')->after('order_id')->default(false);
         });
+
+        Schema::table('orders', function (Blueprint $table) {
+            $table->dropColumn('vat');
+        });
         Schema::table('orders', function (Blueprint $table) {
             $table->dropColumn('total');
-            $table->dropColumn('vat');
         });
     }
 
@@ -58,7 +62,6 @@ class ModifyOrdersAndLines extends Migration
      */
     protected function realignOrderLines()
     {
-        echo 'Realign order lines' . PHP_EOL;
         // Get all lines
         $lines = OrderLine::all();
         // Get default tax rate
@@ -89,7 +92,6 @@ class ModifyOrdersAndLines extends Migration
      */
     protected function applyDiscountsToOrderLines()
     {
-        echo 'Apply discounts to orders' . PHP_EOL;
         DB::transaction(function () {
             $orders = Order::withoutGlobalScopes()->whereHas('discounts')->get();
             $taxrate = Tax::where('default', '=', true)->first();
@@ -121,7 +123,6 @@ class ModifyOrdersAndLines extends Migration
      */
     protected function addShippingOrderLines()
     {
-        echo 'Adding shipping lines' . PHP_EOL;
         DB::transaction(function () {
             $orders = Order::withoutGlobalScopes()->get();
             $taxrate = Tax::where('default', '=', true)->first();
