@@ -23,6 +23,21 @@ class ProductCategoryService extends BaseService
         return $product->categories;
     }
 
+    public function attach($category, array $products)
+    {
+        $category = app('api')->categories()->getByHashedId($category);
+
+        $id = $this->getDecodedIds($products);
+
+        $category->products()->attach($id);
+
+        foreach ($this->getByHashedIds($products) as $product) {
+            app(SearchContract::class)->indexer()->indexObject($product);
+        }
+
+        return $category;
+    }
+
     public function delete($productId, $categoryId)
     {
         $product = $this->getByHashedId($productId);
