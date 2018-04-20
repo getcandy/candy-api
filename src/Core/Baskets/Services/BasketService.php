@@ -148,6 +148,7 @@ class BasketService extends BaseService
                 $price = $variant->total_price;
             }
 
+
             return [
                 'product_variant_id' => $variant->id,
                 'quantity' => $item['quantity'],

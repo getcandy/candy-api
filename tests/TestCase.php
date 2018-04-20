@@ -39,6 +39,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     {
         //Blergh but we need the config
         $app['config']['permission'] = require realpath(__DIR__.'/../vendor/spatie/laravel-permission/config/permission.php');
+        $app['config']['hashids'] = require realpath(__DIR__.'/../config/hashids.php');
 
         $app['config']->set('database.default', 'testing');
         $app['config']->set('database.connections.testing', [
@@ -55,6 +56,17 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         return [
             ApiServiceProvider::class,
             \Spatie\Permission\PermissionServiceProvider::class,
+            \Vinkla\Hashids\HashidsServiceProvider::class,
+        ];
+    }
+
+    protected function getPackageAliases($app)
+    {
+        return [
+            'CurrencyConverter' => \GetCandy\Api\Core\Currencies\Facades\CurrencyConverter::class,
+            'TaxCalculator' => \Facades\GetCandy\Api\Core\Taxes\TaxCalculator::class,
+            'PriceCalculator' => \Facades\GetCandy\Api\Core\Pricing\PriceCalculator::class,
+            'GetCandy' => \Facades\GetCandy\Api\Core\Helpers\GetCandy::class
         ];
     }
 }

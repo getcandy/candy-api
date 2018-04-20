@@ -35,8 +35,12 @@ class ModifyOrdersAndLines extends Migration
         });
         Schema::table('order_lines', function (Blueprint $table) {
             $table->string('variant')->nullable()->change();
+        });
+
+        Schema::table('order_lines', function (Blueprint $table) {
             $table->string('sku')->nullable()->change();
         });
+
         Schema::table('order_lines', function (Blueprint $table) {
             $table->renameColumn('product', 'description');
         });
@@ -150,8 +154,10 @@ class ModifyOrdersAndLines extends Migration
     protected function removeShippingFromOrders()
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->dropColumn('shipping_method');
             $table->dropColumn('shipping_total');
+        });
+        Schema::table('orders', function (Blueprint $table) {
+            $table->dropColumn('shipping_method');
         });
     }
 

@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
+use GetCandy\Api\Core\Products\Models\Product;
 
 class OrderTest extends TestCase
 {
@@ -18,6 +19,22 @@ class OrderTest extends TestCase
 
     public function testOrderIsCreatedFromBasket()
     {
-        $this->assertTrue(true);
+        $basket = app('api')->baskets()->getBasket();
+
+        $variant = Product::withoutGlobalScopes()->first()->variants()->first();
+
+        $basket = app('api')->baskets()->store([
+            'basket_id' => $basket->encodedId(),
+            'variants' => [
+                ['id' => $variant->encodedId(), 'quantity' => 1]
+            ]
+        ]);
+
+        app('api')->baskets()->setTotals($basket);
+
+        // dd($basket->total, $variant->price);
+        // $order = a[[]]
+        $this->assertTrue((float) $basket->total == (float) $variant->price);
+
     }
 }

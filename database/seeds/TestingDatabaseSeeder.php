@@ -16,8 +16,12 @@ class TestingDatabaseSeeder extends Seeder
     {
         Model::unguard();
         $this->call(LanguageTableSeeder::class);
+        $this->call(CurrencyTableSeeder::class);
+        $this->call(AttributesTableSeeder::class);
+        $this->call(CustomerGroupTableSeeder::class);
         $this->call(PermissionTableSeeder::class);
         $this->call(UserTableSeeder::class);
-        // $this->call(ProductTableSeeder::class);
+        $this->call(ProductFamilyTableSeeder::class);
+        $this->call(ProductTableSeeder::class);
     }
 }
