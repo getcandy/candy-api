@@ -31,10 +31,11 @@ class OrderTest extends TestCase
         ]);
 
         app('api')->baskets()->setTotals($basket);
-
-        // dd($basket->total, $variant->price);
-        // $order = a[[]]
         $this->assertTrue((float) $basket->total == (float) $variant->price);
+
+        $order = app('api')->orders()->store($basket->encodedId());
+
+        dd($order);
 
     }
 }
