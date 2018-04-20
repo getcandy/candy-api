@@ -2,12 +2,13 @@
 
 namespace GetCandy\Api\Core\Auth\Models;
 
-use GetCandy\Api\Core\Traits\Hashids;
 use Laravel\Passport\HasApiTokens;
-use GetCandy\Api\Core\Orders\Models\Order;
+use GetCandy\Api\Core\Traits\Hashids;
 use Spatie\Permission\Traits\HasRoles;
-use GetCandy\Api\Core\Baskets\Models\Basket;
 use Illuminate\Notifications\Notifiable;
+use GetCandy\Api\Core\Orders\Models\Order;
+use GetCandy\Api\Core\Baskets\Models\Basket;
+use GetCandy\Api\Core\Users\Models\UserDetail;
 use GetCandy\Api\Core\Addresses\Models\Address;
 use GetCandy\Api\Core\Languages\Models\Language;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
@@ -22,6 +23,8 @@ class User extends Authenticatable
         HasRoles;
 
     protected $hashids = 'user';
+
+    protected $guard_name = 'api';
 
     public function getAuthPassword()
     {
@@ -98,5 +101,10 @@ class User extends Authenticatable
     public function orders()
     {
         return $this->hasMany(Order::class)->withoutGlobalScope('open')->withoutGlobalScope('not_expired');
+    }
+
+    public function details()
+    {
+        return $this->hasOne(UserDetail::class);
     }
 }

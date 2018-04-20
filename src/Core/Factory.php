@@ -1,6 +1,6 @@
 <?php
 
-namespace GetCandy\Api;
+namespace GetCandy\Api\Core;
 
 use GetCandy\Api\Core\Tags\Services\TagService;
 use GetCandy\Api\Core\Auth\Services\RoleService;
