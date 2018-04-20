@@ -1,12 +1,10 @@
 <?php
+
 namespace Seeds;
 
-use Faker\Factory;
 use Illuminate\Database\Seeder;
 use GetCandy\Api\Core\Auth\Models\User;
 use GetCandy\Api\Core\Users\Models\UserDetail;
-use GetCandy\Api\Core\Languages\Models\Language;
-use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 
 class UserTableSeeder extends Seeder
 {
@@ -23,7 +21,7 @@ class UserTableSeeder extends Seeder
             'id' => 2,
             'name' => 'Alec',
             'email' => 'hello@itsalec.co.uk',
-            'password' => \Hash::make('password')
+            'password' => \Hash::make('password'),
         ]);
 
         UserDetail::forceCreate([
@@ -39,7 +37,7 @@ class UserTableSeeder extends Seeder
             'id' => 7,
             'name' => 'Shaun',
             'email' => 'shaun@neondigital.co.uk',
-            'password' => \Hash::make('password')
+            'password' => \Hash::make('password'),
         ]);
         UserDetail::forceCreate([
             'user_id' => $customer->id,

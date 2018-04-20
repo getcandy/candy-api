@@ -10,11 +10,11 @@ use GetCandy\Api\Core\Scaffold\BaseModel;
 use GetCandy\Api\Core\Traits\HasChannels;
 use GetCandy\Api\Core\Traits\HasAttributes;
 use GetCandy\Api\Core\Layouts\Models\Layout;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use GetCandy\Api\Core\Traits\HasCustomerGroups;
 use GetCandy\Api\Core\Discounts\Models\Discount;
 use GetCandy\Api\Core\Categories\Models\Category;
 use GetCandy\Api\Core\Attributes\Models\Attribute;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use GetCandy\Api\Core\Collections\Models\Collection;
 use GetCandy\Api\Core\Http\Transformers\Fractal\Products\ProductTransformer;
 

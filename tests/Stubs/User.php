@@ -2,9 +2,9 @@
 
 namespace Tests\Stubs;
 
+use GetCandy\Api\Core\Traits\HasCandy;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use GetCandy\Api\Core\Traits\HasCandy;
 
 class User extends Authenticatable
 {

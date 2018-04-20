@@ -1,11 +1,11 @@
 <?php
 
-use GetCandy\Api\Core\Taxes\Models\Tax;
-use GetCandy\Api\Core\Orders\Models\Order;
 use Illuminate\Support\Facades\Schema;
-use GetCandy\Api\Core\Orders\Models\OrderLine;
+use GetCandy\Api\Core\Taxes\Models\Tax;
 use Illuminate\Database\Schema\Blueprint;
+use GetCandy\Api\Core\Orders\Models\Order;
 use Illuminate\Database\Migrations\Migration;
+use GetCandy\Api\Core\Orders\Models\OrderLine;
 
 class ModifyOrdersAndLines extends Migration
 {
@@ -24,7 +24,7 @@ class ModifyOrdersAndLines extends Migration
     }
 
     /**
-     * Remaps the orders for our new way
+     * Remaps the orders for our new way.
      *
      * @return void
      */
@@ -56,7 +56,7 @@ class ModifyOrdersAndLines extends Migration
     }
 
     /**
-     * Goes through each order line and its the corresponding tax
+     * Goes through each order line and its the corresponding tax.
      *
      * @return void
      */
@@ -69,7 +69,6 @@ class ModifyOrdersAndLines extends Migration
 
         DB::transaction(function () use ($lines, $taxrate) {
             foreach ($lines as $line) {
-
                 $itemCost = $line->line_amount / $line->quantity; // With Tax
                 $costNoTax = round($itemCost / (1 + ($taxrate->percentage / 100)), 2); // Without tax
 
@@ -79,14 +78,14 @@ class ModifyOrdersAndLines extends Migration
                 $line->update([
                     'line_amount' => $lineAmount,
                     'tax' => $taxAmount,
-                    'tax_rate' => $taxrate->percentage
+                    'tax_rate' => $taxrate->percentage,
                 ]);
             }
         });
     }
 
     /**
-     * Get any orders with discounts and update the order lines
+     * Get any orders with discounts and update the order lines.
      *
      * @return void
      */
@@ -109,7 +108,7 @@ class ModifyOrdersAndLines extends Migration
 
                     $line->update([
                         'discount' => $line->line_amount * $decimal,
-                        'tax' => $taxAmount
+                        'tax' => $taxAmount,
                     ]);
                 }
             }
@@ -117,7 +116,7 @@ class ModifyOrdersAndLines extends Migration
     }
 
     /**
-     * Add shipping order lines
+     * Add shipping order lines.
      *
      * @return void
      */
@@ -135,16 +134,16 @@ class ModifyOrdersAndLines extends Migration
                     'quantity' => 1,
                     'line_amount' => $order->shipping_total,
                     'tax' => $taxAmount,
-                    'description' => $order->shipping_method ? : 'Standard',
+                    'description' => $order->shipping_method ?: 'Standard',
                     'shipping' => true,
-                    'tax_rate' => $taxrate->percentage
+                    'tax_rate' => $taxrate->percentage,
                 ]);
             }
         });
     }
 
     /**
-     * Removes the shipping bits from orders table
+     * Removes the shipping bits from orders table.
      *
      * @return void
      */

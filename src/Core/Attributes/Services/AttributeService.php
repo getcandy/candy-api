@@ -3,8 +3,8 @@
 namespace GetCandy\Api\Core\Attributes\Services;
 
 use GetCandy\Api\Core\Scaffold\BaseService;
-use GetCandy\Api\Core\Attributes\Models\Attribute;
 use GetCandy\Exceptions\DuplicateValueException;
+use GetCandy\Api\Core\Attributes\Models\Attribute;
 
 class AttributeService extends BaseService
 {
