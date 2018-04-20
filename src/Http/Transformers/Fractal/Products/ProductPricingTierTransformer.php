@@ -3,7 +3,7 @@
 namespace GetCandy\Api\Http\Transformers\Fractal\Products;
 
 use PriceCalculator;
-use GetCandy\Api\Products\Models\ProductPricingTier;
+use GetCandy\Api\Core\Products\Models\ProductPricingTier;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Customers\CustomerGroupTransformer;
 

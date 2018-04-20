@@ -2,7 +2,7 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Shipping;
 
-use GetCandy\Api\Shipping\Models\ShippingZone;
+use GetCandy\Api\Core\Shipping\Models\ShippingZone;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Countries\CountryTransformer;
 

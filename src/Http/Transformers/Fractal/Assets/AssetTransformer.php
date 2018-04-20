@@ -3,7 +3,7 @@
 namespace GetCandy\Api\Http\Transformers\Fractal\Assets;
 
 use Storage;
-use GetCandy\Api\Assets\Models\Asset;
+use GetCandy\Api\Core\Assets\Models\Asset;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Tags\TagTransformer;
 

@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Products;
 
-use GetCandy\Api\Products\Models\Product;
-use GetCandy\Api\Products\Models\ProductVariant;
+use GetCandy\Api\Core\Products\Models\Product;
+use GetCandy\Api\Core\Products\Models\ProductVariant;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Taxes\TaxTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Assets\AssetTransformer;

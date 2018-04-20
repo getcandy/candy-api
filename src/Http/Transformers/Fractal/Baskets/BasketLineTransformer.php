@@ -2,7 +2,7 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Baskets;
 
-use GetCandy\Api\Baskets\Models\BasketLine;
+use GetCandy\Api\Core\Baskets\Models\BasketLine;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Products\ProductVariantTransformer;
 

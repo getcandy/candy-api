@@ -2,7 +2,7 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Categories;
 
-use GetCandy\Api\Categories\Models\Category;
+use GetCandy\Api\Core\Categories\Models\Category;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 
 class CategoryFancytreeTransformer extends BaseTransformer

@@ -2,7 +2,7 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Countries;
 
-use GetCandy\Api\Countries\Models\Country;
+use GetCandy\Api\Core\Countries\Models\Country;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 
 class CountryTransformer extends BaseTransformer
