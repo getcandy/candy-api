@@ -23,8 +23,15 @@ class CustomerGroupTableSeeder extends Seeder
         CustomerGroup::forceCreate([
             'name' => 'Guest',
             'handle' => 'guest',
-            'default' => false,
+            'default' => true,
             'system' => true
+        ]);
+
+        CustomerGroup::forceCreate([
+            'name' => 'Member',
+            'handle' => 'member',
+            'default' => false,
+            'system' => false
         ]);
     }
 }

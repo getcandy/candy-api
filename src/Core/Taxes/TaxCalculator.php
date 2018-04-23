@@ -64,7 +64,6 @@ class TaxCalculator
         if (! $this->taxable) {
             return 0;
         }
-
         $exVat = $price * (($this->percent + 100) / 100);
         $amount = $exVat - $price;
 

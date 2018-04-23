@@ -56,6 +56,7 @@ class Factory
     protected function setTotalAndTax($basket)
     {
         $basket->total = 0;
+
         foreach ($basket->lines as $line) {
             $basket->total += $line->current_total;
 
@@ -84,40 +85,47 @@ class Factory
 
         $this->setTotalAndTax($basket);
 
+        $percentage = 0;
+        $fixedAmount = 0;
+        $freeshipping = false;
+
         // Go through each discount
-        foreach ($discounts as $discount) {
+        foreach ($discounts->sortBy('priority') as $discount) {
             // Go through each set
             foreach ($discount->getCriteria() as $criteria) {
                 foreach ($criteria->getSets() as $set) {
                     if ($set instanceof ProductIn) {
-                        // Go through each basket line and see which ones apply...
-                        foreach ($basket->lines as $line) {
-                            $productId = $line->variant->product->id;
-                            if ($set->getRealIds()->contains($productId)) {
-                                $lines->push($line);
-                            }
-                        }
-                        $discountable = 0;
-                        foreach ($lines as $line) {
-                            $discountable += $line->total;
-                        }
 
-                        $subtotal -= $discountable;
-
-                        foreach ($discount->getRewards() as $reward) {
-                            $discountable = $this->applyPercentage($discountable, $reward['value']);
-                        }
-
-                        $subtotal += $discountable;
-
-                        break;
                     } elseif ($set instanceof Coupon) {
                         foreach ($discount->getRewards() as $reward) {
-                            $basket->total = $this->applyPercentage($basket->total, $reward['value']);
-                            $basket->tax = $this->applyPercentage($basket->tax, $reward['value']);
+                            switch($reward['type']) {
+                                case 'percentage':
+                                    $percentage += $reward['value'];
+                                break;
+                                case 'fixed_amount':
+                                    $fixedAmount = $reward['value'];
+                                break;
+                                case 'free_shipping':
+                                    $freeshipping = true;
+                                break;
+                                default:
+                                    // Do nothing
+                                break;
+                            }
                         }
                     }
                 }
+            }
+            if ($discount->getModel()->stop_rules) {
+                break;
+            }
+        }
+
+        foreach ($basket->lines as $line) {
+            if (!$line->shipping) {
+                $line->discount = $line->currentTotal * ($percentage / 100);
+            } else if ($freeshipping) {
+                $line->discount = $line->total;
             }
         }
 
@@ -163,8 +171,7 @@ class Factory
 
     protected function applyPercentage($price, $amount)
     {
-        $result = ($price / 100) * $amount;
-
+        $result = $price * ($amount / 100);
         return round($price - $result, 2);
     }
 

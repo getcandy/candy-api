@@ -46,6 +46,10 @@ class ModifyOrdersAndLines extends Migration
         });
 
         Schema::table('order_lines', function (Blueprint $table) {
+            $table->decimal('tax', 10, 2)->default(0);
+        });
+
+        Schema::table('order_lines', function (Blueprint $table) {
             $table->decimal('tax_rate', 10, 2)->default(0)->after('tax');
             $table->decimal('discount', 10, 2)->after('line_amount')->default(0);
             $table->boolean('shipping')->after('order_id')->default(false);

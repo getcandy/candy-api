@@ -34,8 +34,6 @@ class BasketService extends BaseService
     {
         $basket = new Basket();
 
-        $basket->currency = app('api')->currencies()->getDefaultRecord()->code;
-
         if ($id) {
             $basket = $this->getByHashedId($id);
         } elseif ($user && $userBasket = $this->getCurrentForUser($user)) {
@@ -44,6 +42,10 @@ class BasketService extends BaseService
 
         if ($user && ! $basket->user) {
             $basket->user()->associate($user);
+        }
+
+        if (!$basket->currency) {
+            $basket->currency = app('api')->currencies()->getDefaultRecord()->code;
         }
 
         $basket->save();
@@ -171,8 +173,9 @@ class BasketService extends BaseService
     {
         $basket = $this->getByHashedId($basketId);
         $discountCriteria = app('api')->discounts()->getByCoupon($coupon);
+
         $discount = $discountCriteria->set->discount;
-        $discount->increment('uses');
+        $discount->uses ? $discount->increment('uses') : 1;
         $basket->discounts()->attach($discount->id, ['coupon' => $coupon]);
 
         return $basket;
@@ -293,6 +296,7 @@ class BasketService extends BaseService
         $factory = new Factory;
         $sets = app('api')->discounts()->parse($basket->discounts);
         $applied = $factory->getApplied($sets, \Auth::user(), null, $basket);
+
         $factory->applyToBasket($applied, $basket);
 
         return $basket;

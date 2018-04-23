@@ -6,6 +6,7 @@ use DB;
 use PDF;
 use Carbon\Carbon;
 use TaxCalculator;
+use PriceCalculator;
 use CurrencyConverter;
 use GetCandy\Api\Core\Auth\Models\User;
 use GetCandy\Api\Core\Orders\Models\Order;
@@ -36,7 +37,7 @@ class OrderService extends BaseService
      */
     public function store($basketId, $user = null)
     {
-        // // Get the basket
+        // Get the basket
         $basket = app('api')->baskets()->getByHashedId($basketId);
 
         app('api')->baskets()->setTotals($basket);
@@ -46,6 +47,13 @@ class OrderService extends BaseService
         } else {
             $order = new Order;
             $order->basket()->associate($basket);
+
+            // Get the default order status
+            $settings = app('api')->settings()->get('orders');
+
+            if ($settings) {
+                $order->status = $settings->content['default_status'];
+            }
         }
 
         if ($user) {
@@ -56,18 +64,6 @@ class OrderService extends BaseService
         }
 
         $order->conversion = CurrencyConverter::rate();
-
-        $order->total = $basket->total;
-        $order->vat = $basket->tax;
-
-        if (! $order->shipping_total) {
-            $order->shipping_total = 0;
-            $order->shipping_method = '';
-        } else {
-            $shippingTax = TaxCalculator::amount($order->shipping_total);
-            $order->vat += $shippingTax;
-            $order->total += $order->shipping_total + $shippingTax;
-        }
 
         $order->currency = $basket->currency;
 
@@ -80,9 +76,38 @@ class OrderService extends BaseService
             $this->mapOrderDiscounts($basket)
         );
 
+        // dd($this->mapOrderLines($basket));
         $order->lines()->createMany(
             $this->mapOrderLines($basket)
         );
+
+        return $order;
+    }
+
+    public function addShippingLine($orderId, $shippingPriceId)
+    {
+        $order = $this->getByHashedId($orderId);
+        $price = app('api')->shippingPrices()->getByHashedId($shippingPriceId);
+
+        $rate = PriceCalculator::get(
+            $price->rate,
+            app('api')->taxes()->getDefaultRecord()->percentage
+        );
+
+        // Remove any shipping lines already on there.
+        $existing = $order->lines()->where('shipping', '=', true)->first();
+
+        if ($existing) {
+            $existing->delete();
+        }
+
+        $order->lines()->create([
+            'shipping' => true,
+            'quantity' => 1,
+            'description' => $price->method->attribute('name'),
+            'line_amount' => $rate->amount,
+            'tax' => $rate->tax
+        ]);
 
         return $order;
     }
@@ -139,9 +164,6 @@ class OrderService extends BaseService
     {
         $order = $this->getByHashedId($orderId);
 
-        $shippingTotal = $order->shipping_total;
-        $shippingMethod = $order->shipping_method;
-
         $refreshedOrder = $this->store(
             $order->basket->encodedId()
         );
@@ -159,8 +181,6 @@ class OrderService extends BaseService
      */
     public function setBilling($id, array $data, $user = null)
     {
-        $this->refresh($id);
-
         return $this->addAddress(
             $id,
             $data,
@@ -278,28 +298,28 @@ class OrderService extends BaseService
      */
     protected function getNextInvoiceReference($year = null, $month = null)
     {
-        if (! $year) {
-            $year = Carbon::now()->year;
+        if (!$year) {
+            $year = (string) Carbon::now()->year;
         }
 
-        if (! $month) {
+        if (!$month) {
             $month = Carbon::now()->format('m');
         }
 
-        $order = DB::table('orders')->select(
-            DB::RAW('MAX(reference) as reference')
-        )->whereRaw('YEAR(placed_at) = '.$year)
-            ->whereRaw('MONTH(placed_at) = '.$month)
-            ->whereRaw("reference REGEXP '^([0-9]*-[0-9]*-[0-9]*)'")
+
+        $order = DB::table('orders')->
+            select(
+                DB::RAW('MAX(reference) as reference, id')
+            )->whereYear('placed_at', '=', $year)
+            ->whereMonth('placed_at', '=', $month)
             ->first();
 
-        if (! $order->reference) {
+        if (!$order || !$order->reference) {
             $increment = 1;
         } else {
             $segments = explode('-', $order->reference);
             $increment = $segments[2] + 1;
         }
-
         return $year.'-'.$month.'-'.str_pad($increment, 4, 0, STR_PAD_LEFT);
     }
 
@@ -345,18 +365,21 @@ class OrderService extends BaseService
         $lines = [];
 
         foreach ($basket->lines as $line) {
+
             $tax = $line->current_tax;
             $currentTotal = $line->current_total;
-            $withoutTax = $currentTotal - $tax;
 
             array_push($lines, [
                 'sku' => $line->variant->sku,
-                'tax' => $line->current_tax,
-                'tax_rate' => -($withoutTax - $currentTotal) / $withoutTax * 100,
-                'discount' => 0.00,
-                'total' => $line->current_total,
+                'tax' => PriceCalculator::get(
+                    $currentTotal - $line->discount,
+                    $line->variant->tax
+                )->tax,
+                'tax_rate' => $line->variant->tax->percentage,
+                'discount' => $line->discount,
+                'line_amount' => $currentTotal,
                 'quantity' => $line->quantity,
-                'product' => $line->variant->product->attribute('name'),
+                'description' => $line->variant->product->attribute('name'),
                 'variant' => $line->variant->name,
             ]);
         }
@@ -464,7 +487,7 @@ class OrderService extends BaseService
 
         $order->save();
 
-        event(new OrderProcessedEvent($order));
+        // event(new OrderProcessedEvent($order));
 
         return $order;
     }

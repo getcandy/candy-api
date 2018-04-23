@@ -2,8 +2,11 @@
 
 namespace Tests;
 
+use TaxCalculator;
 use Tests\Stubs\User;
+use GetCandy\Api\Core\Taxes\Models\Tax;
 use GetCandy\Api\Providers\ApiServiceProvider;
+use Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables;
 
 abstract class TestCase extends \Orchestra\Testbench\TestCase
 {
@@ -27,6 +30,11 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             $this->artisan('migrate', ['--database' => 'testing']);
             $this->artisan('db:seed', ['--class' => '\Seeds\TestingDatabaseSeeder']);
         }
+
+        // By Default, set up everything as taxable
+        TaxCalculator::setTax(
+            app('api')->taxes()->getDefaultRecord()
+        );
     }
 
     /**
@@ -37,10 +45,14 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
      */
     protected function getEnvironmentSetUp($app)
     {
+        parent::getEnvironmentSetUp($app);
+
+        $app->useEnvironmentPath(__DIR__ . '/..');
+        $app->bootstrapWith([LoadEnvironmentVariables::class]);
+
         //Blergh but we need the config
         $app['config']['permission'] = require realpath(__DIR__.'/../vendor/spatie/laravel-permission/config/permission.php');
         $app['config']['hashids'] = require realpath(__DIR__.'/../config/hashids.php');
-
         $app['config']->set('database.default', 'testing');
         $app['config']->set('database.connections.testing', [
             'driver' => 'sqlite',
@@ -49,6 +61,22 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         ]);
 
         $app['config']->set('auth.providers.users.model', User::class);
+
+        // GetCandy specific
+        $app['config']->set('getcandy', require realpath(__DIR__ . '/../config/getcandy.php'));
+
+        $app['config']->set('services', [
+            'braintree' => [
+                'key' => env('BRAINTREE_PUBLIC_KEY'),
+                'secret' => env('BRAINTREE_PRIVATE_KEY'),
+                '3D_secure' => env('3D_SECURE', false),
+                'merchant_id' => env('BRAINTREE_MERCHANT'),
+                'merchants' => [
+                    'default' => env('BRAINTREE_GBP_MERCHANT'),
+                    'eur' => env('BRAINTREE_EUR_MERCHANT'),
+                ],
+            ],
+        ]);
     }
 
     protected function getPackageProviders($app)

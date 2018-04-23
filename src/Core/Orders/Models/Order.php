@@ -58,9 +58,33 @@ class Order extends BaseModel
         return $query;
     }
 
+    /**
+     * Gets the order total with tax
+     *
+     * @return mixed
+     */
     public function getTotalAttribute()
     {
         return $this->lines->sum(function ($line) {
+            return ($line->line_amount - $line->discount) + $line->tax;
+        });
+    }
+
+    /**
+     * Gets the order total without tax or discounts applied
+     *
+     * @return mixed
+     */
+    public function getSubTotalAttribute()
+    {
+        return $this->lines->sum(function ($line) {
+            return $line->line_amount - $line->discount;
+        });
+    }
+
+    public function getShippingTotalAttribute()
+    {
+        return $this->lines->where('shipping', true)->sum(function ($line) {
             return ($line->line_amount - $line->discount);
         });
     }

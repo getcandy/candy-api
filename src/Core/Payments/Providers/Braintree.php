@@ -123,6 +123,7 @@ class Braintree extends AbstractProvider
             ],
         ]);
 
+
         $transaction = $this->createTransaction($sale, $order);
 
         return $transaction->success;
@@ -133,18 +134,20 @@ class Braintree extends AbstractProvider
         $transaction = new Transaction;
 
         $transaction->success = $result->success;
+        $transaction->order()->associate($order);
+        $transaction->merchant = $result->transaction->merchantAccountId;
 
-        if ($transaction->success) {
-            $transaction->provider = $result->transaction->paymentInstrumentType;
-            $transaction->status = $result->transaction->status;
+        $transaction->provider = $result->transaction->paymentInstrumentType;
+        $transaction->status = $result->transaction->status;
+        $transaction->amount = $result->transaction->amount;
+        $transaction->card_type = $result->transaction->creditCardDetails->cardType ?? '';
+        $transaction->last_four = $result->transaction->creditCardDetails->last4 ?? '';
+
+        if ($result->transaction) {
             $transaction->transaction_id = $result->transaction->id;
-            $transaction->amount = $result->transaction->amount;
-            $transaction->merchant = $result->transaction->merchantAccountId;
-            $transaction->card_type = $result->transaction->creditCardDetails->cardType ?? '';
-            $transaction->last_four = $result->transaction->creditCardDetails->last4 ?? '';
+        } else {
+            $transaction->transaction_id = 'Unknown';
         }
-
-        $transaction->order_id = $order->id;
 
         $transaction->save();
 
