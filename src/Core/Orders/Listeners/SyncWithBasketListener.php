@@ -25,7 +25,6 @@ class SyncWithBasketListener
         if (! $event->basket->order) {
             return true;
         }
-        dd('hit');
         app('api')->orders()->syncWithBasket($event->basket->order, $event->basket);
     }
 }
