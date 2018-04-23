@@ -85,6 +85,14 @@ class OrderService extends BaseService
         return $order;
     }
 
+    /**
+     * Adds a shipping line to an order
+     *
+     * @param string $orderId
+     * @param string $shippingPriceId
+     *
+     * @return Order
+     */
     public function addShippingLine($orderId, $shippingPriceId)
     {
         $order = $this->getByHashedId($orderId);
@@ -539,39 +547,6 @@ class OrderService extends BaseService
     public function getPending()
     {
         return $this->model->withoutGlobalScopes()->where('status', '=', 'payment-processing')->get();
-    }
-
-    /**
-     * Set the shipping cost and method on an order.
-     *
-     * @param string $orderId
-     * @param string $priceId
-     *
-     * @return Order
-     */
-    public function setShippingCost($orderId, $priceId)
-    {
-        $order = $this->getByHashedId($orderId);
-        $price = app('api')->shippingPrices()->getByHashedId($priceId);
-
-        // Take off any previous shipping costs
-        if ($order->shipping_total) {
-            $shippingTax = TaxCalculator::amount($order->shipping_total);
-            $order->vat -= $shippingTax;
-            $order->total -= $order->shipping_total + $shippingTax;
-        }
-
-        $order->shipping_total = round($price->rate, 2);
-        $order->shipping_method = $price->method->attribute('name');
-
-        $shippingTax = TaxCalculator::amount($order->shipping_total);
-
-        $order->vat += $shippingTax;
-        $order->total += $order->shipping_total + $shippingTax;
-
-        $order->save();
-
-        return $order;
     }
 
     /**
