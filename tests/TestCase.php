@@ -14,7 +14,12 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
 
     protected function setUp()
     {
-        $databaseExists = file_exists(__DIR__.'/database.sqlite');
+        // Make sure storage path is there
+
+        if (!file_exists(__DIR__ . '/../storage')) {
+            mkdir(__DIR__ . '/../storage');
+        }
+        $databaseExists = file_exists(__DIR__.'/../storage/database.sqlite');
 
         parent::setUp();
 
@@ -22,9 +27,9 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
 
         if (! $databaseExists || $this->requiresRefresh) {
             if ($databaseExists) {
-                unlink(__DIR__.'/database.sqlite');
+                unlink(__DIR__.'/../storage/database.sqlite');
             }
-            touch(__DIR__.'/database.sqlite');
+            touch(__DIR__.'/../storage/database.sqlite');
 
             $this->loadLaravelMigrations(['--database' => 'testing']);
             $this->artisan('migrate', ['--database' => 'testing']);
@@ -56,7 +61,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         $app['config']->set('database.default', 'testing');
         $app['config']->set('database.connections.testing', [
             'driver' => 'sqlite',
-            'database' => __DIR__.'/database.sqlite',
+            'database' => __DIR__.'/../storage/database.sqlite',
             'prefix' => '',
         ]);
 
