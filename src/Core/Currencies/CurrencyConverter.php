@@ -37,7 +37,9 @@ class CurrencyConverter
 
     public function convert($price, $currency = null)
     {
-        $this->set($currency);
+        if (!$this->currency) {
+            $this->set($currency);
+        }
         return round($price / $this->currency->exchange_rate, 2);
     }
 }
