@@ -58,28 +58,10 @@ class Basket extends BaseModel
         return $this->hasOne(Order::class)->withoutGlobalScope('open');
     }
 
-    // protected function getTotalWithoutDiscountAttribute()
-    // {
-    //     // $subTotal = 0;
-    //     // foreach ($this->lines as $line) {
-    //     //     if ($line->variant->tax) {
-    //     //         $tieredPrice = app('api')->productVariants()->getTieredPrice($line->variant, $line->quantity, \Auth::user());
-    //     //         if ($tieredPrice) {
-    //     //             $taxTotal += $tieredPrice->tax;
-    //     //         } else {
-    //     //             $taxTotal += PriceCalculator::get($line->current_total, $line->variant->tax)->amount;
-    //     //         }
-    //     //     }
-    //     // }
-    //     // return $total;
-    // }
-
-    // public function getTaxTotalAttribute()
-    // {
-
-    //     dd($taxTotal);
-    //     return $taxTotal;
-    // }
+    public function refresh()
+    {
+        return app('api')->baskets()->setTotals($this);
+    }
 
     public function getWeightAttribute()
     {
