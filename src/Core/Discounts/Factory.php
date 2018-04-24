@@ -100,16 +100,16 @@ class Factory
                             switch ($reward['type']) {
                                 case 'percentage':
                                     $percentage += $reward['value'];
-                                break;
+                                    break;
                                 case 'fixed_amount':
                                     $fixedAmount = $reward['value'];
-                                break;
+                                    break;
                                 case 'free_shipping':
                                     $freeshipping = true;
-                                break;
+                                    break;
                                 default:
                                     // Do nothing
-                                break;
+                                    break;
                             }
                         }
                     }
@@ -123,9 +123,11 @@ class Factory
         foreach ($basket->lines as $line) {
             if (! $line->shipping) {
                 $line->discount = $line->currentTotal * ($percentage / 100);
-            } elseif ($freeshipping) {
-                $line->discount = $line->total;
             }
+        }
+
+        if ($freeshipping) {
+            $basket->freeShipping = true;
         }
 
         return $basket;

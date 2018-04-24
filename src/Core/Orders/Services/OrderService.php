@@ -97,6 +97,11 @@ class OrderService extends BaseService
         $order = $this->getByHashedId($orderId);
         $price = app('api')->shippingPrices()->getByHashedId($shippingPriceId);
 
+        // TODO Need a better way to do this basket totals thing
+        $basket = $order->basket;
+
+        app('api')->baskets()->setTotals($basket);
+
         $rate = PriceCalculator::get(
             $price->rate,
             app('api')->taxes()->getDefaultRecord()->percentage
@@ -109,9 +114,12 @@ class OrderService extends BaseService
             $existing->delete();
         }
 
+        // Does the basket have a free shipping discount?
+        $discounts = $order->basket->discounts;
         $order->lines()->create([
             'shipping' => true,
             'quantity' => 1,
+            'discount' => $basket->freeShipping ? $rate->amount + $rate->tax : 0,
             'description' => $price->method->attribute('name'),
             'line_amount' => $rate->amount,
             'tax' => $rate->tax,

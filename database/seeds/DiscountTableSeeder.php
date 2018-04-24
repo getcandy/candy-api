@@ -47,5 +47,35 @@ class DiscountTableSeeder extends Seeder
             'type' => 'percentage',
             'value' => 10,
         ]);
+
+        $discount = Discount::forceCreate([
+            'attribute_data' => [
+                'name' => [
+                    'en' => 'Free Shipping',
+                ],
+            ],
+            'uses' => 0,
+            'status' => 1,
+            'start_at' => Carbon::now(),
+            'end_at' => Carbon::now()->addYear(1),
+        ]);
+
+        $set = DiscountCriteriaSet::forceCreate([
+            'discount_id' => $discount->id,
+            'scope' => 'all',
+            'outcome' => 1,
+        ]);
+
+        $item = DiscountCriteriaItem::forceCreate([
+            'discount_criteria_set_id' => $set->id,
+            'type' => 'coupon',
+            'value' => 'FREE_SHIPPING',
+        ]);
+
+        $reward = DiscountReward::forceCreate([
+            'discount_id' => $discount->id,
+            'type' => 'free_shipping',
+            'value' => 10,
+        ]);
     }
 }
