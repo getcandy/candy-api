@@ -59,7 +59,7 @@ class Order extends BaseModel
     }
 
     /**
-     * Gets the order total with tax
+     * Gets the order total with tax.
      *
      * @return mixed
      */
@@ -71,7 +71,7 @@ class Order extends BaseModel
     }
 
     /**
-     * Gets the order total without tax or discounts applied
+     * Gets the order total without tax or discounts applied.
      *
      * @return mixed
      */
@@ -85,7 +85,7 @@ class Order extends BaseModel
     public function getShippingTotalAttribute()
     {
         return $this->lines->where('shipping', true)->sum(function ($line) {
-            return ($line->line_amount - $line->discount);
+            return $line->line_amount - $line->discount;
         });
     }
 

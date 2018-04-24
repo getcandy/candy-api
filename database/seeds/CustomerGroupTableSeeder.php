@@ -1,4 +1,5 @@
 <?php
+
 namespace Seeds;
 
 use Illuminate\Database\Seeder;
@@ -24,14 +25,14 @@ class CustomerGroupTableSeeder extends Seeder
             'name' => 'Guest',
             'handle' => 'guest',
             'default' => true,
-            'system' => true
+            'system' => true,
         ]);
 
         CustomerGroup::forceCreate([
             'name' => 'Member',
             'handle' => 'member',
             'default' => false,
-            'system' => false
+            'system' => false,
         ]);
     }
 }

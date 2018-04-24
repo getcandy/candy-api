@@ -18,7 +18,7 @@ class OrderLine extends BaseModel
         'tax',
         'tax_rate',
         'discount',
-        'shipping'
+        'shipping',
     ];
 
     public function variant()

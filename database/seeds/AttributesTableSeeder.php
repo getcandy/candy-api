@@ -2,9 +2,7 @@
 
 namespace Seeds;
 
-use Faker\Factory;
 use Illuminate\Database\Seeder;
-use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Attributes\Models\Attribute;
 use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
 
@@ -20,7 +18,7 @@ class AttributesTableSeeder extends Seeder
         $group = AttributeGroup::create([
             'name' => ['en' => 'Marketing', 'sv' => 'Marknadsförande'],
             'handle' => 'marketing',
-            'position' => 1
+            'position' => 1,
         ]);
 
         $attribute = new Attribute();
@@ -66,7 +64,7 @@ class AttributesTableSeeder extends Seeder
         $group = AttributeGroup::create([
             'name' => ['en' => 'SEO', 'sv' => 'SEO'],
             'handle' => 'seo',
-            'position' => 3
+            'position' => 3,
         ]);
 
         $attribute = new Attribute();

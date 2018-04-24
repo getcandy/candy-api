@@ -1,8 +1,8 @@
 <?php
+
 namespace Seeds;
 
 use Carbon\Carbon;
-use Faker\Factory;
 use Illuminate\Database\Seeder;
 use GetCandy\Api\Core\Channels\Models\Channel;
 use GetCandy\Api\Core\Currencies\Models\Currency;
@@ -23,19 +23,18 @@ class ShippingTableSeeder extends Seeder
         $method = ShippingMethod::forceCreate([
             'attribute_data' => [
                 'name' => [
-                    'en' => 'Test Delivery'
-                ]
+                    'en' => 'Test Delivery',
+                ],
             ],
-            'type' => 'standard'
+            'type' => 'standard',
         ]);
 
         $channel = Channel::first();
 
         // Attach method to some channels
         $method->channels()->sync([
-            $channel->id => ['published_at' => Carbon::now()]
+            $channel->id => ['published_at' => Carbon::now()],
         ]);
-
 
         // Create Price
         $price = ShippingPrice::forceCreate([
@@ -46,9 +45,8 @@ class ShippingTableSeeder extends Seeder
             'min_basket' => 0,
         ]);
 
-
         $price->customerGroups()->sync([
-            CustomerGroup::first()->id => ['visible' => true]
+            CustomerGroup::first()->id => ['visible' => true],
         ]);
     }
 }

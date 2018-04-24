@@ -4,20 +4,16 @@ namespace Tests\Unit;
 
 use TaxCalculator;
 use Tests\TestCase;
-use PriceCalculator;
-use Tests\Stubs\User;
 use CurrencyConverter;
 use GetCandy\Api\Core\Taxes\Models\Tax;
-use GetCandy\Api\Core\Channels\Models\Channel;
 use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Shipping\Models\ShippingPrice;
 use GetCandy\Api\Core\Orders\Exceptions\OrderAlreadyProcessedException;
 
 class OrderTest extends TestCase
 {
-
     /**
-     * Tests if a guest order can be created from a basket
+     * Tests if a guest order can be created from a basket.
      *
      * @return void
      */
@@ -38,8 +34,8 @@ class OrderTest extends TestCase
         $basket = app('api')->baskets()->store([
             'basket_id' => $basket->encodedId(),
             'variants' => [
-                ['id' => $variant->encodedId(), 'quantity' => 1]
-            ]
+                ['id' => $variant->encodedId(), 'quantity' => 1],
+            ],
         ]);
 
         app('api')->baskets()->setTotals($basket);
@@ -59,7 +55,7 @@ class OrderTest extends TestCase
 
         foreach ($order->lines as $line) {
             $this->assertTrue($line->tax == $this->getTaxForAmount($tax, $line->line_amount));
-            $this->assertTrue(!$line->discount);
+            $this->assertTrue(! $line->discount);
         }
     }
 
@@ -78,12 +74,11 @@ class OrderTest extends TestCase
             'basket_id' => $basket->encodedId(),
             'variants' => [
                 ['id' => $variantOne->encodedId(), 'quantity' => 1],
-                ['id' => $variantTwo->encodedId(), 'quantity' => 1]
-            ]
+                ['id' => $variantTwo->encodedId(), 'quantity' => 1],
+            ],
         ]);
 
         app('api')->baskets()->setTotals($basket);
-
 
         $taxAmount = $this->getTaxForAmount($tax, $variantOne->price + $variantTwo->price);
 
@@ -97,7 +92,7 @@ class OrderTest extends TestCase
 
         foreach ($order->lines as $line) {
             $this->assertEquals($line->tax, $this->getTaxForAmount($tax, $line->line_amount));
-            $this->assertTrue(!$line->discount);
+            $this->assertTrue(! $line->discount);
         }
     }
 
@@ -117,8 +112,8 @@ class OrderTest extends TestCase
         $basket = app('api')->baskets()->store([
             'basket_id' => $basket->encodedId(),
             'variants' => [
-                ['id' => $variant->encodedId(), 'quantity' => 1]
-            ]
+                ['id' => $variant->encodedId(), 'quantity' => 1],
+            ],
         ]);
 
         app('api')->baskets()->setTotals($basket);
@@ -161,8 +156,8 @@ class OrderTest extends TestCase
         $basket = app('api')->baskets()->store([
             'basket_id' => $basket->encodedId(),
             'variants' => [
-                ['id' => $variant->encodedId(), 'quantity' => 1]
-            ]
+                ['id' => $variant->encodedId(), 'quantity' => 1],
+            ],
         ]);
 
         $basket = app('api')->baskets()->addDiscount(
@@ -188,13 +183,13 @@ class OrderTest extends TestCase
 
         // Make sure each line has the discount applied, except shipping
         foreach ($order->lines as $line) {
-            if (!$line->shipping) {
+            if (! $line->shipping) {
                 $this->assertEquals(
                     $line->line_amount * ($percentage / 100),
                     $line->discount
                 );
             } else {
-                $this->assertTrue(!$line->discount);
+                $this->assertTrue(! $line->discount);
             }
         }
 
@@ -218,8 +213,8 @@ class OrderTest extends TestCase
         $basket = app('api')->baskets()->store([
             'basket_id' => $basket->encodedId(),
             'variants' => [
-                ['id' => $variant->encodedId(), 'quantity' => 1]
-            ]
+                ['id' => $variant->encodedId(), 'quantity' => 1],
+            ],
         ]);
 
         app('api')->baskets()->setTotals($basket);
@@ -238,7 +233,7 @@ class OrderTest extends TestCase
             'address_two' => 'Somewhere',
             'city' => 'Some City',
             'country' => 'United Kingdom',
-            'zip' => 'ZIP123'
+            'zip' => 'ZIP123',
         ]);
 
         $order = app('api')->orders()->setBilling($order->encodedId(), [
@@ -249,7 +244,7 @@ class OrderTest extends TestCase
             'address_two' => 'Somewhere',
             'city' => 'Some City',
             'country' => 'United Kingdom',
-            'zip' => 'ZIP123'
+            'zip' => 'ZIP123',
         ]);
 
         $order = app('api')->orders()->process([
@@ -297,8 +292,8 @@ class OrderTest extends TestCase
         $basket = app('api')->baskets()->store([
             'basket_id' => $basket->encodedId(),
             'variants' => [
-                ['id' => $variant->encodedId(), 'quantity' => 2]
-            ]
+                ['id' => $variant->encodedId(), 'quantity' => 2],
+            ],
         ]);
 
         app('api')->baskets()->setTotals($basket);
@@ -317,7 +312,7 @@ class OrderTest extends TestCase
             'address_two' => 'Somewhere',
             'city' => 'Some City',
             'country' => 'United Kingdom',
-            'zip' => 'ZIP123'
+            'zip' => 'ZIP123',
         ]);
 
         $order = app('api')->orders()->setBilling($order->encodedId(), [
@@ -328,7 +323,7 @@ class OrderTest extends TestCase
             'address_two' => 'Somewhere',
             'city' => 'Some City',
             'country' => 'United Kingdom',
-            'zip' => 'ZIP123'
+            'zip' => 'ZIP123',
         ]);
 
         $order = app('api')->orders()->process([
@@ -365,8 +360,8 @@ class OrderTest extends TestCase
         $basket = app('api')->baskets()->store([
             'basket_id' => $basket->encodedId(),
             'variants' => [
-                ['id' => $variant->encodedId(), 'quantity' => 1]
-            ]
+                ['id' => $variant->encodedId(), 'quantity' => 1],
+            ],
         ]);
 
         app('api')->baskets()->setTotals($basket);
@@ -403,8 +398,8 @@ class OrderTest extends TestCase
         $basket = app('api')->baskets()->store([
             'basket_id' => $basket->encodedId(),
             'variants' => [
-                ['id' => $variant->encodedId(), 'quantity' => 1]
-            ]
+                ['id' => $variant->encodedId(), 'quantity' => 1],
+            ],
         ]);
 
         app('api')->baskets()->setTotals($basket);

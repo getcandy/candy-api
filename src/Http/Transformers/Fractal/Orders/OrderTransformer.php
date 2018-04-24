@@ -30,7 +30,7 @@ class OrderTransformer extends BaseTransformer
             'customer_name' => $order->customer_name,
             'contact_details' => [
                 'phone' => $order->contact_phone,
-                'email' => $order->contact_email
+                'email' => $order->contact_email,
             ],
             'billing_details' => $order->billing_details,
             'shipping_details' => $order->shipping_details,

@@ -1,8 +1,8 @@
 <?php
+
 namespace Seeds;
 
 use Illuminate\Database\Seeder;
-
 use GetCandy\Api\Core\Currencies\Models\Currency;
 
 class CurrencyTableSeeder extends Seeder
@@ -22,7 +22,7 @@ class CurrencyTableSeeder extends Seeder
             'format' => '&#xa3;{price}',
             'decimal_point' => '.',
             'thousand_point' => ',',
-            'default' => true
+            'default' => true,
         ]);
 
         Currency::ForceCreate([
@@ -32,7 +32,7 @@ class CurrencyTableSeeder extends Seeder
             'exchange_rate' => 0.87260,
             'format' => '&euro;{price}',
             'decimal_point' => '.',
-            'thousand_point' => ','
+            'thousand_point' => ',',
         ]);
 
         Currency::ForceCreate([
@@ -42,7 +42,7 @@ class CurrencyTableSeeder extends Seeder
             'exchange_rate' => 0.71,
             'format' => '&euro;{price}',
             'decimal_point' => '.',
-            'thousand_point' => ','
+            'thousand_point' => ',',
         ]);
     }
 }

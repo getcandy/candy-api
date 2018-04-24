@@ -95,10 +95,9 @@ class Factory
             foreach ($discount->getCriteria() as $criteria) {
                 foreach ($criteria->getSets() as $set) {
                     if ($set instanceof ProductIn) {
-
                     } elseif ($set instanceof Coupon) {
                         foreach ($discount->getRewards() as $reward) {
-                            switch($reward['type']) {
+                            switch ($reward['type']) {
                                 case 'percentage':
                                     $percentage += $reward['value'];
                                 break;
@@ -122,9 +121,9 @@ class Factory
         }
 
         foreach ($basket->lines as $line) {
-            if (!$line->shipping) {
+            if (! $line->shipping) {
                 $line->discount = $line->currentTotal * ($percentage / 100);
-            } else if ($freeshipping) {
+            } elseif ($freeshipping) {
                 $line->discount = $line->total;
             }
         }
@@ -172,6 +171,7 @@ class Factory
     protected function applyPercentage($price, $amount)
     {
         $result = $price * ($amount / 100);
+
         return round($price - $result, 2);
     }
 

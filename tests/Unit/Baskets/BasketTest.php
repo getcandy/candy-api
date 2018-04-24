@@ -54,8 +54,8 @@ class BasketTest extends TestCase
         $basket = app('api')->baskets()->store([
             'basket_id' => $basket->encodedId(),
             'variants' => [
-                ['id' => $variant->encodedId(), 'quantity' => 1]
-            ]
+                ['id' => $variant->encodedId(), 'quantity' => 1],
+            ],
         ]);
 
         // Make an order
@@ -96,8 +96,8 @@ class BasketTest extends TestCase
         $basket = app('api')->baskets()->store([
             'basket_id' => $basket->encodedId(),
             'variants' => [
-                ['id' => $variant->encodedId(), 'quantity' => 1]
-            ]
+                ['id' => $variant->encodedId(), 'quantity' => 1],
+            ],
         ]);
 
         app('api')->baskets()->setTotals($basket);

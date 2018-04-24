@@ -5,7 +5,6 @@ namespace GetCandy\Api\Core\Orders\Services;
 use DB;
 use PDF;
 use Carbon\Carbon;
-use TaxCalculator;
 use PriceCalculator;
 use CurrencyConverter;
 use GetCandy\Api\Core\Auth\Models\User;
@@ -86,7 +85,7 @@ class OrderService extends BaseService
     }
 
     /**
-     * Adds a shipping line to an order
+     * Adds a shipping line to an order.
      *
      * @param string $orderId
      * @param string $shippingPriceId
@@ -115,7 +114,7 @@ class OrderService extends BaseService
             'quantity' => 1,
             'description' => $price->method->attribute('name'),
             'line_amount' => $rate->amount,
-            'tax' => $rate->tax
+            'tax' => $rate->tax,
         ]);
 
         return $order;
@@ -307,14 +306,13 @@ class OrderService extends BaseService
      */
     protected function getNextInvoiceReference($year = null, $month = null)
     {
-        if (!$year) {
+        if (! $year) {
             $year = (string) Carbon::now()->year;
         }
 
-        if (!$month) {
+        if (! $month) {
             $month = Carbon::now()->format('m');
         }
-
 
         $order = DB::table('orders')->
             select(
@@ -323,12 +321,13 @@ class OrderService extends BaseService
             ->whereMonth('placed_at', '=', $month)
             ->first();
 
-        if (!$order || !$order->reference) {
+        if (! $order || ! $order->reference) {
             $increment = 1;
         } else {
             $segments = explode('-', $order->reference);
             $increment = $segments[2] + 1;
         }
+
         return $year.'-'.$month.'-'.str_pad($increment, 4, 0, STR_PAD_LEFT);
     }
 
@@ -374,7 +373,6 @@ class OrderService extends BaseService
         $lines = [];
 
         foreach ($basket->lines as $line) {
-
             $tax = $line->current_tax;
             $currentTotal = $line->current_total;
 

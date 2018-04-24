@@ -24,7 +24,7 @@ class OrderLineTransformer extends BaseTransformer
             'description' => $line->description,
             'sku' => $line->sku,
             'variant' => $line->variant,
-            'shipping' => (bool) $line->shipping
+            'shipping' => (bool) $line->shipping,
         ];
 
         return $data;
