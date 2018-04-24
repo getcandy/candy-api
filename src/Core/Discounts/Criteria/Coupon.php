@@ -41,7 +41,6 @@ class Coupon implements DiscountCriteriaContract
 
         $discounts = $basket->discounts ?: collect();
 
-
         $coupons = $discounts->map(function ($item) {
             return $item->pivot->coupon;
         });

@@ -1,7 +1,7 @@
 <?php
+
 namespace Seeds;
 
-use Faker\Factory;
 use Illuminate\Database\Seeder;
 use GetCandy\Api\Core\Channels\Models\Channel;
 
@@ -17,18 +17,18 @@ class ChannelTableSeeder extends Seeder
         Channel::create([
             'name' => 'Ecommerce',
             'handle' => 'ecommerce',
-            'default' => true
+            'default' => true,
         ]);
         if (getenv('APP_ENV') != 'testing') {
             Channel::create([
                 'name' => 'Mobile',
                 'handle' => 'mobile',
-                'default' => false
+                'default' => false,
             ]);
             Channel::create([
                 'name' => 'Print',
                 'handle' => 'print',
-                'default' => false
+                'default' => false,
             ]);
         }
     }

@@ -4,7 +4,6 @@ namespace Tests;
 
 use TaxCalculator;
 use Tests\Stubs\User;
-use GetCandy\Api\Core\Taxes\Models\Tax;
 use GetCandy\Api\Providers\ApiServiceProvider;
 use Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables;
 
@@ -16,8 +15,8 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     {
         // Make sure storage path is there
 
-        if (!file_exists(__DIR__ . '/../storage')) {
-            mkdir(__DIR__ . '/../storage');
+        if (! file_exists(__DIR__.'/../storage')) {
+            mkdir(__DIR__.'/../storage');
         }
         $databaseExists = file_exists(__DIR__.'/../storage/database.sqlite');
 
@@ -52,7 +51,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     {
         parent::getEnvironmentSetUp($app);
 
-        $app->useEnvironmentPath(__DIR__ . '/..');
+        $app->useEnvironmentPath(__DIR__.'/..');
         $app->bootstrapWith([LoadEnvironmentVariables::class]);
 
         //Blergh but we need the config
@@ -68,7 +67,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         $app['config']->set('auth.providers.users.model', User::class);
 
         // GetCandy specific
-        $app['config']->set('getcandy', require realpath(__DIR__ . '/../config/getcandy.php'));
+        $app['config']->set('getcandy', require realpath(__DIR__.'/../config/getcandy.php'));
 
         $app['config']->set('services', [
             'braintree' => [
@@ -99,7 +98,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             'CurrencyConverter' => \GetCandy\Api\Core\Currencies\Facades\CurrencyConverter::class,
             'TaxCalculator' => \Facades\GetCandy\Api\Core\Taxes\TaxCalculator::class,
             'PriceCalculator' => \Facades\GetCandy\Api\Core\Pricing\PriceCalculator::class,
-            'GetCandy' => \Facades\GetCandy\Api\Core\Helpers\GetCandy::class
+            'GetCandy' => \Facades\GetCandy\Api\Core\Helpers\GetCandy::class,
         ];
     }
 }

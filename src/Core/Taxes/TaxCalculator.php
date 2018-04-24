@@ -21,6 +21,7 @@ class TaxCalculator
         } else {
             $this->taxable = false;
         }
+
         return $this;
     }
 

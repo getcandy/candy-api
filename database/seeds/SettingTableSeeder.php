@@ -1,12 +1,9 @@
 <?php
+
 namespace Seeds;
 
-use Faker\Factory;
 use Illuminate\Database\Seeder;
-use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Settings\Models\Setting;
-use GetCandy\Api\Core\Attributes\Models\Attribute;
-use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
 
 class SettingTableSeeder extends Seeder
 {
@@ -22,16 +19,16 @@ class SettingTableSeeder extends Seeder
             'handle' => 'products',
             'content' => [
                 'asset_source' => 'products',
-                'transforms' => ['large_thumbnail']
-            ]
+                'transforms' => ['large_thumbnail'],
+            ],
         ]);
 
         Setting::create([
             'name' => 'Invoices',
             'handle' => 'invoices',
             'content' => [
-                'next' => 1
-            ]
+                'next' => 1,
+            ],
         ]);
 
         Setting::create([
@@ -42,10 +39,10 @@ class SettingTableSeeder extends Seeder
                     'awaiting-payment' => 'Awaiting Payment',
                     'void' => 'Void',
                     'payment-received' => 'Payment Received',
-                    'payment-processing' => 'Payment Processing'
+                    'payment-processing' => 'Payment Processing',
                 ],
-                'default_status' => 'awaiting-payment'
-            ]
+                'default_status' => 'awaiting-payment',
+            ],
         ]);
     }
 }

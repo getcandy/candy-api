@@ -1,8 +1,8 @@
 <?php
+
 namespace Seeds;
 
 use Carbon\Carbon;
-use Faker\Factory;
 use Illuminate\Database\Seeder;
 use GetCandy\Api\Core\Discounts\Models\Discount;
 use GetCandy\Api\Core\Discounts\Models\DiscountReward;
@@ -21,31 +21,31 @@ class DiscountTableSeeder extends Seeder
         $discount = Discount::forceCreate([
             'attribute_data' => [
                 'name' => [
-                    'en' => 'Foo 10 Percent'
-                ]
+                    'en' => 'Foo 10 Percent',
+                ],
             ],
             'uses' => 0,
             'status' => 1,
             'start_at' => Carbon::now(),
-            'end_at' => Carbon::now()->addYear(1)
+            'end_at' => Carbon::now()->addYear(1),
         ]);
 
         $set = DiscountCriteriaSet::forceCreate([
             'discount_id' => $discount->id,
             'scope' => 'all',
-            'outcome' => 1
+            'outcome' => 1,
         ]);
 
         $item = DiscountCriteriaItem::forceCreate([
             'discount_criteria_set_id' => $set->id,
             'type' => 'coupon',
-            'value' => 'FOO10'
+            'value' => 'FOO10',
         ]);
 
         $reward = DiscountReward::forceCreate([
             'discount_id' => $discount->id,
             'type' => 'percentage',
-            'value' => 10
+            'value' => 10,
         ]);
     }
 }

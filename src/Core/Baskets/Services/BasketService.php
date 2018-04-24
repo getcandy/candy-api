@@ -44,7 +44,7 @@ class BasketService extends BaseService
             $basket->user()->associate($user);
         }
 
-        if (!$basket->currency) {
+        if (! $basket->currency) {
             $basket->currency = app('api')->currencies()->getDefaultRecord()->code;
         }
 
@@ -149,7 +149,6 @@ class BasketService extends BaseService
             } else {
                 $price = $variant->total_price;
             }
-
 
             return [
                 'product_variant_id' => $variant->id,

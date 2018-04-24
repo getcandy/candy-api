@@ -11,6 +11,7 @@ class CurrencyConverter
     public function setDefault()
     {
         $this->currency = app('api')->currencies()->getDefaultRecord();
+
         return $this;
     }
 
@@ -37,9 +38,10 @@ class CurrencyConverter
 
     public function convert($price, $currency = null)
     {
-        if (!$this->currency) {
+        if (! $this->currency) {
             $this->set($currency);
         }
+
         return round($price / $this->currency->exchange_rate, 2);
     }
 }

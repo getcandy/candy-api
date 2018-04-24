@@ -1,8 +1,8 @@
 <?php
+
 namespace Seeds;
 
 use Carbon\Carbon;
-use Faker\Factory;
 use Illuminate\Database\Seeder;
 use GetCandy\Api\Core\Layouts\Models\Layout;
 use GetCandy\Api\Core\Channels\Models\Channel;
@@ -11,7 +11,6 @@ use GetCandy\Api\Core\Languages\Models\Language;
 use GetCandy\Api\Core\Attributes\Models\Attribute;
 use GetCandy\Api\Core\Products\Models\ProductFamily;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
-use GetCandy\Api\Core\Products\Models\ProductVariant;
 
 class ProductTableSeeder extends Seeder
 {
@@ -27,12 +26,12 @@ class ProductTableSeeder extends Seeder
 
         $basic = Layout::create([
             'name' => 'Basic product',
-            'handle' => 'basic-product'
+            'handle' => 'basic-product',
         ])->id;
 
         $featured = Layout::create([
             'name' => 'Featured product',
-            'handle' => 'featured-product'
+            'handle' => 'featured-product',
         ])->id;
 
         $data = [
@@ -42,7 +41,7 @@ class ProductTableSeeder extends Seeder
                     'position' => 2,
                     'label' => [
                         'en' => 'Size',
-                        'sv' => 'Storlek'
+                        'sv' => 'Storlek',
                     ],
                     'options' => [
                         '12' => [
@@ -50,41 +49,41 @@ class ProductTableSeeder extends Seeder
                             'values' => [
                                 'en' => '12',
                                 'sv' => '13',
-                            ]
+                            ],
                         ],
                         '10' => [
                             'position' => 1,
                             'values' => [
                                 'en' => '10',
-                                'sv' => '11'
-                            ]
-                        ]
-                    ]
+                                'sv' => '11',
+                            ],
+                        ],
+                    ],
                 ],
                 'colour' => [
                     'position' => 1,
                     'label' => [
                         'en' => 'Colour',
-                        'sv' => 'Färg'
+                        'sv' => 'Färg',
                     ],
                     'options' => [
                         'black' => [
                             'position' => 1,
                             'values' => [
                                 'en' => 'Black',
-                                'sv' => 'Svart'
-                            ]
+                                'sv' => 'Svart',
+                            ],
                         ],
                         'brown' => [
                             'position' => 2,
                             'values' => [
                                 'en' => 'Brown',
-                                'sv' => 'Brun'
-                            ]
+                                'sv' => 'Brun',
+                            ],
                         ],
 
-                    ]
-                ]
+                    ],
+                ],
             ],
             'variants' => [
                 [
@@ -93,8 +92,8 @@ class ProductTableSeeder extends Seeder
                     'stock' => 1,
                     'options' => [
                         'size' => '12',
-                        'colour' => 'brown'
-                    ]
+                        'colour' => 'brown',
+                    ],
                 ],
                 [
                     'sku' => '123-10',
@@ -102,8 +101,8 @@ class ProductTableSeeder extends Seeder
                     'stock' => 1,
                     'options' => [
                         'size' => '10',
-                        'colour' => 'brown'
-                    ]
+                        'colour' => 'brown',
+                    ],
                 ],
                 [
                     'sku' => '456-12',
@@ -111,8 +110,8 @@ class ProductTableSeeder extends Seeder
                     'stock' => 1,
                     'options' => [
                         'size' => '12',
-                        'colour' => 'black'
-                    ]
+                        'colour' => 'black',
+                    ],
                 ],
                 [
                     'sku' => '456-10',
@@ -120,24 +119,24 @@ class ProductTableSeeder extends Seeder
                     'stock' => 1,
                     'options' => [
                         'size' => '10',
-                        'colour' => 'black'
-                    ]
-                ]
+                        'colour' => 'black',
+                    ],
+                ],
             ],
             'attribute_data' => [
                 'name' => [
                     'en' => 'Red Dog',
-                    'sv' => 'Röd hund'
+                    'sv' => 'Röd hund',
                 ],
                 'material' => [
                     'en' => 'Leather',
-                    'sv' => 'Läder'
+                    'sv' => 'Läder',
                 ],
                 'description' => [
                     'en' => 'Legendary lightweight boots made by Blundstone in Tasmania since 1932. Their iconic soles have been engineered for optimum comfort, shock absorption and all-weathers.',
-                    'sv' => 'Legendariska lätta stövlar gjorda av Blundstone i Tasmanien sedan 1932. Deras ikoniska sålar har konstruerats för optimal komfort, stötdämpning och alla väder.'
-                ]
-            ]
+                    'sv' => 'Legendariska lätta stövlar gjorda av Blundstone i Tasmanien sedan 1932. Deras ikoniska sålar har konstruerats för optimal komfort, stötdämpning och alla väder.',
+                ],
+            ],
         ];
 
         $attributes = Attribute::get();
@@ -148,7 +147,7 @@ class ProductTableSeeder extends Seeder
 
         $product = Product::create([
             'attribute_data' => $data['attribute_data'],
-            'option_data' => (!empty($data['option_data']) ? $data['option_data'] : [])
+            'option_data' => (! empty($data['option_data']) ? $data['option_data'] : []),
         ]);
 
         $groups = CustomerGroup::all();
@@ -157,7 +156,7 @@ class ProductTableSeeder extends Seeder
         foreach ($groups as $group) {
             $product->customerGroups()->attach($group->id, [
                 'visible' => 1,
-                'purchasable' => 1
+                'purchasable' => 1,
             ]);
         }
 
@@ -176,14 +175,14 @@ class ProductTableSeeder extends Seeder
                 $product->route()->create([
                     'default' => true,
                     'slug' => str_slug($attr_data['en']),
-                    'locale' => 'en'
+                    'locale' => 'en',
                 ]);
             }
         }
 
         $product->save();
 
-        if (!empty($data['variants'])) {
+        if (! empty($data['variants'])) {
             foreach ($data['variants'] as $variant) {
                 $product->variants()->create($variant);
             }
@@ -192,7 +191,7 @@ class ProductTableSeeder extends Seeder
                 'options' => [],
                 'sku' => str_random(8),
                 'stock' => 1,
-                'price' => 40
+                'price' => 40,
             ]);
         }
 
@@ -208,7 +207,7 @@ class ProductTableSeeder extends Seeder
                     'position' => 2,
                     'label' => [
                         'en' => 'Size',
-                        'sv' => 'Storlek'
+                        'sv' => 'Storlek',
                     ],
                     'options' => [
                         '12' => [
@@ -216,41 +215,41 @@ class ProductTableSeeder extends Seeder
                             'values' => [
                                 'en' => '12',
                                 'sv' => '13',
-                            ]
+                            ],
                         ],
                         '10' => [
                             'position' => 1,
                             'values' => [
                                 'en' => '10',
-                                'sv' => '11'
-                            ]
-                        ]
-                    ]
+                                'sv' => '11',
+                            ],
+                        ],
+                    ],
                 ],
                 'colour' => [
                     'position' => 1,
                     'label' => [
                         'en' => 'Colour',
-                        'sv' => 'Färg'
+                        'sv' => 'Färg',
                     ],
                     'options' => [
                         'black' => [
                             'position' => 1,
                             'values' => [
                                 'en' => 'Black',
-                                'sv' => 'Svart'
-                            ]
+                                'sv' => 'Svart',
+                            ],
                         ],
                         'brown' => [
                             'position' => 2,
                             'values' => [
                                 'en' => 'Brown',
-                                'sv' => 'Brun'
-                            ]
+                                'sv' => 'Brun',
+                            ],
                         ],
 
-                    ]
-                ]
+                    ],
+                ],
             ],
             'variants' => [
                 [
@@ -259,8 +258,8 @@ class ProductTableSeeder extends Seeder
                     'stock' => 1,
                     'options' => [
                         'size' => '12',
-                        'colour' => 'brown'
-                    ]
+                        'colour' => 'brown',
+                    ],
                 ],
                 [
                     'sku' => '102020',
@@ -268,24 +267,24 @@ class ProductTableSeeder extends Seeder
                     'stock' => 1,
                     'options' => [
                         'size' => '10',
-                        'colour' => 'brown'
-                    ]
-                ]
+                        'colour' => 'brown',
+                    ],
+                ],
             ],
             'attribute_data' => [
                 'name' => [
                     'en' => 'Leather Boots',
-                    'sv' => 'Läder Buts'
+                    'sv' => 'Läder Buts',
                 ],
                 'material' => [
                     'en' => 'Leather',
-                    'sv' => 'Läder'
+                    'sv' => 'Läder',
                 ],
                 'description' => [
                     'en' => 'Legendary lightweight boots made by Blundstone in Tasmania since 1932. Their iconic soles have been engineered for optimum comfort, shock absorption and all-weathers.',
-                    'sv' => 'Legendariska lätta stövlar gjorda av Blundstone i Tasmanien sedan 1932. Deras ikoniska sålar har konstruerats för optimal komfort, stötdämpning och alla väder.'
-                ]
-            ]
+                    'sv' => 'Legendariska lätta stövlar gjorda av Blundstone i Tasmanien sedan 1932. Deras ikoniska sålar har konstruerats för optimal komfort, stötdämpning och alla väder.',
+                ],
+            ],
         ];
 
         $attributes = Attribute::get();
@@ -296,7 +295,7 @@ class ProductTableSeeder extends Seeder
 
         $product = Product::create([
             'attribute_data' => $data['attribute_data'],
-            'option_data' => (!empty($data['option_data']) ? $data['option_data'] : [])
+            'option_data' => (! empty($data['option_data']) ? $data['option_data'] : []),
         ]);
 
         $groups = CustomerGroup::all();
@@ -305,7 +304,7 @@ class ProductTableSeeder extends Seeder
         foreach ($groups as $group) {
             $product->customerGroups()->attach($group->id, [
                 'visible' => 1,
-                'purchasable' => 1
+                'purchasable' => 1,
             ]);
         }
 
@@ -324,14 +323,14 @@ class ProductTableSeeder extends Seeder
                 $product->route()->create([
                     'default' => true,
                     'slug' => str_slug($attr_data['en']),
-                    'locale' => 'en'
+                    'locale' => 'en',
                 ]);
             }
         }
 
         $product->save();
 
-        if (!empty($data['variants'])) {
+        if (! empty($data['variants'])) {
             foreach ($data['variants'] as $variant) {
                 $product->variants()->create($variant);
             }
@@ -340,7 +339,7 @@ class ProductTableSeeder extends Seeder
                 'options' => [],
                 'sku' => 'LTHRBTS',
                 'stock' => 1,
-                'price' => 25
+                'price' => 25,
             ]);
         }
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace Seeds;
 
 use Illuminate\Database\Seeder;
@@ -16,7 +17,7 @@ class TaxTableSeeder extends Seeder
         Tax::create([
             'percentage' => 20,
             'name' => 'VAT',
-            'default' => true
+            'default' => true,
         ]);
     }
 }
