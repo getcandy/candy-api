@@ -8,10 +8,6 @@ use GetCandy\Api\Http\Transformers\Fractal\Products\ProductVariantTransformer;
 
 class OrderLineTransformer extends BaseTransformer
 {
-    protected $availableIncludes = [
-        'variant',
-    ];
-
     public function transform(OrderLine $line)
     {
         $data = [
@@ -28,10 +24,5 @@ class OrderLineTransformer extends BaseTransformer
         ];
 
         return $data;
-    }
-
-    protected function includeVariant(OrderLine $line)
-    {
-        return $this->item($line->variant, new ProductVariantTransformer);
     }
 }

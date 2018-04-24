@@ -23,6 +23,10 @@ class BasketLine extends BaseModel
 
     public function getCurrentTaxAttribute()
     {
+        $tieredPrice = app('api')->productVariants()->getTieredPrice($this->variant, $this->quantity, \Auth::user());
+        if ($tieredPrice) {
+            return $this->quantity * $tieredPrice->tax;
+        }
         return $this->quantity * $this->variant->tax_total;
     }
 

@@ -89,15 +89,15 @@ class ApiServiceProvider extends ServiceProvider
         Validator::extend('valid_structure', 'GetCandy\Api\Http\Validators\AttributeValidator@validateData');
         Validator::extend('unique_category_attribute', 'GetCandy\Api\Http\Validators\CategoriesValidator@uniqueCategoryAttributeData');
         Validator::extend('unique_route', 'GetCandy\Api\Http\Validators\RoutesValidator@uniqueRoute');
-        Validator::extend('check_coupon', 'GetCandy\Api\Discounts\Validators\DiscountValidator@checkCoupon');
+        Validator::extend('check_coupon', 'GetCandy\Api\Core\Discounts\Validators\DiscountValidator@checkCoupon');
         Validator::extend('valid_locales', 'GetCandy\Api\Http\Validators\LocaleValidator@validate');
         Validator::extend('enabled', 'GetCandy\Api\Http\Validators\BaseValidator@enabled');
         Validator::extend('asset_url', 'GetCandy\Api\Http\Validators\AssetValidator@validAssetUrl');
-        Validator::extend('valid_discount', 'GetCandy\Api\Discounts\Validators\DiscountValidator@validate');
-        Validator::extend('unique_lines', 'GetCandy\Api\Baskets\Validators\BasketValidator@uniqueLines');
-        Validator::extend('in_stock', 'GetCandy\Api\Baskets\Validators\BasketValidator@inStock');
-        Validator::extend('valid_payment_token', 'GetCandy\Api\Payments\Validators\PaymentTokenValidator@validate');
-        Validator::extend('valid_order', 'GetCandy\Api\Orders\Validators\OrderIsActiveValidator@validate');
+        Validator::extend('valid_discount', 'GetCandy\Api\Core\Discounts\Validators\DiscountValidator@validate');
+        Validator::extend('unique_lines', 'GetCandy\Api\Core\Baskets\Validators\BasketValidator@uniqueLines');
+        Validator::extend('in_stock', 'GetCandy\Api\Core\Baskets\Validators\BasketValidator@inStock');
+        Validator::extend('valid_payment_token', 'GetCandy\Api\Core\Payments\Validators\PaymentTokenValidator@validate');
+        Validator::extend('valid_order', 'GetCandy\Api\Core\Orders\Validators\OrderIsActiveValidator@validate');
     }
 
     public function mapCommands()

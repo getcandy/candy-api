@@ -22,7 +22,11 @@ class PriceCalculator
     {
         $converted = CurrencyConverter::convert($price);
 
-        $taxamount = TaxCalculator::set($tax)->amount($converted);
+        if ($tax == 'default') {
+            $taxamount = TaxCalculator::amount($converted);
+        } else {
+            $taxamount = TaxCalculator::set($tax)->amount($converted);
+        }
 
         $this->pricing = [
             'amount' => round($converted, 2),
