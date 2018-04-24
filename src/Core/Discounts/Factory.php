@@ -55,10 +55,11 @@ class Factory
 
     protected function setTotalAndTax($basket)
     {
-        $basket->total = 0;
+        $basket->subTotal = 0;
+        $basket->tax = 0;
 
         foreach ($basket->lines as $line) {
-            $basket->total += $line->current_total;
+            $basket->subTotal += $line->current_total;
 
             $tieredPrice = app('api')->productVariants()->getTieredPrice(
                 $line->variant,
@@ -76,7 +77,7 @@ class Factory
             }
         }
 
-        $basket->sub_total = $basket->total;
+        $basket->total = $basket->subTotal + $basket->tax;
     }
 
     public function applyToBasket($discounts, $basket)
