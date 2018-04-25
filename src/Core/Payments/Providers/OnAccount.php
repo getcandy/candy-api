@@ -23,6 +23,11 @@ class OnAccount extends AbstractProvider
         return true;
     }
 
+    public function getClientToken()
+    {
+        return 'ONACCOUNT';
+    }
+
     public function updateTransaction($transaction)
     {
         return true;
