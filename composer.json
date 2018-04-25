@@ -32,7 +32,8 @@
         "mockery/mockery": "~1.0",
         "phpunit/phpunit": "~7.0",
         "filp/whoops": "~2.0",
-        "orchestra/testbench": "~3.6"
+        "orchestra/testbench": "~3.6",
+        "codedungeon/phpunit-result-printer": "^0.16.1"
     },
     "autoload": {
         "psr-4": {
