@@ -40,4 +40,11 @@ abstract class AbstractProvider
      * @return void
      */
     abstract public function refund($token, $amount = null);
+
+    /**
+     * Gets a client token for the front end
+     *
+     * @return mixed
+     */
+    abstract public function getClientToken();
 }
