@@ -6,6 +6,7 @@ use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Payments\Models\Transaction;
 use GetCandy\Api\Core\Payments\Exceptions\AlreadyRefundedException;
+use GetCandy\Api\Core\Orders\Exceptions\OrderAlreadyProcessedException;
 
 class PaymentService extends BaseService
 {
@@ -72,6 +73,10 @@ class PaymentService extends BaseService
      */
     public function charge(Order $order, $token = null, $type = null)
     {
+        if ($order->placed_at) {
+            throw new OrderAlreadyProcessedException;
+        }
+
         if ($type) {
             $this->setProvider($type->driver);
         }

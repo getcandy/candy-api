@@ -14,7 +14,6 @@ use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Core\Orders\Events\OrderProcessedEvent;
 use GetCandy\Api\Core\Orders\Events\OrderBeforeSavedEvent;
 use GetCandy\Api\Core\Orders\Exceptions\IncompleteOrderException;
-use GetCandy\Api\Core\Orders\Exceptions\OrderAlreadyProcessedException;
 
 class OrderService extends BaseService
 {
@@ -468,10 +467,6 @@ class OrderService extends BaseService
     public function process(array $data)
     {
         $order = $this->getByHashedId($data['order_id']);
-
-        if ($order->placed_at) {
-            throw new OrderAlreadyProcessedException;
-        }
 
         if (! $this->isProcessable($order)) {
             throw new IncompleteOrderException;
