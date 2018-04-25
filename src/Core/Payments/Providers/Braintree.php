@@ -79,7 +79,7 @@ class Braintree extends AbstractProvider
         return true;
     }
 
-    protected function getMerchant($currency)
+    public function getMerchant($currency = null)
     {
         return config(
             'services.braintree.merchants.'.strtolower($currency),
