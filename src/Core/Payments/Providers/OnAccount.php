@@ -2,6 +2,8 @@
 
 namespace GetCandy\Api\Core\Payments\Providers;
 
+use GetCandy\Api\Core\Orders\Models\Order;
+
 class OnAccount extends AbstractProvider
 {
     protected $name = 'On Account';
@@ -33,7 +35,7 @@ class OnAccount extends AbstractProvider
         return true;
     }
 
-    public function charge($token, $order)
+    public function charge($token, Order $order)
     {
         return true;
     }

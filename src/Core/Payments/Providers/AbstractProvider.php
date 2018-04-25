@@ -2,6 +2,8 @@
 
 namespace GetCandy\Api\Core\Payments\Providers;
 
+use GetCandy\Api\Core\Orders\Models\Order;
+
 abstract class AbstractProvider
 {
     protected $billing;
@@ -29,7 +31,7 @@ abstract class AbstractProvider
      *
      * @return void
      */
-    abstract public function charge($token, $order);
+    abstract public function charge($token, Order $order);
 
     /**
      * Refund a transaction.

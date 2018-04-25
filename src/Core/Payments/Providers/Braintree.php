@@ -8,6 +8,7 @@ use Braintree_Configuration;
 use Braintree_Test_Transaction;
 use Braintree_Exception_NotFound;
 use Braintree_PaymentMethodNonce;
+use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Payments\Models\Transaction;
 
 class Braintree extends AbstractProvider
@@ -87,7 +88,7 @@ class Braintree extends AbstractProvider
         );
     }
 
-    public function charge($token, $order)
+    public function charge($token, Order $order)
     {
         $merchant = $this->getMerchant($order->currency);
 
