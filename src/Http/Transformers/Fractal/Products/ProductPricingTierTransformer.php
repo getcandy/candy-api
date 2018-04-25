@@ -21,7 +21,7 @@ class ProductPricingTierTransformer extends BaseTransformer
             'id' => $model->encodedId(),
             'lower_limit' => $model->lower_limit,
             'price' => $pricing->amount,
-            'tax' => $pricing->tax
+            'tax' => $pricing->tax,
         ];
     }
 

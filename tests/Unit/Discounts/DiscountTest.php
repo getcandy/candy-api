@@ -2,8 +2,6 @@
 
 namespace Tests\Unit\Discounts;
 
-use Carbon\Carbon;
-use TaxCalculator;
 use Tests\TestCase;
 use GetCandy\Api\Core\Taxes\Models\Tax;
 use GetCandy\Api\Core\Products\Models\Product;
@@ -54,13 +52,13 @@ class DiscountTest extends TestCase
 
         // Make sure each line has the discount applied, except shipping
         foreach ($order->lines as $line) {
-            if (!$line->shipping) {
+            if (! $line->shipping) {
                 $this->assertEquals(
                     $line->line_amount * ($percentage / 100),
                     $line->discount
                 );
             } else {
-                $this->assertTrue(!$line->discount);
+                $this->assertTrue(! $line->discount);
             }
         }
 

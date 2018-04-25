@@ -13,18 +13,18 @@ abstract class PaymentsAbstract extends TestCase
     {
         $config = config('getcandy');
 
-        $this->assertTrue(!empty($config['payments']['gateway']));
+        $this->assertTrue(! empty($config['payments']['gateway']));
 
         $gateway = $config['payments']['gateway'];
 
-        $this->assertTrue(!empty($config['payments']['providers'][$gateway]));
+        $this->assertTrue(! empty($config['payments']['providers'][$gateway]));
 
         $providerClassName = $config['payments']['providers'][$gateway];
 
         return [
             'gateway' => $gateway,
             'providers' => $config['payments']['providers'],
-            'provider' => $providerClassName
+            'provider' => $providerClassName,
         ];
     }
 

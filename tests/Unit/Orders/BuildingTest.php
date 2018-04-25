@@ -8,7 +8,6 @@ use CurrencyConverter;
 use GetCandy\Api\Core\Taxes\Models\Tax;
 use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Shipping\Models\ShippingPrice;
-use GetCandy\Api\Core\Orders\Exceptions\OrderAlreadyProcessedException;
 
 class BuildingTest extends TestCase
 {
@@ -56,7 +55,7 @@ class BuildingTest extends TestCase
 
         foreach ($order->lines as $line) {
             $this->assertTrue($line->tax == $this->getTaxForAmount($tax, $line->line_amount));
-            $this->assertTrue(!$line->discount);
+            $this->assertTrue(! $line->discount);
         }
     }
 
@@ -93,7 +92,7 @@ class BuildingTest extends TestCase
 
         foreach ($order->lines as $line) {
             $this->assertEquals($line->tax, $this->getTaxForAmount($tax, $line->line_amount));
-            $this->assertTrue(!$line->discount);
+            $this->assertTrue(! $line->discount);
         }
     }
 

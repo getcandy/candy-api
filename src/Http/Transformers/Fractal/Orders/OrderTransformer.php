@@ -46,9 +46,10 @@ class OrderTransformer extends BaseTransformer
 
     protected function includeShipping(Order $order)
     {
-        if (!$order->shipping) {
+        if (! $order->shipping) {
             return $this->null();
         }
+
         return $this->item($order->shipping, new OrderLineTransformer);
     }
 

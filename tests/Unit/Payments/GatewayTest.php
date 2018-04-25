@@ -16,20 +16,20 @@ class GatewayTest extends PaymentsAbstract
     {
         $config = $this->getGatewayConfig();
 
-        $this->assertTrue(!empty(
-            config('services.' . $config['gateway'])
+        $this->assertTrue(! empty(
+            config('services.'.$config['gateway'])
         ));
-        $this->assertTrue(!empty(
-            config('services.' . $config['gateway'] . '.merchants')
+        $this->assertTrue(! empty(
+            config('services.'.$config['gateway'].'.merchants')
         ));
     }
 
     public function testCorrectMerchantForCurrency()
     {
-        $config         =   $this->getGatewayConfig();
-        $serviceConfig  =   config('services.' . $config['gateway']);
-        $provider       =   $this->getProvider();
-        $merchant       =   $provider->getMerchant();
+        $config = $this->getGatewayConfig();
+        $serviceConfig = config('services.'.$config['gateway']);
+        $provider = $this->getProvider();
+        $merchant = $provider->getMerchant();
 
         $this->assertEquals($serviceConfig['merchants']['default'], $merchant);
 
@@ -41,7 +41,7 @@ class GatewayTest extends PaymentsAbstract
     public function testCanGetClientToken()
     {
         $this->assertTrue(
-            !empty($this->getProvider()->getClientToken())
+            ! empty($this->getProvider()->getClientToken())
         );
     }
 

@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Core\Baskets\Models;
 
-use PriceCalculator;
 use GetCandy\Api\Core\Scaffold\BaseModel;
 use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Traits\HasCompletion;

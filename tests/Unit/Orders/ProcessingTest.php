@@ -2,9 +2,7 @@
 
 namespace Tests\Unit\Orders;
 
-use TaxCalculator;
 use Tests\TestCase;
-use CurrencyConverter;
 use GetCandy\Api\Core\Taxes\Models\Tax;
 use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Shipping\Models\ShippingPrice;

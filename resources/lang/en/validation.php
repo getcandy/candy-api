@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'in_stock' => 'Insufficient stock levels'
+    'in_stock' => 'Insufficient stock levels',
 ];
