@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Discounts;
 
 use Carbon\Carbon;
 use TaxCalculator;
