@@ -164,7 +164,7 @@ Route::group([
     $router->post('products/{product}/collections', 'Products\ProductCollectionController@update');
     $router->post('products/{product}/routes', 'Products\ProductRouteController@store');
     $router->post('products/{product}/categories', 'Products\ProductCategoryController@update');
-    $router->delete('products/{product}/categories/{category}', 'Products\Produ\ctCategoryController@destroy');
+    $router->delete('products/{product}/categories/{category}', 'Products\Product\CategoryController@destroy');
     $router->delete('products/{product}/collections/{collection}', 'Products\ProductCollectionController@destroy');
     $router->post('products/{product}/associations', 'Products\ProductAssociationController@store');
     $router->delete('products/{product}/associations', 'Products\ProductAssociationController@destroy');
