@@ -2,7 +2,7 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Discounts;
 
-use GetCandy\Api\Discounts\Models\DiscountReward;
+use GetCandy\Api\Core\Discounts\Models\DiscountReward;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 
 class DiscountRewardTransformer extends BaseTransformer

@@ -3,7 +3,7 @@
 namespace GetCandy\Api\Http\Transformers\Fractal\Assets;
 
 use League\Fractal\TransformerAbstract;
-use GetCandy\Api\Assets\Models\Transform;
+use GetCandy\Api\Core\Assets\Models\Transform;
 
 class TransformTransformer extends TransformerAbstract
 {

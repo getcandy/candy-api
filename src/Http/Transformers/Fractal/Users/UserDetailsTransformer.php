@@ -2,7 +2,7 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Users;
 
-use GetCandy\Api\Users\Models\UserDetail;
+use GetCandy\Api\Core\Users\Models\UserDetail;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 
 class UserDetailsTransformer extends BaseTransformer

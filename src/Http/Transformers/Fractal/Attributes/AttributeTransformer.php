@@ -2,7 +2,7 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Attributes;
 
-use GetCandy\Api\Attributes\Models\Attribute;
+use GetCandy\Api\Core\Attributes\Models\Attribute;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 
 class AttributeTransformer extends BaseTransformer

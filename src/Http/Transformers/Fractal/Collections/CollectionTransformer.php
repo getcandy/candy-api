@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Collections;
 
-use GetCandy\Api\Products\Models\Product;
-use GetCandy\Api\Traits\IncludesAttributes;
-use GetCandy\Api\Collections\Models\Collection;
+use GetCandy\Api\Core\Products\Models\Product;
+use GetCandy\Api\Core\Traits\IncludesAttributes;
+use GetCandy\Api\Core\Collections\Models\Collection;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Assets\AssetTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Routes\RouteTransformer;

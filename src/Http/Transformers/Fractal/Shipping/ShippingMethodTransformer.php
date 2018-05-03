@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Shipping;
 
-use GetCandy\Api\Traits\IncludesAttributes;
-use GetCandy\Api\Shipping\Models\ShippingMethod;
+use GetCandy\Api\Core\Traits\IncludesAttributes;
+use GetCandy\Api\Core\Shipping\Models\ShippingMethod;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Users\UserTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Channels\ChannelTransformer;

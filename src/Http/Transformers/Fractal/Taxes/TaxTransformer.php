@@ -2,7 +2,7 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Taxes;
 
-use GetCandy\Api\Taxes\Models\Tax;
+use GetCandy\Api\Core\Taxes\Models\Tax;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 
 class TaxTransformer extends BaseTransformer

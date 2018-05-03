@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Categories;
 
-use GetCandy\Api\Categories\Models\Category;
-use GetCandy\Api\Attributes\Models\AttributeGroup;
+use GetCandy\Api\Core\Categories\Models\Category;
+use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Assets\AssetTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Routes\RouteTransformer;

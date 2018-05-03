@@ -3,8 +3,8 @@
 namespace GetCandy\Api\Http\Transformers\Fractal\Discounts;
 
 use Carbon\Carbon;
-use GetCandy\Api\Discounts\Models\Discount;
-use GetCandy\Api\Traits\IncludesAttributes;
+use GetCandy\Api\Core\Discounts\Models\Discount;
+use GetCandy\Api\Core\Traits\IncludesAttributes;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Channels\ChannelTransformer;
 
