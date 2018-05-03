@@ -3,7 +3,7 @@
 namespace GetCandy\Api\Search\Elastic\Indexers;
 
 use Elastica\Document;
-use GetCandy\Api\Products\Models\Product;
+use GetCandy\Api\Core\Products\Models\Product;
 
 class ProductIndexer extends BaseIndexer
 {

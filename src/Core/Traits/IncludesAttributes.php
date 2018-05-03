@@ -4,7 +4,7 @@ namespace GetCandy\Api\Core\Traits;
 
 use Illuminate\Database\Eloquent\Model;
 use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
-use GetCandy\Api\Core\Http\Transformers\Fractal\Attributes\AttributeGroupTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\Attributes\AttributeGroupTransformer;
 
 trait IncludesAttributes
 {

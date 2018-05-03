@@ -1,16 +1,33 @@
 <?php
 
-namespace GetCandy\Api\Search\Elastic\Indexers;
+namespace GetCandy\Api\Core\Search\Providers\Elastic\Types;
 
 use Carbon\Carbon;
-use GetCandy\Api\Search\Indexable;
+use GetCandy\Api\Core\Search\Indexable;
 use Illuminate\Database\Eloquent\Model;
 
-abstract class BaseIndexer
+abstract class BaseType
 {
-    public function getIndexName($lang = 'en')
+    protected $suffix = null;
+
+    public function setSuffix($suffix)
     {
-        return config('getcandy.search.index_prefix').'_'.$this->type.'_'.$lang;
+        $this->suffix = $suffix;
+        return $this;
+    }
+
+    public function getSuffix()
+    {
+        return $this->suffix;
+    }
+
+    public function getHandle()
+    {
+        return $this->handle;
+    }
+    public function getIndexName()
+    {
+        return config('getcandy.search.index_prefix').'_'.$this->handle;
     }
 
     /**
@@ -31,9 +48,10 @@ abstract class BaseIndexer
             foreach ($attribute as $lang => $item) {
                 // Base Stuff
                 $indexable = $this->getIndexable($model);
-                $indexable->setIndex(
-                    $this->getIndexName($lang)
-                );
+
+                $indice = $this->getIndexName() . "_{$lang}_{$this->suffix}";
+
+                $indexable->setIndex($indice);
 
                 $indexable->set('image', $this->getThumbnail($model));
 
@@ -213,5 +231,33 @@ abstract class BaseIndexer
                 'name' => $item->name,
             ];
         })->toArray();
+    }
+
+    public function getMapping()
+    {
+        $attributes = app('api')->attributes()->all()->reject(function ($attribute) {
+            return $attribute->system || !$attribute->searchable;
+        })->mapWithKeys(function ($attribute) {
+            switch ($attribute->type) {
+                case 'radio':
+                    $type = 'boolean';
+                    break;
+                case 'date':
+                    $type = 'date';
+                    break;
+                default:
+                    $type = 'text';
+            }
+            return [
+                $attribute->handle => [
+                    'type' => $type,
+                    'analyzer' => 'standard',
+                ]
+            ];
+        })->toArray();
+
+        $attributes = array_merge($attributes, $this->mapping);
+
+        return $attributes;
     }
 }

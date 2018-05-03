@@ -61,7 +61,7 @@ return [
     |
     */
     'search' => [
-        'client' => \GetCandy\Api\Search\Elastic\Elastic::class,
+        'client' => \GetCandy\Api\Core\Search\Providers\Elastic\Elastic::class,
         'index_prefix' => env('SEARCH_INDEX_PREFIX', 'candy'),
         'index' => env('SEARCH_INDEX', 'candy_products_en'),
     ],

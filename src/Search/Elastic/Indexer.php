@@ -6,6 +6,7 @@ use Elastica\Document;
 use Elastica\Type\Mapping;
 use GetCandy\Api\Search\IndexContract;
 use Illuminate\Database\Eloquent\Model;
+use GetCandy\Api\Core\Scopes\CustomerGroupScope;
 
 class Indexer extends AbstractProvider implements IndexContract
 {
@@ -24,7 +25,7 @@ class Indexer extends AbstractProvider implements IndexContract
      * @param  Model  $model
      * @return bool
      */
-    public function indexObject(Model $model)
+    public function indexObject(Model $model, $reindex = false)
     {
         // Get the indexer.
         // $indexer = $this->getIndexer($model);
@@ -37,7 +38,11 @@ class Indexer extends AbstractProvider implements IndexContract
         $indexables = $this->indexer->getIndexDocument($model);
 
         foreach ($indexables as $indexable) {
-            $index = $this->getIndex($indexable->getIndex());
+
+            $index = $this->getIndex(
+                $indexable->getIndex(),
+                $reindex
+            );
 
             $elasticaType = $index->getType($this->indexer->type);
             $document = new Document(
@@ -49,6 +54,17 @@ class Indexer extends AbstractProvider implements IndexContract
         }
 
         return true;
+    }
+
+    public function indexAll($model)
+    {
+        $this->against($model);
+
+        $model = new $model;
+
+        foreach ($model->withoutGlobalScopes()->get() as $model) {
+            $this->indexObject($model, true);
+        }
     }
 
     public function updateDocument($model, $field)
@@ -106,11 +122,45 @@ class Indexer extends AbstractProvider implements IndexContract
     }
 
     /**
+     * Gets an index name prefixed by a version
+     *
+     * @param string $name
+     *
+     * @return string
+     */
+    public function getVersions($name)
+    {
+        $v = 1;
+        $previous = null;
+
+        while ($this->hasIndex($name)) {
+            $previous = $name;
+            preg_match("/(?:_v|v)\s*((?:[0-9]+\.?)+)/i", $name, $matches);
+            // If it doesn't have a version prefix, give it one.
+            if (empty($matches)) {
+                $name = $name . "_v{$v}";
+            } else {
+                $name = str_replace($matches[1], $v, $name);
+            }
+            $v++;
+        }
+        return [
+            'number' => $v,
+            'previous' => $previous,
+            'next' => $name
+        ];
+    }
+
+    /**
      * Returns the index for the model.
      * @return Elastica\Index
      */
-    public function getIndex($name = null)
+    public function getIndex($name = null, $fresh = false)
     {
+        if ($fresh) {
+            $name = $this->getVersions($name)['next'];
+        }
+
         $index = $this->client()->getIndex($name);
 
         if (! $this->hasIndex($name)) {
@@ -136,8 +186,6 @@ class Indexer extends AbstractProvider implements IndexContract
                     ],
                 ],
             ]);
-            $index->addAlias($name.'_alias');
-            // ...and update the mappings
             $this->updateMappings($index);
         }
 
