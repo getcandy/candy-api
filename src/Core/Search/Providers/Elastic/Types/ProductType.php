@@ -82,9 +82,6 @@ class ProductType extends BaseType
                 ],
             ],
         ],
-        'thumbnail' => [
-            'type' => 'text',
-        ],
         'pricing' => [
             'type' => 'nested',
             'properties' => [
