@@ -13,6 +13,7 @@ abstract class BaseType
     public function setSuffix($suffix)
     {
         $this->suffix = $suffix;
+
         return $this;
     }
 
@@ -25,6 +26,7 @@ abstract class BaseType
     {
         return $this->handle;
     }
+
     public function getIndexName()
     {
         return config('getcandy.search.index_prefix').'_'.$this->handle;
@@ -49,7 +51,7 @@ abstract class BaseType
                 // Base Stuff
                 $indexable = $this->getIndexable($model);
 
-                $indice = $this->getIndexName() . "_{$lang}_{$this->suffix}";
+                $indice = $this->getIndexName()."_{$lang}_{$this->suffix}";
 
                 $indexable->setIndex($indice);
 
@@ -120,12 +122,13 @@ abstract class BaseType
             foreach ($channel as $channelName => $locales) {
                 foreach ($locales as $locale => $value) {
                     $newValue = strip_tags($model->attribute($field, $channelName, $locale));
-                    if (!$this->mappingValueExists($mapping, $model->id, $locale, $field, $newValue)) {
+                    if (! $this->mappingValueExists($mapping, $model->id, $locale, $field, $newValue)) {
                         $mapping[$model->id][$locale]['data'][$field][] = $newValue;
                     }
                 }
             }
         }
+
         return $mapping;
     }
 
@@ -228,18 +231,19 @@ abstract class BaseType
         $attributes = app('api')->attributes()->all()->reject(function ($attribute) {
             return $attribute->system;
         })->mapWithKeys(function ($attribute) {
-            if (!$attribute->searchable) {
+            if (! $attribute->searchable) {
                 return [
                     $attribute->handle => [
-                        'enabled' => false
-                    ]
+                        'enabled' => false,
+                    ],
                 ];
             }
+
             return [
                 $attribute->handle => [
                     'type' => 'text',
                     'analyzer' => 'standard',
-                ]
+                ],
             ];
         })->toArray();
 

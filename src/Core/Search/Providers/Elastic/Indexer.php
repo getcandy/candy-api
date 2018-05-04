@@ -3,17 +3,10 @@
 namespace GetCandy\Api\Core\Search\Providers\Elastic;
 
 use Elastica\Client;
-use Elastica\Status;
 use Elastica\Reindex;
 use Elastica\Document;
 use Elastica\Type\Mapping;
-use GetCandy\Api\Search\IndexContract;
 use Illuminate\Database\Eloquent\Model;
-use GetCandy\Api\Core\Products\Models\Product;
-use GetCandy\Api\Core\Scopes\CustomerGroupScope;
-use GetCandy\Api\Core\Categories\Models\Category;
-use GetCandy\Api\Core\Search\Providers\Elastic\Types\ProductType;
-use GetCandy\Api\Core\Search\Providers\Elastic\Types\CategoryType;
 
 class Indexer
 {
@@ -27,7 +20,7 @@ class Indexer
     }
 
     /**
-     * Updates the mapping for a model
+     * Updates the mapping for a model.
      *
      * @param Model $model
      * @return void
@@ -44,13 +37,12 @@ class Indexer
         $aliases = [];
 
         foreach ($languages as $language) {
+            $indexBasename = $baseIndex."_{$language->lang}";
 
-            $indexBasename = $baseIndex . "_{$language->lang}";
-
-            $currentIndex =  $this->client->getIndex($indexBasename . "_{$currentSuffix}");
+            $currentIndex = $this->client->getIndex($indexBasename."_{$currentSuffix}");
 
             $newIndex = $this->createIndex(
-                $indexBasename . "_{$nextSuffix}"
+                $indexBasename."_{$nextSuffix}"
             );
 
             $reindexer = new Reindex($currentIndex, $newIndex);
@@ -66,7 +58,7 @@ class Indexer
     }
 
     /**
-     * Reindexes all indexes for a model
+     * Reindexes all indexes for a model.
      *
      * @param string $model
      * @return void
@@ -87,9 +79,9 @@ class Indexer
 
         // Go through our languages and create a new index at the correct version
         foreach ($languages as $language) {
-            $alias = $this->getBaseIndexName() . '_' . $language->lang;
+            $alias = $this->getBaseIndexName().'_'.$language->lang;
             $this->createIndex(
-                $alias . "_{$suffix}"
+                $alias."_{$suffix}"
             );
             $aliases[] = $alias;
         }
@@ -115,7 +107,7 @@ class Indexer
             }
 
             foreach ($indexes as $key => $documents) {
-                $index =  $this->client->getIndex($key);
+                $index = $this->client->getIndex($key);
                 $elasticaType = $index->getType($this->type->getHandle());
                 $elasticaType->addDocuments($documents);
             }
@@ -123,7 +115,7 @@ class Indexer
             $elasticaType->addDocuments($documents);
             $elasticaType->getIndex()->refresh();
 
-            echo ':batch:' . $this->batch;
+            echo ':batch:'.$this->batch;
             $this->batch += 1000;
             $models = $model->withoutGlobalScopes()->limit(1000)->offset($this->batch)->get();
         }
@@ -134,7 +126,7 @@ class Indexer
     }
 
     /**
-     * Cleans up the indexes for next time
+     * Cleans up the indexes for next time.
      *
      * @param string $suffix
      * @param array $aliases
@@ -148,14 +140,14 @@ class Indexer
             $remove = 'a';
         }
         foreach ($aliases as $alias) {
-            $index = $this->client->getIndex($alias . "_{$suffix}");
+            $index = $this->client->getIndex($alias."_{$suffix}");
             $index->addAlias($alias);
-            $this->reset($alias . "_{$remove}");
+            $this->reset($alias."_{$remove}");
         }
     }
 
     /**
-     * Index a single object
+     * Index a single object.
      *
      * @param Model $model
      * @return void
@@ -164,18 +156,19 @@ class Indexer
     {
         $this->type = $this->getType($model);
         $indexName = $this->getDefaultIndex();
-        if (!$this->suffix) {
+        if (! $this->suffix) {
             $this->suffix = $this->getCurrentIndexSuffix($indexName);
         }
+
         return $this->addToIndex($model, $this->suffix);
     }
 
     /**
-     * Add a single model to the elastic index
+     * Add a single model to the elastic index.
      *
      * @param Model $model
      * @param string $suffix
-     * @return boolean
+     * @return bool
      */
     protected function addToIndex(Model $model, $suffix = null)
     {
@@ -184,8 +177,7 @@ class Indexer
         $indexables = $type->getIndexDocument($model);
 
         foreach ($indexables as $indexable) {
-
-            $index =  $this->client->getIndex(
+            $index = $this->client->getIndex(
                 $indexable->getIndex()
             );
 
@@ -208,8 +200,6 @@ class Indexer
             $this->client->getIndex($index)->delete();
         }
     }
-
-
 
     /**
      * Create an index based on the model.
@@ -241,6 +231,7 @@ class Indexer
             ],
         ]);
         $this->updateMappings($index);
+
         return $index;
     }
 }

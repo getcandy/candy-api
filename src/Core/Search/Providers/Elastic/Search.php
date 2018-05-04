@@ -34,7 +34,6 @@ class Search implements ClientContract
     {
         $this->client = $client;
         $this->categoryFilter = $categoryFilter;
-
     }
 
     public function with($searchterm)
@@ -44,7 +43,7 @@ class Search implements ClientContract
 
     protected function getSearchIndex()
     {
-        return $this->type->getIndexName() . '_' . $this->lang;
+        return $this->type->getIndexName().'_'.$this->lang;
     }
 
     public function user($user = null)

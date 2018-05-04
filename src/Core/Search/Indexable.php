@@ -70,7 +70,7 @@ class Indexable
             $this->set($key, $value);
         }
         $current = $this->data[$key];
-        if (!is_array($current)) {
+        if (! is_array($current)) {
             $this->data[$key] = [];
         }
         array_push($this->data[$key], $value);

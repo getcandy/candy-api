@@ -4,7 +4,6 @@ namespace GetCandy\Api\Core\Products\Services;
 
 use PriceCalculator;
 use GetCandy\Api\Core\Scaffold\BaseService;
-use GetCandy\Api\Core\Search\Jobs\ReindexSearchJob;
 use GetCandy\Api\Core\Products\Models\ProductVariant;
 use GetCandy\Api\Core\Search\Events\IndexableSavedEvent;
 

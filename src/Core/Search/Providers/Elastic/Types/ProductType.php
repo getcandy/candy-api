@@ -129,7 +129,6 @@ class ProductType extends BaseType
         ],
     ];
 
-
     /**
      * Returns the Index document ready to be added.
      * @param  Product $product

@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Core\Attributes\Events;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 

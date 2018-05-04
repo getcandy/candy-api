@@ -11,7 +11,6 @@
 |
 */
 
-
 Broadcast::channel('indexers', function ($user, $id) {
     //TODO: Check for admin
     return true;
