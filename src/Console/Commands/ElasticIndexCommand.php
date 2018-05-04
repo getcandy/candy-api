@@ -3,9 +3,9 @@
 namespace GetCandy\Api\Console\Commands;
 
 use Illuminate\Console\Command;
-use GetCandy\Api\Search\SearchContract;
-use GetCandy\Api\Products\Models\Product;
-use GetCandy\Api\Categories\Models\Category;
+use GetCandy\Api\Core\Search\SearchContract;
+use GetCandy\Api\Core\Products\Models\Product;
+use GetCandy\Api\Core\Categories\Models\Category;
 
 class ElasticIndexCommand extends Command
 {
