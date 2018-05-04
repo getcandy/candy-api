@@ -12,7 +12,7 @@ use GetCandy\Api\Search\Listeners\IndexObjectListener;
 use GetCandy\Api\Orders\Listeners\SyncWithBasketListener;
 use GetCandy\Api\Attributes\Events\AttributableSavedEvent;
 use GetCandy\Api\Core\Attributes\Events\AttributeSavedEvent;
-use GetCandy\Api\Core\Search\Listeners\ReindexSearchListener;
+use GetCandy\Api\Core\Search\Listeners\UpdateMappingsListener;
 use GetCandy\Api\Attributes\Listeners\SyncAttributablesListener;
 use GetCandy\Api\Discounts\Listeners\AddDiscountToProductListener;
 use GetCandy\Api\Products\Listeners\AddToIndexListener as ProductIndexListener;
@@ -30,7 +30,7 @@ class EventServiceProvider extends ServiceProvider
             SyncAttributablesListener::class,
         ],
         AttributeSavedEvent::class => [
-            ReindexSearchListener::class
+            UpdateMappingsListener::class
         ],
         ProductCreatedEvent::class => [
             ProductIndexListener::class,
