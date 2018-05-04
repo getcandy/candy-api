@@ -7,14 +7,14 @@ use GetCandy\Api\Core\Search\SearchContract;
 use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Attributes\Events\AttributeSavedEvent;
 
-class ReindexSearchListener implements ShouldQueue
+class UpdateMappingsListener implements ShouldQueue
 {
     /**
      * The name of the queue the job should be sent to.
      *
      * @var string|null
      */
-    // public $queue = 'indexers';
+    public $queue = 'indexers';
 
     /**
      * Handle the event.
@@ -24,7 +24,6 @@ class ReindexSearchListener implements ShouldQueue
      */
     public function handle(AttributeSavedEvent $event)
     {
-        dd(app(SearchContract::class)->indexer()->indexAll(Product::class));
-        dd('hit');
+        app(SearchContract::class)->indexer()->updateMapping(Product::class);
     }
 }

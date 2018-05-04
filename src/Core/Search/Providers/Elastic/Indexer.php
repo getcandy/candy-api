@@ -4,6 +4,7 @@ namespace GetCandy\Api\Core\Search\Providers\Elastic;
 
 use Elastica\Client;
 use Elastica\Status;
+use Elastica\Reindex;
 use Elastica\Document;
 use Elastica\Type\Mapping;
 use GetCandy\Api\Search\IndexContract;
@@ -23,6 +24,10 @@ class Indexer
 
     protected $type = null;
 
+    protected $suffix = null;
+
+    protected $batch = 0;
+
     /**
      * @var array
      */
@@ -36,26 +41,83 @@ class Indexer
         $this->client = $client;
     }
 
+    /**
+     * Gets the base index name
+     *
+     * @return string
+     */
     protected function getBaseIndexName()
     {
         return config('getcandy.search.index_prefix') . '_' . $this->type->getHandle();
     }
 
-    public function indexAll($model)
+    /**
+     * Gets the name of the default index
+     *
+     * @return string
+     */
+    protected function getDefaultIndex()
     {
+        $defaultLang = app('api')->languages()->getDefaultRecord();
+        return $this->getBaseIndexName() . "_{$defaultLang->lang}";
+    }
+
+    /**
+     * Updates the mapping for a model
+     *
+     * @param Model $model
+     * @return void
+     */
+    public function updateMapping($model)
+    {
+        $this->type = $this->getType($model);
+        $indexName = $this->getDefaultIndex();
+        $baseIndex = $this->getBaseIndexName();
+        $currentSuffix = $this->getCurrentIndexSuffix($indexName);
+        $nextSuffix = $currentSuffix == 'a' ? 'b' : 'a';
         $languages = app('api')->languages()->all();
 
-        $defaultLang = $languages->first(function ($lang) {
-            return $lang->default;
-        });
+        $aliases = [];
 
+        foreach ($languages as $language) {
+
+            $indexBasename = $baseIndex . "_{$language->lang}";
+
+            $currentIndex =  $this->client->getIndex($indexBasename . "_{$currentSuffix}");
+
+            $newIndex = $this->createIndex(
+                $indexBasename . "_{$nextSuffix}"
+            );
+
+            $reindexer = new Reindex($currentIndex, $newIndex);
+
+            $reindexer->run();
+
+            $aliases[] = $indexBasename;
+        }
+
+        $this->cleanup($nextSuffix, $aliases);
+
+        return true;
+    }
+
+    /**
+     * Reindexes all indexes for a model
+     *
+     * @param string $model
+     * @return void
+     */
+    public function indexAll($model)
+    {
         $this->type = $this->getType($model);
 
-        $indexName = $this->getBaseIndexName() . "_{$defaultLang->lang}";
+        $languages = app('api')->languages()->all();
+
+        $indexName = $this->getDefaultIndex();
 
         $model = new $model;
 
-        $suffix = $this->getIndexSuffix($indexName);
+        $suffix = $this->getNextIndexSuffix($indexName);
 
         $aliases = [];
 
@@ -68,8 +130,38 @@ class Indexer
             $aliases[] = $alias;
         }
 
-        foreach ($model->withoutGlobalScopes()->take(1)->get() as $model) {
-            $this->indexObject($model, $suffix);
+        // Do it in batches of 200
+        $models = $model->withoutGlobalScopes()->limit(1000)->offset($this->batch)->get();
+
+        $this->type->setSuffix($suffix);
+
+        while ($models->count()) {
+            $indexes = [];
+
+            foreach ($models as $model) {
+                $indexables = $this->type->getIndexDocument($model);
+                echo '.';
+                foreach ($indexables as $indexable) {
+                    $document = new Document(
+                        $indexable->getId(),
+                        $indexable->getData()
+                    );
+                    $indexes[$indexable->getIndex()][] = $document;
+                }
+            }
+
+            foreach ($indexes as $key => $documents) {
+                $index =  $this->client->getIndex($key);
+                $elasticaType = $index->getType($this->type->getHandle());
+                $elasticaType->addDocuments($documents);
+            }
+
+            $elasticaType->addDocuments($documents);
+            $elasticaType->getIndex()->refresh();
+
+            echo ':batch:' . $this->batch;
+            $this->batch += 1000;
+            $models = $model->withoutGlobalScopes()->limit(1000)->offset($this->batch)->get();
         }
 
         $this->cleanup($suffix, $aliases);
@@ -98,7 +190,24 @@ class Indexer
         }
     }
 
-    protected function getIndexSuffix($name)
+    /**
+     * Get the suffix of the current index
+     *
+     * @param string $name
+     * @return string
+     */
+    protected function getCurrentIndexSuffix($name)
+    {
+        return $this->getNextIndexSuffix($name) == 'a' ? 'b' : 'a';
+    }
+
+    /**
+     * Get the next suffix
+     *
+     * @param string $name
+     * @return string
+     */
+    protected function getNextIndexSuffix($name)
     {
         if ($this->hasIndex($name . '_a')) {
             return 'b';
@@ -118,6 +227,13 @@ class Indexer
         return $elasticaStatus->indexExists($name) || $elasticaStatus->aliasExists($name);
     }
 
+    /**
+     * Get the type for a model
+     *
+     * @param Model|string $model
+     * @throws Symfony\Component\HttpKernel\Exception\HttpException;
+     * @return mixed
+     */
     public function getType($model)
     {
         if (is_object($model)) {
@@ -142,21 +258,44 @@ class Indexer
         return isset($this->types[$model]);
     }
 
-
-    protected function indexObject(Model $model, $suffix)
+    /**
+     * Index a single object
+     *
+     * @param Model $model
+     * @return void
+     */
+    public function indexObject(Model $model)
     {
-        // $this->against($model);
+        $this->type = $this->getType($model);
+        $indexName = $this->getDefaultIndex();
+        if (!$this->suffix) {
+            $this->suffix = $this->getCurrentIndexSuffix($indexName);
+        }
+        return $this->addToIndex($model, $this->suffix);
+    }
+
+    /**
+     * Add a single model to the elastic index
+     *
+     * @param Model $model
+     * @param string $suffix
+     * @return boolean
+     */
+    protected function addToIndex(Model $model, $suffix = null)
+    {
         $type = $this->type->setSuffix($suffix);
 
         $indexables = $type->getIndexDocument($model);
 
         foreach ($indexables as $indexable) {
 
+
             $index =  $this->client->getIndex(
                 $indexable->getIndex()
             );
 
             $elasticaType = $index->getType($this->type->getHandle());
+
             $document = new Document(
                 $indexable->getId(),
                 $indexable->getData()
@@ -167,38 +306,6 @@ class Indexer
 
         return true;
     }
-
-    // public function indexAll($model)
-    // {
-    //     $this->against($model);
-
-    //     // $model = new $model;
-
-    //     // foreach ($model->withoutGlobalScopes()->get() as $model) {
-    //     //     $this->indexObject($model, true);
-    //     // }
-    // }
-
-    // public function updateDocument($model, $field)
-    // {
-    //     $this->against($model);
-    //     $index = $this->getIndex(
-    //         $this->indexer->getIndexName()
-    //     );
-    //     $this->indexer->getUpdatedDocument($model, $field, $index);
-    //     $elasticaType = $index->getType($this->indexer->type);
-    //     $elasticaType->addDocument($document);
-    // }
-
-    // public function updateDocuments($models, $field)
-    // {
-    //     $this->against($models->first());
-    //     $index = $this->getIndex(
-    //         $this->indexer->getIndexName()
-    //     );
-    //     $documents = $this->indexer->getUpdatedDocuments($models, $field, $index);
-    //     $index->addDocuments($documents);
-    // }
 
     public function reset($index)
     {

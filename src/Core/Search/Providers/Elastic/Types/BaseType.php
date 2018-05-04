@@ -53,8 +53,6 @@ abstract class BaseType
 
                 $indexable->setIndex($indice);
 
-                $indexable->set('image', $this->getThumbnail($model));
-
                 $indexable->set('departments', $this->getCategories($model));
                 $indexable->set('customer_groups', $this->getCustomerGroups($model));
                 $indexable->set('channels', $this->getChannels($model));
@@ -118,19 +116,13 @@ abstract class BaseType
     public function attributeMapping(Model $model)
     {
         $mapping = [];
-        $searchable = $this->getIndexableAttributes($model);
-
         foreach ($model->attribute_data as $field => $channel) {
-            if (! $searchable->contains($field)) {
-                continue;
-            }
             foreach ($channel as $channelName => $locales) {
                 foreach ($locales as $locale => $value) {
                     $mapping[$model->id][$locale]['data'][$field] = strip_tags($model->attribute($field, $channelName, $locale));
                 }
             }
         }
-
         return $mapping;
     }
 
@@ -236,28 +228,23 @@ abstract class BaseType
     public function getMapping()
     {
         $attributes = app('api')->attributes()->all()->reject(function ($attribute) {
-            return $attribute->system || !$attribute->searchable;
+            return $attribute->system;
         })->mapWithKeys(function ($attribute) {
-            switch ($attribute->type) {
-                case 'radio':
-                    $type = 'boolean';
-                    break;
-                case 'date':
-                    $type = 'date';
-                    break;
-                default:
-                    $type = 'text';
+            if (!$attribute->searchable) {
+                return [
+                    $attribute->handle => [
+                        'enabled' => false
+                    ]
+                ];
             }
             return [
                 $attribute->handle => [
-                    'type' => $type,
+                    'type' => 'text',
                     'analyzer' => 'standard',
                 ]
             ];
         })->toArray();
 
-        $attributes = array_merge($attributes, $this->mapping);
-
-        return $attributes;
+        return array_merge($attributes, $this->mapping);
     }
 }
