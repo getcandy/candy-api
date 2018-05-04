@@ -4,10 +4,9 @@ namespace GetCandy\Api\Core\Products\Services;
 
 use PriceCalculator;
 use GetCandy\Api\Core\Scaffold\BaseService;
+use GetCandy\Api\Core\Search\Jobs\ReindexSearchJob;
 use GetCandy\Api\Core\Products\Models\ProductVariant;
 use GetCandy\Api\Core\Search\Events\IndexableSavedEvent;
-use GetCandy\Api\Core\Search\Jobs\ReindexSearchJob;
-use GetCandy\Api\Core\Attributes\Events\AttributeSavedEvent;
 
 class ProductVariantService extends BaseService
 {
@@ -207,10 +206,6 @@ class ProductVariantService extends BaseService
      */
     public function update($hashedId, array $data)
     {
-
-        event(new AttributeSavedEvent);
-
-
         $variant = $this->getByHashedId($hashedId);
 
         $options = $variant->product->option_data;
