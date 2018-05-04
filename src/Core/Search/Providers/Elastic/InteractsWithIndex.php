@@ -4,6 +4,7 @@ namespace GetCandy\Api\Core\Search\Providers\Elastic;
 
 use Elastica\Client;
 use Elastica\Status;
+use Elastica\Type\Mapping;
 use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Categories\Models\Category;
 use GetCandy\Api\Core\Search\Providers\Elastic\Types\ProductType;
@@ -104,6 +105,22 @@ trait InteractsWithIndex
     protected function getCurrentIndexSuffix($name)
     {
         return $this->getNextIndexSuffix($name) == 'a' ? 'b' : 'a';
+    }
+
+    /**
+     * Updates the mappings for the model.
+     * @param  Elastica\Index $index
+     * @return void
+     */
+    public function updateMappings($index)
+    {
+        $elasticaType = $index->getType($this->type->getHandle());
+
+        $mapping = new Mapping();
+        $mapping->setType($elasticaType);
+
+        $mapping->setProperties($this->type->getMapping());
+        $mapping->send();
     }
 
     /**
