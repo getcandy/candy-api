@@ -5,8 +5,8 @@ namespace GetCandy\Api\Core\Search\Services;
 use Elastica\ResultSet;
 use League\Fractal\Resource\Collection;
 use Elastica\Exception\InvalidException;
-use GetCandy\Api\Core\Http\Transformers\Fractal\Products\ProductTransformer;
-use GetCandy\Api\Core\Http\Transformers\Fractal\Categories\CategoryTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\Products\ProductTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\Categories\CategoryTransformer;
 
 class SearchService
 {

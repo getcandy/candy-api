@@ -3,32 +3,48 @@
 namespace GetCandy\Api\Core\Search\Providers\Elastic;
 
 use Elastica\Query;
+use Elastica\Client;
 use Elastica\Suggest;
 use Elastica\Query\Term;
 use Elastica\Query\Match;
 use Elastica\Suggest\Phrase;
 use Elastica\Query\BoolQuery;
 use Elastica\Aggregation\Terms;
-use GetCandy\Api\Core\Search\ClientContract;
 use Elastica\Query\Nested as NestedQuery;
+use GetCandy\Api\Core\Search\ClientContract;
 use Elastica\Aggregation\Filter as FilterAggregation;
 use Elastica\Aggregation\Nested as NestedAggregation;
 use Elastica\Suggest\CandidateGenerator\DirectGenerator;
+use GetCandy\Api\Core\Search\Providers\Elastic\Filters\CategoryFilter;
 
-class Search extends AbstractProvider implements ClientContract
+class Search implements ClientContract
 {
+    use InteractsWithIndex;
+
     protected $categories = [];
     protected $channel = null;
     protected $authUser = null;
+
+    /**
+     * @var CategoryFilter
+     */
+    protected $categoryFilter;
+
+    public function __construct(Client $client, CategoryFilter $categoryFilter)
+    {
+        $this->client = $client;
+        $this->categoryFilter = $categoryFilter;
+
+    }
 
     public function with($searchterm)
     {
         return $this->search($searchterm);
     }
 
-    protected function getSearchIndex($indexer)
+    protected function getSearchIndex()
     {
-        return config('search.index_prefix').$this->lang;
+        return $this->type->getIndexName() . '_' . $this->lang;
     }
 
     public function user($user = null)
@@ -54,6 +70,13 @@ class Search extends AbstractProvider implements ClientContract
         return $this;
     }
 
+    public function language($lang = 'en')
+    {
+        $this->lang = $lang;
+
+        return $this;
+    }
+
     protected function setChannelDefault()
     {
         $channel = app('api')->channels()->getDefaultRecord()->handle;
@@ -71,7 +94,7 @@ class Search extends AbstractProvider implements ClientContract
      */
     public function search($keywords, $category = null, $filters = [], $sorts = [], $page = 1, $perPage = 25)
     {
-        if (! $this->indexer) {
+        if (! $this->type) {
             abort(400, 'You need to set an indexer first');
         }
 
@@ -84,8 +107,8 @@ class Search extends AbstractProvider implements ClientContract
 
         $search = new \Elastica\Search($this->client);
         $search
-            ->addIndex($this->indexer->getIndexName())
-            ->addType($this->indexer->type);
+            ->addIndex($this->getSearchIndex())
+            ->addType($this->type->getHandle());
 
         $query = new Query();
         $query->setParam('size', $perPage);
@@ -379,7 +402,7 @@ class Search extends AbstractProvider implements ClientContract
         $multiMatchQuery = new \Elastica\Query\MultiMatch();
         $multiMatchQuery->setType('phrase');
         $multiMatchQuery->setQuery($keywords);
-        $multiMatchQuery->setFields($this->indexer->rankings());
+        $multiMatchQuery->setFields($this->type->rankings());
 
         $disMaxQuery->addQuery($multiMatchQuery);
 
@@ -387,7 +410,7 @@ class Search extends AbstractProvider implements ClientContract
         $multiMatchQuery->setType('best_fields');
         $multiMatchQuery->setQuery($keywords);
 
-        $multiMatchQuery->setFields($this->indexer->rankings());
+        $multiMatchQuery->setFields($this->type->rankings());
 
         $disMaxQuery->addQuery($multiMatchQuery);
 
@@ -403,7 +426,7 @@ class Search extends AbstractProvider implements ClientContract
      */
     protected function getSorts($sorts = [])
     {
-        $mapping = $this->indexer->mapping();
+        $mapping = $this->type->getMapping();
 
         $sortables = [];
 

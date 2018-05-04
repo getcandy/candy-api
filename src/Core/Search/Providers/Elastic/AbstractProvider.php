@@ -4,6 +4,7 @@ namespace GetCandy\Api\Core\Search\Providers\Elastic;
 
 use Elastica\Client;
 use Elastica\Status;
+use GetCandy\Api\Core\Search\Providers\Elastic\Filters\CategoryFilter;
 
 abstract class AbstractProvider
 {
@@ -11,11 +12,6 @@ abstract class AbstractProvider
      * @var string
      */
     protected $type;
-
-    /**
-     * @var CategoryFilter
-     */
-    protected $categoryFilter;
 
     /**
      * @var string
@@ -28,19 +24,7 @@ abstract class AbstractProvider
         $this->categoryFilter = $categoryFilter;
     }
 
-    public function language($lang = 'en')
-    {
-        $this->lang = $lang;
 
-        return $this;
-    }
-
-    public function against($types)
-    {
-        $this->indexer = $this->getIndexer($types);
-
-        return $this;
-    }
 
     /**
      * Gets the client for the model.
@@ -60,15 +44,5 @@ abstract class AbstractProvider
         $elasticaStatus = new Status($this->client());
 
         return $elasticaStatus->indexExists($name) or $elasticaStatus->aliasExists($name);
-    }
-
-    /**
-     * Gets the indexer for a model.
-     * @param  mixed $model
-     * @return mixed
-     */
-    public function getIndexer($model)
-    {
-
     }
 }

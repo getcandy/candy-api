@@ -17,49 +17,13 @@ use GetCandy\Api\Core\Search\Providers\Elastic\Types\CategoryType;
 
 class Indexer
 {
-    /**
-     * @var Client
-     */
-    protected $client;
-
-    protected $type = null;
-
-    protected $suffix = null;
+    use InteractsWithIndex;
 
     protected $batch = 0;
-
-    /**
-     * @var array
-     */
-    protected $types = [
-        Product::class => ProductType::class,
-        Category::class => CategoryType::class,
-    ];
 
     public function __construct(Client $client)
     {
         $this->client = $client;
-    }
-
-    /**
-     * Gets the base index name
-     *
-     * @return string
-     */
-    protected function getBaseIndexName()
-    {
-        return config('getcandy.search.index_prefix') . '_' . $this->type->getHandle();
-    }
-
-    /**
-     * Gets the name of the default index
-     *
-     * @return string
-     */
-    protected function getDefaultIndex()
-    {
-        $defaultLang = app('api')->languages()->getDefaultRecord();
-        return $this->getBaseIndexName() . "_{$defaultLang->lang}";
     }
 
     /**
@@ -191,74 +155,6 @@ class Indexer
     }
 
     /**
-     * Get the suffix of the current index
-     *
-     * @param string $name
-     * @return string
-     */
-    protected function getCurrentIndexSuffix($name)
-    {
-        return $this->getNextIndexSuffix($name) == 'a' ? 'b' : 'a';
-    }
-
-    /**
-     * Get the next suffix
-     *
-     * @param string $name
-     * @return string
-     */
-    protected function getNextIndexSuffix($name)
-    {
-        if ($this->hasIndex($name . '_a')) {
-            return 'b';
-        }
-        return 'a';
-    }
-
-    /**
-     * Determines if the index exists in elastic
-     *
-     * @param string $name
-     * @return boolean
-     */
-    public function hasIndex($name)
-    {
-        $elasticaStatus = new Status($this->client);
-        return $elasticaStatus->indexExists($name) || $elasticaStatus->aliasExists($name);
-    }
-
-    /**
-     * Get the type for a model
-     *
-     * @param Model|string $model
-     * @throws Symfony\Component\HttpKernel\Exception\HttpException;
-     * @return mixed
-     */
-    public function getType($model)
-    {
-        if (is_object($model)) {
-            $model = get_class($model);
-        }
-        if (!$this->hasType($model)) {
-            abort(400, "No type available for {$model}");
-        }
-        return new $this->types[$model];
-    }
-
-    /**
-     * Checks whether an indexer exists.
-     * @param  mixed  $model
-     * @return bool
-     */
-    public function hasType($model)
-    {
-        if (is_object($model)) {
-            $model = get_class($model);
-        }
-        return isset($this->types[$model]);
-    }
-
-    /**
      * Index a single object
      *
      * @param Model $model
@@ -289,7 +185,6 @@ class Indexer
 
         foreach ($indexables as $indexable) {
 
-
             $index =  $this->client->getIndex(
                 $indexable->getIndex()
             );
@@ -301,7 +196,7 @@ class Indexer
                 $indexable->getData()
             );
 
-            $response = $elasticaType->addDocument($document);
+            $elasticaType->addDocument($document);
         }
 
         return true;
@@ -314,21 +209,7 @@ class Indexer
         }
     }
 
-    /**
-     * Updates the mappings for the model.
-     * @param  Elastica\Index $index
-     * @return void
-     */
-    public function updateMappings($index)
-    {
-        $elasticaType = $index->getType($this->type->getHandle());
 
-        $mapping = new Mapping();
-        $mapping->setType($elasticaType);
-
-        $mapping->setProperties($this->type->getMapping());
-        $mapping->send();
-    }
 
     /**
      * Create an index based on the model.

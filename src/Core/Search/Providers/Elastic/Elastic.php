@@ -10,9 +10,9 @@ class Elastic implements SearchContract
 
     protected $indexer;
 
-    public function __construct(Indexer $indexer)
+    public function __construct(Search $client, Indexer $indexer)
     {
-        // $this->client = $client;
+        $this->client = $client;
         $this->indexer = $indexer;
     }
 

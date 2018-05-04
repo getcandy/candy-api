@@ -2,19 +2,18 @@
 
 namespace GetCandy\Api\Core\Products\Listeners;
 
+use Illuminate\Contracts\Queue\ShouldQueue;
 use GetCandy\Api\Core\Search\SearchContract;
 use GetCandy\Api\Core\Products\Events\ProductCreatedEvent;
 
-class AddToIndexListener
+class AddToIndexListener implements ShouldQueue
 {
     /**
-     * Create the event listener.
+     * The name of the queue the job should be sent to.
      *
-     * @return void
+     * @var string|null
      */
-    public function __construct()
-    {
-    }
+    public $queue = 'indexers';
 
     /**
      * Handle the event.
