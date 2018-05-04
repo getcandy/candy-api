@@ -61,7 +61,7 @@ abstract class BaseType
 
                 if (! empty($item['data'])) {
                     foreach ($item['data'] as $field => $value) {
-                        $indexable->set($field, $value);
+                        $indexable->set($field, (count($value) > 1 ? $value : $value[0]));
                     }
                 }
 
@@ -119,11 +119,27 @@ abstract class BaseType
         foreach ($model->attribute_data as $field => $channel) {
             foreach ($channel as $channelName => $locales) {
                 foreach ($locales as $locale => $value) {
-                    $mapping[$model->id][$locale]['data'][$field] = strip_tags($model->attribute($field, $channelName, $locale));
+                    $newValue = strip_tags($model->attribute($field, $channelName, $locale));
+                    if (!$this->mappingValueExists($mapping, $model->id, $locale, $field, $newValue)) {
+                        $mapping[$model->id][$locale]['data'][$field][] = $newValue;
+                    }
                 }
             }
         }
         return $mapping;
+    }
+
+    private function mappingValueExists($mapping, $id, $locale, $field, $value)
+    {
+        if (empty($mapping[$id][$locale]['data'][$field])) {
+            return false;
+        }
+
+        if ($mapping[$id][$locale]['data'][$field][0] == $value) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -152,24 +168,6 @@ abstract class BaseType
         );
 
         return $indexable;
-    }
-
-    /**
-     * Gets the thumbnail for a model.
-     *
-     * @param Model $model
-     * @return string
-     */
-    protected function getThumbnail(Model $model)
-    {
-        $url = null;
-        if ($asset = $model->primaryAsset->first()) {
-            $transform = $asset->first();
-            $path = $transform->location.'/'.$transform->filename;
-            $url = \Storage::disk($transform->disk)->url($path);
-        }
-
-        return $url;
     }
 
     /**
