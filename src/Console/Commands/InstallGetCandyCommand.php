@@ -5,17 +5,17 @@ namespace GetCandy\Api\Console\Commands;
 use Hash;
 use Laravel\Passport\Client;
 use Illuminate\Console\Command;
-use GetCandy\Api\Auth\Models\User;
-use GetCandy\Api\Taxes\Models\Tax;
+use GetCandy\Core\Auth\Models\User;
+use GetCandy\Core\Taxes\Models\Tax;
 use Spatie\Permission\Models\Role;
-use GetCandy\Api\Products\Models\Product;
-use GetCandy\Api\Languages\Models\Language;
-use GetCandy\Api\Categories\Models\Category;
-use GetCandy\Api\Currencies\Models\Currency;
-use GetCandy\Api\Attributes\Models\Attribute;
-use GetCandy\Api\Customers\Models\CustomerGroup;
-use GetCandy\Api\Attributes\Models\AttributeGroup;
-use GetCandy\Api\Associations\Models\AssociationGroup;
+use GetCandy\Core\Products\Models\Product;
+use GetCandy\Core\Languages\Models\Language;
+use GetCandy\Core\Categories\Models\Category;
+use GetCandy\Core\Currencies\Models\Currency;
+use GetCandy\Core\Attributes\Models\Attribute;
+use GetCandy\Core\Customers\Models\CustomerGroup;
+use GetCandy\Core\Attributes\Models\AttributeGroup;
+use GetCandy\Core\Associations\Models\AssociationGroup;
 
 class InstallGetCandyCommand extends Command
 {
