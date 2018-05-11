@@ -1,6 +1,6 @@
 <?php
 
-namespace GetCandy\Exceptions;
+namespace GetCandy\Api\Exceptions;
 
 use Exception;
 use GetCandy\Api\Traits\Fractal;
@@ -93,6 +93,6 @@ class Handler extends ExceptionHandler
             return response()->json(['error' => 'Unauthenticated.'], 401);
         }
 
-        return redirect()->guest(route('login'));
+        return redirect()->guest(route('hub.login'));
     }
 }

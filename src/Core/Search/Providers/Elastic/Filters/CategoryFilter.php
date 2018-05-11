@@ -1,6 +1,6 @@
 <?php
 
-namespace GetCandy\Api\Search\Elastic;
+namespace GetCandy\Api\Core\Search\Providers\Elastic\Filters;
 
 use Elastica\Query\Term;
 use Elastica\Query\Nested;

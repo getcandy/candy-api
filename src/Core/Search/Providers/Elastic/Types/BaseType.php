@@ -1,16 +1,35 @@
 <?php
 
-namespace GetCandy\Api\Search\Elastic\Indexers;
+namespace GetCandy\Api\Core\Search\Providers\Elastic\Types;
 
 use Carbon\Carbon;
-use GetCandy\Api\Search\Indexable;
+use GetCandy\Api\Core\Search\Indexable;
 use Illuminate\Database\Eloquent\Model;
 
-abstract class BaseIndexer
+abstract class BaseType
 {
-    public function getIndexName($lang = 'en')
+    protected $suffix = null;
+
+    public function setSuffix($suffix)
     {
-        return config('getcandy.search.index_prefix').'_'.$this->type.'_'.$lang;
+        $this->suffix = $suffix;
+
+        return $this;
+    }
+
+    public function getSuffix()
+    {
+        return $this->suffix;
+    }
+
+    public function getHandle()
+    {
+        return $this->handle;
+    }
+
+    public function getIndexName()
+    {
+        return config('getcandy.search.index_prefix').'_'.$this->handle;
     }
 
     /**
@@ -24,17 +43,17 @@ abstract class BaseIndexer
         $attributes = $this->attributeMapping($model);
 
         $customerGroups = app('api')->customerGroups->all();
+
         $indexables = collect();
 
         foreach ($attributes as $attribute) {
             foreach ($attribute as $lang => $item) {
                 // Base Stuff
                 $indexable = $this->getIndexable($model);
-                $indexable->setIndex(
-                    $this->getIndexName($lang)
-                );
 
-                $indexable->set('image', $this->getThumbnail($model));
+                $indice = $this->getIndexName()."_{$lang}_{$this->suffix}";
+
+                $indexable->setIndex($indice);
 
                 $indexable->set('departments', $this->getCategories($model));
                 $indexable->set('customer_groups', $this->getCustomerGroups($model));
@@ -44,7 +63,7 @@ abstract class BaseIndexer
 
                 if (! empty($item['data'])) {
                     foreach ($item['data'] as $field => $value) {
-                        $indexable->set($field, $value);
+                        $indexable->set($field, (count($value) > 1 ? $value : $value[0]));
                     }
                 }
 
@@ -99,20 +118,31 @@ abstract class BaseIndexer
     public function attributeMapping(Model $model)
     {
         $mapping = [];
-        $searchable = $this->getIndexableAttributes($model);
-
         foreach ($model->attribute_data as $field => $channel) {
-            if (! $searchable->contains($field)) {
-                continue;
-            }
             foreach ($channel as $channelName => $locales) {
                 foreach ($locales as $locale => $value) {
-                    $mapping[$model->id][$locale]['data'][$field] = strip_tags($model->attribute($field, $channelName, $locale));
+                    $newValue = strip_tags($model->attribute($field, $channelName, $locale));
+                    if (! $this->mappingValueExists($mapping, $model->id, $locale, $field, $newValue)) {
+                        $mapping[$model->id][$locale]['data'][$field][] = $newValue;
+                    }
                 }
             }
         }
 
         return $mapping;
+    }
+
+    private function mappingValueExists($mapping, $id, $locale, $field, $value)
+    {
+        if (empty($mapping[$id][$locale]['data'][$field])) {
+            return false;
+        }
+
+        if ($mapping[$id][$locale]['data'][$field][0] == $value) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -141,24 +171,6 @@ abstract class BaseIndexer
         );
 
         return $indexable;
-    }
-
-    /**
-     * Gets the thumbnail for a model.
-     *
-     * @param Model $model
-     * @return string
-     */
-    protected function getThumbnail(Model $model)
-    {
-        $url = null;
-        if ($asset = $model->primaryAsset->first()) {
-            $transform = $asset->first();
-            $path = $transform->location.'/'.$transform->filename;
-            $url = \Storage::disk($transform->disk)->url($path);
-        }
-
-        return $url;
     }
 
     /**
@@ -212,5 +224,29 @@ abstract class BaseIndexer
                 'name' => $item->name,
             ];
         })->toArray();
+    }
+
+    public function getMapping()
+    {
+        $attributes = app('api')->attributes()->all()->reject(function ($attribute) {
+            return $attribute->system;
+        })->mapWithKeys(function ($attribute) {
+            if (! $attribute->searchable) {
+                return [
+                    $attribute->handle => [
+                        'enabled' => false,
+                    ],
+                ];
+            }
+
+            return [
+                $attribute->handle => [
+                    'type' => 'text',
+                    'analyzer' => 'standard',
+                ],
+            ];
+        })->toArray();
+
+        return array_merge($attributes, $this->mapping);
     }
 }

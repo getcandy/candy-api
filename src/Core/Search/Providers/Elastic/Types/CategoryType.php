@@ -1,12 +1,12 @@
 <?php
 
-namespace GetCandy\Api\Search\Elastic\Indexers;
+namespace GetCandy\Api\Core\Search\Providers\Elastic\Types;
 
 use Elastica\Document;
 use Illuminate\Database\Eloquent\Model;
-use GetCandy\Api\Categories\Models\Category;
+use GetCandy\Api\Core\Categories\Models\Category;
 
-class CategoryIndexer extends BaseIndexer
+class CategoryType extends BaseType
 {
     /**
      * @var Product

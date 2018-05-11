@@ -3,17 +3,19 @@
 namespace GetCandy\Api\Providers;
 
 use Illuminate\Support\Facades\Event;
-use GetCandy\Api\Baskets\Events\BasketStoredEvent;
-use GetCandy\Api\Search\Events\IndexableSavedEvent;
-use GetCandy\Api\Products\Events\ProductViewedEvent;
-use GetCandy\Api\Products\Events\ProductCreatedEvent;
-use GetCandy\Api\Products\Events\ProductUpdatedEvent;
-use GetCandy\Api\Search\Listeners\IndexObjectListener;
-use GetCandy\Api\Orders\Listeners\SyncWithBasketListener;
-use GetCandy\Api\Attributes\Events\AttributableSavedEvent;
-use GetCandy\Api\Attributes\Listeners\SyncAttributablesListener;
-use GetCandy\Api\Discounts\Listeners\AddDiscountToProductListener;
-use GetCandy\Api\Products\Listeners\AddToIndexListener as ProductIndexListener;
+use GetCandy\Api\Core\Baskets\Events\BasketStoredEvent;
+use GetCandy\Api\Core\Search\Events\IndexableSavedEvent;
+use GetCandy\Api\Core\Products\Events\ProductViewedEvent;
+use GetCandy\Api\Core\Products\Events\ProductCreatedEvent;
+use GetCandy\Api\Core\Products\Events\ProductUpdatedEvent;
+use GetCandy\Api\Core\Search\Listeners\IndexObjectListener;
+use GetCandy\Api\Core\Attributes\Events\AttributeSavedEvent;
+use GetCandy\Api\Core\Orders\Listeners\SyncWithBasketListener;
+use GetCandy\Api\Core\Search\Listeners\UpdateMappingsListener;
+use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
+use GetCandy\Api\Core\Attributes\Listeners\SyncAttributablesListener;
+use GetCandy\Api\Core\Discounts\Listeners\AddDiscountToProductListener;
+use GetCandy\Api\Core\Products\Listeners\AddToIndexListener as ProductIndexListener;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -26,6 +28,9 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         AttributableSavedEvent::class => [
             SyncAttributablesListener::class,
+        ],
+        AttributeSavedEvent::class => [
+            UpdateMappingsListener::class,
         ],
         ProductCreatedEvent::class => [
             ProductIndexListener::class,

@@ -15,7 +15,7 @@ class AttributeGroupTransformer extends BaseTransformer
     {
         return [
             'id' => $group->encodedId(),
-            'name' => $this->getLocalisedName($group->name),
+            'name' => $group->name,
             'handle' => $group->handle,
             'position' => (string) $group->position,
         ];

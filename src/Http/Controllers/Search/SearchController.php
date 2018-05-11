@@ -3,9 +3,9 @@
 namespace GetCandy\Api\Http\Controllers\Search;
 
 use Illuminate\Http\Request;
-use GetCandy\Api\Search\SearchContract;
-use GetCandy\Api\Products\Models\Product;
-use GetCandy\Api\Categories\Models\Category;
+use GetCandy\Api\Core\Search\SearchContract;
+use GetCandy\Api\Core\Products\Models\Product;
+use GetCandy\Api\Core\Categories\Models\Category;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Search\SearchRequest;
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace GetCandy\Api\Search\Elastic;
+namespace GetCandy\Api\Core\Search\Providers\Elastic;
 
-use GetCandy\Api\Search\SearchContract;
+use GetCandy\Api\Core\Search\SearchContract;
 
 class Elastic implements SearchContract
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace GetCandy\Api\Search;
+namespace GetCandy\Api\Core\Search;
 
 interface SearchContract
 {

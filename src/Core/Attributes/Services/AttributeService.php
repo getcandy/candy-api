@@ -5,6 +5,7 @@ namespace GetCandy\Api\Core\Attributes\Services;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Exceptions\DuplicateValueException;
 use GetCandy\Api\Core\Attributes\Models\Attribute;
+use GetCandy\Api\Core\Attributes\Events\AttributeSavedEvent;
 
 class AttributeService extends BaseService
 {
@@ -41,6 +42,8 @@ class AttributeService extends BaseService
             'searchable' => ! empty($data['searchable']) ? $data['searchable'] : false,
             'filterable' => ! empty($data['filterable']) ? $data['filterable'] : false,
         ]);
+
+        event(new AttributeSavedEvent);
 
         return $result;
     }
@@ -130,6 +133,8 @@ class AttributeService extends BaseService
 
         $attribute->fill($data);
         $attribute->save();
+
+        event(new AttributeSavedEvent);
 
         return $attribute;
     }

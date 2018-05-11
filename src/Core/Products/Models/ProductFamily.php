@@ -8,7 +8,6 @@ use GetCandy\Api\Core\Traits\HasAttributes;
 class ProductFamily extends BaseModel
 {
     use HasAttributes;
-
     /**
      * The Hashid Channel for encoding the id.
      * @var string
@@ -16,6 +15,11 @@ class ProductFamily extends BaseModel
     protected $hashids = 'product_family';
 
     protected $fillable = ['attribute_data'];
+
+    public function getNameAttribute($value)
+    {
+        return json_decode($value, true);
+    }
 
     public function products()
     {
