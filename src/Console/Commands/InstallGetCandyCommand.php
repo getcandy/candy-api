@@ -314,7 +314,7 @@ class InstallGetCandyCommand extends Command
 
         $this->info('Adding some base settings');
 
-        \GetCandy\Api\Settings\Models\Setting::forceCreate([
+        \GetCandy\Api\Core\Settings\Models\Setting::forceCreate([
             'name' => 'Products',
             'handle' => 'products',
             'content' => [
@@ -323,7 +323,7 @@ class InstallGetCandyCommand extends Command
             ],
         ]);
 
-        \GetCandy\Api\Settings\Models\Setting::forceCreate([
+        \GetCandy\Api\Core\Settings\Models\Setting::forceCreate([
             'name' => 'Categories',
             'handle' => 'categories',
             'content' => [
@@ -404,10 +404,10 @@ class InstallGetCandyCommand extends Command
         ];
 
         foreach ($sources as $source) {
-            \GetCandy\Api\Assets\Models\AssetSource::create($source);
+            \GetCandy\Api\Core\Assets\Models\AssetSource::create($source);
         }
 
-        \GetCandy\Api\Assets\Models\Transform::create([
+        \GetCandy\Api\Core\Assets\Models\Transform::create([
             'name' => 'Thumbnail',
             'handle' => 'thumbnail',
             'mode' => 'fit',
@@ -415,7 +415,7 @@ class InstallGetCandyCommand extends Command
             'height' => 250,
         ]);
 
-        \GetCandy\Api\Assets\Models\Transform::create([
+        \GetCandy\Api\Core\Assets\Models\Transform::create([
             'name' => 'Large Thumbnail',
             'handle' => 'large_thumbnail',
             'mode' => 'fit',
@@ -446,7 +446,7 @@ class InstallGetCandyCommand extends Command
             foreach ($country['translations'] as $code => $data) {
                 $name[$code] = $data['common'];
             }
-            \GetCandy\Api\Countries\Models\Country::create([
+            \GetCandy\Api\Core\Countries\Models\Country::create([
                 'name' => json_encode($name),
                 'iso_a_2' => $country['cca2'],
                 'iso_a_3' => $country['cca3'],
