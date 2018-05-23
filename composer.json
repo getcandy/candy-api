@@ -32,7 +32,8 @@
         "mockery/mockery": "~1.0",
         "phpunit/phpunit": "~7.0",
         "filp/whoops": "~2.0",
-        "orchestra/testbench": "~3.6"
+        "orchestra/testbench": "~3.6",
+        "codedungeon/phpunit-result-printer": "^0.16.1"
     },
     "autoload": {
         "psr-4": {
@@ -53,10 +54,10 @@
                 "GetCandy\\Api\\Providers\\PluginServiceProvider"
             ],
             "aliases": {
-                "CurrencyConverter" : "GetCandy\\Api\\Currencies\\Facades\\CurrencyConverter",
-                "TaxCalculator" : "Facades\\GetCandy\\Api\\Taxes\\TaxCalculator",
-                "PriceCalculator" : "Facades\\GetCandy\\Api\\Pricing\\PriceCalculator",
-                "GetCandy" : "Facades\\GetCandy\\Api\\Helpers\\GetCandy"
+                "CurrencyConverter" : "GetCandy\\Api\\Core\\Currencies\\Facades\\CurrencyConverter",
+                "TaxCalculator" : "Facades\\GetCandy\\Api\\Core\\Taxes\\TaxCalculator",
+                "PriceCalculator" : "Facades\\GetCandy\\Api\\Core\\Pricing\\PriceCalculator",
+                "GetCandy" : "Facades\\GetCandy\\Api\\Core\\Helpers\\GetCandy"
             }
         }
     }

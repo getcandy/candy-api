@@ -17,7 +17,6 @@ class Order extends BaseModel
     ];
 
     protected $required = [
-        'total',
         'currency',
         'billing_firstname',
         'billing_lastname',
@@ -59,16 +58,40 @@ class Order extends BaseModel
         return $query;
     }
 
-    public function getChargedAmountAttribute()
-    {
-        $total = 0;
-        $transactions = $this->transactions()->charged()->pluck('amount');
-        foreach ($transactions as $amount) {
-            $total += $amount;
-        }
+    // /**
+    //  * Gets the order total with tax.
+    //  *
+    //  * @return mixed
+    //  */
+    // public function getTotalAttribute()
+    // {
+    //     return $this->lines->sum(function ($line) {
+    //         return ($line->line_amount - $line->discount) + $line->tax;
+    //     });
+    // }
 
-        return $total;
-    }
+
+    // public function getShippingTotalAttribute()
+    // {
+    //     return $this->lines->where('shipping', true)->sum(function ($line) {
+    //         return $line->line_amount - $line->discount;
+    //     });
+    // }
+
+    // public function getDiscountAttribute()
+    // {
+    //     return $this->lines->sum('discount');
+    // }
+
+    // public function getTaxAttribute()
+    // {
+    //     return $this->lines->sum('tax');
+    // }
+
+    // public function getShippingAttribute()
+    // {
+    //     return $this->lines->where('shipping', '=', 1)->first();
+    // }
 
     /**
      * Gets the shipping details.

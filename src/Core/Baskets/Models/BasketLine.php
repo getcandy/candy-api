@@ -17,12 +17,16 @@ class BasketLine extends BaseModel
         if ($tieredPrice) {
             return $this->quantity * $tieredPrice->amount;
         }
-
         return $this->quantity * $this->variant->total_price;
     }
 
     public function getCurrentTaxAttribute()
     {
+        $tieredPrice = app('api')->productVariants()->getTieredPrice($this->variant, $this->quantity, \Auth::user());
+        if ($tieredPrice) {
+            return $this->quantity * $tieredPrice->tax;
+        }
+
         return $this->quantity * $this->variant->tax_total;
     }
 

@@ -14,8 +14,7 @@ class AlterProductFamilies extends Migration
     public function up()
     {
         Schema::table('product_families', function (Blueprint $table) {
-            $table->dropColumn('attribute_data');
-            $table->json('name');
+            $table->json('name')->nullable();
         });
     }
 
@@ -28,7 +27,6 @@ class AlterProductFamilies extends Migration
     {
         Schema::table('transactions', function (Blueprint $table) {
             $table->dropColumn('name');
-            $table->json('attribute_data');
         });
     }
 }

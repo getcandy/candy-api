@@ -187,11 +187,16 @@ class InstallGetCandyCommand extends Command
 
         $this->info('Setting that up for you now...');
 
-        app('api')->productFamilies()->create([
+        // Get all our attributes and assign to the product family.
+        $attributes = Attribute::all();
+
+        $family = app('api')->productFamilies()->create([
             'name' => [
                 'en' => $productFamily,
             ],
         ]);
+
+        $family->attributes()->attach($attributes);
     }
 
     /**

@@ -53,27 +53,12 @@ class ElasticIndexCommand extends Command
 
             $model = new $indexable;
 
-            if (! $search->indexer()->hasIndexer($model)) {
+            if (! $search->indexer()->hasType($model)) {
                 $this->error("No Indexer found for {$model}");
             }
 
-            $indexer = $search->indexer()->getIndexer($model);
+            $search->indexer()->indexAll($model);
 
-            if ($this->confirm('Do you want to reset the index?')) {
-                $search->indexer()->reset($indexer->getIndexName('en'));
-                $search->indexer()->reset($indexer->getIndexName('fr'));
-            }
-
-            $items = $model->withoutGlobalScopes()->get();
-
-            $bar = $this->output->createProgressBar($items->count());
-
-            foreach ($items as $model) {
-                app(SearchContract::class)->indexer()->indexObject($model);
-                $bar->advance();
-            }
-
-            $bar->finish();
             $this->info('');
         }
 

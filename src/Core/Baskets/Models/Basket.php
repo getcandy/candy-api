@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Core\Baskets\Models;
 
-use PriceCalculator;
 use GetCandy\Api\Core\Scaffold\BaseModel;
 use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Traits\HasCompletion;
@@ -35,7 +34,7 @@ class Basket extends BaseModel
 
     public function getExVatAttribute()
     {
-        return round($this->total - $this->tax, 2);
+        return $this->total - $this->tax;
     }
 
     /**
@@ -58,28 +57,10 @@ class Basket extends BaseModel
         return $this->hasOne(Order::class)->withoutGlobalScope('open');
     }
 
-    // protected function getTotalWithoutDiscountAttribute()
-    // {
-    //     // $subTotal = 0;
-    //     // foreach ($this->lines as $line) {
-    //     //     if ($line->variant->tax) {
-    //     //         $tieredPrice = app('api')->productVariants()->getTieredPrice($line->variant, $line->quantity, \Auth::user());
-    //     //         if ($tieredPrice) {
-    //     //             $taxTotal += $tieredPrice->tax;
-    //     //         } else {
-    //     //             $taxTotal += PriceCalculator::get($line->current_total, $line->variant->tax)->amount;
-    //     //         }
-    //     //     }
-    //     // }
-    //     // return $total;
-    // }
-
-    // public function getTaxTotalAttribute()
-    // {
-
-    //     dd($taxTotal);
-    //     return $taxTotal;
-    // }
+    public function refresh()
+    {
+        return app('api')->baskets()->setTotals($this);
+    }
 
     public function getWeightAttribute()
     {

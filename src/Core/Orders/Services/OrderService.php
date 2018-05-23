@@ -5,7 +5,7 @@ namespace GetCandy\Api\Core\Orders\Services;
 use DB;
 use PDF;
 use Carbon\Carbon;
-use TaxCalculator;
+use PriceCalculator;
 use CurrencyConverter;
 use GetCandy\Api\Core\Auth\Models\User;
 use GetCandy\Api\Core\Orders\Models\Order;
@@ -36,7 +36,7 @@ class OrderService extends BaseService
      */
     public function store($basketId, $user = null)
     {
-        // // Get the basket
+        // Get the basket
         $basket = app('api')->baskets()->getByHashedId($basketId);
 
         app('api')->baskets()->setTotals($basket);
@@ -46,6 +46,13 @@ class OrderService extends BaseService
         } else {
             $order = new Order;
             $order->basket()->associate($basket);
+
+            // Get the default order status
+            $settings = app('api')->settings()->get('orders');
+
+            if ($settings) {
+                $order->status = $settings->content['default_status'];
+            }
         }
 
         if ($user) {
@@ -56,19 +63,9 @@ class OrderService extends BaseService
         }
 
         $order->conversion = CurrencyConverter::rate();
-
-        $order->total = $basket->total;
-        $order->vat = $basket->tax;
-
-        if (! $order->shipping_total) {
-            $order->shipping_total = 0;
-            $order->shipping_method = '';
-        } else {
-            $shippingTax = TaxCalculator::amount($order->shipping_total);
-            $order->vat += $shippingTax;
-            $order->total += $order->shipping_total + $shippingTax;
-        }
-
+        $order->order_total = $basket->total;
+        $order->sub_total = $basket->subTotal;
+        $order->tax_total = $basket->tax;
         $order->currency = $basket->currency;
 
         $order->save();
@@ -83,6 +80,56 @@ class OrderService extends BaseService
         $order->lines()->createMany(
             $this->mapOrderLines($basket)
         );
+
+        $order->discount_total = $order->lines()->sum('discount_total');
+
+        return $order;
+    }
+
+    /**
+     * Adds a shipping line to an order.
+     *
+     * @param string $orderId
+     * @param string $shippingPriceId
+     *
+     * @return Order
+     */
+    public function addShippingLine($orderId, $shippingPriceId)
+    {
+        $order = $this->getByHashedId($orderId);
+        $price = app('api')->shippingPrices()->getByHashedId($shippingPriceId);
+
+        // TODO Need a better way to do this basket totals thing
+        $basket = $order->basket;
+
+        app('api')->baskets()->setTotals($basket);
+
+        $tax = app('api')->taxes()->getDefaultRecord();
+
+        $rate = PriceCalculator::get(
+            $price->value,
+            $tax->percentage
+        );
+
+        // Remove any shipping lines already on there.
+        $existing = $order->lines()->where('shipping', '=', true)->first();
+
+        if ($existing) {
+            $existing->delete();
+        }
+
+        // Does the basket have a free shipping discount?
+        $discounts = $order->basket->discounts;
+        $order->lines()->create([
+            'is_shipping' => true,
+            'quantity' => 1,
+            'discount_total' => $basket->freeShipping ? $rate->amount + $rate->tax : 0,
+            'description' => $price->method->attribute('name'),
+            'line_total' => $rate->amount,
+            'unit_price' => $rate->amount,
+            'tax_total' => $rate->tax,
+            'tax_rate' => $tax->percentage
+        ]);
 
         return $order;
     }
@@ -139,9 +186,6 @@ class OrderService extends BaseService
     {
         $order = $this->getByHashedId($orderId);
 
-        $shippingTotal = $order->shipping_total;
-        $shippingMethod = $order->shipping_method;
-
         $refreshedOrder = $this->store(
             $order->basket->encodedId()
         );
@@ -159,8 +203,6 @@ class OrderService extends BaseService
      */
     public function setBilling($id, array $data, $user = null)
     {
-        $this->refresh($id);
-
         return $this->addAddress(
             $id,
             $data,
@@ -279,21 +321,21 @@ class OrderService extends BaseService
     protected function getNextInvoiceReference($year = null, $month = null)
     {
         if (! $year) {
-            $year = Carbon::now()->year;
+            $year = (string) Carbon::now()->year;
         }
 
         if (! $month) {
             $month = Carbon::now()->format('m');
         }
 
-        $order = DB::table('orders')->select(
-            DB::RAW('MAX(reference) as reference')
-        )->whereRaw('YEAR(placed_at) = '.$year)
-            ->whereRaw('MONTH(placed_at) = '.$month)
-            ->whereRaw("reference REGEXP '^([0-9]*-[0-9]*-[0-9]*)'")
+        $order = DB::table('orders')->
+            select(
+                DB::RAW('MAX(reference) as reference, id')
+            )->whereYear('placed_at', '=', $year)
+            ->whereMonth('placed_at', '=', $month)
             ->first();
 
-        if (! $order->reference) {
+        if (! $order || ! $order->reference) {
             $increment = 1;
         } else {
             $segments = explode('-', $order->reference);
@@ -347,16 +389,19 @@ class OrderService extends BaseService
         foreach ($basket->lines as $line) {
             $tax = $line->current_tax;
             $currentTotal = $line->current_total;
-            $withoutTax = $currentTotal - $tax;
 
             array_push($lines, [
                 'sku' => $line->variant->sku,
-                'tax' => $line->current_tax,
-                'tax_rate' => -($withoutTax - $currentTotal) / $withoutTax * 100,
-                'discount' => 0.00,
-                'total' => $line->current_total,
+                'tax_total' => PriceCalculator::get(
+                    $currentTotal - $line->discount,
+                    $line->variant->tax
+                )->tax,
+                'tax_rate' => $line->variant->tax->percentage,
+                'discount_total' => $line->discount,
+                'line_total' => $currentTotal,
+                'unit_price' => $currentTotal / $line->quantity,
                 'quantity' => $line->quantity,
-                'product' => $line->variant->product->attribute('name'),
+                'description' => $line->variant->product->attribute('name'),
                 'variant' => $line->variant->name,
             ]);
         }
@@ -383,7 +428,7 @@ class OrderService extends BaseService
                     'name' => $discount->attribute('name'),
                     'description' => $discount->attribute('description'),
                     'type' => $reward->type,
-                    'amount' => $reward->value,
+                    'value' => $reward->value,
                 ]);
             }
         }
@@ -464,7 +509,7 @@ class OrderService extends BaseService
 
         $order->save();
 
-        event(new OrderProcessedEvent($order));
+        // event(new OrderProcessedEvent($order));
 
         return $order;
     }
@@ -511,39 +556,6 @@ class OrderService extends BaseService
     public function getPending()
     {
         return $this->model->withoutGlobalScopes()->where('status', '=', 'payment-processing')->get();
-    }
-
-    /**
-     * Set the shipping cost and method on an order.
-     *
-     * @param string $orderId
-     * @param string $priceId
-     *
-     * @return Order
-     */
-    public function setShippingCost($orderId, $priceId)
-    {
-        $order = $this->getByHashedId($orderId);
-        $price = app('api')->shippingPrices()->getByHashedId($priceId);
-
-        // Take off any previous shipping costs
-        if ($order->shipping_total) {
-            $shippingTax = TaxCalculator::amount($order->shipping_total);
-            $order->vat -= $shippingTax;
-            $order->total -= $order->shipping_total + $shippingTax;
-        }
-
-        $order->shipping_total = round($price->rate, 2);
-        $order->shipping_method = $price->method->attribute('name');
-
-        $shippingTax = TaxCalculator::amount($order->shipping_total);
-
-        $order->vat += $shippingTax;
-        $order->total += $order->shipping_total + $shippingTax;
-
-        $order->save();
-
-        return $order;
     }
 
     /**

@@ -14,11 +14,13 @@ class SyncAttributablesListener
      */
     public function handle(AttributableSavedEvent $event)
     {
+
         $mapped = [];
         foreach ($event->model->attribute_data as $attribute => $data) {
             $mapped[] = $attribute;
         }
         $attributes = app('api')->attributes()->getByHandles($mapped);
+
         $event->model->attributes()->sync($attributes->pluck('id')->toArray());
     }
 }

@@ -21,11 +21,17 @@ class PriceCalculator
     public function get($price, $tax = 0)
     {
         $converted = CurrencyConverter::convert($price);
-        $taxamount = TaxCalculator::set($tax)->amount($converted);
+
+
+        if ($tax == 'default') {
+            $taxamount = TaxCalculator::amount($converted);
+        } else {
+            $taxamount = TaxCalculator::set($tax)->amount($converted);
+        }
 
         $this->pricing = [
-            'amount' => round($converted + $taxamount, 2),
-            'tax' => $taxamount,
+            'amount' => (int) round($converted),
+            'tax' => (int) round($taxamount),
         ];
 
         return $this;

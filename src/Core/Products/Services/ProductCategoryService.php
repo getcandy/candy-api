@@ -16,8 +16,13 @@ class ProductCategoryService extends BaseService
     public function update($product, array $data)
     {
         $product = $this->getByHashedId($product);
-        $category_ids = app('api')->categories()->getDecodedIds($data['categories']);
-        $product->categories()->sync($category_ids);
+        $categoryIds = app('api')->categories()->getDecodedIds($data['categories']);
+
+        $categories = collect($categoryIds)->mapWithKeys(function ($id, $index) {
+            return [$id => ['position' => $index + 1]];
+        });
+
+        $product->categories()->sync($categories);
         event(new IndexableSavedEvent($product));
 
         return $product->categories;

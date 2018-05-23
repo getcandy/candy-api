@@ -13,10 +13,14 @@ class TaxCalculator
 
     protected $percent = 0;
 
-    public function setTax($type)
+    public function setTax($type = null)
     {
-        $this->set($type);
-        $this->taxable = true;
+        if ($type) {
+            $this->set($type);
+            $this->taxable = true;
+        } else {
+            $this->taxable = false;
+        }
 
         return $this;
     }
@@ -64,7 +68,6 @@ class TaxCalculator
         if (! $this->taxable) {
             return 0;
         }
-
         $exVat = $price * (($this->percent + 100) / 100);
         $amount = $exVat - $price;
 

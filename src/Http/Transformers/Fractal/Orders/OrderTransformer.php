@@ -11,29 +11,31 @@ use GetCandy\Api\Http\Transformers\Fractal\Payments\TransactionTransformer;
 class OrderTransformer extends BaseTransformer
 {
     protected $availableIncludes = [
-        'lines', 'user', 'basket', 'transactions', 'discounts',
+        'lines', 'user', 'basket', 'transactions', 'discounts', 'shipping',
     ];
 
     public function transform(Order $order)
     {
         $data = [
             'id' => $order->encodedId(),
-            'sub_total' => round($order->total + $order->shipping_total - $order->vat, 2),
-            'total' => round($order->total, 2),
-            'vat' => round($order->vat, 2),
+            'sub_total' => $order->sub_total,
+            'delivery_total' => $order->delivery_total,
+            'discount_total' => $order->discount_total,
+            'tax_total' => $order->tax_total,
+            'order_total' => $order->order_total,
             'reference' => $order->ref,
             'invoice_reference' => $order->invoice_reference,
             'vat_no' => $order->vat_no,
             'tracking_no' => $order->tracking_no,
             'dispatched_at' => $order->dispatched_at,
             'currency' => $order->currency,
-            'shipping_total' => $order->shipping_total,
-            'shipping_method' => $order->shipping_method,
             'customer_name' => $order->customer_name,
-            'contact_phone' => $order->contact_phone,
-            'contact_email' => $order->contact_email,
-            'billing' => $order->billing_details,
-            'shipping' => $order->shipping_details,
+            'contact_details' => [
+                'phone' => $order->contact_phone,
+                'email' => $order->contact_email,
+            ],
+            'billing_details' => $order->billing_details,
+            'shipping_details' => $order->shipping_details,
             'status' => $order->status,
             'created_at' => $order->created_at,
             'updated_at' => $order->updated_at,
@@ -42,6 +44,15 @@ class OrderTransformer extends BaseTransformer
         ];
 
         return $data;
+    }
+
+    protected function includeShipping(Order $order)
+    {
+        if (! $order->shipping) {
+            return $this->null();
+        }
+
+        return $this->item($order->shipping, new OrderLineTransformer);
     }
 
     protected function includeLines(Order $order)

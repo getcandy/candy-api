@@ -48,7 +48,6 @@ class CategoryService extends BaseService
 
         $category->save();
 
-        event(new AttributableSavedEvent($category));
 
         if (! empty($data['customer_groups'])) {
             $groupData = $this->mapCustomerGroupData($data['customer_groups']['data']);
@@ -71,6 +70,7 @@ class CategoryService extends BaseService
             $parentNode->prependNode($category);
         }
 
+        event(new AttributableSavedEvent($category));
         event(new IndexableSavedEvent($category));
 
         return $category;

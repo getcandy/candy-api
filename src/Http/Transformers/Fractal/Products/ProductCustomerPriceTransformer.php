@@ -18,7 +18,7 @@ class ProductCustomerPriceTransformer extends BaseTransformer
         return [
             'id' => $model->encodedId(),
             'price' => $model->price,
-            'compare_at_price' => $model->compare_at_price0,
+            'compare_at_price' => $model->compare_at_price,
         ];
     }
 

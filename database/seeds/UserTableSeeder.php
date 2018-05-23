@@ -5,6 +5,7 @@ namespace Seeds;
 use Illuminate\Database\Seeder;
 use GetCandy\Api\Core\Auth\Models\User;
 use GetCandy\Api\Core\Users\Models\UserDetail;
+use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 
 class UserTableSeeder extends Seeder
 {
@@ -46,7 +47,11 @@ class UserTableSeeder extends Seeder
             'lastname' => 'Rainer',
         ]);
 
+        $group = CustomerGroup::find(2);
+
+        $customer->groups()->attach($group->id);
         $customer->language()->associate($language);
+
         $customer->save();
     }
 }

@@ -137,7 +137,7 @@ class Product extends BaseModel
 
     public function categories()
     {
-        return $this->belongsToMany(Category::class, 'product_categories')->withPivot('position');
+        return $this->belongsToMany(Category::class, 'product_categories');
     }
 
     public function associations()

@@ -12,6 +12,7 @@ use GetCandy\Api\Http\Requests\Orders\StoreAddressRequest;
 use GetCandy\Api\Orders\Exceptions\IncompleteOrderException;
 use GetCandy\Api\Http\Transformers\Fractal\Orders\OrderTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Documents\PdfTransformer;
+use GetCandy\Api\Core\Orders\Exceptions\OrderAlreadyProcessedException;
 use GetCandy\Api\Http\Transformers\Fractal\Shipping\ShippingPriceTransformer;
 
 class OrderController extends BaseController
@@ -81,6 +82,8 @@ class OrderController extends BaseController
             return $this->respondWithItem($order, new OrderTransformer);
         } catch (IncompleteOrderException $e) {
             return $this->errorForbidden('The order is missing billing information');
+        } catch (OrderAlreadyProcessedException $e) {
+            return $this->errorUnprocessable('This order has already been processed');
         }
     }
 
@@ -208,7 +211,7 @@ class OrderController extends BaseController
     public function shippingCost($id, Request $request)
     {
         try {
-            $order = app('api')->orders()->setShippingCost($id, $request->price_id);
+            $order = app('api')->orders()->addShippingLine($id, $request->price_id);
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }

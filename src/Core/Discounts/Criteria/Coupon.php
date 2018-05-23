@@ -45,6 +45,6 @@ class Coupon implements DiscountCriteriaContract
             return $item->pivot->coupon;
         });
 
-        return ! $coupons->contains($this->value);
+        return $coupons->contains($this->value);
     }
 }

@@ -14,7 +14,7 @@ return [
     /*
      * Which default customer group to use
      */
-    'default_customer_group' => 'retail',
+    'default_customer_group' => 'guest',
 
     /*
     |--------------------------------------------------------------------------
@@ -25,10 +25,10 @@ return [
     |
      */
     'discounters' => [
-        'coupon' => GetCandy\Api\Discounts\Criteria\Coupon::class,
-        'customer-groups' => GetCandy\Api\Discounts\Criteria\CustomerGroup::class,
-        'products' => GetCandy\Api\Discounts\Criteria\Products::class,
-        'users' => GetCandy\Api\Discounts\Criteria\Users::class,
+        'coupon' => GetCandy\Api\Core\Discounts\Criteria\Coupon::class,
+        'customer-groups' => GetCandy\Api\Core\Discounts\Criteria\CustomerGroup::class,
+        'products' => GetCandy\Api\Core\Discounts\Criteria\Products::class,
+        'users' => GetCandy\Api\Core\Discounts\Criteria\Users::class,
     ],
 
     /*
@@ -43,8 +43,8 @@ return [
         'gateway' => 'braintree',
         'environment' => env('PAYMENT_ENV'),
         'providers' => [
-            'offline' => GetCandy\Api\Payments\Providers\OnAccount::class,
-            'braintree' => GetCandy\Api\Payments\Providers\Braintree::class,
+            'offline' => GetCandy\Api\Core\Payments\Providers\OnAccount::class,
+            'braintree' => GetCandy\Api\Core\Payments\Providers\Braintree::class,
         ],
     ],
 

@@ -176,6 +176,7 @@ class ProductVariantService extends BaseService
             }
         }
 
+
         $price = PriceCalculator::get($price, $tax);
 
         return $price;
@@ -243,6 +244,9 @@ class ProductVariantService extends BaseService
         if (isset($data['group_pricing']) && ! $data['group_pricing']) {
             $variant->customerPricing()->delete();
         }
+
+        $variant->group_pricing = !empty($data['group_pricing']);
+
         if (isset($data['inventory'])) {
             $variant->stock = $data['inventory'];
         }
@@ -282,7 +286,6 @@ class ProductVariantService extends BaseService
             } else {
                 $price['tax_id'] = null;
             }
-
             $variant->customerPricing()->create($price);
         }
     }
