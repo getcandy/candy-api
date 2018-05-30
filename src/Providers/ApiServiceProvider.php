@@ -29,6 +29,7 @@ class ApiServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->loadTranslations();
         $this->mapValidators();
         $this->publishConfig();
         $this->mapValidators();
@@ -38,6 +39,11 @@ class ApiServiceProvider extends ServiceProvider
         $this->mapRoutes();
         $this->mapCommands();
         $this->loadMigrations();
+    }
+
+    protected function loadTranslations()
+    {
+        $this->loadTranslationsFrom(__DIR__ . '/../../resources/lang', 'getcandy');
     }
 
     protected function publishConfig()
@@ -95,7 +101,7 @@ class ApiServiceProvider extends ServiceProvider
         Validator::extend('asset_url', 'GetCandy\Api\Http\Validators\AssetValidator@validAssetUrl');
         Validator::extend('valid_discount', 'GetCandy\Api\Core\Discounts\Validators\DiscountValidator@validate');
         Validator::extend('unique_lines', 'GetCandy\Api\Core\Baskets\Validators\BasketValidator@uniqueLines');
-        Validator::extend('in_stock', 'GetCandy\Api\Core\Baskets\Validators\BasketValidator@inStock');
+        Validator::extend('in_stock', 'GetCandy\Api\Core\Baskets\Validators\BasketValidator@inStock', trans('getcandy::validation.in_stock'));
         Validator::extend('valid_payment_token', 'GetCandy\Api\Core\Payments\Validators\PaymentTokenValidator@validate');
         Validator::extend('valid_order', 'GetCandy\Api\Core\Orders\Validators\OrderIsActiveValidator@validate');
     }

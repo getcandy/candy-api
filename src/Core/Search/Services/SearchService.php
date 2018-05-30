@@ -50,8 +50,8 @@ class SearchService
         $resource->setMeta([
             'sort' => $this->getSort($results),
             'category_page' => (bool) $category,
-            'pagination' => $this->getPagination($results, $page),
-            'aggregation' => $this->getSearchAggregator($results),
+            'pagination' => ['data' => $this->getPagination($results, $page)],
+            // 'aggregation' => ['data' => $this->getSearchAggregator($results)],
             'suggestions' => $this->getSuggestions($results),
         ]);
 

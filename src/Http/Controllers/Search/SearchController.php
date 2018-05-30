@@ -57,8 +57,6 @@ class SearchController extends BaseController
             return $this->errorInternalError($e->getMessage());
         }
 
-        // clock()->startEvent('results', 'Getting Search Results');
-
         $results = app('api')->search()->getResults(
             $results,
             $request->type,

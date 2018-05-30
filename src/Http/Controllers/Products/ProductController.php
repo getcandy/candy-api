@@ -44,13 +44,13 @@ class ProductController extends BaseController
             $product = app('api')->products()->getByHashedId($id);
         } catch (ModelNotFoundException $e) {
             // If it cannot be found by ID, try get the variant by SKU
-            $variant = app('api')->productVariants()->getBySku($id);
-
+            // $variant = app('api')->productVariants()->getBySku($id);
+            return $this->errorNotFound();
             if (! $variant) {
                 return $this->errorNotFound();
             }
 
-            $product = $variant->product;
+            // $product = $variant->product;
         }
 
         return $this->respondWithItem($product, new ProductTransformer);

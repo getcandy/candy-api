@@ -42,9 +42,8 @@ class ProductTransformer extends BaseTransformer
      */
     public function transform(Product $product)
     {
-        // clock()->startEvent('apply_' . $product->id . 'discounts', 'Applying Discounts');
+        // clock()->startEvent('transforming_' . $product->id, 'Transforming Product');
         $this->applyDiscounts($product);
-        // clock()->endEvent('apply_' . $product->id . 'discounts');
 
         $response = [
             'id' => $product->encodedId(),
@@ -60,6 +59,8 @@ class ProductTransformer extends BaseTransformer
             $response['type'] = $product->pivot->type;
             $response['position'] = $product->pivot->position;
         }
+
+        // clock()->endEvent('transforming_' . $product->id);
 
         return $response;
     }

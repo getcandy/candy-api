@@ -17,7 +17,15 @@ class CategoryTransformer extends BaseTransformer
     protected $attributeGroups;
 
     protected $availableIncludes = [
-        'attribute_groups', 'assets', 'channels', 'customer_groups', 'products', 'routes',
+        'attribute_groups',
+        'assets',
+        'channels',
+        'customer_groups',
+        'products',
+        'routes',
+        'parent',
+        'descendants',
+        'siblings'
     ];
 
     public function transform(Category $category)
@@ -26,11 +34,10 @@ class CategoryTransformer extends BaseTransformer
             'id' => $category->encodedId(),
             'sort' => $category->sort,
             'attribute_data' => $category->attribute_data,
-            'depth' => $category->depth ?: 0,
+            'depth' => $category->depth,
             'products_count' => $category->products()->count(),
             'thumbnail' => $this->getThumbnail($category),
-            'parent_id' => app('api')->categories()->getEncodedId($category->parent_id),
-            'descendants' => $category->descendants,
+            'parent_id' => app('api')->categories()->getEncodedId($category->parent_id)
         ];
 
         if (! is_null($category->aggregate_selected)) {
@@ -38,6 +45,24 @@ class CategoryTransformer extends BaseTransformer
         }
 
         return $data;
+    }
+
+    public function includeSiblings(Category $category)
+    {
+        return $this->collection($category->getSiblings(), $this);
+    }
+
+    public function includeDescendants(Category $category)
+    {
+        return $this->collection($category->descendants()->where('parent_id', '=', $category->id)->get(), $this);
+    }
+
+    public function includeParent(Category $category)
+    {
+        if (!$category->parent) {
+            return null;
+        }
+        return $this->item($category->parent, $this);
     }
 
     public function includeChildren(Category $category)
