@@ -6,8 +6,8 @@ use Storage;
 use Image as InterventionImage;
 use Symfony\Component\Finder\SplFileInfo;
 use GetCandy\Api\Core\Assets\Jobs\GenerateTransforms;
-use GetCandy\Api\Core\Assets\Contracts\AssetDriverContract;
 use Intervention\Image\Exception\NotReadableException;
+use GetCandy\Api\Core\Assets\Contracts\AssetDriverContract;
 
 class Image extends BaseUploadDriver implements AssetDriverContract
 {
@@ -44,8 +44,8 @@ class Image extends BaseUploadDriver implements AssetDriverContract
         $model->assets()->save($asset);
 
         if ($data['file'] instanceof SplFileInfo) {
-            Storage::disk($source->disk)->put($asset->location . '/' . $asset->filename, $data['file']->getContents());
-            // dd();
+            Storage::disk($source->disk)->put($asset->location.'/'.$asset->filename, $data['file']->getContents());
+        // dd();
         } else {
             $data['file']->storeAs($asset->location, $asset->filename, $source->disk);
         }

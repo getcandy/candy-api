@@ -35,18 +35,18 @@ class ModifyOrdersAndLines extends Migration
      */
     protected function addNewColumns()
     {
-        /**
+        /*
          * Orders
          */
-         Schema::table('orders', function (Blueprint $table) {
+        Schema::table('orders', function (Blueprint $table) {
             $table->integer('sub_total')->unsigned()->default(0)->after('user_id');
             $table->integer('delivery_total')->unsigned()->default(0)->after('sub_total');
             $table->integer('discount_total')->unsigned()->default(0)->after('delivery_total');
             $table->integer('tax_total')->unsigned()->default(0)->after('discount_total');
             $table->integer('order_total')->unsigned()->default(0)->after('tax_total');
-         });
+        });
 
-        /**
+        /*
          * Order lines
          */
         Schema::table('order_lines', function (Blueprint $table) {
@@ -78,9 +78,7 @@ class ModifyOrdersAndLines extends Migration
 
         $i = 0;
 
-
         foreach ($orders as $order) {
-
             $discount = $order->discounts->first();
 
             $taxrate = Tax::where('default', '=', true)->first();
@@ -143,12 +141,13 @@ class ModifyOrdersAndLines extends Migration
     protected function getProductPrices($sku)
     {
         $product = ProductVariant::where('sku', '=', $sku)->with(['tiers', 'customerPricing'])->first();
-        if (!$product) {
+        if (! $product) {
             return false;
         }
         $prices = [$product->price];
         $prices = array_merge($prices, $product->customerPricing->pluck('price')->toArray());
         $prices = array_merge($prices, $product->tiers->pluck('price')->toArray());
+
         return $prices;
     }
 
@@ -233,10 +232,10 @@ class ModifyOrdersAndLines extends Migration
      */
     public function down()
     {
-
     }
 
-    protected function cleanup() {
+    protected function cleanup()
+    {
         Schema::table('orders', function (Blueprint $table) {
             $table->dropColumn('total');
         });

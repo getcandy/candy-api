@@ -26,7 +26,7 @@ abstract class BaseUploadDriver
             $mimeType = 'image';
             $extension = $file->getExtension();
             $original_filename = $file->getFilename();
-            $filename = $data['filename'] . '.' . $extension ?? $original_filename;
+            $filename = $data['filename'].'.'.$extension ?? $original_filename;
             $subType = null;
         } else {
             $mtFragments = explode('/', $file->getClientMimeType());
@@ -37,7 +37,7 @@ abstract class BaseUploadDriver
             $original_filename = $file->getClientOriginalName();
             $filename = $file->hashName();
 
-            if (!$extension) {
+            if (! $extension) {
                 $extension = pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
             }
         }

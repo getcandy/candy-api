@@ -22,7 +22,6 @@ class PriceCalculator
     {
         $converted = CurrencyConverter::convert($price);
 
-
         if ($tax == 'default') {
             $taxamount = TaxCalculator::amount($converted);
         } else {

@@ -70,7 +70,6 @@ class Order extends BaseModel
     //     });
     // }
 
-
     // public function getShippingTotalAttribute()
     // {
     //     return $this->lines->where('shipping', true)->sum(function ($line) {

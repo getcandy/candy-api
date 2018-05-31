@@ -43,7 +43,7 @@ class ApiServiceProvider extends ServiceProvider
 
     protected function loadTranslations()
     {
-        $this->loadTranslationsFrom(__DIR__ . '/../../resources/lang', 'getcandy');
+        $this->loadTranslationsFrom(__DIR__.'/../../resources/lang', 'getcandy');
     }
 
     protected function publishConfig()

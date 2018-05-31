@@ -25,7 +25,7 @@ class CategoryTransformer extends BaseTransformer
         'routes',
         'parent',
         'descendants',
-        'siblings'
+        'siblings',
     ];
 
     public function transform(Category $category)
@@ -37,7 +37,7 @@ class CategoryTransformer extends BaseTransformer
             'depth' => $category->depth,
             'products_count' => $category->products()->count(),
             'thumbnail' => $this->getThumbnail($category),
-            'parent_id' => app('api')->categories()->getEncodedId($category->parent_id)
+            'parent_id' => app('api')->categories()->getEncodedId($category->parent_id),
         ];
 
         if (! is_null($category->aggregate_selected)) {
@@ -59,9 +59,10 @@ class CategoryTransformer extends BaseTransformer
 
     public function includeParent(Category $category)
     {
-        if (!$category->parent) {
-            return null;
+        if (! $category->parent) {
+            return;
         }
+
         return $this->item($category->parent, $this);
     }
 

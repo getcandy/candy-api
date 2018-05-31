@@ -128,7 +128,7 @@ class OrderService extends BaseService
             'line_total' => $rate->amount,
             'unit_price' => $rate->amount,
             'tax_total' => $rate->tax,
-            'tax_rate' => $tax->percentage
+            'tax_rate' => $tax->percentage,
         ]);
 
         return $order;
