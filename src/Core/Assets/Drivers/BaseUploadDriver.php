@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Assets\Drivers;
 
+use Symfony\Component\Finder\SplFileInfo;
 use GetCandy\Api\Core\Assets\Models\Asset;
 
 abstract class BaseUploadDriver
@@ -20,25 +21,45 @@ abstract class BaseUploadDriver
     public function prepare(array $data, $source)
     {
         $file = $data['file'];
-        $mimeType = explode('/', $file->getClientMimeType());
-        $extension = $file->clientExtension();
 
-        if (! $extension) {
-            $extension = pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
+        if ($file instanceof SplFileInfo) {
+            $mimeType = 'image';
+            $extension = $file->getExtension();
+            $original_filename = $file->getFilename();
+            $filename = $data['filename'] . '.' . $extension ?? $original_filename;
+            $subType = null;
+        } else {
+            $mtFragments = explode('/', $file->getClientMimeType());
+            $mimeType = $mtFragments[0];
+            $subType = $mtFragments[1] ?? null;
+
+            $extension = $file->clientExtension();
+            $original_filename = $file->getClientOriginalName();
+            $filename = $file->hashName();
+
+            if (!$extension) {
+                $extension = pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
+            }
+        }
+
+        // If a one for one asset already exists, return it.
+        if ($existing = Asset::where('filename', '=', $filename)->first()) {
+            return $existing;
         }
 
         $asset = new Asset([
-            'kind' => $mimeType[0],
-            'sub_kind' => ! empty($mimeType[1]) ? $mimeType[1] : null,
+            'kind' => $mimeType,
+            'sub_kind' => $subType,
             'size' => $file->getSize(),
-            'original_filename' => $file->getClientOriginalName(),
-            'title' => $file->getClientOriginalName(),
-            'filename' => $file->hashName(),
+            'original_filename' => $original_filename,
+            'title' => $data['alt'] ?? $filename,
+            'filename' => $filename,
             'extension' => $extension,
         ]);
 
         $asset->source()->associate($source);
         $path = $source->path.'/'.substr($asset->filename, 0, 2);
+
         $asset->location = $path;
 
         return $asset;

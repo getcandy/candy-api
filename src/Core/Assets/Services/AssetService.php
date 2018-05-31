@@ -4,6 +4,7 @@ namespace GetCandy\Api\Core\Assets\Services;
 
 use Image;
 use Illuminate\Database\Eloquent\Model;
+use Symfony\Component\Finder\SplFileInfo;
 use GetCandy\Api\Core\Assets\Models\Asset;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Assets\Jobs\CleanUpAssetFiles;
@@ -38,11 +39,17 @@ class AssetService extends BaseService
     public function upload($data, Model $model, $position = 0)
     {
         if (! empty($data['file'])) {
-            $mimeType = $data['file']->getClientMimeType();
+            if ($data['file'] instanceof SplFileInfo) {
+                $mimeType = 'image';
+            } else {
+                $mimeType = $data['file']->getClientMimeType();
+            }
         } else {
             $mimeType = $data['mime_type'];
         }
+
         $driver = $this->getDriver($mimeType);
+
         $asset = $driver->process(
             $data,
             $model
