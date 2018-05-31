@@ -20,15 +20,16 @@ class UserTransformer extends BaseTransformer
         return [
             'id' => $user->encodedId(),
             'email' => $user->email,
-            'name' => $user->name
+            'name' => $user->name,
         ];
     }
 
     public function includeLanguage(Model $user)
     {
-        if (!$user->language) {
+        if (! $user->language) {
             return $this->null();
         }
+
         return $this->item($user->language, new LanguageTransformer);
     }
 

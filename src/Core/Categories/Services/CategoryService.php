@@ -61,7 +61,6 @@ class CategoryService extends BaseService
 
         $category->save();
 
-
         if (! empty($data['customer_groups'])) {
             $groupData = $this->mapCustomerGroupData($data['customer_groups']['data']);
             $category->customerGroups()->sync($groupData);

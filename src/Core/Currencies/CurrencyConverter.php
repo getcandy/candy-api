@@ -41,6 +41,7 @@ class CurrencyConverter
         if (! $this->currency) {
             $this->set($currency);
         }
+
         return $price * $this->currency->exchange_rate;
     }
 }

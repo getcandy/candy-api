@@ -1,11 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Schema;
-use GetCandy\Api\Core\Taxes\Models\Tax;
 use Illuminate\Database\Schema\Blueprint;
-use GetCandy\Api\Core\Orders\Models\Order;
 use Illuminate\Database\Migrations\Migration;
-use GetCandy\Api\Core\Orders\Models\OrderLine;
 
 class AddPositionToProductCategories extends Migration
 {
