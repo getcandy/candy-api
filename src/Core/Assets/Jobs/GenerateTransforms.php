@@ -38,7 +38,10 @@ class GenerateTransforms implements ShouldQueue
     public function handle()
     {
         foreach ($this->assets as $asset) {
-            $settings = $asset->assetable->settings;
+
+            // Do it this way to avoid global scope issues
+            $settings = (new $asset->assetable_type)->settings;
+
             app('api')->transforms()->transform(array_merge(
                 ['thumbnail'],
                 $settings['transforms']
