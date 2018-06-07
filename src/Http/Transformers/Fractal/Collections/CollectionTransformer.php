@@ -11,6 +11,7 @@ use GetCandy\Api\Http\Transformers\Fractal\Routes\RouteTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Channels\ChannelTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Products\ProductTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Customers\CustomerGroupTransformer;
+use League\Fractal\ParamBag;
 
 class CollectionTransformer extends BaseTransformer
 {
@@ -50,9 +51,9 @@ class CollectionTransformer extends BaseTransformer
      * @param  Collection $collection
      * @return League\Fractal\Resource\Collection
      */
-    public function includeProducts(Collection $collection)
+    public function includeProducts(Collection $collection, ParamBag $params = null)
     {
-        return $this->collection($collection->products, new ProductTransformer);
+        return $this->paginateInclude('products', $collection, $params, new ProductTransformer);
     }
 
     public function includeAssets(Collection $collection)

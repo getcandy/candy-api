@@ -4,6 +4,7 @@ namespace GetCandy\Api\Http\Transformers\Fractal;
 
 use League\Fractal\TransformerAbstract;
 use GetCandy\Api\Http\Transformers\Fractal\Assets\AssetTransformer;
+use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 
 abstract class BaseTransformer extends TransformerAbstract
 {
@@ -44,5 +45,16 @@ abstract class BaseTransformer extends TransformerAbstract
         $data = $this->item($asset, new AssetTransformer);
 
         return app()->fractal->createData($data)->toArray();
+    }
+
+    protected function paginateInclude($relation, $parent, $params, $transformer)
+    {
+        $perPage = $params['per_page'][0] ?? 15;
+        $currentPage = $params['page'][0] ?? 1;
+
+        $paginatedData = $parent->{$relation}()->paginate($perPage, ['*'], 'page', $currentPage);
+
+        return $this->collection($paginatedData->getCollection(), $transformer)
+            ->setPaginator(new IlluminatePaginatorAdapter($paginatedData));
     }
 }

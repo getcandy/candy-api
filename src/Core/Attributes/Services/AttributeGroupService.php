@@ -54,6 +54,9 @@ class AttributeGroupService extends BaseService
         if (! $group) {
             return;
         }
+        if (isset($data['handle'])) {
+            $group->handle = $data['handle'];
+        }
 
         $group->fill($data);
         $group->save();
