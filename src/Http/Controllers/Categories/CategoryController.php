@@ -81,7 +81,7 @@ class CategoryController extends BaseController
         }
 
         if ($response) {
-            return response()->json('Successful Created', 201);
+            return $this->respondWithItem($response, new CategoryTransformer);
         }
 
         return response()->json('Error', 500);

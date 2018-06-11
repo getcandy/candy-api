@@ -176,7 +176,6 @@ class ProductVariantService extends BaseService
             }
         }
 
-
         $price = PriceCalculator::get($price, $tax);
 
         return $price;
@@ -250,7 +249,7 @@ class ProductVariantService extends BaseService
             $variant->customerPricing()->delete();
         }
 
-        $variant->group_pricing = !empty($data['group_pricing']);
+        $variant->group_pricing = ! empty($data['group_pricing']);
 
         if (isset($data['inventory'])) {
             $variant->stock = $data['inventory'];

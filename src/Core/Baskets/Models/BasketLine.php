@@ -17,6 +17,7 @@ class BasketLine extends BaseModel
         if ($tieredPrice) {
             return $this->quantity * $tieredPrice->amount;
         }
+
         return $this->quantity * $this->variant->total_price;
     }
 

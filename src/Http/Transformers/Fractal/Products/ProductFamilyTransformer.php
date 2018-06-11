@@ -6,6 +6,7 @@ use GetCandy\Api\Core\Traits\IncludesAttributes;
 use GetCandy\Api\Core\Products\Models\ProductFamily;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Attributes\AttributeTransformer;
+use League\Fractal\ParamBag;
 
 class ProductFamilyTransformer extends BaseTransformer
 {
@@ -19,13 +20,13 @@ class ProductFamilyTransformer extends BaseTransformer
     {
         return [
             'id' => $family->encodedId(),
-            'name' => $family->name,
+            'attribute_data' => $family->attribute_data,
         ];
     }
 
-    public function includeProducts(ProductFamily $family)
+    public function includeProducts(ProductFamily $family, ParamBag $params = null)
     {
-        return $this->collection($family->products, new ProductTransformer);
+        return $this->paginateInclude('products', $family, $params, new ProductTransformer);
     }
 
     public function includeAttributes(ProductFamily $family)

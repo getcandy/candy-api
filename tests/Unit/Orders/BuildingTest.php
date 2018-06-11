@@ -212,7 +212,7 @@ class BuildingTest extends TestCase
 
         $order = app('api')->orders()->store($basket->encodedId());
 
-        $this->assertEquals($order->sub_total, (int)($variant->price * $currency->exchange_rate));
+        $this->assertEquals($order->sub_total, (int) ($variant->price * $currency->exchange_rate));
     }
 
     protected function getTaxForAmount($tax, $amount)
