@@ -9,6 +9,7 @@ use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Core\Baskets\Models\BasketTotal;
 use GetCandy\Api\Core\Baskets\Events\BasketStoredEvent;
+use GetCandy\Api\Core\Baskets\Models\SavedBasket;
 
 class BasketService extends BaseService
 {
@@ -131,6 +132,27 @@ class BasketService extends BaseService
 
         $basket->save();
         event(new BasketStoredEvent($basket));
+
+        return $basket;
+    }
+
+    /**
+     * Saves a basket with a name
+     *
+     * @param string $basketId
+     * @param string $name
+     *
+     * @return Basket
+     */
+    public function save($basketId, $name)
+    {
+        $savedBasket = new SavedBasket;
+        $savedBasket->name = $name;
+
+        $basket = $this->getByHashedId($basketId);
+        $savedBasket->basket()->associate($basket);
+
+        $savedBasket->save();
 
         return $basket;
     }

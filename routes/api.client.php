@@ -41,6 +41,7 @@ Route::group([
     $router->delete('baskets/{id}/discounts', 'Baskets\BasketController@deleteDiscount');
     $router->put('baskets/{id}/user', 'Baskets\BasketController@putUser');
     $router->delete('baskets/{id}/user', 'Baskets\BasketController@deleteUser');
+    $router->post('baskets/{id}/save', 'Baskets\BasketController@save');
     $router->resource('baskets', 'Baskets\BasketController', [
         'except' => ['edit', 'create'],
     ]);

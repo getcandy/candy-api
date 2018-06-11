@@ -4,6 +4,7 @@ namespace GetCandy\Api\Http\Controllers\Baskets;
 
 use Illuminate\Http\Request;
 use GetCandy\Api\Http\Controllers\BaseController;
+use GetCandy\Api\Http\Requests\Baskets\SaveRequest;
 use GetCandy\Api\Http\Requests\Baskets\CreateRequest;
 use GetCandy\Api\Http\Requests\Baskets\PutUserRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -65,6 +66,18 @@ class BasketController extends BaseController
     {
         $basket = app('api')->baskets()->store($request->all(), $request->user());
 
+        return $this->respondWithItem($basket, new BasketTransformer);
+    }
+
+    /**
+     * Saves a basket to a users account
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function save($id, SaveRequest $request)
+    {
+        $basket = app('api')->baskets()->save($id, $request->name);
         return $this->respondWithItem($basket, new BasketTransformer);
     }
 
