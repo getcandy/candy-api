@@ -24,6 +24,7 @@ class CategoryTransformer extends BaseTransformer
         'products',
         'routes',
         'parent',
+        'thumbnail',
         'descendants',
         'siblings'
     ];
@@ -36,7 +37,6 @@ class CategoryTransformer extends BaseTransformer
             'attribute_data' => $category->attribute_data,
             'depth' => $category->depth,
             'products_count' => $category->products()->count(),
-            'thumbnail' => $this->getThumbnail($category),
             'parent_id' => app('api')->categories()->getEncodedId($category->parent_id)
         ];
 

@@ -45,4 +45,13 @@ abstract class BaseTransformer extends TransformerAbstract
 
         return app()->fractal->createData($data)->toArray();
     }
+
+    protected function includeThumbnail($model)
+    {
+        $asset = $model->primaryAsset->first();
+        if (!$asset) {
+            return null;
+        }
+        return $this->item($asset, new AssetTransformer);
+    }
 }
