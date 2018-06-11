@@ -194,6 +194,11 @@ class ProductVariantService extends BaseService
         return $this->model->where('sku', '=', $sku)->exists();
     }
 
+    public function getBySku($sku)
+    {
+        return $this->model->where('sku', '=', $sku)->first();
+    }
+
     /**
      * Updates a resource from the given data.
      *
