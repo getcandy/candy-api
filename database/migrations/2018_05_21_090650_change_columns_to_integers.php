@@ -23,10 +23,6 @@ class ChangeColumnsToIntegers extends Migration
 
     protected function setUp()
     {
-        Schema::table('product_variants', function (Blueprint $table) {
-            $table->integer('price_new')->unsigned()->default(0)->after('price');
-        });
-
         Schema::table('discount_rewards', function (Blueprint $table) {
             $table->integer('value_new')->unsigned()->nullable()->default(0)->after('value');
         });
@@ -43,23 +39,21 @@ class ChangeColumnsToIntegers extends Migration
             $table->integer('amount_new')->unsigned()->default(0)->after('amount');
         });
 
-        Schema::table('product_customer_prices', function (Blueprint $table) {
-            $table->integer('price_new')->unsigned()->default(0)->after('price');
+        Schema::table('product_variants', function (Blueprint $table) {
+            $table->decimal('price', 15, 5)->change();
         });
 
         Schema::table('product_pricing_tiers', function (Blueprint $table) {
-            $table->integer('price_new')->unsigned()->default(0)->after('price');
+            $table->decimal('price', 15, 5)->change();
+        });
+
+        Schema::table('product_customer_prices', function (Blueprint $table) {
+            $table->decimal('price', 15, 5)->change();
         });
     }
 
     protected function cleanUp()
     {
-        Schema::table('product_variants', function (Blueprint $table) {
-            $table->dropColumn('price');
-        });
-        Schema::table('product_variants', function (Blueprint $table) {
-            $table->renameColumn('price_new', 'price');
-        });
 
         Schema::table('discount_rewards', function (Blueprint $table) {
             $table->dropColumn('value');
@@ -91,33 +85,14 @@ class ChangeColumnsToIntegers extends Migration
         Schema::table('transactions', function (Blueprint $table) {
             $table->renameColumn('amount_new', 'amount');
         });
-
-        Schema::table('product_pricing_tiers', function (Blueprint $table) {
-            $table->dropColumn('price');
-        });
-
-        Schema::table('product_pricing_tiers', function (Blueprint $table) {
-            $table->renameColumn('price_new', 'price');
-        });
-
-        Schema::table('product_customer_prices', function (Blueprint $table) {
-            $table->dropColumn('price');
-        });
-
-        Schema::table('product_customer_prices', function (Blueprint $table) {
-            $table->renameColumn('price_new', 'price');
-        });
     }
 
     protected function remapDecimalsToIntegers()
     {
-        DB::table('product_variants')->update(['price_new' => DB::raw('100 * price')]);
         DB::table('discount_rewards')->update(['value_new' => DB::raw('IF(value, 100 * value, 0)')]);
         DB::table('order_discounts')->update(['amount_new' => DB::raw('100 * amount')]);
         DB::table('shipping_prices')->update(['rate_new' => DB::raw('100 * rate')]);
         DB::table('transactions')->update(['amount_new' => DB::raw('100 * amount')]);
-        DB::table('product_customer_prices')->update(['price_new' => DB::raw('100 * price')]);
-        DB::table('product_pricing_tiers')->update(['price_new' => DB::raw('100 * price')]);
     }
 
     /**

@@ -17,7 +17,7 @@ class ProductVariant extends BaseModel
      */
     protected $hashids = 'product';
 
-    protected $fillable = ['options', 'price', 'sku', 'stock', 'backorder'];
+    protected $fillable = ['options', 'price', 'sku', 'stock', 'backorder', 'incoming', 'unit_qty', 'min_qty', 'max_qty'];
 
     protected $pricing;
 
