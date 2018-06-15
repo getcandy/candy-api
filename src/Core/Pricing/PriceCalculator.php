@@ -30,7 +30,7 @@ class PriceCalculator
 
         $this->pricing = [
             'amount' => $converted,
-            'tax' => $taxamount
+            'tax' => $taxamount,
         ];
 
         return $this;

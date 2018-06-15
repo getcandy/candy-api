@@ -8,8 +8,8 @@ use GetCandy\Api\Core\Discounts\Factory;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Core\Baskets\Models\BasketTotal;
-use GetCandy\Api\Core\Baskets\Events\BasketStoredEvent;
 use GetCandy\Api\Core\Baskets\Models\SavedBasket;
+use GetCandy\Api\Core\Baskets\Events\BasketStoredEvent;
 
 class BasketService extends BaseService
 {
@@ -137,7 +137,7 @@ class BasketService extends BaseService
     }
 
     /**
-     * Saves a basket with a name
+     * Saves a basket with a name.
      *
      * @param string $basketId
      * @param string $name

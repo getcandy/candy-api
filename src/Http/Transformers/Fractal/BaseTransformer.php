@@ -3,8 +3,8 @@
 namespace GetCandy\Api\Http\Transformers\Fractal;
 
 use League\Fractal\TransformerAbstract;
-use GetCandy\Api\Http\Transformers\Fractal\Assets\AssetTransformer;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
+use GetCandy\Api\Http\Transformers\Fractal\Assets\AssetTransformer;
 
 abstract class BaseTransformer extends TransformerAbstract
 {
@@ -50,9 +50,10 @@ abstract class BaseTransformer extends TransformerAbstract
     protected function includeThumbnail($model)
     {
         $asset = $model->primaryAsset->first();
-        if (!$asset) {
-            return null;
+        if (! $asset) {
+            return;
         }
+
         return $this->item($asset, new AssetTransformer);
     }
 
