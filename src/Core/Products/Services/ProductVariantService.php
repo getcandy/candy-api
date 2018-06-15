@@ -133,7 +133,17 @@ class ProductVariantService extends BaseService
     {
         $variant = $this->getByHashedId($variantId);
 
-        return $variant->backorder || $quantity <= $variant->stock;
+        $backorder = $variant->backorder;
+
+        if ($backorder == 'always') {
+            return true;
+        }
+
+        if ($backorder == 'expected') {
+            return ($variant->incoming + $variant->stock) >= $quantity;
+        }
+
+        return $quantity <= $variant->stock;
     }
 
     /**
@@ -166,19 +176,14 @@ class ProductVariantService extends BaseService
         }
 
         if ($pricing) {
-            $tax = $pricing->tax ? $pricing->tax->percentage : 0;
+            $tax = $pricing->tax->percentage ?? 0;
             $price = $pricing->price;
         } else {
-            $tax = 0;
+            $tax = $variant->tax->percentage ?? 0;
             $price = $variant->price;
-            if ($variant->tax) {
-                $tax = $variant->tax->percentage;
-            }
         }
 
-        $price = PriceCalculator::get($price, $tax);
-
-        return $price;
+        return PriceCalculator::get($price, $tax);
     }
 
     /**
@@ -219,7 +224,6 @@ class ProductVariantService extends BaseService
                 'option_data' => $this->mapOptions($options, $data['options']),
             ]);
         }
-
         $variant->fill($data);
 
         $thumbnailId = null;
@@ -290,6 +294,7 @@ class ProductVariantService extends BaseService
             } else {
                 $price['tax_id'] = null;
             }
+
             $variant->customerPricing()->create($price);
         }
     }

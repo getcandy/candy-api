@@ -50,9 +50,9 @@ class Image extends BaseUploadDriver implements AssetDriverContract
             $data['file']->storeAs($asset->location, $asset->filename, $source->disk);
         }
 
-        // if (! empty($image)) {
-        //     dispatch(new GenerateTransforms($asset));
-        // }
+        if (! empty($image)) {
+            dispatch(new GenerateTransforms($asset));
+        }
 
         return $asset;
     }

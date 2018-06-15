@@ -10,6 +10,7 @@ class SaveRequest extends FormRequest
     {
         return true;
     }
+
     public function rules()
     {
         return [

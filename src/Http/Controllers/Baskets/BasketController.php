@@ -70,7 +70,7 @@ class BasketController extends BaseController
     }
 
     /**
-     * Saves a basket to a users account
+     * Saves a basket to a users account.
      *
      * @param Request $request
      * @return void
@@ -78,6 +78,7 @@ class BasketController extends BaseController
     public function save($id, SaveRequest $request)
     {
         $basket = app('api')->baskets()->save($id, $request->name);
+
         return $this->respondWithItem($basket, new BasketTransformer);
     }
 

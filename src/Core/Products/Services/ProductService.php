@@ -134,6 +134,8 @@ class ProductService extends BaseService
             'sku' => $sku,
             'price' => $data['price'],
             'pricing' => $this->getPriceMapping($data['price']),
+            'min_qty' => $data['min_qty'] ?? 1,
+            'unit_qty' => $data['unit_qty'] ?? 1,
         ]);
 
         if (! empty($data['tax_id'])) {
