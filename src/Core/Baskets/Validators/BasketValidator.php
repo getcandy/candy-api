@@ -15,5 +15,4 @@ class BasketValidator
     {
         return app('api')->productVariants()->canAddToBasket($variant['id'], $variant['quantity']);
     }
-
 }

@@ -54,7 +54,6 @@ class ChangeColumnsToIntegers extends Migration
 
     protected function cleanUp()
     {
-
         Schema::table('discount_rewards', function (Blueprint $table) {
             $table->dropColumn('value');
         });

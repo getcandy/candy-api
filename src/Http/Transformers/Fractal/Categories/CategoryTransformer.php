@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Categories;
 
+use League\Fractal\ParamBag;
 use GetCandy\Api\Core\Categories\Models\Category;
 use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
@@ -11,7 +12,7 @@ use GetCandy\Api\Http\Transformers\Fractal\Channels\ChannelTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Products\ProductTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Customers\CustomerGroupTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Attributes\AttributeGroupTransformer;
-use League\Fractal\ParamBag;
+
 class CategoryTransformer extends BaseTransformer
 {
     protected $attributeGroups;
@@ -37,7 +38,7 @@ class CategoryTransformer extends BaseTransformer
             'attribute_data' => $category->attribute_data,
             'depth' => $category->depth,
             'products_count' => $category->products()->count(),
-            'parent_id' => app('api')->categories()->getEncodedId($category->parent_id)
+            'parent_id' => app('api')->categories()->getEncodedId($category->parent_id),
         ];
 
         if (! is_null($category->aggregate_selected)) {

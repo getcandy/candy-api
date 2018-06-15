@@ -2,11 +2,11 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Products;
 
+use League\Fractal\ParamBag;
 use GetCandy\Api\Core\Traits\IncludesAttributes;
 use GetCandy\Api\Core\Products\Models\ProductFamily;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Attributes\AttributeTransformer;
-use League\Fractal\ParamBag;
 
 class ProductFamilyTransformer extends BaseTransformer
 {
