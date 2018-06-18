@@ -70,7 +70,7 @@ class SearchController extends BaseController
     }
 
     /**
-     * Gets suggested searches
+     * Gets suggested searches.
      *
      * @param SearchRequest $request
      * @param SearchContract $client

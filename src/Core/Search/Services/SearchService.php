@@ -60,8 +60,6 @@ class SearchService
         return $data;
     }
 
-
-
     /**
      * Maps the search sorting used to something we can use.
      *
@@ -146,6 +144,7 @@ class SearchService
                 }
             }
         }
+
         return $suggestions;
     }
 

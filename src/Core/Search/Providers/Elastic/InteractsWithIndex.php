@@ -136,14 +136,13 @@ trait InteractsWithIndex
     protected function getNextIndexSuffix($name)
     {
         // Somethings gone wrong and hasn't cleaned up...
-        if ($this->hasIndex($name . '_a') && $this->hasIndex($name . '_b')) {
-            $this->client->getIndex($name . '_b')->delete();
+        if ($this->hasIndex($name.'_a') && $this->hasIndex($name.'_b')) {
+            $this->client->getIndex($name.'_b')->delete();
         }
 
         if ($this->hasIndex($name.'_a')) {
             return 'b';
         }
-
 
         return 'a';
     }
