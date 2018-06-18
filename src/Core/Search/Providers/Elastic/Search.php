@@ -86,7 +86,7 @@ class Search implements ClientContract
 
     public function suggest($keywords)
     {
-        if (!$this->channel) {
+        if (! $this->channel) {
             $this->setChannelDefault();
         }
 

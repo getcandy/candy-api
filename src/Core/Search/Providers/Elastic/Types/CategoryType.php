@@ -77,8 +77,8 @@ class CategoryType extends BaseType
                     'type' => 'text',
                     'analyzer' => 'english',
                 ],
-                "suggest" => [
-                    "type" => "completion"
+                'suggest' => [
+                    'type' => 'completion',
                 ],
                 'trigram' => [
                     'type' => 'text',

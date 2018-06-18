@@ -14,7 +14,7 @@ class SearchSuggestionTransformer extends BaseTransformer
     {
         return [
             'id' => $model->encodedId(),
-            'name' => $model->name
+            'name' => $model->name,
         ];
     }
 
