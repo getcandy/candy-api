@@ -84,6 +84,25 @@ class Search implements ClientContract
         return $this;
     }
 
+    public function suggest($keywords)
+    {
+        if (!$this->channel) {
+            $this->setChannelDefault();
+        }
+
+        $search = new \Elastica\Search($this->client);
+        $search
+            ->addIndex($this->getSearchIndex())
+            ->addType($this->type->getHandle());
+
+        $suggest = new \Elastica\Suggest;
+        $term = new \Elastica\Suggest\Completion('suggest', 'name.suggest');
+        $term->setText($keywords);
+        $suggest->addSuggestion($term);
+
+        return $search->search($suggest);
+    }
+
     /**
      * Searches the index.
      *

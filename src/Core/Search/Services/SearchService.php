@@ -60,6 +60,8 @@ class SearchService
         return $data;
     }
 
+
+
     /**
      * Maps the search sorting used to something we can use.
      *
@@ -131,7 +133,7 @@ class SearchService
      *
      * @return array
      */
-    public function getSuggestions($results)
+    protected function getSuggestions($results)
     {
         $suggestions = [];
 
@@ -144,8 +146,22 @@ class SearchService
                 }
             }
         }
-
         return $suggestions;
+    }
+
+    public function getSuggestResults(ResultSet $results, $type = 'product')
+    {
+        $suggestions = $this->getSuggestions($results);
+
+        if (empty($suggestions['suggest'])) {
+            return [];
+        }
+
+        $ids = collect($suggestions['suggest'])->map(function ($item) {
+            return $item['_id'];
+        });
+
+        return app('api')->{str_plural($type)}()->getSearchedIds($ids, true);
     }
 
     /**

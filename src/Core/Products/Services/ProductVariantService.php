@@ -265,6 +265,8 @@ class ProductVariantService extends BaseService
 
         if (! empty($data['tiers'])) {
             $this->setPricingTiers($variant, $data['tiers']);
+        } else {
+            $variant->tiers()->delete();
         }
 
         $variant->save();
