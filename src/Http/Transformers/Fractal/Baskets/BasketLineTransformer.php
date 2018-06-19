@@ -17,9 +17,9 @@ class BasketLineTransformer extends BaseTransformer
         $data = [
             'id' => $line->encodedId(),
             'quantity' => $line->quantity,
-            'line_total' => $line->current_total,
-            'unit_price' => $line->current_total / $line->quantity,
-            'tax' => $line->current_tax,
+            'line_total' => $line->currentTotal,
+            'unit_price' => $line->currentTotal / $line->quantity,
+            'tax' => $line->currentTax,
         ];
 
         return $data;
