@@ -51,7 +51,7 @@ class SearchService
             'sort' => $this->getSort($results),
             'category_page' => (bool) $category,
             'pagination' => ['data' => $this->getPagination($results, $page)],
-            // 'aggregation' => ['data' => $this->getSearchAggregator($results)],
+            'aggregation' => ['data' => $this->getSearchAggregator($results)],
             'suggestions' => $this->getSuggestions($results),
         ]);
 
@@ -188,11 +188,12 @@ class SearchService
                 foreach ($agg['categories_after_filter']['categories_post_inner']['buckets'] as $bucket) {
                     $selected[] = $bucket['key'];
                 }
-            }
-            if ($handle == 'categories_before') {
+            } else if ($handle == 'categories_before') {
                 foreach ($agg['categories_before_inner']['buckets'] as $bucket) {
                     $all[] = $bucket['key'];
                 }
+            } else {
+                $results[$handle] = $agg['value'];
             }
         }
 
