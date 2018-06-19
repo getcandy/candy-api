@@ -59,7 +59,7 @@ class Factory
         $basket->tax = 0;
 
         foreach ($basket->lines as $line) {
-            $basket->subTotal += $line->current_total;
+            $basket->subTotal += $line->currentTotal;
 
             $tieredPrice = app('api')->productVariants()->getTieredPrice(
                 $line->variant,
@@ -68,10 +68,10 @@ class Factory
             );
 
             if ($tieredPrice) {
-                $basket->tax += $tieredPrice->tax * $line->quantity;
+                $basket->tax += ($tieredPrice->tax / $line->variant->unit_qty) * $line->quantity;
             } else {
                 if ($line->current_tax) {
-                    $basket->tax += $line->variant->taxTotal * $line->quantity;
+                    $basket->tax += ($line->variant->taxTotal / $line->variant->unit_qty) * $line->quantity;
                 } else {
                     $basket->tax += 0;
                 }
@@ -176,7 +176,7 @@ class Factory
     {
         $result = $price * ($amount / 100);
 
-        return round($price - $result, 2);
+        return $price - $result;
     }
 
     protected function applyFixedAmount($price, $amount)
