@@ -63,9 +63,9 @@ class OrderService extends BaseService
         }
 
         $order->conversion = CurrencyConverter::rate();
-        $order->order_total = $basket->total;
-        $order->sub_total = $basket->subTotal;
-        $order->tax_total = $basket->tax;
+        $order->order_total = round($basket->total, 2) * 100;
+        $order->sub_total = round($basket->subTotal, 2) * 100;
+        $order->tax_total = round($basket->tax, 2) * 100;
         $order->currency = $basket->currency;
 
         $order->save();
@@ -309,7 +309,6 @@ class OrderService extends BaseService
     {
         $id = $this->model->decodeId($id);
         $query = $this->model->withoutGlobalScope('open')->withoutGlobalScope('not_expired');
-
         return $query->findOrFail($id);
     }
 
@@ -366,8 +365,10 @@ class OrderService extends BaseService
             $this->mapOrderLines($basket)
         );
 
-        $order->total = $basket->total;
-        $order->vat = $basket->vat_total;
+        $order->conversion = CurrencyConverter::rate();
+        $order->order_total = round($basket->total, 2) * 100;
+        $order->sub_total = round($basket->subTotal, 2) * 100;
+        $order->tax_total = round($basket->tax, 2) * 100;
         $order->currency = $basket->currency;
 
         $order->save();
@@ -390,16 +391,17 @@ class OrderService extends BaseService
             $tax = $line->current_tax;
             $currentTotal = $line->current_total;
 
+            $tax = PriceCalculator::get(
+                $currentTotal - $line->discount,
+                $line->variant->tax
+            )->tax;
             array_push($lines, [
                 'sku' => $line->variant->sku,
-                'tax_total' => PriceCalculator::get(
-                    $currentTotal - $line->discount,
-                    $line->variant->tax
-                )->tax,
+                'tax_total' => round($tax, 2) * 100,
                 'tax_rate' => $line->variant->tax->percentage,
-                'discount_total' => $line->discount,
-                'line_total' => $currentTotal,
-                'unit_price' => $currentTotal / $line->quantity,
+                'discount_total' => $line->discount ?? 0,
+                'line_total' => round($currentTotal, 2) * 100,
+                'unit_price' => round($currentTotal / $line->quantity, 2) * 100,
                 'quantity' => $line->quantity,
                 'description' => $line->variant->product->attribute('name'),
                 'variant' => $line->variant->name,
