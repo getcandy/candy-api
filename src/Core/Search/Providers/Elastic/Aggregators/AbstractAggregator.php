@@ -2,6 +2,8 @@
 
 namespace GetCandy\Api\Core\Search\Providers\Elastic\Aggregators;
 
+use Elastica\Search;
+
 abstract class AbstractAggregator
 {
     /**
@@ -9,5 +11,5 @@ abstract class AbstractAggregator
      *
      * @return mixed
      */
-    abstract public function getQuery();
+    abstract public function getQuery(Search $search, $query);
 }

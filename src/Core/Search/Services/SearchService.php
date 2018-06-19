@@ -193,7 +193,7 @@ class SearchService
                     $all[] = $bucket['key'];
                 }
             } else {
-                $results[$handle] = $agg['value'];
+                $results[$handle] = $agg;
             }
         }
 

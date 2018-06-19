@@ -25,8 +25,7 @@ class Search implements ClientContract
     protected $authUser = null;
 
     protected $aggregators = [
-        'minPrice',
-        'maxPrice',
+        'priceRange'
     ];
 
     /**
@@ -188,10 +187,6 @@ class Search implements ClientContract
             );
         }
 
-        foreach ($this->aggregationSet->get() as $agg) {
-            $query->addAggregation($agg->getQuery());
-        }
-
         $query->setQuery($boolQuery);
 
         $query->setHighlight(
@@ -211,6 +206,12 @@ class Search implements ClientContract
         if ($keywords) {
             $query->setSuggest(
                 $this->getSuggest($keywords)
+            );
+        }
+
+        foreach ($this->aggregationSet->get() as $agg) {
+            $query->addAggregation(
+                $agg->getQuery($search, $query)
             );
         }
 
