@@ -135,6 +135,11 @@ class Product extends BaseModel
         return $this->hasMany(ProductVariant::class);
     }
 
+    public function firstVariant()
+    {
+        return $this->hasOne(ProductVariant::class);
+    }
+
     public function categories()
     {
         return $this->belongsToMany(Category::class, 'product_categories');

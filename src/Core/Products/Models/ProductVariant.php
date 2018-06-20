@@ -65,7 +65,10 @@ class ProductVariant extends BaseModel
 
     protected function getPricing()
     {
-        return app('api')->productVariants()->getVariantPrice($this, app('auth')->user());
+        if (!$this->pricing) {
+            $this->pricing = app('api')->productVariants()->getVariantPrice($this, app('auth')->user());
+        }
+        return $this->pricing;
     }
 
     public function getTotalPriceAttribute()

@@ -251,7 +251,7 @@ class ProductService extends BaseService
 
         $placeholders = implode(',', array_fill(0, count($parsedIds), '?')); // string for the query
 
-        $query = $this->model->whereIn('id', $parsedIds);
+        $query = $this->model->with(['routes', 'primaryAsset.transforms', 'firstVariant'])->whereIn('id', $parsedIds);
 
         $groups = \GetCandy::getGroups();
         $user = \Auth::user();
