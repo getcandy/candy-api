@@ -24,7 +24,7 @@ class ElasticIndexCommand extends Command
     protected $description = 'Indexes a model for Elasticsearch';
 
     protected $indexables = [
-        // Product::class,
+        Product::class,
         Category::class,
     ];
 
