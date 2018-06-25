@@ -128,7 +128,8 @@ class ProductService extends BaseService
 
         $variant = $this->createVariant($product, [
             'options' => [],
-            'stock' => $data['stock'],
+            'stock' => $data['stock'] ?? 0,
+            'incoming' => $data['incoming'] ?? 0,
             'sku' => $sku,
             'price' => $data['price'],
             'pricing' => $this->getPriceMapping($data['price']),
