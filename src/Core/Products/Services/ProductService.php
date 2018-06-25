@@ -105,8 +105,6 @@ class ProductService extends BaseService
             $product->save();
         }
 
-        event(new AttributableSavedEvent($product));
-
         if (! empty($data['customer_groups'])) {
             $groupData = $this->mapCustomerGroupData($data['customer_groups']['data']);
             $product->customerGroups()->sync($groupData);
