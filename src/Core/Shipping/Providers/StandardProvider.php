@@ -4,9 +4,10 @@ namespace GetCandy\Api\Core\Shipping\Providers;
 
 class StandardProvider extends AbstractProvider
 {
-    public function calculate($basket)
+    public function calculate($order)
     {
         $weight = $basket->weight;
+        $basket = $order->basket;
         $total = $basket->total;
         $users = $this->method->users;
         $prices = $this->method->prices;
