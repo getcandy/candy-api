@@ -3,7 +3,6 @@
 namespace GetCandy\Api\Http\Requests\ProductFamilies;
 
 use GetCandy\Api\Http\Requests\FormRequest;
-use GetCandy\Api\Products\Models\ProductFamily;
 
 class UpdateRequest extends FormRequest
 {
@@ -13,10 +12,10 @@ class UpdateRequest extends FormRequest
         return $this->user()->hasRole('admin');
     }
 
-    public function rules(ProductFamily $family)
+    public function rules()
     {
         return [
-            'attributes' => 'array|required',
+            'name' => 'array|required|valid_structure:product_families',
         ];
     }
 }
