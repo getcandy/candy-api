@@ -21,6 +21,16 @@ class ShippingZone extends BaseModel
         return $this->belongsToMany(ShippingMethod::class, 'shipping_method_zones');
     }
 
+    public function prices()
+    {
+        return $this->hasMany(ShippingPrice::class);
+    }
+
+    public function regions()
+    {
+        return $this->hasMany(ShippingRegion::class);
+    }
+
     public function countries()
     {
         return $this->belongsToMany(Country::class, 'shipping_zone_country');

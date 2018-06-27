@@ -42,6 +42,11 @@ class ShippingPrice extends BaseModel
         return $this->belongsTo(Currency::class);
     }
 
+    public function zone()
+    {
+        return $this->belongsTo(ShippingZone::class, 'shipping_zone_id');
+    }
+
     public function customerGroups()
     {
         return $this->belongsToMany(CustomerGroup::class, 'shipping_customer_group_price')->withPivot(['visible']);

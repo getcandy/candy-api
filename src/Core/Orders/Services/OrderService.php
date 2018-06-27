@@ -68,10 +68,19 @@ class OrderService extends BaseService
         $order->tax_total = round($basket->tax, 2) * 100;
         $order->currency = $basket->currency;
 
+        // If we have shipping already, make sure it stays on.
+        $shipping = $order->lines()->whereIsShipping(true)->first();
+
+        if ($shipping) {
+            $order->order_total += $shipping->line_total + $shipping->tax_total;
+            $order->sub_total += $shipping->unit_price;
+            $order->tax_total += $shipping->tax_total;
+        }
+
         $order->save();
 
         $order->discounts()->delete();
-        $order->lines()->delete();
+        $order->lines()->whereIsShipping(false)->delete();
 
         $order->discounts()->createMany(
             $this->mapOrderDiscounts($basket)
@@ -80,6 +89,7 @@ class OrderService extends BaseService
         $order->lines()->createMany(
             $this->mapOrderLines($basket)
         );
+
 
         $order->discount_total = $order->lines()->sum('discount_total');
 
@@ -107,16 +117,26 @@ class OrderService extends BaseService
         $tax = app('api')->taxes()->getDefaultRecord();
 
         $rate = PriceCalculator::get(
-            $price->value,
+            $price->rate,
             $tax->percentage
         );
 
         // Remove any shipping lines already on there.
-        $existing = $order->lines()->where('shipping', '=', true)->first();
+        $existing = $order->lines()->where('is_shipping', '=', true)->first();
 
         if ($existing) {
+            $order->sub_total -= $existing->unit_price;
+            $order->tax_total -= $existing->tax_total;
+            $order->order_total -= ($existing->tax_total + $existing->unit_price);
+            $order->save();
             $existing->delete();
         }
+
+        $order->sub_total += $rate->amount;
+        $order->tax_total += $rate->tax;
+        $order->order_total = $order->sub_total + $order->tax_total;
+
+        $order->save();
 
         // Does the basket have a free shipping discount?
         $discounts = $order->basket->discounts;
@@ -127,8 +147,10 @@ class OrderService extends BaseService
             'description' => $price->method->attribute('name'),
             'line_total' => $rate->amount,
             'unit_price' => $rate->amount,
+            'variant' => $price->zone->name,
             'tax_total' => $rate->tax,
             'tax_rate' => $tax->percentage,
+            'sku' => $shippingPriceId,
         ]);
 
         return $order;

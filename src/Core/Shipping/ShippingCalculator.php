@@ -4,6 +4,7 @@ namespace GetCandy\Api\Core\Shipping;
 
 use Illuminate\Support\Manager;
 use GetCandy\Api\Core\Shipping\Providers\StandardProvider;
+use GetCandy\Api\Core\Shipping\Providers\RegionalProvider;
 
 class ShippingCalculator extends Manager
 {
@@ -26,6 +27,13 @@ class ShippingCalculator extends Manager
     {
         return $this->buildProvider(
             StandardProvider::class
+        );
+    }
+
+    public function createRegionalDriver()
+    {
+        return $this->buildProvider(
+            RegionalProvider::class
         );
     }
 

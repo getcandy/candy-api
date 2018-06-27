@@ -6,6 +6,8 @@ use GetCandy\Api\Core\Shipping\Models\ShippingPrice;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Currencies\CurrencyTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Customers\CustomerGroupTransformer;
+use PriceCalculator;
+use TaxCalculator;
 
 class ShippingPriceTransformer extends BaseTransformer
 {
@@ -20,9 +22,12 @@ class ShippingPriceTransformer extends BaseTransformer
 
     public function transform(ShippingPrice $price)
     {
+        $prices = PriceCalculator::get($price->rate, 'default');
+
         return [
             'id' => $price->encodedId(),
-            'rate' => $price->rate,
+            'rate' => $prices->amount,
+            'tax' => $prices->tax,
             'fixed' => (bool) $price->fixed,
             'min_basket' => $price->min_basket,
             'min_weight' => $price->min_weight,
