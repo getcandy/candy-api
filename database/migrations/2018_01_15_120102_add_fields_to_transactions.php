@@ -27,10 +27,12 @@ class AddFieldsToTransactions extends Migration
      */
     public function down()
     {
-        Schema::table('transactions', function (Blueprint $table) {
-            $table->dropColumn('card_type');
-            $table->dropColumn('last_four');
-            $table->dropColumn('provider');
-        });
+        if (Schema::hasTable('transactions')) {
+            Schema::table('transactions', function (Blueprint $table) {
+                $table->dropColumn('card_type');
+                $table->dropColumn('last_four');
+                $table->dropColumn('provider');
+            });
+        }
     }
 }

@@ -25,7 +25,7 @@ class AlterProductFamilies extends Migration
      */
     public function down()
     {
-        Schema::table('transactions', function (Blueprint $table) {
+        Schema::table('product_families', function (Blueprint $table) {
             $table->dropColumn('name');
         });
     }
