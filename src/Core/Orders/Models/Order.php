@@ -172,7 +172,7 @@ class Order extends BaseModel
      */
     public function lines()
     {
-        return $this->hasMany(OrderLine::class);
+        return $this->hasMany(OrderLine::class)->orderBy('is_shipping', 'asc');
     }
 
     public function basket()
