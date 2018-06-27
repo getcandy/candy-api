@@ -17,6 +17,10 @@ class ProviderTransformer extends BaseTransformer
             $data['client_token'] = $provider->getClientToken();
         }
 
+        if (method_exists($provider, 'getTokenExpiry')) {
+            $data['exires_at'] = $provider->getTokenExpiry();
+        }
+
         return $data;
     }
 }
