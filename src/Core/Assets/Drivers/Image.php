@@ -24,11 +24,18 @@ class Image extends BaseUploadDriver implements AssetDriverContract
         $asset = $this->prepare($data, $source);
 
         try {
-            $image = InterventionImage::make($data['file']);
+            // If it's not a jpeg or a PNG then encode it.
+            if ($asset->extension == 'bmp') {
+                $image = InterventionImage::make($data['file'])->encode('jpg');
+                $asset->filename = str_replace($asset->extension, 'jpg', $asset->filename);
+                $asset->extension = 'jpg';
+            } else {
+                $image = InterventionImage::make($data['file']);
+            }
             $asset->width = $image->width();
             $asset->height = $image->height();
         } catch (NotReadableException $e) {
-            // Fall through
+            //
         }
 
         if ($model->assets()->count()) {
@@ -45,14 +52,13 @@ class Image extends BaseUploadDriver implements AssetDriverContract
 
         if ($data['file'] instanceof SplFileInfo) {
             Storage::disk($source->disk)->put($asset->location.'/'.$asset->filename, $data['file']->getContents());
-        // dd();
         } else {
             $data['file']->storeAs($asset->location, $asset->filename, $source->disk);
         }
 
-        // if (! empty($image)) {
-        //     dispatch(new GenerateTransforms($asset));
-        // }
+        if (! empty($image)) {
+            dispatch(new GenerateTransforms($asset));
+        }
 
         return $asset;
     }

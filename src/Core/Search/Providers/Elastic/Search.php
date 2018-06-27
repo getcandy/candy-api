@@ -15,7 +15,6 @@ use GetCandy\Api\Core\Search\ClientContract;
 use Elastica\Aggregation\Filter as FilterAggregation;
 use Elastica\Aggregation\Nested as NestedAggregation;
 use Elastica\Suggest\CandidateGenerator\DirectGenerator;
-use GetCandy\Api\Core\Search\Providers\Elastic\Filters\CategoryFilter;
 
 class Search implements ClientContract
 {
@@ -25,15 +24,24 @@ class Search implements ClientContract
     protected $channel = null;
     protected $authUser = null;
 
-    /**
-     * @var CategoryFilter
-     */
-    protected $categoryFilter;
+    protected $aggregators = [
+        'priceRange'
+    ];
 
-    public function __construct(Client $client, CategoryFilter $categoryFilter)
+    /**
+     * @var FilterSet
+     */
+    protected $filterSet;
+
+    public function __construct(Client $client, FilterSet $filterSet, AggregationSet $aggregationSet)
     {
         $this->client = $client;
-        $this->categoryFilter = $categoryFilter;
+        $this->filterSet = $filterSet;
+        $this->aggregationSet = $aggregationSet;
+
+        foreach ($this->aggregators as $agg) {
+            $this->aggregationSet->add($agg);
+        }
     }
 
     public function with($searchterm)
@@ -82,6 +90,25 @@ class Search implements ClientContract
         $this->channel = $channel;
 
         return $this;
+    }
+
+    public function suggest($keywords)
+    {
+        if (! $this->channel) {
+            $this->setChannelDefault();
+        }
+
+        $search = new \Elastica\Search($this->client);
+        $search
+            ->addIndex($this->getSearchIndex())
+            ->addType($this->type->getHandle());
+
+        $suggest = new \Elastica\Suggest;
+        $term = new \Elastica\Suggest\Completion('suggest', 'name.suggest');
+        $term->setText($keywords);
+        $suggest->addSuggestion($term);
+
+        return $search->search($suggest);
     }
 
     /**
@@ -140,21 +167,25 @@ class Search implements ClientContract
             );
         }
 
-        if (! empty($filters['categories'])) {
-            $this->categoryFilter->add($filters['categories']['values']);
+        foreach ($filters ?? [] as $filter => $value) {
+            $this->filterSet->add($filter, $value);
         }
+
         if ($category) {
-            $this->categoryFilter->add($category);
+            $this->filterSet->add('categories', $category);
         }
 
-        $filter = $this->categoryFilter->getFilter();
+        foreach ($this->filterSet->getFilters() as $filter) {
+            if ($filterQuery = $filter->getQuery()) {
+                $boolQuery->addFilter($filterQuery);
+            }
+        }
 
-        $boolQuery->addFilter(
-            $filter
-        );
-        $query->setPostFilter(
-            $filter
-        );
+        if ($categoryFilter = $this->filterSet->getFilter('categories')) {
+            $query->setPostFilter(
+                $categoryFilter->getQuery()
+            );
+        }
 
         $query->setQuery($boolQuery);
 
@@ -175,6 +206,12 @@ class Search implements ClientContract
         if ($keywords) {
             $query->setSuggest(
                 $this->getSuggest($keywords)
+            );
+        }
+
+        foreach ($this->aggregationSet->get() as $agg) {
+            $query->addAggregation(
+                $agg->getQuery($search, $query)
             );
         }
 

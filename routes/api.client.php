@@ -102,6 +102,7 @@ Route::group([
     $router->post('password/reset/request', 'Auth\ForgotPasswordController@sendResetLinkEmail');
 
     $router->get('search', 'Search\SearchController@search');
+    $router->get('search/suggest', 'Search\SearchController@suggest');
     $router->get('search/products', 'Search\SearchController@products');
 
     /*

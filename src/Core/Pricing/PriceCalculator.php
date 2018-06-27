@@ -2,37 +2,17 @@
 
 namespace GetCandy\Api\Core\Pricing;
 
-use TaxCalculator;
-use CurrencyConverter;
-use InvalidArgumentException;
+use Illuminate\Support\Facades\Facade;
 
-class PriceCalculator
+class PriceCalculator extends Facade
 {
-    protected $pricing = [];
-
-    public function __get($property)
+    /**
+     * Get the registered name of the component.
+     *
+     * @return string
+     */
+    protected static function getFacadeAccessor()
     {
-        if (isset($this->pricing[$property])) {
-            return $this->pricing[$property];
-        }
-        throw new InvalidArgumentException("Method or Property {$property} doesn't exist");
-    }
-
-    public function get($price, $tax = 0)
-    {
-        $converted = CurrencyConverter::convert($price);
-
-        if ($tax == 'default') {
-            $taxamount = TaxCalculator::amount($converted);
-        } else {
-            $taxamount = TaxCalculator::set($tax)->amount($converted);
-        }
-
-        $this->pricing = [
-            'amount' => (int) round($converted),
-            'tax' => (int) round($taxamount),
-        ];
-
-        return $this;
+        return new PriceCalculatorService();
     }
 }

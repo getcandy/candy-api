@@ -3,6 +3,7 @@
 namespace GetCandy\Api\Core\Traits;
 
 use GetCandy\Api\Core\Assets\Models\Asset;
+use GetCandy\Api\Core\Assets\Models\AssetTransform;
 
 trait Assetable
 {
@@ -13,6 +14,6 @@ trait Assetable
 
     public function primaryAsset()
     {
-        return $this->assets()->where('primary', '=', 1);
+        return $this->assets()->where('primary', '=', 1)->with('transforms');
     }
 }

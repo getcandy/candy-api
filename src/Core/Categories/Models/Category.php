@@ -34,11 +34,7 @@ class Category extends BaseModel
     {
         return array_merge(parent::toArray(), [
             'id' => $this->encodedId(),
-            'thumbnail' => $this->primaryAsset->first(),
-            'parent_id' => $this->encode($this->parent_id),
-            'routes' => [
-                'data' => $this->routes,
-            ],
+            'parent_id' => $this->encode($this->parent_id)
         ]);
     }
 

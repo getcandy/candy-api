@@ -6,22 +6,20 @@ use Elastica\Query\Term;
 use Elastica\Query\Nested;
 use Elastica\Query\BoolQuery;
 
-class CategoryFilter extends AbstractFilter
+class PriceFilter extends AbstractFilter
 {
-    protected $categories = [];
-
-    public function __construct()
-    {
-        $this->categories = collect();
-    }
+    protected $dirs = [];
 
     public function process($payload)
     {
-        if (!empty($payload['values']) && is_array($payload['values'])) {
-            $this->add($payload['values']);
-        } elseif (is_string($payload)) {
-            $this->add($payload);
+        if (empty($payload['values']) || !is_array($payload['values'])) {
+            return null;
         }
+
+        foreach ($payload['values'] as $handle => $value) {
+            $this->dirs[$handle] = $value;
+        }
+
         return $this;
     }
 
@@ -50,21 +48,22 @@ class CategoryFilter extends AbstractFilter
      */
     public function getQuery()
     {
-        $filter = new BoolQuery;
+        dd($this->dirs);
+        // $filter = new BoolQuery;
 
-        foreach ($this->categories as $value) {
-            $cat = new Nested();
-            $cat->setPath('departments');
+        // foreach ($this->categories as $value) {
+        //     $cat = new Nested();
+        //     $cat->setPath('departments');
 
-            $term = new Term;
-            $term->setTerm('departments.id', $value);
+        //     $term = new Term;
+        //     $term->setTerm('departments.id', $value);
 
-            $cat->setQuery($term);
+        //     $cat->setQuery($term);
 
-            $filter->addMust($cat);
-            $this->categories[] = $value;
-        }
+        //     $filter->addMust($cat);
+        //     $this->categories[] = $value;
+        // }
 
-        return $filter;
+        // return $filter;
     }
 }

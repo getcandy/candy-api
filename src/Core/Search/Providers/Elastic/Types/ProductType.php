@@ -31,6 +31,11 @@ class ProductType extends BaseType
         'sku' => [
             'type' => 'text',
             'analyzer' => 'standard',
+            'fields' => [
+                'suggest' => [
+                    'type' => 'completion',
+                ],
+            ],
         ],
         'created_at'  => [
             'type' => 'date',
@@ -116,6 +121,9 @@ class ProductType extends BaseType
             'fields' => [
                 'sortable' => [
                     'type' => 'keyword',
+                ],
+                'suggest' => [
+                    'type' => 'completion',
                 ],
                 'en' => [
                     'type' => 'text',

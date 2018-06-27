@@ -110,7 +110,7 @@ class PaymentService extends BaseService
                 'status' => $result->transaction->type,
                 'merchant' => '-',
                 'order' => $order,
-                'notes' => $result->message,
+                'notes' => '',
             ];
         } else {
             $data = [

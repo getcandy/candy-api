@@ -105,8 +105,6 @@ class ProductService extends BaseService
             $product->save();
         }
 
-        event(new AttributableSavedEvent($product));
-
         if (! empty($data['customer_groups'])) {
             $groupData = $this->mapCustomerGroupData($data['customer_groups']['data']);
             $product->customerGroups()->sync($groupData);
@@ -130,10 +128,13 @@ class ProductService extends BaseService
 
         $variant = $this->createVariant($product, [
             'options' => [],
-            'stock' => $data['stock'],
+            'stock' => $data['stock'] ?? 0,
+            'incoming' => $data['incoming'] ?? 0,
             'sku' => $sku,
             'price' => $data['price'],
             'pricing' => $this->getPriceMapping($data['price']),
+            'min_qty' => $data['min_qty'] ?? 1,
+            'unit_qty' => $data['unit_qty'] ?? 1,
         ]);
 
         if (! empty($data['tax_id'])) {
@@ -249,7 +250,7 @@ class ProductService extends BaseService
 
         $placeholders = implode(',', array_fill(0, count($parsedIds), '?')); // string for the query
 
-        $query = $this->model->whereIn('id', $parsedIds);
+        $query = $this->model->with(['routes', 'primaryAsset.transforms', 'firstVariant'])->whereIn('id', $parsedIds);
 
         $groups = \GetCandy::getGroups();
         $user = \Auth::user();
