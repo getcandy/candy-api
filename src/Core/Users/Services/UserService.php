@@ -73,7 +73,7 @@ class UserService extends BaseService implements UserContract
     {
         $user = $this->model;
 
-        $user->name = $data['name'];
+        $user->name = $data['firstname'].' '.$data['lastname'];
         $user->email = $data['email'];
         $user->password = bcrypt($data['password']);
 
@@ -88,6 +88,9 @@ class UserService extends BaseService implements UserContract
         $user->language()->associate($lang);
 
         $user->save();
+
+        $data['details']['firstname'] = $data['firstname'];
+        $data['details']['lastname'] = $data['lastname'];
 
         if (! empty($data['details'])) {
             $data['details']['user_id'] = $user->id;
