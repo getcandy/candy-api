@@ -74,24 +74,27 @@ class ShippingMethodService extends BaseService
      */
     public function getForOrder($orderId)
     {
-        // // Get the zones for this order...
+        // Get the zones for this order...
         $order = app('api')->orders()->getByHashedId($orderId);
         $basket = app('api')->baskets()->setTotals($order->basket);
-        $zones = app('api')->shippingZones()->getByCountryName($order->shipping_details['country']);
+        $methods = $this->all();
         $basket = $order->basket;
         $calculator = new ShippingCalculator(app());
 
         $options = [];
 
-        foreach ($zones as $zone) {
-            foreach ($zone->methods as $index => $method) {
-                $option = $calculator->with($method)->calculate($basket);
-                if (! $option) {
-                    continue;
-                }
-                $options[$index] = $calculator->with($method)->calculate($basket);
+        foreach ($methods as $index => $method) {
+            $option = $calculator->with($method)->calculate($order);
+            if (! $option) {
+                continue;
+            }
+            if (is_array($option)) {
+                $options = array_merge($options, $option);
+            } else {
+                $options[$index] = $option;
             }
         }
+
 
         return collect($options);
     }
