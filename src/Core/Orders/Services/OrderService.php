@@ -508,7 +508,6 @@ class OrderService extends BaseService
             $order->notes = $data['notes'];
         }
 
-        $type = null;
         if (! empty($data['payment_type_id'])) {
             $type = app('api')->paymentTypes()->getByHashedId($data['payment_type_id']);
         }
@@ -516,11 +515,12 @@ class OrderService extends BaseService
         $result = app('api')->payments()->charge(
             $order,
             $data['payment_token'] ?? null,
-            $type
+            $type ?? null,
+            $data['data'] ?? []
         );
 
-        if ($result) {
-            if ($type) {
+        if ($result->success) {
+            if (!empty($type)) {
                 $order->status = $type->success_status;
             } else {
                 $order->status = 'payment-processing';
