@@ -54,7 +54,7 @@ class Basket extends BaseModel
 
     public function activeOrder()
     {
-        return $this->hasOne(Order::class)->withoutGlobalScope('open');
+        return $this->hasOne(Order::class);
     }
 
     public function refresh()
