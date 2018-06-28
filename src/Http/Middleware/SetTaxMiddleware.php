@@ -17,10 +17,12 @@ class SetTaxMiddleware
     public function handle($request, Closure $next)
     {
         // if (! $request->excl_tax) {
+        /*
         TaxCalculator::setTax(
                 app('api')->taxes()->getDefaultRecord()
             );
         // }
+        */
 
         return $next($request);
     }
