@@ -26,7 +26,7 @@ class AddDriverToTransactions extends Migration
     public function down()
     {
         Schema::table('transactions', function (Blueprint $table) {
-            $table->dropColumn('driver');
+            $table->dropIfExists('driver');
         });
     }
 }
