@@ -41,8 +41,8 @@ class OrderService extends BaseService
 
         app('api')->baskets()->setTotals($basket);
 
-        if ($basket->order) {
-            $order = $basket->order;
+        if ($basket->activeOrder) {
+            $order = $basket->activeOrder;
         } else {
             $order = new Order;
             $order->basket()->associate($basket);
