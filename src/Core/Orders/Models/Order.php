@@ -16,6 +16,10 @@ class Order extends BaseModel
         'lines',
     ];
 
+    protected $dates = [
+        'placed_at'
+    ];
+
     protected $required = [
         'currency',
         'billing_firstname',
