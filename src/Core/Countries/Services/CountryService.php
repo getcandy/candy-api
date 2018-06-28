@@ -12,6 +12,11 @@ class CountryService extends BaseService
         $this->model = new Country;
     }
 
+    /**
+     * Get countries grouped by region
+     *
+     * @return Collection
+     */
     public function getGroupedByRegion()
     {
         $countries = $this->model->get();
@@ -21,5 +26,17 @@ class CountryService extends BaseService
         })->groupBy('region');
 
         return $countries;
+    }
+
+    /**
+     * Get a country by its name
+     *
+     * @param string $name
+     * @param string $locale
+     * @return Country
+     */
+    public function getByName($name, $locale = 'en')
+    {
+        return $this->model->where('name->' . $locale, $name)->first();
     }
 }
