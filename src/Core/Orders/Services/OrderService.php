@@ -351,7 +351,7 @@ class OrderService extends BaseService
 
         $order = DB::table('orders')->
             select(
-                DB::RAW('MAX(reference) as reference, id')
+                DB::RAW('MAX(reference) as reference')
             )->whereYear('placed_at', '=', $year)
             ->whereMonth('placed_at', '=', $month)
             ->first();
