@@ -11,6 +11,7 @@ use GetCandy\Api\Core\Auth\Models\User;
 use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Baskets\Models\Basket;
+use GetCandy\Api\Core\Orders\Events\OrderSavedEvent;
 use GetCandy\Api\Core\Orders\Events\OrderProcessedEvent;
 use GetCandy\Api\Core\Orders\Events\OrderBeforeSavedEvent;
 use GetCandy\Api\Core\Orders\Exceptions\IncompleteOrderException;
@@ -63,24 +64,15 @@ class OrderService extends BaseService
         }
 
         $order->conversion = CurrencyConverter::rate();
-        $order->order_total = round($basket->total, 2) * 100;
-        $order->sub_total = round($basket->subTotal, 2) * 100;
-        $order->tax_total = round($basket->tax, 2) * 100;
         $order->currency = $basket->currency;
-
-        // If we have shipping already, make sure it stays on.
-        $shipping = $order->lines()->whereIsShipping(true)->first();
-
-        if ($shipping) {
-            $order->order_total += $shipping->line_total + $shipping->tax_total;
-            $order->sub_total += $shipping->unit_price;
-            $order->tax_total += $shipping->tax_total;
-        }
 
         $order->save();
 
         $order->discounts()->delete();
-        $order->lines()->whereIsShipping(false)->delete();
+
+        foreach ($order->basketLines as $line) {
+            $line->delete();
+        }
 
         $order->discounts()->createMany(
             $this->mapOrderDiscounts($basket)
@@ -90,8 +82,9 @@ class OrderService extends BaseService
             $this->mapOrderLines($basket)
         );
 
-
         $order->discount_total = $order->lines()->sum('discount_total');
+
+        event(new OrderSavedEvent($order));
 
         return $order;
     }
@@ -125,18 +118,8 @@ class OrderService extends BaseService
         $existing = $order->lines()->where('is_shipping', '=', true)->first();
 
         if ($existing) {
-            $order->sub_total -= $existing->unit_price;
-            $order->tax_total -= $existing->tax_total;
-            $order->order_total -= ($existing->tax_total + $existing->unit_price);
-            $order->save();
             $existing->delete();
         }
-
-        $order->sub_total += $rate->amount;
-        $order->tax_total += $rate->tax;
-        $order->order_total = $order->sub_total + $order->tax_total;
-
-        $order->save();
 
         // Does the basket have a free shipping discount?
         $discounts = $order->basket->discounts;
@@ -152,6 +135,8 @@ class OrderService extends BaseService
             'tax_rate' => $tax->percentage,
             'sku' => $shippingPriceId,
         ]);
+
+        event(new OrderSavedEvent($order));
 
         return $order;
     }
@@ -182,6 +167,7 @@ class OrderService extends BaseService
 
         event(new OrderBeforeSavedEvent($order));
         $order->save();
+        event(new OrderSavedEvent($order));
 
         return $order;
     }
@@ -213,6 +199,8 @@ class OrderService extends BaseService
         );
 
         $refreshedOrder->save();
+
+        event(new OrderSavedEvent($order));
     }
 
     /**
@@ -271,6 +259,8 @@ class OrderService extends BaseService
 
         $order->save();
 
+        event(new OrderSavedEvent($order));
+
         return $order;
     }
 
@@ -323,6 +313,8 @@ class OrderService extends BaseService
 
         $order->status = 'expired';
         $order->save();
+
+        event(new OrderSavedEvent($order));
 
         return true;
     }
@@ -387,13 +379,9 @@ class OrderService extends BaseService
             $this->mapOrderLines($basket)
         );
 
-        $order->conversion = CurrencyConverter::rate();
-        $order->order_total = round($basket->total, 2) * 100;
-        $order->sub_total = round($basket->subTotal, 2) * 100;
-        $order->tax_total = round($basket->tax, 2) * 100;
-        $order->currency = $basket->currency;
-
         $order->save();
+
+        event(new OrderSavedEvent($order));
 
         return $order;
     }
@@ -504,9 +492,8 @@ class OrderService extends BaseService
             throw new IncompleteOrderException;
         }
 
-        if (! empty($data['notes'])) {
-            $order->notes = $data['notes'];
-        }
+        $order->notes = $data['notes'] ?? null;
+        $order->customer_reference = $data['customer_reference'] ?? null;
 
         if (! empty($data['payment_type_id'])) {
             $type = app('api')->paymentTypes()->getByHashedId($data['payment_type_id']);
@@ -533,7 +520,7 @@ class OrderService extends BaseService
 
         $order->save();
 
-        // event(new OrderProcessedEvent($order));
+        event(new OrderProcessedEvent($order));
 
         return $order;
     }
