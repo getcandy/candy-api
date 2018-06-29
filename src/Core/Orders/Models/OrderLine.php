@@ -35,4 +35,9 @@ class OrderLine extends BaseModel
     {
         return $this->belongsTo(ProductVariant::class, 'product_variant_id');
     }
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
+    }
 }
