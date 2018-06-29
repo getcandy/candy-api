@@ -14,6 +14,11 @@ class Order extends BaseModel
 
     protected $fillable = [
         'lines',
+        'delivery_total',
+        'tax_total',
+        'discount_total',
+        'sub_total',
+        'order_total',
     ];
 
     protected $dates = [
