@@ -179,6 +179,16 @@ class Order extends BaseModel
         return $this->hasMany(OrderLine::class)->orderBy('is_shipping', 'asc');
     }
 
+    /**
+     * Gets all order lines that are from the basket
+     *
+     * @return void
+     */
+    public function basketLines()
+    {
+        return $this->hasMany(OrderLine::class)->whereIsShipping(false)->whereIsManual(false);
+    }
+
     public function basket()
     {
         return $this->belongsTo(Basket::class);
