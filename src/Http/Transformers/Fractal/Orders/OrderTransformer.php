@@ -24,6 +24,7 @@ class OrderTransformer extends BaseTransformer
             'tax_total' => $order->tax_total,
             'order_total' => $order->order_total,
             'reference' => $order->ref,
+            'customer_reference' => $order->customer_reference,
             'invoice_reference' => $order->invoice_reference,
             'vat_no' => $order->vat_no,
             'tracking_no' => $order->tracking_no,
