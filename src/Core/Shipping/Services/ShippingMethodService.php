@@ -95,7 +95,6 @@ class ShippingMethodService extends BaseService
             }
         }
 
-
         return collect($options);
     }
 

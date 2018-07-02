@@ -7,7 +7,7 @@ use Elastica\Search;
 abstract class AbstractAggregator
 {
     /**
-     * Get the aggregator
+     * Get the aggregator.
      *
      * @return mixed
      */

@@ -25,7 +25,7 @@ class EstimateRequest extends FormRequest
     {
         return [
             'amount' => 'required|numeric',
-            'zip' => 'required'
+            'zip' => 'required',
         ];
     }
 }

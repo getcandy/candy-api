@@ -188,7 +188,7 @@ class SearchService
                 foreach ($agg['categories_after_filter']['categories_post_inner']['buckets'] as $bucket) {
                     $selected[] = $bucket['key'];
                 }
-            } else if ($handle == 'categories_before') {
+            } elseif ($handle == 'categories_before') {
                 foreach ($agg['categories_before_inner']['buckets'] as $bucket) {
                     $all[] = $bucket['key'];
                 }

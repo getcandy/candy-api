@@ -18,7 +18,7 @@ class OrderLineService extends BaseService
     }
 
     /**
-     * Add a manual order line
+     * Add a manual order line.
      *
      * @param string $orderId
      * @param array $data
@@ -34,14 +34,13 @@ class OrderLineService extends BaseService
             $lineTotal = $data['unit_price'] * $data['quantity'];
         }
 
-        if (!isset($data['unit_price'])) {
+        if (! isset($data['unit_price'])) {
             $unitPrice = $data['line_total'] / $data['quantity'];
         } else {
             $unitPrice = $data['unit_price'];
         }
 
         $pricing = PriceCalculator::get($lineTotal, $data['tax_rate']);
-
 
         $order->lines()->create([
             'description' => $data['description'],
@@ -53,7 +52,7 @@ class OrderLineService extends BaseService
             'tax_total' => round($pricing->tax, 2),
             'variant' => $data['variant'] ?? null,
             'sku' => $data['sku'] ?? null,
-            'discount_total' => $data['discount_total'] ?? 0
+            'discount_total' => $data['discount_total'] ?? 0,
         ]);
 
         event(new OrderSavedEvent($order));
@@ -62,15 +61,16 @@ class OrderLineService extends BaseService
     }
 
     /**
-     * Delete an order line
+     * Delete an order line.
      *
      * @param string $lineId
-     * @return boolean
+     * @return bool
      */
     public function delete($lineId)
     {
         $realId = $this->model->decodeId($lineId);
         $line = $this->model->find($realId);
+
         return $line->delete();
     }
 }

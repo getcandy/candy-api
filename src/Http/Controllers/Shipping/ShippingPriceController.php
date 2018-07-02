@@ -65,6 +65,7 @@ class ShippingPriceController extends BaseController
     public function estimate(EstimateRequest $request)
     {
         $result = app('api')->shippingPrices()->estimate($request->amount, $request->zip);
+
         return $this->respondWithItem($result, new ShippingPriceTransformer);
     }
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace GetCandy\Api\Core\Payments\Providers;
 
 use Log;
@@ -29,14 +30,14 @@ class SagePay extends AbstractProvider
         // Get the billing country
         $country = app('api')->countries()->getByName($order->billing_country);
 
-        if (!$country) {
+        if (! $country) {
             $countryIso = 'GB';
         } else {
             $countryIso = $country->iso_a_2;
         }
 
         $client = new Client([
-            'base_uri' => $this->host
+            'base_uri' => $this->host,
         ]);
 
         try {
@@ -45,8 +46,8 @@ class SagePay extends AbstractProvider
                 'paymentMethod' => [
                     'card' => [
                         'merchantSessionKey' => $data['merchant_key'] ?? $this->getClientToken(),
-                        'cardIdentifier' => $token
-                    ]
+                        'cardIdentifier' => $token,
+                    ],
                 ],
                 'amount' => $order->order_total,
                 'currency' => $order->currency,
@@ -59,35 +60,35 @@ class SagePay extends AbstractProvider
                     'address1' => $order->billing_address,
                     'city' => $order->billing_city,
                     'postalCode' => $order->billing_zip,
-                    'country' => $countryIso
+                    'country' => $countryIso,
                 ],
-                'entryMethod' => 'Ecommerce'
+                'entryMethod' => 'Ecommerce',
             ];
 
             $response = $client->request('POST', 'transactions', [
                 'headers' => [
-                    'Authorization' => 'Basic ' . $this->getCredentials(),
+                    'Authorization' => 'Basic '.$this->getCredentials(),
                     'Content-Type' => 'application/json',
                     'Cache-Control' => 'no-cache',
                 ],
-                'json' => $payload
+                'json' => $payload,
             ]);
-
-
         } catch (ClientException $e) {
             $errors = json_decode($e->getResponse()->getBody()->getContents(), true);
             $this->createFailedTransaction($errors, $order);
+
             return false;
         }
 
         $content = json_decode($response->getBody()->getContents(), true);
         $this->createSuccessTransaction($content, $order);
+
         return true;
     }
 
     protected function getVendorTxCode($order)
     {
-        return base64_encode($order->encodedId() . '-' . microtime(true));
+        return base64_encode($order->encodedId().'-'.microtime(true));
     }
 
     protected function createSuccessTransaction($content, $order)
@@ -123,34 +124,35 @@ class SagePay extends AbstractProvider
         $transaction->last_four = '-';
         $transaction->transaction_id = 'Unknown';
         $transaction->save();
+
         return $transaction;
     }
 
     public function refund($token, $amount = null)
     {
-
     }
 
     public function getClientToken()
     {
         $client = new Client([
-            'base_uri' => $this->host
+            'base_uri' => $this->host,
         ]);
 
         try {
             $response = $client->request('POST', 'merchant-session-keys', [
                 'headers' => [
-                    'Authorization' => 'Basic ' . $this->getCredentials(),
+                    'Authorization' => 'Basic '.$this->getCredentials(),
                     'Content-Type' => 'application/json',
                     'Cache-Control' => 'no-cache',
                 ],
                 'json' => [
-                    'vendorName' => $this->getVendor()
-                ]
+                    'vendorName' => $this->getVendor(),
+                ],
             ]);
         } catch (ClientException $e) {
             Log::error($e->getMessage());
-            return null;
+
+            return;
         }
 
         $response = json_decode($response->getBody()->getContents(), true);
@@ -172,6 +174,6 @@ class SagePay extends AbstractProvider
 
     protected function getCredentials()
     {
-        return base64_encode(config('services.sagepay.key') . ':' . config('services.sagepay.password'));
+        return base64_encode(config('services.sagepay.key').':'.config('services.sagepay.password'));
     }
 }

@@ -22,13 +22,13 @@ class RegionalProvider extends AbstractProvider
                     $region->region == $outcode ||
                     $region->region == $strippedOutcode;
             });
+
             return (bool) $region;
         });
 
-        if (!$prices->count()) {
+        if (! $prices->count()) {
             return false;
         }
-
 
         $user = $basket->user;
         $price = $prices->filter(function ($item) use ($weight, $basket, $user, $users, $order) {
