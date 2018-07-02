@@ -4,6 +4,7 @@ namespace GetCandy\Api\Core\Shipping\Services;
 
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Shipping\Models\ShippingPrice;
+use GetCandy\Api\Core\Shipping\Models\ShippingRegion;
 
 class ShippingPriceService extends BaseService
 {
@@ -94,5 +95,38 @@ class ShippingPriceService extends BaseService
         $price = $this->getByHashedId($id);
 
         return $price->delete();
+    }
+
+    /**
+     * Estimates shipping prices for a zip and amount
+     *
+     * @param int $amount
+     * @param string $zip
+     * @return void
+     */
+    public function estimate($amount, $zip)
+    {
+        $postcode = strtoupper($zip);
+        $outcode = rtrim(substr($postcode, 0, -3));
+        $strippedOutcode = rtrim($outcode, '0..9');
+
+        // Get region.
+        $region = ShippingRegion::where('region', '=', $postcode)
+            ->orWhere('region', '=', $outcode)
+            ->orWhere('region', '=', $strippedOutcode)
+            ->first();
+
+        if (!$region) {
+            return false;
+        }
+
+        // Get the shipping zone regional prices.
+        $prices = $region->zone->prices()->whereHas('method', function ($q) {
+            return $q->whereType('regional');
+        })->get();
+
+        return $prices->filter(function ($price) use ($amount) {
+            return ($amount * 100) > $price->min_basket;
+        })->sortBy('rate')->first();
     }
 }

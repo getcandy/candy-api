@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use GetCandy\Api\Http\Controllers\BaseController;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use GetCandy\Api\Http\Requests\Shipping\Pricing\CreateRequest;
+use GetCandy\Api\Http\Requests\Shipping\Pricing\EstimateRequest;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use GetCandy\Api\Http\Transformers\Fractal\Shipping\ShippingPriceTransformer;
 
@@ -58,6 +59,12 @@ class ShippingPriceController extends BaseController
             return $this->errorNotFound();
         }
 
+        return $this->respondWithItem($result, new ShippingPriceTransformer);
+    }
+
+    public function estimate(EstimateRequest $request)
+    {
+        $result = app('api')->shippingPrices()->estimate($request->amount, $request->zip);
         return $this->respondWithItem($result, new ShippingPriceTransformer);
     }
 
