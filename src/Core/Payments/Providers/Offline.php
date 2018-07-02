@@ -4,9 +4,9 @@ namespace GetCandy\Api\Core\Payments\Providers;
 
 use GetCandy\Api\Core\Orders\Models\Order;
 
-class OnAccount extends AbstractProvider
+class Offline extends AbstractProvider
 {
-    protected $name = 'On Account';
+    protected $name = 'Offline';
 
     public function getName()
     {
@@ -27,7 +27,7 @@ class OnAccount extends AbstractProvider
 
     public function getClientToken()
     {
-        return 'ONACCOUNT';
+        return 'OFFLINE';
     }
 
     public function updateTransaction($transaction)
