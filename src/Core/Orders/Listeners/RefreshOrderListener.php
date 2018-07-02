@@ -17,14 +17,16 @@ class RefreshOrderListener
     {
         $order = $event->order;
 
-        $totals = $order->lines()->select(
+        $totals = \DB::table('order_lines')->select(
+            'order_id',
             DB::RAW('SUM(line_total) as line_total'),
             DB::RAW('SUM(tax_total) as tax_total'),
             DB::RAW('SUM(discount_total) as discount_total'),
             DB::RAW('SUM(line_total) + SUM(tax_total) - SUM(discount_total) as grand_total')
-        )->whereIsShipping(false)->first()->toArray();
+        )->where('order_id', '=', $order->id)->whereIsShipping(false)->groupBy('order_id')->first();
 
-        $totals['delivery_total'] = 0;
+
+        $totals->delivery_total = 0;
 
         $shipping = $order->lines()
             ->select(
@@ -35,18 +37,18 @@ class RefreshOrderListener
             )->whereIsShipping(true)->first();
 
         if ($shipping) {
-            $totals['delivery_total'] = $shipping->line_total;
-            $totals['tax_total'] += $shipping->tax_total;
-            $totals['discount_total'] += $shipping->discount_total;
-            $totals['grand_total'] += $shipping->grand_total;
+            $totals->delivery_total = $shipping->line_total;
+            $totals->tax_total += $shipping->tax_total;
+            $totals->discount_total += $shipping->discount_total;
+            $totals->grand_total += $shipping->grand_total;
         }
 
         $order->update([
-            'delivery_total' => $totals['delivery_total'] ?? 0,
-            'tax_total' => $totals['tax_total'] ?? 0,
-            'discount_total' => $totals['discount_total'] ?? 0,
-            'sub_total' => $totals['line_total'] ?? 0,
-            'order_total' => $totals['grand_total'] ?? 0,
+            'delivery_total' => $totals->delivery_total ?? 0,
+            'tax_total' => $totals->tax_total ?? 0,
+            'discount_total' => $totals->discount_total ?? 0,
+            'sub_total' => $totals->line_total ?? 0,
+            'order_total' => $totals->grand_total ?? 0,
         ]);
     }
 }
