@@ -12,8 +12,8 @@ class PriceFilter extends AbstractFilter
 
     public function process($payload)
     {
-        if (empty($payload['values']) || !is_array($payload['values'])) {
-            return null;
+        if (empty($payload['values']) || ! is_array($payload['values'])) {
+            return;
         }
 
         foreach ($payload['values'] as $handle => $value) {
@@ -24,7 +24,7 @@ class PriceFilter extends AbstractFilter
     }
 
     /**
-     * Add a category into the mix
+     * Add a category into the mix.
      *
      * @param string $category
      * @return self
@@ -38,11 +38,12 @@ class PriceFilter extends AbstractFilter
         } else {
             $this->categories->push($category);
         }
+
         return $this;
     }
 
     /**
-     * Get the query for the filter
+     * Get the query for the filter.
      *
      * @return mixed
      */

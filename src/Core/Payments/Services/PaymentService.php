@@ -80,6 +80,7 @@ class PaymentService extends BaseService
         if ($type) {
             $this->setProvider($type->driver);
         }
+
         return $this->getProvider()->charge($token, $order, $data);
     }
 

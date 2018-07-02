@@ -17,16 +17,17 @@ class CategoryFilter extends AbstractFilter
 
     public function process($payload)
     {
-        if (!empty($payload['values']) && is_array($payload['values'])) {
+        if (! empty($payload['values']) && is_array($payload['values'])) {
             $this->add($payload['values']);
         } elseif (is_string($payload)) {
             $this->add($payload);
         }
+
         return $this;
     }
 
     /**
-     * Add a category into the mix
+     * Add a category into the mix.
      *
      * @param string $category
      * @return self
@@ -40,11 +41,12 @@ class CategoryFilter extends AbstractFilter
         } else {
             $this->categories->push($category);
         }
+
         return $this;
     }
 
     /**
-     * Get the query for the filter
+     * Get the query for the filter.
      *
      * @return mixed
      */

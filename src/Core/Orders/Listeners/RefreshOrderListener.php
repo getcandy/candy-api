@@ -3,7 +3,6 @@
 namespace GetCandy\Api\Core\Orders\Listeners;
 
 use DB;
-use GetCandy\Api\Core\Discounts\Factory;
 use GetCandy\Api\Core\Orders\Events\OrderSavedEvent;
 
 class RefreshOrderListener
@@ -47,7 +46,7 @@ class RefreshOrderListener
             'tax_total' => $totals['tax_total'] ?? 0,
             'discount_total' => $totals['discount_total'] ?? 0,
             'sub_total' => $totals['line_total'] ?? 0,
-            'order_total' => $totals['grand_total'] ?? 0
+            'order_total' => $totals['grand_total'] ?? 0,
         ]);
     }
 }

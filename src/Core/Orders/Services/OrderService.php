@@ -323,6 +323,7 @@ class OrderService extends BaseService
     {
         $id = $this->model->decodeId($id);
         $query = $this->model->withoutGlobalScope('open')->withoutGlobalScope('not_expired');
+
         return $query->findOrFail($id);
     }
 
@@ -507,7 +508,7 @@ class OrderService extends BaseService
         );
 
         if ($result) {
-            if (!empty($type)) {
+            if (! empty($type)) {
                 $order->status = $type->success_status;
             } else {
                 $order->status = 'payment-processing';

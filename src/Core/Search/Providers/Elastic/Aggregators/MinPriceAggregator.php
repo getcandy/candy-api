@@ -10,6 +10,7 @@ class MinPriceAggregator
     {
         $agg = new Min('min_price');
         $agg->setField('min_price');
+
         return $agg;
     }
 }

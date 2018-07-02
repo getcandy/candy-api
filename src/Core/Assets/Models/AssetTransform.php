@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Assets\Models;
 
-use GetCandy\Api\Core\Scaffold\BaseModel;
 use Storage;
+use GetCandy\Api\Core\Scaffold\BaseModel;
 
 class AssetTransform extends BaseModel
 {
@@ -14,7 +14,7 @@ class AssetTransform extends BaseModel
     public function toArray()
     {
         return array_merge(parent::toArray(), [
-            'url' => Storage::disk($this->asset->source->disk)->url($this->location . '/' . $this->filename)
+            'url' => Storage::disk($this->asset->source->disk)->url($this->location.'/'.$this->filename),
         ]);
     }
 

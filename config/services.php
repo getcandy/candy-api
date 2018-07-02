@@ -14,5 +14,5 @@ return [
     'sagepay' => [
         'key' => env('SAGEPAY_KEY'),
         'password' => env('SAGEPAY_PASSWORD'),
-    ]
+    ],
 ];
