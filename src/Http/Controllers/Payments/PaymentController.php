@@ -45,6 +45,13 @@ class PaymentController extends BaseController
         return $this->respondWithItem($transaction, new TransactionTransformer);
     }
 
+    /**
+     * Handle the request to void a payment
+     *
+     * @param string $id
+     * @param VoidRequest $request
+     * @return Json
+     */
     public function void($id, VoidRequest $request)
     {
         try {
