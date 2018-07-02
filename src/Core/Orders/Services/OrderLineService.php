@@ -28,13 +28,13 @@ class OrderLineService extends BaseService
     {
         $order = $this->orders->getByHashedId($orderId);
 
-        if (!empty($data['line_total'])) {
+        if (isset($data['line_total'])) {
             $lineTotal = $data['line_total'];
         } else {
             $lineTotal = $data['unit_price'] * $data['quantity'];
         }
 
-        if (empty($data['unit_price'])) {
+        if (!isset($data['unit_price'])) {
             $unitPrice = $data['line_total'] / $data['quantity'];
         } else {
             $unitPrice = $data['unit_price'];
