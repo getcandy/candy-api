@@ -27,15 +27,6 @@ class SagePay extends AbstractProvider
 
     public function charge($token, Order $order, $data = [])
     {
-        // Get the billing country
-        $country = app('api')->countries()->getByName($order->billing_country);
-
-        if (! $country) {
-            $countryIso = 'GB';
-        } else {
-            $countryIso = $country->iso_a_2;
-        }
-
         $client = new Client([
             'base_uri' => $this->host,
         ]);
@@ -60,7 +51,7 @@ class SagePay extends AbstractProvider
                     'address1' => $order->billing_address,
                     'city' => $order->billing_city,
                     'postalCode' => $order->billing_zip,
-                    'country' => $countryIso,
+                    'country' => $order->billing_country,
                 ],
                 'entryMethod' => 'Ecommerce',
             ];
