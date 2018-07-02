@@ -506,7 +506,7 @@ class OrderService extends BaseService
             $data['data'] ?? []
         );
 
-        if ($result->success) {
+        if ($result) {
             if (!empty($type)) {
                 $order->status = $type->success_status;
             } else {
