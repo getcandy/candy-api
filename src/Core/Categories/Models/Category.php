@@ -34,7 +34,7 @@ class Category extends BaseModel
     {
         return array_merge(parent::toArray(), [
             'id' => $this->encodedId(),
-            'parent_id' => $this->encode($this->parent_id)
+            'parent_id' => $this->encode($this->parent_id),
         ]);
     }
 

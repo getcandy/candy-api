@@ -60,6 +60,7 @@ class OrderController extends BaseController
     public function store(CreateRequest $request)
     {
         $order = app('api')->orders()->store($request->basket_id, $request->user());
+
         return $this->respondWithItem($order->fresh(), new OrderTransformer);
     }
 
@@ -77,6 +78,7 @@ class OrderController extends BaseController
             if (! $order->placed_at) {
                 return $this->errorForbidden('Payment has failed');
             }
+
             return $this->respondWithItem($order, new OrderTransformer);
         } catch (IncompleteOrderException $e) {
             return $this->errorForbidden('The order is missing billing information');

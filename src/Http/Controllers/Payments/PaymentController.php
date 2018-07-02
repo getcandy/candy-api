@@ -46,7 +46,7 @@ class PaymentController extends BaseController
     }
 
     /**
-     * Handle the request to void a payment
+     * Handle the request to void a payment.
      *
      * @param string $id
      * @param VoidRequest $request

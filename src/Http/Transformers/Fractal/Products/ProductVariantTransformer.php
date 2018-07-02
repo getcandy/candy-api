@@ -21,7 +21,7 @@ class ProductVariantTransformer extends BaseTransformer
             'id' => $variant->encodedId(),
             'sku' => $variant->sku,
             'backorder' => $variant->backorder,
-            'requires_shipping' => (bool)$variant->requires_shipping,
+            'requires_shipping' => (bool) $variant->requires_shipping,
             'price' => $variant->total_price,
             'unit_price' => $variant->total_price / $variant->unit_qty,
             'tax' => $variant->tax_total,

@@ -2,12 +2,11 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Shipping;
 
+use PriceCalculator;
 use GetCandy\Api\Core\Shipping\Models\ShippingPrice;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Currencies\CurrencyTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Customers\CustomerGroupTransformer;
-use PriceCalculator;
-use TaxCalculator;
 
 class ShippingPriceTransformer extends BaseTransformer
 {

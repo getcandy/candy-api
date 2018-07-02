@@ -50,8 +50,8 @@ class EventServiceProvider extends ServiceProvider
             IndexObjectListener::class,
         ],
         OrderSavedEvent::class => [
-            RefreshOrderListener::class
-        ]
+            RefreshOrderListener::class,
+        ],
     ];
 
     /**

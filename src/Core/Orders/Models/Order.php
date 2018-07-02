@@ -22,7 +22,7 @@ class Order extends BaseModel
     ];
 
     protected $dates = [
-        'placed_at'
+        'placed_at',
     ];
 
     protected $required = [
@@ -185,7 +185,7 @@ class Order extends BaseModel
     }
 
     /**
-     * Gets all order lines that are from the basket
+     * Gets all order lines that are from the basket.
      *
      * @return void
      */

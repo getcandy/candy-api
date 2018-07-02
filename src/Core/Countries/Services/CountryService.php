@@ -13,7 +13,7 @@ class CountryService extends BaseService
     }
 
     /**
-     * Get countries grouped by region
+     * Get countries grouped by region.
      *
      * @return Collection
      */
@@ -29,7 +29,7 @@ class CountryService extends BaseService
     }
 
     /**
-     * Get a country by its name
+     * Get a country by its name.
      *
      * @param string $name
      * @param string $locale
@@ -37,6 +37,6 @@ class CountryService extends BaseService
      */
     public function getByName($name, $locale = 'en')
     {
-        return $this->model->where('name->' . $locale, $name)->first();
+        return $this->model->where('name->'.$locale, $name)->first();
     }
 }

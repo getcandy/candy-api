@@ -19,7 +19,7 @@ class OrderLineController extends BaseController
     }
 
     /**
-     * Handles the request to store a new order line
+     * Handles the request to store a new order line.
      *
      * @param string $orderId
      * @param CreateRequest $request
@@ -38,7 +38,7 @@ class OrderLineController extends BaseController
     }
 
     /**
-     * Handles the request to remove an order line
+     * Handles the request to remove an order line.
      *
      * @param string $lineId
      * @param DeleteRequest $request
@@ -51,6 +51,7 @@ class OrderLineController extends BaseController
         } catch (ModelNotFoundException $e) {
             //
         }
+
         return $this->respondWithSuccess();
     }
 }

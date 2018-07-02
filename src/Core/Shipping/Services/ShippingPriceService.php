@@ -98,7 +98,7 @@ class ShippingPriceService extends BaseService
     }
 
     /**
-     * Estimates shipping prices for a zip and amount
+     * Estimates shipping prices for a zip and amount.
      *
      * @param int $amount
      * @param string $zip
@@ -116,7 +116,7 @@ class ShippingPriceService extends BaseService
             ->orWhere('region', '=', $strippedOutcode)
             ->first();
 
-        if (!$region) {
+        if (! $region) {
             return false;
         }
 
