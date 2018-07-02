@@ -76,11 +76,13 @@ class SagePay extends AbstractProvider
 
         } catch (ClientException $e) {
             $errors = json_decode($e->getResponse()->getBody()->getContents(), true);
-            return $this->createFailedTransaction($errors, $order);
+            $this->createFailedTransaction($errors, $order);
+            return false;
         }
 
         $content = json_decode($response->getBody()->getContents(), true);
-        return $this->createSuccessTransaction($content, $order);
+        $this->createSuccessTransaction($content, $order);
+        return true;
     }
 
     protected function getVendorTxCode($order)
