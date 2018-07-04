@@ -94,13 +94,20 @@ class OrderService extends BaseService
      *
      * @param string $orderId
      * @param string $shippingPriceId
+     * @param string $preference
      *
      * @return Order
      */
-    public function addShippingLine($orderId, $shippingPriceId)
+    public function addShippingLine($orderId, $shippingPriceId, $preference = null)
     {
         $order = $this->getByHashedId($orderId);
         $price = app('api')->shippingPrices()->getByHashedId($shippingPriceId);
+
+        if ($preference) {
+            $order->update([
+                'shipping_preference' => $preference
+            ]);
+        }
 
         // TODO Need a better way to do this basket totals thing
         $basket = $order->basket;

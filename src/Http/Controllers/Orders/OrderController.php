@@ -213,7 +213,7 @@ class OrderController extends BaseController
     public function shippingCost($id, Request $request)
     {
         try {
-            $order = app('api')->orders()->addShippingLine($id, $request->price_id);
+            $order = app('api')->orders()->addShippingLine($id, $request->price_id, $request->preference);
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
