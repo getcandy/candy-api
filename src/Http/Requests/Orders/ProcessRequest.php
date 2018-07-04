@@ -24,10 +24,15 @@ class ProcessRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'order_id' => 'required',
-            'payment_token' => 'valid_payment_token|required_without:payment_type_id',
-            'payment_type_id' => 'required_without:payment_token|hashid_is_valid:payment_types',
+        $rules = [
+            'order_id' => 'required'
         ];
+
+        if (!$this->force) {
+            $rules['payment_token'] = 'valid_payment_token|required_without:payment_type_id';
+            $rules['payment_type_id'] = 'required_without:payment_token|hashid_is_valid:payment_types';
+        }
+
+        return $rules;
     }
 }
