@@ -30,7 +30,6 @@ class RefreshOrderListener
             DB::RAW('SUM(line_total) + SUM(tax_total) - SUM(discount_total) as grand_total')
         )->where('order_id', '=', $order->id)->whereIsShipping(false)->groupBy('order_id')->first();
 
-
         $totals->delivery_total = 0;
 
         $shipping = $order->lines()
