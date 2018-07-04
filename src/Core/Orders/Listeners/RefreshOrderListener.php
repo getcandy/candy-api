@@ -17,6 +17,11 @@ class RefreshOrderListener
     {
         $order = $event->order;
 
+        // If the order has been placed DO NOT alter it, no matter what.
+        if ($order->placed_at) {
+            return;
+        }
+
         $totals = \DB::table('order_lines')->select(
             'order_id',
             DB::RAW('SUM(line_total) as line_total'),
