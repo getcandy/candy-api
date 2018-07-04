@@ -489,7 +489,7 @@ class OrderService extends BaseService
     {
         $order = $this->getByHashedId($data['order_id']);
 
-        if (! $this->isProcessable($order)) {
+        if (! $this->isProcessable($order) && empty($data['force'])) {
             throw new IncompleteOrderException;
         }
 
