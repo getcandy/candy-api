@@ -25,10 +25,10 @@ class ProcessRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'order_id' => 'required'
+            'order_id' => 'required',
         ];
 
-        if (!$this->force) {
+        if (! $this->force) {
             $rules['payment_token'] = 'valid_payment_token|required_without:payment_type_id';
             $rules['payment_type_id'] = 'required_without:payment_token|hashid_is_valid:payment_types';
         }
