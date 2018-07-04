@@ -104,7 +104,7 @@ class ShippingPriceService extends BaseService
      * @param string $zip
      * @return void
      */
-    public function estimate($amount, $zip)
+    public function estimate($amount, $zip, $limit = 1)
     {
         $postcode = strtoupper($zip);
         $outcode = rtrim(substr($postcode, 0, -3));
@@ -121,12 +121,8 @@ class ShippingPriceService extends BaseService
         }
 
         // Get the shipping zone regional prices.
-        $prices = $region->zone->prices()->whereHas('method', function ($q) {
+        return $region->zone->prices()->whereHas('method', function ($q) {
             return $q->whereType('regional');
-        })->get();
-
-        return $prices->filter(function ($price) use ($amount) {
-            return ($amount * 100) > $price->min_basket;
-        })->sortBy('rate')->first();
+        })->get()->groupBy('shipping_method_id')->sortByDesc('min_basket')->first();
     }
 }
