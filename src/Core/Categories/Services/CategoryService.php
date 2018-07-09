@@ -188,7 +188,14 @@ class CategoryService extends BaseService
     public function getCategoryTree($channel = null)
     {
         return Category::channel($channel)
-            ->with(['assets', 'assets.transforms', 'routes'])
+            ->with([
+                'assets',
+                'assets.transforms',
+                'assets.transforms.asset',
+                'assets.transforms.asset.source',
+                'assets.source',
+                'routes'
+            ])
             ->withCount('products')
             ->defaultOrder()
             ->get()
