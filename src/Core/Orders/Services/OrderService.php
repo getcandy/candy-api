@@ -86,7 +86,7 @@ class OrderService extends BaseService
 
         event(new OrderSavedEvent($order));
 
-        return $order;
+        return $order->fresh();
     }
 
     /**
@@ -103,11 +103,15 @@ class OrderService extends BaseService
         $order = $this->getByHashedId($orderId);
         $price = app('api')->shippingPrices()->getByHashedId($shippingPriceId);
 
+        $updateFields = [
+            'shipping_method' => $price->method->name
+        ];
+
         if ($preference) {
-            $order->update([
-                'shipping_preference' => $preference
-            ]);
+            $updateFields['shipping_preference'] = $preference;
         }
+
+        $order->update($updateFields);
 
         // TODO Need a better way to do this basket totals thing
         $basket = $order->basket;

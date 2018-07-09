@@ -20,6 +20,7 @@ class Order extends BaseModel
         'sub_total',
         'order_total',
         'shipping_preference',
+        'shipping_method',
     ];
 
     protected $dates = [

@@ -19,7 +19,7 @@ class OrderLineTransformer extends BaseTransformer
             'tax_rate' => $line->tax_rate,
             'description' => $line->description,
             'sku' => $line->sku,
-            'variant' => $line->variant,
+            'variant' => $line->variant()->first(),
             'is_shipping' => (bool) $line->is_shipping,
             'is_manual' => (bool) $line->is_manual,
         ];
