@@ -49,7 +49,7 @@ class ForgotPasswordController extends BaseController
     }
 
     /**
-     * Get a users reset token
+     * Get a users reset token.
      *
      * @param string $email
      * @return void
