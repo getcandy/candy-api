@@ -104,7 +104,7 @@ class OrderService extends BaseService
         $price = app('api')->shippingPrices()->getByHashedId($shippingPriceId);
 
         $updateFields = [
-            'shipping_method' => $price->method->name
+            'shipping_method' => $price->method->name,
         ];
 
         if ($preference) {

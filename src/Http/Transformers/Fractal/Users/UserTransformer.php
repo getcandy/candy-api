@@ -7,13 +7,13 @@ use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Orders\OrderTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Addresses\AddressTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Languages\LanguageTransformer;
-use GetCandy\Api\Http\Transformers\Fractal\Customers\CustomerGroupTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Baskets\SavedBasketTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\Customers\CustomerGroupTransformer;
 
 class UserTransformer extends BaseTransformer
 {
     protected $availableIncludes = [
-        'store', 'addresses', 'groups', 'roles', 'orders', 'language', 'details', 'baskets'
+        'store', 'addresses', 'groups', 'roles', 'orders', 'language', 'details', 'baskets',
     ];
 
     public function transform(Model $user)
@@ -27,9 +27,10 @@ class UserTransformer extends BaseTransformer
 
     public function includeBaskets(Model $user)
     {
-        if (!$user->savedBaskets) {
+        if (! $user->savedBaskets) {
             return $this->null();
         }
+
         return $this->collection($user->savedBaskets, new SavedBasketTransformer);
     }
 

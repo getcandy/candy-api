@@ -194,7 +194,7 @@ class CategoryService extends BaseService
                 'assets.transforms.asset',
                 'assets.transforms.asset.source',
                 'assets.source',
-                'routes'
+                'routes',
             ])
             ->withCount('products')
             ->defaultOrder()
