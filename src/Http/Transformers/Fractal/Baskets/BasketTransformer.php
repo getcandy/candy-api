@@ -5,13 +5,14 @@ namespace GetCandy\Api\Http\Transformers\Fractal\Baskets;
 use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Users\UserTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\Orders\OrderTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Routes\RouteTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Discounts\DiscountTransformer;
 
 class BasketTransformer extends BaseTransformer
 {
     protected $availableIncludes = [
-        'lines', 'user', 'discounts', 'routes',
+        'lines', 'user', 'discounts', 'routes', 'order',
     ];
 
     public function transform(Basket $basket)
@@ -30,6 +31,15 @@ class BasketTransformer extends BaseTransformer
     protected function includeLines(Basket $basket)
     {
         return $this->collection($basket->lines, new BasketLineTransformer);
+    }
+
+    protected function includeOrder(Basket $basket)
+    {
+        if (! $basket->order) {
+            return $this->null();
+        }
+
+        return $this->item($basket->order, new OrderTransformer);
     }
 
     public function includeRoutes(Basket $basket)

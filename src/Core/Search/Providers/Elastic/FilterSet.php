@@ -2,8 +2,6 @@
 
 namespace GetCandy\Api\Core\Search\Providers\Elastic;
 
-use GetCandy\Api\Core\Search\Providers\Elastic\Filters\FilterAbstract;
-
 class FilterSet
 {
     protected $filters = [];
@@ -14,7 +12,7 @@ class FilterSet
     }
 
     /**
-     * Add a filter to the chain
+     * Add a filter to the chain.
      *
      * @param string $type
      * @param mixed $payload
@@ -32,7 +30,7 @@ class FilterSet
     }
 
     /**
-     * Undocumented function
+     * Undocumented function.
      *
      * @return void
      */
@@ -42,7 +40,7 @@ class FilterSet
     }
 
     /**
-     * Get a filter from the chain
+     * Get a filter from the chain.
      *
      * @param string $handle
      * @return mixed
@@ -53,19 +51,17 @@ class FilterSet
     }
 
     /**
-     * Find the filter class
+     * Find the filter class.
      *
      * @param string $type
      * @return mixed
      */
     private function findFilter($type)
     {
-        $name = ucfirst(camel_case(str_singular($type))) . 'Filter';
+        $name = ucfirst(camel_case(str_singular($type))).'Filter';
         $classname = "GetCandy\Api\Core\Search\Providers\Elastic\Filters\\{$name}";
         if (class_exists($classname)) {
             return app()->make($classname);
         }
-        return null;
     }
-
 }

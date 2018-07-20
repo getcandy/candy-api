@@ -6,8 +6,8 @@ class StandardProvider extends AbstractProvider
 {
     public function calculate($order)
     {
-        $weight = $basket->weight;
         $basket = $order->basket;
+        $weight = $basket->weight;
         $total = $basket->total;
         $users = $this->method->users;
         $prices = $this->method->prices;

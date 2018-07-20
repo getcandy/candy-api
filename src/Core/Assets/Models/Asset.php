@@ -2,11 +2,11 @@
 
 namespace GetCandy\Api\Core\Assets\Models;
 
+use Storage;
 use GetCandy\Api\Core\Tags\Models\Tag;
 use GetCandy\Api\Core\Scaffold\BaseModel;
 use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Categories\Models\Category;
-use Storage;
 
 class Asset extends BaseModel
 {
@@ -37,7 +37,7 @@ class Asset extends BaseModel
     public function toArray()
     {
         return array_merge(parent::toArray(), [
-            'url' => Storage::disk($this->source->disk)->url($this->location . '/' . $this->filename)
+            'url' => Storage::disk($this->source->disk)->url($this->location.'/'.$this->filename),
         ]);
     }
 

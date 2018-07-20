@@ -82,6 +82,10 @@ Route::group([
     $router->put('orders/{id}/shipping/cost', 'Orders\OrderController@shippingCost');
     $router->put('orders/{id}/contact', 'Orders\OrderController@addContact');
     $router->put('orders/{id}/billing/address', 'Orders\OrderController@billingAddress');
+
+    $router->post('orders/{id}/lines', 'Orders\OrderLineController@store');
+    $router->delete('orders/lines/{id}', 'Orders\OrderLineController@destroy');
+
     $router->resource('orders', 'Orders\OrderController', [
         'only' => ['store', 'show'],
     ]);
@@ -109,6 +113,7 @@ Route::group([
      * Shipping
      */
     $router->get('shipping', 'Shipping\ShippingMethodController@index');
+    $router->get('shipping/prices/estimate', 'Shipping\ShippingPriceController@estimate');
 
     $router->post('users', 'Users\UserController@store');
     $router->post('users/{userid}', 'Users\UserController@update');

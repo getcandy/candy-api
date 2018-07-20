@@ -23,6 +23,7 @@ class OrderLine extends BaseModel
 
         // New fields
         'is_shipping',
+        'is_manual',
         'line_total',
         'unit_price',
         'discount_total',
@@ -32,6 +33,11 @@ class OrderLine extends BaseModel
 
     public function variant()
     {
-        return $this->belongsTo(ProductVariant::class, 'product_variant_id');
+        return $this->belongsTo(ProductVariant::class, 'sku', 'sku');
+    }
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
     }
 }

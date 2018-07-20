@@ -9,7 +9,7 @@ use GetCandy\Api\Http\Requests\Orders\UpdateRequest;
 use GetCandy\Api\Http\Requests\Orders\ProcessRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use GetCandy\Api\Http\Requests\Orders\StoreAddressRequest;
-use GetCandy\Api\Orders\Exceptions\IncompleteOrderException;
+use GetCandy\Api\Core\Orders\Exceptions\IncompleteOrderException;
 use GetCandy\Api\Http\Transformers\Fractal\Orders\OrderTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Documents\PdfTransformer;
 use GetCandy\Api\Core\Orders\Exceptions\OrderAlreadyProcessedException;
@@ -61,7 +61,7 @@ class OrderController extends BaseController
     {
         $order = app('api')->orders()->store($request->basket_id, $request->user());
 
-        return $this->respondWithItem($order, new OrderTransformer);
+        return $this->respondWithItem($order->fresh(), new OrderTransformer);
     }
 
     /**
@@ -82,6 +82,8 @@ class OrderController extends BaseController
             return $this->respondWithItem($order, new OrderTransformer);
         } catch (IncompleteOrderException $e) {
             return $this->errorForbidden('The order is missing billing information');
+        } catch (ModelNotFoundException $e) {
+            return $this->errorNotFound();
         } catch (OrderAlreadyProcessedException $e) {
             return $this->errorUnprocessable('This order has already been processed');
         }
@@ -211,7 +213,7 @@ class OrderController extends BaseController
     public function shippingCost($id, Request $request)
     {
         try {
-            $order = app('api')->orders()->addShippingLine($id, $request->price_id);
+            $order = app('api')->orders()->addShippingLine($id, $request->price_id, $request->preference);
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }

@@ -25,7 +25,7 @@ class Search implements ClientContract
     protected $authUser = null;
 
     protected $aggregators = [
-        'priceRange'
+        'priceRange',
     ];
 
     /**

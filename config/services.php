@@ -11,4 +11,8 @@ return [
             'eur' => env('BRAINTREE_EUR_MERCHANT'),
         ],
     ],
+    'sagepay' => [
+        'key' => env('SAGEPAY_KEY'),
+        'password' => env('SAGEPAY_PASSWORD'),
+    ],
 ];

@@ -24,6 +24,12 @@ class StoreAddressRequest extends FormRequest
      */
     public function rules()
     {
+        // We can choose to ignore the validation.
+        // Useful if we don't need to set most fields.
+        if ($this->force) {
+            return [];
+        }
+
         return [
             'address_id' => 'hashid_is_valid:addresses',
             'address' => 'required_without:address_id',

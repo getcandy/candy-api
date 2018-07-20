@@ -71,7 +71,7 @@ class PaymentService extends BaseService
      *
      * @return bool
      */
-    public function charge(Order $order, $token = null, $type = null)
+    public function charge(Order $order, $token = null, $type = null, $data = [])
     {
         if ($order->placed_at) {
             throw new OrderAlreadyProcessedException;
@@ -81,7 +81,7 @@ class PaymentService extends BaseService
             $this->setProvider($type->driver);
         }
 
-        return $this->getProvider()->charge($token, $order);
+        return $this->getProvider()->charge($token, $order, $data);
     }
 
     /**

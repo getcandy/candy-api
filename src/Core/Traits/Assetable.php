@@ -3,7 +3,6 @@
 namespace GetCandy\Api\Core\Traits;
 
 use GetCandy\Api\Core\Assets\Models\Asset;
-use GetCandy\Api\Core\Assets\Models\AssetTransform;
 
 trait Assetable
 {

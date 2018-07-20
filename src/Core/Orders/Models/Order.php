@@ -14,6 +14,17 @@ class Order extends BaseModel
 
     protected $fillable = [
         'lines',
+        'delivery_total',
+        'tax_total',
+        'discount_total',
+        'sub_total',
+        'order_total',
+        'shipping_preference',
+        'shipping_method',
+    ];
+
+    protected $dates = [
+        'placed_at',
     ];
 
     protected $required = [
@@ -173,6 +184,16 @@ class Order extends BaseModel
     public function lines()
     {
         return $this->hasMany(OrderLine::class)->orderBy('is_shipping', 'asc');
+    }
+
+    /**
+     * Gets all order lines that are from the basket.
+     *
+     * @return void
+     */
+    public function basketLines()
+    {
+        return $this->hasMany(OrderLine::class)->whereIsShipping(false)->whereIsManual(false);
     }
 
     public function basket()
