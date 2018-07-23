@@ -49,7 +49,6 @@ class CustomerService extends BaseService
 
             $query = $query
                 ->whereHas('details', function ($q) use ($segments, $keywords) {
-
                     if (count($segments) > 1) {
                         $q->where('firstname', '=', $segments[0])
                             ->where('lastname', '=', $segments[1])
@@ -59,8 +58,6 @@ class CustomerService extends BaseService
                             ->orWhere('lastname', 'LIKE', '%'.$keywords.'%')
                             ->orWhere('company_name', 'LIKE', '%'.$keywords.'%');
                     }
-
-
                 })->orWhere('email', 'LIKE', '%'.$keywords.'%');
         }
 
