@@ -1,6 +1,6 @@
 <?php
 
-namespace GetCandy\Api\Http\Transformers\Fractal\Search;
+namespace GetCandy\Api\Http\Transformers\Fractal\Settings;
 
 use Illuminate\Database\Eloquent\Model;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
