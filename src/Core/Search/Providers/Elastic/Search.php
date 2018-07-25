@@ -49,11 +49,22 @@ class Search implements ClientContract
         return $this->search($searchterm);
     }
 
+    /**
+     * Get the search index
+     *
+     * @return string
+     */
     protected function getSearchIndex()
     {
         return $this->type->getIndexName().'_'.$this->lang;
     }
 
+    /**
+     * Set the user on the search
+     *
+     * @param \Illuminate\Database\Eloquent\Model $user
+     * @return self
+     */
     public function user($user = null)
     {
         $this->authUser = $user;
@@ -77,6 +88,12 @@ class Search implements ClientContract
         return $this;
     }
 
+    /**
+     * Set the search language
+     *
+     * @param string $lang
+     * @return self
+     */
     public function language($lang = 'en')
     {
         $this->lang = $lang;
@@ -84,6 +101,11 @@ class Search implements ClientContract
         return $this;
     }
 
+    /**
+     * Set the search channel
+     *
+     * @return self
+     */
     protected function setChannelDefault()
     {
         $channel = app('api')->channels()->getDefaultRecord()->handle;
@@ -92,6 +114,12 @@ class Search implements ClientContract
         return $this;
     }
 
+    /**
+     * Set the suggestions
+     *
+     * @param string $keywords
+     * @return void
+     */
     public function suggest($keywords)
     {
         if (! $this->channel) {

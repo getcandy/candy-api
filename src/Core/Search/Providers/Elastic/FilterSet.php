@@ -60,6 +60,7 @@ class FilterSet
     {
         $name = ucfirst(camel_case(str_singular($type))).'Filter';
         $classname = "GetCandy\Api\Core\Search\Providers\Elastic\Filters\\{$name}";
+
         if (class_exists($classname)) {
             return app()->make($classname);
         }
