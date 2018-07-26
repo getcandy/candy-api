@@ -15,7 +15,7 @@ class CategoryFilter extends AbstractFilter
         $this->categories = collect();
     }
 
-    public function process($payload)
+    public function process($payload, $type = null)
     {
         if (! empty($payload['values']) && is_array($payload['values'])) {
             $this->add($payload['values']);

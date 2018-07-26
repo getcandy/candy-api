@@ -33,8 +33,11 @@ class Search implements ClientContract
      */
     protected $filterSet;
 
-    public function __construct(Client $client, FilterSet $filterSet, AggregationSet $aggregationSet)
-    {
+    public function __construct(
+        Client $client,
+        FilterSet $filterSet,
+        AggregationSet $aggregationSet
+    ) {
         $this->client = $client;
         $this->filterSet = $filterSet;
         $this->aggregationSet = $aggregationSet;
@@ -47,16 +50,6 @@ class Search implements ClientContract
     public function with($searchterm)
     {
         return $this->search($searchterm);
-    }
-
-    /**
-     * Get the search index
-     *
-     * @return string
-     */
-    protected function getSearchIndex()
-    {
-        return $this->type->getIndexName().'_'.$this->lang;
     }
 
     /**
@@ -251,6 +244,18 @@ class Search implements ClientContract
     }
 
     /**
+     * Set the filters on search
+     *
+     * @param array $payload
+     * @return void
+     */
+    public function setFilters($payload = [])
+    {
+        $this->filterSet->add($payload);
+        return $this;
+    }
+
+    /**
      * Get the suggester.
      *
      * @return Suggest
@@ -434,6 +439,11 @@ class Search implements ClientContract
         return $filter;
     }
 
+    /**
+     * Get the channel filter
+     *
+     * @return BoolQuery
+     */
     protected function getChannelFilter()
     {
         $filter = new BoolQuery;

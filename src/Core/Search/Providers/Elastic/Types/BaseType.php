@@ -231,20 +231,20 @@ abstract class BaseType
         $attributes = app('api')->attributes()->all()->reject(function ($attribute) {
             return $attribute->system;
         })->mapWithKeys(function ($attribute) {
-            if (! $attribute->searchable) {
-                return [
-                    $attribute->handle => [
-                        'enabled' => false,
-                    ],
-                ];
+            $payload[$attribute->handle] = [
+                'type' => 'text',
+                'analyzer' => 'standard'
+            ];
+
+            if (! $attribute->searchable && !$attribute->filterable) {
+                $payload[$attribute->handle]['enabled'] = false;
             }
 
-            return [
-                $attribute->handle => [
-                    'type' => 'text',
-                    'analyzer' => 'standard',
-                ],
-            ];
+            if ($attribute->filterable && ! $attribute->searchable) {
+                $payload[$attribute->handle]['include_in_all'] = false;
+            }
+
+            return $payload;
         })->toArray();
 
         return array_merge($attributes, $this->mapping);

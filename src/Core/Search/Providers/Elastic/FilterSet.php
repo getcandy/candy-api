@@ -2,27 +2,39 @@
 
 namespace GetCandy\Api\Core\Search\Providers\Elastic;
 
+use GetCandy\Api\Core\Attributes\Services\AttributeService;
+use GetCandy\Api\Core\Search\Providers\Elastic\Filters\AttributeFilter;
+
 class FilterSet
 {
     protected $filters = [];
+    protected $filterable = [];
 
-    public function __construct()
+    public function __construct(AttributeService $attributes)
     {
         $this->filters = collect();
+        $this->filterable = $attributes->getFilterable();
     }
 
     /**
      * Add a filter to the chain.
      *
-     * @param string $type
+     * @param mixed $type
      * @param mixed $payload
      * @return self
      */
-    public function add($type, $payload)
+    public function add($type, $payload = null)
     {
+        if (is_array($type)) {
+            foreach ($type as $key => $value) {
+                $this->add($key, $value);
+            }
+            return $this;
+        }
+
         $filter = $this->findFilter($type);
 
-        if ($filter && $filter = $filter->process($payload)) {
+        if ($filter && $filter = $filter->process($payload, $type)) {
             $this->filters->put($type, $filter);
         }
 
@@ -51,6 +63,17 @@ class FilterSet
     }
 
     /**
+     * Find a matching attribute based on filter type
+     *
+     * @param string $type
+     * @return mixed
+     */
+    protected function getAttribute($type)
+    {
+        return $this->filterable->firstWhere('handle', $type);
+    }
+
+    /**
      * Find the filter class.
      *
      * @param string $type
@@ -58,6 +81,11 @@ class FilterSet
      */
     private function findFilter($type)
     {
+        // Is this an attribute filter?
+        if ($attribute = $this->getAttribute($type)) {
+            $type = $attribute->type;
+        }
+
         $name = ucfirst(camel_case(str_singular($type))).'Filter';
         $classname = "GetCandy\Api\Core\Search\Providers\Elastic\Filters\\{$name}";
 

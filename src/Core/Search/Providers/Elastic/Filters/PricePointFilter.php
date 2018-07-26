@@ -9,15 +9,15 @@ use Elastica\Query\BoolQuery;
 class PricePointFilter extends AbstractFilter
 {
     protected $points = [];
+    protected $seperator = ':';
+    protected $delimiter = '-';
 
-    public function process($payload)
+    public function process($payload, $type = null)
     {
-        if (!is_array($payload)) {
-            return false;
-        }
+        $pricePoints = explode($this->seperator, $payload);
 
-        foreach ($payload as $key => $value) {
-            $this->points[$key] = $value;
+        foreach ($pricePoints as $point) {
+            $this->points[] = explode($this->delimiter, $point);
         }
 
         $this->points = collect($this->points);
@@ -37,12 +37,11 @@ class PricePointFilter extends AbstractFilter
         foreach ($this->points as $point) {
             $args = [];
 
-            if (!empty($point['from'])) {
-                $args['gte'] = $point['from'];
-            }
+            $args['gte'] = $point[0];
 
-            if (!empty($point['to'])) {
-                $args['lte'] = $point['to'];
+            // If we have a single array, just do LTE
+            if (isset($point[1])) {
+                $args['lte'] = $point[1];
             }
 
             $range = new Range('min_price', $args);

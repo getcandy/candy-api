@@ -17,5 +17,5 @@ abstract class AbstractFilter
      * @param mixed $payload
      * @return self
      */
-    abstract public function process($payload);
+    abstract public function process($payload, $type = null);
 }

@@ -44,6 +44,7 @@ class SearchController extends BaseController
                 ->on($request->channel)
                 ->against($this->types[$request->type])
                 ->user($request->user())
+                ->setFilters($request->all())
                 ->search(
                     $request->keywords,
                     $request->category,
