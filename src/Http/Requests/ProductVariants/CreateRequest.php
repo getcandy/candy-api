@@ -24,13 +24,20 @@ class CreateRequest extends FormRequest
      */
     public function rules()
     {
-        $rules = [];
+        $rules = [
+            'variants' => 'array|min:1',
+            'options.*.options' => 'array|min:1',
+            'options' => 'array|min:1',
+            'variants.*.price' => 'numeric|required',
+        ];
 
         foreach (collect($this->variants) as $index => $variant) {
             if (empty($variant['id'])) {
-                $rules['sku'] = 'unique:product_variants';
+                $rules['variants.*.sku'] = 'unique:product_variants';
             }
         }
+
+        // dd($rules);
 
         return $rules;
     }
@@ -40,6 +47,11 @@ class CreateRequest extends FormRequest
         return [
             'variants.*.sku.unique' => 'This SKU has already been taken',
             'variants.*.sku.required' => 'The SKU field is required',
+            'options.*.options.min' => 'You must specify options',
+            'variants.*.price.required' => 'You must give a price',
+            'variants.*.price.numeric' => 'The price field must be a number',
+            'variants.min' => 'You must generate at least one variant',
+            'options.min' => 'You must generate at least one option',
         ];
     }
 }
