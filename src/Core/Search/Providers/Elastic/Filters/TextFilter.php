@@ -3,6 +3,7 @@ namespace GetCandy\Api\Core\Search\Providers\Elastic\Filters;
 
 use Elastica\Query\Term;
 use Elastica\Query\BoolQuery;
+use Elastica\Query\Match;
 
 class TextFilter extends AbstractFilter
 {
@@ -14,9 +15,7 @@ class TextFilter extends AbstractFilter
         $filter = new BoolQuery;
 
         foreach ($this->value as $value) {
-            $term = new Term;
-            $term->setTerm($this->field, $value);
-            $filter->addShould($term);
+            $filter->addShould(new Match($this->field, $value));
         }
 
         return $filter;

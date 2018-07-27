@@ -25,19 +25,26 @@ class FilterSet
      */
     public function add($type, $payload = null)
     {
-        if (is_array($type)) {
-            foreach ($type as $key => $value) {
-                $this->add($key, $value);
-            }
-            return $this;
-        }
-
         $filter = $this->findFilter($type);
 
         if ($filter && $filter = $filter->process($payload, $type)) {
             $this->filters->put($type, $filter);
         }
 
+        return $this;
+    }
+
+    /**
+     * Add many filters to the search
+     *
+     * @param array $filters
+     * @return object
+     */
+    public function addMany(array $filters)
+    {
+        foreach ($filters as $key => $value) {
+            $this->add($key, $value);
+        }
         return $this;
     }
 
@@ -49,6 +56,16 @@ class FilterSet
     public function getFilters()
     {
         return $this->filters;
+    }
+
+    /**
+     * Get the filterable fields
+     *
+     * @return void
+     */
+    public function getFilterable()
+    {
+        return $this->filterable;
     }
 
     /**

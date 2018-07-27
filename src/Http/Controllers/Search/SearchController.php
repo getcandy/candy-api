@@ -8,14 +8,26 @@ use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Categories\Models\Category;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Search\SearchRequest;
+use GetCandy\Api\Core\Channels\Services\ChannelService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use GetCandy\Api\Core\Categories\Services\CategoryService;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use GetCandy\Api\Http\Transformers\Fractal\Search\SearchSuggestionTransformer;
 
 class SearchController extends BaseController
 {
-    protected $types = [
-        'product' => Product::class,
-        'category' => Category::class,
-    ];
+    /**
+     * The channel service
+     *
+     * @var ChannelService
+     */
+    protected $channels;
+
+    public function __construct(ChannelService $channels, CategoryService $categories)
+    {
+        $this->channels = $channels;
+        $this->categories = $categories;
+    }
 
     /**
      * Performs a search against a type.
@@ -25,10 +37,16 @@ class SearchController extends BaseController
      *
      * @return array
      */
-    public function search(SearchRequest $request, SearchContract $client)
+    public function search(SearchRequest $request, SearchContract $search)
     {
-        if (empty($this->types[$request->type])) {
-            return $this->errorWrongArgs('Invalid type');
+        // Get channel
+        $defaultChannel = $this->channels->getDefaultRecord();
+        $channel = $request->channel ?: $defaultChannel ? $defaultChannel->handle : null;
+
+        try {
+            $category = $this->categories->getByHashedId($request->category);
+        } catch (ModelNotFoundException $e) {
+            $category = null;
         }
 
         if ($request->current_page) {
@@ -38,17 +56,18 @@ class SearchController extends BaseController
         }
 
         try {
-            $results = $client
+            $results = $search
                 ->client()
                 ->language(app()->getLocale())
-                ->on($request->channel)
-                ->against($this->types[$request->type])
+                ->on($channel)
+                ->against($request->type)
                 ->user($request->user())
-                ->setFilters($request->all())
                 ->search(
                     $request->keywords,
-                    $request->category,
-                    $request->filters,
+                    $category,
+                    $request->except(
+                        ['page', 'type', 'keywords', 'per_page', 'source']
+                    ),
                     $request->sort_by ?: [],
                     $page ?: 1,
                     $request->per_page ?: 10

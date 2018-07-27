@@ -25,6 +25,8 @@ trait InteractsWithIndex
 
     protected $client;
 
+    protected $lang = 'en';
+
     /**
      * Gets the base index name.
      *

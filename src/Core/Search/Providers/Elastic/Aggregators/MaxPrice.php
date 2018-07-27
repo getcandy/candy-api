@@ -2,14 +2,14 @@
 
 namespace GetCandy\Api\Core\Search\Providers\Elastic\Aggregators;
 
-use Elastica\Aggregation\Min;
+use Elastica\Aggregation\Max;
 
-class MinPriceAggregator
+class MaxPrice
 {
     public function getQuery()
     {
-        $agg = new Min('min_price');
-        $agg->setField('min_price');
+        $agg = new Max('max_price');
+        $agg->setField('max_price');
 
         return $agg;
     }

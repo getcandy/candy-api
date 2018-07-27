@@ -5,6 +5,13 @@ namespace GetCandy\Api\Core\Search\Providers\Elastic\Filters;
 abstract class AbstractFilter
 {
     /**
+     * Whether this is a post filter
+     *
+     * @var boolean
+     */
+    protected $post = false;
+
+    /**
      * Get the filter.
      *
      * @return mixed
