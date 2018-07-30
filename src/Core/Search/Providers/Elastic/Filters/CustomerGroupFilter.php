@@ -44,10 +44,10 @@ class CustomerGroupFilter extends AbstractFilter
     {
         if ($this->user) {
             // Set to empty array as we don't want to filter any out.
-            if ($user->hasRole('admin')) {
+            if ($this->user->hasRole('admin')) {
                 $groups = [];
             } else {
-                $groups = $user->groups;
+                $groups = $this->user->groups;
             }
         } else {
             $groups = [app('api')->customerGroups()->getGuest()];
