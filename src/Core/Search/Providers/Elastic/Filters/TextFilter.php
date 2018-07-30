@@ -2,8 +2,9 @@
 namespace GetCandy\Api\Core\Search\Providers\Elastic\Filters;
 
 use Elastica\Query\Term;
-use Elastica\Query\BoolQuery;
 use Elastica\Query\Match;
+use Elastica\Query\BoolQuery;
+use GetCandy\Api\Core\Search\Providers\Elastic\Aggregators\Attribute;
 
 class TextFilter extends AbstractFilter
 {
@@ -15,10 +16,28 @@ class TextFilter extends AbstractFilter
         $filter = new BoolQuery;
 
         foreach ($this->value as $value) {
-            $filter->addShould(new Match($this->field, $value));
+            $match = new Match;
+            $match->setFieldAnalyzer($this->field, 'standard');
+            $match->setFieldQuery($this->field, $value);
+            $filter->addShould($match);
         }
 
         return $filter;
+    }
+
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+    /**
+     * Get an aggregation based on this filter.
+     *
+     * @return void
+     */
+    public function aggregate()
+    {
+        return new Attribute($this->field);
     }
 
     public function process($payload, $type = null)
