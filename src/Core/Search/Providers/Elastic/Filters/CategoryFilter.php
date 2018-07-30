@@ -65,8 +65,8 @@ class CategoryFilter extends AbstractFilter
 
             $cat->setQuery($term);
 
+
             $filter->addMust($cat);
-            $this->categories[] = $value;
         }
 
         return $filter;
