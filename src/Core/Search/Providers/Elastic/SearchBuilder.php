@@ -5,9 +5,12 @@ namespace GetCandy\Api\Core\Search\Providers\Elastic;
 use Elastica\Query;
 use Elastica\Client;
 use Elastica\Search;
+use Elastica\Suggest;
+use Elastica\Suggest\Phrase;
 use Elastica\Query\BoolQuery;
 use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Categories\Models\Category;
+use Elastica\Suggest\CandidateGenerator\DirectGenerator;
 use GetCandy\Api\Core\Search\Providers\Elastic\Query\Term;
 use GetCandy\Api\Core\Attributes\Services\AttributeService;
 use GetCandy\Api\Core\Search\Providers\Elastic\Sorts\TextSort;
@@ -276,7 +279,7 @@ class SearchBuilder
     public function withAggregations()
     {
         $aggs = array_merge(
-            ['priceRange'],
+            ['priceRange', 'category'],
             $this->attributes->where('filterable', true)->pluck('handle')->toArray()
         );
 
@@ -419,6 +422,9 @@ class SearchBuilder
             $boolQuery->addMust(
                 $this->term->getQuery()
             );
+            $query->setSuggest(
+                $this->getSuggest()
+            );
         }
 
         $query->setSource(
@@ -460,6 +466,59 @@ class SearchBuilder
 
         $query->setQuery($boolQuery);
 
+        $query->setHighlight(
+            $this->highlight()
+        );
+
         return $query;
+    }
+
+    /**
+     * Get the search highlight
+     *
+     * @return array
+     */
+    protected function highlight()
+    {
+        return [
+            'pre_tags' => ['<em class="highlight">'],
+            'post_tags' => ['</em>'],
+            'fields' => [
+                'name' => [
+                    'number_of_fragments' => 0,
+                ],
+                'description' => [
+                    'number_of_fragments' => 0,
+                ],
+            ],
+        ];
+    }
+
+        /**
+     * Get the suggester.
+     *
+     * @return Suggest
+     */
+    protected function getSuggest()
+    {
+        // Did you mean...
+        $phrase = new Phrase(
+            'name',
+            'name'
+        );
+        $phrase->setGramSize(3);
+        $phrase->setSize(1);
+        $phrase->setText($this->term->getText());
+
+        $generator = new DirectGenerator('name');
+        $generator->setSuggestMode('always');
+        $generator->setField('name');
+        $phrase->addCandidateGenerator($generator);
+
+        $phrase->setHighlight('<strong>', '</strong>');
+        $suggest = new Suggest;
+        $suggest->addSuggestion($phrase);
+
+        return $suggest;
     }
 }
