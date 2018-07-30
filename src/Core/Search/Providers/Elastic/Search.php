@@ -140,7 +140,7 @@ class Search implements ClientContract
      *
      * @return array
      */
-    public function search($keywords, $category = null, $filters = [], $sorts = [], $page = 1, $perPage = 25)
+    public function search($keywords, $category = null, $filters = [], $sorts = [], $page = 1, $perPage = 30)
     {
         $roles = app('api')->roles()->getHubAccessRoles();
 
