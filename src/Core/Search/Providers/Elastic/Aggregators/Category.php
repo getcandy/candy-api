@@ -2,12 +2,14 @@
 
 namespace GetCandy\Api\Core\Search\Providers\Elastic\Aggregators;
 
+use Elastica\Search;
+use Elastica\Query\Term;
 use Elastica\Query\BoolQuery;
 use Elastica\Aggregation\Terms;
 use Elastica\Aggregation\Filter;
 use Elastica\Aggregation\Nested;
 
-class Category extends AbstractAggregator
+class Category
 {
     /**
      * The categories
@@ -16,32 +18,39 @@ class Category extends AbstractAggregator
      */
     protected $categories = [];
 
-    public function __construct($field)
+    public function getPre(Search $search, $query)
     {
-        $this->field = $field;
-    }
-
-    public function getPre()
-    {
-        $agg = new Terms(str_plural($this->field));
-        $agg->setField($this->field . '.filter');
-
-        return $agg;
-    }
-
-    public function getPost()
-    {
-        $nestedAggPost = new Nested(
-            'categories_after',
+        // Get our category aggregations
+        $nestedAggBefore = new Nested(
+            'categories_before',
             'departments'
         );
 
-        $agg = new Filter('categories_after_filter');
+        $childAgg = new Terms('categories_before_inner');
+        $childAgg->setField('departments.id');
+        $nestedAggBefore->addAggregation($childAgg);
+
+        return $nestedAggBefore;
+    }
+
+    /**
+     * Get the post filter
+     *
+     * @return void
+     */
+    public function getPost($value)
+    {
+        $nestedAggPost = new Nested(
+            'categories_post',
+            'departments'
+        );
+
+        $agg = new Filter('categories_post_filter');
 
         // Add boolean
         $postBool = new BoolQuery();
 
-        foreach ($this->categories as $category) {
+        foreach ($value as $category) {
             $term = new Term;
             $term->setTerm('departments.id', $category);
             $postBool->addMust($term);
