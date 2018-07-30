@@ -5,9 +5,9 @@ namespace GetCandy\Api\Core\Search\Providers\Elastic\Filters;
 abstract class AbstractFilter
 {
     /**
-     * Whether this is a post filter
+     * Whether this is a post filter.
      *
-     * @var boolean
+     * @var bool
      */
     protected $post = false;
 

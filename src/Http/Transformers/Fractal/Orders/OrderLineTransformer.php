@@ -34,6 +34,5 @@ class OrderLineTransformer extends BaseTransformer
         if ($variant = $line->variant()->first()) {
             return $this->item($variant, new ProductVariantTransformer);
         }
-        return null;
     }
 }

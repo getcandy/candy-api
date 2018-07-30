@@ -150,7 +150,7 @@ trait InteractsWithIndex
     }
 
     /**
-     * Get the search index
+     * Get the search index.
      *
      * @return string
      */

@@ -1,7 +1,7 @@
 <?php
+
 namespace GetCandy\Api\Core\Search\Providers\Elastic\Filters;
 
-use Elastica\Query\Term;
 use Elastica\Query\Match;
 use Elastica\Query\BoolQuery;
 use GetCandy\Api\Core\Search\Providers\Elastic\Aggregators\Attribute;
@@ -44,6 +44,7 @@ class TextFilter extends AbstractFilter
     {
         $this->field = $type;
         $this->value = explode(':', $payload);
+
         return $this;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace GetCandy\Api\Core\Search\Providers\Elastic\Filters;
 
 use Elastica\Query\Term;
@@ -37,5 +38,4 @@ class ChannelFilter extends AbstractFilter
 
         return $filter;
     }
-
 }

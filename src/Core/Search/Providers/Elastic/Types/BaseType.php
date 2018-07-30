@@ -82,7 +82,7 @@ abstract class BaseType
                             $i++;
                         }
 
-                        if (!count($prices)) {
+                        if (! count($prices)) {
                             dd($model->id);
                         }
                         $pricing[] = [
@@ -239,17 +239,17 @@ abstract class BaseType
         })->mapWithKeys(function ($attribute) {
             $payload = [];
 
-            if (! $attribute->searchable && !$attribute->filterable) {
+            if (! $attribute->searchable && ! $attribute->filterable) {
                 $payload[$attribute->handle]['enabled'] = false;
             } else {
                 $payload[$attribute->handle] = [
                     'type' => 'text',
-                    'analyzer' => 'standard'
+                    'analyzer' => 'standard',
                 ];
 
                 if ($attribute->filterable) {
                     $payload[$attribute->handle]['fields'] = [
-                        'filter' => ['type' => 'keyword']
+                        'filter' => ['type' => 'keyword'],
                     ];
                 }
             }

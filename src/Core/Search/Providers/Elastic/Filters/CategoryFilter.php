@@ -40,6 +40,7 @@ class CategoryFilter extends AbstractFilter
         foreach (explode(':', $category) as $cat) {
             $this->categories->push($cat);
         }
+
         return $this;
     }
 
@@ -60,7 +61,6 @@ class CategoryFilter extends AbstractFilter
             $term->setTerm('departments.id', $value);
 
             $cat->setQuery($term);
-
 
             $filter->addMust($cat);
         }

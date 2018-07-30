@@ -8,14 +8,14 @@ use Elastica\Query\MultiMatch;
 class Term
 {
     /**
-     * The query value
+     * The query value.
      *
      * @var string
      */
     protected $text;
 
     /**
-     * The query fields
+     * The query fields.
      *
      * @var array
      */
@@ -28,7 +28,7 @@ class Term
     }
 
     /**
-     * Get the text value
+     * Get the text value.
      *
      * @return string
      */

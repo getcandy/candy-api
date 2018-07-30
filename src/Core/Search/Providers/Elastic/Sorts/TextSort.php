@@ -7,7 +7,7 @@ class TextSort extends AbstractSort
     public function getMapping()
     {
         return [
-            $this->field . '.' . $this->handle => $this->dir
+            $this->field.'.'.$this->handle => $this->dir,
         ];
     }
 }

@@ -12,7 +12,7 @@ use Elastica\Aggregation\Nested;
 class Category
 {
     /**
-     * The categories
+     * The categories.
      *
      * @var array
      */
@@ -34,7 +34,7 @@ class Category
     }
 
     /**
-     * Get the post filter
+     * Get the post filter.
      *
      * @return void
      */

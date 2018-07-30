@@ -3,7 +3,6 @@
 namespace GetCandy\Api\Core\Search\Providers\Elastic;
 
 use GetCandy\Api\Core\Attributes\Services\AttributeService;
-use GetCandy\Api\Core\Search\Providers\Elastic\Filters\AttributeFilter;
 
 class FilterSet
 {
@@ -35,7 +34,7 @@ class FilterSet
     }
 
     /**
-     * Add many filters to the search
+     * Add many filters to the search.
      *
      * @param array $filters
      * @return object
@@ -45,6 +44,7 @@ class FilterSet
         foreach ($filters as $key => $value) {
             $this->add($key, $value);
         }
+
         return $this;
     }
 
@@ -59,7 +59,7 @@ class FilterSet
     }
 
     /**
-     * Get the filterable fields
+     * Get the filterable fields.
      *
      * @return void
      */
@@ -80,7 +80,7 @@ class FilterSet
     }
 
     /**
-     * Find a matching attribute based on filter type
+     * Find a matching attribute based on filter type.
      *
      * @param string $type
      * @return mixed

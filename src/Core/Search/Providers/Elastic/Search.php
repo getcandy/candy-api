@@ -2,10 +2,7 @@
 
 namespace GetCandy\Api\Core\Search\Providers\Elastic;
 
-use Elastica\Query;
-use Elastica\Client;
 use Elastica\Suggest;
-use Elastica\Query\Term;
 use GetCandy\Api\Core\Search\ClientContract;
 use GetCandy\Api\Core\Search\Providers\Elastic\Sorts\CategorySort;
 use GetCandy\Api\Core\Search\Providers\Elastic\Filters\ChannelFilter;
@@ -13,7 +10,7 @@ use GetCandy\Api\Core\Search\Providers\Elastic\Filters\ChannelFilter;
 class Search implements ClientContract
 {
     /**
-     * The Search Builder
+     * The Search Builder.
      *
      * @var SearchBuilder
      */
@@ -34,7 +31,7 @@ class Search implements ClientContract
     }
 
     /**
-     * Set the user on the search
+     * Set the user on the search.
      *
      * @param \Illuminate\Database\Eloquent\Model $user
      * @return self
@@ -42,6 +39,7 @@ class Search implements ClientContract
     public function user($user = null)
     {
         $this->builder->setUser($user);
+
         return $this;
     }
 
@@ -53,11 +51,12 @@ class Search implements ClientContract
     public function on($channel = null)
     {
         $this->builder->setChannel($channel);
+
         return $this;
     }
 
     /**
-     * Set the index
+     * Set the index.
      *
      * @param string $index
      * @return Search
@@ -65,11 +64,12 @@ class Search implements ClientContract
     public function against($type)
     {
         $this->builder->setType($type);
+
         return $this;
     }
 
     /**
-     * Set the search language
+     * Set the search language.
      *
      * @param string $lang
      * @return self
@@ -77,11 +77,12 @@ class Search implements ClientContract
     public function language($lang = 'en')
     {
         $this->lang = $lang;
+
         return $this;
     }
 
     /**
-     * Set the suggestions
+     * Set the suggestions.
      *
      * @param string $keywords
      * @return void
@@ -145,7 +146,6 @@ class Search implements ClientContract
         return $search->search();
     }
 
-
     /**
      * Find the filter class.
      *
@@ -168,7 +168,7 @@ class Search implements ClientContract
     }
 
     /**
-     * Find a matching attribute based on filter type
+     * Find a matching attribute based on filter type.
      *
      * @param string $type
      * @return mixed

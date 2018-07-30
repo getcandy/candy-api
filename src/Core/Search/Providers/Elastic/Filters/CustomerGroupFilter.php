@@ -3,14 +3,13 @@
 namespace GetCandy\Api\Core\Search\Providers\Elastic\Filters;
 
 use Elastica\Query\Term;
-use Elastica\Query\Range;
-use Elastica\Query\BoolQuery;
 use Elastica\Query\Nested;
+use Elastica\Query\BoolQuery;
 
 class CustomerGroupFilter extends AbstractFilter
 {
     /**
-     * The user
+     * The user.
      *
      * @var mixed
      */
@@ -38,7 +37,6 @@ class CustomerGroupFilter extends AbstractFilter
 
         return $filter;
     }
-
 
     private function getCustomerGroups()
     {

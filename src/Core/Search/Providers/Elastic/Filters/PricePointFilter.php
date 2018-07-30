@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Core\Search\Providers\Elastic\Filters;
 
-use Elastica\Query\Term;
 use Elastica\Query\Range;
 use Elastica\Query\BoolQuery;
 

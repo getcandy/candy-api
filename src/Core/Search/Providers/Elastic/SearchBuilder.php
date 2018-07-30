@@ -24,77 +24,77 @@ class SearchBuilder
     use InteractsWithIndex;
 
     /**
-     * The index to search on
+     * The index to search on.
      *
      * @var string
      */
     protected $index;
 
     /**
-     * The channel to search on
+     * The channel to search on.
      *
      * @var string
      */
     protected $channel;
 
     /**
-     * The search type
+     * The search type.
      *
      * @var mixed
      */
     protected $type;
 
     /**
-     * The search filters
+     * The search filters.
      *
      * @var array
      */
     protected $filters = [];
 
     /**
-     * The filterable fields
+     * The filterable fields.
      *
      * @var array
      */
     protected $attributes = [];
 
     /**
-     * The applied aggregations
+     * The applied aggregations.
      *
      * @var array
      */
     protected $aggregations = [];
 
     /**
-     * The applied sorts
+     * The applied sorts.
      *
      * @var array
      */
     protected $sorts = [];
 
     /**
-     * The page limit
+     * The page limit.
      *
-     * @var integer
+     * @var int
      */
     protected $limit = 30;
 
     /**
-     * The current search page
+     * The current search page.
      *
-     * @var integer
+     * @var int
      */
     protected $offset = 0;
 
     /**
-     * The search term
+     * The search term.
      *
      * @var Term
      */
     protected $term = null;
 
     /**
-     * The user to restrict searching
+     * The user to restrict searching.
      *
      * @var mixed
      */
@@ -110,7 +110,7 @@ class SearchBuilder
     }
 
     /**
-     * Sets the search index
+     * Sets the search index.
      *
      * @param string $index
      * @return SearchBuilder
@@ -118,11 +118,12 @@ class SearchBuilder
     public function setIndex($index)
     {
         $this->index = $index;
+
         return $this;
     }
 
     /**
-     * Set the search term
+     * Set the search term.
      *
      * @param string $term
      * @return SearchBuilder
@@ -130,27 +131,29 @@ class SearchBuilder
     public function setTerm($term)
     {
         $this->term = new Term($term, $this->type->rankings());
+
         return $this;
     }
 
     /**
-     * Add a filter to the search
+     * Add a filter to the search.
      *
      * @param mixed $filter
-     * @param boolean $post Whether this is a post filter
+     * @param bool $post Whether this is a post filter
      * @return SearchBuilder
      */
     public function addFilter($filter, $post = true)
     {
         $this->filters->push([
             'filter' => $filter,
-            'post' => $post
+            'post' => $post,
         ]);
+
         return $this;
     }
 
     /**
-     * Set the channel to search on
+     * Set the channel to search on.
      *
      * @param string $channel
      * @return SearchBuilder
@@ -158,23 +161,25 @@ class SearchBuilder
     public function setChannel($channel)
     {
         $this->channel = $channel;
+
         return $this;
     }
 
     /**
-     * Set the search limit
+     * Set the search limit.
      *
-     * @param integer $limit
+     * @param int $limit
      * @return SeachBuilder
      */
     public function setLimit($limit)
     {
         $this->limit = $limit;
+
         return $this;
     }
 
     /**
-     * Set the search offset
+     * Set the search offset.
      *
      * @param integar $offset
      * @return SearchBuilder
@@ -182,11 +187,12 @@ class SearchBuilder
     public function setOffset($offset)
     {
         $this->offset = $offset;
+
         return $this;
     }
 
     /**
-     * Set the user
+     * Set the user.
      *
      * @param mixed $user
      * @return SearchBuilder
@@ -194,11 +200,12 @@ class SearchBuilder
     public function setUser($user)
     {
         $this->user = $user;
+
         return $this;
     }
 
     /**
-     * Init customer group filters
+     * Init customer group filters.
      *
      * @return SearchBuilder
      */
@@ -207,11 +214,12 @@ class SearchBuilder
         $filter = new CustomerGroupFilter;
         $filter->process($this->user);
         $this->addFilter($filter, false);
+
         return $this;
     }
 
     /**
-     * Set the type
+     * Set the type.
      *
      * @param string $type
      * @return SearchBuilder
@@ -226,7 +234,7 @@ class SearchBuilder
                 $this->type = $this->getType(Category::class);
                 break;
             default:
-                # code...
+                // code...
                 break;
         }
 
@@ -236,7 +244,7 @@ class SearchBuilder
     }
 
     /**
-     * Add a sort to the builder
+     * Add a sort to the builder.
      *
      * @param mixed $type
      * @param mixed $payload
@@ -247,11 +255,12 @@ class SearchBuilder
         $this->sorts->push(
             new $type($payload)
         );
+
         return $this;
     }
 
     /**
-     * Get the user
+     * Get the user.
      *
      * @return User
      */
@@ -261,7 +270,7 @@ class SearchBuilder
     }
 
     /**
-     * Get the channel
+     * Get the channel.
      *
      * @return string
      */
@@ -271,7 +280,7 @@ class SearchBuilder
     }
 
     /**
-     * Set up aggregations based on our attributes
+     * Set up aggregations based on our attributes.
      *
      * @return SearchBuilder
      */
@@ -297,7 +306,7 @@ class SearchBuilder
     }
 
     /**
-     * Get the attributes
+     * Get the attributes.
      *
      * @return Collection
      */
@@ -307,7 +316,7 @@ class SearchBuilder
     }
 
     /**
-     * Set the sorting on the search
+     * Set the sorting on the search.
      *
      * @param array $sorts
      * @return SearchBuilder
@@ -319,7 +328,6 @@ class SearchBuilder
         $sortables = [];
 
         foreach ($sorts as $field => $dir) {
-
             $column = $field;
 
             if ($field == 'min_price' || $field == 'max_price') {
@@ -350,11 +358,12 @@ class SearchBuilder
                 $this->sorts->push($sort);
             }
         }
+
         return $this;
     }
 
     /**
-     * Add an aggregation to the builder
+     * Add an aggregation to the builder.
      *
      * @param GetCandy\Api\Core\Search\Providers\Elastic\Aggregators\AbstractAggregator $aggregation
      * @return SearchBuilder
@@ -362,11 +371,12 @@ class SearchBuilder
     public function addAggregation($aggregation)
     {
         $this->aggregations->push($aggregation);
+
         return $this;
     }
 
     /**
-     * Get any fields that shouldnt be searched on
+     * Get any fields that shouldnt be searched on.
      *
      * @return array
      */
@@ -374,25 +384,25 @@ class SearchBuilder
     {
         $filterable = $this->attributes
             ->filter(function ($attribute) {
-                return !$attribute->searchable && !$attribute->filterable ||$attribute->filterable;
+                return ! $attribute->searchable && ! $attribute->filterable || $attribute->filterable;
             })
             ->pluck('handle')
             ->toArray();
 
         return [
-            'excludes' => $filterable
+            'excludes' => $filterable,
         ];
     }
 
-
     /**
-     * Get the search object
+     * Get the search object.
      *
      * @return Search
      */
     public function getSearch()
     {
         $search = new Search($this->client);
+
         return $search
             ->addIndex($this->index)
             ->setOption(
@@ -405,7 +415,7 @@ class SearchBuilder
     }
 
     /**
-     * Get the search query
+     * Get the search query.
      *
      * @return void
      */
@@ -434,8 +444,7 @@ class SearchBuilder
         $postFilter = new BoolQuery;
 
         foreach ($this->filters as $filter) {
-
-            if (!empty($filter['post'])) {
+            if (! empty($filter['post'])) {
                 $postFilter->addFilter(
                     $filter['filter']->getQuery()
                 );
@@ -473,7 +482,7 @@ class SearchBuilder
     }
 
     /**
-     * Get the search highlight
+     * Get the search highlight.
      *
      * @return array
      */
@@ -493,7 +502,7 @@ class SearchBuilder
         ];
     }
 
-        /**
+    /**
      * Get the suggester.
      *
      * @return Suggest

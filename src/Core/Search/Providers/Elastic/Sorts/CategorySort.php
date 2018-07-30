@@ -7,7 +7,7 @@ use GetCandy\Api\Core\Categories\Models\Category;
 class CategorySort extends AbstractSort
 {
     /**
-     * The category model
+     * The category model.
      *
      * @var Category
      */
@@ -19,7 +19,7 @@ class CategorySort extends AbstractSort
     }
 
     /**
-     * Get the sort mapping
+     * Get the sort mapping.
      *
      * @return array
      */
@@ -47,6 +47,7 @@ class CategorySort extends AbstractSort
             $sort = explode(':', $category->sort);
             $defaultSort = [[$sort[0] => $sort[1]]];
         }
+
         return $defaultSort;
     }
 }

@@ -8,7 +8,7 @@ use Elastica\Aggregation\Range;
 class PriceRange extends AbstractAggregator
 {
     /**
-     * Get the pre aggregation
+     * Get the pre aggregation.
      *
      * @param Search $search
      * @param Query $query

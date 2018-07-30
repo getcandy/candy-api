@@ -7,7 +7,7 @@ class BasicSort extends AbstractSort
     public function getMapping()
     {
         return [
-            $this->field => $this->dir
+            $this->field => $this->dir,
         ];
     }
 }

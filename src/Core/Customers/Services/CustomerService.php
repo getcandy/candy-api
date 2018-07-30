@@ -44,7 +44,6 @@ class CustomerService extends BaseService
         $query = $this->model;
 
         if ($keywords) {
-
             $segments = explode(' ', $keywords);
 
             $query = $query
