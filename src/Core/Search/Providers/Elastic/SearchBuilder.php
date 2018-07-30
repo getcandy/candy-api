@@ -134,11 +134,15 @@ class SearchBuilder
      * Add a filter to the search
      *
      * @param mixed $filter
+     * @param boolean $post Whether this is a post filter
      * @return SearchBuilder
      */
-    public function addFilter($filter)
+    public function addFilter($filter, $post = true)
     {
-        $this->filters->push($filter);
+        $this->filters->push([
+            'filter' => $filter,
+            'post' => $post
+        ]);
         return $this;
     }
 
