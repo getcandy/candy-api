@@ -6,26 +6,12 @@ use Elastica\Query;
 use Elastica\Client;
 use Elastica\Suggest;
 use Elastica\Query\Term;
-use Elastica\Query\Match;
-use Elastica\Suggest\Phrase;
-use Elastica\Query\BoolQuery;
-use Elastica\Aggregation\Terms;
-use Elastica\Query\Nested as NestedQuery;
 use GetCandy\Api\Core\Search\ClientContract;
-use Elastica\Aggregation\Filter as FilterAggregation;
-use Elastica\Aggregation\Nested as NestedAggregation;
-use Elastica\Suggest\CandidateGenerator\DirectGenerator;
 use GetCandy\Api\Core\Search\Providers\Elastic\Sorts\CategorySort;
 use GetCandy\Api\Core\Search\Providers\Elastic\Filters\ChannelFilter;
 
 class Search implements ClientContract
 {
-    use InteractsWithIndex;
-
-    protected $categories = [];
-    protected $channel = null;
-    protected $authUser = null;
-
     /**
      * The Search Builder
      *
@@ -42,23 +28,9 @@ class Search implements ClientContract
      */
     protected $filterSet;
 
-    public function __construct(
-        FilterSet $filterSet,
-        AggregationSet $aggregationSet,
-        SearchBuilder $builder
-    ) {
-        $this->filterSet = $filterSet;
-        $this->aggregationSet = $aggregationSet;
-        $this->builder = $builder;
-
-        foreach ($this->aggregators as $agg) {
-            $this->aggregationSet->add($agg);
-        }
-    }
-
-    public function with($searchterm)
+    public function __construct(SearchBuilder $builder)
     {
-        return $this->search($searchterm);
+        $this->builder = $builder;
     }
 
     /**
@@ -116,14 +88,7 @@ class Search implements ClientContract
      */
     public function suggest($keywords)
     {
-        if (! $this->channel) {
-            $this->setChannelDefault();
-        }
-
-        $search = new \Elastica\Search($this->client);
-        $search
-            ->addIndex($this->getSearchIndex())
-            ->addType($this->type->getHandle());
+        $search = $this->builder->getSearch();
 
         $suggest = new \Elastica\Suggest;
         $term = new \Elastica\Suggest\Completion('suggest', 'name.suggest');
@@ -175,42 +140,9 @@ class Search implements ClientContract
         $search = $builder->getSearch();
         $query = $builder->getQuery();
 
-        // if ($categoryFilter = $this->filterSet->getFilter('categories')) {
-        //     $query->setPostFilter(
-        //         $categoryFilter->getQuery()
-        //     );
-        // }
-
-
-        $query->setHighlight(
-            $this->getHighlight()
-        );
-
-        // $query->addAggregation(
-        //     $this->getCategoryPreAgg()
-        // );
-
-        // $query->addAggregation(
-        //     $this->getCategoryPostAgg()
-        // );
-
-        if ($keywords) {
-            $query->setSuggest(
-                $this->getSuggest($keywords)
-            );
-        }
-
-        // foreach ($this->aggregationSet->get() as $agg) {
-        //     $query->addAggregation(
-        //         $agg->getQuery($search, $query)
-        //     );
-        // }
-
         $search->setQuery($query);
 
-        $results = $search->search();
-
-        return $results;
+        return $search->search();
     }
 
 
@@ -244,116 +176,5 @@ class Search implements ClientContract
     protected function getAttribute($type)
     {
         return $this->builder->getAttributes()->firstWhere('handle', $type);
-    }
-
-    /**
-     * Get the suggester.
-     *
-     * @return Suggest
-     */
-    protected function getSuggest($keywords)
-    {
-        // Did you mean...
-        $phrase = new Phrase(
-            'name',
-            'name'
-        );
-        $phrase->setGramSize(3);
-        $phrase->setSize(1);
-        $phrase->setText($keywords);
-
-        $generator = new DirectGenerator('name');
-        $generator->setSuggestMode('always');
-        $generator->setField('name');
-        $phrase->addCandidateGenerator($generator);
-
-        $phrase->setHighlight('<strong>', '</strong>');
-        $suggest = new Suggest;
-        $suggest->addSuggestion($phrase);
-
-        return $suggest;
-    }
-
-    /**
-     * Gets the category post aggregation.
-     *
-     * @return NestedAggregation
-     */
-    protected function getCategoryPostAgg()
-    {
-        $nestedAggPost = new NestedAggregation(
-            'categories_after',
-            'departments'
-        );
-
-        $agg = new FilterAggregation('categories_after_filter');
-
-        // Add boolean
-        $postBool = new BoolQuery();
-
-        foreach ($this->categories as $category) {
-            $term = new Term;
-            $term->setTerm('departments.id', $category);
-            $postBool->addMust($term);
-        }
-
-        // Need to set another agg on categories_remaining
-        $childAgg = new \Elastica\Aggregation\Terms('categories_post_inner');
-        $childAgg->setField('departments.id');
-
-        // Do the terms in the categories loop...
-        $agg->setFilter($postBool);
-        $agg->addAggregation($childAgg);
-
-        $nestedAggPost->addAggregation($agg);
-
-        return $nestedAggPost;
-    }
-
-    /**
-     * Returns the category before aggregation.
-     *
-     * @return NestedAggregation
-     */
-    protected function getCategoryPreAgg()
-    {
-        // Get our category aggregations
-        $nestedAggBefore = new NestedAggregation(
-            'categories_before',
-            'departments'
-        );
-
-        $childAgg = new \Elastica\Aggregation\Terms('categories_before_inner');
-        $childAgg->setField('departments.id');
-
-        $nestedAggBefore->addAggregation($childAgg);
-
-        return $nestedAggBefore;
-    }
-
-    /**
-     * Gets the highlight for the search query.
-     *
-     * @return array
-     */
-    protected function getHighlight()
-    {
-        return [
-            'pre_tags' => ['<em class="highlight">'],
-            'post_tags' => ['</em>'],
-            'fields' => [
-                'name' => [
-                    'number_of_fragments' => 0,
-                ],
-                'description' => [
-                    'number_of_fragments' => 0,
-                ],
-            ],
-        ];
-    }
-
-    private function getRealCategoryIds($categories)
-    {
-        return app('api')->categories()->getDecodedIds($categories['values']);
     }
 }
