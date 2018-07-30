@@ -145,12 +145,15 @@ class Search implements ClientContract
         $roles = app('api')->roles()->getHubAccessRoles();
 
         $builder = $this->builder
-            ->setTerm($keywords)
             ->setLimit($perPage)
             ->setOffset(($page - 1) * $perPage)
             ->setSorting($sorts)
             ->withAggregations()
             ->useCustomerFilters();
+
+        if ($keywords) {
+            $builder->setTerm($keywords);
+        }
 
         if ($category) {
             $builder->addSort(CategorySort::class, $category);
