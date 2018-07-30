@@ -6,7 +6,7 @@ use Elastica\Aggregation\Min;
 
 class MinPrice
 {
-    public function getQuery()
+    public function getPre()
     {
         $agg = new Min('min_price');
         $agg->setField('min_price');
