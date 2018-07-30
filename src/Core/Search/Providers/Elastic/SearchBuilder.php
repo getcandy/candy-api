@@ -411,22 +411,44 @@ class SearchBuilder
 
         $boolQuery = new BoolQuery;
 
-        $boolQuery->addMust(
-            $this->term->getQuery()
-        );
+        if ($this->term) {
+            $boolQuery->addMust(
+                $this->term->getQuery()
+            );
+        }
 
         $query->setSource(
             $this->getExcludedFields()
         );
 
+        // Set filters as post filters
+        $postFilter = new BoolQuery;
+
         foreach ($this->filters as $filter) {
-            $boolQuery->addFilter(
-                $filter->getQuery()
-            );
+
+            if (!empty($filter['post'])) {
+                $postFilter->addFilter(
+                    $filter['filter']->getQuery()
+                );
+            } else {
+                $boolQuery->addFilter(
+                    $filter['filter']->getQuery()
+                );
+            }
+
+            if (method_exists($filter['filter'], 'aggregate')) {
+                $query->addAggregation(
+                    $filter['filter']->aggregate()->getPost(
+                        $filter['filter']->getValue()
+                    )
+                );
+            }
         }
 
+        $query->setPostFilter($postFilter);
+
         foreach ($this->aggregations as $agg) {
-            $query->addAggregation($agg->getQuery(
+            $query->addAggregation($agg->getPre(
                 $this->getSearch(),
                 $query
             ));
@@ -435,15 +457,5 @@ class SearchBuilder
         $query->setQuery($boolQuery);
 
         return $query;
-    }
-
-
-    public function search()
-    {
-        $search = $this->getSearch();
-        $query = $this->getQuery();
-
-        dd($query);
-        dd('hit');
     }
 }
