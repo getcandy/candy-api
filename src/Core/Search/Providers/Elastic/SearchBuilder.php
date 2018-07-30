@@ -3,8 +3,8 @@
 namespace GetCandy\Api\Core\Search\Providers\Elastic;
 
 use Elastica\Query;
-use Elastica\Search;
 use Elastica\Client;
+use Elastica\Search;
 use Elastica\Query\BoolQuery;
 use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Categories\Models\Category;
@@ -393,6 +393,10 @@ class SearchBuilder
         $search = new Search($this->client);
         return $search
             ->addIndex($this->index)
+            ->setOption(
+                Search::OPTION_SEARCH_TYPE,
+                Search::OPTION_SEARCH_TYPE_DFS_QUERY_THEN_FETCH
+            )
             ->addType(
                 $this->type->getHandle()
             );
