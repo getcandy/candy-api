@@ -351,6 +351,18 @@ class SearchBuilder
     }
 
     /**
+     * Add an aggregation to the builder
+     *
+     * @param GetCandy\Api\Core\Search\Providers\Elastic\Aggregators\AbstractAggregator $aggregation
+     * @return SearchBuilder
+     */
+    public function addAggregation($aggregation)
+    {
+        $this->aggregations->push($aggregation);
+        return $this;
+    }
+
+    /**
      * Get any fields that shouldnt be searched on
      *
      * @return array
