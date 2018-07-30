@@ -27,6 +27,16 @@ class Term
         $this->fields = $fields;
     }
 
+    /**
+     * Get the text value
+     *
+     * @return string
+     */
+    public function getText()
+    {
+        return $this->text;
+    }
+
     public function getQuery()
     {
         $disMaxQuery = new DisMax;
