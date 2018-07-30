@@ -5,6 +5,7 @@ namespace GetCandy\Api\Core\Search\Providers\Elastic\Filters;
 use Elastica\Query\Term;
 use Elastica\Query\Nested;
 use Elastica\Query\BoolQuery;
+use GetCandy\Api\Core\Search\Providers\Elastic\Aggregators\Category;
 
 class CategoryFilter extends AbstractFilter
 {
@@ -36,14 +37,9 @@ class CategoryFilter extends AbstractFilter
      */
     protected function add($category)
     {
-        if (is_iterable($category)) {
-            foreach ($category as $cat) {
-                $this->categories->push($cat);
-            }
-        } else {
-            $this->categories->push($category);
+        foreach (explode(':', $category) as $cat) {
+            $this->categories->push($cat);
         }
-
         return $this;
     }
 
@@ -70,5 +66,20 @@ class CategoryFilter extends AbstractFilter
         }
 
         return $filter;
+    }
+
+    public function getValue()
+    {
+        return $this->categories;
+    }
+
+    /**
+     * Get an aggregation based on this filter.
+     *
+     * @return void
+     */
+    public function aggregate()
+    {
+        return new Category('category');
     }
 }
