@@ -21,6 +21,8 @@ class CategoryFilter extends AbstractFilter
             $this->add($payload['values']);
         } elseif (is_string($payload)) {
             $this->add($payload);
+        } else {
+            $this->add($payload->encodedId());
         }
 
         return $this;
