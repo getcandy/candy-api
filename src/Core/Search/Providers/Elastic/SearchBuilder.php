@@ -204,10 +204,9 @@ class SearchBuilder
      */
     public function useCustomerFilters()
     {
-        $this->addFilter(
-            new CustomerGroupFilter($this->user),
-            false
-        );
+        $filter = new CustomerGroupFilter;
+        $filter->process($this->user);
+        $this->addFilter($filter, false);
         return $this;
     }
 
