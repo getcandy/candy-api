@@ -17,4 +17,11 @@ class UpdateAttributesRequest extends FormRequest
             'attributes' => 'required|array',
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'attributes' => 'This field is required',
+        ];
+    }
 }

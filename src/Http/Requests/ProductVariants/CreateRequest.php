@@ -28,7 +28,8 @@ class CreateRequest extends FormRequest
 
         foreach (collect($this->variants) as $index => $variant) {
             if (empty($variant['id'])) {
-                $rules['sku'] = 'unique:product_variants';
+                $rules['variants.*.sku'] = 'unique:product_variants';
+                $rules['variants.*.price'] = 'required';
             }
         }
 
@@ -40,6 +41,7 @@ class CreateRequest extends FormRequest
         return [
             'variants.*.sku.unique' => 'This SKU has already been taken',
             'variants.*.sku.required' => 'The SKU field is required',
+            'variants.*.price.required' => 'The price field is required',
         ];
     }
 }
