@@ -16,19 +16,21 @@ use GetCandy\Api\Http\Middleware\SetTaxMiddleware;
 use GetCandy\Api\Core\Currencies\CurrencyConverter;
 use GetCandy\Api\Core\Users\Contracts\UserContract;
 use GetCandy\Api\Http\Middleware\SetCustomerGroups;
-use GetCandy\Api\Core\Products\ProductVariantFactory;
 use GetCandy\Api\Http\Middleware\SetLocaleMiddleware;
 use GetCandy\Api\Console\Commands\ElasticIndexCommand;
 use GetCandy\Api\Core\Baskets\Factories\BasketFactory;
-use GetCandy\Api\Core\Products\ProductVariantInterface;
 use GetCandy\Api\Http\Middleware\SetCurrencyMiddleware;
+use GetCandy\Api\Core\Products\Factories\ProductFactory;
 use GetCandy\Api\Http\Middleware\CheckClientCredentials;
 use GetCandy\Api\Console\Commands\InstallGetCandyCommand;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketInterface;
 use GetCandy\Api\Core\Baskets\Factories\BasketLineFactory;
+use GetCandy\Api\Core\Products\Interfaces\ProductInterface;
+use GetCandy\Api\Core\Search\Factories\SearchResultFactory;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketLineInterface;
 use GetCandy\Api\Core\Search\Interfaces\SearchResultInterface;
-use GetCandy\Api\Core\Search\Factories\SearchResultFactory;
+use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
+use GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface;
 
 class ApiServiceProvider extends ServiceProvider
 {
@@ -181,6 +183,10 @@ class ApiServiceProvider extends ServiceProvider
 
         $this->app->bind(ProductVariantInterface::class, function ($app) {
             return $app->make(ProductVariantFactory::class);
+        });
+
+        $this->app->bind(ProductInterface::class, function ($app) {
+            return $app->make(ProductFactory::class);
         });
 
         $this->app->bind(BasketLineInterface::class, function ($app) {

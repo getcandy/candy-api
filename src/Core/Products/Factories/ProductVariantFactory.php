@@ -1,11 +1,12 @@
 <?php
 
-namespace GetCandy\Api\Core\Products;
+namespace GetCandy\Api\Core\Products\Factories;
 
 use PriceCalculator;
 use Illuminate\Database\Eloquent\Model;
 use GetCandy\Api\Core\Products\Models\ProductVariant;
 use GetCandy\Api\Core\Products\Entities\ProductVariantEntity;
+use GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface;
 
 class ProductVariantFactory implements ProductVariantInterface
 {

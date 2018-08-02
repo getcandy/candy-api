@@ -9,14 +9,36 @@ use GetCandy\Api\Core\Scopes\CustomerGroupScope;
 use GetCandy\Api\Core\Search\Events\IndexableSavedEvent;
 use GetCandy\Api\Core\Products\Events\ProductCreatedEvent;
 use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
+use GetCandy\Api\Core\Products\Interfaces\ProductInterface;
 
 class ProductService extends BaseService
 {
     protected $model;
 
-    public function __construct()
+    /**
+     * The product factory instance
+     *
+     * @var ProductInterface
+     */
+    protected $factory;
+
+    public function __construct(ProductInterface $factory)
     {
         $this->model = new Product();
+        $this->factory = $factory;
+    }
+
+    /**
+     * Returns model by a given hashed id.
+     * @param  string $id
+     * @throws  Illuminate\Database\Eloquent\ModelNotFoundException
+     * @return Product
+     */
+    public function getByHashedId($id)
+    {
+        $id = $this->model->decodeId($id);
+        $product = $this->model->findOrFail($id);
+        return $this->factory->init($product)->get();
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace GetCandy\Api\Core\Products;
+namespace GetCandy\Api\Core\Products\Interfaces;
 
 interface ProductVariantInterface
 {

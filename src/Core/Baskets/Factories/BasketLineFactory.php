@@ -4,7 +4,7 @@ namespace GetCandy\Api\Core\Baskets\Factories;
 
 use GetCandy\Api\Core\Baskets\Models\BasketLine;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketLineInterface;
-use GetCandy\Api\Core\Products\ProductVariantFactory;
+use GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface;
 
 class BasketLineFactory implements BasketLineInterface
 {
@@ -18,11 +18,11 @@ class BasketLineFactory implements BasketLineInterface
     /**
      * The variant factory
      *
-     * @var ProductVariantFactory
+     * @var ProductVariantInterface
      */
     protected $variantFactory;
 
-    public function __construct(ProductVariantFactory $factory)
+    public function __construct(ProductVariantInterface $factory)
     {
         $this->variantFactory = $factory;
     }
