@@ -9,16 +9,26 @@ use GetCandy\Api\Core\Factory;
 use Laravel\Passport\Passport;
 use Illuminate\Support\ServiceProvider;
 use GetCandy\Api\Core\Search\SearchContract;
+use GetCandy\Api\Core\Discounts\DiscountFactory;
 use GetCandy\Api\Core\Users\Services\UserService;
+use GetCandy\Api\Core\Discounts\DiscountInterface;
 use GetCandy\Api\Http\Middleware\SetTaxMiddleware;
 use GetCandy\Api\Core\Currencies\CurrencyConverter;
 use GetCandy\Api\Core\Users\Contracts\UserContract;
 use GetCandy\Api\Http\Middleware\SetCustomerGroups;
+use GetCandy\Api\Core\Products\ProductVariantFactory;
 use GetCandy\Api\Http\Middleware\SetLocaleMiddleware;
 use GetCandy\Api\Console\Commands\ElasticIndexCommand;
+use GetCandy\Api\Core\Baskets\Factories\BasketFactory;
+use GetCandy\Api\Core\Products\ProductVariantInterface;
 use GetCandy\Api\Http\Middleware\SetCurrencyMiddleware;
 use GetCandy\Api\Http\Middleware\CheckClientCredentials;
 use GetCandy\Api\Console\Commands\InstallGetCandyCommand;
+use GetCandy\Api\Core\Baskets\Interfaces\BasketInterface;
+use GetCandy\Api\Core\Baskets\Factories\BasketLineFactory;
+use GetCandy\Api\Core\Baskets\Interfaces\BasketLineInterface;
+use GetCandy\Api\Core\Search\Interfaces\SearchResultInterface;
+use GetCandy\Api\Core\Search\Factories\SearchResultFactory;
 
 class ApiServiceProvider extends ServiceProvider
 {
@@ -158,6 +168,28 @@ class ApiServiceProvider extends ServiceProvider
                 return $app->make($driver);
             });
         }
+
+
+        // New factory bindings
+        $this->app->singleton(BasketInterface::class, function ($app) {
+            return $app->make(BasketFactory::class);
+        });
+
+        $this->app->singleton(DiscountInterface::class, function ($app) {
+            return $app->make(DiscountFactory::class);
+        });
+
+        $this->app->bind(ProductVariantInterface::class, function ($app) {
+            return $app->make(ProductVariantFactory::class);
+        });
+
+        $this->app->bind(BasketLineInterface::class, function ($app) {
+            return $app->make(BasketLineFactory::class);
+        });
+
+        $this->app->bind(SearchResultInterface::class, function ($app) {
+            return $app->make(SearchResultFactory::class);
+        });
     }
 
     /**

@@ -17,12 +17,11 @@ class BasketTransformer extends BaseTransformer
 
     public function transform(Basket $basket)
     {
-        $basket = app('api')->baskets()->setTotals($basket);
         $data = [
             'id' => $basket->encodedId(),
-            'total' => round($basket->total, 2),
-            'sub_total' => round($basket->subTotal, 2),
-            'tax_total' => round($basket->tax, 2),
+            'total' => $basket->total_cost,
+            'sub_total' => $basket->sub_total,
+            'tax_total' => $basket->total_tax,
         ];
 
         return $data;

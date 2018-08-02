@@ -231,4 +231,32 @@ class CategoryService extends BaseService
 
         return $category->delete();
     }
+
+    public function getSearchedIds($ids = [])
+    {
+        $parsedIds = [];
+        foreach ($ids as $hash) {
+            $parsedIds[] = $this->model->decodeId($hash);
+        }
+
+        $placeholders = implode(',', array_fill(0, count($parsedIds), '?')); // string for the query
+
+        $query = $this->model->with([
+            'routes',
+            'products',
+            'assets',
+            'assets',
+            'primaryAsset.transforms',
+            'primaryAsset.source',
+            'primaryAsset',
+        ])
+            ->withoutGlobalScopes()
+            ->whereIn('id', $parsedIds);
+
+        if (count($parsedIds)) {
+            $query = $query->orderByRaw("field(id,{$placeholders})", $parsedIds);
+        }
+
+        return $query->get();
+    }
 }

@@ -6,11 +6,12 @@ use GetCandy\Api\Core\Taxes\Models\Tax;
 use GetCandy\Api\Core\Scaffold\BaseModel;
 use GetCandy\Api\Core\Assets\Models\Asset;
 use GetCandy\Api\Core\Traits\HasAttributes;
+use GetCandy\Api\Core\Traits\Lockable;
 use GetCandy\Api\Core\Baskets\Models\BasketLine;
 
 class ProductVariant extends BaseModel
 {
-    use HasAttributes;
+    use HasAttributes, Lockable;
     /**
      * The Hashid Channel for encoding the id.
      * @var string
@@ -72,25 +73,6 @@ class ProductVariant extends BaseModel
         }
 
         return $values;
-    }
-
-    protected function getPricing()
-    {
-        if (! $this->pricing) {
-            $this->pricing = app('api')->productVariants()->getVariantPrice($this, app('auth')->user());
-        }
-
-        return $this->pricing;
-    }
-
-    public function getTotalPriceAttribute()
-    {
-        return $this->getPricing()->amount;
-    }
-
-    public function getTaxTotalAttribute()
-    {
-        return $this->getPricing()->tax;
     }
 
     public function setOptionsAttribute($val)

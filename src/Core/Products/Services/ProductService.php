@@ -241,7 +241,7 @@ class ProductService extends BaseService
         return $attributes;
     }
 
-    public function getSearchedIds($ids = [])
+    public function getSearchedIds($ids = [], $user = null)
     {
         $parsedIds = [];
         foreach ($ids as $hash) {
@@ -253,7 +253,6 @@ class ProductService extends BaseService
         $query = $this->model->with(['routes', 'primaryAsset.transforms', 'firstVariant'])->whereIn('id', $parsedIds);
 
         $groups = \GetCandy::getGroups();
-        $user = \Auth::user();
 
         $ids = [];
 

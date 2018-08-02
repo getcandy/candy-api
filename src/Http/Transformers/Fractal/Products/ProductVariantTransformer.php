@@ -16,16 +16,14 @@ class ProductVariantTransformer extends BaseTransformer
 
     public function transform(ProductVariant $variant)
     {
-        // $price =
-        $response = [
+        return [
             'id' => $variant->encodedId(),
             'sku' => $variant->sku,
             'backorder' => $variant->backorder,
             'requires_shipping' => (bool) $variant->requires_shipping,
-            'price' => $variant->total_price,
-            'unit_price' => $variant->total_price / $variant->unit_qty,
-            'tax' => $variant->tax_total,
-            'unit_tax' => $variant->tax_total / $variant->unit_qty,
+            'price' => $variant->price,
+            'unit_price' => $variant->unit_cost,
+            'tax' => $variant->unit_tax,
             'unit_qty' => $variant->unit_qty,
             'min_qty' => $variant->min_qty,
             'max_qty' => $variant->max_qty,
@@ -54,8 +52,6 @@ class ProductVariantTransformer extends BaseTransformer
             ],
             'options' => $variant->options,
         ];
-
-        return $response;
     }
 
     public function includeTax(ProductVariant $variant)
@@ -94,10 +90,9 @@ class ProductVariantTransformer extends BaseTransformer
     {
         $groups = \GetCandy::getGroups();
 
-        //TODO: Review for performace
-        $tiers = $product->tiers()->inGroups(
-            $groups->pluck('id')->toArray()
-        )->get();
+        $tiers = $product->tiers->filter(function ($tier) use ($groups) {
+            return $groups->contains($tier->group);
+        });
 
         return $this->collection(
             $tiers,

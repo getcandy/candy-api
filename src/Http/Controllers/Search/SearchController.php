@@ -80,7 +80,8 @@ class SearchController extends BaseController
             $request->type,
             $request->includes,
             $request->page ?: 1,
-            $request->category
+            $request->category,
+            $request->user()
         );
 
         return response($results, 200);

@@ -92,43 +92,6 @@ class ProductVariantService extends BaseService
         return $product;
     }
 
-    /**
-     * Gets any tiered pricing for this variant.
-     *
-     * @param ProductVariant $variant
-     * @param int $quantity
-     * @param mixed $user
-     *
-     * @return void
-     */
-    public function getTieredPrice($variant, $quantity, $user = null)
-    {
-        $groups = \GetCandy::getGroups();
-
-        $ids = [];
-
-        foreach ($groups as $group) {
-            $ids[] = $group->id;
-        }
-
-        $price = $variant->tiers()->whereIn('customer_group_id', $ids)
-            ->where('lower_limit', '<=', $quantity)
-            ->orderBy('price', 'asc')
-            ->first();
-
-        if (! $price) {
-            return;
-        }
-
-        $tax = 0;
-
-        if ($variant->tax) {
-            $tax = $variant->tax->percentage;
-        }
-
-        return PriceCalculator::get($price->price, $tax);
-    }
-
     public function canAddToBasket($variantId, $quantity)
     {
         $variant = $this->getByHashedId($variantId);
@@ -144,46 +107,6 @@ class ProductVariantService extends BaseService
         }
 
         return $quantity <= $variant->stock;
-    }
-
-    /**
-     * Gets the variants true price.
-     *
-     * @param ProductVariant $variant
-     * @param mixed $user
-     *
-     * @return void
-     */
-    public function getVariantPrice($variant, $user = null)
-    {
-        // clock()->startEvent($variant->encodedId(), "Getting variant [{$variant->encodedId()}] price");
-        $groups = \GetCandy::getGroups();
-
-        $ids = [];
-
-        foreach ($groups as $group) {
-            $ids[] = $group->id;
-        }
-
-        $pricing = null;
-
-        // If the user is an admin, fall through
-        if (! $user || ($user && ! $user->hasRole('admin'))) {
-            $pricing = $variant->customerPricing()
-                ->whereIn('customer_group_id', $ids)
-                ->orderBy('price', 'asc')
-                ->first();
-        }
-
-        if ($pricing) {
-            $tax = $pricing->tax->percentage ?? 0;
-            $price = $pricing->price;
-        } else {
-            $tax = $variant->tax->percentage ?? 0;
-            $price = $variant->price;
-        }
-
-        return PriceCalculator::get($price, $tax);
     }
 
     /**
