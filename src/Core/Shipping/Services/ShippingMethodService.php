@@ -6,12 +6,21 @@ use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Shipping\ShippingCalculator;
 use GetCandy\Api\Core\Shipping\Models\ShippingMethod;
 use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
+use GetCandy\Api\Core\Baskets\Services\BasketService;
 
 class ShippingMethodService extends BaseService
 {
-    public function __construct()
+    /**
+     * The basket service
+     *
+     * @var BasketService
+     */
+    protected $baskets;
+
+    public function __construct(BasketService $baskets)
     {
         $this->model = new ShippingMethod();
+        $this->baskets = $baskets;
     }
 
     /**
@@ -76,7 +85,8 @@ class ShippingMethodService extends BaseService
     {
         // Get the zones for this order...
         $order = app('api')->orders()->getByHashedId($orderId);
-        $basket = app('api')->baskets()->setTotals($order->basket);
+        $basket = $this->baskets->getForOrder($order);
+
         $methods = $this->all();
         $basket = $order->basket;
         $calculator = new ShippingCalculator(app());

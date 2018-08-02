@@ -12,6 +12,7 @@ use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Core\Orders\Events\OrderSavedEvent;
+use GetCandy\Api\Core\Baskets\Services\BasketService;
 use GetCandy\Api\Core\Orders\Events\OrderProcessedEvent;
 use GetCandy\Api\Core\Orders\Events\OrderBeforeSavedEvent;
 use GetCandy\Api\Core\Orders\Exceptions\IncompleteOrderException;
@@ -19,13 +20,21 @@ use GetCandy\Api\Core\Orders\Exceptions\IncompleteOrderException;
 class OrderService extends BaseService
 {
     /**
+     * The basket service
+     *
+     * @var BasketService
+     */
+    protected $baskets;
+
+    /**
      * @var Basket
      */
     protected $model;
 
-    public function __construct()
+    public function __construct(BasketService $baskets)
     {
         $this->model = new Order();
+        $this->baskets = $baskets;
     }
 
     /**
@@ -39,8 +48,6 @@ class OrderService extends BaseService
     {
         // Get the basket
         $basket = app('api')->baskets()->getByHashedId($basketId);
-
-        app('api')->baskets()->setTotals($basket);
 
         if ($basket->activeOrder) {
             $order = $basket->activeOrder;
@@ -114,9 +121,8 @@ class OrderService extends BaseService
         $order->update($updateFields);
 
         // TODO Need a better way to do this basket totals thing
-        $basket = $order->basket;
+        $basket = $this->baskets->getForOrder($order);
 
-        app('api')->baskets()->setTotals($basket);
 
         $tax = app('api')->taxes()->getDefaultRecord();
 
@@ -134,15 +140,16 @@ class OrderService extends BaseService
 
         // Does the basket have a free shipping discount?
         $discounts = $order->basket->discounts;
+
         $order->lines()->create([
             'is_shipping' => true,
-            'quantity' => 1,
+            'quantity' => $rate->qty,
             'discount_total' => $basket->freeShipping ? $rate->amount + $rate->tax : 0,
             'description' => $price->method->attribute('name'),
-            'line_total' => $rate->amount,
-            'unit_price' => $rate->amount,
+            'line_total' => $rate->total_cost,
+            'unit_price' => $rate->unit_cost,
             'variant' => $price->zone->name,
-            'tax_total' => $rate->tax,
+            'tax_total' => $rate->total_tax,
             'tax_rate' => $tax->percentage,
             'sku' => $shippingPriceId,
         ]);
@@ -410,20 +417,14 @@ class OrderService extends BaseService
         $lines = [];
 
         foreach ($basket->lines as $line) {
-            $tax = $line->current_tax;
-            $currentTotal = $line->current_total;
 
-            $tax = PriceCalculator::get(
-                $currentTotal - $line->discount,
-                $line->variant->tax
-            )->tax;
             array_push($lines, [
                 'sku' => $line->variant->sku,
-                'tax_total' => round($tax, 2) * 100,
+                'tax_total' => $line->total_tax * 100,
                 'tax_rate' => $line->variant->tax->percentage,
                 'discount_total' => $line->discount ?? 0,
-                'line_total' => round($currentTotal, 2) * 100,
-                'unit_price' => round($currentTotal / $line->quantity, 2) * 100,
+                'line_total' => $line->total_cost * 100,
+                'unit_price' => $line->unit_cost,
                 'quantity' => $line->quantity,
                 'description' => $line->variant->product->attribute('name'),
                 'variant' => $line->variant->name,

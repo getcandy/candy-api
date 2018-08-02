@@ -5,14 +5,15 @@ namespace GetCandy\Api\Core\Baskets\Services;
 use Carbon\Carbon;
 use GetCandy\Api\Core\Auth\Models\User;
 use GetCandy\Api\Core\Discounts\Factory;
+use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Core\Baskets\Models\BasketTotal;
 use GetCandy\Api\Core\Baskets\Models\SavedBasket;
+use GetCandy\Api\Core\Products\ProductVariantFactory;
 use GetCandy\Api\Core\Baskets\Events\BasketStoredEvent;
 use GetCandy\Api\Core\Products\ProductVariantInterface;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketInterface;
-use GetCandy\Api\Core\Products\ProductVariantFactory;
 
 class BasketService extends BaseService
 {
@@ -95,6 +96,17 @@ class BasketService extends BaseService
             'lines.variant.customerPricing',
         ])->findOrFail($id);
         return $this->factory->init($basket)->get();
+    }
+
+    /**
+     * Get basket for an order
+     *
+     * @param Order $order
+     * @return Basket
+     */
+    public function getForOrder(Order $order)
+    {
+        return $this->factory->init($order->basket)->get();
     }
 
     /**
@@ -341,23 +353,5 @@ class BasketService extends BaseService
         );
 
         return $userBasket;
-    }
-
-    /**
-     * Get the totals for a basket.
-     *
-     * @param Basket $basket
-     *
-     * @return BasketTotal
-     */
-    public function setTotals(Basket $basket)
-    {
-        $factory = new Factory;
-        $sets = app('api')->discounts()->parse($basket->discounts);
-        $applied = $factory->getApplied($sets, \Auth::user(), null, $basket);
-
-        $factory->applyToBasket($applied, $basket);
-
-        return $basket;
     }
 }

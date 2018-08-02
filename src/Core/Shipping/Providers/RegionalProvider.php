@@ -37,7 +37,7 @@ class RegionalProvider extends AbstractProvider
             } elseif ($users->count()) {
                 return false;
             }
-            if (($basket->total * 100) > $item->min_basket && $weight >= $item->min_weight) {
+            if (($basket->sub_total * 100) > $item->min_basket && $weight >= $item->min_weight) {
                 return $item;
             }
         })->sortBy('rate')->first();
