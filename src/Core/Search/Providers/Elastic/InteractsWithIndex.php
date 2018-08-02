@@ -25,6 +25,8 @@ trait InteractsWithIndex
 
     protected $client;
 
+    protected $lang = 'en';
+
     /**
      * Gets the base index name.
      *
@@ -145,5 +147,22 @@ trait InteractsWithIndex
         }
 
         return 'a';
+    }
+
+    /**
+     * Get the search index.
+     *
+     * @return string
+     */
+    protected function getSearchIndex()
+    {
+        return $this->type->getIndexName().'_'.$this->lang;
+    }
+
+    protected function getCurrentIndex()
+    {
+        return $this->client->getIndex(
+            $this->getSearchIndex()
+        );
     }
 }

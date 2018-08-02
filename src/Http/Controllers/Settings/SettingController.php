@@ -22,7 +22,7 @@ class SettingController extends BaseController
             return $this->errorNotFound();
         }
 
-        if (!$setting) {
+        if (! $setting) {
             return $this->errorNotFound();
         }
 

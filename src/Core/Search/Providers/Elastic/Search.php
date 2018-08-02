@@ -2,27 +2,19 @@
 
 namespace GetCandy\Api\Core\Search\Providers\Elastic;
 
-use Elastica\Query;
-use Elastica\Client;
 use Elastica\Suggest;
-use Elastica\Query\Term;
-use Elastica\Query\Match;
-use Elastica\Suggest\Phrase;
-use Elastica\Query\BoolQuery;
-use Elastica\Aggregation\Terms;
-use Elastica\Query\Nested as NestedQuery;
 use GetCandy\Api\Core\Search\ClientContract;
-use Elastica\Aggregation\Filter as FilterAggregation;
-use Elastica\Aggregation\Nested as NestedAggregation;
-use Elastica\Suggest\CandidateGenerator\DirectGenerator;
+use GetCandy\Api\Core\Search\Providers\Elastic\Sorts\CategorySort;
+use GetCandy\Api\Core\Search\Providers\Elastic\Filters\ChannelFilter;
 
 class Search implements ClientContract
 {
-    use InteractsWithIndex;
-
-    protected $categories = [];
-    protected $channel = null;
-    protected $authUser = null;
+    /**
+     * The Search Builder.
+     *
+     * @var SearchBuilder
+     */
+    protected $builder;
 
     protected $aggregators = [
         'priceRange',
@@ -33,30 +25,20 @@ class Search implements ClientContract
      */
     protected $filterSet;
 
-    public function __construct(Client $client, FilterSet $filterSet, AggregationSet $aggregationSet)
+    public function __construct(SearchBuilder $builder)
     {
-        $this->client = $client;
-        $this->filterSet = $filterSet;
-        $this->aggregationSet = $aggregationSet;
-
-        foreach ($this->aggregators as $agg) {
-            $this->aggregationSet->add($agg);
-        }
+        $this->builder = $builder;
     }
 
-    public function with($searchterm)
-    {
-        return $this->search($searchterm);
-    }
-
-    protected function getSearchIndex()
-    {
-        return $this->type->getIndexName().'_'.$this->lang;
-    }
-
+    /**
+     * Set the user on the search.
+     *
+     * @param \Illuminate\Database\Eloquent\Model $user
+     * @return self
+     */
     public function user($user = null)
     {
-        $this->authUser = $user;
+        $this->builder->setUser($user);
 
         return $this;
     }
@@ -64,19 +46,34 @@ class Search implements ClientContract
     /**
      * Set the channel to filter on.
      *
-     * @return void
+     * @return Search
      */
     public function on($channel = null)
     {
-        if (! $channel) {
-            $this->setChannelDefault();
-        } else {
-            $this->channel = $channel;
-        }
+        $this->builder->setChannel($channel);
 
         return $this;
     }
 
+    /**
+     * Set the index.
+     *
+     * @param string $index
+     * @return Search
+     */
+    public function against($type)
+    {
+        $this->builder->setType($type);
+
+        return $this;
+    }
+
+    /**
+     * Set the search language.
+     *
+     * @param string $lang
+     * @return self
+     */
     public function language($lang = 'en')
     {
         $this->lang = $lang;
@@ -84,24 +81,15 @@ class Search implements ClientContract
         return $this;
     }
 
-    protected function setChannelDefault()
-    {
-        $channel = app('api')->channels()->getDefaultRecord()->handle;
-        $this->channel = $channel;
-
-        return $this;
-    }
-
+    /**
+     * Set the suggestions.
+     *
+     * @param string $keywords
+     * @return void
+     */
     public function suggest($keywords)
     {
-        if (! $this->channel) {
-            $this->setChannelDefault();
-        }
-
-        $search = new \Elastica\Search($this->client);
-        $search
-            ->addIndex($this->getSearchIndex())
-            ->addType($this->type->getHandle());
+        $search = $this->builder->getSearch();
 
         $suggest = new \Elastica\Suggest;
         $term = new \Elastica\Suggest\Completion('suggest', 'name.suggest');
@@ -118,403 +106,75 @@ class Search implements ClientContract
      *
      * @return array
      */
-    public function search($keywords, $category = null, $filters = [], $sorts = [], $page = 1, $perPage = 25)
+    public function search($keywords, $category = null, $filters = [], $sorts = [], $page = 1, $perPage = 30)
     {
-        if (! $this->type) {
-            abort(400, 'You need to set an indexer first');
-        }
-
         $roles = app('api')->roles()->getHubAccessRoles();
-        $user = app('auth')->user();
 
-        if (! $this->channel) {
-            $this->setChannelDefault();
-        }
-
-        $search = new \Elastica\Search($this->client);
-        $search
-            ->addIndex($this->getSearchIndex())
-            ->addType($this->type->getHandle());
-
-        $query = new Query();
-        $query->setParam('size', $perPage);
-        $query->setParam('from', ($page - 1) * $perPage);
-
-        foreach ($this->getSorts($sorts) as $sortable) {
-            $query->addSort($sortable);
-        }
-
-        if ($category && empty($sorts)) {
-            $query->setSort(
-                $this->getDefaultCategorySort($category)
-            );
-        }
-
-        $boolQuery = new BoolQuery;
+        $builder = $this->builder
+            ->setLimit($perPage)
+            ->setOffset(($page - 1) * $perPage)
+            ->setSorting($sorts)
+            ->withAggregations()
+            ->useCustomerFilters();
 
         if ($keywords) {
-            $disMaxQuery = $this->generateDisMax($keywords);
-            $boolQuery->addMust($disMaxQuery);
+            $builder->setTerm($keywords);
         }
 
-        $filter = $this->getCustomerGroupFilter();
+        if ($category) {
+            $builder->addSort(CategorySort::class, $category);
+        }
 
-        $boolQuery->addFilter($filter);
-
-        if ($user && ! $user->hasAnyRole($roles)) {
-            $boolQuery->addFilter(
-                $this->getChannelFilter()
+        if ($builder->getUser() && ! $builder->getUser()->hasAnyRole($roles)) {
+            $builder->addFilter(
+                new ChannelFilter($builder->getChannel())
             );
         }
 
         foreach ($filters ?? [] as $filter => $value) {
-            $this->filterSet->add($filter, $value);
-        }
-
-        if ($category) {
-            $this->filterSet->add('categories', $category);
-        }
-
-        foreach ($this->filterSet->getFilters() as $filter) {
-            if ($filterQuery = $filter->getQuery()) {
-                $boolQuery->addFilter($filterQuery);
+            $object = $this->findFilter($filter);
+            if ($object && $object = $object->process($value, $filter)) {
+                $builder->addFilter($object);
             }
         }
 
-        if ($categoryFilter = $this->filterSet->getFilter('categories')) {
-            $query->setPostFilter(
-                $categoryFilter->getQuery()
-            );
-        }
-
-        $query->setQuery($boolQuery);
-
-        $query->setHighlight(
-            $this->getHighlight()
-        );
-
-        $query->addAggregation(
-            $this->getCategoryPreAgg()
-        );
-
-        $query->addAggregation(
-            $this->getCategoryPostAgg()
-        );
-
-        // dd($query);
-
-        if ($keywords) {
-            $query->setSuggest(
-                $this->getSuggest($keywords)
-            );
-        }
-
-        foreach ($this->aggregationSet->get() as $agg) {
-            $query->addAggregation(
-                $agg->getQuery($search, $query)
-            );
-        }
+        $search = $builder->getSearch();
+        $query = $builder->getQuery();
 
         $search->setQuery($query);
 
-        $results = $search->search();
-
-        return $results;
+        return $search->search();
     }
 
     /**
-     * Get the suggester.
+     * Find the filter class.
      *
-     * @return Suggest
+     * @param string $type
+     * @return mixed
      */
-    protected function getSuggest($keywords)
+    private function findFilter($type)
     {
-        // Did you mean...
-        $phrase = new Phrase(
-            'name',
-            'name'
-        );
-        $phrase->setGramSize(3);
-        $phrase->setSize(1);
-        $phrase->setText($keywords);
-
-        $generator = new DirectGenerator('name');
-        $generator->setSuggestMode('always');
-        $generator->setField('name');
-        $phrase->addCandidateGenerator($generator);
-
-        $phrase->setHighlight('<strong>', '</strong>');
-        $suggest = new Suggest;
-        $suggest->addSuggestion($phrase);
-
-        return $suggest;
-    }
-
-    /**
-     * Gets the category post aggregation.
-     *
-     * @return NestedAggregation
-     */
-    protected function getCategoryPostAgg()
-    {
-        $nestedAggPost = new NestedAggregation(
-            'categories_after',
-            'departments'
-        );
-
-        $agg = new FilterAggregation('categories_after_filter');
-
-        // Add boolean
-        $postBool = new BoolQuery();
-
-        foreach ($this->categories as $category) {
-            $term = new Term;
-            $term->setTerm('departments.id', $category);
-            $postBool->addMust($term);
+        // Is this an attribute filter?
+        if ($attribute = $this->getAttribute($type)) {
+            $type = $attribute->type;
         }
 
-        // Need to set another agg on categories_remaining
-        $childAgg = new \Elastica\Aggregation\Terms('categories_post_inner');
-        $childAgg->setField('departments.id');
+        $name = ucfirst(camel_case(str_singular($type))).'Filter';
+        $classname = "GetCandy\Api\Core\Search\Providers\Elastic\Filters\\{$name}";
 
-        // Do the terms in the categories loop...
-        $agg->setFilter($postBool);
-        $agg->addAggregation($childAgg);
-
-        $nestedAggPost->addAggregation($agg);
-
-        return $nestedAggPost;
-    }
-
-    /**
-     * Returns the category before aggregation.
-     *
-     * @return NestedAggregation
-     */
-    protected function getCategoryPreAgg()
-    {
-        // Get our category aggregations
-        $nestedAggBefore = new NestedAggregation(
-            'categories_before',
-            'departments'
-        );
-
-        $childAgg = new \Elastica\Aggregation\Terms('categories_before_inner');
-        $childAgg->setField('departments.id');
-
-        $nestedAggBefore->addAggregation($childAgg);
-
-        return $nestedAggBefore;
-    }
-
-    /**
-     * Gets the highlight for the search query.
-     *
-     * @return array
-     */
-    protected function getHighlight()
-    {
-        return [
-            'pre_tags' => ['<em class="highlight">'],
-            'post_tags' => ['</em>'],
-            'fields' => [
-                'name' => [
-                    'number_of_fragments' => 0,
-                ],
-                'description' => [
-                    'number_of_fragments' => 0,
-                ],
-            ],
-        ];
-    }
-
-    private function getRealCategoryIds($categories)
-    {
-        return app('api')->categories()->getDecodedIds($categories['values']);
-    }
-
-    /**
-     * Gets the default sorting data for categories.
-     *
-     * @param array $categories
-     *
-     * @return array
-     */
-    protected function getDefaultCategorySort($category)
-    {
-        $category = app('api')->categories()->getByHashedId($category);
-
-        $defaultSort = [];
-
-        if ($category->sort == 'custom') {
-            $sort = [
-                'departments.position' => [
-                    'order' => 'asc',
-                    'mode' => 'max',
-                    'nested_path' => 'departments',
-                    'nested_filter' => [
-                        'bool' => [
-                            'must' => [
-                                'match' => [
-                                    'departments.id' => $category->encodedId(),
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-            ];
-            $defaultSort[] = $sort;
-        } else {
-            $sort = explode(':', $category->sort);
-            $defaultSort = $this->getSorts([$sort[0] => $sort[1]]);
+        if (class_exists($classname)) {
+            return app()->make($classname);
         }
-
-        return $defaultSort;
-    }
-
-    private function getCustomerGroups()
-    {
-        if ($user = $this->authUser) {
-            // Set to empty array as we don't want to filter any out.
-            if ($user->hasRole('admin')) {
-                $groups = [];
-            } else {
-                $groups = $user->groups;
-            }
-        } else {
-            $groups = [app('api')->customerGroups()->getGuest()];
-        }
-
-        return $groups;
-    }
-
-    protected function getCustomerGroupFilter()
-    {
-        $filter = new BoolQuery;
-
-        foreach ($this->getCustomerGroups() as $model) {
-            $cat = new NestedQuery();
-            $cat->setPath('customer_groups');
-            $term = new Term;
-            $term->setTerm('customer_groups.id', $model->encodedId());
-
-            $cat->setQuery($term);
-
-            $filter->addShould($cat);
-        }
-
-        return $filter;
-    }
-
-    protected function getChannelFilter()
-    {
-        $filter = new BoolQuery;
-
-        $cat = new NestedQuery();
-        $cat->setPath('channels');
-        $term = new Term;
-        $term->setTerm('channels.handle', $this->channel);
-
-        $cat->setQuery($term);
-
-        $filter->addMust($cat);
-
-        return $filter;
     }
 
     /**
-     * Generates the DisMax query.
+     * Find a matching attribute based on filter type.
      *
-     * @param string $keywords
-     *
-     * @return void
+     * @param string $type
+     * @return mixed
      */
-    protected function generateDisMax($keywords)
+    protected function getAttribute($type)
     {
-        $disMaxQuery = new \Elastica\Query\DisMax();
-        $disMaxQuery->setBoost(1.5);
-        $disMaxQuery->setTieBreaker(1);
-
-        $multiMatchQuery = new \Elastica\Query\MultiMatch();
-        $multiMatchQuery->setType('phrase');
-        $multiMatchQuery->setQuery($keywords);
-        $multiMatchQuery->setFields($this->type->rankings());
-
-        $disMaxQuery->addQuery($multiMatchQuery);
-
-        $multiMatchQuery = new \Elastica\Query\MultiMatch();
-        $multiMatchQuery->setType('best_fields');
-        $multiMatchQuery->setQuery($keywords);
-
-        $multiMatchQuery->setFields($this->type->rankings());
-
-        $disMaxQuery->addQuery($multiMatchQuery);
-
-        return $disMaxQuery;
-    }
-
-    /**
-     * Gets an array of mapped sortable fields.
-     *
-     * @param array $sorts
-     *
-     * @return arrau
-     */
-    protected function getSorts($sorts = [])
-    {
-        $mapping = $this->type->getMapping();
-
-        $sortables = [];
-
-        foreach ($sorts as $field => $dir) {
-            $column = $field;
-            if ($field == 'min_price' || $field == 'max_price') {
-                $field = 'pricing';
-            }
-
-            if (empty($mapping[$field])) {
-                continue;
-            }
-            $map = $mapping[$field];
-
-            // If it's a text property, elastic won't sort on it.
-            // So lets find any sortable fields we can use...
-            if ($map['type'] == 'text') {
-                if (empty($map['fields'])) {
-                    continue;
-                }
-                foreach ($map['fields'] as $handle => $subField) {
-                    if ($subField['type'] != 'text') {
-                        $sortables[] = [$field.'.'.$handle => $dir];
-                    }
-                }
-            } elseif ($map['type'] == 'nested') {
-                $column = $field.'.'.str_replace('_price', '', $column);
-                $sort = [
-                    $column => [
-                        'order' => $dir,
-                        'mode' => 'min',
-                        'nested_path' => 'pricing',
-                        'nested_filter' => [
-                            'bool' => [
-                                'must' => [],
-                            ],
-                        ],
-                    ],
-                ];
-                foreach ($this->getCustomerGroups() as $group) {
-                    $sort[$column]['nested_filter']['bool']['must'] = [
-                        'match' => [
-                            $field.'.id' => $group->encodedId(),
-                        ],
-                    ];
-                }
-                $sortables[] = $sort;
-            } else {
-                $sortables[] = [$field => $dir];
-            }
-        }
-
-        return $sortables;
+        return $this->builder->getAttributes()->firstWhere('handle', $type);
     }
 }

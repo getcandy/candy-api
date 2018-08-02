@@ -52,7 +52,7 @@ class OrderService extends BaseService
             $settings = app('api')->settings()->get('orders');
 
             if ($settings) {
-                $order->status = $settings->content['default_status'];
+                $order->status = $settings->content['default_status'] ?? 'awaiting-payment';
             }
         }
 

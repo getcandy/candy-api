@@ -51,7 +51,7 @@ class SearchService
             'sort' => $this->getSort($results),
             'category_page' => (bool) $category,
             'pagination' => ['data' => $this->getPagination($results, $page)],
-            'aggregation' => ['data' => $this->getSearchAggregator($results)],
+            'aggregation' => ['data' => $results->getAggregations()],
             'suggestions' => $this->getSuggestions($results),
         ]);
 
@@ -161,54 +161,5 @@ class SearchService
         });
 
         return app('api')->{str_plural($type)}()->getSearchedIds($ids, true);
-    }
-
-    /**
-     * Gets the aggregation fields for the results.
-     *
-     * @param array $results
-     *
-     * @return void
-     */
-    protected function getSearchAggregator($results)
-    {
-        if (! $results->hasAggregations()) {
-            return [];
-        }
-
-        $aggs = $results->getAggregations();
-
-        $results = [];
-
-        $selected = [];
-        $all = [];
-
-        foreach ($aggs as $handle => $agg) {
-            if ($handle == 'categories_after') {
-                foreach ($agg['categories_after_filter']['categories_post_inner']['buckets'] as $bucket) {
-                    $selected[] = $bucket['key'];
-                }
-            } elseif ($handle == 'categories_before') {
-                foreach ($agg['categories_before_inner']['buckets'] as $bucket) {
-                    $all[] = $bucket['key'];
-                }
-            } else {
-                $results[$handle] = $agg;
-            }
-        }
-
-        $selected = collect($selected);
-
-        $models = app('api')->categories()->getSearchedIds($all);
-
-        foreach ($models as $category) {
-            $category->aggregate_selected = $selected->contains($category->encodedId());
-        }
-
-        $resource = new Collection($models, new CategoryTransformer);
-
-        $results['categories'] = app()->fractal->createData($resource)->toArray();
-
-        return $results;
     }
 }
