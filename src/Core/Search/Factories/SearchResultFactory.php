@@ -230,25 +230,19 @@ class SearchResultFactory implements SearchResultInterface
         ];
     }
 
+    /**
+     * Get the search result data
+     *
+     * @return array
+     */
     public function get()
     {
-        clock()->startEvent('searched_ids', 'Get Searched IDs');
         $models = $this->service->getSearchedIds($this->ids, $this->user);
-        clock()->endEvent('searched_ids');
-
         $resource = new Collection($models, $this->transformer);
-
-        clock()->startEvent('search_meta', 'Setting Search Meta');
         $resource->setMeta(
             $this->getMeta()
         );
-        clock()->endEvent('search_meta');
-
-        clock()->startEvent('transformer', 'Building Tranformer');
-        $data = $this->fractal->createData($resource)->toArray();
-        clock()->endEvent('transformer');
-
-        return $data;
+        return $this->fractal->createData($resource)->toArray();
     }
 
 /**

@@ -20,7 +20,6 @@ class AssetTransformTransformer extends BaseTransformer
     protected function getUrl($transform)
     {
         $path = $transform->location.'/'.$transform->filename;
-
         return Storage::disk($transform->asset->source->disk)->url($path);
     }
 }

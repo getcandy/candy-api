@@ -250,7 +250,18 @@ class ProductService extends BaseService
 
         $placeholders = implode(',', array_fill(0, count($parsedIds), '?')); // string for the query
 
-        $query = $this->model->with(['routes', 'primaryAsset.transforms', 'firstVariant'])->whereIn('id', $parsedIds);
+        $query = $this->model->with([
+            'routes',
+            'variants.product',
+            'variants.tiers',
+            'variants.tiers.group',
+            'primaryAsset',
+            'primaryAsset.transforms.transform',
+            'primaryAsset.transforms.asset',
+            'primaryAsset.transforms.asset.source',
+            'primaryAsset.tags',
+            'primaryAsset.source',
+        ])->whereIn('id', $parsedIds);
 
         $groups = \GetCandy::getGroups();
 
@@ -260,17 +271,9 @@ class ProductService extends BaseService
             $ids[] = $group->id;
         }
 
-        $pricing = null;
-
         // If the user is an admin, fall through
         if (! $user || ($user && ! $user->hasRole('admin'))) {
             $query->with([
-                'variants.product',
-                'routes',
-                'primaryAsset.transforms',
-                'primaryAsset.source',
-                'primaryAsset',
-                'variants.tax',
                 'variants' => function ($q1) use ($ids) {
                     $q1->with(['customerPricing' => function ($q2) use ($ids) {
                         $q2->whereIn('customer_group_id', $ids)

@@ -58,7 +58,7 @@ class SearchService
     {
         $service = $type == 'product' ? $this->products : $this->categories;
 
-        $results = $this->factory
+        return $this->factory
             ->include($includes)
             ->type($type)
             ->page($page)
@@ -66,22 +66,5 @@ class SearchService
             ->category($category)
             ->init($results)
             ->get();
-
-
-        // $resource = new Collection($collection, $transformer);
-
-        // $resource->setMeta([
-        //     'sort' => $this->getSort($results),
-        //     'category_page' => (bool) $category,
-        //     'pagination' => ['data' => $this->getPagination($results, $page)],
-        //     'aggregation' => ['data' => $this->getSearchAggregator($results)],
-        //     'suggestions' => $this->getSuggestions($results),
-        // ]);
-
-        // $data = app()->fractal->createData($resource)->toArray();
-
-        return $results;
     }
-
-
 }
