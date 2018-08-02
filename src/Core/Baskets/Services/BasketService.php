@@ -292,11 +292,11 @@ class BasketService extends BaseService
 
         if ($basket) {
             if ($basket->order && ! $basket->order->placed_at || ! $basket->order) {
-                return $basket;
+                return $this->factory->init($basket)->get();
             }
         }
 
-        return new Basket();
+        return $this->factory->init(new Basket())->get();
     }
 
     /**
