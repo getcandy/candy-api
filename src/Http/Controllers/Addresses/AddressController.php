@@ -23,7 +23,7 @@ class AddressController extends BaseController
     public function store(Request $request)
     {
         try {
-            $user = app('api')->users()->getByHashedId($request->user_id);
+            $user = app('api')->users()->getByHashedId($request->user()->encodedId());
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
