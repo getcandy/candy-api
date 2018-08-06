@@ -6,12 +6,16 @@ use PriceCalculator;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Products\Models\ProductVariant;
 use GetCandy\Api\Core\Search\Events\IndexableSavedEvent;
+use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
 
 class ProductVariantService extends BaseService
 {
-    public function __construct()
+    protected $factory;
+
+    public function __construct(ProductVariantFactory $factory)
     {
         $this->model = new ProductVariant();
+        $this->factory = $factory;
     }
 
     /**
@@ -123,7 +127,8 @@ class ProductVariantService extends BaseService
 
     public function getBySku($sku)
     {
-        return $this->model->where('sku', '=', $sku)->first();
+        $variant = $this->model->where('sku', '=', $sku)->first();
+        return $this->factory->init($variant)->get();
     }
 
     /**

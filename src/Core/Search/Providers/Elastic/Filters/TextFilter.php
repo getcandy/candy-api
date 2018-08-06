@@ -8,6 +8,7 @@ use GetCandy\Api\Core\Search\Providers\Elastic\Aggregators\Attribute;
 
 class TextFilter extends AbstractFilter
 {
+    public $handle = 'text-filter';
     protected $field;
     protected $value;
 

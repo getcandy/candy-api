@@ -10,6 +10,7 @@ class PricePointFilter extends AbstractFilter
     protected $points = [];
     protected $seperator = ':';
     protected $delimiter = '-';
+    public $handle = 'price-point-filter';
 
     public function process($payload, $type = null)
     {

@@ -18,6 +18,24 @@ class Category
      */
     protected $categories = [];
 
+    /**
+     * The filter to apply
+     *
+     * @var array
+     */
+    protected $filters = [];
+    /**
+     * Set the filter on the aggregation
+     *
+     * @param mixed $filter
+     * @return Attribute
+     */
+    public function addFilter($filter = null)
+    {
+        $this->filters[] = $filter;
+        return $this;
+    }
+
     public function getPre(Search $search, $query)
     {
         // Get our category aggregations

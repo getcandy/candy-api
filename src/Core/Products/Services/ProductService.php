@@ -87,6 +87,24 @@ class ProductService extends BaseService
     }
 
     /**
+     * Update a products layout
+     *
+     * @param string $productId
+     * @param string $layoutId
+     * @return Product
+     */
+    public function updateLayout($productId, $layoutId)
+    {
+        $layout = app('api')->layouts()->getByHashedId($layoutId);
+        $product = $this->getByHashedId($productId);
+
+        $product->layout->associate($layout);
+        $product->save();
+
+        return $product;
+    }
+
+    /**
      * Creates a resource from the given data.
      *
      * @throws \GetCandy\Exceptions\InvalidLanguageException

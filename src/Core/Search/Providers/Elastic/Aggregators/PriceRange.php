@@ -14,7 +14,7 @@ class PriceRange extends AbstractAggregator
      * @param Query $query
      * @return Query
      */
-    public function getPre(Search $search, $query)
+    public function getPre(Search $search = null, $query = null)
     {
         // Add max price aggregator
         $max = new MaxPrice;

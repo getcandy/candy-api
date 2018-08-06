@@ -11,6 +11,8 @@ class CategoryFilter extends AbstractFilter
 {
     protected $categories = [];
 
+    public $handle = 'category-filter';
+
     public function __construct()
     {
         $this->categories = collect();

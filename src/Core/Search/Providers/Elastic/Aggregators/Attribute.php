@@ -10,6 +10,13 @@ use Elastica\Aggregation\Filter;
 class Attribute
 {
     /**
+     * The filter to apply
+     *
+     * @var array
+     */
+    protected $filters = [];
+
+    /**
      * The field to aggregate.
      *
      * @var [type]
@@ -21,12 +28,41 @@ class Attribute
         $this->field = $field;
     }
 
+    /**
+     * Set the filter on the aggregation
+     *
+     * @param mixed $filter
+     * @return Attribute
+     */
+    public function addFilter($filter = null)
+    {
+        $this->filters[] = $filter;
+        return $this;
+    }
+
     public function getPre()
     {
+        if (empty($this->filters)) {
+            $agg = new Terms(str_plural($this->field));
+            $agg->setField($this->field.'.filter');
+            return $agg;
+        }
+
+        $filterAgg = new Filter(str_plural($this->field));
+
         $agg = new Terms(str_plural($this->field));
         $agg->setField($this->field.'.filter');
 
-        return $agg;
+        $postBool = new BoolQuery();
+
+        foreach ($this->filters as $filter) {
+            $postBool->addMust($filter['filter']->getQuery());
+        }
+
+        $filterAgg->setFilter($postBool);
+        $filterAgg->addAggregation($agg);
+
+        return $filterAgg;
     }
 
     public function getPost($value)

@@ -5,6 +5,7 @@ namespace GetCandy\Api\Core\Categories\Models;
 use Kalnoy\Nestedset\NodeTrait;
 use GetCandy\Api\Core\Traits\Assetable;
 use GetCandy\Api\Core\Traits\HasRoutes;
+use GetCandy\Api\Core\Traits\HasLayouts;
 use GetCandy\Api\Core\Scaffold\BaseModel;
 use GetCandy\Api\Core\Traits\HasChannels;
 use GetCandy\Api\Core\Traits\HasAttributes;
@@ -17,6 +18,7 @@ class Category extends BaseModel
 {
     use NodeTrait,
         HasAttributes,
+        HasLayouts,
         Assetable,
         HasChannels,
         HasRoutes,

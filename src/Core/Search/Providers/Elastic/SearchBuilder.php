@@ -100,6 +100,11 @@ class SearchBuilder
      */
     protected $user;
 
+    protected $topFilters = [
+        'category-filter',
+        'customer-group-filter',
+    ];
+
     public function __construct(AttributeService $attributes, Client $client)
     {
         $this->filters = collect($this->filters);
@@ -145,6 +150,7 @@ class SearchBuilder
     public function addFilter($filter, $post = true)
     {
         $this->filters->push([
+            'handle' => $filter->handle,
             'filter' => $filter,
             'post' => $post,
         ]);
@@ -471,6 +477,17 @@ class SearchBuilder
         $query->setPostFilter($postFilter);
 
         foreach ($this->aggregations as $agg) {
+
+            // If we have a category or customer group filter
+            // then make sure the aggregation supports it.
+            $topLevelFilters = $this->filters->filter(function ($filter) {
+                return in_array($filter['handle'], $this->topFilters);
+            });
+
+            foreach ($topLevelFilters as $filter) {
+                $agg = $agg->addFilter($filter);
+            }
+
             $query->addAggregation($agg->getPre(
                 $this->getSearch(),
                 $query
