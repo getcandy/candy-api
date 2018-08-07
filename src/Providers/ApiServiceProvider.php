@@ -9,6 +9,8 @@ use GetCandy\Api\Core\Factory;
 use Laravel\Passport\Passport;
 use Illuminate\Support\ServiceProvider;
 use GetCandy\Api\Core\Search\SearchContract;
+use GetCandy\Api\Core\Payments\PaymentManager;
+use GetCandy\Api\Core\Payments\PaymentContract;
 use GetCandy\Api\Core\Discounts\DiscountFactory;
 use GetCandy\Api\Core\Users\Services\UserService;
 use GetCandy\Api\Core\Discounts\DiscountInterface;
@@ -20,13 +22,13 @@ use GetCandy\Api\Http\Middleware\SetLocaleMiddleware;
 use GetCandy\Api\Console\Commands\ElasticIndexCommand;
 use GetCandy\Api\Core\Baskets\Factories\BasketFactory;
 use GetCandy\Api\Http\Middleware\SetCurrencyMiddleware;
-use GetCandy\Api\Core\Products\Factories\ProductFactory;
 use GetCandy\Api\Http\Middleware\CheckClientCredentials;
+use GetCandy\Api\Core\Products\Factories\ProductFactory;
 use GetCandy\Api\Console\Commands\InstallGetCandyCommand;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketInterface;
 use GetCandy\Api\Core\Baskets\Factories\BasketLineFactory;
-use GetCandy\Api\Core\Products\Interfaces\ProductInterface;
 use GetCandy\Api\Core\Search\Factories\SearchResultFactory;
+use GetCandy\Api\Core\Products\Interfaces\ProductInterface;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketLineInterface;
 use GetCandy\Api\Core\Search\Interfaces\SearchResultInterface;
 use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
@@ -114,7 +116,6 @@ class ApiServiceProvider extends ServiceProvider
         Validator::extend('valid_discount', 'GetCandy\Api\Core\Discounts\Validators\DiscountValidator@validate');
         Validator::extend('unique_lines', 'GetCandy\Api\Core\Baskets\Validators\BasketValidator@uniqueLines');
         Validator::extend('in_stock', 'GetCandy\Api\Core\Baskets\Validators\BasketValidator@inStock', trans('getcandy::validation.in_stock'));
-        Validator::extend('valid_payment_token', 'GetCandy\Api\Core\Payments\Validators\PaymentTokenValidator@validate');
         Validator::extend('valid_order', 'GetCandy\Api\Core\Orders\Validators\OrderIsActiveValidator@validate');
     }
 
@@ -195,6 +196,10 @@ class ApiServiceProvider extends ServiceProvider
 
         $this->app->bind(SearchResultInterface::class, function ($app) {
             return $app->make(SearchResultFactory::class);
+        });
+
+        $this->app->singleton(PaymentContract::class, function ($app) {
+            return new PaymentManager($app);
         });
     }
 

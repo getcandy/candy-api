@@ -23,7 +23,8 @@
         "tightenco/ziggy": "^0.6.2",
         "vinkla/hashids": "^4.0",
         "vimeo/laravel": "^5.0",
-        "doctrine/dbal": "2.7"
+        "doctrine/dbal": "2.7",
+        "paypal/rest-api-sdk-php": "*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

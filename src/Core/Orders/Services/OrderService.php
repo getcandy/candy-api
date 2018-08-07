@@ -13,6 +13,7 @@ use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Core\Orders\Events\OrderSavedEvent;
 use GetCandy\Api\Core\Baskets\Services\BasketService;
+use GetCandy\Api\Core\Payments\Services\PaymentService;
 use GetCandy\Api\Core\Orders\Events\OrderProcessedEvent;
 use GetCandy\Api\Core\Orders\Events\OrderBeforeSavedEvent;
 use GetCandy\Api\Core\Orders\Exceptions\IncompleteOrderException;
@@ -31,10 +32,18 @@ class OrderService extends BaseService
      */
     protected $model;
 
-    public function __construct(BasketService $baskets)
+    /**
+     * The payments service
+     *
+     * @var PaymentService
+     */
+    protected $payments;
+
+    public function __construct(BasketService $baskets, PaymentService $payments)
     {
         $this->model = new Order();
         $this->baskets = $baskets;
+        $this->payments = $payments;
     }
 
     /**
@@ -510,16 +519,18 @@ class OrderService extends BaseService
 
         if (! empty($data['payment_type_id'])) {
             $type = app('api')->paymentTypes()->getByHashedId($data['payment_type_id']);
+        } elseif (!empty($data['payment_type'])) {
+            $type = app('api')->paymentTypes()->getByHandle($data['payment_type']);
         }
 
-        $result = app('api')->payments()->charge(
+        $result = $this->payments->process(
             $order,
             $data['payment_token'] ?? null,
             $type ?? null,
             $data['data'] ?? []
         );
 
-        if ($result) {
+        if ($result->success) {
             if (! empty($type)) {
                 $order->status = $type->success_status;
             } else {

@@ -9,20 +9,75 @@ abstract class AbstractProvider
     protected $billing;
 
     /**
-     * Gets the name of the provider.
+     * The order to process
      *
+     * @var Order
+     */
+    protected $order;
+
+    /**
+     * Any additional fields
+     *
+     * @var array
+     */
+    protected $fields = [];
+
+    /**
+     * The payment token
+     *
+     * @var string
+     */
+    protected $token = null;
+
+    /**
+     * Set the order
+     *
+     * @param Order $order
+     * @return AbstractProvider
+     */
+    public function order(Order $order)
+    {
+        $this->order = $order;
+        return $this;
+    }
+
+    /**
+     * Set additional fields
+     *
+     * @param array $fields
+     * @return AbstractProvider
+     */
+    public function fields(array $fields)
+    {
+        $this->fields = $fields;
+        return $this;
+    }
+
+    /**
+     * Set the payment token
+     *
+     * @param string $token
+     * @return AbstractToken
+     */
+    public function token($token)
+    {
+        $this->token = $token;
+        return $this;
+    }
+
+    /**
+     * Validate the payment token
+     *
+     * @param string $token
+     * @return void
+     */
+    abstract public function validate($token);
+
+    /**
+     * Gets the name of the provider.
      * @return string
      */
     abstract public function getName();
-
-    /**
-     * Validates a payment token.
-     *
-     * @param string $token
-     *
-     * @return bool
-     */
-    abstract public function validateToken($token);
 
     /**
      * Create a charge for a payment token.
@@ -31,7 +86,7 @@ abstract class AbstractProvider
      *
      * @return void
      */
-    abstract public function charge($token, Order $order);
+    abstract public function charge();
 
     /**
      * Refund a transaction.
