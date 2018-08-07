@@ -43,7 +43,6 @@ class ProductTransformer extends BaseTransformer
      */
     public function transform(Product $product)
     {
-        $this->applyDiscounts($product);
 
         $response = [
             'id' => $product->encodedId(),
@@ -59,33 +58,6 @@ class ProductTransformer extends BaseTransformer
             $response['position'] = $product->pivot->position;
         }
         return $response;
-    }
-
-    protected function applyDiscounts(Product $product)
-    {
-        // $discounts = app('api')->discounts()->get();
-        // $sets = app('api')->discounts()->parse($discounts);
-
-        $product->max_price = 0;
-        $product->min_price = 0;
-        $product->original_max_price = 0;
-        $product->original_min_price = 0;
-
-        foreach ($product->variants as $variant) {
-            $variantPrice = $variant->total_price;
-
-            $product->max_price = $variantPrice > $product->max_price ? $variantPrice : $product->max_price;
-            if ($product->min_price) {
-                $product->min_price = $variantPrice < $product->min_price ? $variantPrice : $product->min_price;
-            } else {
-                $product->min_price = $product->max_price;
-            }
-        }
-
-        // $applied = \Facades\GetCandy\Api\Discounts\Factory::getApplied($sets, \Auth::user(), $product);
-
-        // \Facades\GetCandy\Api\Discounts\Factory::apply($applied, $product);
-        return $product;
     }
 
     protected function parseOptionData($data)

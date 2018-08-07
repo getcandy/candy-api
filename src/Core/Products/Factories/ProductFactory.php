@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Products\Factories;
 
+use Illuminate\Support\Collection;
 use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Products\Interfaces\ProductInterface;
 use GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface;
@@ -42,7 +43,29 @@ class ProductFactory implements ProductInterface
     {
         foreach ($this->product->variants as $variant) {
             $variant = $this->variantFactory->init($variant)->get();
+
+            if (!$this->product->min_price || $variant->unit_cost < $this->product->min_price) {
+                $this->product->min_price = $variant->unit_cost;
+            }
+            if (!$this->product->max_price || $variant->unit_cost > $this->product->max_price) {
+                $this->product->max_price = $variant->unit_cost;
+            }
         }
+
         return $this->product;
+    }
+
+    /**
+     * Process a collection of products
+     *
+     * @param Collection $products
+     * @return Collection
+     */
+    public function collection(Collection $products)
+    {
+        foreach ($products as $product) {
+            $this->init($product)->get();
+        }
+        return $products;
     }
 }

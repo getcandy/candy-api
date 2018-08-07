@@ -30,6 +30,20 @@ class Product extends BaseModel
 
     protected $settings = 'products';
 
+    /**
+     * The products minimum price
+     *
+     * @var integer
+     */
+    public $min_price = 0;
+
+    /**
+     * The products maxiumum price
+     *
+     * @var integer
+     */
+    public $max_price = 0;
+
     protected $dates = ['deleted_at'];
 
     public $transformer = ProductTransformer::class;

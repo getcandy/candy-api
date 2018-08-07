@@ -328,7 +328,7 @@ class ProductService extends BaseService
             $query = $query->orderByRaw("field(id,{$placeholders})", $parsedIds);
         }
 
-        return $query->get();
+        return $this->factory->collection($query->get());
     }
 
     /**
