@@ -2,6 +2,8 @@
 
 namespace GetCandy\Api\Core\Search\Providers\Elastic\Sorts;
 
+use Illuminate\Database\Eloquent\Model;
+
 abstract class AbstractSort
 {
     /**
@@ -32,12 +34,31 @@ abstract class AbstractSort
      */
     protected $handle;
 
+    /**
+     * The authenticated user
+     *
+     * @var Model
+     */
+    protected $user = null;
+
     public function __construct($field = null, $handle = null, $dir = null, $mode = null)
     {
         $this->field = $field;
         $this->dir = $dir;
         $this->handle = $handle;
         $this->mode = $mode;
+    }
+
+    /**
+     * Set the user on the sort
+     *
+     * @param Model $user
+     * @return void
+     */
+    public function user(Model $user)
+    {
+        $this->user = $user;
+        return $this;
     }
 
     /**
@@ -85,4 +106,25 @@ abstract class AbstractSort
      * @return array
      */
     abstract public function getMapping();
+
+    /**
+     * Get the customer groups
+     *
+     * @return array
+     */
+    protected function customerGroups()
+    {
+        if ($this->user) {
+            // Set to empty array as we don't want to filter any out.
+            if ($this->user->hasRole('admin')) {
+                $groups = [];
+            } else {
+                $groups = $this->user->groups;
+            }
+        } else {
+            $groups = [app('api')->customerGroups()->getGuest()];
+        }
+
+        return $groups;
+    }
 }

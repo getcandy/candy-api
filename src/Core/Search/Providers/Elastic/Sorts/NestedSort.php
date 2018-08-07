@@ -6,8 +6,16 @@ class NestedSort extends AbstractSort
 {
     public function getMapping()
     {
-        return [
-            $this->handle => [
+        $column = $this->handle;
+
+
+        if ($this->handle == 'min_price' || $this->handle == 'max_price') {
+            $this->handle = 'pricing';
+            $column = $this->handle.'.'.str_replace('_price', '', $column);
+        }
+
+        $sort = [
+            $column => [
                 'order' => $this->dir,
                 'mode' => $this->mode,
                 'nested_path' => $this->field,
@@ -18,5 +26,15 @@ class NestedSort extends AbstractSort
                 ],
             ],
         ];
+
+        foreach ($this->customerGroups() as $group) {
+            $sort[$column]['nested_filter']['bool']['must'] = [
+                'match' => [
+                    $this->handle.'.id' => $group->encodedId(),
+                ],
+            ];
+        }
+
+        return $sort;
     }
 }
