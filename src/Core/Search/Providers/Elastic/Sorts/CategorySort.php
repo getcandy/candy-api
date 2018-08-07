@@ -44,8 +44,8 @@ class CategorySort extends AbstractSort
             ];
             $defaultSort[] = $sort;
         } else {
-            $sort = explode(':', $category->sort);
-            $defaultSort = [[$sort[0] => $sort[1]]];
+            $sort = explode(':', $this->category->sort);
+            $defaultSort = [$sort[0] => $sort[1]];
         }
 
         return $defaultSort;
