@@ -260,30 +260,8 @@ class SearchResultFactory implements SearchResultInterface
             return;
         }
 
-        $sorting = [];
 
-        foreach ($params as $param) {
-            foreach ($param as $key => $value) {
-                $sort = $key;
-                $order = $value;
-                if (is_iterable($value)) {
-                    $field = explode('.', $sort);
-
-                    if (! empty($field[1])) {
-                        $sort = $field[1].'_'.str_replace('ing', 'e', $field[0]);
-                    } else {
-                        $sort = $field[0];
-                    }
-                    $order = $value['order'];
-                }
-            }
-            $sorting[] = [
-                'sort' => $sort,
-                'order' => $order,
-            ];
-        }
-
-        return $sorting;
+        return $params;
     }
 
     /**
