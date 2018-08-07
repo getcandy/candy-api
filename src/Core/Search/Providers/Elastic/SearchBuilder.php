@@ -500,6 +500,11 @@ class SearchBuilder
             $this->highlight()
         );
 
+        foreach ($this->sorts as $sort) {
+            $query->addSort($sort->getMapping(
+                $this->user
+            ));
+        }
         return $query;
     }
 
