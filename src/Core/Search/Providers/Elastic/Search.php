@@ -121,7 +121,7 @@ class Search implements ClientContract
             $builder->setTerm($keywords);
         }
 
-        if ($category) {
+        if ($category && empty($sorts)) {
             $builder->addSort(CategorySort::class, $category);
         }
 
