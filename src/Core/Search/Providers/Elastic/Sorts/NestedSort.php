@@ -8,7 +8,6 @@ class NestedSort extends AbstractSort
     {
         $column = $this->handle;
 
-
         if ($this->handle == 'min_price' || $this->handle == 'max_price') {
             $this->handle = 'pricing';
             $column = $this->handle.'.'.str_replace('_price', '', $column);

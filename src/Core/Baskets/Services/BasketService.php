@@ -8,7 +8,6 @@ use GetCandy\Api\Core\Discounts\Factory;
 use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Baskets\Models\Basket;
-use GetCandy\Api\Core\Baskets\Models\BasketTotal;
 use GetCandy\Api\Core\Baskets\Models\SavedBasket;
 use GetCandy\Api\Core\Baskets\Events\BasketStoredEvent;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketInterface;
@@ -22,14 +21,14 @@ class BasketService extends BaseService
     protected $model;
 
     /**
-     * The basket factory
+     * The basket factory.
      *
      * @var BasketFactoryInterface
      */
     protected $factory;
 
     /**
-     * The variant factory
+     * The variant factory.
      *
      * @var ProductVariantInterface
      */
@@ -77,7 +76,7 @@ class BasketService extends BaseService
     }
 
     /**
-     * Get a basket by it's hashed ID
+     * Get a basket by it's hashed ID.
      *
      * @param string $id
      * @return BasketFactory
@@ -95,11 +94,12 @@ class BasketService extends BaseService
             'lines.variant.product',
             'lines.variant.customerPricing',
         ])->findOrFail($id);
+
         return $this->factory->init($basket)->get();
     }
 
     /**
-     * Get basket for an order
+     * Get basket for an order.
      *
      * @param Order $order
      * @return Basket
@@ -219,7 +219,6 @@ class BasketService extends BaseService
         $service = app('api')->productVariants();
 
         $variants = collect($variants)->map(function ($item) use ($service, $basket) {
-
             $variant = $this->variantFactory->init(
                 $service->getByHashedId($item['id'])
             )->get($item['quantity']);

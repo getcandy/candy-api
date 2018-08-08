@@ -8,30 +8,29 @@ use GetCandy\Api\Core\Baskets\Models\Basket;
 
 class DiscountFactory implements DiscountInterface
 {
-
     /**
-     * The discount models
+     * The discount models.
      *
      * @var \Illuminate\Support\Collection
      */
     protected $discounts;
 
     /**
-     * The basket
+     * The basket.
      *
      * @var \GetCandy\Api\Core\Baskets\Models\Basket
      */
     protected $basket;
 
     /**
-     * The user
+     * The user.
      *
      * @var \Illuminate\Database\Eloquent\Model
      */
     protected $user;
 
     /**
-     * Initialise the factory
+     * Initialise the factory.
      *
      * @param mixed $discounts
      * @return DiscountFactory
@@ -39,11 +38,12 @@ class DiscountFactory implements DiscountInterface
     public function init(Collection $discounts)
     {
         $this->discounts = $discounts;
+
         return $this;
     }
 
     /**
-     * Set the basket
+     * Set the basket.
      *
      * @param Basket $basket
      * @return DiscountFactory
@@ -51,11 +51,12 @@ class DiscountFactory implements DiscountInterface
     public function setBasket(Basket $basket)
     {
         $this->basket = $basket;
+
         return $this;
     }
 
     /**
-     * Set the user
+     * Set the user.
      *
      * @param Model $user
      * @return DiscountFactory
@@ -63,11 +64,12 @@ class DiscountFactory implements DiscountInterface
     public function setUser(Model $user = null)
     {
         $this->user = $user;
+
         return $this;
     }
 
     /**
-     * Get all applied discounts
+     * Get all applied discounts.
      *
      * @return Illuminate\Support\Collection
      */
@@ -79,6 +81,7 @@ class DiscountFactory implements DiscountInterface
                 break;
             }
         }
+
         return collect($this->discounts)->filter(function ($discount) {
             return $discount->applied;
         });
@@ -90,7 +93,7 @@ class DiscountFactory implements DiscountInterface
      * @param Discount $discount
      * @param mixed $uesr
      * @param Basket $basket
-     * @return boolean
+     * @return bool
      */
     public function checkCriteria($discount, $user = null, $basket = null, $product = null)
     {

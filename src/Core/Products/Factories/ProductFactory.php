@@ -10,14 +10,14 @@ use GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface;
 class ProductFactory implements ProductInterface
 {
     /**
-     * The product
+     * The product.
      *
      * @var Product
      */
     protected $product;
 
     /**
-     * The variant factory
+     * The variant factory.
      *
      * @var ProductVariantInterface
      */
@@ -31,11 +31,12 @@ class ProductFactory implements ProductInterface
     public function init($product)
     {
         $this->product = $product;
+
         return $this;
     }
 
     /**
-     * Get the processed product
+     * Get the processed product.
      *
      * @return void
      */
@@ -44,10 +45,10 @@ class ProductFactory implements ProductInterface
         foreach ($this->product->variants as $variant) {
             $variant = $this->variantFactory->init($variant)->get();
 
-            if (!$this->product->min_price || $variant->unit_cost < $this->product->min_price) {
+            if (! $this->product->min_price || $variant->unit_cost < $this->product->min_price) {
                 $this->product->min_price = $variant->unit_cost;
             }
-            if (!$this->product->max_price || $variant->unit_cost > $this->product->max_price) {
+            if (! $this->product->max_price || $variant->unit_cost > $this->product->max_price) {
                 $this->product->max_price = $variant->unit_cost;
             }
         }
@@ -56,7 +57,7 @@ class ProductFactory implements ProductInterface
     }
 
     /**
-     * Process a collection of products
+     * Process a collection of products.
      *
      * @param Collection $products
      * @return Collection
@@ -66,6 +67,7 @@ class ProductFactory implements ProductInterface
         foreach ($products as $product) {
             $this->init($product)->get();
         }
+
         return $products;
     }
 }

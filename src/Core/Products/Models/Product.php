@@ -31,16 +31,16 @@ class Product extends BaseModel
     protected $settings = 'products';
 
     /**
-     * The products minimum price
+     * The products minimum price.
      *
-     * @var integer
+     * @var int
      */
     public $min_price = 0;
 
     /**
-     * The products maxiumum price
+     * The products maxiumum price.
      *
-     * @var integer
+     * @var int
      */
     public $max_price = 0;
 

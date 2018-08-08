@@ -2,35 +2,32 @@
 
 namespace GetCandy\Api\Core\Payments\Providers;
 
-use Log;
-use Carbon\Carbon;
-use PayPal\Api\Sale;
 use PayPal\Api\Payment;
 use PayPal\Rest\ApiContext;
 use PayPal\Auth\OAuthTokenCredential;
 use GetCandy\Api\Core\Orders\Models\Order;
-use GetCandy\Api\Core\Payments\Models\Transaction;
-use PayPal\Exception\PayPalConnectionException;
 use GetCandy\Api\Core\Payments\PaymentResponse;
+use PayPal\Exception\PayPalConnectionException;
+use GetCandy\Api\Core\Payments\Models\Transaction;
 
 class PayPal extends AbstractProvider
 {
     /**
-     * The Guzzle client
+     * The Guzzle client.
      *
      * @var Client
      */
     protected $client;
 
     /**
-     * The environment context
+     * The environment context.
      *
      * @var ApiContext
      */
     protected $context;
 
     /**
-     * PayPal payment details
+     * PayPal payment details.
      *
      * @var Payment
      */
@@ -53,10 +50,10 @@ class PayPal extends AbstractProvider
     }
 
     /**
-     * Checks whether the token is valid
+     * Checks whether the token is valid.
      *
      * @param string $token
-     * @return boolean
+     * @return bool
      */
     public function validate($token)
     {
@@ -66,6 +63,7 @@ class PayPal extends AbstractProvider
         } catch (PayPalConnectionException $e) {
             return false;
         }
+
         return true;
     }
 
@@ -78,11 +76,12 @@ class PayPal extends AbstractProvider
             return $t->success;
         });
 
-        if (!$success) {
+        if (! $success) {
             $response = new PaymentResponse(false, 'Unable to process order');
             $response->transaction = $transactions->first(function ($t) {
-                return !$t->success;
+                return ! $t->success;
             });
+
             return $response;
         }
 
@@ -93,7 +92,7 @@ class PayPal extends AbstractProvider
     }
 
     /**
-     * Create a successful transaction
+     * Create a successful transaction.
      *
      * @param [type] $content
      * @param [type] $order
@@ -133,11 +132,9 @@ class PayPal extends AbstractProvider
 
     public function refund($token, $amount = null)
     {
-
     }
 
     public function getClientToken()
     {
-
     }
 }

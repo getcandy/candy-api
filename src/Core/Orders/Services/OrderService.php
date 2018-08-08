@@ -21,7 +21,7 @@ use GetCandy\Api\Core\Orders\Exceptions\IncompleteOrderException;
 class OrderService extends BaseService
 {
     /**
-     * The basket service
+     * The basket service.
      *
      * @var BasketService
      */
@@ -33,7 +33,7 @@ class OrderService extends BaseService
     protected $model;
 
     /**
-     * The payments service
+     * The payments service.
      *
      * @var PaymentService
      */
@@ -131,7 +131,6 @@ class OrderService extends BaseService
 
         // TODO Need a better way to do this basket totals thing
         $basket = $this->baskets->getForOrder($order);
-
 
         $tax = app('api')->taxes()->getDefaultRecord();
 
@@ -519,7 +518,7 @@ class OrderService extends BaseService
 
         if (! empty($data['payment_type_id'])) {
             $type = app('api')->paymentTypes()->getByHashedId($data['payment_type_id']);
-        } elseif (!empty($data['payment_type'])) {
+        } elseif (! empty($data['payment_type'])) {
             $type = app('api')->paymentTypes()->getByHandle($data['payment_type']);
         }
 

@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 use League\Fractal\Resource\Collection;
 use Elastica\Exception\InvalidException;
 use GetCandy\Api\Core\Categories\Models\Category;
-use GetCandy\Api\Core\Products\Services\ProductService;
 use GetCandy\Api\Core\Search\Interfaces\SearchResultInterface;
 use GetCandy\Api\Http\Transformers\Fractal\Products\ProductTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Categories\CategoryTransformer;
@@ -16,43 +15,42 @@ use GetCandy\Api\Http\Transformers\Fractal\Categories\CategoryTransformer;
 class SearchResultFactory implements SearchResultInterface
 {
     /**
-     * The result set
+     * The result set.
      *
      * @var ResultSet
      */
     protected $results;
 
     /**
-     * The fractal instance
+     * The fractal instance.
      *
      * @var Manager
      */
     protected $fractal;
 
     /**
-     * The search type
+     * The search type.
      *
      * @var string
      */
     protected $type = 'product';
 
     /**
-     * The ids of the searched models
+     * The ids of the searched models.
      *
      * @var array
      */
     protected $ids = [];
 
     /**
-     * The result category
+     * The result category.
      *
      * @var Category
      */
     protected $category = null;
 
-
     /**
-     * The available transformers
+     * The available transformers.
      *
      * @var array
      */
@@ -62,36 +60,35 @@ class SearchResultFactory implements SearchResultInterface
     ];
 
     /**
-     * The transformer to use
+     * The transformer to use.
      *
      * @var AbstractTranformer
      */
     protected $transformer;
 
     /**
-     * The search meta
+     * The search meta.
      *
      * @var array
      */
     protected $meta = [];
 
-
     /**
-     * The current page
+     * The current page.
      *
-     * @var integer
+     * @var int
      */
     protected $page = 1;
 
     /**
-     * The model service
+     * The model service.
      *
      * @var mixed
      */
     protected $service;
 
     /**
-     * The current user
+     * The current user.
      *
      * @var Model
      */
@@ -105,7 +102,7 @@ class SearchResultFactory implements SearchResultInterface
     }
 
     /**
-     * Initialise the factory
+     * Initialise the factory.
      *
      * @param ResultSet $results
      * @return void
@@ -122,7 +119,7 @@ class SearchResultFactory implements SearchResultInterface
             }
         }
 
-        if (!empty($this->transformers[$this->type])) {
+        if (! empty($this->transformers[$this->type])) {
             return $this->setTransformer(
                 $this->transformers[$this->type]
             );
@@ -132,7 +129,7 @@ class SearchResultFactory implements SearchResultInterface
     }
 
     /**
-     * Set the model service
+     * Set the model service.
      *
      * @param mixed $service
      * @return void
@@ -140,23 +137,25 @@ class SearchResultFactory implements SearchResultInterface
     public function service($service)
     {
         $this->service = $service;
+
         return $this;
     }
 
     /**
-     * Set the page
+     * Set the page.
      *
-     * @param integer $page
+     * @param int $page
      * @return void
      */
     public function page($page)
     {
         $this->page = $page;
+
         return $this;
     }
 
     /**
-     * Set the category
+     * Set the category.
      *
      * @param Category $category
      * @return void
@@ -164,11 +163,12 @@ class SearchResultFactory implements SearchResultInterface
     public function category($category)
     {
         $this->category = $category;
+
         return $this;
     }
 
     /**
-     * Set the current user
+     * Set the current user.
      *
      * @param Model $user
      * @return void
@@ -176,11 +176,12 @@ class SearchResultFactory implements SearchResultInterface
     public function user($user)
     {
         $this->user = $user;
+
         return $this;
     }
 
     /**
-     * Set the transformer to use
+     * Set the transformer to use.
      *
      * @param mixed $transformer
      * @return void
@@ -189,14 +190,16 @@ class SearchResultFactory implements SearchResultInterface
     {
         if (is_object($transformer)) {
             $this->transformer = $transformer;
+
             return $this;
         }
         $this->transformer = new $transformer;
+
         return $this;
     }
 
     /**
-     * Parse the fractal includes
+     * Parse the fractal includes.
      *
      * @param string $includes
      * @return void
@@ -204,11 +207,12 @@ class SearchResultFactory implements SearchResultInterface
     public function include($includes = [])
     {
         $this->fractal->parseIncludes($includes ?? []);
+
         return $this;
     }
 
     /**
-     * Set the search type
+     * Set the search type.
      *
      * @param string $type
      * @return void
@@ -216,6 +220,7 @@ class SearchResultFactory implements SearchResultInterface
     public function type($type)
     {
         $this->type = $type;
+
         return $this;
     }
 
@@ -231,7 +236,7 @@ class SearchResultFactory implements SearchResultInterface
     }
 
     /**
-     * Get the search result data
+     * Get the search result data.
      *
      * @return array
      */
@@ -242,10 +247,11 @@ class SearchResultFactory implements SearchResultInterface
         $resource->setMeta(
             $this->getMeta()
         );
+
         return $this->fractal->createData($resource)->toArray();
     }
 
-/**
+    /**
      * Maps the search sorting used to something we can use.
      *
      * @param ResultSet $results
@@ -259,7 +265,6 @@ class SearchResultFactory implements SearchResultInterface
         } catch (InvalidException $e) {
             return;
         }
-
 
         return $params;
     }

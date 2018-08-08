@@ -43,7 +43,6 @@ class ProductTransformer extends BaseTransformer
      */
     public function transform(Product $product)
     {
-
         $response = [
             'id' => $product->encodedId(),
             'attribute_data' => $product->attribute_data,
@@ -57,6 +56,7 @@ class ProductTransformer extends BaseTransformer
             $response['type'] = $product->pivot->type;
             $response['position'] = $product->pivot->position;
         }
+
         return $response;
     }
 

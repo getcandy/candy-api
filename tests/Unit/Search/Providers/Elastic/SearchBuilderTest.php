@@ -34,7 +34,6 @@ class SearchBuilderTest extends TestCase
 
         // $builder->allows()->getCurrentIndex()->andReturns('Foo');
 
-
         // $builder->setType('prdoduct');
         dd($builder);
     }

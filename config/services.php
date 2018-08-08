@@ -16,12 +16,12 @@ return [
         'client_id' => env('PAYPAL_CLIENT_ID', ''),
         'client_secret' => env('PAYPAL_CLIENT_SECRET'),
 
-        /**
+        /*
          * SDK configuration settings
          */
         'settings' => [
 
-            /**
+            /*
              * Payment Mode
              *
              * Available options are 'sandbox' or 'live'
@@ -37,9 +37,9 @@ return [
             'log.LogEnabled' => true,
 
             // Specigy the location for our paypal logs
-            'log.FileName' => storage_path() . '/logs/paypal.log',
+            'log.FileName' => storage_path().'/logs/paypal.log',
 
-            /**
+            /*
              * Log Level
              *
              * Available options: 'DEBUG', 'INFO', 'WARN' or 'ERROR'

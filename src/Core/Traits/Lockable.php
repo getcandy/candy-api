@@ -7,14 +7,14 @@ use GetCandy\Api\Observers\LockedObserver;
 trait Lockable
 {
     /**
-     * Set whether model is locked
+     * Set whether model is locked.
      *
-     * @var boolean
+     * @var bool
      */
     protected $locked = false;
 
     /**
-     * Boot up the trait
+     * Boot up the trait.
      *
      * @return void
      */
@@ -24,31 +24,33 @@ trait Lockable
     }
 
     /**
-     * Lock the model
+     * Lock the model.
      *
      * @return void
      */
     public function lock()
     {
         $this->locked = true;
+
         return $this;
     }
 
     /**
-     * Unlock the model
+     * Unlock the model.
      *
      * @return void
      */
     public function unlock()
     {
         $this->locked = false;
+
         return $this;
     }
 
     /**
-     * If the model is locked
+     * If the model is locked.
      *
-     * @return boolean
+     * @return bool
      */
     public function isLocked()
     {

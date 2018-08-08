@@ -35,7 +35,7 @@ abstract class AbstractSort
     protected $handle;
 
     /**
-     * The authenticated user
+     * The authenticated user.
      *
      * @var Model
      */
@@ -50,7 +50,7 @@ abstract class AbstractSort
     }
 
     /**
-     * Set the user on the sort
+     * Set the user on the sort.
      *
      * @param Model $user
      * @return void
@@ -58,6 +58,7 @@ abstract class AbstractSort
     public function user(Model $user)
     {
         $this->user = $user;
+
         return $this;
     }
 
@@ -108,7 +109,7 @@ abstract class AbstractSort
     abstract public function getMapping();
 
     /**
-     * Get the customer groups
+     * Get the customer groups.
      *
      * @return array
      */

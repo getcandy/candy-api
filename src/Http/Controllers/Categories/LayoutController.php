@@ -4,15 +4,13 @@ namespace GetCandy\Api\Http\Controllers\Categories;
 
 use Illuminate\Http\Request;
 use GetCandy\Api\Http\Controllers\BaseController;
-use Intervention\Image\Exception\NotFoundException;
 use GetCandy\Api\Http\Requests\Layouts\AttachRequest;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use GetCandy\Api\Http\Transformers\Fractal\Categories\CategoryTransformer;
 
 class LayoutController extends BaseController
 {
     /**
-     * Handle the request to store a layout against a category
+     * Handle the request to store a layout against a category.
      *
      * @param AttachRequest $request
      * @return json
@@ -20,6 +18,7 @@ class LayoutController extends BaseController
     public function store($category, AttachRequest $request)
     {
         $result = app('api')->categories()->updateLayout($category, $request->layout_id);
+
         return $this->respondWithItem($result, new CategoryTransformer);
     }
 }

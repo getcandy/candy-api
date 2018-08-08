@@ -7,7 +7,7 @@ use Elastica\Search;
 abstract class AbstractAggregator
 {
     /**
-     * The filter to apply
+     * The filter to apply.
      *
      * @var array
      */
@@ -31,7 +31,7 @@ abstract class AbstractAggregator
     }
 
     /**
-     * Set the filter on the aggregation
+     * Set the filter on the aggregation.
      *
      * @param mixed $filter
      * @return Attribute
@@ -39,6 +39,7 @@ abstract class AbstractAggregator
     public function addFilter($filter = null)
     {
         $this->filters[] = $filter;
+
         return $this;
     }
 }

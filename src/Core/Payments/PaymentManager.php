@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Core\Payments;
 
-use InvalidArgumentException;
 use Illuminate\Support\Manager;
 use GetCandy\Api\Core\Payments\Providers\PayPal;
 use GetCandy\Api\Core\Payments\Providers\SagePay;
@@ -21,7 +20,7 @@ class PaymentManager extends Manager implements PaymentContract
     }
 
     /**
-     * Create the PayPal driver
+     * Create the PayPal driver.
      *
      * @return PayPal
      */
@@ -33,7 +32,7 @@ class PaymentManager extends Manager implements PaymentContract
     }
 
     /**
-     * Create the sagepay driver
+     * Create the sagepay driver.
      *
      * @return SagePay
      */
@@ -45,7 +44,7 @@ class PaymentManager extends Manager implements PaymentContract
     }
 
     /**
-     * Build a layout provider instance
+     * Build a layout provider instance.
      *
      * @param  string  $provider
      * @param  array  $config
@@ -56,7 +55,7 @@ class PaymentManager extends Manager implements PaymentContract
         return new $provider;
     }
 
-     /**
+    /**
      * Get the default driver name.
      *
      * @throws \InvalidArgumentException
