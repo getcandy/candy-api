@@ -14,7 +14,7 @@ class AddIncomingFieldOnVariants extends Migration
     public function up()
     {
         Schema::table('product_variants', function (Blueprint $table) {
-            $table->integer('incoming')->after('stock');
+            $table->integer('incoming')->after('stock')->default(0);
         });
     }
 

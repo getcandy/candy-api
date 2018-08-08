@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class ChangePricingVariantIncoming extends Migration
+class AddUnitQtyToOrderLine extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class ChangePricingVariantIncoming extends Migration
      */
     public function up()
     {
-        Schema::table('product_variants', function (Blueprint $table) {
-            $table->integer('incoming')->default(0)->change();
+        Schema::table('order_lines', function (Blueprint $table) {
+            $table->integer('unit_qty')->default(1)->after('unit_price');
         });
     }
 }

@@ -28,30 +28,32 @@ class ProductVariantFactory implements ProductVariantInterface
         // Lock the variant from saving.
         $this->variant->lock();
 
-        $tieredPrice = $this->getTieredPrice($qty, $user);
+        $tieredPrice  = $this->getTieredPrice($qty, $user);
         $variantPrice = $this->getVariantPrice($qty, $user);
-
-        $unitCost = $variantPrice->unit_cost;
-        $unitTax = $variantPrice->unit_tax;
-        $totalCost = $variantPrice->total_cost;
-        $totalTax = $variantPrice->total_tax;
-        $basePrice = $variantPrice->base_cost;
+        $basePrice    = $variantPrice->base_cost;
+        $unitCost     = $variantPrice->unit_cost;
+        $unitTax      = $variantPrice->unit_tax;
+        $totalCost    = $variantPrice->total_cost;
+        $totalTax     = $variantPrice->total_tax;
+        $basePrice    = $variantPrice->base_cost;
 
         if ($tieredPrice) {
-            $unitCost = $tieredPrice->unit_cost;
-            $unitTax = $tieredPrice->unit_tax;
+            $basePrice = $tieredPrice->base_cost;
+            $unitCost  = $tieredPrice->unit_cost;
+            $unitTax   = $tieredPrice->unit_tax;
             $totalCost = $tieredPrice->total_cost;
-            $totalTax = $tieredPrice->total_tax;
+            $totalTax  = $tieredPrice->total_tax;
             $basePrice = $tieredPrice->base_cost;
         }
 
+        $this->variant->qty           = $qty;
+        $this->variant->price         = $basePrice;
+        $this->variant->unit_tax      = $unitTax;
+        $this->variant->unit_cost     = $unitCost;
+        $this->variant->total_tax     = $totalTax;
+        $this->variant->base_cost     = $basePrice;
+        $this->variant->total_price   = $totalCost;
         $this->variant->origial_price = $this->variant->price;
-        $this->variant->price = $basePrice;
-        $this->variant->unit_cost = $unitCost;
-        $this->variant->unit_tax = $unitTax;
-        $this->variant->total_price = $totalCost;
-        $this->variant->total_tax = $totalTax;
-        $this->variant->qty = $qty;
 
         return $this->variant;
     }
