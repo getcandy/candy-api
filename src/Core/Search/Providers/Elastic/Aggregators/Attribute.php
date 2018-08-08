@@ -10,7 +10,7 @@ use Elastica\Aggregation\Filter;
 class Attribute
 {
     /**
-     * The filter to apply
+     * The filter to apply.
      *
      * @var array
      */
@@ -29,7 +29,7 @@ class Attribute
     }
 
     /**
-     * Set the filter on the aggregation
+     * Set the filter on the aggregation.
      *
      * @param mixed $filter
      * @return Attribute
@@ -37,6 +37,7 @@ class Attribute
     public function addFilter($filter = null)
     {
         $this->filters[] = $filter;
+
         return $this;
     }
 
@@ -45,6 +46,7 @@ class Attribute
         if (empty($this->filters)) {
             $agg = new Terms(str_plural($this->field));
             $agg->setField($this->field.'.filter');
+
             return $agg;
         }
 

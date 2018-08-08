@@ -2,54 +2,52 @@
 
 namespace GetCandy\Api\Core\Baskets\Factories;
 
-use Illuminate\Database\Eloquent\Model;
 use GetCandy\Api\Core\Discounts\Factory;
 use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Core\Discounts\DiscountInterface;
-use GetCandy\Api\Core\Products\ProductVariantInterface;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketInterface;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketLineInterface;
 
 class BasketFactory implements BasketInterface
 {
     /**
-     * The current basket
+     * The current basket.
      *
      * @var Basket
      */
     protected $basket;
 
     /**
-     * The order attached to the basket
+     * The order attached to the basket.
      *
      * @var Order
      */
     protected $order;
 
     /**
-     * The applied discounts
+     * The applied discounts.
      *
      * @var array
      */
     protected $discounts = [];
 
     /**
-     * The discount factory
+     * The discount factory.
      *
      * @var DiscountInterface
      */
     protected $discountFactory;
 
     /**
-     * The basket lines
+     * The basket lines.
      *
      * @var mixed
      */
     protected $lines = [];
 
     /**
-     * The basket line factory
+     * The basket line factory.
      *
      * @var string
      */
@@ -59,22 +57,22 @@ class BasketFactory implements BasketInterface
         DiscountInterface $discountFactory,
         BasketLineInterface $lineFactory
     ) {
-        $this->lineFactory     = $lineFactory;
-        $this->lines           = collect($this->lines);
+        $this->lineFactory = $lineFactory;
+        $this->lines = collect($this->lines);
         $this->discountFactory = $discountFactory;
-        $this->discounts       = collect($this->discounts);
+        $this->discounts = collect($this->discounts);
     }
 
     /**
-     * Initialise with the basket
+     * Initialise with the basket.
      *
      * @param Basket $basket
      * @return BasketFactory
      */
     public function init(Basket $basket)
     {
-        $this->basket    = $basket;
-        $this->order     = $basket->order;
+        $this->basket = $basket;
+        $this->order = $basket->order;
         $this->discounts = $this->discountFactory
                             ->init($basket->discounts)
                             ->setBasket($this->basket)
@@ -91,7 +89,7 @@ class BasketFactory implements BasketInterface
     }
 
     /**
-     * Set the basket totals
+     * Set the basket totals.
      *
      * @return BasketFactory
      */

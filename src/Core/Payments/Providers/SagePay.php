@@ -6,9 +6,8 @@ use Log;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
-use GetCandy\Api\Core\Orders\Models\Order;
-use GetCandy\Api\Core\Payments\Models\Transaction;
 use GetCandy\Api\Core\Payments\PaymentResponse;
+use GetCandy\Api\Core\Payments\Models\Transaction;
 
 class SagePay extends AbstractProvider
 {

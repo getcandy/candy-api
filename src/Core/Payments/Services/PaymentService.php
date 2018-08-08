@@ -7,8 +7,8 @@ use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Payments\PaymentContract;
 use GetCandy\Api\Core\Payments\Models\Transaction;
 use GetCandy\Api\Core\Payments\Exceptions\AlreadyRefundedException;
-use GetCandy\Api\Core\Payments\Exceptions\InvalidPaymentTokenException;
 use GetCandy\Api\Core\Orders\Exceptions\OrderAlreadyProcessedException;
+use GetCandy\Api\Core\Payments\Exceptions\InvalidPaymentTokenException;
 
 class PaymentService extends BaseService
 {
@@ -17,7 +17,7 @@ class PaymentService extends BaseService
     protected $provider;
 
     /**
-     * Payment Manager
+     * Payment Manager.
      *
      * @var PaymentContract
      */
@@ -83,7 +83,7 @@ class PaymentService extends BaseService
     }
 
     /**
-     * Process an order for payment
+     * Process an order for payment.
      *
      * @param Order $order
      * @param string $token
@@ -97,7 +97,7 @@ class PaymentService extends BaseService
             $type ? $type->driver : null
         );
 
-        if (!$manager->validate($token)) {
+        if (! $manager->validate($token)) {
             throw new InvalidPaymentTokenException;
         }
 

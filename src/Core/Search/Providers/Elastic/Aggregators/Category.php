@@ -19,13 +19,14 @@ class Category
     protected $categories = [];
 
     /**
-     * The filter to apply
+     * The filter to apply.
      *
      * @var array
      */
     protected $filters = [];
+
     /**
-     * Set the filter on the aggregation
+     * Set the filter on the aggregation.
      *
      * @param mixed $filter
      * @return Attribute
@@ -33,6 +34,7 @@ class Category
     public function addFilter($filter = null)
     {
         $this->filters[] = $filter;
+
         return $this;
     }
 

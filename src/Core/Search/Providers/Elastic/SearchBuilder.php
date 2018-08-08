@@ -505,6 +505,7 @@ class SearchBuilder
                 $this->user
             ));
         }
+
         return $query;
     }
 

@@ -3,31 +3,28 @@
 namespace GetCandy\Api\Core\Search\Services;
 
 use Elastica\ResultSet;
-use League\Fractal\Resource\Collection;
 use GetCandy\Api\Core\Products\Services\ProductService;
 use GetCandy\Api\Core\Categories\Services\CategoryService;
 use GetCandy\Api\Core\Search\Interfaces\SearchResultInterface;
-use GetCandy\Api\Http\Transformers\Fractal\Products\ProductTransformer;
-use GetCandy\Api\Http\Transformers\Fractal\Categories\CategoryTransformer;
 
 class SearchService
 {
     /**
-     * The products service
+     * The products service.
      *
      * @var ProductService
      */
     protected $products;
 
     /**
-     * The category service
+     * The category service.
      *
      * @var CategoryService
      */
     protected $categories;
 
     /**
-     * The search result factory
+     * The search result factory.
      *
      * @var SearchResultInterface
      */

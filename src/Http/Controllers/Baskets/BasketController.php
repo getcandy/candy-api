@@ -37,6 +37,7 @@ class BasketController extends BaseController
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
+
         return $this->respondWithItem($basket, new BasketTransformer);
     }
 

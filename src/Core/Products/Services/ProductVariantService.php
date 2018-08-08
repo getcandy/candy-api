@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Core\Products\Services;
 
-use PriceCalculator;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Products\Models\ProductVariant;
 use GetCandy\Api\Core\Search\Events\IndexableSavedEvent;
@@ -128,6 +127,7 @@ class ProductVariantService extends BaseService
     public function getBySku($sku)
     {
         $variant = $this->model->where('sku', '=', $sku)->first();
+
         return $this->factory->init($variant)->get();
     }
 

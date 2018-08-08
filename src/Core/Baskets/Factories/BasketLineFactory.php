@@ -9,14 +9,14 @@ use GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface;
 class BasketLineFactory implements BasketLineInterface
 {
     /**
-     * The basket line
+     * The basket line.
      *
      * @var BasketLine
      */
     protected $line;
 
     /**
-     * The variant factory
+     * The variant factory.
      *
      * @var ProductVariantInterface
      */
@@ -28,7 +28,7 @@ class BasketLineFactory implements BasketLineInterface
     }
 
     /**
-     * Initialise the factory
+     * Initialise the factory.
      *
      * @param BasketLine $line
      * @return BasketLineFactory
@@ -36,11 +36,12 @@ class BasketLineFactory implements BasketLineInterface
     public function init(BasketLine $line)
     {
         $this->line = $line;
+
         return $this;
     }
 
     /**
-     * Get the basket line
+     * Get the basket line.
      *
      * @return BasketLine
      */

@@ -145,9 +145,8 @@ class CategoryService extends BaseService
         return $category;
     }
 
-
     /**
-     * Update a category layout
+     * Update a category layout.
      *
      * @param string $categoryId
      * @param string $layoutId
@@ -159,6 +158,7 @@ class CategoryService extends BaseService
         $category = $this->getByHashedId($categoryId);
         $category->layout()->associate($layout);
         $category->save();
+
         return $category;
     }
 

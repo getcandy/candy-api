@@ -3,7 +3,6 @@
 namespace GetCandy\Api\Core\Baskets\Models;
 
 use GetCandy\Api\Core\Scaffold\BaseModel;
-use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Core\Products\Models\ProductVariant;
 
 class BasketLine extends BaseModel

@@ -7,7 +7,7 @@ use GetCandy\Api\Core\Layouts\Models\Layout;
 trait HasLayouts
 {
     /**
-     * Get the associated layout
+     * Get the associated layout.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

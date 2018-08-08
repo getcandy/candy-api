@@ -13,7 +13,7 @@ class LayoutService extends BaseService
     }
 
     /**
-     * Create a new layout
+     * Create a new layout.
      *
      * @param array $data
      * @return Layout
@@ -30,7 +30,7 @@ class LayoutService extends BaseService
     }
 
     /**
-     * Update an existing layout
+     * Update an existing layout.
      *
      * @param string $id
      * @param array $data
@@ -41,6 +41,7 @@ class LayoutService extends BaseService
         $layout = $this->getByHashedId($id);
         $layout->fill($data);
         $layout->save();
+
         return $layout;
     }
 }

@@ -13,6 +13,7 @@ class LockedObserver
                 trans('getcandy::exceptions.model_locked')
             );
         }
+
         return false;
     }
 }

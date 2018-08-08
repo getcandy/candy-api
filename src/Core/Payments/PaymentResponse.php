@@ -7,28 +7,28 @@ use GetCandy\Api\Core\Payments\Models\Transaction;
 class PaymentResponse
 {
     /**
-     * Whether the payment was successful
+     * Whether the payment was successful.
      *
-     * @var boolean
+     * @var bool
      */
     public $success = false;
 
     /**
-     * The response message
+     * The response message.
      *
      * @var string
      */
     public $message = null;
 
     /**
-     * Any errors that occured
+     * Any errors that occured.
      *
      * @var array
      */
     public $errors = [];
 
     /**
-     * The transaction object
+     * The transaction object.
      *
      * @var Transaction
      */
@@ -42,7 +42,7 @@ class PaymentResponse
     }
 
     /**
-     * Set the transaction
+     * Set the transaction.
      *
      * @param Transaction $transaction
      * @return PaymentResponse
@@ -50,11 +50,12 @@ class PaymentResponse
     public function transaction($transaction)
     {
         $this->transaction = $transaction;
+
         return $this;
     }
 
     /**
-     * Get the transaction object
+     * Get the transaction object.
      *
      * @return Transaction
      */

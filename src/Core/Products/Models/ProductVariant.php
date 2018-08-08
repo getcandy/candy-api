@@ -2,11 +2,11 @@
 
 namespace GetCandy\Api\Core\Products\Models;
 
+use GetCandy\Api\Core\Traits\Lockable;
 use GetCandy\Api\Core\Taxes\Models\Tax;
 use GetCandy\Api\Core\Scaffold\BaseModel;
 use GetCandy\Api\Core\Assets\Models\Asset;
 use GetCandy\Api\Core\Traits\HasAttributes;
-use GetCandy\Api\Core\Traits\Lockable;
 use GetCandy\Api\Core\Baskets\Models\BasketLine;
 
 class ProductVariant extends BaseModel

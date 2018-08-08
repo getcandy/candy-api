@@ -9,28 +9,28 @@ abstract class AbstractProvider
     protected $billing;
 
     /**
-     * The order to process
+     * The order to process.
      *
      * @var Order
      */
     protected $order;
 
     /**
-     * Any additional fields
+     * Any additional fields.
      *
      * @var array
      */
     protected $fields = [];
 
     /**
-     * The payment token
+     * The payment token.
      *
      * @var string
      */
     protected $token = null;
 
     /**
-     * Set the order
+     * Set the order.
      *
      * @param Order $order
      * @return AbstractProvider
@@ -38,11 +38,12 @@ abstract class AbstractProvider
     public function order(Order $order)
     {
         $this->order = $order;
+
         return $this;
     }
 
     /**
-     * Set additional fields
+     * Set additional fields.
      *
      * @param array $fields
      * @return AbstractProvider
@@ -50,11 +51,12 @@ abstract class AbstractProvider
     public function fields(array $fields)
     {
         $this->fields = $fields;
+
         return $this;
     }
 
     /**
-     * Set the payment token
+     * Set the payment token.
      *
      * @param string $token
      * @return AbstractToken
@@ -62,11 +64,12 @@ abstract class AbstractProvider
     public function token($token)
     {
         $this->token = $token;
+
         return $this;
     }
 
     /**
-     * Validate the payment token
+     * Validate the payment token.
      *
      * @param string $token
      * @return void

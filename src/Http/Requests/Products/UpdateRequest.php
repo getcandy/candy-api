@@ -28,6 +28,7 @@ class UpdateRequest extends FormRequest
                 $ruleset[$rulestring] = 'required';
             }
         }
+
         return $ruleset;
     }
 
@@ -37,5 +38,4 @@ class UpdateRequest extends FormRequest
             'attributes.*.*.*.required' => 'This Field is required',
         ];
     }
-
 }
