@@ -18,6 +18,7 @@ class OrderLineTransformer extends BaseTransformer
             'line_total' => $line->line_total,
             'discount_total' => $line->discount_total,
             'unit_price' => $line->unit_price,
+            'unit_qty' => $line->unit_qty,
             'tax_total' => $line->tax_total,
             'tax_rate' => $line->tax_rate,
             'description' => $line->description,

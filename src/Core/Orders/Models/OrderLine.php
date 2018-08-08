@@ -23,6 +23,7 @@ class OrderLine extends BaseModel
 
         // New fields
         'is_shipping',
+        'unit_qty',
         'is_manual',
         'line_total',
         'unit_price',
