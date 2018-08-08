@@ -69,7 +69,7 @@ class SagePay extends AbstractProvider
             ]);
         } catch (ClientException $e) {
             $errors = json_decode($e->getResponse()->getBody()->getContents(), true);
-            $response = new PaymentResponse(false, 'Payment Failed', $errors['errors']);
+            $response = new PaymentResponse(false, 'Payment Failed', $errors);
 
             $response->transaction(
                 $this->createFailedTransaction($errors)
@@ -79,9 +79,13 @@ class SagePay extends AbstractProvider
         }
 
         $content = json_decode($response->getBody()->getContents(), true);
-        $this->createSuccessTransaction($content, $this->order);
 
-        return true;
+        $response = new PaymentResponse(true, 'Payment Received');
+        $response->transaction(
+            $this->createSuccessTransaction($content, $this->order)
+        );
+
+        return $response;
     }
 
     protected function getVendorTxCode($order)
