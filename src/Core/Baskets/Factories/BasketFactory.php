@@ -99,6 +99,7 @@ class BasketFactory implements BasketInterface
     {
         $this->basket->sub_total = 0;
         $this->basket->total_tax = 0;
+        $this->basket->total_cost = 0;
 
         foreach ($this->lines as $line) {
             $this->basket->sub_total += $line->total_cost;
