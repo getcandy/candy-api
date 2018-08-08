@@ -57,7 +57,8 @@ class BasketService extends BaseService
         $basket = new Basket();
 
         if ($id) {
-            $basket = $this->getByHashedId($id);
+            $basketId = $this->getDecodedId($id);
+            $basket = Basket::find($basketId);
         } elseif ($user && $userBasket = $this->getCurrentForUser($user)) {
             $basket = $userBasket;
         }
@@ -184,10 +185,12 @@ class BasketService extends BaseService
             $this->remapLines($basket, $data['variants']);
         }
 
+        $basket = $this->factory->init($basket)->get();
+
         $basket->save();
         event(new BasketStoredEvent($basket));
 
-        return $this->factory->init($basket)->get();
+        return $basket;
     }
 
     /**
