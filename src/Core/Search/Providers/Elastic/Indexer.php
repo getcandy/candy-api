@@ -87,11 +87,11 @@ class Indexer
         }
 
         // Do it in batches of 200
-        $models = $model->withoutGlobalScopes()->limit(1000)->offset($this->batch)->get();
+        $models = $model->withoutGlobalScopes()->limit(10)->get();
 
         $this->type->setSuffix($suffix);
 
-        while ($models->count()) {
+        // while ($models->count()) {
             $indexes = [];
 
             foreach ($models as $model) {
@@ -117,8 +117,8 @@ class Indexer
 
             echo ':batch:'.$this->batch;
             $this->batch += 1000;
-            $models = $model->withoutGlobalScopes()->limit(1000)->offset($this->batch)->get();
-        }
+            $models = $model->withoutGlobalScopes()->limit(10)->get();
+        // }
 
         $this->cleanup($suffix, $aliases);
 
@@ -139,8 +139,10 @@ class Indexer
         } else {
             $remove = 'a';
         }
+
         foreach ($aliases as $alias) {
             $index = $this->client->getIndex($alias."_{$suffix}");
+            dump($index);
             $index->addAlias($alias);
             $this->reset($alias."_{$remove}");
         }
