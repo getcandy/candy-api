@@ -5,6 +5,7 @@ namespace GetCandy\Api\Core\Payments;
 use Illuminate\Support\Manager;
 use GetCandy\Api\Core\Payments\Providers\PayPal;
 use GetCandy\Api\Core\Payments\Providers\SagePay;
+use GetCandy\Api\Core\Payments\Providers\Offline;
 
 class PaymentManager extends Manager implements PaymentContract
 {
@@ -40,6 +41,18 @@ class PaymentManager extends Manager implements PaymentContract
     {
         return $this->buildProvider(
             SagePay::class
+        );
+    }
+
+    /**
+     * Create the offline driver
+     *
+     * @return Offline
+     */
+    public function createOfflineDriver()
+    {
+        return $this->buildProvider(
+            Offline::class
         );
     }
 
