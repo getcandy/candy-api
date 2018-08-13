@@ -6,7 +6,7 @@ use Log;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
-use GetCandy\Api\Core\Orders\Models\Order;
+use GetCandy\Api\Core\Payments\PaymentResponse;
 use GetCandy\Api\Core\Payments\Models\Transaction;
 
 class SagePay extends AbstractProvider
@@ -20,12 +20,14 @@ class SagePay extends AbstractProvider
         return 'SagePay';
     }
 
-    public function validateToken($token)
+    public function validate($token)
     {
+        // SagePay doesn't seem to have a good way to
+        // check this, so we just return true.
         return true;
     }
 
-    public function charge($token, Order $order, $data = [])
+    public function charge()
     {
         $client = new Client([
             'base_uri' => $this->host,
@@ -36,22 +38,22 @@ class SagePay extends AbstractProvider
                 'transactionType' => 'Payment',
                 'paymentMethod' => [
                     'card' => [
-                        'merchantSessionKey' => $data['merchant_key'] ?? $this->getClientToken(),
-                        'cardIdentifier' => $token,
+                        'merchantSessionKey' => $this->fields['merchant_key'] ?? $this->getClientToken(),
+                        'cardIdentifier' => $this->token,
                     ],
                 ],
-                'amount' => $order->order_total,
-                'currency' => $order->currency,
+                'amount' => $this->order->order_total,
+                'currency' => $this->order->currency,
                 'description' => 'Website Transaction',
                 'apply3DSecure' => 'UseMSPSetting',
-                'customerFirstName' => $order->billing_firstname,
-                'customerLastName' => $order->billing_lastname,
+                'customerFirstName' => $this->order->billing_firstname,
+                'customerLastName' => $this->order->billing_lastname,
                 'vendorTxCode' => str_random(40),
                 'billingAddress' => [
-                    'address1' => $order->billing_address,
-                    'city' => $order->billing_city,
-                    'postalCode' => $order->billing_zip,
-                    'country' => $order->billing_country,
+                    'address1' => $this->order->billing_address,
+                    'city' => $this->order->billing_city,
+                    'postalCode' => $this->order->billing_zip,
+                    'country' => $this->order->billing_country,
                 ],
                 'entryMethod' => 'Ecommerce',
             ];
@@ -66,15 +68,23 @@ class SagePay extends AbstractProvider
             ]);
         } catch (ClientException $e) {
             $errors = json_decode($e->getResponse()->getBody()->getContents(), true);
-            $this->createFailedTransaction($errors, $order);
+            $response = new PaymentResponse(false, 'Payment Failed', $errors);
 
-            return false;
+            $response->transaction(
+                $this->createFailedTransaction($errors)
+            );
+
+            return $response;
         }
 
         $content = json_decode($response->getBody()->getContents(), true);
-        $this->createSuccessTransaction($content, $order);
 
-        return true;
+        $response = new PaymentResponse(true, 'Payment Received');
+        $response->transaction(
+            $this->createSuccessTransaction($content, $this->order)
+        );
+
+        return $response;
     }
 
     protected function getVendorTxCode($order)
@@ -101,15 +111,15 @@ class SagePay extends AbstractProvider
         return $transaction;
     }
 
-    protected function createFailedTransaction($errors, $order)
+    protected function createFailedTransaction($errors)
     {
         $transaction = new Transaction;
         $transaction->success = false;
-        $transaction->order()->associate($order);
+        $transaction->order()->associate($this->order);
         $transaction->merchant = $this->getVendor();
         $transaction->provider = 'SagePay';
         $transaction->notes = $errors['description'] ?? null;
-        $transaction->amount = $order->order_total;
+        $transaction->amount = $this->order->order_total;
         $transaction->status = 'failed';
         $transaction->card_type = '-';
         $transaction->last_four = '-';

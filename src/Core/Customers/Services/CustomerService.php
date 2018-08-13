@@ -33,7 +33,6 @@ class CustomerService extends BaseService
 
         if (! empty($data['customer_groups'])) {
             $groups = app('api')->customerGroups()->getDecodedIds($data['customer_groups']);
-            dd($groups);
             $user->groups()->sync($groups);
         }
 
@@ -45,9 +44,20 @@ class CustomerService extends BaseService
         $query = $this->model;
 
         if ($keywords) {
-            $query = $query->orWhere('email', 'LIKE', '%'.$keywords.'%')
-                        ->orWhere('firstname', 'LIKE', '%'.$keywords.'%')
-                        ->orWhere('lastname', 'LIKE', '%'.$keywords.'%');
+            $segments = explode(' ', $keywords);
+
+            $query = $query
+                ->whereHas('details', function ($q) use ($segments, $keywords) {
+                    if (count($segments) > 1) {
+                        $q->where('firstname', '=', $segments[0])
+                            ->where('lastname', '=', $segments[1])
+                            ->orWhere('company_name', 'LIKE', '%'.$keywords.'%');
+                    } else {
+                        $q->where('firstname', 'LIKE', '%'.$keywords.'%')
+                            ->orWhere('lastname', 'LIKE', '%'.$keywords.'%')
+                            ->orWhere('company_name', 'LIKE', '%'.$keywords.'%');
+                    }
+                })->orWhere('email', 'LIKE', '%'.$keywords.'%');
         }
 
         return $query->paginate($length, ['*'], 'page', $page);

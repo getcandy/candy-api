@@ -25,8 +25,8 @@ class ShippingPriceTransformer extends BaseTransformer
 
         return [
             'id' => $price->encodedId(),
-            'rate' => $prices->amount,
-            'tax' => $prices->tax,
+            'rate' => $prices->total_cost,
+            'tax' => $prices->total_tax,
             'fixed' => (bool) $price->fixed,
             'min_basket' => $price->min_basket,
             'min_weight' => $price->min_weight,

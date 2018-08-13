@@ -13,6 +13,32 @@ class Basket extends BaseModel
 
     protected $hashids = 'basket';
 
+    /**
+     * The basket sub total.
+     *
+     * @var int
+     */
+    public $sub_total = 0;
+
+    /**
+     * The basket total tax.
+     *
+     * @var int
+     */
+    public $total_tax = 0;
+
+    /**
+     * The basket total cost.
+     *
+     * @var int
+     */
+    public $total_cost = 0;
+
+    /**
+     * The fillable attributes.
+     *
+     * @var array
+     */
     protected $fillable = [
         'lines', 'completed_at', 'merged_id',
     ];

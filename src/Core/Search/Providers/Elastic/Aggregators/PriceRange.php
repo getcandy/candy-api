@@ -5,14 +5,21 @@ namespace GetCandy\Api\Core\Search\Providers\Elastic\Aggregators;
 use Elastica\Search;
 use Elastica\Aggregation\Range;
 
-class PriceRangeAggregator
+class PriceRange extends AbstractAggregator
 {
-    public function getQuery(Search $search, $query)
+    /**
+     * Get the pre aggregation.
+     *
+     * @param Search $search
+     * @param Query $query
+     * @return Query
+     */
+    public function getPre(Search $search = null, $query = null)
     {
         // Add max price aggregator
-        $max = new MaxPriceAggregator;
+        $max = new MaxPrice;
 
-        $query->addAggregation($max->getQuery());
+        $query->addAggregation($max->getPre());
 
         $results = $search->setQuery($query)->search();
 

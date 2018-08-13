@@ -77,6 +77,7 @@ Route::group([
     $router->post('categories/reorder', 'Categories\CategoryController@reorder');
     $router->post('categories/{category}/products/attach', 'Products\ProductCategoryController@attach');
     $router->put('categories/{category}/products', 'Categories\CategoryController@putProducts');
+    $router->put('categories/{category}/layouts', 'Categories\LayoutController@store');
 
     $router->post('categories/{category}/routes', 'Categories\CategoryRouteController@store');
     $router->resource('categories', 'Categories\CategoryController', [

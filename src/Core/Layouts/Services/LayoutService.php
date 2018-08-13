@@ -11,4 +11,37 @@ class LayoutService extends BaseService
     {
         $this->model = new Layout();
     }
+
+    /**
+     * Create a new layout.
+     *
+     * @param array $data
+     * @return Layout
+     */
+    public function create(array $data)
+    {
+        $layout = new Layout();
+        $layout->name = $data['name'];
+        $layout->handle = $data['handle'];
+        $layout->type = $data['type'];
+        $layout->save();
+
+        return $layout;
+    }
+
+    /**
+     * Update an existing layout.
+     *
+     * @param string $id
+     * @param array $data
+     * @return Layout
+     */
+    public function update($id, array $data)
+    {
+        $layout = $this->getByHashedId($id);
+        $layout->fill($data);
+        $layout->save();
+
+        return $layout;
+    }
 }

@@ -145,6 +145,23 @@ class CategoryService extends BaseService
         return $category;
     }
 
+    /**
+     * Update a category layout.
+     *
+     * @param string $categoryId
+     * @param string $layoutId
+     * @return Product
+     */
+    public function updateLayout($categoryId, $layoutId)
+    {
+        $layout = app('api')->layouts()->getByHashedId($layoutId);
+        $category = $this->getByHashedId($categoryId);
+        $category->layout()->associate($layout);
+        $category->save();
+
+        return $category;
+    }
+
     public function reorder(array $data)
     {
         $response = false;
@@ -230,5 +247,33 @@ class CategoryService extends BaseService
         $category->channels()->sync([]);
 
         return $category->delete();
+    }
+
+    public function getSearchedIds($ids = [])
+    {
+        $parsedIds = [];
+        foreach ($ids as $hash) {
+            $parsedIds[] = $this->model->decodeId($hash);
+        }
+
+        $placeholders = implode(',', array_fill(0, count($parsedIds), '?')); // string for the query
+
+        $query = $this->model->with([
+            'routes',
+            'products',
+            'assets',
+            'assets',
+            'primaryAsset.transforms',
+            'primaryAsset.source',
+            'primaryAsset',
+        ])
+            ->withoutGlobalScopes()
+            ->whereIn('id', $parsedIds);
+
+        if (count($parsedIds)) {
+            $query = $query->orderByRaw("field(id,{$placeholders})", $parsedIds);
+        }
+
+        return $query->get();
     }
 }

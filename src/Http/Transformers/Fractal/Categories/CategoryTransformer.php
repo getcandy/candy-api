@@ -8,6 +8,7 @@ use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Assets\AssetTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Routes\RouteTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\Layouts\LayoutTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Channels\ChannelTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Products\ProductTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Customers\CustomerGroupTransformer;
@@ -26,6 +27,7 @@ class CategoryTransformer extends BaseTransformer
         'routes',
         'parent',
         'thumbnail',
+        'layout',
         'descendants',
         'siblings',
     ];
@@ -37,7 +39,7 @@ class CategoryTransformer extends BaseTransformer
             'sort' => $category->sort,
             'attribute_data' => $category->attribute_data,
             'depth' => $category->depth,
-            'products_count' => $category->products()->count(),
+            'products_count' => $category->products->count(),
             'parent_id' => app('api')->categories()->getEncodedId($category->parent_id),
         ];
 
@@ -46,6 +48,11 @@ class CategoryTransformer extends BaseTransformer
         }
 
         return $data;
+    }
+
+    public function includeLayout(Category $category)
+    {
+        return $this->item($category->layout, new LayoutTransformer);
     }
 
     public function includeSiblings(Category $category)

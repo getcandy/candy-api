@@ -4,9 +4,9 @@ namespace GetCandy\Api\Core\Search\Providers\Elastic\Aggregators;
 
 use Elastica\Aggregation\Max;
 
-class MaxPriceAggregator
+class MaxPrice
 {
-    public function getQuery()
+    public function getPre()
     {
         $agg = new Max('max_price');
         $agg->setField('max_price');

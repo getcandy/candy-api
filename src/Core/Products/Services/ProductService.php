@@ -8,15 +8,38 @@ use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Scopes\CustomerGroupScope;
 use GetCandy\Api\Core\Search\Events\IndexableSavedEvent;
 use GetCandy\Api\Core\Products\Events\ProductCreatedEvent;
+use GetCandy\Api\Core\Products\Interfaces\ProductInterface;
 use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
 
 class ProductService extends BaseService
 {
     protected $model;
 
-    public function __construct()
+    /**
+     * The product factory instance.
+     *
+     * @var ProductInterface
+     */
+    protected $factory;
+
+    public function __construct(ProductInterface $factory)
     {
         $this->model = new Product();
+        $this->factory = $factory;
+    }
+
+    /**
+     * Returns model by a given hashed id.
+     * @param  string $id
+     * @throws  Illuminate\Database\Eloquent\ModelNotFoundException
+     * @return Product
+     */
+    public function getByHashedId($id)
+    {
+        $id = $this->model->decodeId($id);
+        $product = $this->model->findOrFail($id);
+
+        return $this->factory->init($product)->get();
     }
 
     /**
@@ -60,6 +83,24 @@ class ProductService extends BaseService
         }
 
         event(new IndexableSavedEvent($product));
+
+        return $product;
+    }
+
+    /**
+     * Update a products layout.
+     *
+     * @param string $productId
+     * @param string $layoutId
+     * @return Product
+     */
+    public function updateLayout($productId, $layoutId)
+    {
+        $layout = app('api')->layouts()->getByHashedId($layoutId);
+        $product = $this->getByHashedId($productId);
+
+        $product->layout->associate($layout);
+        $product->save();
 
         return $product;
     }
@@ -241,7 +282,7 @@ class ProductService extends BaseService
         return $attributes;
     }
 
-    public function getSearchedIds($ids = [])
+    public function getSearchedIds($ids = [], $user = null)
     {
         $parsedIds = [];
         foreach ($ids as $hash) {
@@ -250,10 +291,20 @@ class ProductService extends BaseService
 
         $placeholders = implode(',', array_fill(0, count($parsedIds), '?')); // string for the query
 
-        $query = $this->model->with(['routes', 'primaryAsset.transforms', 'firstVariant'])->whereIn('id', $parsedIds);
+        $query = $this->model->with([
+            'routes',
+            'variants.product',
+            'variants.tiers',
+            'variants.tiers.group',
+            'primaryAsset',
+            'primaryAsset.transforms.transform',
+            'primaryAsset.transforms.asset',
+            'primaryAsset.transforms.asset.source',
+            'primaryAsset.tags',
+            'primaryAsset.source',
+        ])->whereIn('id', $parsedIds);
 
         $groups = \GetCandy::getGroups();
-        $user = \Auth::user();
 
         $ids = [];
 
@@ -261,17 +312,9 @@ class ProductService extends BaseService
             $ids[] = $group->id;
         }
 
-        $pricing = null;
-
         // If the user is an admin, fall through
         if (! $user || ($user && ! $user->hasRole('admin'))) {
             $query->with([
-                'variants.product',
-                'routes',
-                'primaryAsset.transforms',
-                'primaryAsset.source',
-                'primaryAsset',
-                'variants.tax',
                 'variants' => function ($q1) use ($ids) {
                     $q1->with(['customerPricing' => function ($q2) use ($ids) {
                         $q2->whereIn('customer_group_id', $ids)
@@ -286,7 +329,7 @@ class ProductService extends BaseService
             $query = $query->orderByRaw("field(id,{$placeholders})", $parsedIds);
         }
 
-        return $query->get();
+        return $this->factory->collection($query->get());
     }
 
     /**

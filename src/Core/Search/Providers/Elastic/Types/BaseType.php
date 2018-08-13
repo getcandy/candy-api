@@ -72,12 +72,18 @@ abstract class BaseType
                     foreach ($customerGroups as $customerGroup) {
                         $prices = [];
                         $i = 0;
+
                         foreach ($model->variants as $variant) {
                             $price = $variant->customerPricing->filter(function ($item) use ($customerGroup) {
                                 return $customerGroup->id == $item->group->id;
                             })->first();
+
                             $prices[] = $price ? $price->price : $variant->price;
                             $i++;
+                        }
+
+                        if (! count($prices)) {
+                            dd($model->id);
                         }
                         $pricing[] = [
                             'id' => $customerGroup->encodedId(),
@@ -231,20 +237,24 @@ abstract class BaseType
         $attributes = app('api')->attributes()->all()->reject(function ($attribute) {
             return $attribute->system;
         })->mapWithKeys(function ($attribute) {
-            if (! $attribute->searchable) {
-                return [
-                    $attribute->handle => [
-                        'enabled' => false,
-                    ],
-                ];
-            }
+            $payload = [];
 
-            return [
-                $attribute->handle => [
+            if (! $attribute->searchable && ! $attribute->filterable) {
+                $payload[$attribute->handle]['enabled'] = false;
+            } else {
+                $payload[$attribute->handle] = [
                     'type' => 'text',
                     'analyzer' => 'standard',
-                ],
-            ];
+                ];
+
+                if ($attribute->filterable) {
+                    $payload[$attribute->handle]['fields'] = [
+                        'filter' => ['type' => 'keyword'],
+                    ];
+                }
+            }
+
+            return $payload;
         })->toArray();
 
         return array_merge($attributes, $this->mapping);

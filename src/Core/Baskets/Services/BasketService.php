@@ -5,11 +5,13 @@ namespace GetCandy\Api\Core\Baskets\Services;
 use Carbon\Carbon;
 use GetCandy\Api\Core\Auth\Models\User;
 use GetCandy\Api\Core\Discounts\Factory;
+use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Baskets\Models\Basket;
-use GetCandy\Api\Core\Baskets\Models\BasketTotal;
 use GetCandy\Api\Core\Baskets\Models\SavedBasket;
 use GetCandy\Api\Core\Baskets\Events\BasketStoredEvent;
+use GetCandy\Api\Core\Baskets\Interfaces\BasketInterface;
+use GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface;
 
 class BasketService extends BaseService
 {
@@ -18,9 +20,27 @@ class BasketService extends BaseService
      */
     protected $model;
 
-    public function __construct()
-    {
+    /**
+     * The basket factory.
+     *
+     * @var BasketFactoryInterface
+     */
+    protected $factory;
+
+    /**
+     * The variant factory.
+     *
+     * @var ProductVariantInterface
+     */
+    protected $variantFactory;
+
+    public function __construct(
+        BasketInterface $factory,
+        ProductVariantInterface $variantFactory
+    ) {
         $this->model = new Basket();
+        $this->factory = $factory;
+        $this->variantFactory = $variantFactory;
     }
 
     /**
@@ -36,7 +56,8 @@ class BasketService extends BaseService
         $basket = new Basket();
 
         if ($id) {
-            $basket = $this->getByHashedId($id);
+            $basketId = $this->getDecodedId($id);
+            $basket = Basket::find($basketId);
         } elseif ($user && $userBasket = $this->getCurrentForUser($user)) {
             $basket = $userBasket;
         }
@@ -52,6 +73,40 @@ class BasketService extends BaseService
         $basket->save();
 
         return $basket;
+    }
+
+    /**
+     * Get a basket by it's hashed ID.
+     *
+     * @param string $id
+     * @return BasketFactory
+     */
+    public function getByHashedId($id)
+    {
+        $id = $this->model->decodeId($id);
+        $basket = $this->model->with([
+            'user',
+            'order',
+            'lines.basket',
+            'lines.variant',
+            'lines.variant.tax',
+            'lines.variant.tiers',
+            'lines.variant.product',
+            'lines.variant.customerPricing',
+        ])->findOrFail($id);
+
+        return $this->factory->init($basket)->get();
+    }
+
+    /**
+     * Get basket for an order.
+     *
+     * @param Order $order
+     * @return Basket
+     */
+    public function getForOrder(Order $order)
+    {
+        return $this->factory->init($order->basket)->get();
     }
 
     /**
@@ -130,6 +185,8 @@ class BasketService extends BaseService
             $this->remapLines($basket, $data['variants']);
         }
 
+        $basket = $this->factory->init($basket)->get();
+
         $basket->save();
         event(new BasketStoredEvent($basket));
 
@@ -161,21 +218,15 @@ class BasketService extends BaseService
     {
         $service = app('api')->productVariants();
 
-        $variants = collect($variants)->map(function ($item) use ($service) {
-            $variant = $service->getByHashedId($item['id']);
-
-            $tieredPrice = $service->getTieredPrice($variant, $item['quantity'], \Auth::user());
-
-            if ($tieredPrice) {
-                $price = $tieredPrice->amount;
-            } else {
-                $price = $variant->total_price;
-            }
+        $variants = collect($variants)->map(function ($item) use ($service, $basket) {
+            $variant = $this->variantFactory->init(
+                $service->getByHashedId($item['id'])
+            )->get($item['quantity']);
 
             return [
                 'product_variant_id' => $variant->id,
                 'quantity' => $item['quantity'],
-                'total' => $item['quantity'] * $price,
+                'total' => $item['quantity'] * $variant->price,
             ];
         });
 
@@ -242,11 +293,11 @@ class BasketService extends BaseService
 
         if ($basket) {
             if ($basket->order && ! $basket->order->placed_at || ! $basket->order) {
-                return $basket;
+                return $this->factory->init($basket)->get();
             }
         }
 
-        return new Basket();
+        return $this->factory->init(new Basket())->get();
     }
 
     /**
@@ -303,23 +354,5 @@ class BasketService extends BaseService
         );
 
         return $userBasket;
-    }
-
-    /**
-     * Get the totals for a basket.
-     *
-     * @param Basket $basket
-     *
-     * @return BasketTotal
-     */
-    public function setTotals(Basket $basket)
-    {
-        $factory = new Factory;
-        $sets = app('api')->discounts()->parse($basket->discounts);
-        $applied = $factory->getApplied($sets, \Auth::user(), null, $basket);
-
-        $factory->applyToBasket($applied, $basket);
-
-        return $basket;
     }
 }

@@ -5,7 +5,7 @@ namespace GetCandy\Api\Http\Controllers\Settings;
 use Illuminate\Http\Request;
 use GetCandy\Api\Http\Controllers\BaseController;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use GetCandy\Api\Http\Transformers\Fractal\Search\SettingTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\Settings\SettingTransformer;
 
 class SettingController extends BaseController
 {
@@ -19,6 +19,10 @@ class SettingController extends BaseController
         try {
             $setting = app('api')->settings()->get($handle);
         } catch (ModelNotFoundException $e) {
+            return $this->errorNotFound();
+        }
+
+        if (! $setting) {
             return $this->errorNotFound();
         }
 

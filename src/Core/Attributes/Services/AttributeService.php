@@ -202,4 +202,9 @@ class AttributeService extends BaseService
     {
         return $this->model->whereIn('handle', $handles)->get();
     }
+
+    public function getFilterable()
+    {
+        return $this->model->where('filterable', true)->get();
+    }
 }

@@ -40,16 +40,16 @@ class OrderLineService extends BaseService
             $unitPrice = $data['unit_price'];
         }
 
-        $pricing = PriceCalculator::get($lineTotal, $data['tax_rate']);
+        $pricing = PriceCalculator::get($lineTotal, $data['tax_rate'], $data['quantity'] ?? 1);
 
         $order->lines()->create([
             'description' => $data['description'],
             'is_shipping' => $data['is_shipping'] ?? false,
             'quantity' => $data['quantity'],
             'is_manual' => $manual,
-            'line_total' => $pricing->amount,
-            'unit_price' => $unitPrice,
-            'tax_total' => round($pricing->tax, 2),
+            'line_total' => $pricing->total_cost,
+            'unit_price' => $pricing->unit_cost,
+            'tax_total' => $pricing->total_tax,
             'variant' => $data['variant'] ?? null,
             'sku' => $data['sku'] ?? null,
             'discount_total' => $data['discount_total'] ?? 0,

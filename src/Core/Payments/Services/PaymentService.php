@@ -4,9 +4,11 @@ namespace GetCandy\Api\Core\Payments\Services;
 
 use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Scaffold\BaseService;
+use GetCandy\Api\Core\Payments\PaymentContract;
 use GetCandy\Api\Core\Payments\Models\Transaction;
 use GetCandy\Api\Core\Payments\Exceptions\AlreadyRefundedException;
 use GetCandy\Api\Core\Orders\Exceptions\OrderAlreadyProcessedException;
+use GetCandy\Api\Core\Payments\Exceptions\InvalidPaymentTokenException;
 
 class PaymentService extends BaseService
 {
@@ -14,9 +16,17 @@ class PaymentService extends BaseService
 
     protected $provider;
 
-    public function __construct()
+    /**
+     * Payment Manager.
+     *
+     * @var PaymentContract
+     */
+    protected $manager;
+
+    public function __construct(PaymentContract $manager)
     {
         $this->model = new Transaction;
+        $this->manager = $manager;
     }
 
     /**
@@ -51,18 +61,6 @@ class PaymentService extends BaseService
     }
 
     /**
-     * Validates a payment token.
-     *
-     * @param string $token
-     *
-     * @return void
-     */
-    public function validateToken($token)
-    {
-        return $this->getProvider()->validateToken($token);
-    }
-
-    /**
      * Charge the order.
      *
      * @param Order $order
@@ -82,6 +80,32 @@ class PaymentService extends BaseService
         }
 
         return $this->getProvider()->charge($token, $order, $data);
+    }
+
+    /**
+     * Process an order for payment.
+     *
+     * @param Order $order
+     * @param string $token
+     * @param mixed $type
+     * @param array $fields
+     * @return void
+     */
+    public function process($order, $token, $type = null, $fields = [])
+    {
+        $manager = $this->manager->with(
+            $type ? $type->driver : null
+        );
+
+        if (! $manager->validate($token)) {
+            throw new InvalidPaymentTokenException;
+        }
+
+        return $manager
+            ->token($token)
+            ->order($order)
+            ->fields($fields)
+            ->charge();
     }
 
     /**
