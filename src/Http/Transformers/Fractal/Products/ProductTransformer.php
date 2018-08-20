@@ -73,6 +73,8 @@ class ProductTransformer extends BaseTransformer
 
     protected function sortOptions($options)
     {
+        $options = $options ?? [];
+
         uasort($options, function ($a, $b) {
             return $a['position'] < $b['position'] ? -1 : 1;
         });
