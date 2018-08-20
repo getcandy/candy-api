@@ -8,7 +8,7 @@ class StandardProvider extends AbstractProvider
     {
         $basket = $order->basket;
         $weight = $basket->weight;
-        $total = $basket->total;
+        $total = $basket->total_cost;
         $users = $this->method->users;
         $prices = $this->method->prices;
         $user = $basket->user;
@@ -19,6 +19,7 @@ class StandardProvider extends AbstractProvider
             } elseif ($users->count()) {
                 return false;
             }
+
             if ($total > $item->min_basket && $weight >= $item->min_weight) {
                 return $item;
             }
