@@ -73,4 +73,18 @@ class CollectionService extends BaseService
 
         return $results->paginate($length, ['*'], 'page', $page);
     }
+
+    /**
+     * Sync products to a collection
+     * @param  string $collectionId
+     * @param  array  $products
+     * @return Collection
+     */
+    public function syncProducts($collectionId, $products = [])
+    {
+        $collection = $this->getByHashedId($collectionId);
+        $productIds = app('api')->products()->getDecodedIds($products);
+        $collection->products()->withTimestamps()->sync($productIds);
+        return $collection;
+    }
 }

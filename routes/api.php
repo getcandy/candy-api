@@ -95,6 +95,7 @@ Route::group([
      * Channels
      */
     $router->post('collections/{collection}/routes', 'Collections\CollectionRouteController@store');
+    $router->put('collections/{collection}/products', 'Collections\CollectionProductController@store');
     $router->resource('collections', 'Collections\CollectionController', [
         'except' => ['index', 'edit', 'create', 'show'],
     ]);
