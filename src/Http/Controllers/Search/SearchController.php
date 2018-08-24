@@ -63,7 +63,7 @@ class SearchController extends BaseController
                     $request->keywords,
                     $category,
                     $request->except(
-                        ['page', 'type', 'keywords', 'per_page', 'source']
+                        ['page', 'type', 'keywords', 'per_page', 'source', 'includes']
                     ),
                     $request->sort_by ?: [],
                     $page ?: 1,
