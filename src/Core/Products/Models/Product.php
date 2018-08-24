@@ -44,6 +44,10 @@ class Product extends BaseModel
      */
     public $max_price = 0;
 
+    public $min_price_tax = 0;
+
+    public $max_price_tax = 0;
+
     protected $dates = ['deleted_at'];
 
     public $transformer = ProductTransformer::class;

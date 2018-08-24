@@ -48,7 +48,9 @@ class ProductTransformer extends BaseTransformer
             'attribute_data' => $product->attribute_data,
             'option_data' => $this->parseOptionData($product->option_data),
             'max_price' => $product->max_price,
+            'max_price_tax' => $product->max_price_tax,
             'min_price' => $product->min_price,
+            'min_price_tax' => $product->min_price_tax,
             'variant_count' => $product->variants->count(),
         ];
 
