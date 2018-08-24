@@ -30,6 +30,16 @@ class RefreshOrderListener
             DB::RAW('SUM(line_total) + SUM(tax_total) - SUM(discount_total) as grand_total')
         )->where('order_id', '=', $order->id)->whereIsShipping(false)->groupBy('order_id')->first();
 
+        // If we don't have any totals, then we must have had an order already and deleted all the lines
+        // from it and gone back to the checkout.
+        if (!$totals) {
+            $totals = new \stdClass;
+            $totals->line_total = 0;
+            $totals->tax_total = 0;
+            $totals->discount_total = 0;
+            $totals->grand_total = 0;
+        }
+
         $totals->delivery_total = 0;
 
         $shipping = $order->lines()
