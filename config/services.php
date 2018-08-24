@@ -53,6 +53,7 @@ return [
         ],
     ],
     'sagepay' => [
+        'vendor' => env('SAGEPAY_VENDOR'),
         'key' => env('SAGEPAY_KEY'),
         'password' => env('SAGEPAY_PASSWORD'),
     ],
