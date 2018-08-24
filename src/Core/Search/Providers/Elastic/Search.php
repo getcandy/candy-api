@@ -164,6 +164,8 @@ class Search implements ClientContract
 
         if (class_exists($classname)) {
             return app()->make($classname);
+        } else {
+            return app()->make("GetCandy\Api\Core\Search\Providers\Elastic\Filters\TextFilter");
         }
     }
 
