@@ -47,8 +47,10 @@ class ProductFactory implements ProductInterface
 
             if (! $this->product->min_price || $variant->unit_cost < $this->product->min_price) {
                 $this->product->min_price = $variant->unit_cost;
+                $this->product->min_price_tax = $variant->unit_tax;
             }
             if (! $this->product->max_price || $variant->unit_cost > $this->product->max_price) {
+                $this->product->max_price_tax = $variant->unit_tax;
                 $this->product->max_price = $variant->unit_cost;
             }
         }
