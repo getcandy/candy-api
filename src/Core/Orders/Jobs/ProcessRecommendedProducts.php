@@ -10,7 +10,6 @@ use GetCandy\Api\Core\Orders\Models\Order;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use GetCandy\Api\Core\Products\Models\ProductVariant;
-use GetCandy\Api\Core\Products\Models\ProductRecommendation;
 
 class ProcessRecommendedProducts implements ShouldQueue
 {
@@ -40,10 +39,10 @@ class ProcessRecommendedProducts implements ShouldQueue
      * inner join order_lines as ol1 on ol1.`order_id` = o.id
      * inner join order_lines as ol2 on (ol2.`order_id` = o.id and ol2.id != ol1.id)
      * where ol1.`sku` = '4999610'
-
+     *
      * group by ol2.sku
      * order by count(ol2.sku) desc
-
+     *
      * limit 10
      */
     public function handle()
@@ -52,16 +51,16 @@ class ProcessRecommendedProducts implements ShouldQueue
 
         // Remove any manual or shipping.
         $lines = $this->order->lines->filter(function ($line) {
-            return !$line->is_manual;
+            return ! $line->is_manual;
         })->filter(function ($line) {
-            return !$line->is_shipping;
+            return ! $line->is_shipping;
         });
 
         if ($lines->count() <= 1) {
             return;
         }
 
-        /**
+        /*
          * * select ol2.sku, count(ol2.sku)
             * from orders as o
             * inner join order_lines as ol1 on ol1.`order_id` = o.id

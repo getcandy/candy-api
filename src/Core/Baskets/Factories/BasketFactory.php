@@ -110,7 +110,7 @@ class BasketFactory implements BasketInterface
     }
 
     /**
-     * Clone the basket
+     * Clone the basket.
      *
      * @return Basket
      */

@@ -3,8 +3,8 @@
 namespace GetCandy\Api\Http\Transformers\Fractal\Baskets;
 
 use GetCandy\Api\Core\Baskets\Models\SavedBasket;
-use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use GetCandy\Api\Core\Baskets\Factories\BasketFactory;
+use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 
 class SavedBasketTransformer extends BaseTransformer
 {
@@ -23,6 +23,7 @@ class SavedBasketTransformer extends BaseTransformer
     public function includeBasket(SavedBasket $savedBasket)
     {
         $factory = app()->make(BasketFactory::class);
+
         return $this->item(
             $factory->init($savedBasket->basket)->get(),
             new BasketTransformer
