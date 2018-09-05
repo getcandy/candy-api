@@ -108,4 +108,24 @@ class BasketFactory implements BasketInterface
 
         return $this->basket;
     }
+
+    /**
+     * Clone the basket
+     *
+     * @return Basket
+     */
+    public function clone()
+    {
+        $clone = $this->basket->replicate();
+
+        $clone->save();
+
+        foreach ($clone->lines as $line) {
+            $cloned = $line->replicate();
+            $cloned->basket()->associate($clone);
+            $cloned->save();
+        }
+
+        return $clone;
+    }
 }
