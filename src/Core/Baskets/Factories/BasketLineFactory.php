@@ -51,7 +51,7 @@ class BasketLineFactory implements BasketLineInterface
             ->init($this->line->variant)
             ->get($this->line->quantity);
 
-        $this->line->original_cost = $this->line->price;
+        // $this->line->original_cost = $this->line->price;
         $this->line->total_cost = $variant->total_price;
         $this->line->total_tax = $variant->total_tax;
         $this->line->unit_cost = $variant->unit_cost;

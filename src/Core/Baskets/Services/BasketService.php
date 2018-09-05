@@ -206,12 +206,17 @@ class BasketService extends BaseService
         $savedBasket = new SavedBasket;
         $savedBasket->name = $name;
 
+        // Get the original basket
         $basket = $this->getByHashedId($basketId);
-        $savedBasket->basket()->associate($basket);
+
+        // Clone the basket
+        $clone = $this->factory->init($basket)->clone();
+
+        $savedBasket->basket()->associate($clone);
 
         $savedBasket->save();
 
-        return $basket;
+        return $this->factory->init($clone)->get();
     }
 
     protected function remapLines($basket, $variants = [])
