@@ -170,7 +170,7 @@ Route::group([
     $router->post('products/{product}/associations', 'Products\ProductAssociationController@store');
     $router->delete('products/{product}/associations', 'Products\ProductAssociationController@destroy');
     $router->resource('products', 'Products\ProductController', [
-        'except' => ['edit', 'create'],
+        'except' => ['edit', 'create', 'show'],
     ]);
 
     /*
