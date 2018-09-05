@@ -172,4 +172,9 @@ class Product extends BaseModel
     {
         return $this->morphMany(Discount::class, 'eligible');
     }
+
+    public function recommendations()
+    {
+        return $this->hasMany(ProductRecommendation::class, 'related_product_id');
+    }
 }

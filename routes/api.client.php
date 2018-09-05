@@ -29,6 +29,7 @@ Route::group([
     $router->get('collections', 'Collections\CollectionController@index');
     $router->get('collections/{id}', 'Collections\CollectionController@show');
     $router->get('categories/{id}', 'Categories\CategoryController@show');
+    $router->get('products/recommended', 'Products\ProductController@recommended');
     $router->get('products/{product}', 'Products\ProductController@show');
     $router->post('customers', 'Customers\CustomerController@store');
     $router->get('products', 'Products\ProductController@index');
