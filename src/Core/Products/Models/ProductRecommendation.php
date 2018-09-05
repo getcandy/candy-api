@@ -3,7 +3,6 @@
 namespace GetCandy\Api\Core\Products\Models;
 
 use GetCandy\Api\Core\Scaffold\BaseModel;
-use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 
 class ProductRecommendation extends BaseModel
 {

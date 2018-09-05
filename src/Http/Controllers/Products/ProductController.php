@@ -11,9 +11,9 @@ use GetCandy\Api\Http\Requests\Products\UpdateRequest;
 use GetCandy\Exceptions\MinimumRecordRequiredException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use GetCandy\Api\Core\Products\Models\ProductRecommendation;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use GetCandy\Api\Http\Transformers\Fractal\Products\ProductTransformer;
-use GetCandy\Api\Core\Products\Models\ProductRecommendation;
 use GetCandy\Api\Http\Transformers\Fractal\Products\ProductRecommendationTransformer;
 
 class ProductController extends BaseController

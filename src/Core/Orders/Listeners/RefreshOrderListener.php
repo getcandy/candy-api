@@ -32,7 +32,7 @@ class RefreshOrderListener
 
         // If we don't have any totals, then we must have had an order already and deleted all the lines
         // from it and gone back to the checkout.
-        if (!$totals) {
+        if (! $totals) {
             $totals = new \stdClass;
             $totals->line_total = 0;
             $totals->tax_total = 0;
