@@ -67,6 +67,8 @@ class Indexer
     {
         $this->type = $this->getType($model);
 
+        $this->batch = 0;
+
         $languages = app('api')->languages()->all();
 
         $indexName = $this->getDefaultIndex();
