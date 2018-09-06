@@ -371,4 +371,29 @@ class BasketService extends BaseService
 
         return $userBasket;
     }
+
+    /**
+     * Delete a basket
+     *
+     * @param mixed $basket
+     * @return boolean
+     */
+    public function destroy($basket)
+    {
+        if (is_string($basket)) {
+            $basket = $this->getByHashedId($basket);
+        }
+
+        // Don't delete basket with an order attached.
+        if ($basket->order) {
+            return false;
+        }
+
+        // Delete any lines.
+        $basket->lines()->delete();
+        $basket->discounts()->delete();
+        $basket->savedBasket()->delete();
+
+        return $basket->delete();
+    }
 }
