@@ -42,7 +42,9 @@ trait HasCandy
 
     public function latestBasket()
     {
-        return $this->hasOne(Basket::class)->orderBy('created_at', 'DESC');
+        return $this->hasOne(Basket::class)
+            ->doesntHave('savedBasket')
+            ->orderBy('created_at', 'DESC');
     }
 
     public function savedBaskets()
