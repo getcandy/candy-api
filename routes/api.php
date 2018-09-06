@@ -66,6 +66,7 @@ Route::group([
     $router->get('baskets/saved', 'Baskets\BasketController@saved');
     $router->post('baskets/{id}/save', 'Baskets\BasketController@save');
     $router->delete('baskets/{basket}', 'Baskets\BasketController@destroy');
+    $router->put('baskets/saved/{basket}', 'Baskets\SavedBasketController@update');
 
     /*
      * Payments
