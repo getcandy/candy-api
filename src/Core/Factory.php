@@ -25,6 +25,7 @@ use GetCandy\Api\Core\Customers\Services\CustomerService;
 use GetCandy\Api\Core\Discounts\Services\DiscountService;
 use GetCandy\Api\Core\Languages\Services\LanguageService;
 use GetCandy\Api\Core\Search\Services\SavedSearchService;
+use GetCandy\Api\Core\Baskets\Services\SavedBasketService;
 use GetCandy\Api\Core\Categories\Services\CategoryService;
 use GetCandy\Api\Core\Currencies\Services\CurrencyService;
 use GetCandy\Api\Core\Attributes\Services\AttributeService;
@@ -79,6 +80,11 @@ class Factory
      * @var BasketService
      */
     protected $baskets;
+
+    /**
+     * @var SavedBasketService
+     */
+    protected $savedBaskets;
 
     /**
      * @var BasketLineService
@@ -265,6 +271,7 @@ class Factory
         SavedSearchService $savedSearch,
         SearchService $search,
         SettingService $settings,
+        SavedBasketService $savedBaskets,
         ShippingMethodService $shippingMethods,
         ShippingZoneService $shippingZones,
         ShippingPriceService $shippingPrices,
@@ -302,6 +309,7 @@ class Factory
         $this->products = $products;
         $this->roles = $roles;
         $this->routes = $routes;
+        $this->savedBaskets = $savedBaskets;
         $this->savedSearch = $savedSearch;
         $this->search = $search;
         $this->settings = $settings;

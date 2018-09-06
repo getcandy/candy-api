@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use GetCandy\Api\Http\Requests\Baskets\AddDiscountRequest;
 use GetCandy\Api\Http\Requests\Baskets\DeleteDiscountRequest;
 use GetCandy\Api\Http\Transformers\Fractal\Baskets\BasketTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\Baskets\SavedBasketTransformer;
+use GetCandy\Api\Http\Requests\Baskets\DeleteRequest;
 
 class BasketController extends BaseController
 {
@@ -80,6 +82,31 @@ class BasketController extends BaseController
         $basket = app('api')->baskets()->save($id, $request->name);
 
         return $this->respondWithItem($basket, new BasketTransformer);
+    }
+
+    /**
+     * Handle the request to get a users saved baskets
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function saved(Request $request)
+    {
+        $baskets = app('api')->baskets()->getSaved($request->user());
+        return $this->respondWithCollection($baskets, new SavedBasketTransformer);
+    }
+
+    /**
+     * Handle the request to delete a basket
+     *
+     * @param string $id
+     * @param DeleteRequest $request
+     * @return void
+     */
+    public function destroy($id, DeleteRequest $request)
+    {
+        $result = app('api')->baskets()->destroy($request->basket);
+        return $this->respondWithSuccess();
     }
 
     /**
