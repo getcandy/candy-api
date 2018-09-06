@@ -219,6 +219,17 @@ class BasketService extends BaseService
         return $this->factory->init($clone)->get();
     }
 
+    /**
+     * Get a users saved baskets
+     *
+     * @param mixed $user
+     * @return void
+     */
+    public function getSaved($user)
+    {
+        return $user->savedBaskets;
+    }
+
     protected function remapLines($basket, $variants = [])
     {
         $service = app('api')->productVariants();
