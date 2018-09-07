@@ -23,12 +23,17 @@ class OrderController extends BaseController
      */
     public function index(Request $request)
     {
+        $request->validate([
+            'from' => 'date_format:Y-m-d',
+            'to' => 'date_format:Y-m-d',
+        ]);
         $orders = app('api')->orders()->getPaginatedData(
             $request->per_page,
             $request->current_page,
             $request->user(),
             $request->status,
-            $request->keywords
+            $request->keywords,
+            $request->only(['from', 'to'])
         );
 
         return $this->respondWithCollection($orders, new OrderTransformer);

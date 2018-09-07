@@ -556,7 +556,7 @@ class OrderService extends BaseService
      * @param User $user
      * @return void
      */
-    public function getPaginatedData($length = 50, $page = 1, $user = null, $status = null, $keywords = null)
+    public function getPaginatedData($length = 50, $page = 1, $user = null, $status = null, $keywords = null, $dates = [])
     {
         $query = $this->model
             ->withoutGlobalScope('open')
@@ -572,6 +572,14 @@ class OrderService extends BaseService
             $query = $query->orderBy('created_at', 'desc');
         } else {
             $query = $query->orderBy('placed_at', 'desc');
+        }
+
+        if (!empty($dates['from'])) {
+            $query->whereDate('created_at', '>=', Carbon::parse($dates['from']));
+        }
+
+        if (!empty($dates['to'])) {
+            $query->whereDate('created_at', '<=', Carbon::parse($dates['to']));
         }
 
         if ($keywords) {
