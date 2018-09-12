@@ -125,12 +125,18 @@ class Search implements ClientContract
             $builder->addSort(CategorySort::class, $category);
         }
 
-        if ($builder->getUser() && ! $builder->getUser()->hasAnyRole($roles)) {
-            $builder->addFilter(
-                new ChannelFilter($builder->getChannel())
-            );
+        if ($channel = $builder->getChannel()) {
+            $channelFilter = $this->findFilter('Channel');
+            $channelFilter->process($channel);
+            $builder->addFilter($channelFilter);
         }
 
+        if ($category) {
+            $filter = $this->findFilter('Category');
+            $filter->process($category);
+            $builder->addFilter($filter);
+        }
+        
         foreach ($filters ?? [] as $filter => $value) {
             $object = $this->findFilter($filter);
             if ($object && $object = $object->process($value, $filter)) {
