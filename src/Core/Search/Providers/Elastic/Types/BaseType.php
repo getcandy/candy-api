@@ -247,10 +247,14 @@ abstract class BaseType
                     'analyzer' => 'standard',
                 ];
 
+                $payload[$attribute->handle]['fields'] = [
+                    'sortable' => [
+                        'type' => 'keyword'
+                    ]
+                ];
+
                 if ($attribute->filterable) {
-                    $payload[$attribute->handle]['fields'] = [
-                        'filter' => ['type' => 'keyword'],
-                    ];
+                    $payload[$attribute->handle]['fields']['filter'] = ['type' => 'keyword'];
                 }
             }
 
