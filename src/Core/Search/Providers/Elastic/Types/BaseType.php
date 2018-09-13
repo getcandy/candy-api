@@ -83,8 +83,9 @@ abstract class BaseType
                         }
 
                         if (! count($prices)) {
-                            dd($model->id);
+                            continue;
                         }
+
                         $pricing[] = [
                             'id' => $customerGroup->encodedId(),
                             'name' => $customerGroup->name,
