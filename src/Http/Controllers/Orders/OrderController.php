@@ -29,7 +29,7 @@ class OrderController extends BaseController
         ]);
         $orders = app('api')->orders()->getPaginatedData(
             $request->per_page,
-            $request->current_page,
+            $request->page,
             $request->user(),
             $request->status,
             $request->keywords,
