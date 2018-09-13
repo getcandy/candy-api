@@ -66,7 +66,7 @@ class SearchController extends BaseController
                     $request->keywords,
                     $category,
                     $request->only($filterable),
-                    $request->sort_by ?: [],
+                    $request->sort,
                     $page ?: 1,
                     $request->per_page ?: 10
                 );

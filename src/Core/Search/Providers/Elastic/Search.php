@@ -106,10 +106,9 @@ class Search implements ClientContract
      *
      * @return array
      */
-    public function search($keywords, $category = null, $filters = [], $sorts = [], $page = 1, $perPage = 30)
+    public function search($keywords, $category = null, $filters = [], $sorts = null, $page = 1, $perPage = 30)
     {
         $roles = app('api')->roles()->getHubAccessRoles();
-
         $builder = $this->builder
             ->setLimit($perPage)
             ->setOffset(($page - 1) * $perPage)
@@ -136,7 +135,7 @@ class Search implements ClientContract
             $filter->process($category);
             $builder->addFilter($filter);
         }
-        
+
         foreach ($filters ?? [] as $filter => $value) {
             $object = $this->findFilter($filter);
             if ($object && $object = $object->process($value, $filter)) {
