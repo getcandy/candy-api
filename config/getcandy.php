@@ -46,7 +46,7 @@ return [
         ],
         'statuses' => [
 
-            /**
+            /*
              * Setting these will help GetCandy's internal event system.
              */
 
@@ -54,7 +54,7 @@ return [
             'paid' => 'payment-received',
             'dispatched' => 'dispatched',
 
-            /**
+            /*
              * These are your custom order statuses, they can be whatever you want, just make
              * sure that you map the appropriate statuses above.
              */

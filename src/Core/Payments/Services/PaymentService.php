@@ -96,7 +96,7 @@ class PaymentService extends BaseService
         if ($order->placed_at) {
             throw new OrderAlreadyProcessedException;
         }
-        
+
         $manager = $this->manager->with(
             $type ? $type->driver : null
         );

@@ -26,15 +26,15 @@ class OrderNotification implements ShouldQueue
     public function handle()
     {
         // See if we have a mailer for this:
-        $mailer = config('getcandy.orders.mailers.' . $this->status);
+        $mailer = config('getcandy.orders.mailers.'.$this->status);
 
-        if (!$mailer) {
+        if (! $mailer) {
             return;
         }
 
         $contactEmail = $this->order->contact_email ?? ($this->order->user ? $this->order->user->email : null);
 
-        if (!$contactEmail) {
+        if (! $contactEmail) {
             return;
         }
 
