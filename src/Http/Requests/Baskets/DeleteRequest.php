@@ -15,6 +15,7 @@ class DeleteRequest extends FormRequest
     {
         $basket = app('api')->baskets()->getByHashedId($this->basket);
         $this->basket = $basket;
+
         return $basket->user->id == $this->user()->id;
     }
 

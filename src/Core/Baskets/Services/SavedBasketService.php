@@ -2,16 +2,9 @@
 
 namespace GetCandy\Api\Core\Baskets\Services;
 
-use Carbon\Carbon;
-use GetCandy\Api\Core\Auth\Models\User;
-use GetCandy\Api\Core\Discounts\Factory;
-use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Core\Baskets\Models\SavedBasket;
-use GetCandy\Api\Core\Baskets\Events\BasketStoredEvent;
-use GetCandy\Api\Core\Baskets\Interfaces\BasketInterface;
-use GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface;
 
 class SavedBasketService extends BaseService
 {
@@ -23,7 +16,7 @@ class SavedBasketService extends BaseService
     }
 
     /**
-     * Update a saved basket
+     * Update a saved basket.
      *
      * @param string $id
      * @param array $payload

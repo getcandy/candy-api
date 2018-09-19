@@ -545,11 +545,11 @@ class OrderService extends BaseService
             $query = $query->orderBy('placed_at', 'desc');
         }
 
-        if (!empty($dates['from'])) {
+        if (! empty($dates['from'])) {
             $query->whereDate('created_at', '>=', Carbon::parse($dates['from']));
         }
 
-        if (!empty($dates['to'])) {
+        if (! empty($dates['to'])) {
             $query->whereDate('created_at', '<=', Carbon::parse($dates['to']));
         }
 
@@ -627,7 +627,7 @@ class OrderService extends BaseService
     }
 
     /**
-     * Process discount lines for an order
+     * Process discount lines for an order.
      *
      * @param Basket $basket
      * @param Order $order

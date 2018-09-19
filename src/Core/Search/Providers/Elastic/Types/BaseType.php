@@ -250,8 +250,8 @@ abstract class BaseType
 
                 $payload[$attribute->handle]['fields'] = [
                     'sortable' => [
-                        'type' => 'keyword'
-                    ]
+                        'type' => 'keyword',
+                    ],
                 ];
 
                 if ($attribute->filterable) {

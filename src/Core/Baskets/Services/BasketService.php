@@ -220,7 +220,7 @@ class BasketService extends BaseService
     }
 
     /**
-     * Get a users saved baskets
+     * Get a users saved baskets.
      *
      * @param mixed $user
      * @return void
@@ -373,10 +373,10 @@ class BasketService extends BaseService
     }
 
     /**
-     * Delete a basket
+     * Delete a basket.
      *
      * @param mixed $basket
-     * @return boolean
+     * @return bool
      */
     public function destroy($basket)
     {
