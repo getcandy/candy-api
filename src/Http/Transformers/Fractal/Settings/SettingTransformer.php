@@ -9,10 +9,9 @@ class SettingTransformer extends BaseTransformer
 {
     public function transform(Model $model)
     {
-        return [
+        return array_merge([
             'name' => $model->name,
             'handle' => $model->handle,
-            'data' => $model->content,
-        ];
+        ], $model->config ? $model->config->toArray() : []);
     }
 }
