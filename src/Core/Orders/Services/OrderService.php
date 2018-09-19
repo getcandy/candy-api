@@ -13,13 +13,13 @@ use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Core\Orders\Events\OrderSavedEvent;
+use GetCandy\Api\Core\Orders\Jobs\OrderNotification;
 use GetCandy\Api\Core\Baskets\Services\BasketService;
 use GetCandy\Api\Core\Payments\Services\PaymentService;
 use GetCandy\Api\Core\Orders\Events\OrderProcessedEvent;
 use GetCandy\Api\Core\Orders\Events\OrderBeforeSavedEvent;
 use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
 use GetCandy\Api\Core\Orders\Exceptions\IncompleteOrderException;
-use GetCandy\Api\Core\Orders\Jobs\OrderNotification;
 
 class OrderService extends BaseService
 {
@@ -170,7 +170,7 @@ class OrderService extends BaseService
     }
 
     /**
-     * Bulk update an order
+     * Bulk update an order.
      *
      * @param array $orderIds
      * @param string $field
@@ -185,12 +185,12 @@ class OrderService extends BaseService
         $query = Order::withoutGlobalScopes()->whereIn('id', $realIds);
 
         $payload = [
-            $field => $value
+            $field => $value,
         ];
 
         $result = $query->update($payload);
 
-        if (!$result) {
+        if (! $result) {
             throw \InvalidArgumentException;
         }
 
@@ -570,7 +570,6 @@ class OrderService extends BaseService
                 $order,
                 $order->status
             );
-
         } else {
             $order->status = 'failed';
         }

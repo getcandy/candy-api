@@ -7,8 +7,8 @@ use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Orders\CreateRequest;
 use GetCandy\Api\Http\Requests\Orders\UpdateRequest;
 use GetCandy\Api\Http\Requests\Orders\ProcessRequest;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use GetCandy\Api\Http\Requests\Orders\BulkUpdateRequest;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use GetCandy\Api\Http\Requests\Orders\StoreAddressRequest;
 use GetCandy\Api\Core\Orders\Exceptions\IncompleteOrderException;
 use GetCandy\Api\Http\Transformers\Fractal\Orders\OrderTransformer;
@@ -107,6 +107,7 @@ class OrderController extends BaseController
         } catch (\Illuminate\Database\QueryException $e) {
             return $this->errorUnprocessable('Unable to update field');
         }
+
         return $this->respondWithSuccess();
     }
 
