@@ -32,14 +32,15 @@ class DiscountCriteriaItem extends BaseModel
         if ($this->type == 'product') {
             return $this->checkWithProduct($basket);
         }
+
         return false;
     }
 
     /**
-     * Checks whether a product is eligible
+     * Checks whether a product is eligible.
      *
      * @param Basket $basket
-     * @return boolean
+     * @return bool
      */
     protected function checkWithProduct($basket)
     {

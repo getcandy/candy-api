@@ -21,11 +21,11 @@ class DiscountCriteriaSet extends BaseModel
     }
 
     /**
-     * Process a criteria set
+     * Process a criteria set.
      *
      * @param \Illuminate\Eloquent\Database\Model $user
      * @param \GetCandy\Core\Baskets\Models\Basket $basket
-     * @return boolean
+     * @return bool
      */
     public function process($user, $basket)
     {
@@ -33,6 +33,7 @@ class DiscountCriteriaSet extends BaseModel
         foreach ($this->items as $item) {
             $apply = $item->check($user, $basket);
         }
+
         return $apply;
     }
 }

@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Core\Discounts;
 
-use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 use GetCandy\Api\Core\Baskets\Models\Basket;
 
@@ -39,6 +38,7 @@ class DiscountFactory implements DiscountInterface
     {
         // Pull in all the discounts.
         $this->discounts = app('api')->discounts()->get();
+
         return $this;
     }
 

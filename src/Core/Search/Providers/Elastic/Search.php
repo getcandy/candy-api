@@ -5,7 +5,6 @@ namespace GetCandy\Api\Core\Search\Providers\Elastic;
 use Elastica\Suggest;
 use GetCandy\Api\Core\Search\ClientContract;
 use GetCandy\Api\Core\Search\Providers\Elastic\Sorts\CategorySort;
-use GetCandy\Api\Core\Search\Providers\Elastic\Filters\ChannelFilter;
 
 class Search implements ClientContract
 {
