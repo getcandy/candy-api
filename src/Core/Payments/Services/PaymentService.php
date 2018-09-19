@@ -93,6 +93,10 @@ class PaymentService extends BaseService
      */
     public function process($order, $token, $type = null, $fields = [])
     {
+        if ($order->placed_at) {
+            throw new OrderAlreadyProcessedException;
+        }
+        
         $manager = $this->manager->with(
             $type ? $type->driver : null
         );
