@@ -98,7 +98,12 @@ class OrderController extends BaseController
     public function bulkUpdate(BulkUpdateRequest $request)
     {
         try {
-            app('api')->orders()->bulkUpdate($request->orders, $request->field, $request->value);
+            app('api')->orders()->bulkUpdate(
+                $request->orders,
+                $request->field,
+                $request->value,
+                $request->send_emails ?: false
+            );
         } catch (\Illuminate\Database\QueryException $e) {
             return $this->errorUnprocessable('Unable to update field');
         }
@@ -153,7 +158,7 @@ class OrderController extends BaseController
     public function update($id, UpdateRequest $request)
     {
         try {
-            $order = app('api')->orders()->update($id, $request->all());
+            $order = app('api')->orders()->update($id, $request->all(), $request->send_emails ?: false);
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
