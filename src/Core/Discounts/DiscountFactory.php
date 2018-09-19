@@ -35,10 +35,10 @@ class DiscountFactory implements DiscountInterface
      * @param mixed $discounts
      * @return DiscountFactory
      */
-    public function init(Collection $discounts)
+    public function init()
     {
-        $this->discounts = $discounts;
-
+        // Pull in all the discounts.
+        $this->discounts = app('api')->discounts()->get();
         return $this;
     }
 
@@ -76,7 +76,7 @@ class DiscountFactory implements DiscountInterface
     public function getApplied()
     {
         foreach ($this->discounts as $index => $discount) {
-            $discount->applied = $this->checkCriteria($discount, $user, $basket, $product);
+            $discount->applied = $this->checkCriteria($discount, $this->user, $this->basket);
             if ($discount->stop) {
                 break;
             }
@@ -95,13 +95,13 @@ class DiscountFactory implements DiscountInterface
      * @param Basket $basket
      * @return bool
      */
-    public function checkCriteria($discount, $user = null, $basket = null, $product = null)
+    public function checkCriteria($discount, $user = null, $basket = null)
     {
-        foreach ($discount->getCriteria() as $criteria) {
+        foreach ($discount->sets as $criteria) {
             $fail = 0;
             $pass = 0;
 
-            if (! $criteria->process($user, $product, $basket)) {
+            if (! $criteria->process($user, $basket)) {
                 $fail++;
             } else {
                 $pass++;
@@ -109,7 +109,7 @@ class DiscountFactory implements DiscountInterface
 
             if ($criteria->scope == 'any' && $pass) {
                 return true;
-            } elseif ($criteria->scope == 'all' && ($discount->getCriteria()->count() == $pass)) {
+            } elseif ($criteria->scope == 'all' && ($discount->sets->count() == $pass)) {
                 return true;
             }
 

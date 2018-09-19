@@ -27,6 +27,39 @@ class DiscountCriteriaItem extends BaseModel
         }
     }
 
+    public function check($user, $basket)
+    {
+        if ($this->type == 'product') {
+            return $this->checkWithProduct($basket);
+        }
+        return false;
+    }
+
+    /**
+     * Checks whether a product is eligible
+     *
+     * @param Basket $basket
+     * @return boolean
+     */
+    protected function checkWithProduct($basket)
+    {
+        // Get the criteria item products.
+        $items = $this->products;
+
+        // Get the main discount
+        $lowerLimit = $this->set->discount->lower_limit;
+
+        $quantity = 0;
+
+        foreach ($basket->lines as $line) {
+            if ($items->contains($line->variant->product)) {
+                $quantity += $line->quantity;
+            }
+        }
+
+        return $quantity >= $lowerLimit;
+    }
+
     /**
      * Get all of the owning commentable models.
      */

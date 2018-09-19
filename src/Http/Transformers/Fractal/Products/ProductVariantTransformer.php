@@ -7,6 +7,7 @@ use GetCandy\Api\Core\Products\Models\ProductVariant;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Taxes\TaxTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Assets\AssetTransformer;
+use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
 
 class ProductVariantTransformer extends BaseTransformer
 {
@@ -16,6 +17,7 @@ class ProductVariantTransformer extends BaseTransformer
 
     public function transform(ProductVariant $variant)
     {
+        $variant = app()->make(ProductVariantFactory::class)->init($variant)->get();
         return [
             'id' => $variant->encodedId(),
             'sku' => $variant->sku,

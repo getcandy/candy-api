@@ -79,6 +79,10 @@ class BasketFactory implements BasketInterface
                             ->setUser($this->basket->user)
                             ->getApplied();
 
+        $this->basket->discounts()->sync(
+            $this->discounts->pluck('id')->toArray()
+        );
+
         foreach ($basket->lines as $line) {
             $this->lines->push(
                 $this->lineFactory->init($line)->get()

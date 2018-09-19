@@ -24,9 +24,10 @@ class RefreshOrderListener
 
         $totals = \DB::table('order_lines')->select(
             'order_id',
-            DB::RAW('SUM(line_total) as line_total'),
-            DB::RAW('SUM(tax_total) as tax_total'),
+            DB::RAW('SUM(CASE WHEN discount_total = 0 THEN line_total ELSE 0 END) as line_total'),
+            DB::RAW('SUM(CASE WHEN discount_total = 0 THEN tax_total ELSE 0 END) as tax_total'),
             DB::RAW('SUM(discount_total) as discount_total'),
+            DB::RAW('SUM(discount_total) as tax_discount_total'),
             DB::RAW('SUM(line_total) + SUM(tax_total) - SUM(discount_total) as grand_total')
         )->where('order_id', '=', $order->id)->whereIsShipping(false)->groupBy('order_id')->first();
 

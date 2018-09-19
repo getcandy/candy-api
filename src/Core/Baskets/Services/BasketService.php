@@ -190,7 +190,7 @@ class BasketService extends BaseService
         $basket->save();
         event(new BasketStoredEvent($basket));
 
-        return $basket;
+        return $basket->refresh();
     }
 
     /**

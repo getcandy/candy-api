@@ -5,6 +5,7 @@ namespace GetCandy\Api\Core\Baskets\Models;
 use GetCandy\Api\Core\Scaffold\BaseModel;
 use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Traits\HasCompletion;
+use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Discounts\Models\Discount;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
@@ -53,7 +54,6 @@ class Basket extends BaseModel
     {
         return $this->hasMany(BasketLine::class);
     }
-
     public function discounts()
     {
         return $this->belongsToMany(Discount::class)->withPivot('coupon');
@@ -82,11 +82,6 @@ class Basket extends BaseModel
     public function activeOrder()
     {
         return $this->hasOne(Order::class);
-    }
-
-    public function refresh()
-    {
-        return app('api')->baskets()->setTotals($this);
     }
 
     /**
