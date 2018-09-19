@@ -178,7 +178,7 @@ class OrderService extends BaseService
      * @throws \Illuminate\Database\QueryException
      * @return void
      */
-    public function bulkUpdate($orderIds, $field, $value)
+    public function bulkUpdate($orderIds, $field, $value, $sendEmails = true)
     {
         $realIds = $this->getDecodedIds($orderIds);
 
@@ -195,12 +195,23 @@ class OrderService extends BaseService
         }
 
         if ($field == 'status') {
-            $query->get()->each(function ($order) use ($value) {
-                OrderNotification::dispatch(
-                    $order,
-                    $value
-                );
-            });
+            // If this status is our dispatched status, update the dispatched at.
+            $dispatchedStatus = config('getcandy.orders.statuses.dispatched');
+
+            if ($dispatchedStatus == $value) {
+                $result = $query->update([
+                    'dispatched_at' => Carbon::now(),
+                ]);
+            }
+
+            if ($sendEmails) {
+                $query->get()->each(function ($order) use ($value) {
+                    OrderNotification::dispatch(
+                        $order,
+                        $value
+                    );
+                });
+            }
         }
     }
 
@@ -212,7 +223,7 @@ class OrderService extends BaseService
      *
      * @return Order
      */
-    public function update($orderId, array $data)
+    public function update($orderId, array $data, $sendEmails = true)
     {
         $order = $this->getByHashedId($orderId);
 
@@ -222,10 +233,19 @@ class OrderService extends BaseService
 
         if (! empty($data['status'])) {
             $order->status = $data['status'];
-        }
 
-        if (strtolower($order->status) == 'dispatched') {
-            $order->dispatched_at = Carbon::now();
+            $dispatchedStatus = config('getcandy.orders.statuses.dispatched');
+
+            if ($dispatchedStatus == $order->status) {
+                $order->dispatched_at = Carbon::now();
+            }
+
+            if ($sendEmails) {
+                OrderNotification::dispatch(
+                    $order,
+                    $data['status']
+                );
+            }
         }
 
         event(new OrderBeforeSavedEvent($order));
@@ -541,7 +561,7 @@ class OrderService extends BaseService
             if (! empty($type)) {
                 $order->status = $type->success_status;
             } else {
-                $order->status = 'payment-processing';
+                $order->status = config('getcandy.orders.statuses.pending', 'payment-processing');
             }
             $order->reference = $this->getNextInvoiceReference();
             $order->placed_at = Carbon::now();
@@ -576,9 +596,7 @@ class OrderService extends BaseService
             ->withoutGlobalScope('open')
             ->withoutGlobalScope('not_expired');
 
-        if (! $status || $status == 'processed') {
-            $query = $query->whereNotIn('status', ['open', 'awaiting-payment']);
-        } else {
+        if ($status) {
             $query = $query->where('status', '=', $status);
         }
 
