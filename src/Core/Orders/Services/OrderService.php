@@ -162,7 +162,7 @@ class OrderService extends BaseService
             'sku' => $shippingPriceId,
         ]);
 
-        event(new OrderSavedEvent($order));
+        event(new OrderSavedEvent($order->refresh()));
 
         return $order;
     }
