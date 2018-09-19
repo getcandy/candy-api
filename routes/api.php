@@ -140,6 +140,7 @@ Route::group([
     /*
      * Orders
      */
+    $router->post('orders/bulk', 'Orders\OrderController@bulkUpdate');
     $router->resource('orders', 'Orders\OrderController', [
         'only' => ['index', 'update'],
     ]);

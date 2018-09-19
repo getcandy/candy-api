@@ -4,6 +4,7 @@ namespace GetCandy\Api\Core\Orders\Services;
 
 use DB;
 use PDF;
+use Event;
 use Carbon\Carbon;
 use PriceCalculator;
 use CurrencyConverter;
@@ -18,6 +19,7 @@ use GetCandy\Api\Core\Orders\Events\OrderProcessedEvent;
 use GetCandy\Api\Core\Orders\Events\OrderBeforeSavedEvent;
 use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
 use GetCandy\Api\Core\Orders\Exceptions\IncompleteOrderException;
+use GetCandy\Api\Core\Orders\Jobs\OrderNotification;
 
 class OrderService extends BaseService
 {
@@ -165,6 +167,41 @@ class OrderService extends BaseService
         event(new OrderSavedEvent($order->refresh()));
 
         return $order;
+    }
+
+    /**
+     * Bulk update an order
+     *
+     * @param array $orderIds
+     * @param string $field
+     * @param string $value
+     * @throws \Illuminate\Database\QueryException
+     * @return void
+     */
+    public function bulkUpdate($orderIds, $field, $value)
+    {
+        $realIds = $this->getDecodedIds($orderIds);
+
+        $query = Order::withoutGlobalScopes()->whereIn('id', $realIds);
+
+        $payload = [
+            $field => $value
+        ];
+
+        $result = $query->update($payload);
+
+        if (!$result) {
+            throw \InvalidArgumentException;
+        }
+
+        if ($field == 'status') {
+            $query->get()->each(function ($order) use ($value) {
+                OrderNotification::dispatch(
+                    $order,
+                    $value
+                );
+            });
+        }
     }
 
     /**
@@ -508,6 +545,12 @@ class OrderService extends BaseService
             }
             $order->reference = $this->getNextInvoiceReference();
             $order->placed_at = Carbon::now();
+
+            OrderNotification::dispatch(
+                $order,
+                $order->status
+            );
+
         } else {
             $order->status = 'failed';
         }

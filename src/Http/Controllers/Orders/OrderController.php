@@ -8,6 +8,7 @@ use GetCandy\Api\Http\Requests\Orders\CreateRequest;
 use GetCandy\Api\Http\Requests\Orders\UpdateRequest;
 use GetCandy\Api\Http\Requests\Orders\ProcessRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use GetCandy\Api\Http\Requests\Orders\BulkUpdateRequest;
 use GetCandy\Api\Http\Requests\Orders\StoreAddressRequest;
 use GetCandy\Api\Core\Orders\Exceptions\IncompleteOrderException;
 use GetCandy\Api\Http\Transformers\Fractal\Orders\OrderTransformer;
@@ -92,6 +93,16 @@ class OrderController extends BaseController
         } catch (OrderAlreadyProcessedException $e) {
             return $this->errorUnprocessable('This order has already been processed');
         }
+    }
+
+    public function bulkUpdate(BulkUpdateRequest $request)
+    {
+        try {
+            app('api')->orders()->bulkUpdate($request->orders, $request->field, $request->value);
+        } catch (\Illuminate\Database\QueryException $e) {
+            return $this->errorUnprocessable('Unable to update field');
+        }
+        return $this->respondWithSuccess();
     }
 
     /**
