@@ -33,6 +33,15 @@ class SagePay extends AbstractProvider
             'base_uri' => $this->host,
         ]);
 
+        $country = $this->order->billing_country;
+
+        // Sage pay requires the country iso code, so we should find that to use.
+        $countryModel = app('api')->countries()->getByName($country);
+
+        if ($countryModel) {
+            $country = $countryModel->iso_a_2;
+        }
+
         try {
             $payload = [
                 'transactionType' => 'Payment',
@@ -53,7 +62,7 @@ class SagePay extends AbstractProvider
                     'address1' => $this->order->billing_address,
                     'city' => $this->order->billing_city,
                     'postalCode' => $this->order->billing_zip,
-                    'country' => $this->order->billing_country,
+                    'country' => $country,
                 ],
                 'entryMethod' => 'Ecommerce',
             ];
