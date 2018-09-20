@@ -156,8 +156,15 @@ class BasketController extends BaseController
         return $this->respondWithItem($basket, new BasketTransformer);
     }
 
+    /**
+     * Handle the request to resolve a users basket.
+     *
+     * @param Request $request
+     * @return void
+     */
     public function resolve(Request $request)
     {
         $basket = app('api')->baskets()->resolve($request->user(), $request->basket_id, $request->merge);
+        return $this->respondWithSuccess();
     }
 }
