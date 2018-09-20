@@ -36,11 +36,12 @@ class SagePay extends AbstractProvider
         $country = $this->order->billing_country;
 
         // Sage pay requires the country iso code, so we should find that to use.
-        $countryModel = app('api')->countries()->getByName($country);
+        // $countryModel = app('api')->countries()->getByName($country);
 
-        if ($countryModel) {
-            $country = $countryModel->iso_a_2;
-        }
+        // if ($countryModel) {
+        //     $country = $countryModel->iso_a_2;
+        // }
+        // // This breaks maria DB
 
         try {
             $payload = [
@@ -62,7 +63,7 @@ class SagePay extends AbstractProvider
                     'address1' => $this->order->billing_address,
                     'city' => $this->order->billing_city,
                     'postalCode' => $this->order->billing_zip,
-                    'country' => $country,
+                    'country' => 'GB',
                 ],
                 'entryMethod' => 'Ecommerce',
             ];
