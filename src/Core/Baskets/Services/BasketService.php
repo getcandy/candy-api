@@ -331,7 +331,7 @@ class BasketService extends BaseService
         $basket = $this->getByHashedId($basketId);
 
         // User basket
-        $userBasket = $user->basket;
+        $userBasket = $user->latestBasket;
 
         if ($merge) {
             return $this->merge($basket, $userBasket);
@@ -341,7 +341,7 @@ class BasketService extends BaseService
         $user->basket()->save($basket);
         $basket->save();
 
-        return $basket;
+        return  $this->factory->init($basket)->get();
     }
 
     /**
@@ -369,7 +369,7 @@ class BasketService extends BaseService
             $newLines->merge($oldLines)->toArray()
         );
 
-        return $userBasket;
+        return $this->factory->init($userBasket)->get();
     }
 
     /**
