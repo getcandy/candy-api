@@ -9,6 +9,7 @@ use GetCandy\Api\Core\Scopes\CustomerGroupScope;
 use GetCandy\Api\Core\Search\Events\IndexableSavedEvent;
 use GetCandy\Api\Core\Products\Events\ProductCreatedEvent;
 use GetCandy\Api\Core\Products\Interfaces\ProductInterface;
+use GetCandy\Api\Core\Products\Models\ProductRecommendation;
 use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
 
 class ProductService extends BaseService
@@ -330,6 +331,31 @@ class ProductService extends BaseService
         }
 
         return $this->factory->collection($query->get());
+    }
+
+    /**
+     * Gets recommended products based on an array of products
+     *
+     * @param array|\Illuminate\Database\Eloquent\Collection $products
+     * @param int $limit
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getRecommendations($products = [], $limit = 6)
+    {
+        return ProductRecommendation::whereIn('product_id', $products)
+            ->with(
+                'product.variants.tiers',
+                'product.assets.transforms'
+            )
+            ->whereHas('product')
+            ->select(
+                'related_product_id',
+                \DB::RAW('SUM(count) as count')
+            )
+            ->groupBy('related_product_id')
+            ->orderBy('count', 'desc')
+            ->limit($limit)
+            ->get();
     }
 
     /**

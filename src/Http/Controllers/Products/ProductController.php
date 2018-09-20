@@ -11,7 +11,6 @@ use GetCandy\Api\Http\Requests\Products\UpdateRequest;
 use GetCandy\Exceptions\MinimumRecordRequiredException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use GetCandy\Api\Core\Products\Models\ProductRecommendation;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use GetCandy\Api\Http\Transformers\Fractal\Products\ProductTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Products\ProductRecommendationTransformer;
@@ -72,19 +71,7 @@ class ProductController extends BaseController
             return $line->variant->product_id;
         })->toArray();
 
-        $recommendations = ProductRecommendation::whereIn('product_id', $products)
-            ->with(
-                'product.variants.tiers',
-                'product.assets.transforms'
-            )
-            ->select(
-                'related_product_id',
-                \DB::RAW('SUM(count) as count')
-            )
-            ->groupBy('related_product_id')
-            ->orderBy('count', 'desc')
-            ->limit(6)
-            ->get();
+        $recommendations = app('api')->products()->getRecommendations($products);
 
         return $this->respondWithCollection($recommendations, new ProductRecommendationTransformer);
     }
