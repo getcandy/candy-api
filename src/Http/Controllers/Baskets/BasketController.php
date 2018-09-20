@@ -165,6 +165,6 @@ class BasketController extends BaseController
     public function resolve(Request $request)
     {
         $basket = app('api')->baskets()->resolve($request->user(), $request->basket_id, $request->merge);
-        return $this->respondWithSuccess();
+        return $this->respondWithItem($basket, new BasketTransformer);
     }
 }
