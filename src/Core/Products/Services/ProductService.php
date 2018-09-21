@@ -334,7 +334,7 @@ class ProductService extends BaseService
     }
 
     /**
-     * Gets recommended products based on an array of products
+     * Gets recommended products based on an array of products.
      *
      * @param array|\Illuminate\Database\Eloquent\Collection $products
      * @param int $limit
