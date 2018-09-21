@@ -333,12 +333,11 @@ class BasketService extends BaseService
         // User basket
         $userBasket = $user->latestBasket;
 
-        if ($merge) {
-            return $this->merge($basket, $userBasket);
+        if ($merge && $userBasket) {
+            $basket = $this->merge($basket, $userBasket);
         }
 
-        $basket->resolved_at = Carbon::now();
-        $user->basket()->save($basket);
+        $basket->user_id = $user->id;
         $basket->save();
 
         return  $this->factory->init($basket)->get();
@@ -368,7 +367,6 @@ class BasketService extends BaseService
         $userBasket->lines()->createMany(
             $newLines->merge($oldLines)->toArray()
         );
-
         return $this->factory->init($userBasket)->get();
     }
 
