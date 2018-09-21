@@ -589,7 +589,7 @@ class OrderService extends BaseService
      * @param User $user
      * @return void
      */
-    public function getPaginatedData($length = 50, $page = 1, $user = null, $status = null, $keywords = null, $dates = [])
+    public function getPaginatedData($length = 50, $page = 1, $user = null, $status = null, $keywords = null, $dates = [], $zone  = null)
     {
         $query = $this->model
             ->withoutGlobalScope('open')
@@ -597,6 +597,12 @@ class OrderService extends BaseService
 
         if ($status) {
             $query = $query->where('status', '=', $status);
+        }
+
+        if ($zone) {
+            $query = $query->whereHas('lines', function ($q) use ($zone) {
+                return $q->where('variant', '=', $zone);
+            });
         }
 
         if ($status == 'awaiting-payment') {

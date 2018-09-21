@@ -34,7 +34,8 @@ class OrderController extends BaseController
             $request->user(),
             $request->status,
             $request->keywords,
-            $request->only(['from', 'to'])
+            $request->only(['from', 'to']),
+            $request->zone
         );
 
         return $this->respondWithCollection($orders, new OrderTransformer);
