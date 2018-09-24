@@ -21,7 +21,7 @@ class AddOrderLinesTable extends Migration
             $table->decimal('total', 10, 2);
             $table->string('sku')->index();
             $table->string('product');
-            $table->string('variant')->nullable();
+            $table->string('variant')->nullable()->index();
             $table->timestamps();
         });
     }
