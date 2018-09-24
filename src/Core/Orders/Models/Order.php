@@ -144,6 +144,11 @@ class Order extends BaseModel
         return $this->getDetails('billing');
     }
 
+    public function getTotalAttribute()
+    {
+        return $this->sub_total + $this->delivery_total + $this->tax_total;
+    }
+
     /**
      * Gets the details, mainly for contact info.
      *
