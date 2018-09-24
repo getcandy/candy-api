@@ -115,7 +115,10 @@ class SagePay extends AbstractProvider
         $transaction->card_type = $content['paymentMethod']['card']['cardType'] ?? 'Unknown';
         $transaction->last_four = $content['paymentMethod']['card']['lastFourDigits'] ?? '';
         $transaction->transaction_id = $content['transactionId'];
-
+        $transaction->address_matched = $content['avsCvcCheck']['address'] == 'Matched' ?: false;
+        $transaction->cvc_matched = $content['avsCvcCheck']['securityCode'] == 'Matched' ?: false;
+        $transaction->postcode_matched = $content['avsCvcCheck']['postalCode'] == 'Matched' ?: false;
+        $transaction->setAttribute('3d_secure', $content['3DSecure']['status'] == 'Checked' ?: false);
         $transaction->save();
 
         return $transaction;
