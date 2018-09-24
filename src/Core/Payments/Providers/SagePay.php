@@ -118,7 +118,7 @@ class SagePay extends AbstractProvider
         $transaction->address_matched = $content['avsCvcCheck']['address'] == 'Matched' ?: false;
         $transaction->cvc_matched = $content['avsCvcCheck']['securityCode'] == 'Matched' ?: false;
         $transaction->postcode_matched = $content['avsCvcCheck']['postalCode'] == 'Matched' ?: false;
-        $transaction->setAttribute('3d_secure', $content['3DSecure']['status'] == 'Checked' ?: false);
+        $transaction->setAttribute('threed_secure', $content['3DSecure']['status'] == 'Checked' ?: false);
         $transaction->save();
 
         return $transaction;
