@@ -16,11 +16,13 @@ class OrderNotification implements ShouldQueue
 
     protected $order;
     protected $status;
+    protected $content = [];
 
-    public function __construct(Order $order, $status)
+    public function __construct(Order $order, $status, $content = [])
     {
         $this->order = $order;
         $this->status = $status;
+        $this->content = $content;
     }
 
     public function handle()
@@ -38,6 +40,12 @@ class OrderNotification implements ShouldQueue
             return;
         }
 
-        Mail::to($contactEmail)->send(new $mailer($this->order));
+        $mailer = new $mailer($this->order);
+
+        foreach ($this->content as $key => $value) {
+            $mailer->with($key, $value);
+        }
+
+        Mail::to($contactEmail)->send($mailer);
     }
 }

@@ -223,7 +223,7 @@ class OrderService extends BaseService
      *
      * @return Order
      */
-    public function update($orderId, array $data, $sendEmails = true)
+    public function update($orderId, array $data, $sendEmails = true, $emailContent = [])
     {
         $order = $this->getByHashedId($orderId);
 
@@ -243,7 +243,8 @@ class OrderService extends BaseService
             if ($sendEmails) {
                 OrderNotification::dispatch(
                     $order,
-                    $data['status']
+                    $data['status'],
+                    $emailContent
                 );
             }
         }

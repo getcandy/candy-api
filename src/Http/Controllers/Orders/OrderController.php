@@ -160,7 +160,7 @@ class OrderController extends BaseController
     public function update($id, UpdateRequest $request)
     {
         try {
-            $order = app('api')->orders()->update($id, $request->all(), $request->send_emails ?: false);
+            $order = app('api')->orders()->update($id, $request->all(), $request->send_emails ?: false, $request->data);
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
@@ -258,5 +258,42 @@ class OrderController extends BaseController
         $pdf = app('api')->orders()->getPdf($order);
 
         return $this->respondWithItem($pdf, new PdfTransformer);
+    }
+
+    /**
+     * Handle the request to return an email preview
+     *
+     * @param string $status
+     * @param Request $request
+     * @return void
+     */
+    public function emailPreview($status, Request $request)
+    {
+        // Get our mailer
+        $mailer = config('getcandy.orders.mailers.' . $status);
+
+        if (!$mailer) {
+            return $this->errorUnprocessable([
+                $status => 'No mailer exists',
+            ]);
+        }
+
+        // Instantiate the mailer.
+        $mailerObject = app()->make($mailer);
+
+        foreach ($request->data ?? [] as $attribute => $value) {
+            $mailerObject->with($attribute, $value);
+        }
+
+        if (method_exists($mailerObject, 'example')) {
+            $view = $mailerObject->example();
+        } else {
+            $view = $mailerObject->render();
+        }
+
+        return response()->json([
+            'subject' => $mailerObject->subject,
+            'content' => base64_encode($view)
+        ]);
     }
 }
