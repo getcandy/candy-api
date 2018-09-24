@@ -687,7 +687,7 @@ class OrderService extends BaseService
             $discount->total = $total;
         }
 
-        $pdf = PDF::loadView('pdf.order-invoice', $data);
+        $pdf = PDF::loadView('hub::pdf.order-invoice', $data);
 
         return $pdf;
     }
