@@ -17,7 +17,7 @@ class AddFraudFieldsToTransactions extends Migration
             $table->boolean('address_matched')->default(false);
             $table->boolean('postcode_matched')->default(false);
             $table->boolean('cvc_matched')->default(false);
-            $table->boolean('3d_secure')->default(false);
+            $table->boolean('threed_secure')->default(false);
         });
     }
 
@@ -27,7 +27,7 @@ class AddFraudFieldsToTransactions extends Migration
             $table->dropColumn('address_matched');
             $table->dropColumn('postcode_matched');
             $table->dropColumn('cvc_matched');
-            $table->dropColumn('3d_secure');
+            $table->dropColumn('threed_secure');
         });
     }
 }
