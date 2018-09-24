@@ -19,7 +19,7 @@ class AddOrderLinesTable extends Migration
             $table->foreign('order_id')->references('id')->on('orders');
             $table->integer('quantity');
             $table->decimal('total', 10, 2);
-            $table->string('sku');
+            $table->string('sku')->index();
             $table->string('product');
             $table->string('variant')->nullable();
             $table->timestamps();
