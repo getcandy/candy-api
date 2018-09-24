@@ -169,6 +169,9 @@ class Order extends BaseModel
 
     public function getRefAttribute()
     {
+        if ($this->reference) {
+            return $this->reference;
+        }
         return '#ORD-'.str_pad($this->id, 4, 0, STR_PAD_LEFT);
     }
 
