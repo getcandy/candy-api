@@ -23,6 +23,10 @@ class TransactionTransformer extends BaseTransformer
             'last_four' => $transaction->last_four,
             'provider' => $transaction->provider,
             'success' => (bool) $transaction->success,
+            'address_matched' => (bool) $transaction->address_matched,
+            'cvc_matched' => (bool) $transaction->cvc_matched,
+            'threed_secure' => (bool) $transaction->threed_secure,
+            'postcode_matched' => (bool) $transaction->postcode_matched,
             'status' => $transaction->status,
             'notes' => $transaction->notes,
         ];
