@@ -6,7 +6,7 @@ use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Payments\PaymentContract;
 use GetCandy\Api\Core\Payments\Models\Transaction;
-use GetCandy\Api\Core\Payments\Exceptions\AlreadyRefundedException;
+use GetCandy\Api\Core\Payments\Exceptions\TransactionAmountException;
 use GetCandy\Api\Core\Orders\Exceptions\OrderAlreadyProcessedException;
 use GetCandy\Api\Core\Payments\Exceptions\InvalidPaymentTokenException;
 
@@ -45,6 +45,13 @@ class PaymentService extends BaseService
         );
 
         return app()->make($provider);
+    }
+
+    public function getProviders()
+    {
+        return config(
+            $this->configPath.'.providers'
+        );
     }
 
     /**
@@ -93,6 +100,10 @@ class PaymentService extends BaseService
      */
     public function process($order, $token, $type = null, $fields = [])
     {
+        if ($order->placed_at) {
+            throw new OrderAlreadyProcessedException;
+        }
+
         $manager = $this->manager->with(
             $type ? $type->driver : null
         );
@@ -115,51 +126,32 @@ class PaymentService extends BaseService
      *
      * @return void
      */
-    public function refund($token)
+    public function refund($id, int $amount, $notes = null)
     {
-        $transaction = $this->getByHashedId($token);
-        $order = $transaction->order;
+        $transaction = $this->getByHashedId($id);
 
-        if ($order->status == 'refunded') {
-            throw new AlreadyRefundedException();
+        // Get all transactions that are refunds.
+        $refunds = $transaction->order->transactions()->whereRefund(true)->sum('amount');
+
+        if ($amount > ($transaction->amount - $refunds)) {
+            throw new TransactionAmountException;
         }
 
-        $result = $this->getProvider()->refund($transaction->transaction_id, $transaction->amount);
+        $manager = $this->manager->with(
+            $transaction->driver
+        );
 
-        if ($result->success) {
-            $data = [
-                'transaction_id' => $result->transaction->id,
-                'success' => true,
-                'amount' => -abs($result->transaction->amount),
-                'status' => $result->transaction->type,
-                'merchant' => '-',
-                'order' => $order,
-                'notes' => '',
-            ];
-        } else {
-            $data = [
-                'transaction_id' => $result->params['id'],
-                'success' => false,
-                'amount' => $result->params['transaction']['amount'],
-                'status' => 'error',
-                'merchant' => $result->params['merchantId'],
-                'order' => $order,
-                'notes' => '',
-            ];
+        $refund = $manager->order($transaction->order)->refund(
+            $transaction->transaction_id,
+            $amount ?: $transaction->amount,
+            $notes ?: 'Refund'
+        );
+
+        if ($notes) {
+            $refund->update([
+                'notes' => $notes,
+            ]);
         }
-
-        $refund = $this->createTransaction($data);
-
-        // Add up each transaction that isn't voided or refunded and successful.
-
-        // TODO Improve the way this is checked...
-        if ($order->transactions()->charged()->count() === 1 && $order->total === $transaction->amount) {
-            $order->status = 'refunded';
-        }
-
-        $transaction->status = 'refunded';
-        $order->save();
-        $transaction->save();
 
         return $refund;
     }

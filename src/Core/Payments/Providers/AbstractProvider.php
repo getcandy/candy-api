@@ -99,7 +99,7 @@ abstract class AbstractProvider
      *
      * @return void
      */
-    abstract public function refund($token, $amount = null);
+    abstract public function refund($token, $amount, $description);
 
     /**
      * Gets a client token for the front end.

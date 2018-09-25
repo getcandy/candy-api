@@ -190,7 +190,7 @@ class BasketService extends BaseService
         $basket->save();
         event(new BasketStoredEvent($basket));
 
-        return $basket;
+        return $basket->refresh();
     }
 
     /**
@@ -206,12 +206,28 @@ class BasketService extends BaseService
         $savedBasket = new SavedBasket;
         $savedBasket->name = $name;
 
+        // Get the original basket
         $basket = $this->getByHashedId($basketId);
-        $savedBasket->basket()->associate($basket);
+
+        // Clone the basket
+        $clone = $this->factory->init($basket)->clone();
+
+        $savedBasket->basket()->associate($clone);
 
         $savedBasket->save();
 
-        return $basket;
+        return $this->factory->init($clone)->get();
+    }
+
+    /**
+     * Get a users saved baskets.
+     *
+     * @param mixed $user
+     * @return void
+     */
+    public function getSaved($user)
+    {
+        return $user->savedBaskets;
     }
 
     protected function remapLines($basket, $variants = [])
@@ -315,17 +331,16 @@ class BasketService extends BaseService
         $basket = $this->getByHashedId($basketId);
 
         // User basket
-        $userBasket = $user->basket;
+        $userBasket = $user->latestBasket;
 
-        if ($merge) {
-            return $this->merge($basket, $userBasket);
+        if ($merge && $userBasket) {
+            $basket = $this->merge($basket, $userBasket);
         }
 
-        $basket->resolved_at = Carbon::now();
-        $user->basket()->save($basket);
+        $basket->user_id = $user->id;
         $basket->save();
 
-        return $basket;
+        return  $this->factory->init($basket)->get();
     }
 
     /**
@@ -352,7 +367,31 @@ class BasketService extends BaseService
         $userBasket->lines()->createMany(
             $newLines->merge($oldLines)->toArray()
         );
+        return $this->factory->init($userBasket)->get();
+    }
 
-        return $userBasket;
+    /**
+     * Delete a basket.
+     *
+     * @param mixed $basket
+     * @return bool
+     */
+    public function destroy($basket)
+    {
+        if (is_string($basket)) {
+            $basket = $this->getByHashedId($basket);
+        }
+
+        // Don't delete basket with an order attached.
+        if ($basket->order) {
+            return false;
+        }
+
+        // Delete any lines.
+        $basket->lines()->delete();
+        $basket->discounts()->delete();
+        $basket->savedBasket()->delete();
+
+        return $basket->delete();
     }
 }

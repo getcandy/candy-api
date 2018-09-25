@@ -6,6 +6,7 @@ use GetCandy\Api\Core\Scaffold\BaseModel;
 use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Traits\HasCompletion;
 use GetCandy\Api\Core\Discounts\Models\Discount;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Basket extends BaseModel
 {
@@ -83,9 +84,24 @@ class Basket extends BaseModel
         return $this->hasOne(Order::class);
     }
 
-    public function refresh()
+    /**
+     * Get the saved basket relation.
+     *
+     * @return HasOne
+     */
+    public function savedBasket()
     {
-        return app('api')->baskets()->setTotals($this);
+        return $this->hasOne(SavedBasket::class);
+    }
+
+    /**
+     * Determine whether this basket is saved.
+     *
+     * @return bool
+     */
+    public function isSaved()
+    {
+        return $this->savedBasket()->exists();
     }
 
     public function getWeightAttribute()

@@ -69,8 +69,8 @@ class ProductVariantService extends BaseService
                 );
             } else {
                 $variant->tax()->associate(
-                app('api')->taxes()->getDefaultRecord()
-            );
+                    app('api')->taxes()->getDefaultRecord()
+                );
             }
 
             $this->setMeasurements($variant, $newVariant);

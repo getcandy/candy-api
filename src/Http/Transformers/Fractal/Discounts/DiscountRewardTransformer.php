@@ -7,6 +7,8 @@ use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 
 class DiscountRewardTransformer extends BaseTransformer
 {
+    protected $availableIncludes = ['products'];
+
     public function transform(DiscountReward $reward)
     {
         return [
@@ -14,5 +16,10 @@ class DiscountRewardTransformer extends BaseTransformer
             'type' => $reward->type,
             'value' => $reward->value,
         ];
+    }
+
+    public function includeProducts($reward)
+    {
+        return $this->collection($reward->products, new DiscountRewardProductTransformer);
     }
 }

@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use GetCandy\Api\Http\Transformers\Fractal\Products\ProductTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\Products\ProductRecommendationTransformer;
 
 class ProductController extends BaseController
 {
@@ -45,6 +46,7 @@ class ProductController extends BaseController
         } catch (ModelNotFoundException $e) {
             // If it cannot be found by ID, try get the variant by SKU
             $variant = app('api')->productVariants()->getBySku($id);
+
             $product = app('api')->products()->getByHashedId(
                 $variant->product->encodedId()
             );
@@ -54,6 +56,24 @@ class ProductController extends BaseController
         }
 
         return $this->respondWithItem($product, new ProductTransformer);
+    }
+
+    public function recommended(Request $request)
+    {
+        $request->validate([
+            'basket_id' => 'required|hashid_is_valid:baskets',
+        ]);
+
+        // Get the recommended products based on this basket.
+        $basket = app('api')->baskets()->getByHashedId($request->basket_id);
+
+        $products = $basket->lines->map(function ($line) {
+            return $line->variant->product_id;
+        })->toArray();
+
+        $recommendations = app('api')->products()->getRecommendations($products);
+
+        return $this->respondWithCollection($recommendations, new ProductRecommendationTransformer);
     }
 
     /**

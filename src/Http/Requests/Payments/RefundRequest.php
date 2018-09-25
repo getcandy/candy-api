@@ -13,6 +13,7 @@ class RefundRequest extends FormRequest
      */
     public function authorize()
     {
+        // $this->transaction = app('api')->payments()->getByHashedId($this->id);
         return $this->user()->hasRole('admin');
     }
 
@@ -24,6 +25,7 @@ class RefundRequest extends FormRequest
     public function rules()
     {
         return [
+            'amount' => 'required|numeric|min:1',
         ];
     }
 }

@@ -103,7 +103,7 @@ class AssetTransformService extends BaseService
 
         Storage::disk($source->disk)->put(
             $assetTransform->location.'/'.$assetTransform->filename,
-            $image->stream()->getContents()
+            $image->stream($transformer->format, $transformer->quality)->getContents()
         );
     }
 

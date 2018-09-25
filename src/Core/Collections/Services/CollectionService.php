@@ -75,7 +75,7 @@ class CollectionService extends BaseService
     }
 
     /**
-     * Sync products to a collection
+     * Sync products to a collection.
      * @param  string $collectionId
      * @param  array  $products
      * @return Collection
@@ -85,6 +85,7 @@ class CollectionService extends BaseService
         $collection = $this->getByHashedId($collectionId);
         $productIds = app('api')->products()->getDecodedIds($products);
         $collection->products()->withTimestamps()->sync($productIds);
+
         return $collection;
     }
 }

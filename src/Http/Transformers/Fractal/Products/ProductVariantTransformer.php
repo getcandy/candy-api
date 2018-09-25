@@ -5,6 +5,7 @@ namespace GetCandy\Api\Http\Transformers\Fractal\Products;
 use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Products\Models\ProductVariant;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
+use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
 use GetCandy\Api\Http\Transformers\Fractal\Taxes\TaxTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Assets\AssetTransformer;
 
@@ -16,6 +17,8 @@ class ProductVariantTransformer extends BaseTransformer
 
     public function transform(ProductVariant $variant)
     {
+        $variant = app()->make(ProductVariantFactory::class)->init($variant)->get();
+
         return [
             'id' => $variant->encodedId(),
             'sku' => $variant->sku,

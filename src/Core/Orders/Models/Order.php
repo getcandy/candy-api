@@ -19,6 +19,7 @@ class Order extends BaseModel
         'discount_total',
         'sub_total',
         'order_total',
+        'status',
         'shipping_preference',
         'shipping_method',
     ];
@@ -62,9 +63,29 @@ class Order extends BaseModel
 
     public function scopeSearch($qb, $keywords)
     {
-        $query = $qb->where('billing_firstname', 'LIKE', '%'.$keywords.'%')
-            ->orWhere('id', '=', str_replace('#ORD-', '', $keywords))
-            ->orWhere('reference', '=', str_replace('#INV-', '', $keywords));
+        // Do some stuff.
+        // Explode by commas
+        $segments = explode(',', $keywords);
+
+        $matches = [];
+
+        foreach ($segments as $segment) {
+            $segments = explode(' ', $segment);
+            array_push($matches, $segments);
+        }
+
+        $matches = array_flatten($matches);
+
+        if (count($matches) > 1) {
+            $query = $qb->where('billing_firstname', 'LIKE', '%'.$matches[0].'%')
+                ->where('billing_lastname', 'LIKE', '%'.$matches[1].'%');
+        } else {
+            $query = $qb->whereIn('billing_firstname', $matches)
+            ->orWhereIn('billing_lastname', $matches);
+        }
+
+         $query->orWhereIn('id', $matches)
+            ->orWhereIn('reference', $matches);
 
         return $query;
     }
@@ -123,6 +144,11 @@ class Order extends BaseModel
         return $this->getDetails('billing');
     }
 
+    public function getTotalAttribute()
+    {
+        return $this->sub_total + $this->delivery_total + $this->tax_total;
+    }
+
     /**
      * Gets the details, mainly for contact info.
      *
@@ -141,11 +167,6 @@ class Order extends BaseModel
         })->toArray();
     }
 
-    public function getRefAttribute()
-    {
-        return '#ORD-'.str_pad($this->id, 4, 0, STR_PAD_LEFT);
-    }
-
     public function getInvoiceReferenceAttribute()
     {
         if ($this->reference) {
@@ -158,7 +179,7 @@ class Order extends BaseModel
         $name = null;
 
         if ($billing = $this->getDetails('billing')) {
-            $name = $billing['firstname'].' '.$billing['lastname'];
+            return $billing['firstname'].' '.$billing['lastname'];
         }
 
         if ($this->user) {

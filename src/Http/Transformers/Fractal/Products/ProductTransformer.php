@@ -12,6 +12,7 @@ use GetCandy\Api\Http\Transformers\Fractal\Channels\ChannelTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Categories\CategoryTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Collections\CollectionTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Customers\CustomerGroupTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\Discounts\DiscountTransformer;
 
 class ProductTransformer extends BaseTransformer
 {
@@ -27,6 +28,7 @@ class ProductTransformer extends BaseTransformer
         'categories',
         'channels',
         'collections',
+        'discounts',
         'thumbnail',
         'customer_groups',
         'family',
@@ -48,7 +50,9 @@ class ProductTransformer extends BaseTransformer
             'attribute_data' => $product->attribute_data,
             'option_data' => $this->parseOptionData($product->option_data),
             'max_price' => $product->max_price,
+            'max_price_tax' => $product->max_price_tax,
             'min_price' => $product->min_price,
+            'min_price_tax' => $product->min_price_tax,
             'variant_count' => $product->variants->count(),
         ];
 
@@ -128,6 +132,23 @@ class ProductTransformer extends BaseTransformer
     public function includeAssociations(Product $product)
     {
         return $this->collection($product->associations, new ProductAssociationTransformer);
+    }
+
+    /**
+     * Get the resources discounts
+     *
+     * @param Product $product
+     * @return void
+     */
+    public function includeDiscounts(Product $product)
+    {
+        $morphs = $product->discounts;
+
+        $discounts = $morphs->map(function ($morph) {
+            return $morph->criteria->set->discount;
+        });
+
+        return $this->collection($discounts, new DiscountTransformer);
     }
 
     /**

@@ -52,6 +52,9 @@ class SearchController extends BaseController
             $page = $request->page;
         }
 
+        // Get our filterable attributes.
+        $filterable = app('api')->attributes()->getFilterable()->pluck('handle')->toArray();
+
         try {
             $results = $search
                 ->client()
@@ -62,10 +65,8 @@ class SearchController extends BaseController
                 ->search(
                     $request->keywords,
                     $category,
-                    $request->except(
-                        ['page', 'type', 'keywords', 'per_page', 'source']
-                    ),
-                    $request->sort_by ?: [],
+                    $request->only($filterable),
+                    $request->sort,
                     $page ?: 1,
                     $request->per_page ?: 10
                 );

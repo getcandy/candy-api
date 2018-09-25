@@ -79,6 +79,10 @@ class BasketFactory implements BasketInterface
                             ->setUser($this->basket->user)
                             ->getApplied();
 
+        $this->basket->discounts()->sync(
+            $this->discounts->pluck('id')->toArray()
+        );
+
         foreach ($basket->lines as $line) {
             $this->lines->push(
                 $this->lineFactory->init($line)->get()
@@ -107,5 +111,25 @@ class BasketFactory implements BasketInterface
         $this->basket->total_cost = $this->basket->sub_total + $this->basket->total_tax;
 
         return $this->basket;
+    }
+
+    /**
+     * Clone the basket.
+     *
+     * @return Basket
+     */
+    public function clone()
+    {
+        $clone = $this->basket->replicate();
+
+        $clone->save();
+
+        foreach ($clone->lines as $line) {
+            $cloned = $line->replicate();
+            $cloned->basket()->associate($clone);
+            $cloned->save();
+        }
+
+        return $clone;
     }
 }

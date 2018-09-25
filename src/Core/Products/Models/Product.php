@@ -17,6 +17,8 @@ use GetCandy\Api\Core\Categories\Models\Category;
 use GetCandy\Api\Core\Attributes\Models\Attribute;
 use GetCandy\Api\Core\Collections\Models\Collection;
 use GetCandy\Api\Core\Http\Transformers\Fractal\Products\ProductTransformer;
+use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaItem;
+use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaModel;
 
 class Product extends BaseModel
 {
@@ -43,6 +45,10 @@ class Product extends BaseModel
      * @var int
      */
     public $max_price = 0;
+
+    public $min_price_tax = 0;
+
+    public $max_price_tax = 0;
 
     protected $dates = ['deleted_at'];
 
@@ -166,6 +172,14 @@ class Product extends BaseModel
 
     public function discounts()
     {
-        return $this->morphMany(Discount::class, 'eligible');
+        return $this->morphMany(
+            DiscountCriteriaModel::class,
+            'eligible'
+        )->with('criteria.set.discount');
+    }
+
+    public function recommendations()
+    {
+        return $this->hasMany(ProductRecommendation::class, 'related_product_id');
     }
 }

@@ -5,7 +5,6 @@ namespace GetCandy\Api\Core\Search\Providers\Elastic;
 use Elastica\Suggest;
 use GetCandy\Api\Core\Search\ClientContract;
 use GetCandy\Api\Core\Search\Providers\Elastic\Sorts\CategorySort;
-use GetCandy\Api\Core\Search\Providers\Elastic\Filters\ChannelFilter;
 
 class Search implements ClientContract
 {
@@ -106,10 +105,9 @@ class Search implements ClientContract
      *
      * @return array
      */
-    public function search($keywords, $category = null, $filters = [], $sorts = [], $page = 1, $perPage = 30)
+    public function search($keywords, $category = null, $filters = [], $sorts = null, $page = 1, $perPage = 30)
     {
         $roles = app('api')->roles()->getHubAccessRoles();
-
         $builder = $this->builder
             ->setLimit($perPage)
             ->setOffset(($page - 1) * $perPage)
@@ -125,10 +123,16 @@ class Search implements ClientContract
             $builder->addSort(CategorySort::class, $category);
         }
 
-        if ($builder->getUser() && ! $builder->getUser()->hasAnyRole($roles)) {
-            $builder->addFilter(
-                new ChannelFilter($builder->getChannel())
-            );
+        if ($channel = $builder->getChannel()) {
+            $channelFilter = $this->findFilter('Channel');
+            $channelFilter->process($channel);
+            $builder->addFilter($channelFilter);
+        }
+
+        if ($category) {
+            $filter = $this->findFilter('Category');
+            $filter->process($category);
+            $builder->addFilter($filter);
         }
 
         foreach ($filters ?? [] as $filter => $value) {
@@ -164,6 +168,8 @@ class Search implements ClientContract
 
         if (class_exists($classname)) {
             return app()->make($classname);
+        } else {
+            return app()->make("GetCandy\Api\Core\Search\Providers\Elastic\Filters\TextFilter");
         }
     }
 

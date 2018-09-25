@@ -61,7 +61,7 @@ class CheckClientCredentials extends BaseMiddleware
 
         if (! empty($cookies[Passport::cookie()])) {
             try {
-                $token = $this->decodeJwtTokenCookie($cookies[Passport::cookie()]);
+                $token = $this->decodeJwtTokenCookie($request);
             } catch (DecryptException $e) {
                 throw new AuthenticationException;
             }
@@ -98,12 +98,11 @@ class CheckClientCredentials extends BaseMiddleware
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    protected function decodeJwtTokenCookie($cookie)
+    protected function decodeJwtTokenCookie($request)
     {
         return (array) JWT::decode(
-            $this->encrypter->decrypt($cookie),
-            $this->encrypter->getKey(),
-            ['HS256']
+            $this->encrypter->decrypt($request->cookie(Passport::cookie()), Passport::$unserializesCookies),
+            $this->encrypter->getKey(), ['HS256']
         );
     }
 

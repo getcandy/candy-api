@@ -24,11 +24,22 @@ class RefreshOrderListener
 
         $totals = \DB::table('order_lines')->select(
             'order_id',
-            DB::RAW('SUM(line_total) as line_total'),
-            DB::RAW('SUM(tax_total) as tax_total'),
+            DB::RAW('SUM(CASE WHEN discount_total = 0 THEN line_total ELSE 0 END) as line_total'),
+            DB::RAW('SUM(CASE WHEN discount_total = 0 THEN tax_total ELSE 0 END) as tax_total'),
             DB::RAW('SUM(discount_total) as discount_total'),
+            DB::RAW('SUM(discount_total) as tax_discount_total'),
             DB::RAW('SUM(line_total) + SUM(tax_total) - SUM(discount_total) as grand_total')
         )->where('order_id', '=', $order->id)->whereIsShipping(false)->groupBy('order_id')->first();
+
+        // If we don't have any totals, then we must have had an order already and deleted all the lines
+        // from it and gone back to the checkout.
+        if (! $totals) {
+            $totals = new \stdClass;
+            $totals->line_total = 0;
+            $totals->tax_total = 0;
+            $totals->discount_total = 0;
+            $totals->grand_total = 0;
+        }
 
         $totals->delivery_total = 0;
 

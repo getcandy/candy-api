@@ -4,6 +4,7 @@ namespace GetCandy\Api\Core\Orders\Services;
 
 use DB;
 use PDF;
+use Event;
 use Carbon\Carbon;
 use PriceCalculator;
 use CurrencyConverter;
@@ -12,10 +13,12 @@ use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Core\Orders\Events\OrderSavedEvent;
+use GetCandy\Api\Core\Orders\Jobs\OrderNotification;
 use GetCandy\Api\Core\Baskets\Services\BasketService;
 use GetCandy\Api\Core\Payments\Services\PaymentService;
 use GetCandy\Api\Core\Orders\Events\OrderProcessedEvent;
 use GetCandy\Api\Core\Orders\Events\OrderBeforeSavedEvent;
+use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
 use GetCandy\Api\Core\Orders\Exceptions\IncompleteOrderException;
 
 class OrderService extends BaseService
@@ -39,11 +42,12 @@ class OrderService extends BaseService
      */
     protected $payments;
 
-    public function __construct(BasketService $baskets, PaymentService $payments)
+    public function __construct(BasketService $baskets, PaymentService $payments, ProductVariantFactory $variants)
     {
         $this->model = new Order();
         $this->baskets = $baskets;
         $this->payments = $payments;
+        $this->variants = $variants;
     }
 
     /**
@@ -90,9 +94,7 @@ class OrderService extends BaseService
             $line->delete();
         }
 
-        $order->discounts()->createMany(
-            $this->mapOrderDiscounts($basket)
-        );
+        $this->processDiscountLines($basket, $order);
 
         $order->lines()->createMany(
             $this->mapOrderLines($basket)
@@ -162,9 +164,56 @@ class OrderService extends BaseService
             'sku' => $shippingPriceId,
         ]);
 
-        event(new OrderSavedEvent($order));
+        event(new OrderSavedEvent($order->refresh()));
 
         return $order;
+    }
+
+    /**
+     * Bulk update an order.
+     *
+     * @param array $orderIds
+     * @param string $field
+     * @param string $value
+     * @throws \Illuminate\Database\QueryException
+     * @return void
+     */
+    public function bulkUpdate($orderIds, $field, $value, $sendEmails = true, $data = [])
+    {
+        $realIds = $this->getDecodedIds($orderIds);
+
+        $query = Order::withoutGlobalScopes()->whereIn('id', $realIds);
+
+        $payload = [
+            $field => $value,
+        ];
+
+        $result = $query->update($payload);
+
+        if (! $result) {
+            throw \InvalidArgumentException;
+        }
+
+        if ($field == 'status') {
+            // If this status is our dispatched status, update the dispatched at.
+            $dispatchedStatus = config('getcandy.orders.statuses.dispatched');
+
+            if ($dispatchedStatus == $value) {
+                $result = $query->update([
+                    'dispatched_at' => Carbon::now(),
+                ]);
+            }
+
+            if ($sendEmails) {
+                $query->get()->each(function ($order) use ($value, $data) {
+                    OrderNotification::dispatch(
+                        $order,
+                        $value,
+                        $data
+                    );
+                });
+            }
+        }
     }
 
     /**
@@ -175,7 +224,7 @@ class OrderService extends BaseService
      *
      * @return Order
      */
-    public function update($orderId, array $data)
+    public function update($orderId, array $data, $sendEmails = true, $emailContent = [])
     {
         $order = $this->getByHashedId($orderId);
 
@@ -185,10 +234,20 @@ class OrderService extends BaseService
 
         if (! empty($data['status'])) {
             $order->status = $data['status'];
-        }
 
-        if (strtolower($order->status) == 'dispatched') {
-            $order->dispatched_at = Carbon::now();
+            $dispatchedStatus = config('getcandy.orders.statuses.dispatched');
+
+            if ($dispatchedStatus == $order->status) {
+                $order->dispatched_at = Carbon::now();
+            }
+
+            if ($sendEmails) {
+                OrderNotification::dispatch(
+                    $order,
+                    $data['status'],
+                    $emailContent
+                );
+            }
         }
 
         event(new OrderBeforeSavedEvent($order));
@@ -398,9 +457,7 @@ class OrderService extends BaseService
         $order->lines()->delete();
         $order->discounts()->delete();
 
-        $order->discounts()->createMany(
-            $this->mapOrderDiscounts($basket)
-        );
+        $this->processDiscountLines($basket, $order);
 
         $order->lines()->createMany(
             $this->mapOrderLines($basket)
@@ -440,33 +497,6 @@ class OrderService extends BaseService
         }
 
         return $lines;
-    }
-
-    /**
-     * Maps an orders discounts from a basket.
-     *
-     * @param Basket $basket
-     *
-     * @return array
-     */
-    protected function mapOrderDiscounts($basket)
-    {
-        $discounts = [];
-
-        foreach ($basket->discounts as $discount) {
-            $amount = 0;
-            foreach ($discount->rewards as $reward) {
-                array_push($discounts, [
-                    'coupon' => $discount->pivot->coupon,
-                    'name' => $discount->attribute('name'),
-                    'description' => $discount->attribute('description'),
-                    'type' => $reward->type,
-                    'value' => $reward->value,
-                ]);
-            }
-        }
-
-        return $discounts;
     }
 
     /**
@@ -533,10 +563,15 @@ class OrderService extends BaseService
             if (! empty($type)) {
                 $order->status = $type->success_status;
             } else {
-                $order->status = 'payment-processing';
+                $order->status = config('getcandy.orders.statuses.pending', 'payment-processing');
             }
             $order->reference = $this->getNextInvoiceReference();
             $order->placed_at = Carbon::now();
+
+            OrderNotification::dispatch(
+                $order,
+                $order->status
+            );
         } else {
             $order->status = 'failed';
         }
@@ -556,22 +591,34 @@ class OrderService extends BaseService
      * @param User $user
      * @return void
      */
-    public function getPaginatedData($length = 50, $page = 1, $user = null, $status = null, $keywords = null)
+    public function getPaginatedData($length = 50, $page = 1, $user = null, $status = null, $keywords = null, $dates = [], $zone  = null)
     {
         $query = $this->model
             ->withoutGlobalScope('open')
             ->withoutGlobalScope('not_expired');
 
-        if (! $status || $status == 'processed') {
-            $query = $query->whereNotIn('status', ['open', 'awaiting-payment']);
-        } else {
+        if ($status) {
             $query = $query->where('status', '=', $status);
+        }
+
+        if ($zone) {
+            $query = $query->whereHas('lines', function ($q) use ($zone) {
+                return $q->where('variant', '=', $zone);
+            });
         }
 
         if ($status == 'awaiting-payment') {
             $query = $query->orderBy('created_at', 'desc');
         } else {
             $query = $query->orderBy('placed_at', 'desc');
+        }
+
+        if (! empty($dates['from'])) {
+            $query->whereDate('created_at', '>=', Carbon::parse($dates['from']));
+        }
+
+        if (! empty($dates['to'])) {
+            $query->whereDate('created_at', '<=', Carbon::parse($dates['to']));
         }
 
         if ($keywords) {
@@ -642,8 +689,63 @@ class OrderService extends BaseService
             $discount->total = $total;
         }
 
-        $pdf = PDF::loadView('pdf.order-invoice', $data);
+        $pdf = PDF::loadView('hub::pdf.order-invoice', $data);
 
         return $pdf;
+    }
+
+    /**
+     * Process discount lines for an order.
+     *
+     * @param Basket $basket
+     * @param Order $order
+     * @return void
+     */
+    protected function processDiscountLines(Basket $basket, Order $order)
+    {
+        foreach ($basket->discounts as $discount) {
+            // Get the eligibles.
+            foreach ($discount->sets as $set) {
+                foreach ($set->items as $item) {
+                    // Get all the products from our basket.
+                    // dd($item);
+                    $matched = $basket->lines->filter(function ($line) use ($item) {
+                        return $item->products->contains($line->variant->product);
+                    });
+
+                    $quantity = 0;
+
+                    foreach ($matched as $match) {
+                        $quantity += $match->quantity;
+                    }
+
+                    foreach ($discount->rewards as $reward) {
+                        if ($reward->type == 'product') {
+                            foreach ($reward->products as $product) {
+                                $variant = $this->variants->init(
+                                    $product->product->variants->first()
+                                )->get();
+
+                                // Work out how many times we need to add this product.
+                                $quantity = floor($quantity / $discount->lower_limit);
+
+                                $order->lines()->create([
+                                    'sku' => $variant->sku,
+                                    'tax_total' => ($variant->total_tax * $quantity) * 100,
+                                    'tax_rate' => $variant->tax->percentage,
+                                    'discount_total' => (($variant->total_price * 100) + ($variant->total_tax * 100)) * $quantity,
+                                    'line_total' => (($variant->total_price * $quantity) * 100),
+                                    'unit_price' => $variant->unit_cost * 100,
+                                    'unit_qty' => $variant->unit_qty,
+                                    'quantity' => $quantity,
+                                    'description' => $product->product->attribute('name'),
+                                    'variant' => $variant->name,
+                                ]);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

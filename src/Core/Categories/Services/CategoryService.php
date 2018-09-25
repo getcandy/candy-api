@@ -210,6 +210,7 @@ class CategoryService extends BaseService
                 'assets.transforms',
                 'assets.transforms.asset',
                 'assets.transforms.asset.source',
+                'layout',
                 'assets.source',
                 'routes',
             ])

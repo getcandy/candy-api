@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use GetCandy\Api\Payments\Exceptions\AlreadyRefundedException;
 use GetCandy\Api\Http\Transformers\Fractal\Payments\ProviderTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Payments\TransactionTransformer;
+use GetCandy\Api\Core\Payments\Models\Transaction;
+use GetCandy\Api\Core\Payments\Exceptions\TransactionAmountException;
 
 class PaymentController extends BaseController
 {
@@ -18,6 +20,11 @@ class PaymentController extends BaseController
         $provider = app('api')->payments()->getProvider();
 
         return $this->respondWithItem($provider, new ProviderTransformer);
+    }
+
+    public function providers()
+    {
+        return app('api')->payments()->getProviders();
     }
 
     /**
@@ -31,11 +38,17 @@ class PaymentController extends BaseController
     public function refund($id, RefundRequest $request)
     {
         try {
-            $transaction = app('api')->payments()->refund($id);
+            $transaction = app('api')->payments()->refund(
+                $id,
+                $request->amount ?: null,
+                $request->notes ?: null
+            );
         } catch (AlreadyRefundedException $e) {
             return $this->errorWrongArgs('Refund already issued');
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
+        } catch (TransactionAmountException $e) {
+            return $this->errorWrongArgs($e->getMessage());
         }
 
         if (! $transaction->success) {

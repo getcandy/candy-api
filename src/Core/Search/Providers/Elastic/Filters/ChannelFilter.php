@@ -10,6 +10,8 @@ class ChannelFilter extends AbstractFilter
 {
     protected $channel;
 
+    public $handle = 'channel-filter';
+
     public function process($payload, $type = null)
     {
         $this->channel = $payload;

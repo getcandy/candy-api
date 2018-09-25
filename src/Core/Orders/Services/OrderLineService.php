@@ -64,13 +64,15 @@ class OrderLineService extends BaseService
      * Delete an order line.
      *
      * @param string $lineId
-     * @return bool
+     * @return Order
      */
     public function delete($lineId)
     {
         $realId = $this->model->decodeId($lineId);
         $line = $this->model->find($realId);
 
-        return $line->delete();
+        $line->delete();
+
+        return $line->order;
     }
 }

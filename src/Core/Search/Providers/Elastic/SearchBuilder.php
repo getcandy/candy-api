@@ -332,8 +332,20 @@ class SearchBuilder
      * @param array $sorts
      * @return SearchBuilder
      */
-    public function setSorting($sorts = [])
+    public function setSorting($sortables = null)
     {
+        $sorts = [];
+
+        if ($sortables) {
+            $sortable = explode('|', $sortables);
+            foreach ($sortable as $sort) {
+                $segments = explode('-', $sort);
+                $dir = $segments[1] ?? 'asc';
+                $field = $segments[0];
+                $sorts[$field] = $dir;
+            }
+        }
+
         $mapping = $this->type->getMapping();
 
         $sortables = [];

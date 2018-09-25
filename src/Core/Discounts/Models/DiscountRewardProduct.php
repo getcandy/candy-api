@@ -3,6 +3,7 @@
 namespace GetCandy\Api\Core\Discounts\Models;
 
 use GetCandy\Api\Core\Scaffold\BaseModel;
+use GetCandy\Api\Core\Products\Models\Product;
 
 class DiscountRewardProduct extends BaseModel
 {
@@ -13,5 +14,10 @@ class DiscountRewardProduct extends BaseModel
     public function reward()
     {
         return $this->belongsTo(DiscountReward::class);
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
     }
 }

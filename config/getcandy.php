@@ -33,6 +33,55 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Order settings
+    |--------------------------------------------------------------------------
+    |
+    | This is where you define all your order settings.
+    |
+    */
+    'orders' => [
+        'mailers' => [
+            // 'dispatched' => \Your\OrderDispatchedMailer::class,
+            // 'payment-processing' => \Your\ConfirmationMailer::class,
+        ],
+        'statuses' => [
+
+            /*
+             * Setting these will help GetCandy's internal event system.
+             */
+
+            'pending' => 'payment-processing',
+            'paid' => 'payment-received',
+            'dispatched' => 'dispatched',
+
+            /*
+             * These are your custom order statuses, they can be whatever you want, just make
+             * sure that you map the appropriate statuses above.
+             */
+
+            'options' => [
+                'failed' => [
+                    'label' => 'Failed',
+                    'color' => '#e4002b',
+                ],
+                'payment-received' => [
+                    'label' => 'Payment Received',
+                    'color' => '#6a67ce',
+                ],
+                'awaiting-payment' => [
+                    'label' => 'Awaiting Payment',
+                    'color' => '#848a8c',
+                ],
+                'payment-processing' => [
+                    'label' => 'Payment Processing',
+                    'color' => '#b84592',
+                ],
+            ],
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Payment settings
     |--------------------------------------------------------------------------
     |

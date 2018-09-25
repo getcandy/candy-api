@@ -63,6 +63,10 @@ Route::group([
      */
     $router->post('baskets/resolve', 'Baskets\BasketController@resolve');
     $router->get('baskets/current', 'Baskets\BasketController@current');
+    $router->get('baskets/saved', 'Baskets\BasketController@saved');
+    $router->post('baskets/{id}/save', 'Baskets\BasketController@save');
+    $router->delete('baskets/{basket}', 'Baskets\BasketController@destroy');
+    $router->put('baskets/saved/{basket}', 'Baskets\SavedBasketController@update');
 
     /*
      * Payments
@@ -136,6 +140,8 @@ Route::group([
     /*
      * Orders
      */
+    $router->post('orders/bulk', 'Orders\OrderController@bulkUpdate');
+    $router->post('orders/email-preview/{status}', 'Orders\OrderController@emailPreview');
     $router->resource('orders', 'Orders\OrderController', [
         'only' => ['index', 'update'],
     ]);
@@ -170,7 +176,7 @@ Route::group([
     $router->post('products/{product}/associations', 'Products\ProductAssociationController@store');
     $router->delete('products/{product}/associations', 'Products\ProductAssociationController@destroy');
     $router->resource('products', 'Products\ProductController', [
-        'except' => ['edit', 'create'],
+        'except' => ['edit', 'create', 'show'],
     ]);
 
     /*

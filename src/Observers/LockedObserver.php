@@ -12,6 +12,7 @@ class LockedObserver
             throw new ModelLockedException(
                 trans('getcandy::exceptions.model_locked')
             );
+
             return false;
         }
 

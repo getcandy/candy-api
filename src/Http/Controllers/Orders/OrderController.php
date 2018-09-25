@@ -7,6 +7,7 @@ use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Orders\CreateRequest;
 use GetCandy\Api\Http\Requests\Orders\UpdateRequest;
 use GetCandy\Api\Http\Requests\Orders\ProcessRequest;
+use GetCandy\Api\Http\Requests\Orders\BulkUpdateRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use GetCandy\Api\Http\Requests\Orders\StoreAddressRequest;
 use GetCandy\Api\Core\Orders\Exceptions\IncompleteOrderException;
@@ -23,12 +24,18 @@ class OrderController extends BaseController
      */
     public function index(Request $request)
     {
+        $request->validate([
+            'from' => 'date_format:Y-m-d',
+            'to' => 'date_format:Y-m-d',
+        ]);
         $orders = app('api')->orders()->getPaginatedData(
             $request->per_page,
-            $request->current_page,
+            $request->page,
             $request->user(),
             $request->status,
-            $request->keywords
+            $request->keywords,
+            $request->only(['from', 'to']),
+            $request->zone
         );
 
         return $this->respondWithCollection($orders, new OrderTransformer);
@@ -89,6 +96,23 @@ class OrderController extends BaseController
         }
     }
 
+    public function bulkUpdate(BulkUpdateRequest $request)
+    {
+        try {
+            app('api')->orders()->bulkUpdate(
+                $request->orders,
+                $request->field,
+                $request->value,
+                $request->send_emails ?: false,
+                $request->data
+            );
+        } catch (\Illuminate\Database\QueryException $e) {
+            return $this->errorUnprocessable('Unable to update field');
+        }
+
+        return $this->respondWithSuccess();
+    }
+
     /**
      * Expire an order.
      *
@@ -137,7 +161,7 @@ class OrderController extends BaseController
     public function update($id, UpdateRequest $request)
     {
         try {
-            $order = app('api')->orders()->update($id, $request->all());
+            $order = app('api')->orders()->update($id, $request->all(), $request->send_emails ?: false, $request->data);
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
@@ -235,5 +259,42 @@ class OrderController extends BaseController
         $pdf = app('api')->orders()->getPdf($order);
 
         return $this->respondWithItem($pdf, new PdfTransformer);
+    }
+
+    /**
+     * Handle the request to return an email preview
+     *
+     * @param string $status
+     * @param Request $request
+     * @return void
+     */
+    public function emailPreview($status, Request $request)
+    {
+        // Get our mailer
+        $mailer = config('getcandy.orders.mailers.' . $status);
+
+        if (!$mailer) {
+            return $this->errorUnprocessable([
+                $status => 'No mailer exists',
+            ]);
+        }
+
+        // Instantiate the mailer.
+        $mailerObject = app()->make($mailer);
+
+        foreach ($request->data ?? [] as $attribute => $value) {
+            $mailerObject->with($attribute, $value);
+        }
+
+        if (method_exists($mailerObject, 'example')) {
+            $view = $mailerObject->example();
+        } else {
+            $view = $mailerObject->render();
+        }
+
+        return response()->json([
+            'subject' => $mailerObject->subject,
+            'content' => base64_encode($view)
+        ]);
     }
 }

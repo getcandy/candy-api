@@ -44,15 +44,15 @@ class Attribute
     public function getPre()
     {
         if (empty($this->filters)) {
-            $agg = new Terms(str_plural($this->field));
+            $agg = new Terms($this->field);
             $agg->setField($this->field.'.filter');
 
             return $agg;
         }
 
-        $filterAgg = new Filter(str_plural($this->field));
+        $filterAgg = new Filter($this->field);
 
-        $agg = new Terms(str_plural($this->field));
+        $agg = new Terms($this->field);
         $agg->setField($this->field.'.filter');
 
         $postBool = new BoolQuery();
@@ -69,7 +69,7 @@ class Attribute
 
     public function getPost($value)
     {
-        $agg = new Filter(str_plural($this->field).'_after');
+        $agg = new Filter($this->field.'_after');
 
         if (! is_array($value)) {
             $value = [$value];

@@ -31,6 +31,8 @@ class StoreAddressRequest extends FormRequest
         }
 
         return [
+            'firstname' => 'required',
+            'lastname' => 'required',
             'address_id' => 'hashid_is_valid:addresses',
             'address' => 'required_without:address_id',
             'city' => 'required_without:address_id',

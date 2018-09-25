@@ -13,6 +13,12 @@ class ProductAssociation extends BaseModel
      */
     protected $hashids = 'product';
 
+    protected $fillable = [
+        'group_id',
+        'association_id',
+        'product_id',
+    ];
+
     /**
      * Get the attributes associated to the product.
      * @return Illuminate\Database\Eloquent\Relations\BelongsToMany
