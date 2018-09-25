@@ -103,7 +103,8 @@ class OrderController extends BaseController
                 $request->orders,
                 $request->field,
                 $request->value,
-                $request->send_emails ?: false
+                $request->send_emails ?: false,
+                $request->data
             );
         } catch (\Illuminate\Database\QueryException $e) {
             return $this->errorUnprocessable('Unable to update field');

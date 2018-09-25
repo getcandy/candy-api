@@ -178,7 +178,7 @@ class OrderService extends BaseService
      * @throws \Illuminate\Database\QueryException
      * @return void
      */
-    public function bulkUpdate($orderIds, $field, $value, $sendEmails = true)
+    public function bulkUpdate($orderIds, $field, $value, $sendEmails = true, $data = [])
     {
         $realIds = $this->getDecodedIds($orderIds);
 
@@ -205,10 +205,11 @@ class OrderService extends BaseService
             }
 
             if ($sendEmails) {
-                $query->get()->each(function ($order) use ($value) {
+                $query->get()->each(function ($order) use ($value, $data) {
                     OrderNotification::dispatch(
                         $order,
-                        $value
+                        $value,
+                        $data
                     );
                 });
             }
