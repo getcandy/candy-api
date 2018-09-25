@@ -121,7 +121,7 @@ class ChangeColumnsToIntegers extends Migration
             $table->integer('unit_price')->unsigned()->default(0)->after('line_total');
             $table->integer('discount_total')->unsigned()->default(0)->after('unit_price');
             $table->integer('tax_total')->unsigned()->default(0)->after('discount_total');
-            $table->integer('tax_rate')->unsigned()->default(0)->after('tax_total');
+            $table->decimal('tax_rate', 10, 6)->unsigned()->default(0)->after('tax_total');
             $table->softDeletes();
         });
 
