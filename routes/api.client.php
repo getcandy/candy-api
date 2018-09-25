@@ -95,6 +95,7 @@ Route::group([
      * Payments
      */
     $router->get('payments/provider', 'Payments\PaymentController@provider');
+    $router->get('payments/providers', 'Payments\PaymentController@providers');
     $router->get('payments/types', 'Payments\PaymentTypeController@index');
 
     $router->get('routes', 'Routes\RouteController@index');

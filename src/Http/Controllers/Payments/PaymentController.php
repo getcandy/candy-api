@@ -20,6 +20,11 @@ class PaymentController extends BaseController
         return $this->respondWithItem($provider, new ProviderTransformer);
     }
 
+    public function providers()
+    {
+        return app('api')->payments()->getProviders();
+    }
+
     /**
      * Handle the request to refund a transaction.
      *

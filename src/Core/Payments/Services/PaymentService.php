@@ -47,6 +47,13 @@ class PaymentService extends BaseService
         return app()->make($provider);
     }
 
+    public function getProviders()
+    {
+        return config(
+            $this->configPath.'.providers'
+        );
+    }
+
     /**
      * Set the provider.
      *
