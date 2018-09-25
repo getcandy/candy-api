@@ -31,7 +31,7 @@ trait Fractal
     }
 
     /**
-     * Sets the status code for the response.
+     * Sets the status code for the getcandy::response.
      * @param int $statusCode
      */
     public function setStatusCode($statusCode)
@@ -47,7 +47,7 @@ trait Fractal
      */
     public function errorForbidden($message = null)
     {
-        return $this->setStatusCode(403)->respondWithError(($message ?: trans('response.error.forbidden')));
+        return $this->setStatusCode(403)->respondWithError(($message ?: trans('getcandy::response.error.forbidden')));
     }
 
     /**
@@ -58,7 +58,7 @@ trait Fractal
      */
     public function errorExpired($message = null)
     {
-        return $this->setStatusCode(410)->respondWithError(($message ?: trans('response.error.expired')));
+        return $this->setStatusCode(410)->respondWithError(($message ?: trans('getcandy::response.error.expired')));
     }
 
     /**
@@ -67,7 +67,7 @@ trait Fractal
      */
     public function errorInternalError($message = null)
     {
-        return $this->setStatusCode(500)->respondWithError(($message ?: trans('response.error.internal')));
+        return $this->setStatusCode(500)->respondWithError(($message ?: trans('getcandy::response.error.internal')));
     }
 
     /**
@@ -77,7 +77,9 @@ trait Fractal
      */
     public function errorUnauthorized($message = null)
     {
-        return $this->setStatusCode(401)->respondWithError(($message ?: trans('response.error.unauthorized')));
+        return $this->setStatusCode(401)->respondWithError(
+            $message ?: trans('getcandy::response.error.unauthorized')
+        );
     }
 
     /**
@@ -87,7 +89,9 @@ trait Fractal
      */
     public function errorWrongArgs($message = null)
     {
-        return $this->setStatusCode(400)->respondWithError(($message ?: trans('response.error.wrong_args')));
+        return $this->setStatusCode(400)->respondWithError(
+            $message ?: trans('getcandy::response.error.wrong_args')
+        );
     }
 
     /**
@@ -97,7 +101,9 @@ trait Fractal
      */
     public function errorNotFound($message = null)
     {
-        return $this->setStatusCode(404)->respondWithError(($message ?: trans('response.error.not_found')));
+        return $this->setStatusCode(404)->respondWithError(
+            $message ?: trans('getcandy::response.error.not_found')
+        );
     }
 
     public function errorUnprocessable($data)
@@ -126,7 +132,7 @@ trait Fractal
     }
 
     /**
-     * Returns an error response.
+     * Returns an error getcandy::response.
      * @param  string $message
      * @param  string $errorCode
      * @return array
@@ -134,7 +140,7 @@ trait Fractal
     protected function respondWithError($message = null)
     {
         if ($this->statusCode == 200) {
-            trigger_error(trans('response.error.200'));
+            trigger_error(trans('getcandy::response.error.200'));
         }
 
         return $this->respondWithArray([
