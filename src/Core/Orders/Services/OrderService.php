@@ -559,7 +559,19 @@ class OrderService extends BaseService
             $data['data'] ?? []
         );
 
-        if ($result->success) {
+        return $this->handleProcessResponse($result, $order);
+    }
+
+    /**
+     * Handles the response from an order being processed
+     *
+     * @param Transaction $transaction
+     * @param Order $order
+     * @return void
+     */
+    protected function handleProcessResponse($transaction, $order)
+    {
+        if ($transaction->success) {
             if (! empty($type)) {
                 $order->status = $type->success_status;
             } else {
@@ -581,6 +593,27 @@ class OrderService extends BaseService
         event(new OrderProcessedEvent($order));
 
         return $order;
+    }
+
+    /**
+     * Process a 3DSecured transaction
+     *
+     * @param Order $order
+     * @param string $transactionId
+     * @param string $paRes
+     * @param string $type
+     * @return Order
+     */
+    public function processThreeDSecure($order, $transactionId, $paRes, $type = null)
+    {
+        $result = $this->payments->validateThreeD(
+            $order,
+            $transactionId,
+            $paRes,
+            $type
+        );
+
+        return $this->handleProcessResponse($result, $order);
     }
 
     /**
