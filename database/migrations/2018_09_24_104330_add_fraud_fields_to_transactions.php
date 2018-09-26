@@ -23,7 +23,7 @@ class AddFraudFieldsToTransactions extends Migration
 
     public function down()
     {
-        Schema::table('discounts', function (Blueprint $table) {
+        Schema::table('transactions', function (Blueprint $table) {
             $table->dropColumn('address_matched');
             $table->dropColumn('postcode_matched');
             $table->dropColumn('cvc_matched');
