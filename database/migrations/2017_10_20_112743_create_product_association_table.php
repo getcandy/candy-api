@@ -32,6 +32,11 @@ class CreateProductAssociationTable extends Migration
      */
     public function down()
     {
+        Schema::table('product_associations', function (Blueprint $table) {
+            $table->dropForeign(['group_id']);
+            $table->dropForeign(['association_id']);
+            $table->dropForeign(['product_id']);
+        });
         Schema::dropIfExists('product_associations');
     }
 }

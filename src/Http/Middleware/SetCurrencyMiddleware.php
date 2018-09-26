@@ -16,7 +16,7 @@ class SetCurrencyMiddleware
      */
     public function handle($request, Closure $next)
     {
-        //CurrencyConverter::set($request->currency);
+        CurrencyConverter::set($request->currency);
 
         return $next($request);
     }
