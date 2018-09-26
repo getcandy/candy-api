@@ -54,7 +54,7 @@ class SagePay extends AbstractProvider
         } catch (ClientException $e) {
             $errors = json_decode($e->getResponse()->getBody()->getContents(), true);
             $response = new PaymentResponse(false, 'Refund Failed', $errors);
-            return $this->createFailedTransaction($errors);
+            return $this->createFailedTransaction($errors, $amount, $description);
         }
 
         $content = json_decode($response->getBody()->getContents(), true);
@@ -194,16 +194,16 @@ class SagePay extends AbstractProvider
      * @param array $errors
      * @return Transaction
      */
-    protected function createFailedTransaction($errors)
+    protected function createFailedTransaction($errors, $amount = null, $notes = null)
     {
         $transaction = new Transaction;
         $transaction->success = false;
         $transaction->order()->associate($this->order);
         $transaction->merchant = $this->getVendor();
         $transaction->provider = 'SagePay';
-        $transaction->notes = $errors['description'] ?? null;
-        $transaction->amount = $this->order->order_total;
-        $transaction->status = 'failed';
+        $transaction->amount = $amount ?? $this->order->order_total;
+        $transaction->notes = $notes;
+        $transaction->status = $errors['description'] ?? null;
         $transaction->card_type = '-';
         $transaction->last_four = '-';
         $transaction->transaction_id = 'Unknown';

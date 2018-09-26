@@ -48,11 +48,11 @@ class PaymentController extends BaseController
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         } catch (TransactionAmountException $e) {
-            return $this->errorWrongArgs($e->getMessage());
+            return $this->errorWrongArgs('Amount exceeds remaining balance');
         }
 
         if (! $transaction->success) {
-            return $this->errorWrongArgs($transaction->notes);
+            return $this->errorWrongArgs($transaction->status);
         }
 
         return $this->respondWithItem($transaction, new TransactionTransformer);
