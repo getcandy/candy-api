@@ -14,6 +14,8 @@ use GetCandy\Api\Core\Orders\Exceptions\IncompleteOrderException;
 use GetCandy\Api\Http\Transformers\Fractal\Orders\OrderTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Documents\PdfTransformer;
 use GetCandy\Api\Core\Orders\Exceptions\OrderAlreadyProcessedException;
+use GetCandy\Api\Core\Payments\Exceptions\ThreeDSecureRequiredException;
+use GetCandy\Api\Http\Transformers\Fractal\Payments\ThreeDSecureTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Shipping\ShippingPriceTransformer;
 
 class OrderController extends BaseController
@@ -85,7 +87,6 @@ class OrderController extends BaseController
             if (! $order->placed_at) {
                 return $this->errorForbidden('Payment has failed');
             }
-
             return $this->respondWithItem($order, new OrderTransformer);
         } catch (IncompleteOrderException $e) {
             return $this->errorForbidden('The order is missing billing information');
@@ -93,6 +94,8 @@ class OrderController extends BaseController
             return $this->errorNotFound();
         } catch (OrderAlreadyProcessedException $e) {
             return $this->errorUnprocessable('This order has already been processed');
+        } catch (ThreeDSecureRequiredException $e) {
+            return $this->respondWithItem($e->getResponse(), new ThreeDSecureTransformer);
         }
     }
 

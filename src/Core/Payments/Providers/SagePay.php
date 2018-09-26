@@ -8,6 +8,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use GetCandy\Api\Core\Payments\PaymentResponse;
 use GetCandy\Api\Core\Payments\Models\Transaction;
+use GetCandy\Api\Core\Payments\ThreeDSecureResponse;
 
 class SagePay extends AbstractProvider
 {
@@ -77,7 +78,6 @@ class SagePay extends AbstractProvider
         //     $country = $countryModel->iso_a_2;
         // }
         // // This breaks maria DB
-
         try {
             $payload = [
                 'transactionType' => 'Payment',
@@ -114,15 +114,22 @@ class SagePay extends AbstractProvider
         } catch (ClientException $e) {
             $errors = json_decode($e->getResponse()->getBody()->getContents(), true);
             $response = new PaymentResponse(false, 'Payment Failed', $errors);
-
             $response->transaction(
                 $this->createFailedTransaction($errors)
             );
-
             return $response;
         }
 
         $content = json_decode($response->getBody()->getContents(), true);
+
+        // If it's 3DSecured then we return the relevant response
+        if ($content['status'] == '3DAuth') {
+            return (new ThreeDSecureResponse)
+                ->setStatus($content['statusCode'])
+                ->setTransactionId($content['transactionId'])
+                ->setPaRequest($content['paReq'])
+                ->setRedirect($content['acsUrl']);
+        }
 
         $response = new PaymentResponse(true, 'Payment Received');
         $response->transaction(
@@ -130,6 +137,73 @@ class SagePay extends AbstractProvider
         );
 
         return $response;
+    }
+
+    public function processThreeD($transaction, $paRes)
+    {
+        // https://pi-test.sagepay.com/api/v1/transactions/<transactionId>/3d-secure
+
+        $client = new Client([
+            'base_uri' => $this->host,
+        ]);
+
+        try {
+            $response = $client->request('POST', 'transactions/' . $transaction . '/3d-secure', [
+                'headers' => [
+                    'Authorization' => 'Basic '.$this->getCredentials(),
+                    'Content-Type' => 'application/json',
+                    'Cache-Control' => 'no-cache',
+                ],
+                'json' => ['paRes' => $paRes],
+            ]);
+        } catch (ClientException $e) {
+            $errors = json_decode($e->getResponse()->getBody()->getContents(), true);
+            return $this->createFailedTransaction([
+                'statusDetail' => $errors['description'],
+                'status' => 'failed',
+                'transactionId' => $transaction
+            ]);
+        }
+
+        $content = json_decode($response->getBody()->getContents(), true);
+
+        if ($content['status'] != 'Authenticated') {
+            return $this->createFailedTransaction([
+                'statusDetail' => '3D Secure Failed',
+                'status' => 'failed',
+                'transactionId' => $transaction
+            ]);
+        }
+
+        // We are authenticated, so lets get the transaction from the API
+        $transaction = $this->getTransactionFromApi($transaction);
+
+        if ($transaction['status'] != 'Ok') {
+            return $this->createFailedTransaction($transaction);
+        }
+
+        return $this->createSuccessTransaction($transaction);
+    }
+
+    protected function getTransactionFromApi($id)
+    {
+        $client = new Client([
+            'base_uri' => $this->host,
+        ]);
+
+        try {
+            $response = $client->request('GET', 'transactions/' . $id, [
+                'headers' => [
+                    'Authorization' => 'Basic '.$this->getCredentials(),
+                    'Content-Type' => 'application/json',
+                    'Cache-Control' => 'no-cache',
+                ],
+            ]);
+        } catch (ClientException $e) {
+            return null;
+        }
+
+        return json_decode($response->getBody()->getContents(), true);
     }
 
     protected function getVendorTxCode($order)
@@ -165,12 +239,12 @@ class SagePay extends AbstractProvider
         return $transaction;
     }
 
-    protected function createSuccessTransaction($content, $order)
+    protected function createSuccessTransaction($content)
     {
         $transaction = new Transaction;
 
         $transaction->success = true;
-        $transaction->order()->associate($order);
+        $transaction->order()->associate($this->order);
         $transaction->merchant = $this->getVendor();
         $transaction->provider = 'SagePay';
         $transaction->driver = 'sagepay';
@@ -182,7 +256,7 @@ class SagePay extends AbstractProvider
         $transaction->address_matched = $content['avsCvcCheck']['address'] == 'Matched' ?: false;
         $transaction->cvc_matched = $content['avsCvcCheck']['securityCode'] == 'Matched' ?: false;
         $transaction->postcode_matched = $content['avsCvcCheck']['postalCode'] == 'Matched' ?: false;
-        $transaction->setAttribute('threed_secure', $content['3DSecure']['status'] == 'Checked' ?: false);
+        $transaction->setAttribute('threed_secure', $content['3DSecure']['status'] == 'Authenticated' ?: false);
         $transaction->save();
 
         return $transaction;
@@ -201,12 +275,13 @@ class SagePay extends AbstractProvider
         $transaction->order()->associate($this->order);
         $transaction->merchant = $this->getVendor();
         $transaction->provider = 'SagePay';
+        $transaction->driver = 'sagepay';
         $transaction->amount = $amount ?? $this->order->order_total;
-        $transaction->notes = $notes;
-        $transaction->status = $errors['description'] ?? null;
+        $transaction->notes = $notes ?: $errors['statusDetail'] ?? '-';
+        $transaction->status = $errors['status'] ?? 'failed';
         $transaction->card_type = '-';
         $transaction->last_four = '-';
-        $transaction->transaction_id = 'Unknown';
+        $transaction->transaction_id = $errors['transactionId'] ?? 'Unknown';
         $transaction->save();
 
         return $transaction;
