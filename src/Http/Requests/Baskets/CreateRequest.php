@@ -34,4 +34,11 @@ class CreateRequest extends FormRequest
 
         return $rules;
     }
+
+    public function messages()
+    {
+        return [
+            'variants.*.quantity.max' => trans('getcandy::validation.max_qty'),
+        ];
+    }
 }
