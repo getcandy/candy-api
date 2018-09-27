@@ -22,6 +22,7 @@ class AddShippingZoneToPrices extends Migration
     public function down()
     {
         Schema::table('shipping_prices', function (Blueprint $table) {
+            $table->dropForeign(['shipping_zone_id']);
             $table->dropColumn('shipping_zone_id');
         });
     }

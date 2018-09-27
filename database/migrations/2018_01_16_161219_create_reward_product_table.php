@@ -33,6 +33,7 @@ class CreateRewardProductTable extends Migration
     {
         Schema::table('discount_reward_products', function (Blueprint $table) {
             $table->dropForeign(['product_id']);
+            $table->dropForeign(['discount_reward_id']);
         });
         Schema::dropIfExists('discount_reward_products');
     }

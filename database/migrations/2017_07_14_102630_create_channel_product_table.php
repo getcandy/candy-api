@@ -31,6 +31,10 @@ class CreateChannelProductTable extends Migration
      */
     public function down()
     {
+        Schema::table('channel_product', function (Blueprint $table) {
+            $table->dropForeign(['product_id']);
+            $table->dropForeign(['channel_id']);
+        });
         Schema::dropIfExists('channel_product');
     }
 }

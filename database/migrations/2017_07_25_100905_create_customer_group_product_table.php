@@ -34,6 +34,10 @@ class CreateCustomerGroupProductTable extends Migration
      */
     public function down()
     {
+        Schema::table('customer_group_product', function (Blueprint $table) {
+            $table->dropForeign(['product_id']);
+            $table->dropForeign(['customer_group_id']);
+        });
         Schema::dropIfExists('customer_group_product');
     }
 }
