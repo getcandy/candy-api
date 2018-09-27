@@ -22,4 +22,18 @@ class AddProductRecommendationsTable extends Migration
             $table->integer('count')->unsigned()->index();
         });
     }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('product_recommendations', function (Blueprint $table) {
+            $table->dropForeign(['related_product_id']);
+            $table->dropForeign(['product_id']);
+        });
+        Schema::dropIfExists('product_recommendations');
+    }
 }

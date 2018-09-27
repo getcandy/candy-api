@@ -24,6 +24,6 @@ class AddSavedBaskets extends Migration
 
     public function down()
     {
-        Schema::drop('saved_baskets');
+        Schema::dropIfExists('saved_baskets');
     }
 }
