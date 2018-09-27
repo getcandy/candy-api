@@ -33,7 +33,7 @@ class PriceRange extends AbstractAggregator
             $ranges[$index] = round($range, -1);
         }
 
-        $rangeQuery = new Range('price_points');
+        $rangeQuery = new Range('price');
         $rangeQuery->setField('min_price');
 
         // Go again, this time building up our agg
