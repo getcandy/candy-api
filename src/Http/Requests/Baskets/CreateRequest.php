@@ -28,7 +28,7 @@ class CreateRequest extends FormRequest
             'variants' => 'array|unique_lines',
             'variants.*' => 'in_stock',
             'variants.*.id' => 'required|hashid_is_valid:product_variants',
-            'variants.*.quantity' => 'required|numeric|min:1',
+            'variants.*.quantity' => 'required|numeric|min:1|max:10000',
             'basket_id' => 'hashid_is_valid:baskets',
         ];
 
