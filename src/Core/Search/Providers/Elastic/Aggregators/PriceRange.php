@@ -14,11 +14,20 @@ class PriceRange extends AbstractAggregator
      * @param Query $query
      * @return Query
      */
-    public function getPre(Search $search = null, $query = null)
+    public function getPre(Search $search = null, $query = null, $postFilter = null)
     {
         // Add max price aggregator
         $max = new MaxPrice;
 
+        $boolQuery = $query->getQuery();
+
+        if ($postFilter) {
+            foreach ($postFilter->getParam('filter') as $filter) {
+                $boolQuery->addFilter($filter);
+            }
+        }
+
+        $query->setQuery($boolQuery);
         $query->addAggregation($max->getPre());
 
         $results = $search->setQuery($query)->search();

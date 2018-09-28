@@ -466,6 +466,7 @@ class SearchBuilder
         // Set filters as post filters
         $postFilter = new BoolQuery;
 
+
         foreach ($this->filters as $filter) {
             if (! empty($filter['post'])) {
                 $postFilter->addFilter(
@@ -485,7 +486,6 @@ class SearchBuilder
                 );
             }
         }
-
         $query->setPostFilter($postFilter);
 
         foreach ($this->aggregations as $agg) {
@@ -501,10 +501,10 @@ class SearchBuilder
             }
 
             $cloned = $query;
-
             $query->addAggregation($agg->getPre(
                 $this->getSearch(),
-                $cloned->setQuery($boolQuery)
+                $cloned->setQuery($boolQuery),
+                $postFilter
             ));
         }
 

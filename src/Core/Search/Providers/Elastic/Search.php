@@ -114,11 +114,19 @@ class Search implements ClientContract
             $builder->setTerm($keywords);
         }
 
+
+
         $builder->setLimit($perPage)
             ->setOffset(($page - 1) * $perPage)
             ->setSorting($sorts)
             ->withAggregations()
             ->useCustomerFilters();
+
+        if ($category) {
+            $filter = $this->findFilter('Category');
+            $filter->process($category);
+            $builder->addFilter($filter);
+        }
 
         if ($category && empty($sorts)) {
             $builder->addSort(CategorySort::class, $category);
@@ -128,12 +136,6 @@ class Search implements ClientContract
             $channelFilter = $this->findFilter('Channel');
             $channelFilter->process($channel);
             $builder->addFilter($channelFilter);
-        }
-
-        if ($category) {
-            $filter = $this->findFilter('Category');
-            $filter->process($category);
-            $builder->addFilter($filter);
         }
 
         foreach ($filters ?? [] as $filter => $value) {
