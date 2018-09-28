@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Search\Factories;
 
+use CurrencyConverter;
 use Elastica\ResultSet;
 use League\Fractal\Manager;
 use Illuminate\Database\Eloquent\Model;
@@ -360,6 +361,30 @@ class SearchResultFactory implements SearchResultInterface
                 foreach ($agg['categories_before_inner']['buckets'] as $bucket) {
                     $all[] = $bucket['key'];
                 }
+            } elseif ($handle == 'price') {
+                // Get our currency.
+                // $currency = app()->currencies
+                // dd(CurrencyConverter::format($bucket));
+                $buckets = collect($agg['buckets'])->map(function ($bucket) {
+
+                    $label = 'between';
+
+                    if ($bucket['from'] < 1) {
+                        $label = 'less_then';
+                    } elseif (empty($bucket['to'])) {
+                        $label = 'over';
+                    }
+
+                    $label = trans('getcandy::search.price.aggregation.' . $label, [
+                        'min' => CurrencyConverter::format($bucket['from']),
+                        'max' => CurrencyConverter::format($bucket['to'] ?? 0),
+                    ]);
+
+                    $bucket['key'] = $label;
+                    return $bucket;
+                });
+
+                $results[$handle] = ['buckets' => $buckets];
             } else {
                 $results[$handle] = $agg;
             }

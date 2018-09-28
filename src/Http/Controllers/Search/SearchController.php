@@ -54,6 +54,7 @@ class SearchController extends BaseController
 
         // Get our filterable attributes.
         $filterable = app('api')->attributes()->getFilterable()->pluck('handle')->toArray();
+        $filterable[] = 'price';
 
         try {
             $results = $search

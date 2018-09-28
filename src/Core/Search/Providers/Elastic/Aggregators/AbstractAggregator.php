@@ -25,7 +25,7 @@ abstract class AbstractAggregator
      *
      * @return bool
      */
-    public function getPost(Search $search, $query)
+    public function getPost($value)
     {
         return false;
     }

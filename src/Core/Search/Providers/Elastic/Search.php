@@ -108,16 +108,17 @@ class Search implements ClientContract
     public function search($keywords, $category = null, $filters = [], $sorts = null, $page = 1, $perPage = 30)
     {
         $roles = app('api')->roles()->getHubAccessRoles();
-        $builder = $this->builder
-            ->setLimit($perPage)
-            ->setOffset(($page - 1) * $perPage)
-            ->setSorting($sorts)
-            ->withAggregations()
-            ->useCustomerFilters();
+        $builder = $this->builder;
 
         if ($keywords) {
             $builder->setTerm($keywords);
         }
+
+        $builder->setLimit($perPage)
+            ->setOffset(($page - 1) * $perPage)
+            ->setSorting($sorts)
+            ->withAggregations()
+            ->useCustomerFilters();
 
         if ($category && empty($sorts)) {
             $builder->addSort(CategorySort::class, $category);

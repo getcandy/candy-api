@@ -500,13 +500,16 @@ class SearchBuilder
                 $agg = $agg->addFilter($filter);
             }
 
+            $cloned = $query;
+
             $query->addAggregation($agg->getPre(
                 $this->getSearch(),
-                $query
+                $cloned->setQuery($boolQuery)
             ));
         }
 
         $query->setQuery($boolQuery);
+
 
         $query->setHighlight(
             $this->highlight()

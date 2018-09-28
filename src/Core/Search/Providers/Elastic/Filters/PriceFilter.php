@@ -4,13 +4,16 @@ namespace GetCandy\Api\Core\Search\Providers\Elastic\Filters;
 
 use Elastica\Query\Range;
 use Elastica\Query\BoolQuery;
+use GetCandy\Api\Core\Search\Providers\Elastic\Aggregators\PriceRange;
 
-class PricePointFilter extends AbstractFilter
+class PriceFilter extends AbstractFilter
 {
     protected $points = [];
     protected $seperator = ':';
     protected $delimiter = '-';
-    public $handle = 'price-point-filter';
+    public $handle = 'price-filter';
+    protected $field;
+    protected $value;
 
     public function process($payload, $type = null)
     {
@@ -20,7 +23,7 @@ class PricePointFilter extends AbstractFilter
             $this->points[] = explode($this->delimiter, $point);
         }
 
-        $this->points = collect($this->points);
+        $this->value = collect($this->points);
 
         return $this;
     }
