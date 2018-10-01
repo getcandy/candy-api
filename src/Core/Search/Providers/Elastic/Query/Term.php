@@ -60,6 +60,7 @@ class Term
                 $multiMatchQuery = new MultiMatch;
                 $multiMatchQuery->setType($type);
                 $multiMatchQuery->setQuery($this->text);
+                $multiMatchQuery->setOperator('and');
                 $multiMatchQuery->setFields($fields);
                 $disMaxQuery->addQuery($multiMatchQuery);
                 if (is_array($fields)) {
@@ -67,30 +68,6 @@ class Term
                 }
             }
 
-            $nested = $this->fields['nested'] ?? [];
-
-            foreach ($nested as $path => $fields) {
-
-                $nestedQuery = new Nested;
-                $nestedQuery->setPath($path);
-                $bool = new BoolQuery;
-
-                $fields = array_map(function ($field) use ($path) {
-                    return $path . '.' . $field;
-                }, $fields);
-
-                $match = new MultiMatch;
-                $match->setType('phrase');
-                $match->setQuery($this->text);
-                $match->setFields(
-                    $fields
-                );
-                $bool->addMust($match);
-
-                $nestedQuery->setQuery($bool);
-
-                $disMaxQuery->addQuery($nestedQuery);
-            }
         }
         return $disMaxQuery;
     }
