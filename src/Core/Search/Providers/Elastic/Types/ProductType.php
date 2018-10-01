@@ -49,12 +49,7 @@ class ProductType extends BaseType
                 ],
                 'name' => [
                     'type' => 'text',
-                    'fields' => [
-                        'en' => [
-                            'type' => 'text',
-                            'analyzer' => 'english',
-                        ]
-                    ],
+                    'copy_to' => 'breadcrumbs',
                 ],
                 'position' => [
                     'type' => 'integer',
@@ -120,6 +115,16 @@ class ProductType extends BaseType
         'max_price' => [
             'type' => 'scaled_float',
             'scaling_factor' => 100,
+        ],
+        'breadcrumbs' => [
+            'type' => 'text',
+            'analyzer' => 'standard',
+            'fields' => [
+                'en' => [
+                    'type' => 'text',
+                    'analyzer' => 'english',
+                ],
+            ],
         ],
         'name' => [
             'type' => 'text',
