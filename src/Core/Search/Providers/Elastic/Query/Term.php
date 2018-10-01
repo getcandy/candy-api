@@ -2,7 +2,10 @@
 
 namespace GetCandy\Api\Core\Search\Providers\Elastic\Query;
 
+use Elastica\Query\Match;
 use Elastica\Query\DisMax;
+use Elastica\Query\Nested;
+use Elastica\Query\BoolQuery;
 use Elastica\Query\MultiMatch;
 
 class Term
@@ -39,25 +42,56 @@ class Term
 
     public function getQuery()
     {
+
         $disMaxQuery = new DisMax;
         $disMaxQuery->setBoost(1.5);
         $disMaxQuery->setTieBreaker(1);
 
-        $multiMatchQuery = new MultiMatch;
-        $multiMatchQuery->setType('phrase');
-        $multiMatchQuery->setQuery($this->text);
-        $multiMatchQuery->setFields($this->fields);
+        if (!empty($this->fields['multi_match'])) {
 
-        $disMaxQuery->addQuery($multiMatchQuery);
+            $multiMatch = $this->fields['multi_match'] ?? [];
 
-        $multiMatchQuery = new MultiMatch;
-        $multiMatchQuery->setType('best_fields');
-        $multiMatchQuery->setQuery($this->text);
+            $prev = null;
 
-        $multiMatchQuery->setFields($this->fields);
+            foreach ($multiMatch['types'] ?? [] as $type => $fields) {
+                if ($prev && is_string($fields)) {
+                    $fields = $prev;
+                }
+                $multiMatchQuery = new MultiMatch;
+                $multiMatchQuery->setType($type);
+                $multiMatchQuery->setQuery($this->text);
+                $multiMatchQuery->setFields($fields);
+                $disMaxQuery->addQuery($multiMatchQuery);
+                if (is_array($fields)) {
+                    $prev = $fields;
+                }
+            }
 
-        $disMaxQuery->addQuery($multiMatchQuery);
+            $nested = $this->fields['nested'] ?? [];
 
+            foreach ($nested as $path => $fields) {
+
+                $nestedQuery = new Nested;
+                $nestedQuery->setPath($path);
+                $bool = new BoolQuery;
+
+                $fields = array_map(function ($field) use ($path) {
+                    return $path . '.' . $field;
+                }, $fields);
+
+                $match = new MultiMatch;
+                $match->setType('phrase');
+                $match->setQuery($this->text);
+                $match->setFields(
+                    $fields
+                );
+                $bool->addMust($match);
+
+                $nestedQuery->setQuery($bool);
+
+                $disMaxQuery->addQuery($nestedQuery);
+            }
+        }
         return $disMaxQuery;
     }
 }
