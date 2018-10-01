@@ -41,7 +41,9 @@ class SearchController extends BaseController
         $channel = $request->channel ?: $defaultChannel ? $defaultChannel->handle : null;
 
         try {
-            $category = $this->categories->getByHashedId($request->category);
+            $category = $this->categories->getByHashedIds(
+                explode(':', $request->category)
+            );
         } catch (ModelNotFoundException $e) {
             $category = null;
         }
@@ -51,6 +53,7 @@ class SearchController extends BaseController
         } else {
             $page = $request->page;
         }
+
 
         // Get our filterable attributes.
         $filterable = app('api')->attributes()->getFilterable()->pluck('handle')->toArray();

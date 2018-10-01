@@ -129,7 +129,9 @@ class Search implements ClientContract
         }
 
         if ($category && empty($sorts)) {
-            $builder->addSort(CategorySort::class, $category);
+            foreach ($category as $cat) {
+                $builder->addSort(CategorySort::class, $cat);
+            }
         }
 
         if ($channel = $builder->getChannel()) {

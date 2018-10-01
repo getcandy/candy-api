@@ -359,7 +359,7 @@ class SearchResultFactory implements SearchResultInterface
                 }
             } elseif ($handle == 'categories_before') {
                 foreach ($agg['categories_before_inner']['buckets'] as $bucket) {
-                    $all[] = $bucket['key'];
+                    $all[$bucket['key']] = $bucket['doc_count'];
                 }
             } elseif ($handle == 'price') {
                 // Get our currency.
@@ -392,10 +392,11 @@ class SearchResultFactory implements SearchResultInterface
 
         $selected = collect($selected);
 
-        $models = app('api')->categories()->getSearchedIds($all);
+        $models = app('api')->categories()->getSearchedIds(array_keys($all));
 
         foreach ($models as $category) {
             $category->aggregate_selected = $selected->contains($category->encodedId());
+            $category->doc_count = $all[$category->encodedId()];
         }
 
         $resource = new Collection($models, new CategoryTransformer);
