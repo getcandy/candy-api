@@ -47,10 +47,6 @@ class ProductType extends BaseType
                     'type' => 'keyword',
                     'index' => true,
                 ],
-                'name' => [
-                    'type' => 'text',
-                    'copy_to' => 'breadcrumbs',
-                ],
                 'position' => [
                     'type' => 'integer',
                 ],
