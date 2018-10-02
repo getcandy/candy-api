@@ -110,6 +110,6 @@ class CategoryType extends BaseType
                 'id' => $item->encodedId(),
                 'name' => $item->attribute('name', null, $lang),
             ];
-        })->toArray();
+        });
     }
 }
