@@ -114,15 +114,13 @@ class Search implements ClientContract
             $builder->setTerm($keywords);
         }
 
-
-
         $builder->setLimit($perPage)
             ->setOffset(($page - 1) * $perPage)
             ->setSorting($sorts)
             ->withAggregations()
             ->useCustomerFilters();
 
-        if ($category) {
+        if ($category->count()) {
             $filter = $this->findFilter('Category');
             $filter->process($category);
             $builder->addFilter($filter);
