@@ -74,9 +74,4 @@ class Category extends BaseModel
     {
         return $this->belongsToMany(Channel::class, 'category_channel');
     }
-
-    public function customerGroups()
-    {
-        return $this->belongsToMany(CustomerGroup::class, 'category_customer_group');
-    }
 }
