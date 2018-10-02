@@ -100,9 +100,7 @@ class CategoryType extends BaseType
 
     public function rankings()
     {
-        return [
-            'name^5', 'name.english^3', 'description^1',
-        ];
+        return config('getcandy.search.ranking.categories');
     }
 
     protected function getCategories(Model $model, $lang = 'en')
