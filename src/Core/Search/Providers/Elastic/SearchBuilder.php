@@ -538,16 +538,7 @@ class SearchBuilder
             ));
         }
 
-        // Do score based stuff...
-        // This is just for testing atm, will be made permanent most likely though
-        if ($rank) {
-            $functionScore = new FunctionScore;
-            $functionScore->addFieldValueFactorFunction('popularity', 1.2, 'reciprocal', 1);
-            $functionScore->setQuery($boolQuery);
-            $query->setQuery($functionScore);
-        } else {
-            $query->setQuery($boolQuery);
-        }
+        $query->setQuery($boolQuery);
 
         $query->setHighlight(
             $this->highlight()
