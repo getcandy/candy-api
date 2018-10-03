@@ -22,10 +22,11 @@ use GetCandy\Api\Http\Middleware\SetLocaleMiddleware;
 use GetCandy\Api\Console\Commands\ElasticIndexCommand;
 use GetCandy\Api\Core\Baskets\Factories\BasketFactory;
 use GetCandy\Api\Http\Middleware\SetCurrencyMiddleware;
+use GetCandy\Api\Console\Commands\ScoreProductsCommand;
 use GetCandy\Api\Core\Products\Factories\ProductFactory;
 use GetCandy\Api\Http\Middleware\CheckClientCredentials;
-use GetCandy\Api\Console\Commands\InstallGetCandyCommand;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketInterface;
+use GetCandy\Api\Console\Commands\InstallGetCandyCommand;
 use GetCandy\Api\Core\Baskets\Factories\BasketLineFactory;
 use GetCandy\Api\Core\Products\Interfaces\ProductInterface;
 use GetCandy\Api\Core\Search\Factories\SearchResultFactory;
@@ -125,6 +126,7 @@ class ApiServiceProvider extends ServiceProvider
             $this->commands([
                 ElasticIndexCommand::class,
                 InstallGetCandyCommand::class,
+                ScoreProductsCommand::class,
             ]);
         }
     }
