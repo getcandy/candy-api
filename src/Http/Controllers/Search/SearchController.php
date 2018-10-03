@@ -41,11 +41,11 @@ class SearchController extends BaseController
         $channel = $request->channel ?: $defaultChannel ? $defaultChannel->handle : null;
 
         try {
-            $category = $this->categories->getByHashedIds(
+            $categories = $this->categories->getByHashedIds(
                 explode(':', $request->category)
             );
         } catch (ModelNotFoundException $e) {
-            $category = null;
+            $categories = null;
         }
 
         if ($request->current_page) {
@@ -66,14 +66,12 @@ class SearchController extends BaseController
                 ->on($channel)
                 ->against($request->type)
                 ->user($request->user())
-                ->search(
-                    $request->keywords,
-                    $category,
-                    $request->only($filterable),
-                    $request->sort,
-                    $page ?: 1,
-                    $request->per_page ?: 10
-                );
+                ->categories($categories)
+                ->filters($request->only($filterable))
+                ->sorting($request->sort)
+                ->pagination($page ?: 1, $request->per_page ?: 30)
+                ->keywords($request->keywords)
+                ->search((bool) $request->get('rank', true));
         } catch (\Elastica\Exception\Connection\HttpException $e) {
             return $this->errorInternalError($e->getMessage());
         } catch (\Elastica\Exception\ResponseException $e) {

@@ -3,6 +3,7 @@
 namespace GetCandy\Api\Core\Search\Providers\Elastic;
 
 use GetCandy\Api\Core\Search\SearchContract;
+use GetCandy\Api\Core\Search\Providers\Elastic\Types\ProductType;
 
 class Elastic implements SearchContract
 {
@@ -24,5 +25,10 @@ class Elastic implements SearchContract
     public function client()
     {
         return $this->client;
+    }
+
+    public function products()
+    {
+        return app()->make(ProductType::class);
     }
 }

@@ -24,6 +24,17 @@ class Search implements ClientContract
      */
     protected $filterSet;
 
+    protected $categories = [];
+
+    protected $sorts = [];
+
+    /**
+     * The filters to apply to the search
+     *
+     * @var null|array|Collection
+     */
+    protected $filters = null;
+
     public function __construct(SearchBuilder $builder)
     {
         $this->builder = $builder;
@@ -39,6 +50,46 @@ class Search implements ClientContract
     {
         $this->builder->setUser($user);
 
+        return $this;
+    }
+
+    /**
+     * Set the keywords on the builder
+     *
+     * @param string $keywords
+     * @return Search
+     */
+    public function keywords($keywords = null)
+    {
+        if ($keywords) {
+            $this->builder->setTerm($keywords);
+        }
+        return $this;
+    }
+
+    /**
+     * Set the sorting on the builder
+     *
+     * @param array $sorts
+     * @return Search
+     */
+    public function sorting($sorts)
+    {
+        $this->sorts = $sorts;
+        $this->builder->setSorting($sorts);
+        return $this;
+    }
+
+    /**
+     * Set up the pagination
+     *
+     * @param integer $page
+     * @return Search
+     */
+    public function pagination($page = 1, $perPage = 30)
+    {
+        $this->builder->setLimit($perPage)
+            ->setOffset(($page - 1) * $perPage);
         return $this;
     }
 
@@ -64,6 +115,40 @@ class Search implements ClientContract
     {
         $this->builder->setType($type);
 
+        return $this;
+    }
+
+    /**
+     * Set the categories
+     *
+     * @param array $categories
+     * @return Search
+     */
+    public function categories($categories = [])
+    {
+        if (count($categories)) {
+            $this->catgories = $categories;
+            $filter = $this->findFilter('Category');
+            $filter->process($categories);
+            $this->builder->addFilter($filter);
+        }
+        return $this;
+    }
+
+    /**
+     * Set the filters on the search
+     *
+     * @param array $filters
+     * @return void
+     */
+    public function filters($filters = [])
+    {
+        foreach ($filters as $filter => $value) {
+            $object = $this->findFilter($filter);
+            if ($object && $object = $object->process($value, $filter)) {
+                $this->builder->addFilter($object);
+            }
+        }
         return $this;
     }
 
@@ -105,32 +190,15 @@ class Search implements ClientContract
      *
      * @return array
      */
-    public function search($keywords, $category = null, $filters = [], $sorts = null, $page = 1, $perPage = 30)
+    public function search($rank = true)
     {
         $roles = app('api')->roles()->getHubAccessRoles();
+
         $builder = $this->builder;
 
-        if ($keywords) {
-            $builder->setTerm($keywords);
-        }
-
-        $builder->setLimit($perPage)
-            ->setOffset(($page - 1) * $perPage)
-            ->setSorting($sorts)
+        $builder
             ->withAggregations()
             ->useCustomerFilters();
-
-        if ($category->count()) {
-            $filter = $this->findFilter('Category');
-            $filter->process($category);
-            $builder->addFilter($filter);
-        }
-
-        if ($category && empty($sorts)) {
-            foreach ($category as $cat) {
-                $builder->addSort(CategorySort::class, $cat);
-            }
-        }
 
         if ($channel = $builder->getChannel()) {
             $channelFilter = $this->findFilter('Channel');
@@ -138,17 +206,17 @@ class Search implements ClientContract
             $builder->addFilter($channelFilter);
         }
 
-        foreach ($filters ?? [] as $filter => $value) {
-            $object = $this->findFilter($filter);
-            if ($object && $object = $object->process($value, $filter)) {
-                $builder->addFilter($object);
+        if (count($this->categories) && empty($this->sorts)) {
+            foreach ($category as $cat) {
+                $builder->addSort(CategorySort::class, $cat);
             }
         }
 
         $search = $builder->getSearch();
-        $query = $builder->getQuery();
 
-        $search->setQuery($query);
+        $search->setQuery(
+            $builder->getQuery($rank)
+        );
 
         return $search->search();
     }

@@ -28,6 +28,9 @@ class ProductType extends BaseType
             'type' => 'text',
             'analyzer' => 'standard',
         ],
+        'popularity' => [
+            'type' => 'integer',
+        ],
         'sku' => [
             'type' => 'text',
             'analyzer' => 'standard',
