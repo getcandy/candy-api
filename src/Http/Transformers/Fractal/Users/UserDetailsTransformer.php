@@ -16,7 +16,7 @@ class UserDetailsTransformer extends BaseTransformer
             'company_name' => $details->company_name,
             'contact_number' => $details->contact_number,
             'vat_no' => $details->vat_no,
-            'fields' => json_decode($details->fields, true),
+            'fields' => $details->fields,
         ];
     }
 }
