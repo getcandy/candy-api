@@ -28,6 +28,9 @@ class ProductType extends BaseType
             'type' => 'text',
             'analyzer' => 'standard',
         ],
+        'popularity' => [
+            'type' => 'integer',
+        ],
         'sku' => [
             'type' => 'text',
             'analyzer' => 'standard',
@@ -46,9 +49,6 @@ class ProductType extends BaseType
                 'id' => [
                     'type' => 'keyword',
                     'index' => true,
-                ],
-                'name' => [
-                    'type' => 'text',
                 ],
                 'position' => [
                     'type' => 'integer',
@@ -114,6 +114,16 @@ class ProductType extends BaseType
         'max_price' => [
             'type' => 'scaled_float',
             'scaling_factor' => 100,
+        ],
+        'breadcrumbs' => [
+            'type' => 'text',
+            'analyzer' => 'standard',
+            'fields' => [
+                'en' => [
+                    'type' => 'text',
+                    'analyzer' => 'english',
+                ],
+            ],
         ],
         'name' => [
             'type' => 'text',
@@ -198,8 +208,6 @@ class ProductType extends BaseType
 
     public function rankings()
     {
-        return [
-            'name^5',  'sku^4', 'name.english^3', 'description^1',
-        ];
+        return config('getcandy.search.ranking.products');
     }
 }

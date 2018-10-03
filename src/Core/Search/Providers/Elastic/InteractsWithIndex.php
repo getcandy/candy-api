@@ -154,12 +154,12 @@ trait InteractsWithIndex
      *
      * @return string
      */
-    protected function getSearchIndex()
+    public function getSearchIndex()
     {
         return $this->type->getIndexName().'_'.$this->lang;
     }
 
-    protected function getCurrentIndex()
+    public function getCurrentIndex()
     {
         return $this->client->getIndex(
             $this->getSearchIndex()

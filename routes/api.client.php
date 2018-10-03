@@ -94,6 +94,7 @@ Route::group([
     /*
      * Payments
      */
+    $router->post('payments/3d-secure', 'Payments\PaymentController@validateThreeD');
     $router->get('payments/provider', 'Payments\PaymentController@provider');
     $router->get('payments/providers', 'Payments\PaymentController@providers');
     $router->get('payments/types', 'Payments\PaymentTypeController@index');

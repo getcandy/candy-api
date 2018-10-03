@@ -18,14 +18,14 @@ abstract class AbstractAggregator
      *
      * @return mixed
      */
-    abstract public function getPre(Search $search = null, $query = null);
+    abstract public function getPre(Search $search = null, $query = null, $postFilter = null);
 
     /**
      * Get the post aggregation query.
      *
      * @return bool
      */
-    public function getPost(Search $search, $query)
+    public function getPost($value)
     {
         return false;
     }

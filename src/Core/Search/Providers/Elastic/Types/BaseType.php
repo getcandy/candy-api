@@ -55,9 +55,12 @@ abstract class BaseType
 
                 $indexable->setIndex($indice);
 
-                $indexable->set('departments', $this->getCategories($model));
+                $categories = $this->getCategories($model);
+
+                $indexable->set('departments', $categories->toArray());
                 $indexable->set('customer_groups', $this->getCustomerGroups($model));
                 $indexable->set('channels', $this->getChannels($model));
+                $indexable->set('breadcrumbs', $categories->implode('name', ' | '));
 
                 $groupPricing = [];
 
@@ -204,7 +207,7 @@ abstract class BaseType
                 'name' => $item->attribute('name', null, $lang),
                 'position' => $item->pivot->position ?? 1,
             ];
-        })->toArray();
+        });
     }
 
     protected function getCustomerGroups(Model $model, $lang = 'en')

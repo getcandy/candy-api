@@ -20,14 +20,15 @@ class CategoryFilter extends AbstractFilter
 
     public function process($payload, $type = null)
     {
-        if (! empty($payload['values']) && is_array($payload['values'])) {
-            $this->add($payload['values']);
-        } elseif (is_string($payload)) {
-            $this->add($payload);
-        } else {
-            $this->add($payload->encodedId());
+        foreach ($payload as $category) {
+            if (! empty($category['values']) && is_array($category['values'])) {
+                $this->add($category['values']);
+            } elseif (is_string($category)) {
+                $this->add($category);
+            } else {
+                $this->add($category->encodedId());
+            }
         }
-
         return $this;
     }
 
@@ -39,10 +40,7 @@ class CategoryFilter extends AbstractFilter
      */
     protected function add($category)
     {
-        foreach (explode(':', $category) as $cat) {
-            $this->categories->push($cat);
-        }
-
+        $this->categories->push($category);
         return $this;
     }
 
@@ -64,7 +62,11 @@ class CategoryFilter extends AbstractFilter
 
             $cat->setQuery($term);
 
-            $filter->addMust($cat);
+            if ($this->categories->count() > 1) {
+                $filter->addShould($cat);
+            } else {
+                $filter->addMust($cat);
+            }
         }
 
         return $filter;

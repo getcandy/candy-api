@@ -8,6 +8,7 @@ use Elastica\Search;
 use Elastica\Suggest;
 use Elastica\Suggest\Phrase;
 use Elastica\Query\BoolQuery;
+use Elastica\Query\FunctionScore;
 use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Categories\Models\Category;
 use Elastica\Suggest\CandidateGenerator\DirectGenerator;
@@ -94,6 +95,12 @@ class SearchBuilder
     protected $term = null;
 
     /**
+     * The scoring function
+     * @var
+     */
+    protected $scoring = null;
+
+    /**
      * The user to restrict searching.
      *
      * @var mixed
@@ -172,6 +179,18 @@ class SearchBuilder
     }
 
     /**
+     * Set the function score
+     *
+     * @param mixed $score
+     * @return void
+     */
+    public function scoring($score)
+    {
+        $this->score = $score;
+        return $this;
+    }
+
+    /**
      * Set the search limit.
      *
      * @param int $limit
@@ -195,6 +214,16 @@ class SearchBuilder
         $this->offset = $offset;
 
         return $this;
+    }
+
+    /**
+     * Get the offset value
+     *
+     * @return integer
+     */
+    public function getOffset()
+    {
+        return $this->offset;
     }
 
     /**
@@ -290,6 +319,7 @@ class SearchBuilder
         return $this->client;
     }
 
+
     /**
      * Set up aggregations based on our attributes.
      *
@@ -334,6 +364,7 @@ class SearchBuilder
      */
     public function setSorting($sortables = null)
     {
+
         $sorts = [];
 
         if ($sortables) {
@@ -442,7 +473,7 @@ class SearchBuilder
      *
      * @return void
      */
-    public function getQuery()
+    public function getQuery($rank)
     {
         $query = new Query();
         $query->setParam('size', $this->limit);
@@ -485,7 +516,6 @@ class SearchBuilder
                 );
             }
         }
-
         $query->setPostFilter($postFilter);
 
         foreach ($this->aggregations as $agg) {
@@ -500,9 +530,11 @@ class SearchBuilder
                 $agg = $agg->addFilter($filter);
             }
 
+            $cloned = $query;
             $query->addAggregation($agg->getPre(
                 $this->getSearch(),
-                $query
+                $cloned->setQuery($boolQuery),
+                $postFilter
             ));
         }
 

@@ -40,7 +40,7 @@ class Offline extends AbstractProvider
         return new PaymentResponse(true, 'Payment Received');
     }
 
-    public function refund($token, $amount = null)
+    public function refund($token, $amount, $description)
     {
         return true;
     }

@@ -47,6 +47,10 @@ class CategoryTransformer extends BaseTransformer
             $data['aggregate_selected'] = $category->aggregate_selected;
         }
 
+        if (! is_null($category->doc_count)) {
+            $data['doc_count'] = $category->doc_count;
+        }
+
         return $data;
     }
 

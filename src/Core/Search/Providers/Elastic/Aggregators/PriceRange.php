@@ -14,35 +14,49 @@ class PriceRange extends AbstractAggregator
      * @param Query $query
      * @return Query
      */
-    public function getPre(Search $search = null, $query = null)
+    public function getPre(Search $search = null, $query = null, $postFilter = null)
     {
         // Add max price aggregator
         $max = new MaxPrice;
 
+        $boolQuery = $query->getQuery();
+
+        if ($postFilter) {
+            foreach ($postFilter->getParam('filter') as $filter) {
+                $boolQuery->addFilter($filter);
+            }
+        }
+
+        $query->setQuery($boolQuery);
         $query->addAggregation($max->getPre());
 
         $results = $search->setQuery($query)->search();
 
         $max = floor($results->getAggregation('max_price')['value']);
 
-        $ranges = range(0, $max, $max / 5);
+        // Get the config range filter.
+        $definedRanges = collect(config('getcandy.search.aggregation.price.ranges', []));
 
-        // Clean them up!
-        // Do this first so we have a nice array to work with on the next iteration.
-        foreach ($ranges as $index => $range) {
-            $ranges[$index] = round($range, -1);
-        }
+        $ranges = $definedRanges->first(function ($range) use ($max) {
+            if ($max < last($range)) {
+                return $range;
+            }
+            return false;
+        });
 
-        $rangeQuery = new Range('price_points');
+        $ranges = $ranges ?: $definedRanges->last();
+
+        $rangeQuery = new Range('price');
         $rangeQuery->setField('min_price');
 
-        // Go again, this time building up our agg
+        // Add our first range as being zero to the first one.
+        $rangeQuery->addRange(0, array_first($ranges) - 1);
         foreach ($ranges as $index => $range) {
             $next = $ranges[$index + 1] ?? null;
-
             $rangeQuery->addRange($range, $next ? $next - 1 : null);
         }
 
         return $rangeQuery;
     }
+
 }
