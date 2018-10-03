@@ -559,7 +559,7 @@ class OrderService extends BaseService
             $data['data'] ?? []
         );
 
-        return $this->handleProcessResponse($result, $order);
+        return $this->handleProcessResponse($result, $order, $type);
     }
 
     /**
@@ -569,10 +569,10 @@ class OrderService extends BaseService
      * @param Order $order
      * @return void
      */
-    protected function handleProcessResponse($transaction, $order)
+    protected function handleProcessResponse($transaction, $order, $type = null)
     {
         if ($transaction->success) {
-            if (! empty($type)) {
+            if ($type) {
                 $order->status = $type->success_status;
             } else {
                 $order->status = config('getcandy.orders.statuses.pending', 'payment-processing');
