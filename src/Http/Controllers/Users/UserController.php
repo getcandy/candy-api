@@ -7,6 +7,7 @@ use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Core\Users\Contracts\UserContract;
 use GetCandy\Api\Http\Requests\Users\CreateRequest;
 use GetCandy\Api\Http\Requests\Users\UpdateRequest;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use GetCandy\Api\Http\Transformers\Fractal\Users\UserTransformer;
 
 class UserController extends BaseController
@@ -76,5 +77,20 @@ class UserController extends BaseController
         $user = app('api')->users()->update($userId, $request->all());
 
         return $this->respondWithItem($user, new UserTransformer);
+    }
+
+    public function deleteReusablePayment($id, Request $request)
+    {
+        try {
+            $payment = app('api')->users()->getReusablePayment($id);
+        } catch (ModelNotFoundException $e) {
+            return $this->errorNotFound();
+        }
+
+        if ($payment->user_id != $request->user()->id) {
+            $this->errorUnauthorized();
+        }
+        app('api')->users()->deleteReusablePayment($payment);
+        return $this->respondWithNoContent();
     }
 }

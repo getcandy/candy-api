@@ -5,6 +5,7 @@ namespace GetCandy\Api\Core\Users\Services;
 use GetCandy\Api\Core\Auth\Models\User;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Users\Contracts\UserContract;
+use GetCandy\Api\Core\Payments\Models\ReusablePayment;
 
 class UserService extends BaseService implements UserContract
 {
@@ -108,6 +109,29 @@ class UserService extends BaseService implements UserContract
         $user->save();
 
         return $user;
+    }
+
+    /**
+     * Get a reusable payment by it's id
+     *
+     * @param string $id
+     * @return ReusablePayment
+     */
+    public function getReusablePayment($id)
+    {
+        $realId = (new ReusablePayment)->decodeId($id);
+        return ReusablePayment::findOrFail($realId);
+    }
+
+    /**
+     * Delete a reusable payment
+     *
+     * @param ReusablePayment $payment
+     * @return boolean
+     */
+    public function deleteReusablePayment($payment)
+    {
+        return $payment->delete();
     }
 
     public function update($userId, array $data)
