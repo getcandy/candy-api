@@ -11,6 +11,7 @@ use GetCandy\Api\Core\Addresses\Models\Address;
 use GetCandy\Api\Core\Languages\Models\Language;
 use GetCandy\Api\Core\Baskets\Models\SavedBasket;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
+use GetCandy\Api\Core\Payments\Models\ReusablePayment;
 
 trait HasCandy
 {
@@ -50,6 +51,11 @@ trait HasCandy
     public function savedBaskets()
     {
         return $this->hasManyThrough(SavedBasket::class, Basket::class);
+    }
+
+    public function reusablePayments()
+    {
+        return $this->hasMany(ReusablePayment::class);
     }
 
     public function setFieldsAttribute($value)

@@ -9,6 +9,7 @@ use GuzzleHttp\Exception\ClientException;
 use GetCandy\Api\Core\Payments\PaymentResponse;
 use GetCandy\Api\Core\Payments\Models\Transaction;
 use GetCandy\Api\Core\Payments\ThreeDSecureResponse;
+use GetCandy\Api\Core\Payments\Models\ReusablePayment;
 
 class SagePay extends AbstractProvider
 {
@@ -78,6 +79,7 @@ class SagePay extends AbstractProvider
         //     $country = $countryModel->iso_a_2;
         // }
         // // This breaks maria DB
+
         try {
             $payload = [
                 'transactionType' => 'Payment',
@@ -102,6 +104,17 @@ class SagePay extends AbstractProvider
                 ],
                 'entryMethod' => 'Ecommerce',
             ];
+
+            if (!empty($this->fields['save'])) {
+                $payload['paymentMethod']['card']['save'] = true;
+            }
+
+            if (!empty($this->fields['reusable'])) {
+                $payload['paymentMethod']['card']['reusable'] = true;
+            }
+
+            \Log::info(json_encode($payload));
+
 
             $response = $client->request('POST', 'transactions', [
                 'headers' => [
@@ -132,11 +145,38 @@ class SagePay extends AbstractProvider
         }
 
         $response = new PaymentResponse(true, 'Payment Received');
+
+        if (!empty($content['paymentMethod']['card']['reusable'])) {
+            $this->saveCard($content['paymentMethod']['card']);
+        }
+
         $response->transaction(
             $this->createSuccessTransaction($content, $this->order)
         );
 
         return $response;
+    }
+
+    protected function saveCard($details)
+    {
+        $identifier = $details['cardIdentifier'];
+        $userId = $this->order->user_id;
+        $exists = ReusablePayment::where('token', '=', $identifier)
+                    ->where('user_id', '=', $userId)->exists();
+
+        // If this card already exists for this user. Don't add it again.
+        if ($exists) {
+            return;
+        }
+
+        $payment = new ReusablePayment;
+        $payment->type = strtolower($details['cardType']);
+        $payment->provider = 'sagepay';
+        $payment->last_four = $details['lastFourDigits'];
+        $payment->expires_at = \Carbon\Carbon::createFromFormat('my', $details['expiryDate'])->endOfMonth();
+        $payment->token = $details['cardIdentifier'];
+        $payment->user_id = $this->order->user_id;
+        $payment->save();
     }
 
     public function processThreeD($transaction, $paRes)
@@ -180,6 +220,10 @@ class SagePay extends AbstractProvider
 
         if ($transaction['status'] != 'Ok') {
             return $this->createFailedTransaction($transaction);
+        }
+
+        if (!empty($transaction['paymentMethod']['card']['reusable'])) {
+            $this->saveCard($transaction['paymentMethod']['card']);
         }
 
         return $this->createSuccessTransaction($transaction);
