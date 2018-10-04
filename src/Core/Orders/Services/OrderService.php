@@ -550,6 +550,8 @@ class OrderService extends BaseService
             $type = app('api')->paymentTypes()->getByHashedId($data['payment_type_id']);
         } elseif (! empty($data['payment_type'])) {
             $type = app('api')->paymentTypes()->getByHandle($data['payment_type']);
+        } else {
+            $type = null;
         }
 
         $result = $this->payments->process(
