@@ -239,6 +239,7 @@ Route::group([
      * Users
      */
     $router->get('users/current', 'Users\UserController@getCurrentUser');
+    $router->delete('users/payments/{id}', 'Users\UserController@deleteReusablePayment');
     $router->resource('users', 'Users\UserController', [
         'except' => ['create', 'store'],
     ]);
