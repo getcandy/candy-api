@@ -12,6 +12,7 @@ class PaymentTypeTransformer extends BaseTransformer
         return [
             'id' => $type->encodedId(),
             'name' => $type->name,
+            'handle' => $type->handle,
             'driver' => $type->driver,
         ];
     }
