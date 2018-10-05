@@ -130,7 +130,7 @@ class PayPal extends AbstractProvider
         return $transactions;
     }
 
-    public function refund($token, $amount = null)
+    public function refund($token, $amount, $description)
     {
     }
 
