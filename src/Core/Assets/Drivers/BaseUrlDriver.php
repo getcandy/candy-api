@@ -54,6 +54,10 @@ abstract class BaseUrlDriver
         $this->model = $model;
         $this->data = $data;
 
+        if (!$this->info) {
+            $this->getInfo($this->data['url']);
+        }
+
         $asset = $this->prepare();
 
         if ($model->assets()->count()) {
@@ -106,7 +110,6 @@ abstract class BaseUrlDriver
     public function getThumbnail()
     {
         $thumbnail = $this->getImageFromUrl($this->info['thumbnail_url']);
-
         return $thumbnail ?: null;
     }
 
