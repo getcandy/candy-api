@@ -217,10 +217,10 @@ class ApiServiceProvider extends ServiceProvider
         Passport::routes();
 
         Passport::tokensExpireIn(
-            Carbon::now()->addMinutes(config('getcandy.token-lifetime'), 60)
+            Carbon::now()->addMinutes(config('getcandy.token_lifetime', 60))
         );
         Passport::refreshTokensExpireIn(
-            Carbon::now()->addMinutes(config('getcandy.refresh-token-lifetime'), 60)
+            Carbon::now()->addMinutes(config('getcandy.refresh_token_lifetime', 60))
         );
     }
 
