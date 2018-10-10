@@ -17,6 +17,7 @@ use GetCandy\Api\Core\Orders\Exceptions\OrderAlreadyProcessedException;
 use GetCandy\Api\Core\Payments\Exceptions\ThreeDSecureRequiredException;
 use GetCandy\Api\Http\Transformers\Fractal\Payments\ThreeDSecureTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Shipping\ShippingPriceTransformer;
+use GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException;
 
 class OrderController extends BaseController
 {
@@ -68,7 +69,11 @@ class OrderController extends BaseController
      */
     public function store(CreateRequest $request)
     {
-        $order = app('api')->orders()->store($request->basket_id, $request->user());
+        try {
+            $order = app('api')->orders()->store($request->basket_id, $request->user());
+        } catch (BasketHasPlacedOrderException $e) {
+            return $this->errorForbidden(trans('getcandy::exceptions.basket_already_has_placed_order'));
+        }
 
         return $this->respondWithItem($order->fresh(), new OrderTransformer);
     }

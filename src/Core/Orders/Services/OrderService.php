@@ -20,6 +20,7 @@ use GetCandy\Api\Core\Orders\Events\OrderProcessedEvent;
 use GetCandy\Api\Core\Orders\Events\OrderBeforeSavedEvent;
 use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
 use GetCandy\Api\Core\Orders\Exceptions\IncompleteOrderException;
+use GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException;
 
 class OrderService extends BaseService
 {
@@ -64,6 +65,8 @@ class OrderService extends BaseService
 
         if ($basket->activeOrder) {
             $order = $basket->activeOrder;
+        } elseif ($basket->placedOrder) {
+            throw new BasketHasPlacedOrderException;
         } else {
             $order = new Order;
             $order->basket()->associate($basket);
