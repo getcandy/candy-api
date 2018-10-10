@@ -84,6 +84,11 @@ class Basket extends BaseModel
         return $this->hasOne(Order::class);
     }
 
+    public function placedOrder()
+    {
+        return $this->hasOne(Order::class)->withoutGlobalScope('open')->where('placed_at', '!=', null);
+    }
+
     /**
      * Get the saved basket relation.
      *

@@ -116,7 +116,7 @@ class PayPal extends AbstractProvider
             $candyTrans->order()->associate($this->order);
             $candyTrans->merchant = $transaction->getPayee()->getMerchantId();
             $candyTrans->provider = 'PayPal';
-
+            $candyTrans->driver = 'paypal';
             $candyTrans->card_type = 'Express Checkout';
             $candyTrans->last_four = '';
 

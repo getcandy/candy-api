@@ -207,4 +207,9 @@ class AttributeService extends BaseService
     {
         return $this->model->where('filterable', true)->get();
     }
+
+    public function getSearchable()
+    {
+        return $this->model->where('searchable', true)->get();
+    }
 }
