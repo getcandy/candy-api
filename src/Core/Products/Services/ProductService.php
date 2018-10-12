@@ -285,9 +285,15 @@ class ProductService extends BaseService
 
     public function getSearchedIds($ids = [], $user = null)
     {
+
         $parsedIds = [];
         foreach ($ids as $hash) {
-            $parsedIds[] = $this->model->decodeId($hash);
+            $id = $this->model->decodeId($hash);
+            if (!$id) {
+                $parsedIds[] = $hash;
+            } else {
+                $parsedIds[] = $id;
+            }
         }
 
         $placeholders = implode(',', array_fill(0, count($parsedIds), '?')); // string for the query
