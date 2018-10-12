@@ -56,6 +56,10 @@ class CategoryTransformer extends BaseTransformer
 
     public function includeLayout(Category $category)
     {
+        if (! $category->layout) {
+            return $this->null();
+        }
+
         return $this->item($category->layout, new LayoutTransformer);
     }
 

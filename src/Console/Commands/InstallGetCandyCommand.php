@@ -337,6 +337,12 @@ class InstallGetCandyCommand extends Command
             ],
         ]);
 
+        \GetCandy\Api\Core\Settings\Models\Setting::forceCreate([
+            'name' => 'Orders',
+            'handle' => 'orders',
+            'content' => [],
+        ]);
+
         $this->info('Setting up some customer groups');
 
         CustomerGroup::forceCreate([
