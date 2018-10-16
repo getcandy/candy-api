@@ -43,7 +43,7 @@ Route::group([
     $router->put('baskets/{id}/user', 'Baskets\BasketController@putUser');
     $router->delete('baskets/{id}/user', 'Baskets\BasketController@deleteUser');
     $router->resource('baskets', 'Baskets\BasketController', [
-        'except' => ['edit', 'create', 'destroy'],
+        'except' => ['edit', 'create', 'destroy', 'update'],
     ]);
 
     /*
