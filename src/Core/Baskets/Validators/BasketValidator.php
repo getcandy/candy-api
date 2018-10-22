@@ -13,6 +13,6 @@ class BasketValidator
 
     public function inStock($value, $variant, $basketId, $validator)
     {
-        return app('api')->productVariants()->canAddToBasket($variant['id'], $variant['quantity']);
+        return app('api')->productVariants()->canAddToBasket($variant['id'], $variant['quantity'] ?? null);
     }
 }
