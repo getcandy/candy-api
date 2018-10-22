@@ -120,15 +120,13 @@ class CategoryService extends BaseService
 
         $existingProducts = $category->products;
 
-        $category->products()->detach();
+        $ids = [];
 
         foreach ($data['products'] as $item) {
-            $product = app('api')->products()->getByHashedId($item['id']);
-            $product = $category->products()->save(
-                $product,
-                ['position' => $item['position']]
-            );
+            $ids[app('api')->products()->getDecodedId($item['id'])] = ['position' => $item['position']];
         }
+
+        $category->products()->sync($ids, false);
 
         if ($existingProducts->count()) {
             app(SearchContract::class)->indexer()->updateDocuments(
