@@ -193,6 +193,8 @@ abstract class BaseType
     {
         $categories = $model->categories;
 
+        $cats = collect();
+
         foreach ($categories as $category) {
             $parent = $category->parent;
             while ($parent) {

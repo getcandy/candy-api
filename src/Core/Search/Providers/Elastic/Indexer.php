@@ -57,6 +57,40 @@ class Indexer
         return true;
     }
 
+    public function updateDocument($model, $field)
+    {
+        $this->against($model);
+        $index = $this->getIndex(
+            $this->indexer->getIndexName()
+        );
+        $this->indexer->getUpdatedDocument($model, $field, $index);
+        $elasticaType = $index->getType($this->indexer->type);
+        $elasticaType->addDocument($document);
+    }
+
+    public function updateDocuments($models, $field)
+    {
+        $this->against($models->first());
+
+        $type = $this->getType($models->first());
+        $index = $this->getCurrentIndex();
+        $documents = $type->getUpdatedDocuments($models, $field, $index);
+
+        $docs = [];
+
+        foreach ($documents as $document) {
+            foreach ($document as $doc) {
+                $docs[] = $document = new Document(
+                    $doc->getId(),
+                    $doc->getData(),
+                    $type->getHandle()
+                );
+            }
+        }
+
+        $index->addDocuments($docs);
+    }
+
     /**
      * Reindexes all indexes for a model.
      *

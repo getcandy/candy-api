@@ -180,16 +180,7 @@ class ProductType extends BaseType
 
     protected function updateCategories($model, $index)
     {
-        $type = $index->getType(
-            $this->type
-        );
-
-        $document = $type->getDocument($model->encodedId());
-
-        $categories = $this->getCategories($model);
-
-        $document->set('departments', $categories);
-
+        $document = $this->getIndexDocument($model);
         return $document;
     }
 
