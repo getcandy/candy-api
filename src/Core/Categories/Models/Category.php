@@ -67,7 +67,9 @@ class Category extends BaseModel
 
     public function products()
     {
-        return $this->belongsToMany(Product::class, 'product_categories')->withPivot('position')->orderBy('product_categories.position', 'asc');
+        return $this->belongsToMany(Product::class, 'product_categories')
+            ->withPivot('position')
+            ->orderBy('product_categories.position', 'asc');
     }
 
     public function channels()
