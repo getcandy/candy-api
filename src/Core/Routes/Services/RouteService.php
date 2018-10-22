@@ -4,7 +4,7 @@ namespace GetCandy\Api\Core\Routes\Services;
 
 use GetCandy\Api\Core\Routes\Models\Route;
 use GetCandy\Api\Core\Scaffold\BaseService;
-use GetCandy\Exceptions\MinimumRecordRequiredException;
+use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
 
 class RouteService extends BaseService
 {
@@ -54,7 +54,7 @@ class RouteService extends BaseService
         }
         if ($route->element->routes->count() == 1) {
             throw new MinimumRecordRequiredException(
-                trans('response.error.minimum_record')
+                trans('getcandy::exceptions.minimum_record_required')
             );
         }
 

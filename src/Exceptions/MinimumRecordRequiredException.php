@@ -1,6 +1,6 @@
 <?php
 
-namespace GetCandy\Exceptions;
+namespace GetCandy\Api\Exceptions;
 
 use Exception;
 
