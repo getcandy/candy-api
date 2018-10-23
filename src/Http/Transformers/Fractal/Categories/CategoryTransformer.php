@@ -29,6 +29,7 @@ class CategoryTransformer extends BaseTransformer
         'thumbnail',
         'layout',
         'descendants',
+        'children',
         'siblings',
     ];
 
@@ -40,6 +41,7 @@ class CategoryTransformer extends BaseTransformer
             'attribute_data' => $category->attribute_data,
             'depth' => $category->depth,
             'products_count' => $category->products->count(),
+            'children_count' => $category->children->count(),
             'parent_id' => app('api')->categories()->getEncodedId($category->parent_id),
         ];
 
@@ -73,6 +75,11 @@ class CategoryTransformer extends BaseTransformer
         return $this->collection($category->descendants()->where('parent_id', '=', $category->id)->get(), $this);
     }
 
+    public function includeChildren(Category $category)
+    {
+        return $this->collection($category->children()->defaultOrder()->get(), $this);
+    }
+
     public function includeParent(Category $category)
     {
         if (! $category->parent) {
@@ -80,14 +87,6 @@ class CategoryTransformer extends BaseTransformer
         }
 
         return $this->item($category->parent, $this);
-    }
-
-    public function includeChildren(Category $category)
-    {
-        $desc = $category->descendants()->withDepth()->having('depth', '<', 3)->get();
-        // dump($category);
-        // dd($desc);
-        return $this->collection($desc, $this);
     }
 
     public function includeProducts(Category $category, ParamBag $params = null)
