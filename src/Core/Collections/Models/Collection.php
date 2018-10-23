@@ -20,7 +20,7 @@ class Collection extends BaseModel
 
     protected $hashids = 'channel';
 
-    protected $settings = 'channel';
+    protected $settings = 'collections';
 
     /**
      * The attributes that are mass assignable.
