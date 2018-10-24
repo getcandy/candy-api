@@ -447,7 +447,6 @@ class OrderService extends BaseService
             } else {
                 $increment = $segments[2] + 1;
             }
-
         }
 
         return $year.'-'.$month.'-'.str_pad($increment, 4, 0, STR_PAD_LEFT);
@@ -574,7 +573,7 @@ class OrderService extends BaseService
     }
 
     /**
-     * Handles the response from an order being processed
+     * Handles the response from an order being processed.
      *
      * @param Transaction $transaction
      * @param Order $order
@@ -602,11 +601,12 @@ class OrderService extends BaseService
             $order->save();
         }
         event(new OrderProcessedEvent($order));
+
         return $order;
     }
 
     /**
-     * Process a 3DSecured transaction
+     * Process a 3DSecured transaction.
      *
      * @param Order $order
      * @param string $transactionId
@@ -634,7 +634,7 @@ class OrderService extends BaseService
      * @param User $user
      * @return void
      */
-    public function getPaginatedData($length = 50, $page = 1, $user = null, $status = null, $keywords = null, $dates = [], $zone  = null)
+    public function getPaginatedData($length = 50, $page = 1, $user = null, $status = null, $keywords = null, $dates = [], $zone = null)
     {
         $query = $this->model
             ->withoutGlobalScope('open')

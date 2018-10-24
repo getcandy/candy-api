@@ -29,6 +29,7 @@ class CategoryFilter extends AbstractFilter
                 $this->add($category->encodedId());
             }
         }
+
         return $this;
     }
 
@@ -41,6 +42,7 @@ class CategoryFilter extends AbstractFilter
     protected function add($category)
     {
         $this->categories->push($category);
+
         return $this;
     }
 

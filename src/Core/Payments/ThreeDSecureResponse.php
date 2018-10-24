@@ -15,24 +15,28 @@ class ThreeDSecureResponse
     public function setStatus($status)
     {
         $this->status = $status;
+
         return $this;
     }
 
     public function setTransactionId($transactionId)
     {
         $this->transactionId = $transactionId;
+
         return $this;
     }
 
     public function setRedirect($redirect)
     {
         $this->redirect = $redirect;
+
         return $this;
     }
 
     public function setPaRequest($paRequest)
     {
         $this->paRequest = $paRequest;
+
         return $this;
     }
 

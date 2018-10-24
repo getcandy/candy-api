@@ -2,10 +2,7 @@
 
 namespace GetCandy\Api\Core\Search\Providers\Elastic\Query;
 
-use Elastica\Query\Match;
 use Elastica\Query\DisMax;
-use Elastica\Query\Nested;
-use Elastica\Query\BoolQuery;
 use Elastica\Query\MultiMatch;
 
 class Term
@@ -42,13 +39,11 @@ class Term
 
     public function getQuery()
     {
-
         $disMaxQuery = new DisMax;
         $disMaxQuery->setBoost(1.5);
         $disMaxQuery->setTieBreaker(1);
 
-        if (!empty($this->fields['multi_match'])) {
-
+        if (! empty($this->fields['multi_match'])) {
             $multiMatch = $this->fields['multi_match'] ?? [];
 
             $prev = null;
@@ -67,8 +62,8 @@ class Term
                     $prev = $fields;
                 }
             }
-
         }
+
         return $disMaxQuery;
     }
 }

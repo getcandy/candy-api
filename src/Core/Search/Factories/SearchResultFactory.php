@@ -366,7 +366,6 @@ class SearchResultFactory implements SearchResultInterface
                 // $currency = app()->currencies
                 // dd(CurrencyConverter::format($bucket));
                 $buckets = collect($agg['buckets'])->map(function ($bucket) {
-
                     $label = 'between';
 
                     if ($bucket['from'] < 1) {
@@ -375,12 +374,13 @@ class SearchResultFactory implements SearchResultInterface
                         $label = 'over';
                     }
 
-                    $label = trans('getcandy::search.price.aggregation.' . $label, [
+                    $label = trans('getcandy::search.price.aggregation.'.$label, [
                         'min' => CurrencyConverter::format($bucket['from']),
                         'max' => CurrencyConverter::format($bucket['to'] ?? 0),
                     ]);
 
                     $bucket['key'] = $label;
+
                     return $bucket;
                 });
 

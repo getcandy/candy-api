@@ -2,16 +2,15 @@
 
 namespace GetCandy\Api\Core\Payments\Services;
 
-use Carbon\Carbon;
 use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Payments\PaymentContract;
 use GetCandy\Api\Core\Payments\Models\Transaction;
+use GetCandy\Api\Core\Payments\ThreeDSecureResponse;
 use GetCandy\Api\Core\Payments\Exceptions\TransactionAmountException;
 use GetCandy\Api\Core\Orders\Exceptions\OrderAlreadyProcessedException;
 use GetCandy\Api\Core\Payments\Exceptions\InvalidPaymentTokenException;
 use GetCandy\Api\Core\Payments\Exceptions\ThreeDSecureRequiredException;
-use GetCandy\Api\Core\Payments\ThreeDSecureResponse;
 
 class PaymentService extends BaseService
 {
@@ -166,7 +165,7 @@ class PaymentService extends BaseService
     }
 
     /**
-     * Validate a 3DSecure transaction
+     * Validate a 3DSecure transaction.
      *
      * @param string $transactionId The transaction ID from the provider
      * @param string $paRes The encoded response from the 3DSecure form

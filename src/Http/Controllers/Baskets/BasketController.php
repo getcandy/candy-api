@@ -72,7 +72,6 @@ class BasketController extends BaseController
             return $this->errorUnprocessable(trans('getcandy::validation.max_qty'));
         }
 
-
         return $this->respondWithItem($basket, new BasketTransformer);
     }
 

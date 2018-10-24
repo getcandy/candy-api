@@ -91,6 +91,7 @@ class UserController extends BaseController
             $this->errorUnauthorized();
         }
         app('api')->users()->deleteReusablePayment($payment);
+
         return $this->respondWithNoContent();
     }
 }
