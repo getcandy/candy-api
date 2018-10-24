@@ -5,7 +5,7 @@ return [
         'aggregation' => [
             'less_then' => 'Under :max',
             'between' => ':min - :max',
-            'over' => 'Over :min'
+            'over' => 'Over :min',
         ],
     ],
 ];

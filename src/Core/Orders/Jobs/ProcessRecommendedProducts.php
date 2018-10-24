@@ -93,10 +93,10 @@ class ProcessRecommendedProducts implements ShouldQueue
 
             $variant = ProductVariant::where('sku', '=', $sku)->first();
 
-            if (!$variant) {
+            if (! $variant) {
                 continue;
             }
-            
+
             DB::table('product_recommendations')->where('product_id', '=', $variant->product_id)->delete();
 
             $payload = $topProducts->map(function ($item) use ($variant) {

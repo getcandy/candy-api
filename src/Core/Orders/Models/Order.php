@@ -47,6 +47,7 @@ class Order extends BaseModel
     {
         return '#ORD-'.str_pad($this->id, 4, 0, STR_PAD_LEFT);
     }
+
     /**
      * The "booting" method of the model.
      *
@@ -88,7 +89,7 @@ class Order extends BaseModel
             ->orWhereIn('billing_lastname', $matches);
         }
 
-         $query->orWhereIn('id', $matches)
+        $query->orWhereIn('id', $matches)
             ->orWhereIn('reference', $matches);
 
         return $query;

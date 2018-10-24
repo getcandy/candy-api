@@ -42,7 +42,7 @@ class SagePay extends AbstractProvider
                 'referenceTransactionId' => $token,
                 'currency' => $this->order->currency, // Get currency from order.
                 'vendorTxCode' => str_random(40),
-                "description" => $description,
+                'description' => $description,
             ];
 
             $response = $client->request('POST', 'transactions', [
@@ -56,6 +56,7 @@ class SagePay extends AbstractProvider
         } catch (ClientException $e) {
             $errors = json_decode($e->getResponse()->getBody()->getContents(), true);
             $response = new PaymentResponse(false, 'Refund Failed', $errors);
+
             return $this->createFailedTransaction($errors, $amount, $description);
         }
 
@@ -105,16 +106,15 @@ class SagePay extends AbstractProvider
                 'entryMethod' => 'Ecommerce',
             ];
 
-            if (!empty($this->fields['save'])) {
+            if (! empty($this->fields['save'])) {
                 $payload['paymentMethod']['card']['save'] = true;
             }
 
-            if (!empty($this->fields['reusable'])) {
+            if (! empty($this->fields['reusable'])) {
                 $payload['paymentMethod']['card']['reusable'] = true;
             }
 
             \Log::info(json_encode($payload));
-
 
             $response = $client->request('POST', 'transactions', [
                 'headers' => [
@@ -130,6 +130,7 @@ class SagePay extends AbstractProvider
             $response->transaction(
                 $this->createFailedTransaction($errors)
             );
+
             return $response;
         }
 
@@ -146,7 +147,7 @@ class SagePay extends AbstractProvider
 
         $response = new PaymentResponse(true, 'Payment Received');
 
-        if (!empty($content['paymentMethod']['card']['reusable'])) {
+        if (! empty($content['paymentMethod']['card']['reusable'])) {
             $this->saveCard($content['paymentMethod']['card']);
         }
 
@@ -188,7 +189,7 @@ class SagePay extends AbstractProvider
         ]);
 
         try {
-            $response = $client->request('POST', 'transactions/' . $transaction . '/3d-secure', [
+            $response = $client->request('POST', 'transactions/'.$transaction.'/3d-secure', [
                 'headers' => [
                     'Authorization' => 'Basic '.$this->getCredentials(),
                     'Content-Type' => 'application/json',
@@ -198,10 +199,11 @@ class SagePay extends AbstractProvider
             ]);
         } catch (ClientException $e) {
             $errors = json_decode($e->getResponse()->getBody()->getContents(), true);
+
             return $this->createFailedTransaction([
                 'statusDetail' => $errors['description'],
                 'status' => 'failed',
-                'transactionId' => $transaction
+                'transactionId' => $transaction,
             ]);
         }
 
@@ -211,7 +213,7 @@ class SagePay extends AbstractProvider
             return $this->createFailedTransaction([
                 'statusDetail' => '3D Secure Failed',
                 'status' => 'failed',
-                'transactionId' => $transaction
+                'transactionId' => $transaction,
             ]);
         }
 
@@ -222,7 +224,7 @@ class SagePay extends AbstractProvider
             return $this->createFailedTransaction($transaction);
         }
 
-        if (!empty($transaction['paymentMethod']['card']['reusable'])) {
+        if (! empty($transaction['paymentMethod']['card']['reusable'])) {
             $this->saveCard($transaction['paymentMethod']['card']);
         }
 
@@ -236,7 +238,7 @@ class SagePay extends AbstractProvider
         ]);
 
         try {
-            $response = $client->request('GET', 'transactions/' . $id, [
+            $response = $client->request('GET', 'transactions/'.$id, [
                 'headers' => [
                     'Authorization' => 'Basic '.$this->getCredentials(),
                     'Content-Type' => 'application/json',
@@ -244,7 +246,7 @@ class SagePay extends AbstractProvider
                 ],
             ]);
         } catch (ClientException $e) {
-            return null;
+            return;
         }
 
         return json_decode($response->getBody()->getContents(), true);
@@ -307,7 +309,7 @@ class SagePay extends AbstractProvider
     }
 
     /**
-     * Create a failed transaction
+     * Create a failed transaction.
      *
      * @param array $errors
      * @return Transaction
@@ -332,7 +334,7 @@ class SagePay extends AbstractProvider
     }
 
     /**
-     * Get the client token for authentication
+     * Get the client token for authentication.
      *
      * @return void
      */
@@ -367,7 +369,7 @@ class SagePay extends AbstractProvider
     }
 
     /**
-     * Get the token expiry
+     * Get the token expiry.
      *
      * @return Carbon\Carbon
      */
@@ -377,7 +379,7 @@ class SagePay extends AbstractProvider
     }
 
     /**
-     * Get the vendor name
+     * Get the vendor name.
      *
      * @return string
      */
@@ -387,7 +389,7 @@ class SagePay extends AbstractProvider
     }
 
     /**
-     * Get the service credentials
+     * Get the service credentials.
      *
      * @return string
      */

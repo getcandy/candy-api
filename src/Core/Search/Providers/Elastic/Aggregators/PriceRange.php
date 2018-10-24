@@ -41,6 +41,7 @@ class PriceRange extends AbstractAggregator
             if ($max < last($range)) {
                 return $range;
             }
+
             return false;
         });
 
@@ -58,5 +59,4 @@ class PriceRange extends AbstractAggregator
 
         return $rangeQuery;
     }
-
 }

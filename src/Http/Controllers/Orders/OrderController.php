@@ -13,11 +13,11 @@ use GetCandy\Api\Http\Requests\Orders\StoreAddressRequest;
 use GetCandy\Api\Core\Orders\Exceptions\IncompleteOrderException;
 use GetCandy\Api\Http\Transformers\Fractal\Orders\OrderTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Documents\PdfTransformer;
+use GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException;
 use GetCandy\Api\Core\Orders\Exceptions\OrderAlreadyProcessedException;
 use GetCandy\Api\Core\Payments\Exceptions\ThreeDSecureRequiredException;
 use GetCandy\Api\Http\Transformers\Fractal\Payments\ThreeDSecureTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Shipping\ShippingPriceTransformer;
-use GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException;
 
 class OrderController extends BaseController
 {
@@ -92,6 +92,7 @@ class OrderController extends BaseController
             if (! $order->placed_at) {
                 return $this->errorForbidden('Payment has failed');
             }
+
             return $this->respondWithItem($order, new OrderTransformer);
         } catch (IncompleteOrderException $e) {
             return $this->errorForbidden('The order is missing billing information');
@@ -270,7 +271,7 @@ class OrderController extends BaseController
     }
 
     /**
-     * Handle the request to return an email preview
+     * Handle the request to return an email preview.
      *
      * @param string $status
      * @param Request $request
@@ -279,9 +280,9 @@ class OrderController extends BaseController
     public function emailPreview($status, Request $request)
     {
         // Get our mailer
-        $mailer = config('getcandy.orders.mailers.' . $status);
+        $mailer = config('getcandy.orders.mailers.'.$status);
 
-        if (!$mailer) {
+        if (! $mailer) {
             return $this->errorUnprocessable([
                 $status => 'No mailer exists',
             ]);
@@ -300,7 +301,7 @@ class OrderController extends BaseController
 
         return response()->json([
             'subject' => $mailerObject->subject,
-            'content' => base64_encode($view)
+            'content' => base64_encode($view),
         ]);
     }
 }

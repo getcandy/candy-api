@@ -9,10 +9,10 @@ use GetCandy\Api\Http\Transformers\Fractal\Assets\AssetTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Routes\RouteTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Layouts\LayoutTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Channels\ChannelTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\Discounts\DiscountTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Categories\CategoryTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Collections\CollectionTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Customers\CustomerGroupTransformer;
-use GetCandy\Api\Http\Transformers\Fractal\Discounts\DiscountTransformer;
 
 class ProductTransformer extends BaseTransformer
 {
@@ -135,7 +135,7 @@ class ProductTransformer extends BaseTransformer
     }
 
     /**
-     * Get the resources discounts
+     * Get the resources discounts.
      *
      * @param Product $product
      * @return void

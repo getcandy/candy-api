@@ -12,10 +12,8 @@ use GetCandy\Api\Http\Requests\Payments\ValidateThreeDRequest;
 use GetCandy\Api\Payments\Exceptions\AlreadyRefundedException;
 use GetCandy\Api\Http\Transformers\Fractal\Orders\OrderTransformer;
 use GetCandy\Api\Core\Payments\Exceptions\TransactionAmountException;
-use GetCandy\Api\Core\Payments\Exceptions\ThreeDSecureRequiredException;
 use GetCandy\Api\Http\Transformers\Fractal\Payments\ProviderTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Payments\TransactionTransformer;
-use GetCandy\Api\Http\Transformers\Fractal\Payments\ThreeDSecureTransformer;
 
 class PaymentController extends BaseController
 {
@@ -85,7 +83,7 @@ class PaymentController extends BaseController
     }
 
     /**
-     * Handles the request to validate a 3DSecure Transaction
+     * Handles the request to validate a 3DSecure Transaction.
      *
      * @param ValidateThreeDRequest $request
      * @return void

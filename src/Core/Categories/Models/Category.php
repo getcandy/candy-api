@@ -12,7 +12,6 @@ use GetCandy\Api\Core\Traits\HasAttributes;
 use GetCandy\Api\Core\Channels\Models\Channel;
 use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Traits\HasCustomerGroups;
-use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 
 class Category extends BaseModel
 {
