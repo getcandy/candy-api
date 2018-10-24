@@ -285,11 +285,10 @@ class ProductService extends BaseService
 
     public function getSearchedIds($ids = [], $user = null)
     {
-
         $parsedIds = [];
         foreach ($ids as $hash) {
             $id = $this->model->decodeId($hash);
-            if (!$id) {
+            if (! $id) {
                 $parsedIds[] = $hash;
             } else {
                 $parsedIds[] = $id;

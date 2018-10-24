@@ -29,7 +29,7 @@ class Search implements ClientContract
     protected $sorts = [];
 
     /**
-     * The filters to apply to the search
+     * The filters to apply to the search.
      *
      * @var null|array|Collection
      */
@@ -54,7 +54,7 @@ class Search implements ClientContract
     }
 
     /**
-     * Set the keywords on the builder
+     * Set the keywords on the builder.
      *
      * @param string $keywords
      * @return Search
@@ -64,11 +64,12 @@ class Search implements ClientContract
         if ($keywords) {
             $this->builder->setTerm($keywords);
         }
+
         return $this;
     }
 
     /**
-     * Set the sorting on the builder
+     * Set the sorting on the builder.
      *
      * @param array $sorts
      * @return Search
@@ -77,19 +78,21 @@ class Search implements ClientContract
     {
         $this->sorts = $sorts;
         $this->builder->setSorting($sorts);
+
         return $this;
     }
 
     /**
-     * Set up the pagination
+     * Set up the pagination.
      *
-     * @param integer $page
+     * @param int $page
      * @return Search
      */
     public function pagination($page = 1, $perPage = 30)
     {
         $this->builder->setLimit($perPage)
             ->setOffset(($page - 1) * $perPage);
+
         return $this;
     }
 
@@ -119,7 +122,7 @@ class Search implements ClientContract
     }
 
     /**
-     * Set the categories
+     * Set the categories.
      *
      * @param array $categories
      * @return Search
@@ -132,11 +135,12 @@ class Search implements ClientContract
             $filter->process($categories);
             $this->builder->addFilter($filter);
         }
+
         return $this;
     }
 
     /**
-     * Set the filters on the search
+     * Set the filters on the search.
      *
      * @param array $filters
      * @return void
@@ -149,6 +153,7 @@ class Search implements ClientContract
                 $this->builder->addFilter($object);
             }
         }
+
         return $this;
     }
 

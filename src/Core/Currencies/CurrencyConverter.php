@@ -39,6 +39,7 @@ class CurrencyConverter
     public function format($price)
     {
         $formatted = number_format($price, 2, $this->currency->decimal_point, $this->currency->thousand_point);
+
         return str_replace('{price}', $formatted, $this->currency->format);
     }
 

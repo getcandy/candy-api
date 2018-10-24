@@ -25,6 +25,7 @@ abstract class BaseModel extends Model
     public function setCustomAttribute($key, $value)
     {
         $this->custom_attributes[$key] = $value;
+
         return $this;
     }
 

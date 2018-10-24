@@ -8,7 +8,6 @@ use Elastica\Search;
 use Elastica\Suggest;
 use Elastica\Suggest\Phrase;
 use Elastica\Query\BoolQuery;
-use Elastica\Query\FunctionScore;
 use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Categories\Models\Category;
 use Elastica\Suggest\CandidateGenerator\DirectGenerator;
@@ -95,7 +94,7 @@ class SearchBuilder
     protected $term = null;
 
     /**
-     * The scoring function
+     * The scoring function.
      * @var
      */
     protected $scoring = null;
@@ -179,7 +178,7 @@ class SearchBuilder
     }
 
     /**
-     * Set the function score
+     * Set the function score.
      *
      * @param mixed $score
      * @return void
@@ -187,6 +186,7 @@ class SearchBuilder
     public function scoring($score)
     {
         $this->score = $score;
+
         return $this;
     }
 
@@ -217,9 +217,9 @@ class SearchBuilder
     }
 
     /**
-     * Get the offset value
+     * Get the offset value.
      *
-     * @return integer
+     * @return int
      */
     public function getOffset()
     {
@@ -319,7 +319,6 @@ class SearchBuilder
         return $this->client;
     }
 
-
     /**
      * Set up aggregations based on our attributes.
      *
@@ -364,7 +363,6 @@ class SearchBuilder
      */
     public function setSorting($sortables = null)
     {
-
         $sorts = [];
 
         if ($sortables) {

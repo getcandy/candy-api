@@ -4,12 +4,10 @@ namespace GetCandy\Api\Console\Commands;
 
 use DB;
 use Carbon\Carbon;
+use Elastica\Document;
 use Illuminate\Console\Command;
 use GetCandy\Api\Core\Search\SearchContract;
 use GetCandy\Api\Core\Products\Models\Product;
-use GetCandy\Api\Core\Categories\Models\Category;
-use Hashids\Hashids;
-use Elastica\Document;
 
 class ScoreProductsCommand extends Command
 {
@@ -35,7 +33,7 @@ class ScoreProductsCommand extends Command
         )
         ->whereBetween('placed_at', [
             Carbon::now()->subYear(),
-            Carbon::now()
+            Carbon::now(),
         ])
         ->where('is_shipping', '=', false)
         ->join('orders', 'order_lines.order_id', '=', 'orders.id')

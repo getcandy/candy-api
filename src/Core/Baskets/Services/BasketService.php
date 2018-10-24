@@ -366,6 +366,7 @@ class BasketService extends BaseService
         $userBasket->lines()->createMany(
             $newLines->merge($oldLines)->toArray()
         );
+
         return $this->factory->init($userBasket)->get();
     }
 
