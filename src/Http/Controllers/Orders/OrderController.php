@@ -287,18 +287,16 @@ class OrderController extends BaseController
             ]);
         }
 
+        $order = app('api')->orders()->getByHashedId($request->id);
+
         // Instantiate the mailer.
-        $mailerObject = app()->make($mailer);
+        $mailerObject = new $mailer($order);
 
         foreach ($request->data ?? [] as $attribute => $value) {
             $mailerObject->with($attribute, $value);
         }
 
-        if (method_exists($mailerObject, 'example')) {
-            $view = $mailerObject->example();
-        } else {
-            $view = $mailerObject->render();
-        }
+        $view = $mailerObject->render();
 
         return response()->json([
             'subject' => $mailerObject->subject,
