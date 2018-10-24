@@ -61,7 +61,6 @@ class BasketService extends BaseService
         } elseif ($user && $userBasket = $this->getCurrentForUser($user)) {
             $basket = $userBasket;
         }
-
         if ($user && ! $basket->user) {
             $basket->user()->associate($user);
         }
@@ -190,7 +189,7 @@ class BasketService extends BaseService
         $basket->save();
         event(new BasketStoredEvent($basket));
 
-        return $basket->refresh();
+        return $basket;
     }
 
     /**
