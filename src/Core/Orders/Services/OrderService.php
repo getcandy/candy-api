@@ -441,7 +441,13 @@ class OrderService extends BaseService
             $increment = 1;
         } else {
             $segments = explode('-', $order->reference);
-            $increment = $segments[2] + 1;
+
+            if (count($segments) == 1) {
+                $increment = 1;
+            } else {
+                $increment = $segments[2] + 1;
+            }
+
         }
 
         return $year.'-'.$month.'-'.str_pad($increment, 4, 0, STR_PAD_LEFT);
