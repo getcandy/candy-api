@@ -585,18 +585,17 @@ class OrderService extends BaseService
             $order->reference = $this->getNextInvoiceReference();
             $order->placed_at = Carbon::now();
 
+            $order->save();
+
             OrderNotification::dispatch(
                 $order,
                 $order->status
             );
         } else {
             $order->status = 'failed';
+            $order->save();
         }
-
-        $order->save();
-
         event(new OrderProcessedEvent($order));
-
         return $order;
     }
 
