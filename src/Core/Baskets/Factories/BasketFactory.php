@@ -6,6 +6,7 @@ use GetCandy\Api\Core\Discounts\Factory;
 use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Core\Discounts\DiscountInterface;
+use GetCandy\Api\Core\Baskets\Events\BasketFetchedEvent;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketInterface;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketLineInterface;
 
@@ -109,6 +110,8 @@ class BasketFactory implements BasketInterface
         }
 
         $this->basket->total_cost = $this->basket->sub_total + $this->basket->total_tax;
+
+        event(new BasketFetchedEvent($this->basket));
 
         return $this->basket;
     }

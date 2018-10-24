@@ -10,6 +10,8 @@ abstract class BaseModel extends Model
 {
     use Hashids;
 
+    public $custom_attributes = [];
+
     public function getSettingsAttribute()
     {
         $settings = app('api')->settings()->get($this->settings);
@@ -18,6 +20,12 @@ abstract class BaseModel extends Model
         }
 
         return $settings->content;
+    }
+
+    public function setCustomAttribute($key, $value)
+    {
+        $this->custom_attributes[$key] = $value;
+        return $this;
     }
 
     /**

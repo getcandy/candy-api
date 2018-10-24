@@ -14,13 +14,13 @@ class BasketLineTransformer extends BaseTransformer
 
     public function transform(BasketLine $line)
     {
-        $data = [
+        $data = array_merge($line->custom_attributes, [
             'id' => $line->encodedId(),
             'quantity' => $line->quantity,
-            'line_total' => $line->total_cost,
+            'line_total' => $line->total,
             'unit_price' => $line->unit_cost,
             'tax' => $line->total_tax,
-        ];
+        ]);
 
         return $data;
     }
