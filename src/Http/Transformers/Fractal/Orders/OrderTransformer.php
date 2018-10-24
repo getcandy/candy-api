@@ -18,7 +18,7 @@ class OrderTransformer extends BaseTransformer
     {
         $data = [
             'id' => $order->encodedId(),
-            'display_id' => '#ORD-'.str_pad($order->id, 4, 0, STR_PAD_LEFT),
+            'display_id' => $order->display_id,
             'sub_total' => $order->sub_total,
             'delivery_total' => $order->delivery_total,
             'discount_total' => $order->discount_total,
