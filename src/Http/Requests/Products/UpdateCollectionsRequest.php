@@ -14,7 +14,7 @@ class UpdateCollectionsRequest extends FormRequest
     public function rules()
     {
         return [
-            'collections' => 'required|array',
+            'collections' => 'array',
         ];
     }
 }
