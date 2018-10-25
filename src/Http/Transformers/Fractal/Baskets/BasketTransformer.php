@@ -19,7 +19,7 @@ class BasketTransformer extends BaseTransformer
     {
         $data = array_merge($basket->custom_attributes, [
             'id' => $basket->encodedId(),
-            'total' => $basket->total_cost,
+            'total' => round($basket->total_cost, 2),
             'sub_total' => $basket->sub_total,
             'tax_total' => $basket->total_tax,
         ]);
