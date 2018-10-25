@@ -29,6 +29,11 @@ abstract class BaseModel extends Model
         return $this;
     }
 
+    public function getCustomAttribute($key)
+    {
+        return $this->custom_attributes[$key] ?? null;
+    }
+
     /**
      * Scope a query to only include enabled.
      *
