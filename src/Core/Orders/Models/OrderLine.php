@@ -20,6 +20,7 @@ class OrderLine extends BaseModel
         'discount',
         'total',
         'shipping',
+        'delivery_total',
 
         // New fields
         'is_shipping',
