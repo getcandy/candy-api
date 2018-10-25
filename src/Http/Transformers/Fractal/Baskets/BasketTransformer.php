@@ -17,12 +17,12 @@ class BasketTransformer extends BaseTransformer
 
     public function transform(Basket $basket)
     {
-        $data = [
+        $data = array_merge($basket->custom_attributes, [
             'id' => $basket->encodedId(),
             'total' => $basket->total_cost,
             'sub_total' => $basket->sub_total,
             'tax_total' => $basket->total_tax,
-        ];
+        ]);
 
         return $data;
     }
