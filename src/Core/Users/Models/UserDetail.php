@@ -12,4 +12,9 @@ class UserDetail extends BaseModel
     {
         return json_decode($val);
     }
+
+    public function setFieldsAttribute($val)
+    {
+        $this->attributes['fields'] = json_encode($val);
+    }
 }
