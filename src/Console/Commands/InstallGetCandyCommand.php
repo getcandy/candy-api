@@ -2,25 +2,22 @@
 
 namespace GetCandy\Api\Console\Commands;
 
-use GetCandy\Api\Assets\Models\Asset;
-use GetCandy\Api\Assets\Models\AssetSource;
-use GetCandy\Api\Assets\Models\AssetTransform;
-use GetCandy\Api\Assets\Models\Transform;
-use GetCandy\Api\Associations\Models\AssociationGroup;
-use GetCandy\Api\Attributes\Models\Attribute;
-use GetCandy\Api\Attributes\Models\AttributeGroup;
-use GetCandy\Api\Auth\Models\User;
-use GetCandy\Api\Categories\Models\Category;
-use GetCandy\Api\Currencies\Models\Currency;
-use GetCandy\Api\Customers\Models\CustomerGroup;
-use GetCandy\Api\Languages\Models\Language;
-use GetCandy\Api\Products\Models\Product;
-use GetCandy\Api\Search\SearchContract;
-use GetCandy\Api\Taxes\Models\Tax;
-use Illuminate\Console\Command;
-use Laravel\Passport\Client;
-use Spatie\Permission\Models\Role;
 use Hash;
+use Laravel\Passport\Client;
+use Illuminate\Console\Command;
+use GetCandy\Api\Auth\Models\User;
+use GetCandy\Api\Taxes\Models\Tax;
+use Spatie\Permission\Models\Role;
+use GetCandy\Api\Settings\Models\Setting;
+use GetCandy\Api\Assets\Models\Transform;
+use GetCandy\Api\Countries\Models\Country;
+use GetCandy\Api\Assets\Models\AssetSource;
+use GetCandy\Api\Languages\Models\Language;
+use GetCandy\Api\Currencies\Models\Currency;
+use GetCandy\Api\Attributes\Models\Attribute;
+use GetCandy\Api\Customers\Models\CustomerGroup;
+use GetCandy\Api\Attributes\Models\AttributeGroup;
+use GetCandy\Api\Associations\Models\AssociationGroup;
 
 class InstallGetCandyCommand extends Command
 {
@@ -81,7 +78,7 @@ class InstallGetCandyCommand extends Command
             ['Username / Email', $this->user->email],
             ['Password', '[hidden]'],
             ['CMS Login', route('hub.login')],
-            ['API URL', url('api/' . config('app.api_version', 'v1'))],
+            ['API URL', url('api/'.config('app.api_version', 'v1'))],
             ['CMS Docs', 'https://getcandy.io/documentation/hub'],
             ['CMS Docs', 'https://getcandy.io/documentation/api'],
             ['OAuth Client ID', $client->id],
@@ -89,6 +86,11 @@ class InstallGetCandyCommand extends Command
         ]);
     }
 
+    /**
+     * Echo disclaimer on the command line.
+     *
+     * @return void
+     */
     protected function disclaimer()
     {
         $this->warn('*** BEFORE YOU CONTINUE ***');
@@ -106,7 +108,7 @@ class InstallGetCandyCommand extends Command
     }
 
     /**
-     * Check requirements
+     * Check requirements.
      *
      * @return void
      */
@@ -116,7 +118,7 @@ class InstallGetCandyCommand extends Command
     }
 
     /**
-     * Step one
+     * Step one.
      *
      * @return void
      */
@@ -133,7 +135,7 @@ class InstallGetCandyCommand extends Command
 
         $tries = 0;
 
-        while (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        while (! filter_var($email, FILTER_VALIDATE_EMAIL)) {
             if ($tries < 3) {
                 $message = 'Oops! That email looks invalid, can we try again?';
             } elseif ($tries >= 3 && $tries <= 6) {
@@ -293,7 +295,7 @@ class InstallGetCandyCommand extends Command
     }
 
     /**
-     * Create Taxes
+     * Create Taxes.
      *
      * @return void
      */
@@ -305,7 +307,7 @@ class InstallGetCandyCommand extends Command
             [
                 'percentage' => 20,
                 'name'       => 'VAT',
-                'default'    => true
+                'default'    => true,
             ]
         ];
 
@@ -330,19 +332,19 @@ class InstallGetCandyCommand extends Command
                 'content' => [
                     'asset_source' => 'products',
                     'transforms'   => [
-                        'large_thumbnail'
+                        'large_thumbnail',
                     ]
                 ]
             ]
         ];
 
         foreach ($settings as $setting) {
-            \GetCandy\Api\Settings\Models\Setting::forceCreate($setting);
+            Setting::forceCreate($setting);
         }
     }
 
     /**
-     * Create Customer Groups
+     * Create Customer Groups.
      *
      * @return void
      */
@@ -361,7 +363,7 @@ class InstallGetCandyCommand extends Command
                 'name'    => 'Guest',
                 'handle'  => 'guest',
                 'default' => false,
-                'system'  => true
+                'system'  => true,
             ]
         ];
 
@@ -371,7 +373,7 @@ class InstallGetCandyCommand extends Command
     }
 
     /**
-     * Create Currencies
+     * Create Currencies.
      *
      * @return void
      */
@@ -388,7 +390,7 @@ class InstallGetCandyCommand extends Command
                 'format'         => '&#xa3;{price}',
                 'decimal_point'  => '.',
                 'thousand_point' => ',',
-                'default'        => true
+                'default'        => true,
             ],
             [
                 'code'           => 'EUR',
@@ -397,7 +399,7 @@ class InstallGetCandyCommand extends Command
                 'exchange_rate'  => 0.87260,
                 'format'         => '&euro;{price}',
                 'decimal_point'  => '.',
-                'thousand_point' => ','
+                'thousand_point' => ',',
             ],
             [
                 'code'           => 'USD',
@@ -406,7 +408,7 @@ class InstallGetCandyCommand extends Command
                 'exchange_rate'  => 0.71,
                 'format'         => '${price}',
                 'decimal_point'  => '.',
-                'thousand_point' => ','
+                'thousand_point' => ',',
             ]
         ];
 
@@ -416,7 +418,7 @@ class InstallGetCandyCommand extends Command
     }
 
     /**
-     * Create sources
+     * Create sources.
      *
      * @return void
      */
@@ -427,17 +429,17 @@ class InstallGetCandyCommand extends Command
                 'name'   => 'Product images',
                 'handle' => 'products',
                 'disk'   => 'public',
-                'path'   => 'products'
+                'path'   => 'products',
             ],
             [
                 'name'   => 'Channel images',
                 'handle' => 'channels',
-                'disk'   => 'public'
+                'disk'   => 'public',
             ]
         ];
 
         foreach ($sources as $source) {
-            \GetCandy\Api\Assets\Models\AssetSource::create($source);
+            AssetSource::create($source);
         }
     }
 
@@ -454,24 +456,24 @@ class InstallGetCandyCommand extends Command
                 'handle' => 'thumbnail',
                 'mode'   => 'fit',
                 'width'  => 250,
-                'height' => 250
+                'height' => 250,
             ],
             [
                 'name'   => 'Large Thumbnail',
                 'handle' => 'large_thumbnail',
                 'mode'   => 'fit',
                 'width'  => 485,
-                'height' => 400
+                'height' => 400,
             ]
         ];
 
         foreach ($transforms as $transform) {
-            \GetCandy\Api\Assets\Models\Transform::create($transform);
+            Transform::create($transform);
         }
     }
 
     /**
-     * Create attributes
+     * Create attributes.
      *
      * @return void
      */
@@ -482,19 +484,19 @@ class InstallGetCandyCommand extends Command
         /** Create groups */
         $marketingGroup = AttributeGroup::forceCreate([
             'name'     => [
-                'en' => 'Marketing'
+                'en' => 'Marketing',
             ],
             'handle'   => 'marketing',
-            'position' => 1
+            'position' => 1,
         ]);
 
         $seoGroup = AttributeGroup::forceCreate([
             'name'     => [
                 'en' => 'SEO',
-                'sv' => 'SEO'
+                'sv' => 'SEO',
             ],
             'handle'   => 'seo',
-            'position' => 3
+            'position' => 3,
         ]);
 
         /** Create attributes */
@@ -502,18 +504,18 @@ class InstallGetCandyCommand extends Command
             [
                 'name'       => [
                     'en' => 'Name',
-                    'sv' => 'Name'
+                    'sv' => 'Name',
                 ],
                 'handle'     => 'name',
                 'position'   => 1,
                 'group_id'   => $marketingGroup->id,
                 'required'   => true,
                 'scopeable'  => 1,
-                'searchable' => 1
+                'searchable' => 1,
             ],
             [
                 'name'       => [
-                    'en' => 'Short Description'
+                    'en' => 'Short Description',
                 ],
                 'handle'     => 'short_description',
                 'position'   => 2,
@@ -526,7 +528,7 @@ class InstallGetCandyCommand extends Command
             ],
             [
                 'name'       => [
-                    'en' => 'Description'
+                    'en' => 'Description',
                 ],
                 'handle'     => 'description',
                 'position'   => 2,
@@ -535,11 +537,11 @@ class InstallGetCandyCommand extends Command
                 'required'   => true,
                 'type'       => 'richtext',
                 'scopeable'  => 1,
-                'searchable' => 1
+                'searchable' => 1,
             ],
             [
                 'name'       => [
-                    'en' => 'Page Title'
+                    'en' => 'Page Title',
                 ],
                 'handle'     => 'page_title',
                 'position'   => 1,
@@ -547,11 +549,11 @@ class InstallGetCandyCommand extends Command
                 'channeled'  => 1,
                 'required'   => false,
                 'scopeable'  => 1,
-                'searchable' => 1
+                'searchable' => 1,
             ],
             [
                 'name'       => [
-                    'en' => 'Meta description'
+                    'en' => 'Meta description',
                 ],
                 'handle'     => 'meta_description',
                 'position'   => 2,
@@ -560,11 +562,11 @@ class InstallGetCandyCommand extends Command
                 'required'   => false,
                 'scopeable'  => 1,
                 'searchable' => 1,
-                'type'       => 'textarea'
+                'type'       => 'textarea',
             ],
             [
                 'name'       => [
-                    'en' => 'Meta Keywords'
+                    'en' => 'Meta Keywords',
                 ],
                 'handle'     => 'meta_keywords',
                 'position'   => 3,
@@ -572,7 +574,7 @@ class InstallGetCandyCommand extends Command
                 'channeled'  => 1,
                 'required'   => false,
                 'scopeable'  => 1,
-                'searchable' => 1
+                'searchable' => 1,
             ]
         ];
 
@@ -582,7 +584,7 @@ class InstallGetCandyCommand extends Command
     }
 
     /**
-     * Create association groups
+     * Create association groups.
      *
      * @return void
      */
@@ -601,7 +603,7 @@ class InstallGetCandyCommand extends Command
             ],
             [
                 'name'   => 'Alternate',
-                'handle' => 'alternate'
+                'handle' => 'alternate',
             ]
         ];
 
@@ -611,36 +613,36 @@ class InstallGetCandyCommand extends Command
     }
 
     /**
-     * Create countries
+     * Create countries.
      *
      * @return void
      */
     public function createCountries()
     {
-        $countries = json_decode(file_get_contents(__DIR__ . '/../../../countries.json'), true);
+        $countries = json_decode(file_get_contents(__DIR__.'/../../../countries.json'), true);
 
         foreach ($countries as $country) {
             $name = [
-                'en' => $country['name']['common']
+                'en' => $country['name']['common'],
             ];
 
             foreach ($country['translations'] as $code => $data) {
                 $name[$code] = $data['common'];
             }
 
-            \GetCandy\Api\Countries\Models\Country::create([
+            Country::create([
                 'name'        => json_encode($name),
                 'iso_a_2'     => $country['cca2'],
                 'iso_a_3'     => $country['cca3'],
                 'iso_numeric' => $country['ccn3'],
                 'region'      => $country['region'],
-                'sub_region'  => $country['subregion']
+                'sub_region'  => $country['subregion'],
             ]);
         }
     }
 
     /**
-     * Print the title
+     * Print the title.
      *
      * @return void
      */
