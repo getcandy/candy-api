@@ -13,7 +13,7 @@ class CountryService extends BaseService
     }
 
     /**
-     * Get a collection of Countries grouped by region
+     * Get a collection of Countries grouped by region.
      *
      *
      * @return \Illuminate\Support\Collection
