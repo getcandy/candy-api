@@ -216,7 +216,6 @@ class InstallGetCandyCommand extends Command
         $family->attributes()->attach(Attribute::all());
     }
 
-
     /**
      * Do some behind the scenes stuff first.
      *
