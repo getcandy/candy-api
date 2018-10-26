@@ -89,7 +89,15 @@ class Order extends BaseModel
             ->orWhereIn('billing_lastname', $matches);
         }
 
+        // Need to be able to search on order total
+        foreach ($matches as $match) {
+            if (is_numeric($match)) {
+                $query->orWhere('order_total', '=', $match * 100);
+            }
+        }
+
         $query->orWhereIn('id', $matches)
+            ->orWhereIn('contact_email', $matches)
             ->orWhereIn('reference', $matches);
 
         return $query;
