@@ -12,6 +12,12 @@ class CountryService extends BaseService
         $this->model = new Country;
     }
 
+    /**
+     * Get a collection of Countries grouped by region
+     *
+     *
+     * @return \Illuminate\Support\Collection
+     */
     public function getGroupedByRegion()
     {
         return $this->model
