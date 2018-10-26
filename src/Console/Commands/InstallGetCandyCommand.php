@@ -182,7 +182,7 @@ class InstallGetCandyCommand extends Command
     }
 
     /**
-     * Set up the channel and product families
+     * Set up the channel and product families.
      *
      * @return void
      */
@@ -208,7 +208,7 @@ class InstallGetCandyCommand extends Command
         app('api')->productFamilies()->create([
             'name' => [
                 'en' => $productFamily,
-            ]
+            ],
         ]);
     }
 
@@ -435,7 +435,7 @@ class InstallGetCandyCommand extends Command
                 'name'   => 'Channel images',
                 'handle' => 'channels',
                 'disk'   => 'public',
-            ]
+            ],
         ];
 
         foreach ($sources as $source) {
@@ -575,7 +575,7 @@ class InstallGetCandyCommand extends Command
                 'required'   => false,
                 'scopeable'  => 1,
                 'searchable' => 1,
-            ]
+            ],
         ];
 
         foreach ($attributes as $attribute) {
