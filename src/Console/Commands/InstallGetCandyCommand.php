@@ -9,12 +9,12 @@ use GetCandy\Api\Auth\Models\User;
 use GetCandy\Api\Taxes\Models\Tax;
 use Spatie\Permission\Models\Role;
 use GetCandy\Api\Assets\Models\Transform;
-use GetCandy\Api\Settings\Models\Setting;
 use GetCandy\Api\Countries\Models\Country;
 use GetCandy\Api\Assets\Models\AssetSource;
 use GetCandy\Api\Languages\Models\Language;
 use GetCandy\Api\Currencies\Models\Currency;
 use GetCandy\Api\Attributes\Models\Attribute;
+use GetCandy\Api\Core\Settings\Models\Setting;
 use GetCandy\Api\Customers\Models\CustomerGroup;
 use GetCandy\Api\Attributes\Models\AttributeGroup;
 use GetCandy\Api\Associations\Models\AssociationGroup;
@@ -196,6 +196,8 @@ class InstallGetCandyCommand extends Command
 
         $this->info('Sounds good to me, lets get that set up...');
 
+        $attributes = Attribute::all();
+
         app('api')->channels()->create([
             'name'    => $channel,
             'default' => true,
@@ -205,12 +207,15 @@ class InstallGetCandyCommand extends Command
 
         $this->info('Setting that up for you now...');
 
-        app('api')->productFamilies()->create([
+        $family = app('api')->productFamilies()->create([
             'name' => [
                 'en' => $productFamily,
             ],
         ]);
+
+        $family->attributes()->attach(Attribute::all());
     }
+
 
     /**
      * Do some behind the scenes stuff first.
@@ -335,6 +340,11 @@ class InstallGetCandyCommand extends Command
                         'large_thumbnail',
                     ],
                 ],
+            ],
+            [
+                'name'    => 'Orders',
+                'handle'  => 'orders',
+                'content' => [],
             ],
         ];
 
