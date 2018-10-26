@@ -2,21 +2,21 @@
 
 namespace GetCandy\Api\Console\Commands;
 
-use GetCandy\Api\Attributes\Models\Attribute;
-use GetCandy\Api\Attributes\Models\AttributeGroup;
 use GetCandy\Api\Assets\Models\Asset;
 use GetCandy\Api\Assets\Models\AssetSource;
 use GetCandy\Api\Assets\Models\AssetTransform;
 use GetCandy\Api\Assets\Models\Transform;
+use GetCandy\Api\Associations\Models\AssociationGroup;
+use GetCandy\Api\Attributes\Models\Attribute;
+use GetCandy\Api\Attributes\Models\AttributeGroup;
 use GetCandy\Api\Auth\Models\User;
 use GetCandy\Api\Categories\Models\Category;
 use GetCandy\Api\Currencies\Models\Currency;
 use GetCandy\Api\Customers\Models\CustomerGroup;
 use GetCandy\Api\Languages\Models\Language;
 use GetCandy\Api\Products\Models\Product;
-use GetCandy\Api\Taxes\Models\Tax;
 use GetCandy\Api\Search\SearchContract;
-use GetCandy\Api\Associations\Models\AssociationGroup;
+use GetCandy\Api\Taxes\Models\Tax;
 use Illuminate\Console\Command;
 use Laravel\Passport\Client;
 use Spatie\Permission\Models\Role;
@@ -58,10 +58,15 @@ class InstallGetCandyCommand extends Command
     public function handle()
     {
         $this->disclaimer();
+
         $this->requirements();
+
         $this->preflight();
+
         $this->printTitle();
+
         $this->stepOne();
+
         $this->stepTwo();
 
         $this->line('--------------------------------------------------------');
@@ -100,6 +105,11 @@ class InstallGetCandyCommand extends Command
         }
     }
 
+    /**
+     * Check requirements
+     *
+     * @return void
+     */
     protected function requirements()
     {
         $this->info('Checking requirements');
@@ -113,6 +123,7 @@ class InstallGetCandyCommand extends Command
     protected function stepOne()
     {
         $this->info('Lets start with the basics...');
+
         // Set up new user
         $name = $this->ask('What\'s your name?');
 
@@ -165,7 +176,6 @@ class InstallGetCandyCommand extends Command
 
         $user->assignRole('admin');
 
-
         $this->user = $user;
     }
 
@@ -198,9 +208,6 @@ class InstallGetCandyCommand extends Command
                 'en' => $productFamily
             ]
         ]);
-
-
-
     }
 
     /**
@@ -211,248 +218,425 @@ class InstallGetCandyCommand extends Command
     protected function preflight()
     {
         $this->info('Initialising...');
+
         $this->call('migrate');
 
-        Role::create(['name' => 'admin']);
-        Role::create(['name' => 'customer']);
+        $this->createRoles();
 
-        $this->info('Adding base languages');
+        $this->createLanguages();
 
-        Language::create([
-            'lang' => 'en',
-            'iso' => 'gb',
-            'name' => 'English',
-            'default' => true
-        ]);
+        $this->createTaxes();
 
-        $this->info('Adding VAT...');
+        $this->createAttributes();
 
-        Tax::create([
-            'percentage' => 20,
-            'name' => 'VAT',
-            'default' => true
-        ]);
+        $this->createBaseSettings();
 
-        $this->info('Adding Attributes');
+        $this->createCustomerGroups();
 
-        $group = AttributeGroup::forceCreate([
-            'name' => ['en' => 'Marketing'],
-            'handle' => 'marketing',
-            'position' => 1
-        ]);
-
-        $attribute = new Attribute();
-        $attribute->name = ['en' => 'Name', 'sv' => 'Namn'];
-        $attribute->handle = 'name';
-        $attribute->position = 1;
-        $attribute->group_id = $group->id;
-        $attribute->required = true;
-        $attribute->scopeable = 1;
-        $attribute->searchable = 1;
-        $attribute->save();
-
-        $attribute = new Attribute();
-        $attribute->name = ['en' => 'Short Description'];
-        $attribute->handle = 'short_description';
-        $attribute->position = 2;
-        $attribute->group_id = $group->id;
-        $attribute->channeled = 1;
-        $attribute->required = true;
-        $attribute->type = 'richtext';
-        $attribute->scopeable = 1;
-        $attribute->searchable = 1;
-        $attribute->save();
-
-        $attribute = new Attribute();
-        $attribute->name = ['en' => 'Description'];
-        $attribute->handle = 'description';
-        $attribute->position = 2;
-        $attribute->group_id = $group->id;
-        $attribute->channeled = 1;
-        $attribute->required = true;
-        $attribute->type = 'richtext';
-        $attribute->scopeable = 1;
-        $attribute->searchable = 1;
-        $attribute->save();
-
-        // $group = AttributeGroup::create([
-        //     'name' => ['en' => 'General', 'sv' => 'Allmän'],
-        //     'handle' => 'general',
-        //     'position' => 2
-        // ]);
-
-        $group = AttributeGroup::forceCreate([
-            'name' => ['en' => 'SEO', 'sv' => 'SEO'],
-            'handle' => 'seo',
-            'position' => 3
-        ]);
-
-        $attribute = new Attribute();
-        $attribute->name = ['en' => 'Page Title'];
-        $attribute->handle = 'page_title';
-        $attribute->position = 1;
-        $attribute->group_id = $group->id;
-        $attribute->channeled = 1;
-        $attribute->required = false;
-        $attribute->scopeable = 1;
-        $attribute->searchable = 1;
-        $attribute->save();
-
-        $attribute = new Attribute();
-        $attribute->name = ['en' => 'Meta description'];
-        $attribute->handle = 'meta_description';
-        $attribute->position = 2;
-        $attribute->group_id = $group->id;
-        $attribute->channeled = 1;
-        $attribute->required = false;
-        $attribute->scopeable = 1;
-        $attribute->searchable = 1;
-        $attribute->type = 'textarea';
-        $attribute->save();
-
-        $attribute = new Attribute();
-        $attribute->name = ['en' => 'Meta Keywords'];
-        $attribute->handle = 'meta_keywords';
-        $attribute->position = 3;
-        $attribute->group_id = $group->id;
-        $attribute->channeled = 1;
-        $attribute->required = false;
-        $attribute->scopeable = 1;
-        $attribute->searchable = 1;
-        $attribute->save();
-
-
-        $this->info('Adding some base settings');
-
-        \GetCandy\Api\Settings\Models\Setting::forceCreate([
-            'name' => 'Products',
-            'handle' => 'products',
-            'content' => [
-                'asset_source' => 'products',
-                'transforms' => ['large_thumbnail']
-            ]
-        ]);
-
-        $this->info('Setting up some customer groups');
-
-        CustomerGroup::forceCreate([
-            'name' => 'Retail',
-            'handle' => 'retail',
-            'default' => true,
-            'system' => true
-        ]);
-
-        CustomerGroup::forceCreate([
-            'name' => 'Guest',
-            'handle' => 'guest',
-            'default' => false,
-            'system' => true
-        ]);
-
-        $this->info('Adding some currencies');
-
-        Currency::create([
-            'code' => 'GBP',
-            'name' => 'British Pound',
-            'enabled' => true,
-            'exchange_rate' => 1,
-            'format' => '&#xa3;{price}',
-            'decimal_point' => '.',
-            'thousand_point' => ',',
-            'default' => true
-        ]);
-
-        Currency::create([
-            'code' => 'EUR',
-            'name' => 'Euro',
-            'enabled' => true,
-            'exchange_rate' => 0.87260,
-            'format' => '&euro;{price}',
-            'decimal_point' => '.',
-            'thousand_point' => ','
-        ]);
-
-        Currency::create([
-            'code' => 'USD',
-            'name' => 'US Dollars',
-            'enabled' => true,
-            'exchange_rate' => 0.71,
-            'format' => '${price}',
-            'decimal_point' => '.',
-            'thousand_point' => ','
-        ]);
+        $this->createCurrencies();
 
         $this->info('Initialising Assets');
 
-        $sources = [
+        $this->createSources();
+
+        $this->createImageTransforms();
+
+        $this->createAssociationGroups();
+
+        $this->createCountries();
+
+        $this->call('passport:install');
+    }
+
+    /**
+     * Create Roles
+     *
+     * @return void
+     */
+    public function createRoles()
+    {
+        $roles = [
             [
-                'name' => 'Product images',
-                'handle' => 'products',
-                'disk' => 'public',
-                'path' => 'products'
+                'name' => 'admin'
             ],
             [
-                'name' => 'Channel images',
+                'name' => 'customer'
+            ]
+        ];
+
+        foreach ($roles as $role) {
+            Role::create($role);
+        }
+    }
+
+    /**
+     * Create languages
+     *
+     * @return void
+     */
+    public function createLanguages()
+    {
+        $this->info('Adding base languages');
+
+        $languages = [
+            [
+                'lang'    => 'en',
+                'iso'     => 'gb',
+                'name'    => 'English',
+                'default' => true
+            ]
+        ];
+
+        foreach ($languages as $language) {
+            Language::create($language);
+        }
+    }
+
+    /**
+     * Create Taxes
+     *
+     * @return void
+     */
+    public function createTaxes()
+    {
+        $this->info('Adding Taxes...');
+
+        $taxes = [
+            [
+                'percentage' => 20,
+                'name'       => 'VAT',
+                'default'    => true
+            ]
+        ];
+
+        foreach ($taxes as $tax) {
+            Tax::create($tax);
+        }
+    }
+
+    /**
+     * Create base settings
+     *
+     * @return void
+     */
+    public function createBaseSettings()
+    {
+        $this->info('Adding some base settings');
+
+        $settings = [
+            [
+                'name'    => 'Products',
+                'handle'  => 'products',
+                'content' => [
+                    'asset_source' => 'products',
+                    'transforms'   => [
+                        'large_thumbnail'
+                    ]
+                ]
+            ]
+        ];
+
+        foreach ($settings as $setting) {
+            \GetCandy\Api\Settings\Models\Setting::forceCreate($setting);
+        }
+    }
+
+    /**
+     * Create Customer Groups
+     *
+     * @return void
+     */
+    public function createCustomerGroups()
+    {
+        $this->info('Setting up some customer groups');
+
+        $customerGroups = [
+            [
+                'name'    => 'Retail',
+                'handle'  => 'retail',
+                'default' => true,
+                'system'  => true
+            ],
+            [
+                'name'    => 'Guest',
+                'handle'  => 'guest',
+                'default' => false,
+                'system'  => true
+            ]
+        ];
+
+        foreach ($customerGroups as $group) {
+            CustomerGroup::forceCreate($group);
+        }
+    }
+
+    /**
+     * Create Currencies
+     *
+     * @return void
+     */
+    public function createCurrencies()
+    {
+        $this->info('Adding some currencies');
+
+        $currencies = [
+            [
+                'code'           => 'GBP',
+                'name'           => 'British Pound',
+                'enabled'        => true,
+                'exchange_rate'  => 1,
+                'format'         => '&#xa3;{price}',
+                'decimal_point'  => '.',
+                'thousand_point' => ',',
+                'default'        => true
+            ],
+            [
+                'code'           => 'EUR',
+                'name'           => 'Euro',
+                'enabled'        => true,
+                'exchange_rate'  => 0.87260,
+                'format'         => '&euro;{price}',
+                'decimal_point'  => '.',
+                'thousand_point' => ','
+            ],
+            [
+                'code'           => 'USD',
+                'name'           => 'US Dollars',
+                'enabled'        => true,
+                'exchange_rate'  => 0.71,
+                'format'         => '${price}',
+                'decimal_point'  => '.',
+                'thousand_point' => ','
+            ]
+        ];
+
+        foreach ($currencies as $currency) {
+            Currency::create($currency);
+        }
+    }
+
+    /**
+     * Create sources
+     *
+     * @return void
+     */
+    public function createSources()
+    {
+        $sources = [
+            [
+                'name'   => 'Product images',
+                'handle' => 'products',
+                'disk'   => 'public',
+                'path'   => 'products'
+            ],
+            [
+                'name'   => 'Channel images',
                 'handle' => 'channels',
-                'disk' => 'public'
+                'disk'   => 'public'
             ]
         ];
 
         foreach ($sources as $source) {
             \GetCandy\Api\Assets\Models\AssetSource::create($source);
         }
+    }
 
-        \GetCandy\Api\Assets\Models\Transform::create([
-            'name' => 'Thumbnail',
-            'handle' => 'thumbnail',
-            'mode' => 'fit',
-            'width' => 250,
-            'height' => 250
+    /**
+     * Create Image Transforms
+     *
+     * @return void
+     */
+    public function createImageTransforms()
+    {
+        $transforms = [
+            [
+                'name'   => 'Thumbnail',
+                'handle' => 'thumbnail',
+                'mode'   => 'fit',
+                'width'  => 250,
+                'height' => 250
+            ],
+            [
+                'name'   => 'Large Thumbnail',
+                'handle' => 'large_thumbnail',
+                'mode'   => 'fit',
+                'width'  => 485,
+                'height' => 400
+            ]
+        ];
+
+        foreach ($transforms as $transform) {
+            \GetCandy\Api\Assets\Models\Transform::create($transform);
+        }
+    }
+
+    /**
+     * Create attributes
+     *
+     * @return void
+     */
+    public function createAttributes()
+    {
+        $this->info('Adding Attributes');
+
+        /** Create groups */
+        $marketingGroup = AttributeGroup::forceCreate([
+            'name'     => [
+                'en' => 'Marketing'
+            ],
+            'handle'   => 'marketing',
+            'position' => 1
         ]);
 
-        \GetCandy\Api\Assets\Models\Transform::create([
-            'name' => 'Large Thumbnail',
-            'handle' => 'large_thumbnail',
-            'mode' => 'fit',
-            'width' => 485,
-            'height' => 400
+        $seoGroup = AttributeGroup::forceCreate([
+            'name'     => [
+                'en' => 'SEO',
+                'sv' => 'SEO'
+            ],
+            'handle'   => 'seo',
+            'position' => 3
         ]);
 
+        /** Create attributes */
+        $attributes = [
+            [
+                'name'       => [
+                    'en' => 'Name',
+                    'sv' => 'Name'
+                ],
+                'handle'     => 'name',
+                'position'   => 1,
+                'group_id'   => $marketingGroup->id,
+                'required'   => true,
+                'scopeable'  => 1,
+                'searchable' => 1
+            ],
+            [
+                'name'       => [
+                    'en' => 'Short Description'
+                ],
+                'handle'     => 'short_description',
+                'position'   => 2,
+                'group_id'   => $marketingGroup->id,
+                'channeled'  => 1,
+                'required'   => true,
+                'type'       => 'richtext',
+                'scopeable'  => 1,
+                'searchable' => 1,
+            ],
+            [
+                'name'       => [
+                    'en' => 'Description'
+                ],
+                'handle'     => 'description',
+                'position'   => 2,
+                'group_id'   => $marketingGroup->id,
+                'channeled'  => 1,
+                'required'   => true,
+                'type'       => 'richtext',
+                'scopeable'  => 1,
+                'searchable' => 1
+            ],
+            [
+                'name'       => [
+                    'en' => 'Page Title'
+                ],
+                'handle'     => 'page_title',
+                'position'   => 1,
+                'group_id'   => $seoGroup->id,
+                'channeled'  => 1,
+                'required'   => false,
+                'scopeable'  => 1,
+                'searchable' => 1
+            ],
+            [
+                'name'       => [
+                    'en' => 'Meta description'
+                ],
+                'handle'     => 'meta_description',
+                'position'   => 2,
+                'group_id'   => $seoGroup->id,
+                'channeled'  => 1,
+                'required'   => false,
+                'scopeable'  => 1,
+                'searchable' => 1,
+                'type'       => 'textarea'
+            ],
+            [
+                'name'       => [
+                    'en' => 'Meta Keywords'
+                ],
+                'handle'     => 'meta_keywords',
+                'position'   => 3,
+                'group_id'   => $seoGroup->id,
+                'channeled'  => 1,
+                'required'   => false,
+                'scopeable'  => 1,
+                'searchable' => 1
+            ]
+        ];
+
+        foreach ($attributes as $attribute) {
+            Attribute::create($attribute);
+        }
+    }
+
+    /**
+     * Create association groups
+     *
+     * @return void
+     */
+    public function createAssociationGroups()
+    {
         $this->info('Adding association groups');
 
-        AssociationGroup::forceCreate([
-            'name' => 'Upsell',
-            'handle' => 'upsell',
-        ]);
-        AssociationGroup::forceCreate([
-            'name' => 'Cross-sell',
-            'handle' => 'cross-sell'
-        ]);
-        AssociationGroup::forceCreate([
-            'name' => 'Alternate',
-            'handle' => 'alternate'
-        ]);
+        $associationGroups = [
+            [
+                'name'   => 'Upsell',
+                'handle' => 'upsell',
+            ],
+            [
+                'name'   => 'Cross-sell',
+                'handle' => 'cross-sell'
+            ],
+            [
+                'name'   => 'Alternate',
+                'handle' => 'alternate'
+            ]
+        ];
 
+        foreach ($associationGroups as $group) {
+            AssociationGroup::forceCreate($group);
+        }
+    }
 
+    /**
+     * Create countries
+     *
+     * @return void
+     */
+    public function createCountries()
+    {
         $countries = json_decode(file_get_contents(__DIR__ . '/../../../countries.json'), true);
 
         foreach ($countries as $country) {
-            $name = ['en' => $country['name']['common']];
+            $name = [
+                'en' => $country['name']['common']
+            ];
 
             foreach ($country['translations'] as $code => $data) {
                 $name[$code] = $data['common'];
             }
+
             \GetCandy\Api\Countries\Models\Country::create([
-                'name' => json_encode($name),
-                'iso_a_2' => $country['cca2'],
-                'iso_a_3' => $country['cca3'],
+                'name'        => json_encode($name),
+                'iso_a_2'     => $country['cca2'],
+                'iso_a_3'     => $country['cca3'],
                 'iso_numeric' => $country['ccn3'],
-                'region' => $country['region'],
-                'sub_region' => $country['subregion']
+                'region'      => $country['region'],
+                'sub_region'  => $country['subregion']
             ]);
         }
-
-        $this->call('passport:install');
     }
 
     /**
