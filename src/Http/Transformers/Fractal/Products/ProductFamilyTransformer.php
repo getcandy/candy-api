@@ -21,6 +21,8 @@ class ProductFamilyTransformer extends BaseTransformer
         return [
             'id' => $family->encodedId(),
             'attribute_data' => $family->attribute_data,
+            'product_count' => $family->products()->count(),
+            'attribute_count' => $family->attributes()->count(),
         ];
     }
 
