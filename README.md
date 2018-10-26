@@ -66,7 +66,7 @@ php artisan vendor:publish --tag=public
 GetCandy doesn't have it's own User model, we figured you'd want your own, so we just use a trait:
 
 ```php
-use GetCandy\Api\Traits\HasCandy;
+use GetCandy\Api\Core\Traits\HasCandy;
 
 class User extends Authenticatable
 {
