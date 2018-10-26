@@ -1,4 +1,5 @@
 <?php
+
 namespace GetCandy\Api\Countries\Services;
 
 use GetCandy\Api\Scaffold\BaseService;
