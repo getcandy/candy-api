@@ -8,8 +8,8 @@ use Illuminate\Console\Command;
 use GetCandy\Api\Auth\Models\User;
 use GetCandy\Api\Taxes\Models\Tax;
 use Spatie\Permission\Models\Role;
-use GetCandy\Api\Settings\Models\Setting;
 use GetCandy\Api\Assets\Models\Transform;
+use GetCandy\Api\Settings\Models\Setting;
 use GetCandy\Api\Countries\Models\Country;
 use GetCandy\Api\Assets\Models\AssetSource;
 use GetCandy\Api\Languages\Models\Language;
@@ -82,7 +82,7 @@ class InstallGetCandyCommand extends Command
             ['CMS Docs', 'https://getcandy.io/documentation/hub'],
             ['CMS Docs', 'https://getcandy.io/documentation/api'],
             ['OAuth Client ID', $client->id],
-            ['OAuth Secret', $client->secret]
+            ['OAuth Secret', $client->secret],
         ]);
     }
 
@@ -170,8 +170,8 @@ class InstallGetCandyCommand extends Command
 
         $user->fill([
             'password' => Hash::make($password),
-            'name' => $name,
-            'email' => $email
+            'name'     => $name,
+            'email'    => $email,
         ]);
 
         $user->save();
@@ -197,8 +197,8 @@ class InstallGetCandyCommand extends Command
         $this->info('Sounds good to me, lets get that set up...');
 
         app('api')->channels()->create([
-            'name' => $channel,
-            'default' => true
+            'name'    => $channel,
+            'default' => true,
         ]);
 
         $productFamily = $this->ask('We need to set up an initial product family name');
@@ -207,13 +207,13 @@ class InstallGetCandyCommand extends Command
 
         app('api')->productFamilies()->create([
             'name' => [
-                'en' => $productFamily
+                'en' => $productFamily,
             ]
         ]);
     }
 
     /**
-     * Do some behind the scenes stuff first
+     * Do some behind the scenes stuff first.
      *
      * @return void
      */
@@ -251,7 +251,7 @@ class InstallGetCandyCommand extends Command
     }
 
     /**
-     * Create Roles
+     * Create Roles.
      *
      * @return void
      */
@@ -259,11 +259,11 @@ class InstallGetCandyCommand extends Command
     {
         $roles = [
             [
-                'name' => 'admin'
+                'name' => 'admin',
             ],
             [
-                'name' => 'customer'
-            ]
+                'name' => 'customer',
+            ],
         ];
 
         foreach ($roles as $role) {
@@ -272,7 +272,7 @@ class InstallGetCandyCommand extends Command
     }
 
     /**
-     * Create languages
+     * Create languages.
      *
      * @return void
      */
@@ -285,8 +285,8 @@ class InstallGetCandyCommand extends Command
                 'lang'    => 'en',
                 'iso'     => 'gb',
                 'name'    => 'English',
-                'default' => true
-            ]
+                'default' => true,
+            ],
         ];
 
         foreach ($languages as $language) {
@@ -308,7 +308,7 @@ class InstallGetCandyCommand extends Command
                 'percentage' => 20,
                 'name'       => 'VAT',
                 'default'    => true,
-            ]
+            ],
         ];
 
         foreach ($taxes as $tax) {
@@ -317,7 +317,7 @@ class InstallGetCandyCommand extends Command
     }
 
     /**
-     * Create base settings
+     * Create base settings.
      *
      * @return void
      */
@@ -333,9 +333,9 @@ class InstallGetCandyCommand extends Command
                     'asset_source' => 'products',
                     'transforms'   => [
                         'large_thumbnail',
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ];
 
         foreach ($settings as $setting) {
@@ -357,14 +357,14 @@ class InstallGetCandyCommand extends Command
                 'name'    => 'Retail',
                 'handle'  => 'retail',
                 'default' => true,
-                'system'  => true
+                'system'  => true,
             ],
             [
                 'name'    => 'Guest',
                 'handle'  => 'guest',
                 'default' => false,
                 'system'  => true,
-            ]
+            ],
         ];
 
         foreach ($customerGroups as $group) {
@@ -409,7 +409,7 @@ class InstallGetCandyCommand extends Command
                 'format'         => '${price}',
                 'decimal_point'  => '.',
                 'thousand_point' => ',',
-            ]
+            ],
         ];
 
         foreach ($currencies as $currency) {
@@ -444,7 +444,7 @@ class InstallGetCandyCommand extends Command
     }
 
     /**
-     * Create Image Transforms
+     * Create Image Transforms.
      *
      * @return void
      */
@@ -464,7 +464,7 @@ class InstallGetCandyCommand extends Command
                 'mode'   => 'fit',
                 'width'  => 485,
                 'height' => 400,
-            ]
+            ],
         ];
 
         foreach ($transforms as $transform) {
@@ -599,12 +599,12 @@ class InstallGetCandyCommand extends Command
             ],
             [
                 'name'   => 'Cross-sell',
-                'handle' => 'cross-sell'
+                'handle' => 'cross-sell',
             ],
             [
                 'name'   => 'Alternate',
                 'handle' => 'alternate',
-            ]
+            ],
         ];
 
         foreach ($associationGroups as $group) {
