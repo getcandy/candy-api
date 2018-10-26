@@ -13,27 +13,29 @@ class CountryService extends BaseService
     }
 
     /**
-     * Get countries grouped by region.
+     * Get a collection of Countries grouped by region.
      *
-     * @return Collection
+     * @return  \Illuminate\Support\Collection
      */
     public function getGroupedByRegion()
     {
-        $countries = $this->model->get();
-
-        $countries = $countries->sort(function ($a, $b) {
-            return strcmp($a->translation('name'), $b->translation('name'));
-        })->groupBy('region');
-
-        return $countries;
+        return $this->model
+            ->get()
+            ->sort(function ($a, $b) {
+                return strcmp(
+                    $a->translation('name'),
+                    $b->translation('name')
+                );
+            })
+            ->groupBy('region');
     }
 
     /**
      * Get a country by its name.
      *
-     * @param string $name
-     * @param string $locale
-     * @return Country
+     * @param   string  $name
+     * @param   string  $locale
+     * @return  Country
      */
     public function getByName($name, $locale = 'en')
     {
