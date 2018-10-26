@@ -89,7 +89,7 @@ class ProductFamilyController extends BaseController
     public function destroy($id, DeleteRequest $request)
     {
         try {
-            $result = app('api')->productFamilies()->delete($id);
+            $result = app('api')->productFamilies()->delete($id, $request->product_family_id);
         } catch (MinimumRecordRequiredException $e) {
             return $this->errorUnprocessable($e->getMessage());
         } catch (NotFoundHttpException $e) {

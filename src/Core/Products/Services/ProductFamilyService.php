@@ -56,12 +56,22 @@ class ProductFamilyService extends BaseService
      *
      * @return bool
      */
-    public function delete($hashedId)
+    public function delete($hashedId, $target = null)
     {
         $productFamily = $this->getByHashedId($hashedId);
         if (! $productFamily) {
             abort(404);
         }
+
+        if (!$target) {
+            $target = $this->getDefaultRecord()->id;
+        } else {
+            $target = $this->getDecodedId($target);
+        }
+
+        $products = $productFamily->products()->select('id')->get()->toArray();
+
+        \DB::table('products')->whereIn('id', $products)->update(['product_family_id' => $target]);
 
         return $productFamily->delete();
     }
