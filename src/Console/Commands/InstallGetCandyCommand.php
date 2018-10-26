@@ -5,19 +5,19 @@ namespace GetCandy\Api\Console\Commands;
 use Hash;
 use Laravel\Passport\Client;
 use Illuminate\Console\Command;
-use GetCandy\Api\Auth\Models\User;
-use GetCandy\Api\Taxes\Models\Tax;
 use Spatie\Permission\Models\Role;
-use GetCandy\Api\Assets\Models\Transform;
-use GetCandy\Api\Countries\Models\Country;
-use GetCandy\Api\Assets\Models\AssetSource;
-use GetCandy\Api\Languages\Models\Language;
-use GetCandy\Api\Currencies\Models\Currency;
-use GetCandy\Api\Attributes\Models\Attribute;
+use GetCandy\Api\Core\Taxes\Models\Tax;
+use GetCandy\Api\Core\Auth\Models\User;
+use GetCandy\Api\Core\Assets\Models\Transform;
 use GetCandy\Api\Core\Settings\Models\Setting;
-use GetCandy\Api\Customers\Models\CustomerGroup;
-use GetCandy\Api\Attributes\Models\AttributeGroup;
-use GetCandy\Api\Associations\Models\AssociationGroup;
+use GetCandy\Api\Core\Countries\Models\Country;
+use GetCandy\Api\Core\Assets\Models\AssetSource;
+use GetCandy\Api\Core\Languages\Models\Language;
+use GetCandy\Api\Core\Currencies\Models\Currency;
+use GetCandy\Api\Core\Attributes\Models\Attribute;
+use GetCandy\Api\Core\Customers\Models\CustomerGroup;
+use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
+use GetCandy\Api\Core\Associations\Models\AssociationGroup;
 
 class InstallGetCandyCommand extends Command
 {
