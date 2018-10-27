@@ -1,7 +1,7 @@
 {
-    "name": "getcandy/candy-api",
+    "name": "surpaimb/candy-api",
     "description": "API driven E-commerce solution, written in Laravel",
-    "keywords": ["ecommerce", "laravel", "getcandy"],
+    "keywords": ["ecommerce", "laravel", "getcandy","surpaimb"],
     "license": "MIT",
     "type": "project",
     "require": {
@@ -15,7 +15,7 @@
         "itsgoingd/clockwork": "^2.0",
         "kalnoy/nestedset": "^4.3",
         "laravel/framework": "^5.6",
-        "laravel/passport": "^5.0",
+        "laravel/passport": "^6.0",
         "laravel/tinker": "^1.0",
         "league/fractal": "^0.17.0",
         "rollbar/rollbar-laravel": "^2.2",
