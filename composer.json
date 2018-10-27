@@ -1,6 +1,6 @@
 {
     "name": "surpaimb/candy-api",
-    "description": "API driven E-commerce solution, written in Laravel",
+    "description": "API driven E-commerce solution, written in Laravel fork by getcandy/candy-api",
     "keywords": ["ecommerce", "laravel", "getcandy","surpaimb"],
     "license": "MIT",
     "type": "project",
