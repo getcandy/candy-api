@@ -8,6 +8,7 @@
 Homestead.json
 Homestead.yaml
 npm-debug.log
+composer.lock
 .env
 /storage/testing/database.sqlite
 /output
