@@ -16,6 +16,9 @@ return [
      */
     'default_customer_group' => 'guest',
 
+    'token_lifetime' => 1440, // 1 day
+    'refresh_token_lifetime' => 1440, // 1 day
+
     /*
     |--------------------------------------------------------------------------
     | Discount settings
