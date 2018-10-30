@@ -24,6 +24,12 @@ class CreateDiscountsTable extends Migration
             $table->integer('priority')->default(0);
             $table->boolean('stop_rules')->default(false);
             $table->integer('uses')->default(0);
+            $table->unsignedInteger('created_by')->nullable();
+            $table->ipAddress('created_ip')->nullable();
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->ipAddress('updated_ip')->nullable();
+            $table->timestamp('disabled_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

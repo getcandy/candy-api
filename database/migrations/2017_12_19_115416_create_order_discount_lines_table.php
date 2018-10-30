@@ -22,6 +22,12 @@ class CreateOrderDiscountLinesTable extends Migration
             $table->string('type');
             $table->text('description')->nullable();
             $table->decimal('amount', 10, 2);
+            $table->unsignedInteger('created_by')->nullable();
+            $table->ipAddress('created_ip')->nullable();
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->ipAddress('updated_ip')->nullable();
+            $table->timestamp('disabled_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

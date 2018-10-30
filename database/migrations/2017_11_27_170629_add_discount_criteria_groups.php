@@ -19,6 +19,12 @@ class AddDiscountCriteriaGroups extends Migration
             $table->foreign('discount_id')->references('id')->on('discounts')->onDelete('CASCADE');
             $table->string('scope');
             $table->boolean('outcome');
+            $table->unsignedInteger('created_by')->nullable();
+            $table->ipAddress('created_ip')->nullable();
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->ipAddress('updated_ip')->nullable();
+            $table->timestamp('disabled_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

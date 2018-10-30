@@ -18,6 +18,12 @@ class CreateDiscountCriteriaSetModels extends Migration
             $table->integer('discount_criteria_item_id')->unsigned();
             $table->foreign('discount_criteria_item_id')->references('id')->on('discount_criteria_items');
             $table->morphs('eligible');
+            $table->unsignedInteger('created_by')->nullable();
+            $table->ipAddress('created_ip')->nullable();
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->ipAddress('updated_ip')->nullable();
+            $table->timestamp('disabled_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

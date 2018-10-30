@@ -20,6 +20,12 @@ class CreateCustomerGroupShippingPriceTable extends Migration
             $table->integer('customer_group_id')->unsigned();
             $table->foreign('customer_group_id')->references('id')->on('customer_groups');
             $table->boolean('visible')->default(true);
+            $table->unsignedInteger('created_by')->nullable();
+            $table->ipAddress('created_ip')->nullable();
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->ipAddress('updated_ip')->nullable();
+            $table->timestamp('disabled_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

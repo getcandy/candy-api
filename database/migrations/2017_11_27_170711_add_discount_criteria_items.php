@@ -19,6 +19,12 @@ class AddDiscountCriteriaItems extends Migration
             $table->foreign('discount_criteria_set_id')->references('id')->on('discount_criteria_sets')->onDelete('cascade');
             $table->string('type')->index();
             $table->string('value')->nullable()->index();
+            $table->unsignedInteger('created_by')->nullable();
+            $table->ipAddress('created_ip')->nullable();
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->ipAddress('updated_ip')->nullable();
+            $table->timestamp('disabled_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

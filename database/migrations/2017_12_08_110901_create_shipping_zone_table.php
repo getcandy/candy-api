@@ -16,6 +16,12 @@ class CreateShippingZoneTable extends Migration
         Schema::create('shipping_zones', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->index();
+            $table->unsignedInteger('created_by')->nullable();
+            $table->ipAddress('created_ip')->nullable();
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->ipAddress('updated_ip')->nullable();
+            $table->timestamp('disabled_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

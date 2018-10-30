@@ -20,6 +20,12 @@ class CreateChannelsTable extends Migration
             $table->string('handle')->unique();
             $table->boolean('default')->nullable();
 
+            $table->unsignedInteger('created_by')->nullable();
+            $table->ipAddress('created_ip')->nullable();
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->ipAddress('updated_ip')->nullable();
+            $table->timestamp('disabled_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

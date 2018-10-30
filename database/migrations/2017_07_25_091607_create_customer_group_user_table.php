@@ -19,6 +19,12 @@ class CreateCustomerGroupUserTable extends Migration
             $table->foreign('customer_group_id')->references('id')->onDelete('cascade')->on('customer_groups');
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->onDelete('cascade')->on('users');
+            $table->unsignedInteger('created_by')->nullable();
+            $table->ipAddress('created_ip')->nullable();
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->ipAddress('updated_ip')->nullable();
+            $table->timestamp('disabled_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

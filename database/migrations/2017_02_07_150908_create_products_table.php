@@ -17,8 +17,13 @@ class CreateProductsTable extends Migration
             $table->increments('id');
             $table->json('attribute_data');
             $table->json('option_data')->nullable();
-            $table->timestamps();
+            $table->unsignedInteger('created_by')->nullable();
+            $table->ipAddress('created_ip')->nullable();
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->ipAddress('updated_ip')->nullable();
+            $table->timestamp('disabled_at')->nullable();
             $table->softDeletes();
+            $table->timestamps();
         });
     }
 

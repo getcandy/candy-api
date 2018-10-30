@@ -21,6 +21,12 @@ class CreateProductAssociationTable extends Migration
             $table->foreign('association_id')->references('id')->on('products')->onDelete('cascade');
             $table->integer('group_id')->unsigned();
             $table->foreign('group_id')->references('id')->on('association_groups')->onDelete('cascade');
+            $table->unsignedInteger('created_by')->nullable();
+            $table->ipAddress('created_ip')->nullable();
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->ipAddress('updated_ip')->nullable();
+            $table->timestamp('disabled_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

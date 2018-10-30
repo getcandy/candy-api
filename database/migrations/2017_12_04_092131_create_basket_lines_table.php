@@ -21,6 +21,12 @@ class CreateBasketLinesTable extends Migration
             $table->foreign('product_variant_id')->references('id')->on('product_variants');
             $table->integer('quantity');
             $table->decimal('total', 10, 2);
+            $table->unsignedInteger('created_by')->nullable();
+            $table->ipAddress('created_ip')->nullable();
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->ipAddress('updated_ip')->nullable();
+            $table->timestamp('disabled_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

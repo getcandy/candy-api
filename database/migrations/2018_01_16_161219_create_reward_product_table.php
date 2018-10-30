@@ -20,6 +20,12 @@ class CreateRewardProductTable extends Migration
             $table->integer('discount_reward_id')->unsigned();
             $table->foreign('discount_reward_id')->references('id')->on('discount_rewards');
             $table->integer('quantity')->default(1);
+            $table->unsignedInteger('created_by')->nullable();
+            $table->ipAddress('created_ip')->nullable();
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->ipAddress('updated_ip')->nullable();
+            $table->timestamp('disabled_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

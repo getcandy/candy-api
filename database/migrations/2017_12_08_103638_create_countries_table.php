@@ -21,6 +21,12 @@ class CreateCountriesTable extends Migration
             $table->string('iso_a_2')->unique();
             $table->string('iso_a_3')->unique();
             $table->string('iso_numeric')->unique();
+            $table->unsignedInteger('created_by')->nullable();
+            $table->ipAddress('created_ip')->nullable();
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->ipAddress('updated_ip')->nullable();
+            $table->timestamp('disabled_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

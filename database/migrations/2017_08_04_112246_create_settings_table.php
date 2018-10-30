@@ -18,6 +18,12 @@ class CreateSettingsTable extends Migration
             $table->string('name');
             $table->string('handle')->unique();
             $table->json('content');
+            $table->unsignedInteger('created_by')->nullable();
+            $table->ipAddress('created_ip')->nullable();
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->ipAddress('updated_ip')->nullable();
+            $table->timestamp('disabled_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

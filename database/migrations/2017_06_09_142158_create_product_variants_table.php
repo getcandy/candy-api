@@ -36,6 +36,12 @@ class CreateProductVariantsTable extends Migration
             $table->decimal('volume_value', 10, 5)->default(0.00)->unsigned();
             $table->string('volume_unit')->default('l');
 
+            $table->unsignedInteger('created_by')->nullable();
+            $table->ipAddress('created_ip')->nullable();
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->ipAddress('updated_ip')->nullable();
+            $table->timestamp('disabled_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

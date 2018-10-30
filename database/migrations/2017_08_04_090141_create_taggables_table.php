@@ -17,6 +17,12 @@ class CreateTaggablesTable extends Migration
             $table->increments('id');
             $table->integer('tag_id')->unsigned()->index();
             $table->morphs('taggable');
+            $table->unsignedInteger('created_by')->nullable();
+            $table->ipAddress('created_ip')->nullable();
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->ipAddress('updated_ip')->nullable();
+            $table->timestamp('disabled_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

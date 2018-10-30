@@ -18,6 +18,12 @@ class CreateAttributeGroupsTable extends Migration
             $table->integer('position');
             $table->string('name');
             $table->string('handle')->unique();
+            $table->unsignedInteger('created_by')->nullable();
+            $table->ipAddress('created_ip')->nullable();
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->ipAddress('updated_ip')->nullable();
+            $table->timestamp('disabled_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
             $table->index(['position']);
             $table->index(['handle']);

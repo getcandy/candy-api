@@ -27,6 +27,12 @@ class CreatePagesTable extends Migration
             $table->string('slug');
             $table->json('attribute_data')->nullable();
 
+            $table->unsignedInteger('created_by')->nullable();
+            $table->ipAddress('created_ip')->nullable();
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->ipAddress('updated_ip')->nullable();
+            $table->timestamp('disabled_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
 
             $table->index(['slug']);

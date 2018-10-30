@@ -21,6 +21,12 @@ class AddBasketsTable extends Migration
             $table->foreign('merged_id')->references('id')->on('baskets')->onDelete('cascade');
             $table->timestamp('completed_at')->nullable();
             $table->string('currency')->index();
+            $table->unsignedInteger('created_by')->nullable();
+            $table->ipAddress('created_ip')->nullable();
+            $table->unsignedInteger('updated_by')->nullable();
+            $table->ipAddress('updated_ip')->nullable();
+            $table->timestamp('disabled_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

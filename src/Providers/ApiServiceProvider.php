@@ -117,10 +117,10 @@ class ApiServiceProvider extends ServiceProvider
         $this->app->register(
             \Alaouy\Youtube\YoutubeServiceProvider::class
         );
-
-        $this->app->bind(\GetCandy\Api\Shipping\ShippingCalculator::class, function ($app) {
-            return $app->make(\GetCandy\Api\Shipping\ShippingCalculator::class);
-        });
+//        //解决循环加载的问题
+//        $this->app->bind(\GetCandy\Api\Shipping\ShippingCalculator::class, function ($app) {
+//            return $app->make(\GetCandy\Api\Shipping\ShippingCalculator::class);
+//        });
 
         $this->app->singleton(UserContract::class, function ($app) {
             return $app->make(UserService::class);
