@@ -22,4 +22,21 @@ class AddFieldsToLayouts extends Migration
             $table->foreign('layout_id')->references('id')->on('layouts');
         });
     }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('categories', function (Blueprint $table) {
+            $table->dropForeign(['layout_id']);
+            $table->dropColumn('layout_id');
+        });
+
+        Schema::table('layouts', function (Blueprint $table) {
+            $table->dropColumn('type');
+        });
+    }
 }

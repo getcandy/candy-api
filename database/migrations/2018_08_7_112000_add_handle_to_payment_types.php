@@ -17,4 +17,16 @@ class AddHandleToPaymentTypes extends Migration
             $table->string('handle')->unique()->after('name')->nullable();
         });
     }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('payment_types', function (Blueprint $table) {
+            $table->dropColumn('handle');
+        });
+    }
 }

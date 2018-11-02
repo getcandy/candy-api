@@ -18,6 +18,11 @@ class AddDeliveryTotalToOrderLines extends Migration
         });
     }
 
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
     public function down()
     {
         Schema::table('order_lines', function (Blueprint $table) {

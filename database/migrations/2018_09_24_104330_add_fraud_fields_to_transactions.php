@@ -21,6 +21,11 @@ class AddFraudFieldsToTransactions extends Migration
         });
     }
 
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
     public function down()
     {
         Schema::table('transactions', function (Blueprint $table) {

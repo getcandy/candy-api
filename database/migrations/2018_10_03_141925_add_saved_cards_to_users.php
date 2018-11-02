@@ -26,6 +26,11 @@ class AddSavedCardsToUsers extends Migration
         });
     }
 
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
     public function down()
     {
         Schema::table('reusable_payments', function (Blueprint $table) {

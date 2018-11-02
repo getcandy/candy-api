@@ -17,4 +17,16 @@ class AddUnitQtyToOrderLine extends Migration
             $table->integer('unit_qty')->default(1)->after('unit_price');
         });
     }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('order_lines', function (Blueprint $table) {
+            $table->dropColumn('unit_qty');
+        });
+    }
 }
