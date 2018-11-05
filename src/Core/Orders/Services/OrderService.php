@@ -86,6 +86,7 @@ class OrderService extends BaseService
             }
         }
 
+
         $order->conversion = CurrencyConverter::rate();
         $order->currency = $basket->currency;
 
@@ -429,16 +430,11 @@ class OrderService extends BaseService
      */
     protected function setFields($order, $fields, $prefix)
     {
-        $attributes = $order->getAttributes();
-        foreach ($fields as $handle => $value) {
-            if ($handle == 'channel') {
-                continue;
-            }
-            $field = $prefix.'_'.$handle;
-            if (array_key_exists($field, $attributes)) {
-                $order->setAttribute($field, $value);
-            }
+        $attributes = [];
+        foreach ($fields as $field => $value) {
+            $attributes[$prefix . '_' . $field] = $value;
         }
+        $order->fill($attributes);
     }
 
     /**
