@@ -17,7 +17,7 @@ class BasketLineTransformer extends BaseTransformer
         $data = array_merge($line->custom_attributes, [
             'id' => $line->encodedId(),
             'quantity' => $line->quantity,
-            'line_total' => $line->total,
+            'line_total' => $line->total_cost,
             'unit_price' => $line->unit_cost,
             'tax' => $line->total_tax,
         ]);
