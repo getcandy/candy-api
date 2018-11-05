@@ -640,7 +640,15 @@ class OrderService extends BaseService
             } else {
                 $order->status = config('getcandy.orders.statuses.pending', 'payment-processing');
             }
-            $order->reference = $this->getNextInvoiceReference();
+
+            $callback = config('getcandy.orders.reference_callback', null);
+
+            if ($callback && $callback instanceof \Closure) {
+                $order->reference = $callback($order);
+            } else {
+                $order->reference = $this->getNextInvoiceReference();
+            }
+
             $order->placed_at = Carbon::now();
 
             $order->save();
