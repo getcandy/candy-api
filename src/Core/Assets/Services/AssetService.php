@@ -55,6 +55,10 @@ class AssetService extends BaseService
             $model
         );
 
+        if (!$asset) {
+            return false;
+        }
+
         $asset->update([
             'position' => $position,
         ]);

@@ -18,11 +18,16 @@ class AssetController extends BaseController
         } catch (InvalidServiceException $e) {
             return $this->errorWrongArgs($e->getMessage());
         }
+
         $asset = app('api')->assets()->upload(
             $request->all(),
             $parent,
             $parent->assets()->count() + 1
         );
+
+        if (!$asset) {
+            return $this->respondWithError('Unable to upload asset');
+        }
 
         return $this->respondWithItem($asset, new AssetTransformer);
     }

@@ -60,6 +60,10 @@ class ExternalImage extends BaseUrlDriver
 
         $storage = Storage::disk($this->source->disk);
 
+        if (!$image) {
+            return false;
+        }
+
         $storage->put(
             $asset->location.'/'.$asset->filename,
             $image->stream()->getContents()
