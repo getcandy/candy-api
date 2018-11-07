@@ -183,7 +183,7 @@ class BasketService extends BaseService
         if (! empty($data['variants'])) {
             $this->remapLines($basket, $data['variants']);
         }
-
+        $basket->load('lines');
         $basket = $this->factory->init($basket)->get();
 
         $basket->save();
