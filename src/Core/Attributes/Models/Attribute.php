@@ -23,6 +23,7 @@ class Attribute extends BaseModel
         'variant',
         'searchable',
         'filterable',
+        'type',
     ];
 
     public function group()
