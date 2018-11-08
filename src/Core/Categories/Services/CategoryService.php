@@ -32,8 +32,7 @@ class CategoryService extends BaseService
     public function getByHashedId($id)
     {
         $id = $this->model->decodeId($id);
-
-        return $this->model->withDepth()->withoutGlobalScopes()->findOrFail($id);
+        return $this->model->with($this->with)->withDepth()->withoutGlobalScopes()->findOrFail($id);
     }
 
     public function getNestedList()

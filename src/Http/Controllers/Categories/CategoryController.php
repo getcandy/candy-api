@@ -14,6 +14,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use GetCandy\Api\Http\Transformers\Fractal\Categories\CategoryTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Categories\CategoryTreeTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Categories\CategoryFancytreeTransformer;
+use GetCandy\Api\Http\Resources\Categories\CategoryResource;
+use GetCandy\Api\Core\Categories\Services\CategoryService;
 
 class CategoryController extends BaseController
 {
@@ -21,8 +23,8 @@ class CategoryController extends BaseController
     {
         if ($request->tree) {
             $collection = app('api')->categories()->getCategoryTree($request->channel);
-
-            return $this->respondWithItem($collection, new CategoryTreeTransformer);
+            return CategoryResource::collection($collection);
+            // return $this->respondWithItem($collection, new CategoryTreeTransformer);
         }
 
         $collection = app('api')->categories()->getPaginatedData(
@@ -30,18 +32,24 @@ class CategoryController extends BaseController
             $request->current_page
         );
 
+
         return $this->respondWithCollection($collection, new CategoryTransformer);
     }
 
-    public function show($id)
+    public function show($id, Request $request, CategoryService $categories)
     {
         try {
-            $category = app('api')->categories()->getByHashedId($id);
+            $category = $categories->with(
+                explode(',', $request->includes)
+            )->getByHashedId($id);
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
 
-        return $this->respondWithItem($category, new CategoryTransformer);
+        $resource = new CategoryResource($category);
+        $resource->only(['name']);
+        return $resource;
+        // return $this->respondWithItem($category, new CategoryTransformer);
     }
 
     public function getNested()

@@ -14,6 +14,8 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use GetCandy\Api\Http\Transformers\Fractal\Products\ProductTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Products\ProductRecommendationTransformer;
+use GetCandy\Api\Http\Resources\Products\ProductResource;
+use GetCandy\Api\Core\Languages\Services\LanguageService;
 
 class ProductController extends BaseController
 {
@@ -31,6 +33,11 @@ class ProductController extends BaseController
             $request->ids
         );
 
+        $resource = new ProductResource($paginator);
+
+        return $resource->only(['description'])->respondWithCollection();
+        // return ::collection($paginator, ['ean']);
+        // return ;
         return $this->respondWithCollection($paginator, new ProductTransformer);
     }
 
@@ -39,7 +46,7 @@ class ProductController extends BaseController
      * @param  string $id
      * @return array|\Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
         try {
             $product = app('api')->products()->getByHashedId($id);
@@ -55,7 +62,12 @@ class ProductController extends BaseController
             }
         }
 
-        return $this->respondWithItem($product, new ProductTransformer);
+        $resource = new ProductResource($product);
+
+        $resource->only(['name']);
+        // $resource->language($request->getLocale());
+        // -
+        return $resource;
     }
 
     public function recommended(Request $request)

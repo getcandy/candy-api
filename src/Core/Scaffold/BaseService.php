@@ -18,7 +18,6 @@ abstract class BaseService
     public function with(array $data)
     {
         $this->with = $data;
-
         return $this;
     }
 

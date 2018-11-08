@@ -15,6 +15,11 @@ trait HasAttributes
         return $this->morphToMany(Attribute::class, 'attributable')->orderBy('position', 'asc');
     }
 
+    public function hasAttribute($attribute)
+    {
+        return isset($this->attribute_data[$attribute]);
+    }
+
     public function attributeGroup()
     {
         return $this->hasOne(AttributeGroup::class)->withTimestamps();
@@ -22,15 +27,15 @@ trait HasAttributes
 
     public function attribute($handle, $channel = null, $locale = null)
     {
-        $defaultChannel = app('api')->channels()->getDefaultRecord();
+        // $defaultChannel = app('api')->channels()->getDefaultRecord();
         $userLocale = app()->getLocale();
 
         if (! $locale) {
-            $locale = app('api')->languages()->getDefaultRecord()->lang;
+            $locale = app()->getLocale();
         }
 
         if (! $channel) {
-            $channel = $defaultChannel->handle;
+            $channel = 'webstore';
         }
 
         if (! empty($this->attribute_data[$handle][$channel][$locale])) {
@@ -42,7 +47,7 @@ trait HasAttributes
         } elseif (empty($this->attribute_data[$handle][$channel][$userLocale])) {
             return;
         } elseif (is_null($this->attribute_data[$handle][$channel][$userLocale])) {
-            $channel = $defaultChannel->handle;
+            $channel = 'webstore';
             $locale = $locale->lang;
         }
     }
