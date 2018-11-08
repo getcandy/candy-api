@@ -33,11 +33,11 @@ class CustomerService extends BaseService
 
         if (!empty($data['customer_groups'])) {
             $groups = app('api')->customerGroups()->getDecodedIds($data['customer_groups']);
-            dd($groups);
+//            dd($groups);
             $user->groups()->sync($groups);
         }
 
-        dd($user);
+//        dd($user);
     }
 
     public function getPaginatedData($length = 50, $page = null, $keywords = null)

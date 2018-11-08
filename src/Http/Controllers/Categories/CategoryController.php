@@ -18,8 +18,15 @@ class CategoryController extends BaseController
 {
     public function index(Request $request)
     {
+        if($request->view !== 'tree'){
+            $paginator = app('api')->categories()->getPaginatedData($request->per_page,
+                $request->current_page,
+                $request->ids);
+            return $this->respondWithCollection($paginator, new CategoryTransformer);
+        }
         $collection = app('api')->categories()->getCategoryTree($request->channel);
         return $this->respondWithItem($collection, new CategoryTreeTransformer);
+
     }
 
     public function show($id)

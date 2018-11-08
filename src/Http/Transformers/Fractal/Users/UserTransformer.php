@@ -24,7 +24,9 @@ class UserTransformer extends BaseTransformer
     {
         return [
             'id' => $user->encodedId(),
-            'email' => $user->email
+            'email' => $user->email,
+            'phone_number'=> $user->phone_number,
+            'avatar'=> $user->avatar
         ];
     }
 
