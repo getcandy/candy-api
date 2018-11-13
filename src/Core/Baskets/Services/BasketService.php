@@ -339,6 +339,8 @@ class BasketService extends BaseService
         $basket->user_id = $user->id;
         $basket->save();
 
+        $basket->load('lines');
+
         return  $this->factory->init($basket)->get();
     }
 
