@@ -38,10 +38,19 @@ class OrderController extends BaseController
             $request->status,
             $request->keywords,
             $request->only(['from', 'to']),
-            $request->zone
+            $request->zone,
+            $request->type
         );
 
         return $this->respondWithCollection($orders, new OrderTransformer);
+    }
+
+    public function getTypes(Request $request)
+    {
+        $types = app('api')->orders()->getTypes();
+        return response()->json([
+            'data' => $types,
+        ]);
     }
 
     /**
