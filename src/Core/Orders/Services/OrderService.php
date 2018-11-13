@@ -602,6 +602,9 @@ class OrderService extends BaseService
 
         $order->notes = $data['notes'] ?? null;
         $order->customer_reference = $data['customer_reference'] ?? null;
+        $order->type = $data['type'] ?? null;
+
+        $order->save();
 
         if (! empty($data['payment_type_id'])) {
             $type = app('api')->paymentTypes()->getByHashedId($data['payment_type_id']);
