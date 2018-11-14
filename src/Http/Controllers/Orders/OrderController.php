@@ -3,9 +3,10 @@
 namespace GetCandy\Api\Http\Controllers\Orders;
 
 use Illuminate\Http\Request;
+use GetCandy\Api\Core\Orders\OrderSearchCriteria;
 use GetCandy\Api\Http\Controllers\BaseController;
-use GetCandy\Api\Http\Requests\Orders\CreateRequest;
 use GetCandy\Api\Http\Requests\Orders\UpdateRequest;
+use GetCandy\Api\Http\Requests\Orders\CreateRequest;
 use GetCandy\Api\Http\Requests\Orders\ProcessRequest;
 use GetCandy\Api\Http\Requests\Orders\BulkUpdateRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -31,16 +32,21 @@ class OrderController extends BaseController
             'from' => 'date_format:Y-m-d',
             'to' => 'date_format:Y-m-d',
         ]);
-        $orders = app('api')->orders()->getPaginatedData(
-            $request->per_page,
-            $request->page,
-            $request->user(),
-            $request->status,
-            $request->keywords,
-            $request->only(['from', 'to']),
-            $request->zone,
-            $request->type
-        );
+
+        $criteria = new OrderSearchCriteria;
+
+        $criteria->fill($request->all())
+            ->set('without_scopes', [
+                'open',
+                'not_expired',
+            ]);
+
+        if ($request->user()->hasRole('admin') && !$request->only_own) {
+            $criteria->set('restrict', false);
+        }
+        $criteria->set('user', $request->user());
+
+        $orders = $criteria->get();
 
         return $this->respondWithCollection($orders, new OrderTransformer);
     }

@@ -686,66 +686,6 @@ class OrderService extends BaseService
         return $this->handleProcessResponse($result, $order);
     }
 
-    /**
-     * Get paginated orders.
-     *
-     * @param int $length
-     * @param int $page
-     * @param User $user
-     * @return void
-     */
-    public function getPaginatedData($length = 50, $page = 1, $user = null, $status = null, $keywords = null, $dates = [], $zone = null, $type = null)
-    {
-        $query = $this->model
-            ->withoutGlobalScope('open')
-            ->withoutGlobalScope('not_expired');
-
-        if ($status) {
-            $query = $query->where('status', '=', $status);
-        }
-
-        if ($zone) {
-            $query = $query->whereHas('lines', function ($q) use ($zone) {
-                return $q->where('variant', '=', $zone);
-            });
-        }
-
-        if ($type) {
-            // $query = $query->whereType();
-            if ($type == 'Unknown') {
-                $query = $query->whereNull('type');
-            } else {
-                $query = $query->whereType($type);
-            }
-        }
-
-        if ($status == 'awaiting-payment') {
-            $query = $query->orderBy('created_at', 'desc');
-        } else {
-            $query = $query->orderBy('placed_at', 'desc');
-        }
-
-        if (! empty($dates['from'])) {
-            $query->whereDate('created_at', '>=', Carbon::parse($dates['from']));
-        }
-
-        if (! empty($dates['to'])) {
-            $query->whereDate('created_at', '<=', Carbon::parse($dates['to']));
-        }
-
-        if ($keywords) {
-            $query = $query->search($keywords);
-        }
-
-        if (! app('auth')->user()->hasRole('admin')) {
-            $query = $query->whereHas('user', function ($q) use ($user) {
-                $q->whereId($user->id);
-            });
-        }
-
-        return $query->paginate($length, ['*'], 'page', $page);
-    }
-
     public function getPending()
     {
         return $this->model->withoutGlobalScopes()->where('status', '=', 'payment-processing')->get();
