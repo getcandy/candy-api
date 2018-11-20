@@ -2,10 +2,26 @@
 
 namespace GetCandy\Api\Http\Resources;
 
+use Illuminate\Http\Resources\MissingValue;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 abstract class AbstractCollection extends ResourceCollection
 {
+    protected $only = [];
+
+    /**
+     * Create a new resource instance.
+     *
+     * @param  mixed  $resource
+     * @return void
+     */
+    public function __construct($resource, $only = [])
+    {
+        parent::__construct($resource);
+        $this->only = $only;
+        $this->resource = $this->collectResource($resource);
+    }
+
     /**
      * Transform the resource into a JSON array.
      *
@@ -31,11 +47,17 @@ abstract class AbstractCollection extends ResourceCollection
 
         $collects = $this->collects();
 
-
-        $this->collection = $collects && ! $resource->first() instanceof $collects
-            ? $resource->mapInto($collects)
-            : $resource->toBase();
-
+        if ($collects && ! $resource->first() instanceof $collects) {
+            $collection = collect();
+            $resource->each(function ($item) use ($collection, $collects) {
+                $collection->push(
+                    (new $collects($item))->only($this->only)
+                );
+            });
+            $this->collection = $collection;
+        } else {
+            $this->collection = $resource->toBase();
+        }
 
         return $resource instanceof AbstractPaginator
                     ? $resource->setCollection($this->collection)

@@ -6,6 +6,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use GetCandy\Api\Core\Channels\Services\ChannelService;
 use GetCandy\Api\Core\Languages\Services\LanguageService;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Collection;
+use Illuminate\Http\Resources\MissingValue;
 
 abstract class AbstractResource extends JsonResource
 {
@@ -47,8 +49,11 @@ abstract class AbstractResource extends JsonResource
      * @param array $fields
      * @return self
      */
-    public function only(array $fields = [])
+    public function only($fields = [])
     {
+        if ($fields instanceof Collection) {
+           $fields = $fields->toArray();
+        }
         $this->only = collect($fields);
         return $this;
     }
@@ -86,20 +91,21 @@ abstract class AbstractResource extends JsonResource
     public function __construct($resource)
     {
         $this->resource = $resource;
-        $this->only = collect([]);
+        $this->only = collect();
     }
 
     public function toArray($request)
     {
         $attributes = array_merge($this->payload(), $this->map($this->attribute_data));
-
-        foreach($attributes as $attribute => $value) {
-            if ($this->only->count() && !$this->only->contains($attribute)) {
-                unset($attributes[$attribute]);
-            }
-        }
-
         return array_merge($attributes, $this->includes());
+    }
+
+    protected function relationLoaded($relation)
+    {
+        if ($this->whenLoaded($relation) == MissingValue::class) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -113,10 +119,12 @@ abstract class AbstractResource extends JsonResource
         if (empty($data)) {
             return [];
         }
-
         $modified = [];
 
         foreach ($data as $field => $value) {
+            if ($this->only->count() && !$this->only->contains($field)) {
+                continue;
+            }
             $modified[$field] = $this->resource->attribute(
                 $field,
                 $this->channel,

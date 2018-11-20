@@ -3,6 +3,8 @@
 namespace GetCandy\Api\Http\Resources\Categories;
 
 use GetCandy\Api\Http\Resources\AbstractResource;
+use GetCandy\Api\Http\Resources\Routes\RouteCollection;
+use GetCandy\Api\Http\Resources\Layouts\LayoutResource;
 
 class CategoryResource extends AbstractResource
 {
@@ -11,18 +13,15 @@ class CategoryResource extends AbstractResource
         return [
             'id' => $this->encodedId(),
             'sort' => $this->sort,
-            'depth' => $this->depth,
-            'products_count' => $this->products->count(),
-            'children_count' => $this->children->count(),
-            'parent' => new $this($this->whenLoaded('parent')),
         ];
     }
 
     public function includes()
     {
         return [
-            'descendants' => (new CategoryCollection($this->whenLoaded('descendants')))->only($this->only),
-            // 'routes' => new RouteCollection($this->whenLoaded('routes')),
+            'children' => new CategoryCollection($this->whenLoaded('children'), $this->only),
+            'routes' => new RouteCollection($this->whenLoaded('routes')),
+            'layout' => new LayoutResource($this->whenLoaded('layout')),
         ];
     }
 }

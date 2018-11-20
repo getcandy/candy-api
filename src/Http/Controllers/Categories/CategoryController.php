@@ -15,39 +15,53 @@ use GetCandy\Api\Http\Transformers\Fractal\Categories\CategoryTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Categories\CategoryTreeTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Categories\CategoryFancytreeTransformer;
 use GetCandy\Api\Http\Resources\Categories\CategoryResource;
+use GetCandy\Api\Http\Resources\Categories\CategoryCollection;
 use GetCandy\Api\Core\Categories\Services\CategoryService;
+use GetCandy\Api\Core\Categories\CategoryCriteria;
 
 class CategoryController extends BaseController
 {
-    public function index(Request $request)
+    protected function parseIncludedFields($request)
     {
-        if ($request->tree) {
-            $collection = app('api')->categories()->getCategoryTree($request->channel);
-            return CategoryResource::collection($collection);
-            // return $this->respondWithItem($collection, new CategoryTreeTransformer);
+        if (!$request->fields) {
+            return null;
+        }
+        return explode(',', $request->fields);
+    }
+    public function index(Request $request, CategoryCriteria $criteria)
+    {
+        $results = $criteria
+            ->tree($request->tree)
+            ->include($request->includes);
+
+        if (!$request->tree) {
+            $criteria->limit($request->per_page, 1, 2, 3)
+                ->page($request->page);
         }
 
-        $collection = app('api')->categories()->getPaginatedData(
-            $request->per_page,
-            $request->current_page
+        return new CategoryCollection(
+            $criteria->get(), $this->parseIncludedFields($request)
         );
-
-
-        return $this->respondWithCollection($collection, new CategoryTransformer);
     }
 
-    public function show($id, Request $request, CategoryService $categories)
+    public function show($id, Request $request, CategoryCriteria $criteria)
     {
-        try {
-            $category = $categories->with(
-                explode(',', $request->includes)
-            )->getByHashedId($id);
-        } catch (ModelNotFoundException $e) {
+        $category = $criteria->include($request->includes)->id($id)->first();
+
+        if (!$category) {
             return $this->errorNotFound();
         }
+        // try {
+        //     $category = $categories->with(
+        //         explode(',', $request->includes)
+        //     )->getByHashedId($id);
+        // } catch (ModelNotFoundException $e) {
+        //     return $this->errorNotFound();
+        // }
+
 
         $resource = new CategoryResource($category);
-        $resource->only(['name']);
+        $resource->only($this->parseIncludedFields($request));
         return $resource;
         // return $this->respondWithItem($category, new CategoryTransformer);
     }
