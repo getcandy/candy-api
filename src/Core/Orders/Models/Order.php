@@ -139,7 +139,7 @@ class Order extends BaseModel
             return $qb;
         }
         if ($type == 'Unknown') {
-            $query->whereNull('type');
+            $qb->whereNull('type');
             return $qb->whereNull('type');
         }
         return $qb->where('type', '=', $type);
@@ -187,25 +187,25 @@ class Order extends BaseModel
         $matches = array_flatten($matches);
 
         if (count($matches) > 1) {
-            $query = $qb->where('billing_firstname', 'LIKE', '%'.$matches[0].'%')
+            $qb = $qb->where('billing_firstname', 'LIKE', '%'.$matches[0].'%')
                 ->where('billing_lastname', 'LIKE', '%'.$matches[1].'%');
         } else {
-            $query = $qb->whereIn('billing_firstname', $matches)
+            $qb = $qb->whereIn('billing_firstname', $matches)
             ->orWhereIn('billing_lastname', $matches);
         }
 
         // Need to be able to search on order total
         foreach ($matches as $match) {
             if (is_numeric($match)) {
-                $query->orWhere('order_total', '=', $match * 100);
+                $qb->orWhere('order_total', '=', $match * 100);
             }
         }
 
-        $query->orWhereIn('id', $matches)
+        $qb->orWhereIn('id', $matches)
             ->orWhereIn('contact_email', $matches)
             ->orWhereIn('reference', $matches);
 
-        return $query;
+        return $qb;
     }
 
     /**
@@ -299,6 +299,11 @@ class Order extends BaseModel
     public function basketLines()
     {
         return $this->hasMany(OrderLine::class)->whereIsShipping(false)->whereIsManual(false);
+    }
+
+    public function shipping()
+    {
+        return $this->hasOne(OrderLine::class)->whereIsShipping(true);
     }
 
     public function basket()
