@@ -13,9 +13,14 @@ use GetCandy\Api\Core\Payments\Models\ReusablePayment;
 
 class SagePay extends AbstractProvider
 {
-    protected $host = 'https://pi-test.sagepay.com/api/v1/';
+    protected $host;
 
     protected $tokenExpires;
+
+    public function __construct()
+    {
+        $this->host = config('services.sagepay.host', 'https://pi-test.sagepay.com/api/v1/');
+    }
 
     public function getName()
     {
