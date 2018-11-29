@@ -2,6 +2,8 @@
 
 namespace GetCandy\Api\Core\Shipping\Providers;
 
+use TaxCalculator;
+
 class RegionalProvider extends AbstractProvider
 {
     public function calculate($order)
@@ -27,7 +29,18 @@ class RegionalProvider extends AbstractProvider
         });
 
         if (! $prices->count()) {
-            return false;
+
+            // We haven't found a region so see if we have a "catch all"
+            // If there is no region, see if we have a "catch all" and use that.
+            $prices = $this->method->prices->filter(function ($price) use ($order) {
+                return $price->zone->regions->first(function ($region) use ($order) {
+                    return $region->region == '*';
+                });
+            });
+
+            if (!$prices->count()) {
+                return false;
+            }
         }
 
         $user = $basket->user;
@@ -37,7 +50,9 @@ class RegionalProvider extends AbstractProvider
             } elseif ($users->count()) {
                 return false;
             }
-            if (($basket->sub_total * 100) > $item->min_basket && $weight >= $item->min_weight) {
+
+
+            if ($basket->sub_total > ($item->min_basket / 100) && $weight >= $item->min_weight) {
                 return $item;
             }
         })->sortBy('rate')->first();

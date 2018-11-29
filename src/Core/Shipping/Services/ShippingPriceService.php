@@ -116,8 +116,13 @@ class ShippingPriceService extends BaseService
             ->orWhere('region', '=', $strippedOutcode)
             ->first();
 
+
         if (! $region) {
-            return false;
+            // Is there a "catch all" region?
+            $region = ShippingRegion::where('region', '=', '*')->first();
+            if (!$region) {
+                return collect();
+            }
         }
 
         // Get the shipping zone regional prices.
