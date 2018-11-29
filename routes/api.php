@@ -141,6 +141,7 @@ Route::group([
      * Orders
      */
     $router->post('orders/bulk', 'Orders\OrderController@bulkUpdate');
+    $router->get('orders/types', 'Orders\OrderController@getTypes');
     $router->post('orders/email-preview/{status}', 'Orders\OrderController@emailPreview');
     $router->resource('orders', 'Orders\OrderController', [
         'only' => ['index', 'update'],

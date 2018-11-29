@@ -8,6 +8,7 @@ use GetCandy\Api\Core\Assets\Models\Asset;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Assets\Models\Transform;
 use GetCandy\Api\Core\Assets\Models\AssetTransform;
+use Intervention\Image\Exception\NotReadableException;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 class AssetTransformService extends BaseService

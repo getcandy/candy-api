@@ -53,6 +53,10 @@ class CollectionService extends BaseService
     {
         $collection = $this->getByHashedId($id);
 
+        $collection->customerGroups()->detach();
+        $collection->channels()->detach();
+        $collection->products()->detach();
+
         return $collection->delete();
     }
 

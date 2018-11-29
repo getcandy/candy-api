@@ -602,6 +602,9 @@ class OrderService extends BaseService
 
         $order->notes = $data['notes'] ?? null;
         $order->customer_reference = $data['customer_reference'] ?? null;
+        $order->type = $data['type'] ?? null;
+
+        $order->save();
 
         if (! empty($data['payment_type_id'])) {
             $type = app('api')->paymentTypes()->getByHashedId($data['payment_type_id']);
@@ -683,57 +686,6 @@ class OrderService extends BaseService
         return $this->handleProcessResponse($result, $order);
     }
 
-    /**
-     * Get paginated orders.
-     *
-     * @param int $length
-     * @param int $page
-     * @param User $user
-     * @return void
-     */
-    public function getPaginatedData($length = 50, $page = 1, $user = null, $status = null, $keywords = null, $dates = [], $zone = null)
-    {
-        $query = $this->model
-            ->withoutGlobalScope('open')
-            ->withoutGlobalScope('not_expired');
-
-        if ($status) {
-            $query = $query->where('status', '=', $status);
-        }
-
-        if ($zone) {
-            $query = $query->whereHas('lines', function ($q) use ($zone) {
-                return $q->where('variant', '=', $zone);
-            });
-        }
-
-        if ($status == 'awaiting-payment') {
-            $query = $query->orderBy('created_at', 'desc');
-        } else {
-            $query = $query->orderBy('placed_at', 'desc');
-        }
-
-        if (! empty($dates['from'])) {
-            $query->whereDate('created_at', '>=', Carbon::parse($dates['from']));
-        }
-
-        if (! empty($dates['to'])) {
-            $query->whereDate('created_at', '<=', Carbon::parse($dates['to']));
-        }
-
-        if ($keywords) {
-            $query = $query->search($keywords);
-        }
-
-        if (! app('auth')->user()->hasRole('admin')) {
-            $query = $query->whereHas('user', function ($q) use ($user) {
-                $q->whereId($user->id);
-            });
-        }
-
-        return $query->paginate($length, ['*'], 'page', $page);
-    }
-
     public function getPending()
     {
         return $this->model->withoutGlobalScopes()->where('status', '=', 'payment-processing')->get();
@@ -762,6 +714,16 @@ class OrderService extends BaseService
         $order->save();
 
         return $order;
+    }
+
+    /**
+     * Get the order types
+     *
+     * @return array
+    */
+    public function getTypes()
+    {
+        return Order::select(\DB::raw('type as label'))->groupBy('type')->get();
     }
 
     public function getPdf($order)

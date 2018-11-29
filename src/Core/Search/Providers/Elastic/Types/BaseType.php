@@ -248,10 +248,15 @@ abstract class BaseType
             if (! $attribute->searchable && ! $attribute->filterable) {
                 $payload[$attribute->handle]['enabled'] = false;
             } else {
-                $payload[$attribute->handle] = [
-                    'type' => 'text',
-                    'analyzer' => 'standard',
-                ];
+                if ($attribute->type == 'number') {
+                    $data = ['type' => 'integer'];
+                } else {
+                    $data = [
+                        'type' => 'text',
+                        'analyzer' => 'standard',
+                    ];
+                }
+                $payload[$attribute->handle] = $data;
 
                 $payload[$attribute->handle]['fields'] = [
                     'sortable' => [

@@ -20,6 +20,7 @@ class OrderTransformer extends BaseTransformer
             'id' => $order->encodedId(),
             'display_id' => $order->display_id,
             'sub_total' => $order->sub_total,
+            'type' => $order->type,
             'delivery_total' => $order->delivery_total,
             'discount_total' => $order->discount_total,
             'tax_total' => $order->tax_total,

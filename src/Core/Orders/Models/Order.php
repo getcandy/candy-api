@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Orders\Models;
 
+use Carbon\Carbon;
 use GetCandy\Api\Core\Auth\Models\User;
 use GetCandy\Api\Core\Scaffold\BaseModel;
 use Illuminate\Database\Eloquent\Builder;
@@ -20,6 +21,7 @@ class Order extends BaseModel
         'sub_total',
         'order_total',
         'status',
+        'type',
         'shipping_preference',
         'shipping_method',
         'billing_phone',
@@ -88,8 +90,89 @@ class Order extends BaseModel
         });
     }
 
+    /**
+     * Define the Zone scope
+     *
+     * @param Builder $qb
+     * @param string $zone
+     * @return Builder
+     */
+    public function scopeZone($qb, $zone)
+    {
+        if (!$zone) {
+            return $qb;
+        }
+        return $qb->whereHas('lines', function ($q) use ($zone) {
+            return $q->where('variant', '=', $zone);
+        });
+    }
+
+    /**
+     * Define the date range scope
+     *
+     * @param Builder $qb
+     * @param string $from
+     * @param string $to
+     * @return void
+     */
+    public function scopeRange($qb, $from, $to = null)
+    {
+        if ($from) {
+            $qb->whereDate('created_at', '>=', Carbon::parse($from));
+        }
+        if ($to) {
+            $qb->whereDate('created_at', '<=', Carbon::parse($to));
+        }
+        return $qb;
+    }
+
+    /**
+     * Define the type scope
+     *
+     * @param Builder $qb
+     * @param string $type
+     * @return void
+     */
+    public function scopeType($qb, $type)
+    {
+        if (!$type) {
+            return $qb;
+        }
+        if ($type == 'Unknown') {
+            $qb->whereNull('type');
+            return $qb->whereNull('type');
+        }
+        return $qb->where('type', '=', $type);
+    }
+
+    /**
+     * Define the status scope
+     *
+     * @param Builder $qb
+     * @param string $status
+     * @return void
+     */
+    public function scopeStatus($qb, $status)
+    {
+        if (!$status) {
+            return $qb;
+        }
+        return $qb->where('status', '=', $status);
+    }
+
+    /**
+     * Define the search scope
+     *
+     * @param Builder $qb
+     * @param string $keywords
+     * @return Builder
+     */
     public function scopeSearch($qb, $keywords)
     {
+        if (!$keywords) {
+            return $qb;
+        }
+
         // Do some stuff.
         // Explode by commas
         $segments = explode(',', $keywords);
@@ -104,60 +187,26 @@ class Order extends BaseModel
         $matches = array_flatten($matches);
 
         if (count($matches) > 1) {
-            $query = $qb->where('billing_firstname', 'LIKE', '%'.$matches[0].'%')
+            $qb = $qb->where('billing_firstname', 'LIKE', '%'.$matches[0].'%')
                 ->where('billing_lastname', 'LIKE', '%'.$matches[1].'%');
         } else {
-            $query = $qb->whereIn('billing_firstname', $matches)
+            $qb = $qb->whereIn('billing_firstname', $matches)
             ->orWhereIn('billing_lastname', $matches);
         }
 
         // Need to be able to search on order total
         foreach ($matches as $match) {
             if (is_numeric($match)) {
-                $query->orWhere('order_total', '=', $match * 100);
+                $qb->orWhere('order_total', '=', $match * 100);
             }
         }
 
-        $query->orWhereIn('id', $matches)
+        $qb->orWhereIn('id', $matches)
             ->orWhereIn('contact_email', $matches)
             ->orWhereIn('reference', $matches);
 
-        return $query;
+        return $qb;
     }
-
-    // /**
-    //  * Gets the order total with tax.
-    //  *
-    //  * @return mixed
-    //  */
-    // public function getTotalAttribute()
-    // {
-    //     return $this->lines->sum(function ($line) {
-    //         return ($line->line_amount - $line->discount) + $line->tax;
-    //     });
-    // }
-
-    // public function getShippingTotalAttribute()
-    // {
-    //     return $this->lines->where('shipping', true)->sum(function ($line) {
-    //         return $line->line_amount - $line->discount;
-    //     });
-    // }
-
-    // public function getDiscountAttribute()
-    // {
-    //     return $this->lines->sum('discount');
-    // }
-
-    // public function getTaxAttribute()
-    // {
-    //     return $this->lines->sum('tax');
-    // }
-
-    // public function getShippingAttribute()
-    // {
-    //     return $this->lines->where('shipping', '=', 1)->first();
-    // }
 
     /**
      * Gets the shipping details.
@@ -250,6 +299,11 @@ class Order extends BaseModel
     public function basketLines()
     {
         return $this->hasMany(OrderLine::class)->whereIsShipping(false)->whereIsManual(false);
+    }
+
+    public function shipping()
+    {
+        return $this->hasOne(OrderLine::class)->whereIsShipping(true);
     }
 
     public function basket()
