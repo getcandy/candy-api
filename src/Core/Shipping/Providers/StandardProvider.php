@@ -2,6 +2,8 @@
 
 namespace GetCandy\Api\Core\Shipping\Providers;
 
+use TaxCalculator;
+
 class StandardProvider extends AbstractProvider
 {
     public function calculate($order)
@@ -19,8 +21,9 @@ class StandardProvider extends AbstractProvider
             } elseif ($users->count()) {
                 return false;
             }
+            $withTax = TaxCalculator::amount($item->min_basket);
 
-            if ($total > $item->min_basket && $weight >= $item->min_weight) {
+            if ($total > (($item->min_basket + $withTax)/ 100) && $weight >= $item->min_weight) {
                 return $item;
             }
         })->sortBy('rate')->first();
