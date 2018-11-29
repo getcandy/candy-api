@@ -16,6 +16,7 @@ use GetCandy\Api\Http\Transformers\Fractal\Products\ProductTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Products\ProductRecommendationTransformer;
 use GetCandy\Api\Http\Resources\Products\ProductResource;
 use GetCandy\Api\Core\Languages\Services\LanguageService;
+use GetCandy\Api\Core\Products\ProductCriteria;
 
 class ProductController extends BaseController
 {
@@ -46,25 +47,36 @@ class ProductController extends BaseController
      * @param  string $id
      * @return array|\Illuminate\Http\Response
      */
-    public function show($id, Request $request)
+    public function show($id, Request $request, ProductCriteria $criteria)
     {
-        try {
-            $product = app('api')->products()->getByHashedId($id);
-        } catch (ModelNotFoundException $e) {
-            // If it cannot be found by ID, try get the variant by SKU
-            $variant = app('api')->productVariants()->getBySku($id);
+        $product = $criteria
+            ->include($request->includes)
+            ->id($id)
+            ->first();
 
-            $product = app('api')->products()->getByHashedId(
-                $variant->product->encodedId()
-            );
-            if (! $variant) {
-                return $this->errorNotFound();
-            }
+        if (!$product) {
+            $product = $criteria->blank('id')->sku($id)->first();
         }
+
+        // try {
+        //     $product = app('api')->products()->getByHashedId($id, $request->includes);
+        // } catch (ModelNotFoundException $e) {
+        //     // If it cannot be found by ID, try get the variant by SKU
+        //     $variant = app('api')->productVariants()->getBySku($id);
+
+        //     $product = app('api')->products()->getByHashedId(
+        //         $variant->product->encodedId(),
+        //         $request->includes
+        //     );
+        //     if (! $variant) {
+        //         return $this->errorNotFound();
+        //     }
+        // }
 
         $resource = new ProductResource($product);
 
-        $resource->only(['name']);
+        $resource->only(explode(',', $request->fields));
+
         // $resource->language($request->getLocale());
         // -
         return $resource;

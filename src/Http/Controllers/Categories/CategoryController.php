@@ -38,7 +38,6 @@ class CategoryController extends BaseController
             $criteria->limit($request->per_page, 1, 2, 3)
                 ->page($request->page);
         }
-
         return new CategoryCollection(
             $criteria->get(), $this->parseIncludedFields($request)
         );

@@ -88,10 +88,10 @@ abstract class AbstractResource extends JsonResource
      * @param  mixed  $resource
      * @return void
      */
-    public function __construct($resource)
+    public function __construct($resource, $only = [])
     {
         $this->resource = $resource;
-        $this->only = collect();
+        $this->only = collect($only);
     }
 
     public function toArray($request)
