@@ -23,7 +23,7 @@ class StandardProvider extends AbstractProvider
             }
             $withTax = TaxCalculator::amount($item->min_basket);
 
-            if ($total > (($item->min_basket + $withTax)/ 100) && $weight >= $item->min_weight) {
+            if ($total > (($item->min_basket + $withTax) / 100) && $weight >= $item->min_weight) {
                 return $item;
             }
         })->sortBy('rate')->first();

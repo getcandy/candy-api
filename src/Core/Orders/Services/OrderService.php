@@ -8,7 +8,6 @@ use Event;
 use Carbon\Carbon;
 use PriceCalculator;
 use CurrencyConverter;
-use GetCandy\Api\Core\Auth\Models\User;
 use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Baskets\Models\Basket;
@@ -85,7 +84,6 @@ class OrderService extends BaseService
                 $this->setFields($order, $address->fields, $address->billing ? 'billing' : 'shipping');
             }
         }
-
 
         $order->conversion = CurrencyConverter::rate();
         $order->currency = $basket->currency;
@@ -293,7 +291,7 @@ class OrderService extends BaseService
     }
 
     /**
-     * Recalculates an orders totals
+     * Recalculates an orders totals.
      *
      * @param Order $order
      * @return void
@@ -432,7 +430,7 @@ class OrderService extends BaseService
     {
         $attributes = [];
         foreach ($fields as $field => $value) {
-            $attributes[$prefix . '_' . $field] = $value;
+            $attributes[$prefix.'_'.$field] = $value;
         }
         $order->fill($attributes);
     }
@@ -717,10 +715,10 @@ class OrderService extends BaseService
     }
 
     /**
-     * Get the order types
+     * Get the order types.
      *
      * @return array
-    */
+     */
     public function getTypes()
     {
         return Order::select(\DB::raw('type as label'))->groupBy('type')->get();
