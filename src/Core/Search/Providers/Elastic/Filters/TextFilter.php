@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Search\Providers\Elastic\Filters;
 
-use Elastica\Query\Range;
 use Elastica\Query\Match;
+use Elastica\Query\Range;
 use Elastica\Query\BoolQuery;
 use GetCandy\Api\Core\Search\Providers\Elastic\Aggregators\Attribute;
 
@@ -18,8 +18,7 @@ class TextFilter extends AbstractFilter
         $filter = new BoolQuery;
 
         foreach ($this->value as $value) {
-
-            if (strpos($value, '-') && preg_match("/^[0-9-*]+$/", $value)) {
+            if (strpos($value, '-') && preg_match('/^[0-9-*]+$/', $value)) {
                 $value = explode('-', $value);
             }
 
@@ -35,7 +34,6 @@ class TextFilter extends AbstractFilter
                 $match->setFieldQuery($this->field, $value);
                 $filter->addShould($match);
             }
-
         }
 
         return $filter;

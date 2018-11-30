@@ -200,7 +200,7 @@ class CategoryService extends BaseService
         return true;
     }
 
-    public function getCategoryTree($channel = null, $depth  = null)
+    public function getCategoryTree($channel = null, $depth = null)
     {
         $qb = Category::channel($channel)
             ->with([

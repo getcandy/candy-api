@@ -2,8 +2,6 @@
 
 namespace GetCandy\Api\Core\Shipping\Providers;
 
-use TaxCalculator;
-
 class RegionalProvider extends AbstractProvider
 {
     public function calculate($order)
@@ -38,7 +36,7 @@ class RegionalProvider extends AbstractProvider
                 });
             });
 
-            if (!$prices->count()) {
+            if (! $prices->count()) {
                 return false;
             }
         }
@@ -50,7 +48,6 @@ class RegionalProvider extends AbstractProvider
             } elseif ($users->count()) {
                 return false;
             }
-
 
             if ($basket->sub_total > ($item->min_basket / 100) && $weight >= $item->min_weight) {
                 return $item;

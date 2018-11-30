@@ -55,7 +55,7 @@ class AssetService extends BaseService
             $model
         );
 
-        if (!$asset) {
+        if (! $asset) {
             return false;
         }
 
