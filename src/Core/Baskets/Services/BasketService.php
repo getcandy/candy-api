@@ -91,6 +91,7 @@ class BasketService extends BaseService
             'lines.variant.tax',
             'lines.variant.tiers',
             'lines.variant.product',
+            'lines.variant.product.routes',
             'lines.variant.customerPricing',
         ])->findOrFail($id);
 

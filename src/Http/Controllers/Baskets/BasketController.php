@@ -13,6 +13,7 @@ use GetCandy\Api\Http\Requests\Baskets\AddDiscountRequest;
 use GetCandy\Api\Http\Requests\Baskets\DeleteDiscountRequest;
 use GetCandy\Api\Http\Transformers\Fractal\Baskets\BasketTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Baskets\SavedBasketTransformer;
+use GetCandy\Api\Http\Resources\Baskets\BasketResource;
 
 class BasketController extends BaseController
 {
@@ -40,7 +41,7 @@ class BasketController extends BaseController
             return $this->errorNotFound();
         }
 
-        return $this->respondWithItem($basket, new BasketTransformer);
+        return new BasketResource($basket);
     }
 
     public function addDiscount($basketId, AddDiscountRequest $request)

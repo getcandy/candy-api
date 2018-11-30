@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Products\Models;
 
+use PriceCalculator;
 use GetCandy\Api\Core\Scaffold\BaseModel;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 
@@ -19,6 +20,26 @@ class ProductPricingTier extends BaseModel
         return $query->whereHas('group', function ($q) use ($groups) {
             $q->whereIn('id', $groups);
         });
+    }
+
+    /**
+     * Get the total cost attribute
+     *
+     * @return integer
+     */
+    public function getTotalCostAttribute()
+    {
+        return PriceCalculator::get($this->price)->total_cost;
+    }
+
+    /**
+     * Get the total cost attribute
+     *
+     * @return integer
+     */
+    public function getTotalTaxAttribute()
+    {
+        return PriceCalculator::get($this->price)->total_tax;
     }
 
     /**

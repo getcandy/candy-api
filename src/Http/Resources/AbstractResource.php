@@ -109,6 +109,15 @@ abstract class AbstractResource extends JsonResource
     }
 
     /**
+     * The included resources
+     *
+     * @return array
+     */
+    public function includes() {
+        return [];
+    }
+
+    /**
      * Map the attributes
      *
      * @param array $data

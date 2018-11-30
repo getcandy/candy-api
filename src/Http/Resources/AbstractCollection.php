@@ -22,16 +22,30 @@ abstract class AbstractCollection extends ResourceCollection
         $this->resource = $this->collectResource($resource);
     }
 
+
     /**
-     * Transform the resource into a JSON array.
+     * Transform the resource collection into an array.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
     public function toArray($request)
     {
-        return $this->collection->map->toArray($request)->all();
+        return [
+            'data' => $this->collection,
+        ];
     }
+
+    // /**
+    //  * Transform the resource into a JSON array.
+    //  *
+    //  * @param  \Illuminate\Http\Request  $request
+    //  * @return array
+    //  */
+    // public function toArray($request)
+    // {
+    //     return $this->collection->map->toArray($request)->all();
+    // }
 
     /**
      * Map the given collection resource into its individual resources.

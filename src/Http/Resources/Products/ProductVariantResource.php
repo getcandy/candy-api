@@ -53,8 +53,8 @@ class ProductVariantResource extends AbstractResource
     public function includes()
     {
         return [
-            'product' => new ProductResource($this->whenLoaded('product'), $this->only),
-            'tiers' => new ProductTierCollection($this->whenLoaded('tiers')),
+            'product' => ['data' => new ProductResource($this->whenLoaded('product'), $this->only)],
+            'tiers' => ['data '=> new ProductTierCollection($this->whenLoaded('tiers')) ],
         ];
     }
 }
