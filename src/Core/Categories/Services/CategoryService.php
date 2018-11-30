@@ -204,12 +204,7 @@ class CategoryService extends BaseService
     {
         $qb = Category::channel($channel)
             ->with([
-                'assets',
-                'assets.transforms',
-                'assets.transforms.asset',
-                'assets.transforms.asset.source',
                 'layout',
-                'assets.source',
                 'routes',
             ])
             ->withCount('products')
