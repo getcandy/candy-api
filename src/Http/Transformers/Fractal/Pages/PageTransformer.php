@@ -2,14 +2,13 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Pages;
 
-use GetCandy\Api\Pages\Models\Page;
-use GetCandy\Api\Http\Transformers\Fractal\Attributes\AttributeGroupTransformer;
+use GetCandy\Api\Core\Pages\Models\Page;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 
 class PageTransformer extends BaseTransformer
 {
     protected $availableIncludes = [
-        'element'
+        'element',
     ];
 
     public function transform(Page $page)
@@ -18,7 +17,7 @@ class PageTransformer extends BaseTransformer
             'id' => $page->encodedId(),
             'slug' => $page->slug,
             'seo_title' => $page->seo_title,
-            'seo_description' => $page->seo_description
+            'seo_description' => $page->seo_description,
         ];
     }
 

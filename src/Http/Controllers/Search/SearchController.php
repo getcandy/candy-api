@@ -2,33 +2,50 @@
 
 namespace GetCandy\Api\Http\Controllers\Search;
 
-use GetCandy\Api\Categories\Models\Category;
-use GetCandy\Api\Products\Models\Product;
+use Illuminate\Http\Request;
+use GetCandy\Api\Core\Search\SearchContract;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Search\SearchRequest;
-use GetCandy\Api\Search\SearchContract;
-use Illuminate\Http\Request;
+use GetCandy\Api\Core\Channels\Services\ChannelService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use GetCandy\Api\Core\Categories\Services\CategoryService;
+use GetCandy\Api\Http\Transformers\Fractal\Search\SearchSuggestionTransformer;
 
 class SearchController extends BaseController
 {
-    protected $types = [
-        'product' => Product::class,
-        'category' => Category::class
-    ];
+    /**
+     * The channel service.
+     *
+     * @var ChannelService
+     */
+    protected $channels;
+
+    public function __construct(ChannelService $channels, CategoryService $categories)
+    {
+        $this->channels = $channels;
+        $this->categories = $categories;
+    }
 
     /**
-     * Performs a search against a type
+     * Performs a search against a type.
      *
      * @param Request $request
      * @param SearchContract $client
      *
-     * @return Array
+     * @return array
      */
-    public function search(SearchRequest $request, SearchContract $client)
+    public function search(SearchRequest $request, SearchContract $search)
     {
-        clock()->startEvent('elastica', 'Elastica!');
-        if (empty($this->types[$request->type])) {
-            return $this->errorWrongArgs('Invalid type');
+        // Get channel
+        $defaultChannel = $this->channels->getDefaultRecord();
+        $channel = $request->channel ?: $defaultChannel ? $defaultChannel->handle : null;
+
+        try {
+            $categories = $this->categories->getByHashedIds(
+                explode(':', $request->category)
+            );
+        } catch (ModelNotFoundException $e) {
+            $categories = null;
         }
 
         if ($request->current_page) {
@@ -37,6 +54,50 @@ class SearchController extends BaseController
             $page = $request->page;
         }
 
+        // Get our filterable attributes.
+        $filterable = app('api')->attributes()->getFilterable()->pluck('handle')->toArray();
+        $filterable[] = 'price';
+
+        try {
+            $results = $search
+                ->client()
+                ->language(app()->getLocale())
+                ->on($channel)
+                ->against($request->type)
+                ->user($request->user())
+                ->categories($categories)
+                ->filters($request->only($filterable))
+                ->sorting($request->sort)
+                ->pagination($page ?: 1, $request->per_page ?: 30)
+                ->keywords($request->keywords)
+                ->search((bool) $request->get('rank', true));
+        } catch (\Elastica\Exception\Connection\HttpException $e) {
+            return $this->errorInternalError($e->getMessage());
+        } catch (\Elastica\Exception\ResponseException $e) {
+            return $this->errorInternalError($e->getMessage());
+        }
+
+        $results = app('api')->search()->getResults(
+            $results,
+            $request->type,
+            $request->includes,
+            $request->page ?: 1,
+            $request->category,
+            $request->user()
+        );
+
+        return response($results, 200);
+    }
+
+    /**
+     * Gets suggested searches.
+     *
+     * @param SearchRequest $request
+     * @param SearchContract $client
+     * @return void
+     */
+    public function suggest(SearchRequest $request, SearchContract $client)
+    {
         try {
             $results = $client
                 ->client()
@@ -44,33 +105,15 @@ class SearchController extends BaseController
                 ->on($request->channel)
                 ->against($this->types[$request->type])
                 ->user($request->user())
-                ->search(
-                    $request->keywords,
-                    $request->filters,
-                    $request->sort_by ?: [],
-                    $page ?: 1,
-                    $request->per_page ?: 10
-                );
+                ->suggest($request->keywords);
         } catch (\Elastica\Exception\Connection\HttpException $e) {
             return $this->errorInternalError($e->getMessage());
         } catch (\Elastica\Exception\ResponseException $e) {
             return $this->errorInternalError($e->getMessage());
         }
 
-        clock()->endEvent('elastica');
+        $results = app('api')->search()->getSuggestResults($results, $request->type);
 
-        clock()->startEvent('results', 'Getting Search Results');
-
-        $results = app('api')->search()->getResults(
-            $results,
-            $request->type,
-            $request->includes,
-            $request->page ? : 1
-        );
-
-        clock()->endEvent('results');
-
-        // return 'hi';
-        return response($results, 200);
+        return $this->respondWithCollection($results, new SearchSuggestionTransformer);
     }
 }

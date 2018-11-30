@@ -2,32 +2,33 @@
 
 namespace GetCandy\Api\Http\Controllers\Attributes;
 
+use Illuminate\Http\Request;
 use GetCandy\Exceptions\DuplicateValueException;
 use GetCandy\Api\Http\Controllers\BaseController;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use GetCandy\Api\Http\Requests\AttributeGroups\CreateRequest;
 use GetCandy\Api\Http\Requests\AttributeGroups\DeleteRequest;
-use GetCandy\Api\Http\Requests\AttributeGroups\ReorderRequest;
 use GetCandy\Api\Http\Requests\AttributeGroups\UpdateRequest;
-use GetCandy\Api\Http\Transformers\Fractal\Attributes\AttributeGroupTransformer;
-use Illuminate\Http\Request;
-use Symfony\Component\HttpKernel\Exception\HttpException;
+use GetCandy\Api\Http\Requests\AttributeGroups\ReorderRequest;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use GetCandy\Api\Http\Transformers\Fractal\Attributes\AttributeGroupTransformer;
 
 class AttributeGroupController extends BaseController
 {
     /**
-     * Returns a listing of channels
+     * Returns a listing of channels.
      * @return Json
      */
     public function index(Request $request)
     {
         $paginator = app('api')->attributeGroups()->getPaginatedData($request->per_page);
+
         return $this->respondWithCollection($paginator, new AttributeGroupTransformer);
     }
 
     /**
-     * Handles the request to show a channel based on it's hashed ID
-     * @param  String $id
+     * Handles the request to show a channel based on it's hashed ID.
+     * @param  string $id
      * @return Json
      */
     public function show($id)
@@ -37,23 +38,25 @@ class AttributeGroupController extends BaseController
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
+
         return $this->respondWithItem($attribute, new AttributeGroupTransformer);
     }
 
     /**
-     * Handles the request to create a new channel
+     * Handles the request to create a new channel.
      * @param  CreateRequest $request
      * @return Json
      */
     public function store(CreateRequest $request)
     {
         $result = app('api')->attributeGroups()->create($request->all());
+
         return $this->respondWithItem($result, new AttributeGroupTransformer);
     }
 
     /**
-     * Handles the request to update  a channel
-     * @param  String        $id
+     * Handles the request to update  a channel.
+     * @param  string        $id
      * @param  UpdateRequest $request
      * @return Json
      */
@@ -66,6 +69,7 @@ class AttributeGroupController extends BaseController
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
+
         return $this->respondWithItem($result, new AttributeGroupTransformer);
     }
 
@@ -78,11 +82,13 @@ class AttributeGroupController extends BaseController
         } catch (DuplicateValueException $e) {
             return $this->errorWrongArgs($e->getMessage());
         }
+
         return $this->respondWithNoContent();
     }
+
     /**
-     * Handles the request to delete a channel
-     * @param  String        $id
+     * Handles the request to delete a channel.
+     * @param  string        $id
      * @param  DeleteRequest $request
      * @return Json
      */
@@ -101,6 +107,7 @@ class AttributeGroupController extends BaseController
         } catch (HttpException $e) {
             return $this->setStatusCode($e->getStatusCode())->respondWithError($e->getMessage());
         }
+
         return $this->respondWithNoContent();
     }
 }

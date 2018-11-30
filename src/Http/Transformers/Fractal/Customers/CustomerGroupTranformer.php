@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Customers;
 
-use GetCandy\Api\Customers\Models\CustomerGroup;
 use League\Fractal\TransformerAbstract;
+use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 
-class CustomerGroupTransformer extends TransformerAbstract
+class CustomerGroupTranformer extends TransformerAbstract
 {
     public function transform(CustomerGroup $customerGroup)
     {
@@ -14,7 +14,7 @@ class CustomerGroupTransformer extends TransformerAbstract
             'name' => $customerGroup->name,
             'handle' => $customerGroup->handle,
             'visible' => $customerGroup->visible ? true : false,
-            'purchasable' => $customerGroup->purchasable ? true : false
+            'purchasable' => $customerGroup->purchasable ? true : false,
         ];
     }
 }

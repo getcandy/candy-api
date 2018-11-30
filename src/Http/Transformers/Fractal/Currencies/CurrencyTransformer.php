@@ -2,7 +2,7 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Currencies;
 
-use GetCandy\Api\Currencies\Models\Currency;
+use GetCandy\Api\Core\Currencies\Models\Currency;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 
 class CurrencyTransformer extends BaseTransformer
@@ -20,7 +20,7 @@ class CurrencyTransformer extends BaseTransformer
             'thousand' => $currency->thousand_point,
             'exchange_rate' => $currency->exchange_rate,
             'enabled' => (bool) $currency->enabled,
-            'default' => (bool) $currency->default
+            'default' => (bool) $currency->default,
         ];
     }
 }

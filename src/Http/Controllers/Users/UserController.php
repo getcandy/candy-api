@@ -2,13 +2,13 @@
 
 namespace GetCandy\Api\Http\Controllers\Users;
 
+use Illuminate\Http\Request;
 use GetCandy\Api\Http\Controllers\BaseController;
+use GetCandy\Api\Core\Users\Contracts\UserContract;
 use GetCandy\Api\Http\Requests\Users\CreateRequest;
 use GetCandy\Api\Http\Requests\Users\UpdateRequest;
-use GetCandy\Api\Http\Transformers\Fractal\Users\UserTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
-use GetCandy\Api\Users\Contracts\UserContract;
+use GetCandy\Api\Http\Transformers\Fractal\Users\UserTransformer;
 
 class UserController extends BaseController
 {
@@ -18,8 +18,9 @@ class UserController extends BaseController
     {
         $this->users = $users;
     }
+
     /**
-     * Handles the request to show a listing of all users
+     * Handles the request to show a listing of all users.
      * @return Json
      */
     public function index(Request $request)
@@ -30,19 +31,20 @@ class UserController extends BaseController
             $request->keywords,
             $request->ids
         );
+
         return $this->respondWithCollection($paginator, new UserTransformer);
     }
 
     /**
-     * Handles the request to show a user based on their hashed ID
-     * @param  String $id
+     * Handles the request to show a user based on their hashed ID.
+     * @param  string $id
      * @return Json
      */
     public function show($id)
     {
         $user = app('api')->users()->getByHashedId($id);
 
-        if (!$user) {
+        if (! $user) {
             return $this->errorNotFound('Cannot find user');
         }
 
@@ -50,13 +52,14 @@ class UserController extends BaseController
     }
 
     /**
-     * Handles the request to create a new user
+     * Handles the request to create a new user.
      * @param  CreateUserRequest $request
      * @return Json
      */
     public function store(CreateRequest $request)
     {
         $user = app('api')->users()->create($request->all());
+
         return $this->respondWithItem($user, new UserTransformer);
     }
 
@@ -65,12 +68,30 @@ class UserController extends BaseController
         $user = $this->users->getByHashedId(
             $request->user()->encodedId()
         );
+
         return $this->respondWithItem($user, new UserTransformer);
     }
 
     public function update($userId, UpdateRequest $request)
     {
         $user = app('api')->users()->update($userId, $request->all());
+
         return $this->respondWithItem($user, new UserTransformer);
+    }
+
+    public function deleteReusablePayment($id, Request $request)
+    {
+        try {
+            $payment = app('api')->users()->getReusablePayment($id);
+        } catch (ModelNotFoundException $e) {
+            return $this->errorNotFound();
+        }
+
+        if ($payment->user_id != $request->user()->id) {
+            $this->errorUnauthorized();
+        }
+        app('api')->users()->deleteReusablePayment($payment);
+
+        return $this->respondWithNoContent();
     }
 }

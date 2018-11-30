@@ -2,7 +2,7 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Layouts;
 
-use GetCandy\Api\Layouts\Models\Layout;
+use GetCandy\Api\Core\Layouts\Models\Layout;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 
 class LayoutTransformer extends BaseTransformer
@@ -14,7 +14,7 @@ class LayoutTransformer extends BaseTransformer
         return [
             'id' => $layout->encodedId(),
             'name' => $layout->name,
-            'handle' => $layout->handle
+            'handle' => $layout->handle,
         ];
     }
 }

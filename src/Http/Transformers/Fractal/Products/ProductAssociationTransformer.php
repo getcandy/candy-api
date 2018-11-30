@@ -2,22 +2,20 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Products;
 
-use GetCandy\Api\Products\Models\ProductFamily;
-use GetCandy\Api\Http\Transformers\Fractal\Attributes\AttributeTransformer;
-use GetCandy\Api\Http\Transformers\Fractal\Associations\AssociationGroupTransformer;
+use GetCandy\Api\Core\Products\Models\ProductAssociation;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
-use GetCandy\Api\Products\Models\ProductAssociation;
+use GetCandy\Api\Http\Transformers\Fractal\Associations\AssociationGroupTransformer;
 
 class ProductAssociationTransformer extends BaseTransformer
 {
     protected $defaultIncludes = [
-        'association', 'type'
+        'association', 'type',
     ];
 
     public function transform(ProductAssociation $model)
     {
         return [
-            'id' => $model->encodedId()
+            'id' => $model->encodedId(),
         ];
     }
 

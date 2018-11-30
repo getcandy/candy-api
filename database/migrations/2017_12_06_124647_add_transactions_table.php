@@ -19,6 +19,7 @@ class AddTransactionsTable extends Migration
             $table->string('transaction_id');
             $table->string('merchant');
             $table->boolean('success');
+            $table->boolean('refund')->default(false);
             $table->string('status');
             $table->text('notes')->nullable();
             $table->integer('order_id')->unsigned();

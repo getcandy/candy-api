@@ -1,28 +1,32 @@
 <?php
+
 namespace GetCandy\Api\Http\Transformers\Fractal\Shipping;
 
-use GetCandy\Api\Shipping\Models\ShippingPrice;
+use PriceCalculator;
+use GetCandy\Api\Core\Shipping\Models\ShippingPrice;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Currencies\CurrencyTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Customers\CustomerGroupTransformer;
-use Illuminate\Database\Eloquent\Model;
 
 class ShippingPriceTransformer extends BaseTransformer
 {
     protected $availableIncludes = [
         'method',
-        'customer_groups'
+        'customer_groups',
     ];
 
     protected $defaultIncludes = [
-        'currency'
+        'currency',
     ];
 
     public function transform(ShippingPrice $price)
     {
+        $prices = PriceCalculator::get($price->rate, 'default');
+
         return [
             'id' => $price->encodedId(),
-            'rate' => $price->rate,
+            'rate' => $prices->total_cost,
+            'tax' => $prices->total_tax,
             'fixed' => (bool) $price->fixed,
             'min_basket' => $price->min_basket,
             'min_weight' => $price->min_weight,
@@ -56,6 +60,7 @@ class ShippingPriceTransformer extends BaseTransformer
     public function includeCustomerGroups(ShippingPrice $price)
     {
         $groups = app('api')->customerGroups()->getGroupsWithAvailability($price, 'shipping_prices');
+
         return $this->collection($groups, new CustomerGroupTransformer);
     }
 }

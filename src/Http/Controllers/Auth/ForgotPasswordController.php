@@ -2,10 +2,11 @@
 
 namespace GetCandy\Api\Http\Controllers\Auth;
 
+use Illuminate\Support\Facades\Password;
 use GetCandy\Api\Http\Controllers\BaseController;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use GetCandy\Api\Http\Requests\Auth\ForgotPasswordRequest;
-use Illuminate\Support\Facades\Password;
+use GetCandy\Api\Http\Transformers\Fractal\Auth\PasswordTokenTransformer;
 
 class ForgotPasswordController extends BaseController
 {
@@ -24,9 +25,13 @@ class ForgotPasswordController extends BaseController
 
     public function __construct()
     {
-        $this->middleware('guest');
+        // $this->middleware('guest');
     }
 
+    // public function broker()
+    // {
+
+    // }
 
     /**
      * Send a reset link to the given user.
@@ -36,25 +41,24 @@ class ForgotPasswordController extends BaseController
      */
     public function sendResetLinkEmail(ForgotPasswordRequest $request)
     {
-        // We will send the password reset link to this user. Once we have attempted
-        // to send the link, we will examine the response then see the message we
-        // need to show to the user. Finally, we'll send out a proper response.
-        // $response = $this->broker()->sendResetLink(
-        //     $request->only('email')
-        // );
         $token = $this->getPasswordResetToken($request->only('email'));
-        // \DB::table()
 
         return $token
                     ? $this->sendResetLinkResponse($token)
                     : $this->sendResetLinkFailedResponse($request, $token);
     }
 
+    /**
+     * Get a users reset token.
+     *
+     * @param string $email
+     * @return void
+     */
     protected function getPasswordResetToken($email)
     {
         $user = app('api')->users()->getByEmail($email);
 
-        if (!$user) {
+        if (! $user) {
             return false;
         }
 
@@ -69,9 +73,7 @@ class ForgotPasswordController extends BaseController
      */
     protected function sendResetLinkResponse($token)
     {
-        return $this->respondWithSuccess([
-            'token' => $token
-        ]);
+        return $this->respondWithItem($token, new PasswordTokenTransformer);
     }
 
     /**

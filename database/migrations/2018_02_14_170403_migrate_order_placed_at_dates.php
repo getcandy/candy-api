@@ -13,7 +13,7 @@ class MigrateOrderPlacedAtDates extends Migration
      */
     public function up()
     {
-        $orders = \GetCandy\Api\Orders\Models\Order::withoutGlobalScopes()->with(['transactions' => function ($q) {
+        $orders = \GetCandy\Api\Core\Orders\Models\Order::withoutGlobalScopes()->with(['transactions' => function ($q) {
             $q->where('success', '=', 1);
         }])->whereIn('status', ['dispatched', 'payment-received'])->get();
 
@@ -27,7 +27,6 @@ class MigrateOrderPlacedAtDates extends Migration
 
             $order->placed_at = $paymentDate;
             $order->save();
-
         }
     }
 

@@ -1,18 +1,19 @@
 <?php
+
 namespace GetCandy\Api\Http\Transformers\Fractal\Discounts;
 
-use GetCandy\Api\Discounts\Models\Discount;
-use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use Carbon\Carbon;
-use GetCandy\Api\Traits\IncludesAttributes;
+use GetCandy\Api\Core\Discounts\Models\Discount;
+use GetCandy\Api\Core\Traits\IncludesAttributes;
+use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Channels\ChannelTransformer;
 
 class DiscountTransformer extends BaseTransformer
 {
     use IncludesAttributes;
-    
+
     protected $availableIncludes = [
-        'sets', 'attribute_groups', 'channels', 'rewards'
+        'sets', 'attribute_groups', 'channels', 'rewards',
     ];
 
     public function transform(Discount $discount)
@@ -25,15 +26,15 @@ class DiscountTransformer extends BaseTransformer
             'priority' => $discount->priority,
             'status' => $discount->status,
             'stop_rules' => (bool) $discount->stop_rules,
-            'uses' => $discount->uses
+            'uses' => $discount->uses,
         ];
     }
 
     /**
-     * Include the sets in the resource
+     * Include the sets in the resource.
      *
      * @param Discount $discount
-     * 
+     *
      * @return void
      */
     public function includeSets(Discount $discount)
@@ -49,6 +50,7 @@ class DiscountTransformer extends BaseTransformer
     public function includeChannels(Discount $discount)
     {
         $channels = app('api')->channels()->getChannelsWithAvailability($discount, 'discounts');
+
         return $this->collection($channels, new ChannelTransformer);
     }
 

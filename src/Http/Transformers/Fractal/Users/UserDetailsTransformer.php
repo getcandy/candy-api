@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Users;
 
+use GetCandy\Api\Core\Users\Models\UserDetail;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
-use GetCandy\Api\Users\Models\UserDetail;
 
 class UserDetailsTransformer extends BaseTransformer
 {
@@ -15,7 +15,8 @@ class UserDetailsTransformer extends BaseTransformer
             'lastname' => $details->lastname,
             'company_name' => $details->company_name,
             'contact_number' => $details->contact_number,
-            'vat_no' => $details->vat_no
+            'vat_no' => $details->vat_no,
+            'fields' => $details->fields,
         ];
     }
 }

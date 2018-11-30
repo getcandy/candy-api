@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Assets;
 
-use GetCandy\Api\Assets\Models\Transform;
 use League\Fractal\TransformerAbstract;
+use GetCandy\Api\Core\Assets\Models\Transform;
 
 class TransformTransformer extends TransformerAbstract
 {
@@ -17,7 +17,7 @@ class TransformTransformer extends TransformerAbstract
             'mode' => $transform->mode,
             'format' => $transform->format,
             'position' => $transform->position,
-            'constraint' => $transform->constraint
+            'constraint' => $transform->constraint,
         ];
     }
 }

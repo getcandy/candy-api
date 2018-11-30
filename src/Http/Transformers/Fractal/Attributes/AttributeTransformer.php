@@ -2,17 +2,17 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Attributes;
 
-use GetCandy\Api\Attributes\Models\Attribute;
+use GetCandy\Api\Core\Attributes\Models\Attribute;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 
 class AttributeTransformer extends BaseTransformer
 {
     protected $availableIncludes = [
-        'group'
+        'group',
     ];
 
     /**
-     * Decorates the attribute object for viewing
+     * Decorates the attribute object for viewing.
      * @param  Attribute $product
      * @return array
      */
@@ -20,7 +20,7 @@ class AttributeTransformer extends BaseTransformer
     {
         return [
             'id' => $attribute->encodedId(),
-            'name' => $this->getLocalisedName($attribute->name),
+            'name' => $attribute->name,
             'handle' => $attribute->handle,
             'position' => (string) $attribute->position,
             'filterable' => (bool) $attribute->filterable,
@@ -31,7 +31,8 @@ class AttributeTransformer extends BaseTransformer
             'localised' => (bool) $attribute->translatable,
             'type' => $attribute->type,
             'required' => (bool) $attribute->required,
-            'lookups' => $attribute->lookups
+            'lookups' => $attribute->lookups,
+            'system' => (bool) $attribute->system,
         ];
     }
 

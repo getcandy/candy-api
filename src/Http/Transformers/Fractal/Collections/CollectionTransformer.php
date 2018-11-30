@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Collections;
 
-use GetCandy\Api\Products\Models\Product;
-use GetCandy\Api\Traits\IncludesAttributes;
-use GetCandy\Api\Collections\Models\Collection;
-use GetCandy\Api\Attributes\Models\AttributeGroup;
+use League\Fractal\ParamBag;
+use GetCandy\Api\Core\Products\Models\Product;
+use GetCandy\Api\Core\Traits\IncludesAttributes;
+use GetCandy\Api\Core\Collections\Models\Collection;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Assets\AssetTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Routes\RouteTransformer;
@@ -18,42 +18,42 @@ class CollectionTransformer extends BaseTransformer
     use IncludesAttributes;
 
     protected $defaultIncludes = [
-        'routes'
+        'routes',
     ];
 
     /**
-     * @var Array
+     * @var array
      */
     protected $availableIncludes = [
         'assets',
         'attribute_groups',
         'products',
         'channels',
-        'customer_groups'
+        'customer_groups',
     ];
 
     /**
-     * Decorates the product object for viewing
+     * Decorates the product object for viewing.
      * @param  Collection $collection
-     * @return Array
+     * @return array
      */
     public function transform(Collection $collection)
     {
         return [
             'id' => $collection->encodedId(),
             'attribute_data' => $collection->attribute_data,
-            'thumbnail' => $this->getThumbnail($collection)
+            'thumbnail' => $this->getThumbnail($collection),
         ];
     }
 
     /**
-     * Includes the products for the collection
+     * Includes the products for the collection.
      * @param  Collection $collection
      * @return League\Fractal\Resource\Collection
      */
-    public function includeProducts(Collection $collection)
+    public function includeProducts(Collection $collection, ParamBag $params = null)
     {
-        return $this->collection($collection->products, new ProductTransformer);
+        return $this->paginateInclude('products', $collection, $params, new ProductTransformer);
     }
 
     public function includeAssets(Collection $collection)
@@ -69,6 +69,7 @@ class CollectionTransformer extends BaseTransformer
     public function includeChannels(Collection $collection)
     {
         $channels = app('api')->channels()->getChannelsWithAvailability($collection, 'collections');
+
         return $this->collection($channels, new ChannelTransformer);
     }
 
@@ -80,6 +81,7 @@ class CollectionTransformer extends BaseTransformer
     public function includeCustomerGroups(Collection $collection)
     {
         $groups = app('api')->customerGroups()->getGroupsWithAvailability($collection, 'collections');
+
         return $this->collection($groups, new CustomerGroupTransformer);
     }
 

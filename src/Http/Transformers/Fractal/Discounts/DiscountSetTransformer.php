@@ -1,15 +1,14 @@
 <?php
+
 namespace GetCandy\Api\Http\Transformers\Fractal\Discounts;
 
-use Carbon\Carbon;
-use GetCandy\Api\Discounts\Models\Discount;
-use GetCandy\Api\Discounts\Models\DiscountCriteriaSet;
+use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaSet;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 
 class DiscountSetTransformer extends BaseTransformer
 {
     protected $availableIncludes = [
-        'items'
+        'items',
     ];
 
     public function transform(DiscountCriteriaSet $set)
@@ -17,7 +16,7 @@ class DiscountSetTransformer extends BaseTransformer
         return [
             'id' => $set->encodedId(),
             'scope' => $set->scope,
-            'outcome' => (bool) $set->outcome
+            'outcome' => (bool) $set->outcome,
         ];
     }
 

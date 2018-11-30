@@ -1,32 +1,40 @@
 <?php
+
 namespace GetCandy\Api\Http\Transformers\Fractal\Orders;
 
-use Carbon\Carbon;
-use GetCandy\Api\Orders\Models\OrderLine;
+use GetCandy\Api\Core\Orders\Models\OrderLine;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Products\ProductVariantTransformer;
 
 class OrderLineTransformer extends BaseTransformer
 {
-    protected $availableIncludes = [
-        'variant'
-    ];
+    protected $availableIncludes = ['variant'];
 
     public function transform(OrderLine $line)
     {
         $data = [
             'id' => $line->encodedId(),
             'quantity' => $line->quantity,
-            'total' => round($line->total, 2),
-            'product' => $line->product,
+            'line_total' => $line->line_total,
+            'discount_total' => $line->discount_total,
+            'unit_price' => $line->unit_price,
+            'unit_qty' => $line->unit_qty,
+            'tax_total' => $line->tax_total,
+            'tax_rate' => $line->tax_rate,
+            'description' => $line->description,
+            'variant' => $line->variant,
             'sku' => $line->sku,
-            'variant' => $line->variant
+            'is_shipping' => (bool) $line->is_shipping,
+            'is_manual' => (bool) $line->is_manual,
         ];
+
         return $data;
     }
 
-    protected function includeVariant(OrderLine $line)
+    protected function includeVariant($line)
     {
-        return $this->item($line->variant, new ProductVariantTransformer);
+        if ($variant = $line->variant()->first()) {
+            return $this->item($variant, new ProductVariantTransformer);
+        }
     }
 }

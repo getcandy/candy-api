@@ -2,24 +2,26 @@
 
 namespace GetCandy\Api\Http\Controllers\Routes;
 
-use GetCandy\Exceptions\MinimumRecordRequiredException;
-use GetCandy\Api\Http\Controllers\BaseController;
-use GetCandy\Api\Http\Transformers\Fractal\Routes\RouteTransformer;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Routes\UpdateRequest;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use GetCandy\Api\Http\Transformers\Fractal\Routes\RouteTransformer;
 
 class RouteController extends BaseController
 {
     public function index()
     {
         $pages = app('api')->routes()->getPaginatedData();
+
         return $this->respondWithCollection($pages, new RouteTransformer);
     }
+
     /**
-     * Handles the request to show a route based on it's hashed ID
-     * @param  String $slug
+     * Handles the request to show a route based on it's hashed ID.
+     * @param  string $slug
      * @return Json
      */
     public function show($slug)
@@ -29,11 +31,12 @@ class RouteController extends BaseController
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
+
         return $this->respondWithItem($route, new RouteTransformer);
     }
 
     /**
-     * Update a route
+     * Update a route.
      *
      * @param string $id
      * @param UpdateRequest $request
@@ -47,6 +50,7 @@ class RouteController extends BaseController
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
+
         return $this->respondWithItem($route, new RouteTransformer);
     }
 

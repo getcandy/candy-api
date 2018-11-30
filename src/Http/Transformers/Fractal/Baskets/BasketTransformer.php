@@ -1,35 +1,44 @@
 <?php
+
 namespace GetCandy\Api\Http\Transformers\Fractal\Baskets;
 
-use Carbon\Carbon;
-use GetCandy\Api\Discounts\Factory;
-use GetCandy\Api\Baskets\Models\Basket;
+use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Users\UserTransformer;
-use GetCandy\Api\Http\Transformers\Fractal\Discounts\DiscountTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\Orders\OrderTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Routes\RouteTransformer;
-use TaxCalculator;
+use GetCandy\Api\Http\Transformers\Fractal\Discounts\DiscountTransformer;
 
 class BasketTransformer extends BaseTransformer
 {
     protected $availableIncludes = [
-        'lines', 'user', 'discounts', 'routes'
+        'lines', 'user', 'discounts', 'routes', 'order',
     ];
 
     public function transform(Basket $basket)
     {
-        $basket = app('api')->baskets()->setTotals($basket);
-        $data = [
+        $data = array_merge($basket->custom_attributes, [
             'id' => $basket->encodedId(),
-            'total' => round($basket->total, 2),
-            'tax_total' => round($basket->tax, 2)
-        ];
+            'total' => round($basket->total_cost, 2),
+            'sub_total' => $basket->sub_total,
+            'tax_total' => $basket->total_tax,
+        ]);
+
         return $data;
     }
 
     protected function includeLines(Basket $basket)
     {
         return $this->collection($basket->lines, new BasketLineTransformer);
+    }
+
+    protected function includeOrder(Basket $basket)
+    {
+        if (! $basket->order) {
+            return $this->null();
+        }
+
+        return $this->item($basket->order, new OrderTransformer);
     }
 
     public function includeRoutes(Basket $basket)
@@ -39,9 +48,10 @@ class BasketTransformer extends BaseTransformer
 
     protected function includeUser(Basket $basket)
     {
-        if (!$basket->user) {
-            return null;
+        if (! $basket->user) {
+            return;
         }
+
         return $this->item($basket->user, new UserTransformer);
     }
 

@@ -2,77 +2,103 @@
 
 namespace Tests;
 
-use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use TaxCalculator;
+use Tests\Stubs\User;
+use GetCandy\Api\Providers\ApiServiceProvider;
+use Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables;
 
-use Laravel\Passport\Client;
-use Artisan;
-
-abstract class TestCase extends BaseTestCase
+abstract class TestCase extends \Orchestra\Testbench\TestCase
 {
-    use CreatesApplication;
+    protected $requiresRefresh = false;
 
     protected function setUp()
     {
-        // Delete stub database for force a refresh of data
-        if (file_exists(__DIR__.'/../storage/testing/stub.sqlite')) {
-            unlink(__DIR__.'/../storage/testing/stub.sqlite');
+        // Make sure storage path is there
+
+        if (! file_exists(__DIR__.'/../storage')) {
+            mkdir(__DIR__.'/../storage');
         }
-
-        // Delete testing database if exists
-        if (file_exists(__DIR__.'/../storage/testing/database.sqlite')) {
-            unlink(__DIR__.'/../storage/testing/database.sqlite');
-        }
-
-        touch(__DIR__.'/../storage/testing/database.sqlite');
-
-        ini_set('memory_limit', '1G');
+        $databaseExists = file_exists(__DIR__.'/../storage/database.sqlite');
 
         parent::setUp();
 
-        Artisan::call('db:seed', ['--class' => 'TestingSeeder']);
+        $this->artisan('cache:forget', ['key' => 'spatie.permission.cache']);
+
+        if (! $databaseExists || $this->requiresRefresh) {
+            if ($databaseExists) {
+                unlink(__DIR__.'/../storage/database.sqlite');
+            }
+            touch(__DIR__.'/../storage/database.sqlite');
+
+            $this->loadLaravelMigrations(['--database' => 'testing']);
+            $this->artisan('migrate', ['--database' => 'testing']);
+            $this->artisan('db:seed', ['--class' => '\Seeds\TestingDatabaseSeeder']);
+        }
+
+        // By Default, set up everything as taxable
+        TaxCalculator::setTax(
+            app('api')->taxes()->getDefaultRecord()
+        );
     }
 
-    protected function url($path, $query = null)
+    /**
+     * Define environment setup.
+     *
+     * @param  \Illuminate\Foundation\Application  $app
+     * @return void
+     */
+    protected function getEnvironmentSetUp($app)
     {
-        $url = '/api/' . config('getcandy_api.version', 'v1') . '/' . $path . ($query ? '?' . http_build_query($query) : null);
-        return $url;
-    }
+        parent::getEnvironmentSetUp($app);
 
-    protected function getContent($response)
-    {
-        return json_decode($response->getContent(), true);
-    }
+        $app->useEnvironmentPath(__DIR__.'/..');
+        $app->bootstrapWith([LoadEnvironmentVariables::class]);
 
-    protected function accessToken()
-    {
-        $client = Client::first();
-
-        $response = $this->post('/oauth/token', [
-            'username' => 'alec@neondigital.co.uk',
-            'password' => 'password',
-            'client_id' => $client->id,
-            'client_secret' => $client->secret,
-            'grant_type' => 'password'
-        ], ['Accept' => 'application/json']);
-
-        $content = $this->getContent($response);
-
-        $response->assertJsonStructure([
-            'token_type',
-            'expires_in',
-            'access_token'
+        //Blergh but we need the config
+        $app['config']['permission'] = require realpath(__DIR__.'/../vendor/spatie/laravel-permission/config/permission.php');
+        $app['config']['hashids'] = require realpath(__DIR__.'/../config/hashids.php');
+        $app['config']->set('database.default', 'testing');
+        $app['config']->set('database.connections.testing', [
+            'driver' => 'sqlite',
+            'database' => __DIR__.'/../storage/database.sqlite',
+            'prefix' => '',
         ]);
 
-        $this->assertEquals(200, $response->getStatusCode());
+        $app['config']->set('auth.providers.users.model', User::class);
 
+        // GetCandy specific
+        $app['config']->set('getcandy', require realpath(__DIR__.'/../config/getcandy.php'));
 
-        return $content['access_token'];
+        $app['config']->set('services', [
+            'braintree' => [
+                'key' => env('BRAINTREE_PUBLIC_KEY'),
+                'secret' => env('BRAINTREE_PRIVATE_KEY'),
+                '3D_secure' => env('3D_SECURE', false),
+                'merchant_id' => env('BRAINTREE_MERCHANT'),
+                'merchants' => [
+                    'default' => env('BRAINTREE_GBP_MERCHANT'),
+                    'eur' => env('BRAINTREE_EUR_MERCHANT'),
+                ],
+            ],
+        ]);
     }
 
-    protected function assertHasErrorFormat($response)
+    protected function getPackageProviders($app)
     {
-        $response->assertJsonStructure([
-            'error' => ['http_code', 'message']
-        ]);
+        return [
+            ApiServiceProvider::class,
+            \Spatie\Permission\PermissionServiceProvider::class,
+            \Vinkla\Hashids\HashidsServiceProvider::class,
+        ];
+    }
+
+    protected function getPackageAliases($app)
+    {
+        return [
+            'CurrencyConverter' => \GetCandy\Api\Core\Currencies\Facades\CurrencyConverter::class,
+            'TaxCalculator' => \Facades\GetCandy\Api\Core\Taxes\TaxCalculator::class,
+            'PriceCalculator' => \Facades\GetCandy\Api\Core\Pricing\PriceCalculator::class,
+            'GetCandy' => \Facades\GetCandy\Api\Core\Helpers\GetCandy::class,
+        ];
     }
 }

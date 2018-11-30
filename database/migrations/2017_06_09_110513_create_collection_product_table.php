@@ -30,6 +30,10 @@ class CreateCollectionProductTable extends Migration
      */
     public function down()
     {
+        Schema::table('collection_product', function (Blueprint $table) {
+            $table->dropForeign(['product_id']);
+            $table->dropForeign(['collection_id']);
+        });
         Schema::dropIfExists('collection_product');
     }
 }

@@ -1,16 +1,14 @@
 <?php
+
 namespace GetCandy\Api\Http\Transformers\Fractal\Orders;
 
-use Carbon\Carbon;
-use GetCandy\Api\Orders\Models\OrderLine;
-use GetCandy\Api\Orders\Models\OrderDiscount;
+use GetCandy\Api\Core\Orders\Models\OrderDiscount;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
-use GetCandy\Api\Http\Transformers\Fractal\Products\ProductVariantTransformer;
 
 class OrderDiscountTransformer extends BaseTransformer
 {
     protected $availableIncludes = [
-        'order'
+        'order',
     ];
 
     public function transform(OrderDiscount $discount)
@@ -20,8 +18,9 @@ class OrderDiscountTransformer extends BaseTransformer
             'name' => $discount->name,
             'coupon' => $discount->coupon,
             'amount' => $discount->amount,
-            'type' => $discount->type
+            'type' => $discount->type,
         ];
+
         return $data;
     }
 

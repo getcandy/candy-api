@@ -2,23 +2,23 @@
 
 namespace GetCandy\Api\Http\Controllers\Products;
 
-use GetCandy\Exceptions\InvalidLanguageException;
-use GetCandy\Exceptions\MinimumRecordRequiredException;
+use Illuminate\Http\Request;
 use GetCandy\Api\Http\Controllers\BaseController;
+use GetCandy\Exceptions\InvalidLanguageException;
 use GetCandy\Api\Http\Requests\Products\CreateRequest;
 use GetCandy\Api\Http\Requests\Products\DeleteRequest;
 use GetCandy\Api\Http\Requests\Products\UpdateRequest;
-use GetCandy\Api\Http\Transformers\Fractal\Products\ProductTransformer;
+use GetCandy\Exceptions\MinimumRecordRequiredException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use GetCandy\Api\Products\Events\ProductViewedEvent;
+use GetCandy\Api\Http\Transformers\Fractal\Products\ProductTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\Products\ProductRecommendationTransformer;
 
 class ProductController extends BaseController
 {
     /**
-     * Handles the request to show all products
+     * Handles the request to show all products.
      * @param  Request $request
      * @return array
      */
@@ -27,15 +27,16 @@ class ProductController extends BaseController
         $paginator = app('api')->products()->getPaginatedData(
             $request->channel,
             $request->per_page,
-            $request->current_page,
+            $request->current_page ?: $request->page,
             $request->ids
         );
+
         return $this->respondWithCollection($paginator, new ProductTransformer);
     }
 
     /**
-     * Handles the request to show a product based on hashed ID
-     * @param  String $id
+     * Handles the request to show a product based on hashed ID.
+     * @param  string $id
      * @return array|\Illuminate\Http\Response
      */
     public function show($id)
@@ -43,16 +44,40 @@ class ProductController extends BaseController
         try {
             $product = app('api')->products()->getByHashedId($id);
         } catch (ModelNotFoundException $e) {
-            return $this->errorNotFound();
-        }
+            // If it cannot be found by ID, try get the variant by SKU
+            $variant = app('api')->productVariants()->getBySku($id);
 
-        event(new ProductViewedEvent($product));
+            $product = app('api')->products()->getByHashedId(
+                $variant->product->encodedId()
+            );
+            if (! $variant) {
+                return $this->errorNotFound();
+            }
+        }
 
         return $this->respondWithItem($product, new ProductTransformer);
     }
 
+    public function recommended(Request $request)
+    {
+        $request->validate([
+            'basket_id' => 'required|hashid_is_valid:baskets',
+        ]);
+
+        // Get the recommended products based on this basket.
+        $basket = app('api')->baskets()->getByHashedId($request->basket_id);
+
+        $products = $basket->lines->map(function ($line) {
+            return $line->variant->product_id;
+        })->toArray();
+
+        $recommendations = app('api')->products()->getRecommendations($products);
+
+        return $this->respondWithCollection($recommendations, new ProductRecommendationTransformer);
+    }
+
     /**
-     * Handles the request to create a new product
+     * Handles the request to create a new product.
      * @param  CreateRequest $request
      * @return array
      */
@@ -63,12 +88,13 @@ class ProductController extends BaseController
         } catch (InvalidLanguageException $e) {
             return $this->errorUnprocessable($e->getMessage());
         }
+
         return $this->respondWithItem($result, new ProductTransformer);
     }
 
     /**
-     * Handles the request to update a product
-     * @param  String        $id
+     * Handles the request to update a product.
+     * @param  string        $id
      * @param  UpdateRequest $request
      * @return array|\Illuminate\Http\Response
      */
@@ -85,12 +111,13 @@ class ProductController extends BaseController
         } catch (InvalidLanguageException $e) {
             return $this->errorUnprocessable($e->getMessage());
         }
+
         return $this->respondWithItem($result, new ProductTransformer);
     }
 
     /**
-     * Handles the request to delete a product
-     * @param  String        $id
+     * Handles the request to delete a product.
+     * @param  string        $id
      * @param  DeleteRequest $request
      * @return Json
      */
@@ -105,6 +132,7 @@ class ProductController extends BaseController
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
+
         return $this->respondWithNoContent();
     }
 }

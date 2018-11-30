@@ -2,10 +2,8 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Addresses;
 
-use GetCandy\Api\Associations\Models\AssociationGroup;
-use GetCandy\Api\Http\Transformers\Fractal\Attributes\AttributeTransformer;
+use GetCandy\Api\Core\Addresses\Models\Address;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
-use GetCandy\Api\Addresses\Models\Address;
 
 class AddressTransformer extends BaseTransformer
 {

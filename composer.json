@@ -12,42 +12,48 @@
         "braintree/braintree_php": "^3.28",
         "hashids/hashids": "^2.0",
         "intervention/image": "^2.4",
-        "itsgoingd/clockwork": "^2.0",
         "kalnoy/nestedset": "^4.3",
         "laravel/framework": "^5.6",
-        "laravel/passport": "^5.0",
+        "laravel/passport": "^7.0",
         "laravel/tinker": "^1.0",
         "league/fractal": "^0.17.0",
-        "rollbar/rollbar-laravel": "^2.2",
         "ruflin/elastica": "^6.0",
         "spatie/laravel-permission": "^2.9",
-        "tightenco/ziggy": "^0.6.2",
         "vinkla/hashids": "^4.0",
-        "vimeo/laravel": "^5.0"
+        "vimeo/laravel": "^5.0",
+        "doctrine/dbal": "2.7",
+        "paypal/rest-api-sdk-php": "*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
-        "laravel/homestead": "^7.1",
         "mockery/mockery": "~1.0",
         "phpunit/phpunit": "~7.0",
-        "filp/whoops": "~2.0"
+        "filp/whoops": "~2.0",
+        "orchestra/testbench": "~3.6"
     },
     "autoload": {
         "psr-4": {
             "GetCandy\\Api\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/",
+            "Seeds\\": "database/seeds/"
+        }
+    },
     "extra": {
         "laravel": {
             "providers": [
                 "GetCandy\\Api\\Providers\\ApiServiceProvider",
-                "GetCandy\\Api\\Providers\\EventServiceProvider"
+                "GetCandy\\Api\\Providers\\EventServiceProvider",
+                "GetCandy\\Api\\Providers\\PluginServiceProvider"
             ],
             "aliases": {
-                "CurrencyConverter" : "GetCandy\\Api\\Currencies\\Facades\\CurrencyConverter",
-                "TaxCalculator" : "Facades\\GetCandy\\Api\\Taxes\\TaxCalculator",
-                "PriceCalculator" : "Facades\\GetCandy\\Api\\Pricing\\PriceCalculator",
-                "GetCandy" : "Facades\\GetCandy\\Api\\Helpers\\GetCandy"
+                "CurrencyConverter" : "GetCandy\\Api\\Core\\Currencies\\Facades\\CurrencyConverter",
+                "TaxCalculator" : "Facades\\GetCandy\\Api\\Core\\Taxes\\TaxCalculator",
+                "PriceCalculator" : "GetCandy\\Api\\Core\\Pricing\\PriceCalculator",
+                "GetCandy" : "Facades\\GetCandy\\Api\\Core\\Helpers\\GetCandy"
             }
         }
     }

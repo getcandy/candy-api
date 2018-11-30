@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Payments;
 
+use GetCandy\Api\Core\Payments\Models\PaymentType;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
-use GetCandy\Api\Payments\Models\PaymentType;
 
 class PaymentTypeTransformer extends BaseTransformer
 {
@@ -12,7 +12,8 @@ class PaymentTypeTransformer extends BaseTransformer
         return [
             'id' => $type->encodedId(),
             'name' => $type->name,
-            'driver' => $type->driver
+            'handle' => $type->handle,
+            'driver' => $type->driver,
         ];
     }
 }

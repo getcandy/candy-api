@@ -1,0 +1,189 @@
+<?php
+
+namespace GetCandy\Api\Core\Shipping\Services;
+
+use GetCandy\Api\Core\Scaffold\BaseService;
+use GetCandy\Api\Core\Shipping\ShippingCalculator;
+use GetCandy\Api\Core\Baskets\Services\BasketService;
+use GetCandy\Api\Core\Shipping\Models\ShippingMethod;
+use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
+
+class ShippingMethodService extends BaseService
+{
+    /**
+     * The basket service.
+     *
+     * @var BasketService
+     */
+    protected $baskets;
+
+    public function __construct(BasketService $baskets)
+    {
+        $this->model = new ShippingMethod();
+        $this->baskets = $baskets;
+    }
+
+    /**
+     * Create a shipping method.
+     *
+     * @param array $data
+     *
+     * @return ShippingMethod
+     */
+    public function create(array $data)
+    {
+        $shipping = new ShippingMethod;
+        $shipping->attribute_data = $data;
+        $shipping->type = $data['type'];
+
+        $shipping->save();
+
+        if (! empty($data['channels']['data'])) {
+            $shipping->channels()->sync(
+                $this->getChannelMapping($data['channels']['data'])
+            );
+        }
+
+        event(new AttributableSavedEvent($shipping));
+
+        return $shipping;
+    }
+
+    /**
+     * Update a shipping method.
+     *
+     * @param string $id
+     * @param array $data
+     *
+     * @return ShippingMethod
+     */
+    public function update($id, array $data)
+    {
+        $shipping = $this->getByHashedId($id);
+        $shipping->attribute_data = $data['attribute_data'];
+        $shipping->type = $data['type'];
+
+        if (! empty($data['channels']['data'])) {
+            $shipping->channels()->sync(
+                $this->getChannelMapping($data['channels']['data'])
+            );
+        }
+
+        $shipping->save();
+
+        return $shipping;
+    }
+
+    /**
+     * Gets shipping methods for an order.
+     *
+     * @param string $orderId
+     *
+     * @return ArrayCollection
+     */
+    public function getForOrder($orderId)
+    {
+        // Get the zones for this order...
+        $order = app('api')->orders()->getByHashedId($orderId);
+        $basket = $this->baskets->getForOrder($order);
+
+        $methods = $this->all();
+        $basket = $order->basket;
+        $calculator = new ShippingCalculator(app());
+
+        $options = [];
+
+        foreach ($methods as $index => $method) {
+            $option = $calculator->with($method)->calculate($order);
+            if (! $option) {
+                continue;
+            }
+            if (is_array($option)) {
+                $options = array_merge($options, $option);
+            } else {
+                $options[$index] = $option;
+            }
+        }
+
+        return collect($options);
+    }
+
+    /**
+     * Updates zones for a shipping method.
+     *
+     * @param string $methodId
+     * @param array $data
+     *
+     * @return ShippingMethod
+     */
+    public function updateZones($methodId, $data = [])
+    {
+        $method = $this->getByHashedId($methodId);
+
+        $method->zones()->detach();
+
+        if (! empty($data['zones'])) {
+            $method->zones()->attach(
+                app('api')->shippingZones()->getDecodedIds($data['zones'])
+            );
+        }
+
+        return $method;
+    }
+
+    /**
+     * Update users for a shipping method.
+     *
+     * @param string $methodId
+     * @param array $users
+     *
+     * @return ShippingMethod
+     */
+    public function updateUsers($methodId, $users = [])
+    {
+        $method = $this->getByHashedId($methodId);
+
+        $method->users()->detach();
+
+        $method->users()->attach(
+            app('api')->users()->getDecodedIds($users)
+        );
+
+        return $method;
+    }
+
+    /**
+     * Remove a user from a shipping method.
+     *
+     * @param string $methodId
+     * @param string $userId
+     *
+     * @return ShippingMethod
+     */
+    public function deleteUser($methodId, $userId)
+    {
+        $user = app('api')->users()->getDecodedId($userId);
+        $method = $this->getByHashedId($methodId);
+        $method->users()->detach($user);
+
+        return $method;
+    }
+
+    public function delete($methodId)
+    {
+        $method = $this->getByHashedId($methodId);
+
+        $method->zones()->detach();
+        $method->users()->detach();
+
+        foreach ($method->prices as $price) {
+            $price->customerGroups()->detach();
+            $price->delete();
+        }
+
+        $method->channels()->detach();
+        $method->delete();
+
+        return true;
+    }
+}

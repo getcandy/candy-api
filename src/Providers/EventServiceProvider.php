@@ -2,19 +2,23 @@
 
 namespace GetCandy\Api\Providers;
 
-use GetCandy\Api\Attributes\Events\AttributableSavedEvent;
-use GetCandy\Api\Attributes\Listeners\SyncAttributablesListener;
-use GetCandy\Api\Baskets\Events\BasketStoredEvent;
-use GetCandy\Api\Discounts\Listeners\AddDiscountToProductListener;
-use GetCandy\Api\Orders\Listeners\SyncWithBasketListener;
-use GetCandy\Api\Products\Events\ProductCreatedEvent;
-use GetCandy\Api\Products\Events\ProductUpdatedEvent;
-use GetCandy\Api\Products\Events\ProductViewedEvent;
-use GetCandy\Api\Search\Events\IndexableSavedEvent;
-use GetCandy\Api\Search\Listeners\IndexObjectListener;
-use GetCandy\Api\Products\Listeners\AddToIndexListener as ProductIndexListener;
-use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
+use GetCandy\Api\Core\Orders\Events\OrderSavedEvent;
+use GetCandy\Api\Core\Baskets\Events\BasketStoredEvent;
+use GetCandy\Api\Core\Search\Events\IndexableSavedEvent;
+use GetCandy\Api\Core\Products\Events\ProductViewedEvent;
+use GetCandy\Api\Core\Products\Events\ProductCreatedEvent;
+use GetCandy\Api\Core\Products\Events\ProductUpdatedEvent;
+use GetCandy\Api\Core\Search\Listeners\IndexObjectListener;
+use GetCandy\Api\Core\Attributes\Events\AttributeSavedEvent;
+use GetCandy\Api\Core\Orders\Listeners\RefreshOrderListener;
+use GetCandy\Api\Core\Orders\Listeners\SyncWithBasketListener;
+use GetCandy\Api\Core\Search\Listeners\UpdateMappingsListener;
+use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
+use GetCandy\Api\Core\Attributes\Listeners\SyncAttributablesListener;
+use GetCandy\Api\Core\Discounts\Listeners\AddDiscountToProductListener;
+use GetCandy\Api\Core\Products\Listeners\AddToIndexListener as ProductIndexListener;
+use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -25,23 +29,29 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         AttributableSavedEvent::class => [
-            SyncAttributablesListener::class
+            SyncAttributablesListener::class,
+        ],
+        AttributeSavedEvent::class => [
+            UpdateMappingsListener::class,
         ],
         ProductCreatedEvent::class => [
-            ProductIndexListener::class
+            ProductIndexListener::class,
         ],
         ProductUpdatedEvent::class => [
-            ProductIndexListener::class
+            ProductIndexListener::class,
         ],
         ProductViewedEvent::class => [
-            AddDiscountToProductListener::class
+            AddDiscountToProductListener::class,
         ],
         BasketStoredEvent::class => [
-            SyncWithBasketListener::class
+            SyncWithBasketListener::class,
         ],
         IndexableSavedEvent::class => [
-            IndexObjectListener::class
-        ]
+            IndexObjectListener::class,
+        ],
+        OrderSavedEvent::class => [
+            RefreshOrderListener::class,
+        ],
     ];
 
     /**

@@ -4,7 +4,6 @@ namespace GetCandy\Api\Http\Controllers\Collections;
 
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Collections\Routes\CreateRequest;
-use Illuminate\Http\Request;
 
 class CollectionRouteController extends BaseController
 {
@@ -17,6 +16,7 @@ class CollectionRouteController extends BaseController
     public function store($collection, CreateRequest $request)
     {
         $result = app('api')->collections()->createUrl($collection, $request->all());
+
         return $this->respondWithNoContent();
     }
 }

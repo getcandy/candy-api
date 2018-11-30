@@ -2,20 +2,20 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Channels;
 
-use GetCandy\Api\Channels\Models\Channel;
-use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use Carbon\Carbon;
+use GetCandy\Api\Core\Channels\Models\Channel;
+use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 
 class ChannelTransformer extends BaseTransformer
 {
     protected $availableIncludes = [
-        'routes'
+        'routes',
     ];
 
     /**
-     * Decorates the attribute object for viewing
+     * Decorates the attribute object for viewing.
      * @param  Attribute $product
-     * @return Array
+     * @return array
      */
     public function transform(Channel $channel)
     {
@@ -25,7 +25,7 @@ class ChannelTransformer extends BaseTransformer
             'handle' => $channel->handle,
             'url' => $channel->url,
             'default' => (bool) $channel->default,
-            'published_at' => $channel->published_at ? Carbon::parse($channel->published_at)->toIso8601String() : null
+            'published_at' => $channel->published_at ? Carbon::parse($channel->published_at)->toIso8601String() : null,
         ];
 
         return $data;

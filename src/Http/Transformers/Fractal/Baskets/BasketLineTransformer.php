@@ -1,26 +1,27 @@
 <?php
+
 namespace GetCandy\Api\Http\Transformers\Fractal\Baskets;
 
-use Carbon\Carbon;
-use GetCandy\Api\Baskets\Models\BasketLine;
+use GetCandy\Api\Core\Baskets\Models\BasketLine;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Products\ProductVariantTransformer;
 
 class BasketLineTransformer extends BaseTransformer
 {
     protected $availableIncludes = [
-        'variant'
+        'variant',
     ];
 
     public function transform(BasketLine $line)
     {
-        $data = [
+        $data = array_merge($line->custom_attributes, [
             'id' => $line->encodedId(),
             'quantity' => $line->quantity,
-            'total' => $line->current_total,
-            'total_when_added' => $line->total,
-            'original_price' => $line->total / $line->quantity
-        ];
+            'line_total' => $line->total_cost,
+            'unit_price' => $line->unit_cost,
+            'tax' => $line->total_tax,
+        ]);
+
         return $data;
     }
 

@@ -12,5 +12,5 @@ return [
             'driver' => 'eloquent',
             'model' => GetCandy\Api\Auth\Models\User::class,
         ],
-    ]
+    ],
 ];
