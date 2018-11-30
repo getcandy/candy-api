@@ -2,11 +2,18 @@
 
 namespace GetCandy\Api\Core\Traits;
 
+use Hashids\Hashids as HashidsEncoder;
+
 trait Hashids
 {
     public function hashids()
     {
         return app('hashids')->connection($this->hashids);
+    }
+
+    public function getEncodedIdAttribute()
+    {
+        return app('hashids')->connection($this->hashids)->encode($this->id);
     }
 
     public function decodeId($value)
