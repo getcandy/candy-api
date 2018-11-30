@@ -200,9 +200,9 @@ class CategoryService extends BaseService
         return true;
     }
 
-    public function getCategoryTree($channel = null)
+    public function getCategoryTree($channel = null, $depth  = null)
     {
-        return Category::channel($channel)
+        $qb = Category::channel($channel)
             ->with([
                 'assets',
                 'assets.transforms',
@@ -213,8 +213,13 @@ class CategoryService extends BaseService
                 'routes',
             ])
             ->withCount('products')
-            ->defaultOrder()
-            ->get()
+            ->defaultOrder();
+
+        if ($depth) {
+            $qb = $qb->withDepth()->having('depth', '<=', $depth);
+        }
+
+        return $qb->get()
             ->toTree();
     }
 

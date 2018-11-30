@@ -20,7 +20,7 @@ class CategoryController extends BaseController
     public function index(Request $request)
     {
         if ($request->tree) {
-            $collection = app('api')->categories()->getCategoryTree($request->channel);
+            $collection = app('api')->categories()->getCategoryTree($request->channel, $request->depth);
 
             return $this->respondWithItem($collection, new CategoryTreeTransformer);
         }
