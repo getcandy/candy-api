@@ -86,7 +86,6 @@ class OrderService extends BaseService
             }
         }
 
-
         $order->conversion = CurrencyConverter::rate();
         $order->currency = $basket->currency;
 
@@ -302,14 +301,14 @@ class OrderService extends BaseService
     {
         $totals = \DB::table('order_lines')->select(
             'order_id',
-            DB::RAW('SUM((CASE WHEN discount_total = 0 THEN line_total ELSE line_total - discount_total END)) as line_total'),
+            DB::RAW('SUM((CASE WHEN discount_total = 0 THEN line_total ELSE line_total - IFNULL(discount_total, 0) END)) as line_total'),
             DB::RAW('SUM(delivery_total) as delivery_total'),
             DB::RAW('SUM(CASE WHEN discount_total = 0 THEN tax_total ELSE 0 END) as tax_total'),
             DB::RAW('SUM(discount_total) as discount_total'),
             DB::RAW('SUM(discount_total) as tax_discount_total'),
-            DB::RAW('SUM(line_total) + SUM(tax_total) + SUM(delivery_total) - SUM(discount_total) as grand_total')
-        )->where('order_id', '=', $order->id)->whereIsShipping(false)->groupBy('order_id')->first();
-
+            DB::RAW('SUM(line_total) + SUM(tax_total) + SUM(delivery_total) - SUM(IFNULL(discount_total, 0)) as grand_total')
+        )->where('order_id', '=', $order->id)->groupBy('order_id')->first();
+        
         // If we don't have any totals, then we must have had an order already and deleted all the lines
         // from it and gone back to the checkout.
         if (! $totals) {
