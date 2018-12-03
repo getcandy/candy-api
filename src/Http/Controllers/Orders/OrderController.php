@@ -3,14 +3,16 @@
 namespace GetCandy\Api\Http\Controllers\Orders;
 
 use Illuminate\Http\Request;
-use GetCandy\Api\Core\Orders\OrderSearchCriteria;
 use GetCandy\Api\Http\Controllers\BaseController;
+use GetCandy\Api\Core\Orders\OrderSearchCriteria;
 use GetCandy\Api\Http\Requests\Orders\UpdateRequest;
 use GetCandy\Api\Http\Requests\Orders\CreateRequest;
 use GetCandy\Api\Http\Requests\Orders\ProcessRequest;
-use GetCandy\Api\Http\Requests\Orders\BulkUpdateRequest;
+use GetCandy\Api\Http\Resources\Orders\OrderResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use GetCandy\Api\Http\Requests\Orders\BulkUpdateRequest;
 use GetCandy\Api\Http\Requests\Orders\StoreAddressRequest;
+use GetCandy\Api\Http\Resources\Payments\ThreeDSecureResource;
 use GetCandy\Api\Core\Orders\Exceptions\IncompleteOrderException;
 use GetCandy\Api\Http\Transformers\Fractal\Orders\OrderTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Documents\PdfTransformer;
@@ -89,8 +91,7 @@ class OrderController extends BaseController
         } catch (BasketHasPlacedOrderException $e) {
             return $this->errorForbidden(trans('getcandy::exceptions.basket_already_has_placed_order'));
         }
-
-        return $this->respondWithItem($order->fresh(), new OrderTransformer);
+        return new OrderResource($order);
     }
 
     /**
@@ -107,8 +108,7 @@ class OrderController extends BaseController
             if (! $order->placed_at) {
                 return $this->errorForbidden('Payment has failed');
             }
-
-            return $this->respondWithItem($order, new OrderTransformer);
+            return new OrderResource($order);
         } catch (IncompleteOrderException $e) {
             return $this->errorForbidden('The order is missing billing information');
         } catch (ModelNotFoundException $e) {
@@ -116,7 +116,7 @@ class OrderController extends BaseController
         } catch (OrderAlreadyProcessedException $e) {
             return $this->errorUnprocessable('This order has already been processed');
         } catch (ThreeDSecureRequiredException $e) {
-            return $this->respondWithItem($e->getResponse(), new ThreeDSecureTransformer);
+            return new ThreeDSecureResource($e->getResponse());
         }
     }
 

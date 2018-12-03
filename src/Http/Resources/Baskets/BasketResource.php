@@ -7,6 +7,7 @@ use GetCandy\Api\Http\Resources\Users\UserResource;
 use GetCandy\Api\Http\Resources\Routes\RouteCollection;
 use GetCandy\Api\Http\Resources\Orders\OrderCollection;
 use GetCandy\Api\Http\Resources\Discounts\DiscountCollection;
+use GetCandy\Api\Http\Resources\Orders\OrderResource;
 
 class BasketResource extends AbstractResource
 {
@@ -26,7 +27,7 @@ class BasketResource extends AbstractResource
             'lines' => new BasketLineCollection($this->whenLoaded('lines')),
             'user' => new UserResource($this->whenLoaded('user')),
             'discounts' => new DiscountCollection($this->whenLoaded('discounts')),
-            'orders' => new OrderCollection($this->whenLoaded('orders')),
+            'order' => ['data' => new OrderResource($this->whenLoaded('order'))],
         ];
     }
 }

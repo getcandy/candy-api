@@ -93,10 +93,10 @@ abstract class AbstractResource extends JsonResource
         $this->resource = $resource;
         $this->only = collect($only);
     }
-
+    
     public function toArray($request)
     {
-        $attributes = array_merge($this->payload(), $this->map($this->attribute_data));
+        $attributes = array_merge($this->payload(), $this->map($this->attribute_data ?? []));
         return array_merge($attributes, $this->includes());
     }
 
