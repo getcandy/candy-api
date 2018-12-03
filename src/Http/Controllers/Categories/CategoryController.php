@@ -32,6 +32,7 @@ class CategoryController extends BaseController
     {
         $results = $criteria
             ->tree($request->tree)
+            ->depth($request->depth)
             ->include($request->includes);
 
         if (!$request->tree) {
