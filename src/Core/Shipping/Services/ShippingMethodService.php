@@ -74,6 +74,16 @@ class ShippingMethodService extends BaseService
         return $shipping;
     }
 
+    public function all()
+    {
+        return $this->model->with([
+          'zones',
+          'users',
+          'prices',
+          'channels',
+        ])->get();
+    }
+
     /**
      * Gets shipping methods for an order.
      *

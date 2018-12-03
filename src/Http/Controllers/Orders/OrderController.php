@@ -3,24 +3,26 @@
 namespace GetCandy\Api\Http\Controllers\Orders;
 
 use Illuminate\Http\Request;
-use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Core\Orders\OrderSearchCriteria;
+use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Orders\UpdateRequest;
 use GetCandy\Api\Http\Requests\Orders\CreateRequest;
 use GetCandy\Api\Http\Requests\Orders\ProcessRequest;
 use GetCandy\Api\Http\Resources\Orders\OrderResource;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use GetCandy\Api\Http\Resources\Orders\OrderCollection;
 use GetCandy\Api\Http\Requests\Orders\BulkUpdateRequest;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use GetCandy\Api\Http\Requests\Orders\StoreAddressRequest;
 use GetCandy\Api\Http\Resources\Payments\ThreeDSecureResource;
 use GetCandy\Api\Core\Orders\Exceptions\IncompleteOrderException;
-use GetCandy\Api\Http\Transformers\Fractal\Documents\PdfTransformer;
 use GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException;
 use GetCandy\Api\Core\Orders\Exceptions\OrderAlreadyProcessedException;
 use GetCandy\Api\Core\Payments\Exceptions\ThreeDSecureRequiredException;
-use GetCandy\Api\Http\Transformers\Fractal\Payments\ThreeDSecureTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Shipping\ShippingPriceTransformer;
-use GetCandy\Api\Http\Resources\Orders\OrderCollection;
+use GetCandy\Api\Http\Resources\Files\PdfResource;
+use GetCandy\Api\Http\Resources\Shipping\ShippingMethodCollection;
+use GetCandy\Api\Http\Resources\Shipping\ShippingPriceCollection;
+use GetCandy\Api\Core\Shipping\Services\ShippingMethodService;
 
 class OrderController extends BaseController
 {
@@ -200,15 +202,14 @@ class OrderController extends BaseController
      *
      * @return array
      */
-    public function shippingMethods($orderId, Request $request)
+    public function shippingMethods($orderId, Request $request, ShippingMethodService $methods)
     {
         try {
-            $options = app('api')->shippingMethods()->getForOrder($orderId);
+            $options = $methods->getForOrder($orderId);
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
-
-        return $this->respondWithCollection($options, new ShippingPriceTransformer);
+        return new ShippingPriceCollection($options);
     }
 
     /**
@@ -226,7 +227,6 @@ class OrderController extends BaseController
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
-
         return new OrderResource($order);
     }
 
@@ -280,8 +280,7 @@ class OrderController extends BaseController
     {
         $order = app('api')->orders()->getByHashedId($id);
         $pdf = app('api')->orders()->getPdf($order);
-
-        return $this->respondWithItem($pdf, new PdfTransformer);
+        return new PdfResource($pdf);
     }
 
     /**

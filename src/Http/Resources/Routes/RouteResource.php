@@ -22,9 +22,5 @@ class RouteResource extends AbstractResource
     public function includes()
     {
         return [];
-    //     return [
-    //         'children' => new CategoryCollection($this->whenLoaded('children'), $this->only),
-    //         // 'routes' => new RouteCollection($this->whenLoaded('routes')),
-    //     ];
     }
 }
