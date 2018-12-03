@@ -14,13 +14,13 @@ use GetCandy\Api\Http\Requests\Orders\BulkUpdateRequest;
 use GetCandy\Api\Http\Requests\Orders\StoreAddressRequest;
 use GetCandy\Api\Http\Resources\Payments\ThreeDSecureResource;
 use GetCandy\Api\Core\Orders\Exceptions\IncompleteOrderException;
-use GetCandy\Api\Http\Transformers\Fractal\Orders\OrderTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Documents\PdfTransformer;
 use GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException;
 use GetCandy\Api\Core\Orders\Exceptions\OrderAlreadyProcessedException;
 use GetCandy\Api\Core\Payments\Exceptions\ThreeDSecureRequiredException;
 use GetCandy\Api\Http\Transformers\Fractal\Payments\ThreeDSecureTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Shipping\ShippingPriceTransformer;
+use GetCandy\Api\Http\Resources\Orders\OrderCollection;
 
 class OrderController extends BaseController
 {
@@ -50,7 +50,7 @@ class OrderController extends BaseController
 
         $orders = $criteria->get();
 
-        return $this->respondWithCollection($orders, new OrderTransformer);
+        return new OrderCollection($orders);
     }
 
     public function getTypes(Request $request)
@@ -74,7 +74,7 @@ class OrderController extends BaseController
             return $this->errorNotFound();
         }
 
-        return $this->respondWithItem($order, new OrderTransformer);
+        return new OrderResource($order);
     }
 
     /**
@@ -171,7 +171,7 @@ class OrderController extends BaseController
             return $this->errorNotFound();
         }
 
-        return $this->respondWithItem($order, new OrderTransformer);
+        return new OrderResource($order);
     }
 
     /**
@@ -189,8 +189,7 @@ class OrderController extends BaseController
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
-
-        return $this->respondWithItem($order, new OrderTransformer);
+        return new OrderResource($order);
     }
 
     /**
@@ -228,7 +227,7 @@ class OrderController extends BaseController
             return $this->errorNotFound();
         }
 
-        return $this->respondWithItem($order, new OrderTransformer);
+        return new OrderResource($order);
     }
 
     /**
@@ -247,7 +246,7 @@ class OrderController extends BaseController
             return $this->errorNotFound();
         }
 
-        return $this->respondWithItem($order, new OrderTransformer);
+        return new OrderResource($order);
     }
 
     /**
@@ -266,7 +265,7 @@ class OrderController extends BaseController
             return $this->errorNotFound();
         }
 
-        return $this->respondWithItem($order, new OrderTransformer);
+        return new OrderResource($order);
     }
 
     /**
