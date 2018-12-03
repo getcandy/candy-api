@@ -31,9 +31,14 @@ class CategoryCriteria extends AbstractCriteria
         $category = new Category;
 
         $builder = $category->with($this->includes ?: []);
+
         if ($this->id) {
             $builder->where('id', '=', $category->decodeId($this->id));
             return $builder;
+        }
+
+        if ($this->limit && !$this->tree) {
+            $builder->limit($this->limit);
         }
 
         if ($this->depth) {
@@ -51,8 +56,13 @@ class CategoryCriteria extends AbstractCriteria
      */
     public function get()
     {
+        return $this->tree ? $this->getTree() : $this->getBuilder()->get();
+    }
+
+    protected function getTree()
+    {
         $results = $this->getBuilder()->get();
-        return $this->tree ? $results->toTree() : $results;
+        return $results->toTree()->take($this->limit);
     }
 
 }

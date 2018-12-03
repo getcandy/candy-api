@@ -33,12 +33,14 @@ class CategoryController extends BaseController
         $results = $criteria
             ->tree($request->tree)
             ->depth($request->depth)
-            ->include($request->includes);
+            ->include($request->includes)
+            ->limit($request->limit);
 
         if (!$request->tree) {
-            $criteria->limit($request->per_page, 1, 2, 3)
+            $criteria
                 ->page($request->page);
         }
+
         return new CategoryCollection(
             $criteria->get(), $this->parseIncludedFields($request)
         );
