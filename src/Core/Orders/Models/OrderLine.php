@@ -33,7 +33,7 @@ class OrderLine extends BaseModel
         'tax_rate',
     ];
 
-    public function variant()
+    public function productVariant()
     {
         return $this->belongsTo(ProductVariant::class, 'sku', 'sku');
     }

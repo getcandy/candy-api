@@ -107,6 +107,11 @@ class OrderService extends BaseService
 
         event(new OrderSavedEvent($order, $basket));
 
+        $order->load([
+            'discounts',
+            'lines.productVariant.product.assets.transforms'
+        ]);
+
         return $order;
     }
 
@@ -308,7 +313,7 @@ class OrderService extends BaseService
             DB::RAW('SUM(discount_total) as tax_discount_total'),
             DB::RAW('SUM(line_total) + SUM(tax_total) + SUM(delivery_total) - SUM(IFNULL(discount_total, 0)) as grand_total')
         )->where('order_id', '=', $order->id)->groupBy('order_id')->first();
-        
+
         // If we don't have any totals, then we must have had an order already and deleted all the lines
         // from it and gone back to the checkout.
         if (! $totals) {
