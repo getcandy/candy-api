@@ -7,6 +7,8 @@ use GetCandy\Api\Core\Orders\Models\Order;
 
 class OrderSearchCriteria
 {
+    protected $id;
+
     /**
      * How many orders per page
      *
@@ -130,6 +132,11 @@ class OrderSearchCriteria
         return get_object_vars($this);
     }
 
+    public function find($id)
+    {
+
+    }
+
     /**
      * Get the result from our defined criteria
      *
@@ -137,6 +144,7 @@ class OrderSearchCriteria
      */
     public function get()
     {
+        $order = new Order;
         $query = Order::status($this->status)
             ->type($this->type)
             ->zone($this->zone)
@@ -157,6 +165,9 @@ class OrderSearchCriteria
             $query->whereHas('user', function ($q) {
                 $q->whereId($this->user->id);
             });
+        }
+        if ($this->id) {
+            return $query->find($order->decodeId($this->id));
         }
 
         return $query->paginate($this->per_page, ['*'], 'page', $this->page);
