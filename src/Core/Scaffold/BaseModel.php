@@ -10,6 +10,8 @@ abstract class BaseModel extends Model
 {
     use Hashids;
 
+    protected $hashids = 'main';
+
     public $custom_attributes = [];
 
     public function getSettingsAttribute()

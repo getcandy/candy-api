@@ -4,7 +4,7 @@ namespace GetCandy\Api\Http\Resources\Discounts;
 
 use GetCandy\Api\Http\Resources\AbstractResource;
 
-class DiscountResource extends AbstractResource
+class DiscountSetResource extends AbstractResource
 {
     public function payload()
     {
@@ -16,7 +16,7 @@ class DiscountResource extends AbstractResource
     public function includes()
     {
         return [
-            // 'criteria' => $this->criteria,
+            'discount' => ['data' => new DiscountResource($this->whenLoaded('discount'))],
         ];
     }
 }
