@@ -1,15 +1,15 @@
 <?php
 
-namespace GetCandy\Api\Http\Resources\Assets;
+namespace GetCandy\Api\Http\Resources\Baskets;
 
 use GetCandy\Api\Http\Resources\AbstractCollection;
 
-class AssetCollection extends AbstractCollection
+class SavedBasketCollection extends AbstractCollection
 {
     /**
      * The resource that this resource collects.
      *
      * @var string
      */
-    public $collects = AssetResource::class;
+    public $collects = SavedBasketResource::class;
 }
