@@ -108,6 +108,7 @@ class ShippingMethodService extends BaseService
             if (! $option) {
                 continue;
             }
+            $option->load(['method']);
             if (is_array($option)) {
                 $options = array_merge($options, $option);
             } else {

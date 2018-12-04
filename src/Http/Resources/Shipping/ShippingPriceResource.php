@@ -31,6 +31,8 @@ class ShippingPriceResource extends AbstractResource
 
     public function includes()
     {
-        return [];
+        return [
+            'method' => $this->include('method', ShippingMethodResource::class),
+        ];
     }
 }
