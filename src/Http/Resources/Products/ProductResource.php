@@ -25,8 +25,9 @@ class ProductResource extends AbstractResource
             'routes' => new RouteCollection($this->whenLoaded('routes')),
             'categories' => new CategoryCollection($this->whenLoaded('categories'), $this->only),
             'variants' => new ProductVariantCollection($this->whenLoaded('variants'), $this->only),
-            'associations' => new ProductCollection($this->whenLoaded('associations'), $this->only),
+            'associations' => new ProductAssociationCollection($this->whenLoaded('associations'), $this->only),
             'discounts' => new DiscountModelCollection($this->whenLoaded('discounts'), $this->only),
+            'first_variant' => $this->include('firstVariant', ProductVariantResource::class),
         ];
     }
 }
