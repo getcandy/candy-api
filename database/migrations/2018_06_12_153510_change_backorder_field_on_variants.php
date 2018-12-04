@@ -17,7 +17,7 @@ class ChangeBackorderFieldOnVariants extends Migration
             $table->dropColumn('backorder');
         });
         Schema::table('product_variants', function (Blueprint $table) {
-            $table->enum('backorder', ['in-stock', 'expected', 'always'])->after('stock')->index();
+            $table->enum('backorder', ['in-stock', 'expected', 'always'])->default('always')->after('stock')->index();
         });
     }
 

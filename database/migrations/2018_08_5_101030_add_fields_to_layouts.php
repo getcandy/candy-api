@@ -14,7 +14,7 @@ class AddFieldsToLayouts extends Migration
     public function up()
     {
         Schema::table('layouts', function (Blueprint $table) {
-            $table->string('type')->after('handle')->index();
+            $table->string('type')->nullable()->after('handle')->index();
         });
 
         Schema::table('categories', function (Blueprint $table) {
