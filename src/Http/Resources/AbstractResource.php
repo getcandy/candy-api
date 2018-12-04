@@ -2,12 +2,12 @@
 
 namespace GetCandy\Api\Http\Resources;
 
+use Illuminate\Support\Collection;
+use Illuminate\Http\Resources\MissingValue;
 use Illuminate\Http\Resources\Json\JsonResource;
 use GetCandy\Api\Core\Channels\Services\ChannelService;
 use GetCandy\Api\Core\Languages\Services\LanguageService;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Support\Collection;
-use Illuminate\Http\Resources\MissingValue;
 
 abstract class AbstractResource extends JsonResource
 {
@@ -51,8 +51,11 @@ abstract class AbstractResource extends JsonResource
      */
     public function only($fields = [])
     {
+
         if ($fields instanceof Collection) {
            $fields = $fields->toArray();
+        } elseif (is_string($fields)) {
+            $fields = explode(',', $fields);
         }
         $this->only = collect($fields);
         return $this;
@@ -93,7 +96,7 @@ abstract class AbstractResource extends JsonResource
         $this->resource = $resource;
         $this->only = collect($only);
     }
-    
+
     public function toArray($request)
     {
         $attributes = array_merge($this->payload(), $this->map($this->attribute_data ?? []));
@@ -106,6 +109,13 @@ abstract class AbstractResource extends JsonResource
             return false;
         }
         return true;
+    }
+
+    protected function include($relation, $resource)
+    {
+        return $this->when($this->relationLoaded($relation), function () use ($relation, $resource) {
+            return ['data' => new $resource($this->whenLoaded($relation))];
+        });
     }
 
     /**
