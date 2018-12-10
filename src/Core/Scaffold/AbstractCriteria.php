@@ -28,9 +28,16 @@ abstract class AbstractCriteria
     protected $includes = [];
 
     /**
+     * The current page
+     *
+     * @var string
+     */
+    protected $offset;
+
+    /**
      * Set a limit to the number of resources returned
      */
-    protected $limit;
+    protected $limit = 50;
 
     public function __call($field, $arguments)
     {
@@ -43,6 +50,7 @@ abstract class AbstractCriteria
             } else {
                 $this->{$field} = $arguments;
             }
+
         }
         return $this;
     }
@@ -79,10 +87,21 @@ abstract class AbstractCriteria
     /**
      * Get the first result from the query
      *
-     * @return \Illuminate\Support\Collection
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function first()
     {
         return $this->getBuilder()->first();
+    }
+
+    /**
+     * Get the result
+     *
+     * @return LengthAwarePaginator
+     */
+    public function get()
+    {
+        $query = $this->getBuilder();
+        return $query->paginate($this->limit);
     }
 }
