@@ -37,7 +37,6 @@ class ProductService extends BaseService
      */
     public function getByHashedId($id)
     {
-        dd(1);
         $id = $this->model->decodeId($id);
         $product = $this->model->findOrFail($id);
 
