@@ -17,6 +17,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use GetCandy\Api\Http\Transformers\Fractal\Products\ProductTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Products\ProductRecommendationTransformer;
+use GetCandy\Api\Http\Resources\Products\ProductCollection;
 
 class ProductController extends BaseController
 {
@@ -25,21 +26,14 @@ class ProductController extends BaseController
      * @param  Request $request
      * @return array
      */
-    public function index(Request $request)
+    public function index(Request $request, ProductCriteria $criteria)
     {
-        $paginator = app('api')->products()->getPaginatedData(
-            $request->channel,
-            $request->per_page,
-            $request->current_page ?: $request->page,
-            $request->ids
-        );
+        $products = $criteria
+            ->include($request->includes)
+            ->limit($request->get('limit', 50))
+            ->get();
 
-        $resource = new ProductResource($paginator);
-
-        return $resource->only(['description'])->respondWithCollection();
-        // return ::collection($paginator, ['ean']);
-        // return ;
-        return $this->respondWithCollection($paginator, new ProductTransformer);
+        return new ProductCollection($products);
     }
 
     /**
