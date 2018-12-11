@@ -100,4 +100,16 @@ class ProductVariantController extends BaseController
 
         return $this->respondWithNoContent();
     }
+
+    public function updateInventory($variant, Request $request)
+    {
+        try {
+            $result = app('api')->productVariants()->updateInventory($variant, $request->inventory);
+        } catch (NotFoundHttpException $e) {
+            return $this->errorNotFound();
+        } catch (ModelNotFoundException $e) {
+            return $this->errorNotFound();
+        }
+        return $this->respondWithItem($result, new ProductVariantTransformer);
+    }
 }
