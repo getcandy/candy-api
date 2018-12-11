@@ -21,7 +21,7 @@ class OrderLineResource extends AbstractResource
             'tax_total' => $this->tax_total,
             'tax_rate' => $this->tax_rate,
             'description' => $this->description,
-            'variant' => $this->variant,
+            'variant_name' => $this->variant,
             'sku' => $this->sku,
             'is_shipping' => (bool) $this->is_shipping,
             'is_manual' => (bool) $this->is_manual,

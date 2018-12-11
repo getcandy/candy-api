@@ -465,7 +465,7 @@ class OrderService extends BaseService
         $id = $this->model->decodeId($id);
         $query = $this->model->withoutGlobalScope('open')->withoutGlobalScope('not_expired');
 
-        return $query->with(['lines.productVariant'])->findOrFail($id);
+        return $query->with(['lines.productVariant', 'transactions'])->findOrFail($id);
     }
 
     /**

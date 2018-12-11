@@ -4,6 +4,7 @@ namespace GetCandy\Api\Http\Resources\Orders;
 
 use GetCandy\Api\Http\Resources\AbstractResource;
 use GetCandy\Api\Http\Resources\Discounts\DiscountCollection;
+use GetCandy\Api\Http\Resources\Transactions\TransactionCollection;
 
 class OrderResource extends AbstractResource
 {
@@ -46,6 +47,7 @@ class OrderResource extends AbstractResource
     {
         return [
             'discounts' => new DiscountCollection($this->whenLoaded('discounts')),
+            'transactions' => new TransactionCollection($this->whenLoaded('transactions')),
             'lines' => new OrderLineCollection($this->whenLoaded('lines')),
         ];
     }
