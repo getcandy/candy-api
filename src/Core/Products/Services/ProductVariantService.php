@@ -309,4 +309,19 @@ class ProductVariantService extends BaseService
             }
         }, $measurements);
     }
+
+    /**
+     * Update a variants inventory
+     *
+     * @param string $variantId
+     * @param integer $inventory
+     * @return void
+     */
+    public function updateInventory($variantId, $inventory)
+    {
+        $variant = $this->getByHashedId($variantId);
+        $variant->stock = $inventory;
+        $variant->save();
+        return $variant;
+    }
 }
