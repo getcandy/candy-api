@@ -161,6 +161,7 @@ Route::group([
     $router->resource('products/variants', 'Products\ProductVariantController', [
         'except' => ['edit', 'create', 'store'],
     ]);
+    $router->put('products/variants/{variant}/inventory', 'Products\ProductVariantController@updateInventory');
     $router->post('products/{product}/variants', 'Products\ProductVariantController@store');
 
     /*
