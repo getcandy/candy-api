@@ -3,6 +3,7 @@
 namespace GetCandy\Api\Core\Scaffold;
 
 use Illuminate\Support\ServiceProvider;
+use GetCandy\Api\Core\Plugins\PluginManagerInterface;
 
 abstract class Plugin extends ServiceProvider
 {
@@ -17,6 +18,8 @@ abstract class Plugin extends ServiceProvider
     protected $subscribe = [];
 
     protected $commands = [];
+
+    protected $plugins;
 
     public function boot()
     {

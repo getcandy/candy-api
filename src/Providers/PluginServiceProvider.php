@@ -4,6 +4,8 @@ namespace GetCandy\Api\Providers;
 
 use File;
 use Illuminate\Support\ServiceProvider;
+use GetCandy\Api\Core\Plugins\PluginManagerInterface;
+use GetCandy\Api\Core\Plugins\Plugin;
 
 class PluginServiceProvider extends ServiceProvider
 {
@@ -12,7 +14,7 @@ class PluginServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(PluginManagerInterface $plugins)
     {
         $loader = require base_path().'/vendor/autoload.php';
 
@@ -22,6 +24,13 @@ class PluginServiceProvider extends ServiceProvider
             $list = File::directories($pluginsDir);
             foreach ($list as $dir) {
                 $config = require $dir.'/candy.php';
+
+                $handle = strtolower($config['namespace_suffix']);
+
+                $plugin = new Plugin($handle, $dir);
+                $plugin->setConfig($config);
+
+                $plugins->add($handle, $plugin);
 
                 $namespace = 'GetCandy\\Plugins\\'.$config['namespace_suffix'].'\\';
 

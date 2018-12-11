@@ -119,4 +119,6 @@ Route::group([
 
     $router->post('users', 'Users\UserController@store');
     $router->post('users/{userid}', 'Users\UserController@update');
+
+    $router->get('plugins', 'Plugins\PluginController@index');
 });

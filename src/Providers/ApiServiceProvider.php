@@ -18,22 +18,24 @@ use GetCandy\Api\Http\Middleware\SetTaxMiddleware;
 use GetCandy\Api\Core\Currencies\CurrencyConverter;
 use GetCandy\Api\Core\Users\Contracts\UserContract;
 use GetCandy\Api\Http\Middleware\SetCustomerGroups;
+use GetCandy\Api\Core\Plugins\PluginManagerInterface;
 use GetCandy\Api\Http\Middleware\SetLocaleMiddleware;
 use GetCandy\Api\Console\Commands\ElasticIndexCommand;
 use GetCandy\Api\Core\Baskets\Factories\BasketFactory;
-use GetCandy\Api\Console\Commands\ScoreProductsCommand;
 use GetCandy\Api\Http\Middleware\SetCurrencyMiddleware;
-use GetCandy\Api\Core\Products\Factories\ProductFactory;
+use GetCandy\Api\Console\Commands\ScoreProductsCommand;
 use GetCandy\Api\Http\Middleware\CheckClientCredentials;
+use GetCandy\Api\Core\Products\Factories\ProductFactory;
 use GetCandy\Api\Console\Commands\InstallGetCandyCommand;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketInterface;
 use GetCandy\Api\Core\Baskets\Factories\BasketLineFactory;
-use GetCandy\Api\Core\Products\Interfaces\ProductInterface;
 use GetCandy\Api\Core\Search\Factories\SearchResultFactory;
+use GetCandy\Api\Core\Products\Interfaces\ProductInterface;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketLineInterface;
 use GetCandy\Api\Core\Search\Interfaces\SearchResultInterface;
 use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
 use GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface;
+use GetCandy\Api\Core\Plugins\PluginManager;
 
 class ApiServiceProvider extends ServiceProvider
 {
@@ -141,6 +143,10 @@ class ApiServiceProvider extends ServiceProvider
         $this->app->register(
             \Alaouy\Youtube\YoutubeServiceProvider::class
         );
+
+        $this->app->singleton(PluginManagerInterface::class, function ($app) {
+            return new PluginManager;
+        });
 
         $this->app->bind(\GetCandy\Api\Shipping\ShippingCalculator::class, function ($app) {
             return $app->make(\GetCandy\Api\Shipping\ShippingCalculator::class);
