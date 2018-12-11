@@ -66,7 +66,7 @@ return [
                 'failed' => [
                     'label' => 'Failed',
                     'color' => '#e4002b',
-                    'favourite' => true // This will show as a tab in the hub
+                    'favourite' => true, // This will show as a tab in the hub
                 ],
                 'payment-received' => [
                     'label' => 'Payment Received',
@@ -118,20 +118,20 @@ return [
         'client' => \GetCandy\Api\Core\Search\Providers\Elastic\Elastic::class,
         'index_prefix' => env('SEARCH_INDEX_PREFIX', 'candy'),
         'index' => env('SEARCH_INDEX', 'candy_products_en'),
-        /**
+        /*
          * Here you can define the price aggregation break points, similar
          * to how it's done on Amazon.
          */
         'aggregation' => [
             'price' => [
                 'ranges' => [
-                    'low' => [5,10,20,50],
-                    'medium' => [200,350,400,500],
-                    'large' => [500,600,700,800],
+                    'low' => [5, 10, 20, 50],
+                    'medium' => [200, 350, 400, 500],
+                    'large' => [500, 600, 700, 800],
                 ],
             ],
         ],
-        /**
+        /*
          * This is some experimental ranking, text searching has it's limits
          * and it's difficult to know what should be ranked higher .
          * Here you can define what fields have better "weight" on results.
@@ -141,8 +141,8 @@ return [
                 'multi_match' => [
                     'types' => [
                         'cross_fields' => [
-                            "name^3",
-                            "name.en^4",
+                            'name^3',
+                            'name.en^4',
                         ],
                     ],
                 ],
@@ -151,15 +151,15 @@ return [
                 'multi_match' => [
                     'types' => [
                         'cross_fields' => [
-                            "name^3",
-                            "name.en^4",
-                            "tags^3",
-                            "breadcrumbs.en^2",
+                            'name^3',
+                            'name.en^4',
+                            'tags^3',
+                            'breadcrumbs.en^2',
                             'brand^2',
                             'sku^10',
-                        ]
-                    ]
-                ]
+                        ],
+                    ],
+                ],
             ],
         ],
     ],

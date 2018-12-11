@@ -5,8 +5,8 @@ namespace GetCandy\Api\Http\Controllers\Orders;
 use Illuminate\Http\Request;
 use GetCandy\Api\Core\Orders\OrderSearchCriteria;
 use GetCandy\Api\Http\Controllers\BaseController;
-use GetCandy\Api\Http\Requests\Orders\UpdateRequest;
 use GetCandy\Api\Http\Requests\Orders\CreateRequest;
+use GetCandy\Api\Http\Requests\Orders\UpdateRequest;
 use GetCandy\Api\Http\Requests\Orders\ProcessRequest;
 use GetCandy\Api\Http\Requests\Orders\BulkUpdateRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -41,7 +41,7 @@ class OrderController extends BaseController
                 'not_expired',
             ]);
 
-        if ($request->user()->hasRole('admin') && !$request->only_own) {
+        if ($request->user()->hasRole('admin') && ! $request->only_own) {
             $criteria->set('restrict', false);
         }
         $criteria->set('user', $request->user());
@@ -54,6 +54,7 @@ class OrderController extends BaseController
     public function getTypes(Request $request)
     {
         $types = app('api')->orders()->getTypes();
+
         return response()->json([
             'data' => $types,
         ]);

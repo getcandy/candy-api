@@ -91,7 +91,7 @@ class Order extends BaseModel
     }
 
     /**
-     * Define the Zone scope
+     * Define the Zone scope.
      *
      * @param Builder $qb
      * @param string $zone
@@ -99,16 +99,17 @@ class Order extends BaseModel
      */
     public function scopeZone($qb, $zone)
     {
-        if (!$zone) {
+        if (! $zone) {
             return $qb;
         }
+
         return $qb->whereHas('lines', function ($q) use ($zone) {
             return $q->where('variant', '=', $zone);
         });
     }
 
     /**
-     * Define the date range scope
+     * Define the date range scope.
      *
      * @param Builder $qb
      * @param string $from
@@ -123,11 +124,12 @@ class Order extends BaseModel
         if ($to) {
             $qb->whereDate('created_at', '<=', Carbon::parse($to));
         }
+
         return $qb;
     }
 
     /**
-     * Define the type scope
+     * Define the type scope.
      *
      * @param Builder $qb
      * @param string $type
@@ -135,18 +137,20 @@ class Order extends BaseModel
      */
     public function scopeType($qb, $type)
     {
-        if (!$type) {
+        if (! $type) {
             return $qb;
         }
         if ($type == 'Unknown') {
             $qb->whereNull('type');
+
             return $qb->whereNull('type');
         }
+
         return $qb->where('type', '=', $type);
     }
 
     /**
-     * Define the status scope
+     * Define the status scope.
      *
      * @param Builder $qb
      * @param string $status
@@ -154,14 +158,15 @@ class Order extends BaseModel
      */
     public function scopeStatus($qb, $status)
     {
-        if (!$status) {
+        if (! $status) {
             return $qb;
         }
+
         return $qb->where('status', '=', $status);
     }
 
     /**
-     * Define the search scope
+     * Define the search scope.
      *
      * @param Builder $qb
      * @param string $keywords
@@ -169,7 +174,7 @@ class Order extends BaseModel
      */
     public function scopeSearch($qb, $keywords)
     {
-        if (!$keywords) {
+        if (! $keywords) {
             return $qb;
         }
 

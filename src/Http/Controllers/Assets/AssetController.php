@@ -25,7 +25,7 @@ class AssetController extends BaseController
             $parent->assets()->count() + 1
         );
 
-        if (!$asset) {
+        if (! $asset) {
             return $this->respondWithError('Unable to upload asset');
         }
 
