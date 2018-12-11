@@ -99,7 +99,13 @@ abstract class AbstractResource extends JsonResource
 
     public function toArray($request)
     {
-        $attributes = array_merge($this->payload(), $this->map($this->attribute_data ?? []));
+        if ($request->full_response) {
+            $attributes = array_merge($this->payload(), [
+                'attribute_data' => $this->attribute_data,
+            ]);
+        } else {
+            $attributes = array_merge($this->payload(), $this->map($this->attribute_data ?? []));
+        }
         return array_merge($attributes, $this->includes());
     }
 

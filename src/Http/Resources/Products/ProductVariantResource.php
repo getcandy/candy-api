@@ -5,6 +5,7 @@ namespace GetCandy\Api\Http\Resources\Products;
 use GetCandy\Api\Http\Resources\AbstractResource;
 use GetCandy\Api\Http\Resources\Categories\CategoryCollection;
 use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
+use GetCandy\Api\Http\Resources\Taxes\TaxResource;
 
 class ProductVariantResource extends AbstractResource
 {
@@ -19,7 +20,7 @@ class ProductVariantResource extends AbstractResource
             'requires_shipping' => (bool) $this->requires_shipping,
             'price' => $this->price,
             'unit_price' => $this->unit_cost,
-            'tax' => $this->unit_tax,
+            'unit_tax' => $this->unit_tax,
             'unit_qty' => $this->unit_qty,
             'min_qty' => $this->min_qty,
             'max_qty' => $this->max_qty,
@@ -55,6 +56,7 @@ class ProductVariantResource extends AbstractResource
         return [
             'product' => ['data' => new ProductResource($this->whenLoaded('product'), $this->only)],
             'tiers' => ['data '=> new ProductTierCollection($this->whenLoaded('tiers')) ],
+            'tax' => $this->include('tax', TaxResource::class)
         ];
     }
 }

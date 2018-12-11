@@ -1,18 +1,16 @@
 <?php
 
-namespace GetCandy\Api\Http\Resources\Attributes;
+namespace GetCandy\Api\Http\Resources\Products;
 
 use GetCandy\Api\Http\Resources\AbstractResource;
+use GetCandy\Api\Http\Resources\Attributes\AttributeCollection;
 
-class AttributeGroupResource extends AbstractResource
+class ProductFamilyResource extends AbstractResource
 {
     public function payload()
     {
         return [
             'id' => $this->encoded_id,
-            'name' => $this->name,
-            'handle' => $this->handle,
-            'position' => (string) $this->position,
         ];
     }
 

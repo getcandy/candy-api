@@ -58,11 +58,12 @@ class ProductService extends BaseService
     {
         $product = $this->getByHashedId($hashedId);
 
+
         if (! $product) {
             abort(404);
         }
 
-        $product->attribute_data = $data['attributes'];
+        $product->attribute_data = $data['attribute_data'];
 
         if (! empty($data['family_id'])) {
             $family = app('api')->productFamilies()->getByHashedId($data['family_id']);
@@ -78,6 +79,7 @@ class ProductService extends BaseService
                 $this->getChannelMapping($data['channels']['data'])
             );
         }
+
         if (! empty($data['customer_groups'])) {
             $groupData = $this->mapCustomerGroupData($data['customer_groups']['data']);
             $product->customerGroups()->sync($groupData);

@@ -328,7 +328,6 @@ abstract class BaseService
                 'published_at' => $channel['published_at'] ? Carbon::parse($channel['published_at']) : null,
             ];
         }
-
         return $channelData;
     }
 
