@@ -102,7 +102,7 @@ class ProductVariantController extends BaseController
     }
 
     /**
-     * Handle the request to update a stocks inventory
+     * Handle the request to update a stocks inventory.
      *
      * @param string $variant
      * @param Request $request
@@ -117,6 +117,7 @@ class ProductVariantController extends BaseController
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
+
         return $this->respondWithItem($result, new ProductVariantTransformer);
     }
 }
