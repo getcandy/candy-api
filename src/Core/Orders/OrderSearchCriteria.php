@@ -148,6 +148,7 @@ class OrderSearchCriteria
         $query = Order::status($this->status)
             ->type($this->type)
             ->zone($this->zone)
+            ->with(['lines'])
             ->range($this->from, $this->to)
             ->search($this->keywords);
 
