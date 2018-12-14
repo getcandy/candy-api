@@ -14,11 +14,21 @@ class SyncAttributablesListener
      */
     public function handle(AttributableSavedEvent $event)
     {
-        $mapped = [];
+        $mapped = collect();
+        $model = $event->model;
+
         foreach ($event->model->attribute_data as $attribute => $data) {
-            $mapped[] = $attribute;
+            $mapped->push($attribute);
         }
-        $attributes = app('api')->attributes()->getByHandles($mapped);
+
+        // If we have a product with a family, check if they already have these associated.
+        if ($model->family) {
+            $existing = $model->family->attributes->pluck('handle');
+            $mapped = $mapped->reject(function ($attribute) use ($existing) {
+                return $existing->contains($attribute);
+            });
+        }
+        $attributes = app('api')->attributes()->getByHandles($mapped->toArray());
 
         $event->model->attributes()->sync($attributes->pluck('id')->toArray());
     }
