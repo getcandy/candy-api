@@ -103,8 +103,14 @@ abstract class AbstractResource extends JsonResource
             $attributes = array_merge($this->payload(), [
                 'attribute_data' => $this->attribute_data,
             ]);
+            foreach ($this->optional() as $key => $value) {
+                $attributes[$key] = $value;
+            }
         } else {
             $attributes = array_merge($this->payload(), $this->map($this->attribute_data ?? []));
+            foreach ($this->optional() as $key => $value) {
+                $attributes[$key] = $this->when($request->{$key}, $value);
+            }
         }
         return array_merge($attributes, $this->includes());
     }
@@ -129,7 +135,18 @@ abstract class AbstractResource extends JsonResource
      *
      * @return array
      */
-    public function includes() {
+    public function includes()
+    {
+        return [];
+    }
+
+    /**
+     * Define optional attributes
+     *
+     * @return array
+     */
+    public function optional()
+    {
         return [];
     }
 
@@ -145,7 +162,6 @@ abstract class AbstractResource extends JsonResource
             return [];
         }
         $modified = [];
-
         foreach ($data as $field => $value) {
             if ($this->only->count() && !$this->only->contains($field)) {
                 continue;

@@ -33,7 +33,7 @@ class ProductController extends BaseController
             ->limit($request->get('limit', 50))
             ->get();
 
-        return new ProductCollection($products);
+        return new ProductCollection($products, $this->parseIncludedFields($request));
     }
 
     /**

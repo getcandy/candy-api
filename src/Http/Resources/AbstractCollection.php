@@ -61,7 +61,6 @@ abstract class AbstractCollection extends ResourceCollection
         }
 
         $collects = $this->collects();
-
         if ($collects && ! $resource->first() instanceof $collects) {
             $collection = collect();
             $resource->each(function ($item) use ($collection, $collects) {
@@ -71,7 +70,13 @@ abstract class AbstractCollection extends ResourceCollection
             });
             $this->collection = $collection;
         } else {
-            $this->collection = $resource->toBase();
+            $collection = collect();
+            $resource->each(function ($item) use ($collection, $collects) {
+                $collection->push(
+                    (new $collects($item))->only($this->only)
+                );
+            });
+            $this->collection = $collection;
         }
 
         return $resource instanceof AbstractPaginator

@@ -11,4 +11,18 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class BaseController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests, Fractal;
+
+    /**
+     * Parses included fields into an array
+     *
+     * @param string $request
+     * @return void
+     */
+    protected function parseIncludedFields($request)
+    {
+        if (!$request->fields) {
+            return null;
+        }
+        return explode(',', $request->fields);
+    }
 }

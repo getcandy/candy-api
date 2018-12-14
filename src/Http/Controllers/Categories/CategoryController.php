@@ -21,13 +21,7 @@ use GetCandy\Api\Core\Categories\CategoryCriteria;
 
 class CategoryController extends BaseController
 {
-    protected function parseIncludedFields($request)
-    {
-        if (!$request->fields) {
-            return null;
-        }
-        return explode(',', $request->fields);
-    }
+
     public function index(Request $request, CategoryCriteria $criteria)
     {
         $results = $criteria

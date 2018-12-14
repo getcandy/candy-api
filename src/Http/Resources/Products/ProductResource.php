@@ -19,7 +19,13 @@ class ProductResource extends AbstractResource
     {
         return [
             'id' => $this->encoded_id,
-            'option_data' => $this->parseOptionData($this->option_data),
+        ];
+    }
+
+    public function optional()
+    {
+        return [
+            'option_data' => $this->parseOptionData($this->option_data)
         ];
     }
 
