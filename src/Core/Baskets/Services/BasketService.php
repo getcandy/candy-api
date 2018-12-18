@@ -86,6 +86,7 @@ class BasketService extends BaseService
         $basket = $this->model->with([
             'user',
             'order',
+            'discounts.rewards',
             'lines.basket',
             'lines.variant',
             'lines.variant.tax',
