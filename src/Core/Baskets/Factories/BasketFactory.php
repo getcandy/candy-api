@@ -74,15 +74,6 @@ class BasketFactory implements BasketInterface
     {
         $this->basket = $basket;
         $this->order = $basket->order;
-        $this->discounts = $this->discountFactory
-                            ->init($basket->discounts)
-                            ->setBasket($this->basket)
-                            ->setUser($this->basket->user)
-                            ->getApplied();
-
-        $this->basket->discounts()->sync(
-            $this->discounts->pluck('id')->toArray()
-        );
 
         foreach ($basket->lines as $line) {
             $this->lines->push(
@@ -108,6 +99,9 @@ class BasketFactory implements BasketInterface
             $this->basket->sub_total += $line->total_cost;
             $this->basket->total_tax += $line->total_tax;
         }
+
+        $this->basket->discount_total = $this->basket->lines->sum('discount_total');
+
 
         $this->basket->total_cost = $this->basket->sub_total + $this->basket->total_tax;
 

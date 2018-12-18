@@ -59,6 +59,22 @@ class BasketLineFactory implements BasketLineInterface
         $this->line->unit_qty = $variant->unit_qty;
         $this->line->base_cost = $variant->base_cost;
 
+        foreach ($this->line->basket->discounts as $discount) {
+            foreach ($discount->rewards as $reward) {
+                $method = 'apply' . ucfirst($reward->type);
+                $this->{$method}($reward);
+            }
+        }
+
         return $this->line;
+    }
+
+    protected function applyPercentage($reward)
+    {
+        // Get the decimal
+        $decimal = $reward->value / 100;
+        $amount = ($this->line->total_cost + $this->line->total_tax) * $decimal;
+
+        $this->line->discount_total += $amount;
     }
 }

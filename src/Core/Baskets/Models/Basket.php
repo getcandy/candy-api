@@ -35,6 +35,8 @@ class Basket extends BaseModel
      */
     public $total_cost = 0;
 
+    public $discount_total = 0;
+
     /**
      * The fillable attributes.
      *

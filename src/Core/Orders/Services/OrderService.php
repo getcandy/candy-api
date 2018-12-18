@@ -547,7 +547,7 @@ class OrderService extends BaseService
                 'sku' => $line->variant->sku,
                 'tax_total' => $line->total_tax * 100,
                 'tax_rate' => $line->variant->tax->percentage,
-                'discount_total' => $line->discount ?? 0,
+                'discount_total' => $line->discount_total ?? 0,
                 'line_total' => $line->total_cost * 100,
                 'unit_price' => $line->base_cost * 100,
                 'unit_qty' => $line->variant->unit_qty,

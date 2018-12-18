@@ -15,6 +15,7 @@ class BasketLine extends BaseModel
     public $unit_tax;
     public $unit_qty;
     public $base_cost;
+    public $discount_total;
 
     protected $fillable = ['quantity', 'product_variant_id', 'total'];
 

@@ -22,6 +22,7 @@ class BasketTransformer extends BaseTransformer
             'total' => round($basket->total_cost, 2),
             'sub_total' => $basket->sub_total,
             'tax_total' => $basket->total_tax,
+            'discount_total' => $basket->discount_total,
         ]);
 
         return $data;
