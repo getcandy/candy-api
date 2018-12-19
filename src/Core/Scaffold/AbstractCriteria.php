@@ -95,6 +95,16 @@ abstract class AbstractCriteria
     }
 
     /**
+     * Get the first result from the query
+     *
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function firstOrFail()
+    {
+        return $this->getBuilder()->firstOrFail();
+    }
+
+    /**
      * Get the result
      *
      * @return LengthAwarePaginator
