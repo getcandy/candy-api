@@ -46,7 +46,7 @@ class OrderResource extends AbstractResource
     public function includes()
     {
         return [
-            'discounts' => new DiscountCollection($this->whenLoaded('discounts')),
+            'discounts' => new OrderDiscountCollection($this->whenLoaded('discounts')),
             'transactions' => new TransactionCollection($this->whenLoaded('transactions')),
             'lines' => new OrderLineCollection($this->whenLoaded('lines')),
         ];
