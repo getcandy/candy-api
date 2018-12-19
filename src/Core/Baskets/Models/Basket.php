@@ -61,6 +61,11 @@ class Basket extends BaseModel
         return $this->belongsToMany(Discount::class)->withPivot('coupon');
     }
 
+    public function discount($coupon)
+    {
+        return $this->discounts()->wherePivot('coupon', '=', $coupon)->first();
+    }
+
     public function getExVatAttribute()
     {
         return $this->total - $this->tax;
