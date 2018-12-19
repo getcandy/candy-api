@@ -5,10 +5,10 @@ namespace GetCandy\Api\Core\Baskets\Factories;
 use GetCandy\Api\Core\Discounts\Factory;
 use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Baskets\Models\Basket;
-use GetCandy\Api\Core\Discounts\DiscountInterface;
 use GetCandy\Api\Core\Baskets\Events\BasketFetchedEvent;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketInterface;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketLineInterface;
+use GetCandy\Api\Core\Baskets\Interfaces\BasketDiscountFactoryInterface;
 
 class BasketFactory implements BasketInterface
 {
@@ -27,41 +27,16 @@ class BasketFactory implements BasketInterface
     protected $order;
 
     /**
-     * The applied discounts.
-     *
-     * @var array
-     */
-    protected $discounts = [];
-
-    /**
-     * The discount factory.
-     *
-     * @var DiscountInterface
-     */
-    protected $discountFactory;
-
-    /**
      * The basket lines.
      *
-     * @var mixed
+     * @var BasketLineInterface
      */
-    protected $lines = [];
-
-    /**
-     * The basket line factory.
-     *
-     * @var string
-     */
-    protected $lineFactory;
+    public $lines;
 
     public function __construct(
-        DiscountInterface $discountFactory,
         BasketLineInterface $lineFactory
     ) {
-        $this->lineFactory = $lineFactory;
-        $this->lines = collect($this->lines);
-        $this->discountFactory = $discountFactory;
-        $this->discounts = collect($this->discounts);
+        $this->lines = $lineFactory;
     }
 
     /**
@@ -75,11 +50,10 @@ class BasketFactory implements BasketInterface
         $this->basket = $basket;
         $this->order = $basket->order;
 
-        foreach ($basket->lines as $line) {
-            $this->lines->push(
-                $this->lineFactory->init($line)->get()
-            );
+        foreach($basket->discounts as $discount) {
+            $this->lines->discount($discount);
         }
+        $this->lines->add($basket->lines);
 
         return $this;
     }
@@ -95,13 +69,12 @@ class BasketFactory implements BasketInterface
         $this->basket->total_tax = 0;
         $this->basket->total_cost = 0;
 
-        foreach ($this->lines as $line) {
+        foreach ($this->lines->get() as $line) {
             $this->basket->sub_total += $line->total_cost;
             $this->basket->total_tax += $line->total_tax;
         }
 
         $this->basket->discount_total = $this->basket->lines->sum('discount_total');
-
 
         $this->basket->total_cost = $this->basket->sub_total + $this->basket->total_tax;
 
