@@ -307,12 +307,13 @@ class OrderService extends BaseService
     {
         $totals = \DB::table('order_lines')->select(
             'order_id',
+            // DB::RAW('SUM(line_total) as line_total'),
             DB::RAW('SUM(line_total) as line_total'),
             DB::RAW('SUM(delivery_total) as delivery_total'),
             DB::RAW('SUM(tax_total) as tax_total'),
             DB::RAW('SUM(discount_total) as discount_total'),
             DB::RAW('SUM(discount_total) as tax_discount_total'),
-            DB::RAW('SUM(line_total) + SUM(tax_total) + SUM(delivery_total) - SUM(IFNULL(discount_total, 0)) as grand_total')
+            DB::RAW('SUM(line_total) + SUM(tax_total) + SUM(delivery_total) as grand_total')
         )->where('order_id', '=', $order->id)
         ->where('is_shipping', '=', false)->groupBy('order_id')->first();
 
@@ -468,7 +469,7 @@ class OrderService extends BaseService
         $id = $this->model->decodeId($id);
         $query = $this->model->withoutGlobalScope('open')->withoutGlobalScope('not_expired');
 
-        return $query->with(['lines.productVariant', 'transactions'])->findOrFail($id);
+        return $query->with(['lines.productVariant', 'transactions', 'discounts'])->findOrFail($id);
     }
 
     /**
@@ -798,10 +799,10 @@ class OrderService extends BaseService
                         ]);
 
                         $total = 0;
-                        $bTotal = $basket->sub_total + $basket->total_tax;
+                        $bTotal = $basket->sub_total;
                         foreach ($discount->rewards as $reward) {
                             if ($reward->type == 'percentage') {
-                                $total += $bTotal * $reward->value / 100;
+                                $total += $bTotal * $reward->value;
                             }
                         }
 

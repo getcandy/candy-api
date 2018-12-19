@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Baskets\Factories;
 
+use TaxCalculator;
 use GetCandy\Api\Core\Baskets\Models\BasketLine;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketLineInterface;
 use GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface;
@@ -110,9 +111,16 @@ class BasketLineFactory implements BasketLineInterface
     {
         // Get the decimal
         $decimal = $reward->value / 100;
-        $amount = ($line->total_cost + $line->total_tax) * $decimal;
-
+        $amount = $line->total_cost * $decimal;
         $line->discount_total += $amount;
+
+        // Based on the amount, get the tax total
+        $tax = TaxCalculator::amount($line->total_cost - $amount);
+
+        // Minus off the difference on the line
+        $line->total_tax -= ($line->total_tax - $tax);
+        $line->total_cost -= $amount;
+
 
         return $line;
     }
