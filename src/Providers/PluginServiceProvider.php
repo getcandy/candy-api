@@ -3,9 +3,9 @@
 namespace GetCandy\Api\Providers;
 
 use File;
+use GetCandy\Api\Core\Plugins\Plugin;
 use Illuminate\Support\ServiceProvider;
 use GetCandy\Api\Core\Plugins\PluginManagerInterface;
-use GetCandy\Api\Core\Plugins\Plugin;
 
 class PluginServiceProvider extends ServiceProvider
 {

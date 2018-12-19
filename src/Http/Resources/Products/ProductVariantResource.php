@@ -3,9 +3,8 @@
 namespace GetCandy\Api\Http\Resources\Products;
 
 use GetCandy\Api\Http\Resources\AbstractResource;
-use GetCandy\Api\Http\Resources\Categories\CategoryCollection;
-use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
 use GetCandy\Api\Http\Resources\Taxes\TaxResource;
+use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
 
 class ProductVariantResource extends AbstractResource
 {
@@ -13,6 +12,7 @@ class ProductVariantResource extends AbstractResource
     {
         $factory = new ProductVariantFactory;
         $this->resource = $factory->init($this->resource)->get();
+
         return [
             'id' => $this->encodedId(),
             'sku' => $this->sku,
@@ -55,8 +55,8 @@ class ProductVariantResource extends AbstractResource
     {
         return [
             'product' => ['data' => new ProductResource($this->whenLoaded('product'), $this->only)],
-            'tiers' => ['data '=> new ProductTierCollection($this->whenLoaded('tiers')) ],
-            'tax' => $this->include('tax', TaxResource::class)
+            'tiers' => ['data '=> new ProductTierCollection($this->whenLoaded('tiers'))],
+            'tax' => $this->include('tax', TaxResource::class),
         ];
     }
 }

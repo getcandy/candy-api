@@ -3,10 +3,7 @@
 namespace GetCandy\Api\Http\Resources\Assets;
 
 use GetCandy\Api\Http\Resources\AbstractResource;
-use GetCandy\Api\Http\Resources\Tags\TagResource;
 use GetCandy\Api\Http\Resources\Tags\TagCollection;
-use GetCandy\Api\Http\Resources\Routes\RouteCollection;
-use GetCandy\Api\Http\Resources\Layouts\LayoutResource;
 
 class AssetResource extends AbstractResource
 {
@@ -32,7 +29,7 @@ class AssetResource extends AbstractResource
                 'original_filename' => $this->original_filename,
                 'size' => $this->size,
                 'width' => $this->width,
-                'height' => $this->height
+                'height' => $this->height,
             ]);
         }
 

@@ -2,21 +2,20 @@
 
 namespace GetCandy\Api\Core\Products;
 
-use GetCandy\Api\Core\Scaffold\AbstractCriteria;
 use GetCandy\Api\Core\Products\Models\Product;
+use GetCandy\Api\Core\Scaffold\AbstractCriteria;
 
 class ProductCriteria extends AbstractCriteria
 {
     /**
-     * Query on the sku
+     * Query on the sku.
      *
      * @var string
      */
     protected $sku;
 
-
     /**
-     * Gets the underlying builder for the query
+     * Gets the underlying builder for the query.
      *
      * @return \Illuminate\Database\Eloquent\QueryBuilder
      */
@@ -31,8 +30,10 @@ class ProductCriteria extends AbstractCriteria
         }
         if ($this->id) {
             $builder->where('id', '=', $product->decodeId($this->id));
+
             return $builder;
         }
+
         return $builder;
     }
 }

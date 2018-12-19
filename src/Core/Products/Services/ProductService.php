@@ -58,7 +58,6 @@ class ProductService extends BaseService
     {
         $product = $this->getByHashedId($hashedId);
 
-
         if (! $product) {
             abort(404);
         }

@@ -5,8 +5,6 @@ namespace GetCandy\Api\Http\Resources;
 use Illuminate\Support\Collection;
 use Illuminate\Http\Resources\MissingValue;
 use Illuminate\Http\Resources\Json\JsonResource;
-use GetCandy\Api\Core\Channels\Services\ChannelService;
-use GetCandy\Api\Core\Languages\Services\LanguageService;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 abstract class AbstractResource extends JsonResource
@@ -24,15 +22,14 @@ abstract class AbstractResource extends JsonResource
     protected $language = null;
 
     /**
-     * The resource data array
+     * The resource data array.
      *
      * @var array
      */
     protected $data = [];
 
-
     /**
-     * Set the singular item
+     * Set the singular item.
      *
      * @param mixed $resource
      * @return self
@@ -40,29 +37,30 @@ abstract class AbstractResource extends JsonResource
     public function item($resource)
     {
         $this->resource = $resource;
+
         return $this;
     }
 
     /**
-     * Set the only fields we want to return
+     * Set the only fields we want to return.
      *
      * @param array $fields
      * @return self
      */
     public function only($fields = [])
     {
-
         if ($fields instanceof Collection) {
-           $fields = $fields->toArray();
+            $fields = $fields->toArray();
         } elseif (is_string($fields)) {
             $fields = explode(',', $fields);
         }
         $this->only = collect($fields);
+
         return $this;
     }
 
     /**
-     * Set the channel we want to use
+     * Set the channel we want to use.
      *
      * @param string $channel
      * @return self
@@ -70,11 +68,12 @@ abstract class AbstractResource extends JsonResource
     public function channel($channel)
     {
         $this->channel = $channel;
+
         return $this;
     }
 
     /**
-     * Set the language to use
+     * Set the language to use.
      *
      * @param string $language
      * @return self
@@ -82,6 +81,7 @@ abstract class AbstractResource extends JsonResource
     public function language($language)
     {
         $this->language = $language;
+
         return $this;
     }
 
@@ -112,6 +112,7 @@ abstract class AbstractResource extends JsonResource
                 $attributes[$key] = $this->when($request->{$key}, $value);
             }
         }
+
         return array_merge($attributes, $this->includes());
     }
 
@@ -120,6 +121,7 @@ abstract class AbstractResource extends JsonResource
         if ($this->whenLoaded($relation) == MissingValue::class) {
             return false;
         }
+
         return true;
     }
 
@@ -131,7 +133,7 @@ abstract class AbstractResource extends JsonResource
     }
 
     /**
-     * The included resources
+     * The included resources.
      *
      * @return array
      */
@@ -141,7 +143,7 @@ abstract class AbstractResource extends JsonResource
     }
 
     /**
-     * Define optional attributes
+     * Define optional attributes.
      *
      * @return array
      */
@@ -151,7 +153,7 @@ abstract class AbstractResource extends JsonResource
     }
 
     /**
-     * Map the attributes
+     * Map the attributes.
      *
      * @param array $data
      * @return void
@@ -163,7 +165,7 @@ abstract class AbstractResource extends JsonResource
         }
         $modified = [];
         foreach ($data as $field => $value) {
-            if ($this->only->count() && !$this->only->contains($field)) {
+            if ($this->only->count() && ! $this->only->contains($field)) {
                 continue;
             }
             $modified[$field] = $this->resource->attribute(
@@ -176,7 +178,7 @@ abstract class AbstractResource extends JsonResource
         return $modified;
     }
 
-     /**
+    /**
      * Create new anonymous resource collection.
      *
      * @param  mixed  $resource

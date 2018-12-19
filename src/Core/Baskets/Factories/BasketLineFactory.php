@@ -11,7 +11,7 @@ use GetCandy\Api\Core\Baskets\Interfaces\BasketDiscountFactoryInterface;
 class BasketLineFactory implements BasketLineInterface
 {
     /**
-     * The basket lines
+     * The basket lines.
      *
      * @var Collection
      */
@@ -25,7 +25,7 @@ class BasketLineFactory implements BasketLineInterface
     protected $variantFactory;
 
     /**
-     * The discount factory
+     * The discount factory.
      *
      * @var DiscountFactoryInterface
      */
@@ -41,7 +41,7 @@ class BasketLineFactory implements BasketLineInterface
     }
 
     /**
-     * Add lines to the instance
+     * Add lines to the instance.
      *
      * @param Collection $lines
      * @return void
@@ -49,6 +49,7 @@ class BasketLineFactory implements BasketLineInterface
     public function add($lines)
     {
         $this->lines = $lines;
+
         return $this;
     }
 
@@ -66,7 +67,7 @@ class BasketLineFactory implements BasketLineInterface
     }
 
     /**
-     * Add a discount to the instance
+     * Add a discount to the instance.
      *
      * @param string $coupon
      * @return self
@@ -74,6 +75,7 @@ class BasketLineFactory implements BasketLineInterface
     public function discount($coupon)
     {
         $this->discounts->add($coupon);
+
         return $this;
     }
 
@@ -98,7 +100,7 @@ class BasketLineFactory implements BasketLineInterface
 
             foreach ($this->discounts->get() as $discount) {
                 foreach ($discount->rewards as $reward) {
-                    $method = 'apply' . ucfirst($reward->type);
+                    $method = 'apply'.ucfirst($reward->type);
                     $line = $this->{$method}($line, $reward);
                 }
             }
@@ -120,7 +122,6 @@ class BasketLineFactory implements BasketLineInterface
         // Minus off the difference on the line
         $line->total_tax -= ($line->total_tax - $tax);
         $line->total_cost -= $amount;
-
 
         return $line;
     }

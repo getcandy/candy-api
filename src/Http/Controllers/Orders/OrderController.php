@@ -50,7 +50,7 @@ class OrderController extends BaseController
                 'not_expired',
             ]);
 
-        if ($request->user()->hasRole('admin') && !$request->only_own) {
+        if ($request->user()->hasRole('admin') && ! $request->only_own) {
             $criteria->set('restrict', false);
         }
         $criteria->set('user', $request->user());
@@ -63,6 +63,7 @@ class OrderController extends BaseController
     public function getTypes(Request $request)
     {
         $types = app('api')->orders()->getTypes();
+
         return response()->json([
             'data' => $types,
         ]);
@@ -102,6 +103,7 @@ class OrderController extends BaseController
         } catch (BasketHasPlacedOrderException $e) {
             return $this->errorForbidden(trans('getcandy::exceptions.basket_already_has_placed_order'));
         }
+
         return new OrderResource($order);
     }
 
@@ -119,6 +121,7 @@ class OrderController extends BaseController
             if (! $order->placed_at) {
                 return $this->errorForbidden('Payment has failed');
             }
+
             return new OrderResource($order);
         } catch (IncompleteOrderException $e) {
             return $this->errorForbidden('The order is missing billing information');
@@ -200,6 +203,7 @@ class OrderController extends BaseController
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
+
         return new OrderResource($order);
     }
 
@@ -218,6 +222,7 @@ class OrderController extends BaseController
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
+
         return new ShippingPriceCollection($options);
     }
 
@@ -236,6 +241,7 @@ class OrderController extends BaseController
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
+
         return new OrderResource($order);
     }
 
@@ -289,6 +295,7 @@ class OrderController extends BaseController
     {
         $order = app('api')->orders()->getByHashedId($id);
         $pdf = app('api')->orders()->getPdf($order);
+
         return new PdfResource($pdf);
     }
 

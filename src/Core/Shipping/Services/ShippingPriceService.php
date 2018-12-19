@@ -116,11 +116,10 @@ class ShippingPriceService extends BaseService
             ->orWhere('region', '=', $strippedOutcode)
             ->first();
 
-
         if (! $region) {
             // Is there a "catch all" region?
             $region = ShippingRegion::where('region', '=', '*')->first();
-            if (!$region) {
+            if (! $region) {
                 return collect();
             }
         }

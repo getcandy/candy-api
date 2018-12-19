@@ -8,7 +8,6 @@ use Event;
 use Carbon\Carbon;
 use PriceCalculator;
 use CurrencyConverter;
-use GetCandy\Api\Core\Auth\Models\User;
 use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Baskets\Models\Basket;
@@ -110,7 +109,7 @@ class OrderService extends BaseService
 
         $order->load([
             'discounts',
-            'lines.productVariant.product.assets.transforms'
+            'lines.productVariant.product.assets.transforms',
         ]);
 
         return $order;
@@ -298,7 +297,7 @@ class OrderService extends BaseService
     }
 
     /**
-     * Recalculates an orders totals
+     * Recalculates an orders totals.
      *
      * @param Order $order
      * @return void
@@ -316,7 +315,6 @@ class OrderService extends BaseService
             DB::RAW('SUM(line_total) + SUM(tax_total) + SUM(delivery_total) as grand_total')
         )->where('order_id', '=', $order->id)
         ->where('is_shipping', '=', false)->groupBy('order_id')->first();
-
 
         // If we don't have any totals, then we must have had an order already and deleted all the lines
         // from it and gone back to the checkout.
@@ -440,7 +438,7 @@ class OrderService extends BaseService
     {
         $attributes = [];
         foreach ($fields as $field => $value) {
-            $attributes[$prefix . '_' . $field] = $value;
+            $attributes[$prefix.'_'.$field] = $value;
         }
         $order->fill($attributes);
     }
@@ -724,10 +722,10 @@ class OrderService extends BaseService
     }
 
     /**
-     * Get the order types
+     * Get the order types.
      *
      * @return array
-    */
+     */
     public function getTypes()
     {
         return Order::select(\DB::raw('type as label'))->groupBy('type')->get();
@@ -777,7 +775,6 @@ class OrderService extends BaseService
             // Get the eligibles.
             foreach ($discount->sets as $set) {
                 foreach ($set->items as $item) {
-
                     $quantity = 0;
 
                     if ($item->type == 'product') {

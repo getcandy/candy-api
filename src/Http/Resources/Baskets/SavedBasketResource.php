@@ -23,13 +23,14 @@ class SavedBasketResource extends AbstractResource
     }
 
     /**
-     * Gets the basket with all it's hydrated values
+     * Gets the basket with all it's hydrated values.
      *
      * @return \GetCandy\Api\Core\Baskets\Models\Basket
      */
     protected function getBasket()
     {
         $factory = app()->make(BasketFactory::class);
+
         return $factory->init($this->basket)->get();
     }
 }

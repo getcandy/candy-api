@@ -82,6 +82,7 @@ class DiscountFactory implements DiscountInterface
                 break;
             }
         }
+
         return collect($this->discounts)->filter(function ($discount) {
             return $discount->applied;
         });

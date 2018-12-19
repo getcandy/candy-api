@@ -35,7 +35,7 @@ class Asset extends BaseModel
     ];
 
     /**
-     * Get the url attribute
+     * Get the url attribute.
      *
      * @return string
      */

@@ -8,8 +8,8 @@ use GetCandy\Api\Core\Baskets\Interfaces\BasketCriteriaInterface;
 
 class BasketCriteria extends AbstractCriteria implements BasketCriteriaInterface
 {
-/**
-     * Gets the underlying builder for the query
+    /**
+     * Gets the underlying builder for the query.
      *
      * @return \Illuminate\Database\Eloquent\QueryBuilder
      */
@@ -19,8 +19,10 @@ class BasketCriteria extends AbstractCriteria implements BasketCriteriaInterface
         $builder = $basket->with($this->includes ?: []);
         if ($this->id) {
             $builder->where('id', '=', $basket->decodeId($this->id));
+
             return $builder;
         }
+
         return $builder;
     }
 }

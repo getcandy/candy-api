@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Core\Plugins;
 
-
 class Plugin
 {
     protected $handle;
@@ -29,14 +28,14 @@ class Plugin
 
     protected function getPathToResource($path = null)
     {
-        return realpath($this->dir . '/resources/' . ($path ?: null));
+        return realpath($this->dir.'/resources/'.($path ?: null));
     }
 
     public function getJsResources()
     {
         $dir = $this->getPathToResource('js');
 
-        if (!$dir) {
+        if (! $dir) {
             return [];
         }
 
@@ -46,7 +45,7 @@ class Plugin
 
         foreach ($files as $file) {
             if (basename($file->getFilename(), '.js') == $this->handle) {
-                $resources[] = $this->handle . '/resources/js/' . $file->getFilename();
+                $resources[] = $this->handle.'/resources/js/'.$file->getFilename();
             }
         }
 
@@ -55,8 +54,9 @@ class Plugin
 
     public function getResource($type, $file)
     {
-        return $this->getPathToResource($type . '/' . $file);
+        return $this->getPathToResource($type.'/'.$file);
     }
+
     public function getCssResources()
     {
         return [];
@@ -65,8 +65,9 @@ class Plugin
     public function toArray()
     {
         dd('hi!');
+
         return [
-            'foo' => 'bar'
+            'foo' => 'bar',
         ];
     }
 }

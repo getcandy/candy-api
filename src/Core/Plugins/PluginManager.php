@@ -20,7 +20,7 @@ class PluginManager implements PluginManagerInterface
     {
         return $this->plugins;
     }
-    
+
     public function get($key)
     {
         return $this->plugins->get($key);

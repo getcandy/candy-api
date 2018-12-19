@@ -8,21 +8,21 @@ use GetCandy\Api\Core\Categories\Models\Category;
 class CategoryCriteria extends AbstractCriteria
 {
     /**
-     * The default depth to query for
+     * The default depth to query for.
      *
-     * @var string|integer
+     * @var string|int
      */
     protected $depth = 1;
 
     /**
-     * Whether we show results as full tree
+     * Whether we show results as full tree.
      *
-     * @var boolean
+     * @var bool
      */
     protected $tree = false;
 
     /**
-     * Gets the underlying builder for the query
+     * Gets the underlying builder for the query.
      *
      * @return \Illuminate\Database\Eloquent\QueryBuilder
      */
@@ -34,10 +34,11 @@ class CategoryCriteria extends AbstractCriteria
 
         if ($this->id) {
             $builder->where('id', '=', $category->decodeId($this->id));
+
             return $builder;
         }
 
-        if ($this->limit && !$this->tree) {
+        if ($this->limit && ! $this->tree) {
             $builder->limit($this->limit);
         }
 
@@ -46,11 +47,12 @@ class CategoryCriteria extends AbstractCriteria
                 ->withDepth()
                 ->having('depth', '<=', $this->depth);
         }
+
         return $builder;
     }
 
-     /**
-     * Get the results
+    /**
+     * Get the results.
      *
      * @return \Illuminate\Support\Collection
      */
@@ -62,7 +64,7 @@ class CategoryCriteria extends AbstractCriteria
     protected function getTree()
     {
         $results = $this->getBuilder()->get();
+
         return $results->toTree()->take($this->limit);
     }
-
 }

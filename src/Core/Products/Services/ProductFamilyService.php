@@ -63,7 +63,7 @@ class ProductFamilyService extends BaseService
             abort(404);
         }
 
-        if (!$target) {
+        if (! $target) {
             $target = $this->getDefaultRecord()->id;
         } else {
             $target = $this->getDecodedId($target);
