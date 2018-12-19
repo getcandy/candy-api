@@ -8,7 +8,9 @@ use League\Fractal\Manager;
 use GetCandy\Api\Core\Factory;
 use Laravel\Passport\Passport;
 use Illuminate\Support\ServiceProvider;
+use GetCandy\Api\Core\Plugins\PluginManager;
 use GetCandy\Api\Core\Search\SearchContract;
+use GetCandy\Api\Core\Baskets\BasketCriteria;
 use GetCandy\Api\Core\Payments\PaymentManager;
 use GetCandy\Api\Core\Payments\PaymentContract;
 use GetCandy\Api\Core\Discounts\DiscountFactory;
@@ -22,20 +24,22 @@ use GetCandy\Api\Core\Plugins\PluginManagerInterface;
 use GetCandy\Api\Http\Middleware\SetLocaleMiddleware;
 use GetCandy\Api\Console\Commands\ElasticIndexCommand;
 use GetCandy\Api\Core\Baskets\Factories\BasketFactory;
-use GetCandy\Api\Http\Middleware\SetCurrencyMiddleware;
 use GetCandy\Api\Console\Commands\ScoreProductsCommand;
-use GetCandy\Api\Http\Middleware\CheckClientCredentials;
+use GetCandy\Api\Http\Middleware\SetCurrencyMiddleware;
 use GetCandy\Api\Core\Products\Factories\ProductFactory;
+use GetCandy\Api\Http\Middleware\CheckClientCredentials;
 use GetCandy\Api\Console\Commands\InstallGetCandyCommand;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketInterface;
 use GetCandy\Api\Core\Baskets\Factories\BasketLineFactory;
-use GetCandy\Api\Core\Search\Factories\SearchResultFactory;
 use GetCandy\Api\Core\Products\Interfaces\ProductInterface;
+use GetCandy\Api\Core\Search\Factories\SearchResultFactory;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketLineInterface;
 use GetCandy\Api\Core\Search\Interfaces\SearchResultInterface;
 use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
+use GetCandy\Api\Core\Baskets\Interfaces\BasketCriteriaInterface;
 use GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface;
-use GetCandy\Api\Core\Plugins\PluginManager;
+use GetCandy\Api\Core\Baskets\Interfaces\BasketDiscountFactoryInterface;
+use GetCandy\Api\Core\Baskets\Factories\BasketDiscountFactory;
 
 class ApiServiceProvider extends ServiceProvider
 {
@@ -183,6 +187,14 @@ class ApiServiceProvider extends ServiceProvider
         // New factory bindings
         $this->app->singleton(BasketInterface::class, function ($app) {
             return $app->make(BasketFactory::class);
+        });
+
+        $this->app->singleton(BasketDiscountFactoryInterface::class, function ($app) {
+            return $app->make(BasketDiscountFactory::class);
+        });
+
+        $this->app->bind(BasketCriteriaInterface::class, function ($app) {
+            return $app->make(BasketCriteria::class);
         });
 
         $this->app->singleton(DiscountInterface::class, function ($app) {
