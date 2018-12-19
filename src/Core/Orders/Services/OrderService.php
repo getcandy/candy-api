@@ -541,13 +541,12 @@ class OrderService extends BaseService
     protected function mapOrderLines($basket)
     {
         $lines = [];
-
         foreach ($basket->lines as $line) {
             array_push($lines, [
                 'sku' => $line->variant->sku,
                 'tax_total' => $line->total_tax * 100,
                 'tax_rate' => $line->variant->tax->percentage,
-                'discount_total' => $line->discount_total ?? 0,
+                'discount_total' => $line->discount_total * 100 ?? 0,
                 'line_total' => $line->total_cost * 100,
                 'unit_price' => $line->base_cost * 100,
                 'unit_qty' => $line->variant->unit_qty,
@@ -769,20 +768,43 @@ class OrderService extends BaseService
      */
     protected function processDiscountLines(Basket $basket, Order $order)
     {
+        $order->discounts()->delete();
         foreach ($basket->discounts as $discount) {
             // Get the eligibles.
             foreach ($discount->sets as $set) {
                 foreach ($set->items as $item) {
-                    // Get all the products from our basket.
-                    // dd($item);
-                    $matched = $basket->lines->filter(function ($line) use ($item) {
-                        return $item->products->contains($line->variant->product);
-                    });
 
                     $quantity = 0;
 
-                    foreach ($matched as $match) {
-                        $quantity += $match->quantity;
+                    if ($item->type == 'product') {
+                        $matched = $basket->lines->filter(function ($line) use ($item) {
+                            return $item->products->contains($line->variant->product);
+                        });
+                        foreach ($matched as $match) {
+                            $quantity += $match->quantity;
+                        }
+                    } else {
+                        $quantity = 1;
+                    }
+                    if ($item->type == 'coupon') {
+                        $coupon = new OrderDiscount([
+                            'coupon' => $item->value,
+                            'order_id' => $basket->order->id,
+                            'name' => $discount->attribute('name'),
+                            'type' => 'coupon',
+                        ]);
+
+                        $total = 0;
+                        $bTotal = $basket->sub_total + $basket->total_tax;
+                        foreach ($discount->rewards as $reward) {
+                            if ($reward->type == 'percentage') {
+                                $total += $bTotal * $reward->value / 100;
+                            }
+                        }
+
+                        $coupon->amount = $total;
+
+                        $coupon->save();
                     }
 
                     foreach ($discount->rewards as $reward) {
