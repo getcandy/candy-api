@@ -3,29 +3,34 @@
 namespace GetCandy\Api\Http\Controllers\Orders;
 
 use Illuminate\Http\Request;
-use GetCandy\Api\Core\Orders\OrderSearchCriteria;
 use GetCandy\Api\Http\Controllers\BaseController;
-use GetCandy\Api\Http\Requests\Orders\UpdateRequest;
+use GetCandy\Api\Http\Resources\Files\PdfResource;
 use GetCandy\Api\Http\Requests\Orders\CreateRequest;
+use GetCandy\Api\Http\Requests\Orders\UpdateRequest;
 use GetCandy\Api\Http\Requests\Orders\ProcessRequest;
 use GetCandy\Api\Http\Resources\Orders\OrderResource;
 use GetCandy\Api\Http\Resources\Orders\OrderCollection;
 use GetCandy\Api\Http\Requests\Orders\BulkUpdateRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use GetCandy\Api\Http\Requests\Orders\StoreAddressRequest;
+use GetCandy\Api\Core\Shipping\Services\ShippingMethodService;
 use GetCandy\Api\Http\Resources\Payments\ThreeDSecureResource;
+use GetCandy\Api\Core\Orders\Interfaces\OrderCriteriaInterface;
 use GetCandy\Api\Core\Orders\Exceptions\IncompleteOrderException;
+use GetCandy\Api\Http\Resources\Shipping\ShippingPriceCollection;
 use GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException;
 use GetCandy\Api\Core\Orders\Exceptions\OrderAlreadyProcessedException;
 use GetCandy\Api\Core\Payments\Exceptions\ThreeDSecureRequiredException;
-use GetCandy\Api\Http\Transformers\Fractal\Shipping\ShippingPriceTransformer;
-use GetCandy\Api\Http\Resources\Files\PdfResource;
-use GetCandy\Api\Http\Resources\Shipping\ShippingMethodCollection;
-use GetCandy\Api\Http\Resources\Shipping\ShippingPriceCollection;
-use GetCandy\Api\Core\Shipping\Services\ShippingMethodService;
 
 class OrderController extends BaseController
 {
+    protected $orders;
+
+    public function __construct(OrderCriteriaInterface $orders)
+    {
+        $this->orders = $orders;
+    }
+
     /**
      * Returns a listing of channels.
      * @return Json
@@ -37,7 +42,7 @@ class OrderController extends BaseController
             'to' => 'date_format:Y-m-d',
         ]);
 
-        $criteria = new OrderSearchCriteria;
+        $criteria = $this->orders;
 
         $criteria->fill($request->all())
             ->set('without_scopes', [
@@ -68,10 +73,14 @@ class OrderController extends BaseController
      * @param  string $id
      * @return Json
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
         try {
-            $order = app('api')->orders()->getByHashedId($id);
+            $order = $this->orders
+                ->set('without_scopes', ['open'])
+                ->include($request->includes)
+                ->id($id)
+                ->firstOrFail();
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }

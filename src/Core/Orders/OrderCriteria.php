@@ -4,11 +4,11 @@ namespace GetCandy\Api\Core\Orders;
 
 use Carbon\Carbon;
 use GetCandy\Api\Core\Orders\Models\Order;
+use GetCandy\Api\Core\Scaffold\AbstractCriteria;
+use GetCandy\Api\Core\Orders\Interfaces\OrderCriteriaInterface;
 
-class OrderSearchCriteria
+class OrderCriteria extends AbstractCriteria implements OrderCriteriaInterface
 {
-    protected $id;
-
     /**
      * How many orders per page
      *
@@ -135,6 +135,22 @@ class OrderSearchCriteria
     public function find($id)
     {
 
+    }
+
+    public function getBuilder()
+    {
+        $order = new Order;
+        $builder = $order->with($this->includes ?: []);
+
+        foreach ($this->without_scopes as $scope) {
+            $builder = $builder->withoutGlobalScope($scope);
+        }
+
+        if ($this->id) {
+            $builder->where('id', '=', $order->decodeId($this->id));
+            return $builder;
+        }
+        return $builder;
     }
 
     /**

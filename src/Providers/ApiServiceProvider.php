@@ -8,6 +8,7 @@ use League\Fractal\Manager;
 use GetCandy\Api\Core\Factory;
 use Laravel\Passport\Passport;
 use Illuminate\Support\ServiceProvider;
+use GetCandy\Api\Core\Orders\OrderCriteria;
 use GetCandy\Api\Core\Plugins\PluginManager;
 use GetCandy\Api\Core\Search\SearchContract;
 use GetCandy\Api\Core\Baskets\BasketCriteria;
@@ -34,12 +35,13 @@ use GetCandy\Api\Core\Baskets\Factories\BasketLineFactory;
 use GetCandy\Api\Core\Products\Interfaces\ProductInterface;
 use GetCandy\Api\Core\Search\Factories\SearchResultFactory;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketLineInterface;
+use GetCandy\Api\Core\Baskets\Factories\BasketDiscountFactory;
 use GetCandy\Api\Core\Search\Interfaces\SearchResultInterface;
+use GetCandy\Api\Core\Orders\Interfaces\OrderCriteriaInterface;
 use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketCriteriaInterface;
 use GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketDiscountFactoryInterface;
-use GetCandy\Api\Core\Baskets\Factories\BasketDiscountFactory;
 
 class ApiServiceProvider extends ServiceProvider
 {
@@ -191,6 +193,10 @@ class ApiServiceProvider extends ServiceProvider
 
         $this->app->singleton(BasketDiscountFactoryInterface::class, function ($app) {
             return $app->make(BasketDiscountFactory::class);
+        });
+
+        $this->app->bind(OrderCriteriaInterface::class, function ($app) {
+            return $app->make(OrderCriteria::class);
         });
 
         $this->app->bind(BasketCriteriaInterface::class, function ($app) {
