@@ -8,7 +8,7 @@ class OrderDiscount extends BaseModel
 {
     protected $hashids = 'order';
 
-    protected $fillable = ['coupon', 'name', 'description', 'amount', 'type'];
+    protected $fillable = ['order_id', 'coupon', 'name', 'description', 'amount', 'type'];
 
     public function order()
     {
