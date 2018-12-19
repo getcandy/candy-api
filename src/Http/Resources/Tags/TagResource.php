@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Http\Resources\Tags;
 
-use PriceCalculator;
 use GetCandy\Api\Http\Resources\AbstractResource;
 
 class TagResource extends AbstractResource

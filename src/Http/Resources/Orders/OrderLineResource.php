@@ -3,8 +3,6 @@
 namespace GetCandy\Api\Http\Resources\Orders;
 
 use GetCandy\Api\Http\Resources\AbstractResource;
-use GetCandy\Api\Http\Resources\Discounts\DiscountCollection;
-use GetCandy\Api\Http\Resources\Products\ProductVariantCollection;
 use GetCandy\Api\Http\Resources\Products\ProductVariantResource;
 
 class OrderLineResource extends AbstractResource

@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Core\Orders\Listeners;
 
-use DB;
 use GetCandy\Api\Core\Orders\Events\OrderSavedEvent;
 
 class RefreshOrderListener

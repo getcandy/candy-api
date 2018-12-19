@@ -23,9 +23,9 @@ class ProductPricingTier extends BaseModel
     }
 
     /**
-     * Get the total cost attribute
+     * Get the total cost attribute.
      *
-     * @return integer
+     * @return int
      */
     public function getTotalCostAttribute()
     {
@@ -33,9 +33,9 @@ class ProductPricingTier extends BaseModel
     }
 
     /**
-     * Get the total cost attribute
+     * Get the total cost attribute.
      *
-     * @return integer
+     * @return int
      */
     public function getTotalTaxAttribute()
     {

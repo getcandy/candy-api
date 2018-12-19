@@ -6,12 +6,11 @@ use GetCandy\Api\Http\Resources\AbstractResource;
 use GetCandy\Api\Http\Resources\Assets\AssetCollection;
 use GetCandy\Api\Http\Resources\Routes\RouteCollection;
 use GetCandy\Api\Http\Resources\Channels\ChannelCollection;
-use GetCandy\Api\Http\Resources\Discounts\DiscountCollection;
 use GetCandy\Api\Http\Resources\Categories\CategoryCollection;
 use GetCandy\Api\Http\Resources\Attributes\AttributeCollection;
 use GetCandy\Api\Http\Resources\Collections\CollectionCollection;
-use GetCandy\Api\Http\Resources\Discounts\DiscountModelCollection;
 use GetCandy\Api\Http\Resources\Customers\CustomerGroupCollection;
+use GetCandy\Api\Http\Resources\Discounts\DiscountModelCollection;
 
 class ProductResource extends AbstractResource
 {
@@ -25,7 +24,7 @@ class ProductResource extends AbstractResource
     public function optional()
     {
         return [
-            'option_data' => $this->parseOptionData($this->option_data)
+            'option_data' => $this->parseOptionData($this->option_data),
         ];
     }
 

@@ -2,13 +2,11 @@
 
 namespace GetCandy\Api\Core\Baskets\Factories;
 
-use GetCandy\Api\Core\Discounts\Factory;
 use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Core\Baskets\Events\BasketFetchedEvent;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketInterface;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketLineInterface;
-use GetCandy\Api\Core\Baskets\Interfaces\BasketDiscountFactoryInterface;
 
 class BasketFactory implements BasketInterface
 {
@@ -50,7 +48,7 @@ class BasketFactory implements BasketInterface
         $this->basket = $basket;
         $this->order = $basket->order;
 
-        foreach($basket->discounts as $discount) {
+        foreach ($basket->discounts as $discount) {
             $this->lines->discount($discount);
         }
         $this->lines->add($basket->lines);

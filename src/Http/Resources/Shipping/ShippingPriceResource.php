@@ -10,6 +10,7 @@ class ShippingPriceResource extends AbstractResource
     public function payload()
     {
         $prices = PriceCalculator::get($this->rate, 'default');
+
         return [
             'id' => $this->encodedId(),
             'rate' => $prices->total_cost,

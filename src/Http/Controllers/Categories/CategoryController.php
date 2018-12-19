@@ -4,24 +4,21 @@ namespace GetCandy\Api\Http\Controllers\Categories;
 
 use Illuminate\Http\Request;
 use GetCandy\Api\Http\Controllers\BaseController;
+use GetCandy\Api\Core\Categories\CategoryCriteria;
 use Intervention\Image\Exception\NotFoundException;
 use GetCandy\Api\Http\Requests\Categories\CreateRequest;
 use GetCandy\Api\Http\Requests\Categories\DeleteRequest;
 use GetCandy\Api\Http\Requests\Categories\UpdateRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use GetCandy\Api\Http\Requests\Categories\ReorderRequest;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use GetCandy\Api\Http\Transformers\Fractal\Categories\CategoryTransformer;
-use GetCandy\Api\Http\Transformers\Fractal\Categories\CategoryTreeTransformer;
-use GetCandy\Api\Http\Transformers\Fractal\Categories\CategoryFancytreeTransformer;
 use GetCandy\Api\Http\Resources\Categories\CategoryResource;
 use GetCandy\Api\Http\Resources\Categories\CategoryCollection;
-use GetCandy\Api\Core\Categories\Services\CategoryService;
-use GetCandy\Api\Core\Categories\CategoryCriteria;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use GetCandy\Api\Http\Transformers\Fractal\Categories\CategoryTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\Categories\CategoryFancytreeTransformer;
 
 class CategoryController extends BaseController
 {
-
     public function index(Request $request, CategoryCriteria $criteria)
     {
         $results = $criteria
@@ -30,7 +27,7 @@ class CategoryController extends BaseController
             ->include($request->includes)
             ->limit($request->limit);
 
-        if (!$request->tree) {
+        if (! $request->tree) {
             $criteria
                 ->page($request->page);
         }
@@ -44,7 +41,7 @@ class CategoryController extends BaseController
     {
         $category = $criteria->include($request->includes)->id($id)->first();
 
-        if (!$category) {
+        if (! $category) {
             return $this->errorNotFound();
         }
         // try {
@@ -55,9 +52,9 @@ class CategoryController extends BaseController
         //     return $this->errorNotFound();
         // }
 
-
         $resource = new CategoryResource($category);
         $resource->only($this->parseIncludedFields($request));
+
         return $resource;
         // return $this->respondWithItem($category, new CategoryTransformer);
     }

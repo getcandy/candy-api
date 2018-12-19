@@ -4,20 +4,19 @@ namespace GetCandy\Api\Http\Controllers\Products;
 
 use Illuminate\Http\Request;
 use GetCandy\Api\Core\Products\ProductCriteria;
-use GetCandy\Exceptions\InvalidLanguageException;
 use GetCandy\Api\Http\Controllers\BaseController;
+use GetCandy\Exceptions\InvalidLanguageException;
+use GetCandy\Api\Http\Requests\Products\CreateRequest;
 use GetCandy\Api\Http\Requests\Products\DeleteRequest;
 use GetCandy\Api\Http\Requests\Products\UpdateRequest;
-use GetCandy\Api\Http\Requests\Products\CreateRequest;
 use GetCandy\Exceptions\MinimumRecordRequiredException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use GetCandy\Api\Http\Resources\Products\ProductResource;
-use GetCandy\Api\Core\Languages\Services\LanguageService;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use GetCandy\Api\Http\Resources\Products\ProductCollection;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use GetCandy\Api\Http\Transformers\Fractal\Products\ProductTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Products\ProductRecommendationTransformer;
-use GetCandy\Api\Http\Resources\Products\ProductCollection;
 
 class ProductController extends BaseController
 {
@@ -48,7 +47,7 @@ class ProductController extends BaseController
             ->id($id)
             ->first();
 
-        if (!$product) {
+        if (! $product) {
             $product = $criteria->blank('id')->sku($id)->first();
         }
 

@@ -4,7 +4,6 @@ namespace GetCandy\Api\Http\Resources\Products;
 
 use GetCandy\Api\Http\Resources\AbstractCollection;
 
-
 class ProductTierCollection extends AbstractCollection
 {
     /**

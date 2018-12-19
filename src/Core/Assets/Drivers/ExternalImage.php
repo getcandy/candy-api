@@ -60,7 +60,7 @@ class ExternalImage extends BaseUrlDriver
 
         $storage = Storage::disk($this->source->disk);
 
-        if (!$image) {
+        if (! $image) {
             return false;
         }
 

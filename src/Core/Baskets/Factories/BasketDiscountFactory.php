@@ -2,13 +2,12 @@
 
 namespace GetCandy\Api\Core\Baskets\Factories;
 
-use GetCandy\Api\Core\Baskets\Interfaces\BasketLineInterface;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketDiscountFactoryInterface;
 
 class BasketDiscountFactory implements BasketDiscountFactoryInterface
 {
     /**
-     * The discount pool
+     * The discount pool.
      *
      * @var \Illuminate\Support\Collection
      */
@@ -20,7 +19,7 @@ class BasketDiscountFactory implements BasketDiscountFactoryInterface
     }
 
     /**
-     * Add a discount to the pool
+     * Add a discount to the pool.
      *
      * @param string $discount
      * @return void
@@ -28,11 +27,12 @@ class BasketDiscountFactory implements BasketDiscountFactoryInterface
     public function add($discount)
     {
         $this->discounts->push($discount);
+
         return $this;
     }
 
     /**
-     * Return all the discounts
+     * Return all the discounts.
      *
      * @return \Illuminate\Support\Collection
      */

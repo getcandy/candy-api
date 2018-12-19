@@ -110,6 +110,7 @@ class ProductVariantController extends BaseController
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
+
         return $this->respondWithItem($result, new ProductVariantTransformer);
     }
 }

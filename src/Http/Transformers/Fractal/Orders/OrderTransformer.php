@@ -67,9 +67,10 @@ class OrderTransformer extends BaseTransformer
 
     protected function includeBasket(Order $order)
     {
-        if (!$order->basket) {
+        if (! $order->basket) {
             return $this->null();
         }
+
         return $this->item($order->basket, new BasketTransformer);
     }
 

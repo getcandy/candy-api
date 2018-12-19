@@ -3,11 +3,6 @@
 namespace GetCandy\Api\Http\Resources\Products;
 
 use GetCandy\Api\Http\Resources\AbstractResource;
-use GetCandy\Api\Http\Resources\Assets\AssetCollection;
-use GetCandy\Api\Http\Resources\Routes\RouteCollection;
-use GetCandy\Api\Http\Resources\Discounts\DiscountCollection;
-use GetCandy\Api\Http\Resources\Categories\CategoryCollection;
-use GetCandy\Api\Http\Resources\Discounts\DiscountModelCollection;
 
 class ProductAssociationResource extends AbstractResource
 {

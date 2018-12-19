@@ -18,6 +18,7 @@ abstract class BaseService
     public function with(array $data)
     {
         $this->with = $data;
+
         return $this;
     }
 
@@ -328,6 +329,7 @@ abstract class BaseService
                 'published_at' => $channel['published_at'] ? Carbon::parse($channel['published_at']) : null,
             ];
         }
+
         return $channelData;
     }
 

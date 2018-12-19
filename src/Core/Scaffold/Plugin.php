@@ -3,7 +3,6 @@
 namespace GetCandy\Api\Core\Scaffold;
 
 use Illuminate\Support\ServiceProvider;
-use GetCandy\Api\Core\Plugins\PluginManagerInterface;
 
 abstract class Plugin extends ServiceProvider
 {

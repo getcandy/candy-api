@@ -132,7 +132,7 @@ abstract class BaseType
             foreach ($channel as $channelName => $locales) {
                 foreach ($locales as $locale => $value) {
                     $newValue = $model->attribute($field, $channelName, $locale);
-                    if (!is_array($newValue)) {
+                    if (! is_array($newValue)) {
                         $newValue = strip_tags($newValue);
                     }
                     if (! $this->mappingValueExists($mapping, $model->id, $locale, $field, $newValue)) {

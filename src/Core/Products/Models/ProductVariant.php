@@ -34,7 +34,7 @@ class ProductVariant extends BaseModel
     protected $pricing;
 
     /**
-     * Return the product relation
+     * Return the product relation.
      *
      * @return BelongsTo
      */
@@ -44,7 +44,7 @@ class ProductVariant extends BaseModel
     }
 
     /**
-     * Return the basket lines
+     * Return the basket lines.
      *
      * @return HasMany
      */
@@ -54,7 +54,7 @@ class ProductVariant extends BaseModel
     }
 
     /**
-     * Get the variant name attribute
+     * Get the variant name attribute.
      *
      * @return string
      */

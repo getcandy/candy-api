@@ -2,8 +2,6 @@
 
 namespace GetCandy\Api\Core\Traits;
 
-use Hashids\Hashids as HashidsEncoder;
-
 trait Hashids
 {
     public function hashids()
