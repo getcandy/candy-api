@@ -15,6 +15,7 @@ class BasketLineResource extends AbstractResource
             'line_total' => $this->total_cost,
             'unit_price' => $this->unit_cost,
             'unit_tax' => $this->unit_tax,
+            'line_discount' => $this->discount_total,
             'tax' => $this->total_tax,
         ];
     }
