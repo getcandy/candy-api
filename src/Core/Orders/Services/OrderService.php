@@ -790,7 +790,7 @@ class OrderService extends BaseService
                     if ($item->type == 'coupon') {
                         $coupon = new OrderDiscount([
                             'coupon' => $item->value,
-                            'order_id' => $basket->order->id,
+                            'order_id' => $order->id,
                             'name' => $discount->attribute('name'),
                             'type' => 'coupon',
                         ]);
