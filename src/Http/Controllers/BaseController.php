@@ -21,7 +21,7 @@ class BaseController extends Controller
     protected function parseIncludedFields($request)
     {
         if (! $request->fields) {
-            return;
+            return [];
         }
 
         return explode(',', $request->fields);
