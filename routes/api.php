@@ -33,6 +33,7 @@ Route::group([
      */
 
     $router->put('assets', 'Assets\AssetController@updateAll');
+    $router->post('assets/simple', 'Assets\AssetController@storeSimple');
     $router->resource('assets', 'Assets\AssetController', [
         'except' => ['edit', 'create'],
     ]);
@@ -147,13 +148,13 @@ Route::group([
         'only' => ['index', 'update'],
     ]);
 
-    /*
-     * Pages
-     */
-    $router->get('/pages/{channel}/{lang}/{slug?}', 'Pages\PageController@show');
-    $router->resource('pages', 'Pages\PageController', [
-        'except' => ['edit', 'create'],
-    ]);
+    // /*
+    //  * Pages
+    //  */
+    // $router->get('/pages/{channel}/{lang}/{slug?}', 'Pages\PageController@show');
+    // $router->resource('pages', 'Pages\PageController', [
+    //     'except' => ['edit', 'create'],
+    // ]);
 
     /*
      * Product variants

@@ -2,6 +2,10 @@
 
 namespace GetCandy\Api\Http\Controllers\Assets;
 
+use Image;
+use Storage;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 use GetCandy\Exceptions\InvalidServiceException;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Assets\UploadRequest;
@@ -11,6 +15,40 @@ use GetCandy\Api\Http\Transformers\Fractal\Assets\AssetTransformer;
 
 class AssetController extends BaseController
 {
+    public function storeSimple(Request $request)
+    {
+        $file = $request->file('file');
+
+        $directory = 'public/uploads/' . Carbon::now()->format('d/m');
+
+        $path = $file->store($directory);
+
+        // You can't transform a PDF so...
+        try {
+            $image = Image::make(Storage::get($path));
+            $type = pathinfo($path, PATHINFO_EXTENSION);
+            $filename = basename($path, ".{$type}");
+            $image->resize(500, null, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+            $image->crop(500, 300, 0, 0);
+            $thumbnail = "{$directory}/thumbnails/{$filename}.{$type}";
+            Storage::put(
+                $thumbnail,
+                $image->stream($type, 100)->getContents()
+            );
+        } catch (NotReadableException $e) {
+
+        }
+
+        return response()->json([
+            'path' => $path,
+            'url'=> \Storage::url($path),
+            'thumbnail' => $thumbnail ?? null,
+            'thumbnail_url' => !empty($thumbnail) ? \Storage::url($thumbnail) : null,
+        ]);
+    }
+
     public function store(UploadRequest $request)
     {
         try {
