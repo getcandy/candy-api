@@ -55,7 +55,7 @@ class ProductVariantResource extends AbstractResource
     {
         return [
             'product' => ['data' => new ProductResource($this->whenLoaded('product'), $this->only)],
-            'tiers' => ['data '=> new ProductTierCollection($this->whenLoaded('tiers'))],
+            'tiers' => new ProductTierCollection($this->whenLoaded('tiers')),
             'tax' => $this->include('tax', TaxResource::class),
         ];
     }
