@@ -13,40 +13,7 @@ class Order extends BaseModel
 {
     protected $hashids = 'order';
 
-    protected $fillable = [
-        'lines',
-        'delivery_total',
-        'tax_total',
-        'discount_total',
-        'sub_total',
-        'order_total',
-        'status',
-        'type',
-        'shipping_preference',
-        'shipping_method',
-        'billing_phone',
-        'billing_firstname',
-        'billing_lastname',
-        'billing_address',
-        'billing_address_two',
-        'billing_address_three',
-        'billing_city',
-        'billing_county',
-        'billing_state',
-        'billing_country',
-        'billing_zip',
-        'billing_phone',
-        'shipping_firstname',
-        'shipping_lastname',
-        'shipping_address',
-        'shipping_address_two',
-        'shipping_address_three',
-        'shipping_city',
-        'shipping_county',
-        'shipping_state',
-        'shipping_country',
-        'shipping_zip',
-    ];
+    protected $guarded = [];
 
     protected $dates = [
         'placed_at',
