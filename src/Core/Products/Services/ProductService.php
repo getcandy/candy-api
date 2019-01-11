@@ -73,17 +73,6 @@ class ProductService extends BaseService
 
         event(new AttributableSavedEvent($product));
 
-        if (! empty($data['channels']['data'])) {
-            $product->channels()->sync(
-                $this->getChannelMapping($data['channels']['data'])
-            );
-        }
-
-        if (! empty($data['customer_groups'])) {
-            $groupData = $this->mapCustomerGroupData($data['customer_groups']['data']);
-            $product->customerGroups()->sync($groupData);
-        }
-
         event(new IndexableSavedEvent($product));
 
         return $product;
