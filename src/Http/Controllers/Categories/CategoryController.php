@@ -37,6 +37,13 @@ class CategoryController extends BaseController
         );
     }
 
+    public function children($id, Request $request, CategoryCriteria $criteria)
+    {
+        $category = $criteria->id($id)->first();
+
+        return new CategoryCollection($category->children->load($request->includes ?: []));
+    }
+
     public function show($id, Request $request, CategoryCriteria $criteria)
     {
         $category = $criteria->include($request->includes)->id($id)->first();
