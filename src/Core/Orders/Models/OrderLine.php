@@ -12,7 +12,7 @@ class OrderLine extends BaseModel
     protected $fillable = [
         'quantity',
         'description',
-        'variant',
+        'option',
         'line_amount',
         'sku',
         'tax',
@@ -21,6 +21,7 @@ class OrderLine extends BaseModel
         'total',
         'shipping',
         'delivery_total',
+        'product_variant_id',
 
         // New fields
         'is_shipping',
@@ -35,7 +36,7 @@ class OrderLine extends BaseModel
 
     public function productVariant()
     {
-        return $this->belongsTo(ProductVariant::class, 'sku', 'sku');
+        return $this->belongsTo(ProductVariant::class);
     }
 
     public function order()
