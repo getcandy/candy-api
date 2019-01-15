@@ -13,32 +13,17 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
 
     protected function setUp()
     {
-        // Make sure storage path is there
-
-        if (! file_exists(__DIR__.'/../storage')) {
-            mkdir(__DIR__.'/../storage');
-        }
-        $databaseExists = file_exists(__DIR__.'/../storage/database.sqlite');
-
         parent::setUp();
 
         $this->artisan('cache:forget', ['key' => 'spatie.permission.cache']);
 
-        if (! $databaseExists || $this->requiresRefresh) {
-            if ($databaseExists) {
-                unlink(__DIR__.'/../storage/database.sqlite');
-            }
-            touch(__DIR__.'/../storage/database.sqlite');
+        $this->artisan('migrate', ['--database' => 'testing']);
+        $this->artisan('db:seed', ['--class' => '\Seeds\TestingDatabaseSeeder']);
 
-            $this->loadLaravelMigrations(['--database' => 'testing']);
-            $this->artisan('migrate', ['--database' => 'testing']);
-            $this->artisan('db:seed', ['--class' => '\Seeds\TestingDatabaseSeeder']);
-        }
-
-        // By Default, set up everything as taxable
-        TaxCalculator::setTax(
-            app('api')->taxes()->getDefaultRecord()
-        );
+        // // By Default, set up everything as taxable
+        // TaxCalculator::setTax(
+        //     app('api')->taxes()->getDefaultRecord()
+        // );
     }
 
     /**
@@ -60,7 +45,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         $app['config']->set('database.default', 'testing');
         $app['config']->set('database.connections.testing', [
             'driver' => 'sqlite',
-            'database' => __DIR__.'/../storage/database.sqlite',
+            'database' => ':memory:',
             'prefix' => '',
         ]);
 

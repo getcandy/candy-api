@@ -39,7 +39,7 @@ class ShippingTableSeeder extends Seeder
         // Create Price
         $price = ShippingPrice::forceCreate([
             'shipping_method_id' => $method->id,
-            'value' => 500,
+            'rate' => 500,
             'currency_id' => Currency::first()->id,
             'min_weight' => 0,
             'min_basket' => 0,
