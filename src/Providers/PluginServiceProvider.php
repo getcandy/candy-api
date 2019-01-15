@@ -5,6 +5,7 @@ namespace GetCandy\Api\Providers;
 use File;
 use GetCandy\Api\Core\Plugins\Plugin;
 use Illuminate\Support\ServiceProvider;
+use GetCandy\Api\Core\Plugins\PluginManager;
 use GetCandy\Api\Core\Plugins\PluginManagerInterface;
 
 class PluginServiceProvider extends ServiceProvider
@@ -50,6 +51,8 @@ class PluginServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton(PluginManagerInterface::class, function ($app) {
+            return new PluginManager;
+        });
     }
 }
