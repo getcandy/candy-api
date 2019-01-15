@@ -48,7 +48,7 @@ class OrderLineService extends BaseService
 
         $variant = null;
 
-        if (!empty($data['variant'])) {
+        if (! empty($data['variant'])) {
             $variant = $this->variants->getByHashedId($data['variant']);
         }
 
