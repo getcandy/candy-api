@@ -12,7 +12,7 @@ class CategoryCriteria extends AbstractCriteria
      *
      * @var string|int
      */
-    protected $depth = 1;
+    protected $depth = 0;
 
     /**
      * Whether we show results as full tree.
@@ -34,7 +34,6 @@ class CategoryCriteria extends AbstractCriteria
 
         if ($this->id) {
             $builder->where('id', '=', $category->decodeId($this->id));
-
             return $builder;
         }
 
@@ -42,11 +41,9 @@ class CategoryCriteria extends AbstractCriteria
             $builder->limit($this->limit);
         }
 
-        if ($this->depth) {
-            $builder->defaultOrder()
-                ->withDepth()
-                ->having('depth', '<=', $this->depth);
-        }
+        $builder->defaultOrder()
+            ->withDepth()
+            ->having('depth', '<=', $this->depth);
 
         return $builder;
     }
