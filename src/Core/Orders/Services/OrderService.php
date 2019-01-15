@@ -160,7 +160,7 @@ class OrderService extends BaseService
             'description' => $price->method->attribute('name'),
             'line_total' => $rate->total_cost,
             'unit_price' => $rate->unit_cost,
-            'variant' => $price->zone->name,
+            'option' => $price->zone->name,
             'tax_total' => $rate->total_tax,
             'tax_rate' => $tax->percentage,
             'sku' => $shippingPriceId,
@@ -538,6 +538,7 @@ class OrderService extends BaseService
 
         foreach ($basket->lines as $line) {
             array_push($lines, [
+                'product_variant_id' => $line->variant->id,
                 'sku' => $line->variant->sku,
                 'tax_total' => $line->total_tax * 100,
                 'tax_rate' => $line->variant->tax->percentage,
@@ -547,7 +548,7 @@ class OrderService extends BaseService
                 'unit_qty' => $line->variant->unit_qty,
                 'quantity' => $line->quantity,
                 'description' => $line->variant->product->attribute('name'),
-                'variant' => $line->variant->name,
+                'option' => $line->variant->name,
             ]);
         }
 
