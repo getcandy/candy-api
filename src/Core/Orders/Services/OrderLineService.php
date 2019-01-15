@@ -6,15 +6,19 @@ use PriceCalculator;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Orders\Models\OrderLine;
 use GetCandy\Api\Core\Orders\Events\OrderSavedEvent;
+use GetCandy\Api\Core\Products\Services\ProductVariantService;
 
 class OrderLineService extends BaseService
 {
     protected $orders;
 
-    public function __construct(OrderService $orders)
+    protected $variants;
+
+    public function __construct(OrderService $orders, ProductVariantService $variants)
     {
         $this->orders = $orders;
         $this->model = new OrderLine;
+        $this->variants = $variants;
     }
 
     /**
@@ -42,7 +46,14 @@ class OrderLineService extends BaseService
 
         $pricing = PriceCalculator::get($lineTotal, $data['tax_rate'], $data['quantity'] ?? 1);
 
+        $variant = null;
+
+        if (! empty($data['variant'])) {
+            $variant = $this->variants->getByHashedId($data['variant']);
+        }
+
         $order->lines()->create([
+            'product_variant_id' => $variant ? $variant->id : null,
             'description' => $data['description'],
             'is_shipping' => $data['is_shipping'] ?? false,
             'quantity' => $data['quantity'],
@@ -50,7 +61,7 @@ class OrderLineService extends BaseService
             'line_total' => $pricing->total_cost,
             'unit_price' => $pricing->unit_cost,
             'tax_total' => $pricing->total_tax,
-            'variant' => $data['variant'] ?? null,
+            'option' => $data['option'] ?? null,
             'sku' => $data['sku'] ?? null,
             'discount_total' => $data['discount_total'] ?? 0,
         ]);

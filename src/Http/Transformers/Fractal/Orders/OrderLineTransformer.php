@@ -22,7 +22,7 @@ class OrderLineTransformer extends BaseTransformer
             'tax_total' => $line->tax_total,
             'tax_rate' => $line->tax_rate,
             'description' => $line->description,
-            'variant' => $line->variant,
+            'option' => $line->option,
             'sku' => $line->sku,
             'is_shipping' => (bool) $line->is_shipping,
             'is_manual' => (bool) $line->is_manual,
@@ -33,8 +33,6 @@ class OrderLineTransformer extends BaseTransformer
 
     protected function includeVariant($line)
     {
-        if ($variant = $line->variant()->first()) {
-            return $this->item($variant, new ProductVariantTransformer);
-        }
+        return $this->item($line->variant, new ProductVariantTransformer);
     }
 }
