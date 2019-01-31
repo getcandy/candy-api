@@ -298,7 +298,7 @@ class BasketService extends BaseService
      *
      * @return mixed
      */
-    public function getCurrentForUser($user)
+    public function getCurrentForUser($user, $includes = [])
     {
         if (! $user) {
             return;
@@ -308,7 +308,7 @@ class BasketService extends BaseService
             $user = $this->getByHashedId($user);
         }
 
-        $basket = $user->latestBasket;
+        $basket = $user->latestBasket->load($includes);
 
         if ($basket) {
             if ($basket->order && ! $basket->order->placed_at || ! $basket->order) {
