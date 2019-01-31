@@ -35,6 +35,7 @@ class ProductVariantFactory extends AbstractFactory implements ProductVariantInt
         $totalCost = $variantPrice->total_cost;
         $totalTax = $variantPrice->total_tax;
         $basePrice = $variantPrice->base_cost;
+        $factorTax = $variantPrice->factor_tax;
 
         if ($tieredPrice) {
             $basePrice = $tieredPrice->base_cost;
@@ -43,10 +44,12 @@ class ProductVariantFactory extends AbstractFactory implements ProductVariantInt
             $totalCost = $tieredPrice->total_cost;
             $totalTax = $tieredPrice->total_tax;
             $basePrice = $tieredPrice->base_cost;
+            $factorTax = $tieredPrice->factor_tax;
         }
 
         $this->variant->qty = $qty;
         $this->variant->price = $basePrice;
+        $this->variant->factor_tax = $factorTax;
         $this->variant->unit_tax = $unitTax;
         $this->variant->unit_cost = $unitCost;
         $this->variant->total_tax = $totalTax;
