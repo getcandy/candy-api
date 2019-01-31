@@ -2,7 +2,7 @@
 
 namespace GetCandy\Api\Core\Products\Models;
 
-use PriceCalculator;
+use GetCandy\Api\Core\Pricing\PriceCalculatorInterface;
 use GetCandy\Api\Core\Scaffold\BaseModel;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 use Illuminate\Database\Eloquent\Builder;
@@ -58,7 +58,7 @@ class ProductPricingTier extends BaseModel
      */
     public function getTotalCostAttribute()
     {
-        return app()->getInstance()->make(PriceCalculator::class)->get($this->price)->total_cost;
+        return app()->getInstance()->make(PriceCalculatorInterface::class)->get($this->price)->total_cost;
     }
 
     /**
@@ -68,7 +68,7 @@ class ProductPricingTier extends BaseModel
      */
     public function getTotalTaxAttribute()
     {
-        return app()->getInstance()->make(PriceCalculator::class)->get($this->price)->total_tax;
+        return app()->getInstance()->make(PriceCalculatorInterface::class)->get($this->price)->total_tax;
     }
 
     /**
