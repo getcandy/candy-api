@@ -159,6 +159,8 @@ class OrderController extends BaseController
                 ->provider($type)
                 ->nonce($request->payment_token)
                 ->type($request->type)
+                ->customerReference($request->customer_reference)
+                ->notes($request->notes)
                 ->payload($request->data ?: [])
                 ->resolve();
 
