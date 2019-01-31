@@ -64,6 +64,28 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
      */
     protected $manager;
 
+    /**
+     * The order notes
+     *
+     * @var string
+     */
+    protected $notes;
+
+    /**
+     * The order type
+     *
+     * @var string
+     */
+    protected $type;
+
+    /**
+     * The customer reference
+     *
+     * @var string
+     */
+    protected $customerReference;
+
+
     public function __construct(PaymentContract $manager)
     {
         $this->manager = $manager;
@@ -130,6 +152,24 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
     }
 
     /**
+     * Set the value for notes
+     *
+     * @param string $notes
+     * @return void
+     */
+    public function notes($notes = null)
+    {
+        $this->notes = $notes;
+        return $this;
+    }
+
+    public function customerReference($ref = null)
+    {
+        $this->customerReference = $ref;
+        return $this;
+    }
+
+    /**
      * Set the value of order
      *
      * @param Order $order
@@ -155,6 +195,10 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
             throw new InvalidPaymentTokenException;
         }
 
+        $this->order->notes = $this->notes;
+        $this->order->customer_reference = $this->customerReference;
+        $this->order->type = $this->type;
+
         $response = $driver
             ->token($this->nonce)
             ->order($this->order)
@@ -166,7 +210,6 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
         }
 
         return $this->processResponse($response);
-
     }
 
     /**
