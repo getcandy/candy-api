@@ -72,7 +72,7 @@ class CategoryService extends BaseService
             );
         }
 
-        $urls = $this->getUniqueUrl($data['url']);
+        $urls = $this->getUniqueUrl($data['url'], $data['path'] ?? null);
 
         $category->routes()->createMany($urls);
 

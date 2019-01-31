@@ -67,7 +67,6 @@ abstract class AbstractCriteria
             $arrayOrString = array_map('trim', explode(',', trim($arrayOrString)));
         }
         $this->includes = $arrayOrString;
-
         return $this;
     }
 
@@ -102,6 +101,11 @@ abstract class AbstractCriteria
     public function firstOrFail()
     {
         return $this->getBuilder()->firstOrFail();
+    }
+
+    public function all()
+    {
+        return $this->getBuilder()->get();
     }
 
     /**

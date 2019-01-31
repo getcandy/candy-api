@@ -41,7 +41,12 @@ class CategoryController extends BaseController
     {
         $category = $criteria->id($id)->first();
 
-        return new CategoryCollection($category->children->load($request->includes ?: []));
+        $query = $category
+            ->children()
+            ->with($request->includes)
+            ->withCount(['products', 'children']);
+
+        return new CategoryCollection($query->get());
     }
 
     public function show($id, Request $request, CategoryCriteria $criteria)

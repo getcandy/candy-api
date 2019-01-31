@@ -120,7 +120,7 @@ class PayPal extends AbstractProvider
             $candyTrans->card_type = 'Express Checkout';
             $candyTrans->last_four = '';
 
-            $candyTrans->amount = $transaction->getAmount()->getTotal();
+            $candyTrans->amount = $transaction->getAmount()->getTotal() * 100;
 
             $transactions->push($candyTrans);
 

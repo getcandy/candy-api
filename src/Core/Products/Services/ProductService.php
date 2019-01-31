@@ -289,6 +289,7 @@ class ProductService extends BaseService
 
         $query = $this->model->with([
             'routes',
+            'firstVariant',
             'variants.product',
             'variants.tiers',
             'variants.tiers.group',
@@ -339,8 +340,11 @@ class ProductService extends BaseService
     {
         return ProductRecommendation::whereIn('product_id', $products)
             ->with(
+                'product.routes',
+                'product.categories.assets.transforms',
                 'product.variants.tiers',
-                'product.assets.transforms'
+                'product.assets.transforms',
+                'product.firstVariant'
             )
             ->whereHas('product')
             ->select(

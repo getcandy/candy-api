@@ -4,8 +4,9 @@ namespace GetCandy\Api\Core\Taxes;
 
 use GetCandy\Api\Core\Taxes\Models\Tax;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use GetCandy\Api\Core\Taxes\Interfaces\TaxCalculatorInterface;
 
-class TaxCalculator
+class TaxCalculator implements TaxCalculatorInterface
 {
     protected $rate;
 

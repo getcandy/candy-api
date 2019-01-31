@@ -6,11 +6,10 @@ use TaxCalculator;
 use Tests\Stubs\User;
 use GetCandy\Api\Providers\ApiServiceProvider;
 use Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables;
+use GetCandy\Api\Core\Baskets\Factories\BasketFactory;
 
 abstract class TestCase extends \Orchestra\Testbench\TestCase
 {
-    protected $requiresRefresh = false;
-
     protected function setUp()
     {
         parent::setUp();
@@ -85,5 +84,27 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             'PriceCalculator' => \Facades\GetCandy\Api\Core\Pricing\PriceCalculator::class,
             'GetCandy' => \Facades\GetCandy\Api\Core\Helpers\GetCandy::class,
         ];
+    }
+
+    protected function getinitalbasket($user = null)
+    {
+        $variant = \GetCandy\Api\Core\Products\Models\ProductVariant::first();
+        $basket = \GetCandy\Api\Core\Baskets\Models\Basket::forceCreate([
+            'currency' => 'GBP',
+        ]);
+
+        if ($user) {
+            $basket->user_id = $user->id;
+            $basket->save();
+        }
+
+        \GetCandy\Api\Core\Baskets\Models\BasketLine::forceCreate([
+            'product_variant_id' => $variant->id,
+            'basket_id' => $basket->id,
+            'quantity' => 1,
+            'total' => $variant->price,
+        ]);
+
+        return $this->app->make(BasketFactory::class)->init($basket)->get();
     }
 }

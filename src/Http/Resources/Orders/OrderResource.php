@@ -5,6 +5,7 @@ namespace GetCandy\Api\Http\Resources\Orders;
 use GetCandy\Api\Http\Resources\AbstractResource;
 use GetCandy\Api\Http\Resources\Baskets\BasketResource;
 use GetCandy\Api\Http\Resources\Transactions\TransactionCollection;
+use GetCandy\Api\Http\Resources\Users\UserResource;
 
 class OrderResource extends AbstractResource
 {
@@ -50,6 +51,7 @@ class OrderResource extends AbstractResource
             'discounts' => new OrderDiscountCollection($this->whenLoaded('discounts')),
             'transactions' => new TransactionCollection($this->whenLoaded('transactions')),
             'lines' => new OrderLineCollection($this->whenLoaded('lines')),
+            'user' => $this->include('user', UserResource::class),
         ];
     }
 }

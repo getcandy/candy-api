@@ -13,6 +13,7 @@ class RouteResource extends AbstractResource
             'default' => (bool) $this->default,
             'redirect' => (bool) $this->redirect,
             'locale' => $this->locale,
+            'path' => $this->path,
             'slug' => $this->slug,
             'description' => $this->description,
             'type' => str_slug(class_basename($this->element_type)),

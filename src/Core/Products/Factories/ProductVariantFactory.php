@@ -2,12 +2,12 @@
 
 namespace GetCandy\Api\Core\Products\Factories;
 
-use PriceCalculator;
 use Illuminate\Database\Eloquent\Model;
+use GetCandy\Api\Core\Scaffold\AbstractFactory;
 use GetCandy\Api\Core\Products\Models\ProductVariant;
 use GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface;
 
-class ProductVariantFactory implements ProductVariantInterface
+class ProductVariantFactory extends AbstractFactory implements ProductVariantInterface
 {
     /**
      * The variant.
@@ -19,7 +19,6 @@ class ProductVariantFactory implements ProductVariantInterface
     public function init(ProductVariant $variant)
     {
         $this->variant = $variant;
-
         return $this;
     }
 
@@ -90,7 +89,7 @@ class ProductVariantFactory implements ProductVariantInterface
             $taxRate = $this->variant->tax->percentage;
         }
 
-        return PriceCalculator::get(
+        return $this->calculator->get(
             $price->price,
             $taxRate,
             $qty,
@@ -131,7 +130,7 @@ class ProductVariantFactory implements ProductVariantInterface
             $price = $pricing->price;
         }
 
-        return PriceCalculator::get(
+        return $this->calculator->get(
             $price,
             $taxRate,
             $qty,

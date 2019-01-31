@@ -21,6 +21,14 @@ class CategoryCriteria extends AbstractCriteria
      */
     protected $tree = false;
 
+    public function setDepth($depth)
+    {
+        if ($depth) {
+            $this->depth = $depth;
+        }
+        return $this;
+    }
+
     /**
      * Gets the underlying builder for the query.
      *
@@ -30,7 +38,8 @@ class CategoryCriteria extends AbstractCriteria
     {
         $category = new Category;
 
-        $builder = $category->with($this->includes ?: []);
+        $builder = $category->with($this->includes ?: [])
+            ->withCount(['products', 'children']);
 
         if ($this->id) {
             $builder->where('id', '=', $category->decodeId($this->id));
@@ -40,7 +49,6 @@ class CategoryCriteria extends AbstractCriteria
         if ($this->limit && ! $this->tree) {
             $builder->limit($this->limit);
         }
-
         $builder->defaultOrder()
             ->withDepth()
             ->having('depth', '<=', $this->depth);

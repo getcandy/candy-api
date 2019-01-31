@@ -6,8 +6,6 @@ use DB;
 use PDF;
 use Event;
 use Carbon\Carbon;
-use PriceCalculator;
-use CurrencyConverter;
 use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Baskets\Models\Basket;
@@ -16,13 +14,16 @@ use GetCandy\Api\Core\Orders\Events\OrderSavedEvent;
 use GetCandy\Api\Core\Orders\Jobs\OrderNotification;
 use GetCandy\Api\Core\Baskets\Services\BasketService;
 use GetCandy\Api\Core\Payments\Services\PaymentService;
+use GetCandy\Api\Core\Pricing\PriceCalculatorInterface;
 use GetCandy\Api\Core\Orders\Events\OrderProcessedEvent;
 use GetCandy\Api\Core\Orders\Events\OrderBeforeSavedEvent;
+use GetCandy\Api\Core\Orders\Interfaces\OrderServiceInterface;
 use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
 use GetCandy\Api\Core\Orders\Exceptions\IncompleteOrderException;
 use GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException;
+use GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface;
 
-class OrderService extends BaseService
+class OrderService extends BaseService implements OrderServiceInterface
 {
     /**
      * The basket service.
@@ -43,12 +44,33 @@ class OrderService extends BaseService
      */
     protected $payments;
 
-    public function __construct(BasketService $baskets, PaymentService $payments, ProductVariantFactory $variants)
-    {
+    /**
+     * The price calculator instance
+     *
+     * @var CurrencyConverterInterface
+     */
+    protected $currencies;
+
+    /**
+     * The price calculator instance
+     *
+     * @var PriceCalculatorInterface
+     */
+    protected $calculator;
+
+    public function __construct(
+        BasketService $baskets,
+        PaymentService $payments,
+        ProductVariantFactory $variants,
+        CurrencyConverterInterface $currencies,
+        PriceCalculatorInterface $calculator
+    ) {
         $this->model = new Order();
         $this->baskets = $baskets;
         $this->payments = $payments;
         $this->variants = $variants;
+        $this->currencies = $currencies;
+        $this->calculator = $calculator;
     }
 
     /**
@@ -61,7 +83,7 @@ class OrderService extends BaseService
     public function store($basketId, $user = null)
     {
         // Get the basket
-        $basket = app('api')->baskets()->getByHashedId($basketId);
+        $basket = $this->baskets->getByHashedId($basketId);
 
         if ($basket->activeOrder) {
             $order = $basket->activeOrder;
@@ -86,7 +108,7 @@ class OrderService extends BaseService
             }
         }
 
-        $order->conversion = CurrencyConverter::rate();
+        $order->conversion = $this->currencies->set($basket->currency)->rate();
         $order->currency = $basket->currency;
 
         $order->save();
@@ -109,7 +131,7 @@ class OrderService extends BaseService
 
         $order->load([
             'discounts',
-            'lines.productVariant.product.assets.transforms',
+            'lines.variant.product.assets.transforms',
         ]);
 
         return $order;
@@ -127,6 +149,8 @@ class OrderService extends BaseService
     public function addShippingLine($orderId, $shippingPriceId, $preference = null)
     {
         $order = $this->getByHashedId($orderId);
+
+
         $price = app('api')->shippingPrices()->getByHashedId($shippingPriceId);
 
         $updateFields = [
@@ -139,12 +163,11 @@ class OrderService extends BaseService
 
         $order->update($updateFields);
 
-        // TODO Need a better way to do this basket totals thing
         $basket = $this->baskets->getForOrder($order);
 
         $tax = app('api')->taxes()->getDefaultRecord();
 
-        $rate = PriceCalculator::get(
+        $rate = $this->calculator->get(
             $price->rate,
             $tax->percentage
         );
@@ -349,6 +372,8 @@ class OrderService extends BaseService
             'sub_total' => $totals->line_total ?? 0,
             'order_total' => $totals->grand_total ?? 0,
         ]);
+
+        return $order;
     }
 
     /**
@@ -409,6 +434,8 @@ class OrderService extends BaseService
 
         event(new OrderSavedEvent($order));
 
+        $this->recalculate($order);
+
         return $order;
     }
 
@@ -467,7 +494,7 @@ class OrderService extends BaseService
         $id = $this->model->decodeId($id);
         $query = $this->model->withoutGlobalScope('open')->withoutGlobalScope('not_expired');
 
-        return $query->with(['lines.productVariant', 'transactions', 'discounts'])->findOrFail($id);
+        return $query->with(['lines.variant', 'transactions', 'discounts'])->findOrFail($id);
     }
 
     /**
@@ -549,7 +576,7 @@ class OrderService extends BaseService
                 'sku' => $line->variant->sku,
                 'tax_total' => $line->total_tax * 100,
                 'tax_rate' => $line->variant->tax->percentage,
-                'discount_total' => $line->discount_total * 100 ?? 0,
+                'discount_total' => $line->discount_total ?? 0,
                 'line_total' => $line->total_cost * 100,
                 'unit_price' => $line->base_cost * 100,
                 'unit_qty' => $line->variant->unit_qty,

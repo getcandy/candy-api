@@ -88,7 +88,7 @@ class ProductTableSeeder extends Seeder
             'variants' => [
                 [
                     'sku' => '123-12',
-                    'price' => 5000,
+                    'price' => 10.00,
                     'stock' => 1,
                     'options' => [
                         'size' => '12',
@@ -97,7 +97,7 @@ class ProductTableSeeder extends Seeder
                 ],
                 [
                     'sku' => '123-10',
-                    'price' => 5000,
+                    'price' => 10.00,
                     'stock' => 1,
                     'options' => [
                         'size' => '10',
@@ -106,7 +106,7 @@ class ProductTableSeeder extends Seeder
                 ],
                 [
                     'sku' => '456-12',
-                    'price' => 5000,
+                    'price' => 10.00,
                     'stock' => 1,
                     'options' => [
                         'size' => '12',
@@ -115,7 +115,7 @@ class ProductTableSeeder extends Seeder
                 ],
                 [
                     'sku' => '456-10',
-                    'price' => 5000,
+                    'price' => 10.00,
                     'stock' => 1,
                     'options' => [
                         'size' => '10',

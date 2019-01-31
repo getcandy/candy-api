@@ -51,12 +51,15 @@ class ApiServiceProvider extends ServiceProvider
     {
         $providers = [
             BasketServiceProvider::class,
+            CurrencyServiceProvider::class,
             DiscountServiceProvider::class,
             OrderServiceProvider::class,
             PaymentServiceProvider::class,
+            PricingServiceProvider::class,
             ProductServiceProvider::class,
             SearchServiceProvider::class,
             ShippingServiceProvider::class,
+            TaxServiceProvider::class,
         ];
         foreach ($providers as $provider) {
             $this->app->register($provider, true);
@@ -154,7 +157,7 @@ class ApiServiceProvider extends ServiceProvider
         });
 
         $this->app->singleton('currency_converter', function ($app) {
-            return new CurrencyConverter;
+            return $app->make(CurrencyConverter::class);
         });
 
         $this->app->singleton('api', function ($app) {

@@ -12,4 +12,12 @@ class UserResource extends AbstractResource
             'id' => $this->encoded_id,
         ];
     }
+
+    public function includes()
+    {
+        return [
+            // 'details' => $this->include('details', UserDetailsResource::class),
+            'details' => $this->include('details', UserDetailsResource::class),
+        ];
+    }
 }

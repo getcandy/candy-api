@@ -2,14 +2,14 @@
 
 namespace GetCandy\Api\Http\Resources\Shipping;
 
-use PriceCalculator;
 use GetCandy\Api\Http\Resources\AbstractResource;
+use GetCandy\Api\Core\Pricing\PriceCalculator;
 
 class ShippingPriceResource extends AbstractResource
 {
     public function payload()
     {
-        $prices = PriceCalculator::get($this->rate, 'default');
+        $prices = app()->getInstance()->make(PriceCalculator::class)->get($this->rate, 'default');
 
         return [
             'id' => $this->encodedId(),

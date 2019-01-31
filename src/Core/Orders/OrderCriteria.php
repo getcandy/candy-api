@@ -78,6 +78,8 @@ class OrderCriteria extends AbstractCriteria implements OrderCriteriaInterface
      */
     protected $scopes = [];
 
+    protected $includes = [];
+
     /**
      * The scopes to take off.
      *
@@ -123,6 +125,11 @@ class OrderCriteria extends AbstractCriteria implements OrderCriteriaInterface
         return $this;
     }
 
+    public function includes($includes) {
+        $this->includes = $includes;
+        return $this;
+    }
+
     /**
      * Get all the criteria params.
      *
@@ -164,9 +171,9 @@ class OrderCriteria extends AbstractCriteria implements OrderCriteriaInterface
     {
         $order = new Order;
         $query = Order::status($this->status)
+            ->with($this->includes)
             ->type($this->type)
             ->zone($this->zone)
-            ->with(['lines'])
             ->range($this->from, $this->to)
             ->search($this->keywords);
 

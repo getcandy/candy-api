@@ -58,7 +58,7 @@ class ProductPricingTier extends BaseModel
      */
     public function getTotalCostAttribute()
     {
-        return PriceCalculator::get($this->price)->total_cost;
+        return app()->getInstance()->make(PriceCalculator::class)->get($this->price)->total_cost;
     }
 
     /**
@@ -68,7 +68,7 @@ class ProductPricingTier extends BaseModel
      */
     public function getTotalTaxAttribute()
     {
-        return PriceCalculator::get($this->price)->total_tax;
+        return app()->getInstance()->make(PriceCalculator::class)->get($this->price)->total_tax;
     }
 
     /**

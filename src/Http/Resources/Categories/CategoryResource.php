@@ -18,6 +18,8 @@ class CategoryResource extends AbstractResource
         return [
             'id' => $this->encodedId(),
             'sort' => $this->sort,
+            'products_count' => $this->when(!is_null($this->products_count), $this->products_count),
+            'children_count' => $this->when(!is_null($this->children_count), $this->children_count),
         ];
     }
 

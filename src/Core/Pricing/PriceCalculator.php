@@ -2,17 +2,63 @@
 
 namespace GetCandy\Api\Core\Pricing;
 
-use Illuminate\Support\Facades\Facade;
+use GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface;
+use GetCandy\Api\Core\Taxes\Interfaces\TaxCalculatorInterface;
 
-class PriceCalculator extends Facade
+class PriceCalculator implements PriceCalculatorInterface
 {
+    protected $pricing = [];
+
     /**
-     * Get the registered name of the component.
+     * The currency converter instance
      *
-     * @return string
+     * @var CurrencyConverterInterface
      */
-    protected static function getFacadeAccessor()
+    protected $converter;
+
+    /**
+     * The tax calculator instance
+     *
+     * @var TaxCalculatorInterface
+     */
+    protected $taxes;
+
+    public function __construct(CurrencyConverterInterface $converter, TaxCalculatorInterface $taxes)
     {
-        return new PriceCalculatorService();
+        $this->converter = $converter;
+        $this->taxes = $taxes;
+    }
+
+    public function __get($property)
+    {
+        if (isset($this->pricing[$property])) {
+            return $this->pricing[$property];
+        }
+        throw new InvalidArgumentException("Method or Property {$property} doesn't exist");
+    }
+
+    public function get($price, $tax = 0, $qty = 1, $factor = 1)
+    {
+        $unitPrice = $price / $factor;
+
+        $converted = $this->converter->convert($unitPrice * $qty);
+
+        if ($tax == 'default') {
+            $taxamount = $this->taxes->amount($converted);
+        } else {
+            $taxamount = $this->taxes->setTax($tax)->amount($converted);
+        }
+
+        $this->pricing = [
+            'base_cost' => $price,
+            'unit_cost' => $unitPrice,
+            'unit_tax' => round($taxamount / $qty, 2),
+            'factor' => $factor,
+            'total_cost' => round($converted, 2),
+            'total_tax' => $taxamount,
+            'qty' => (int) $qty,
+        ];
+
+        return $this;
     }
 }

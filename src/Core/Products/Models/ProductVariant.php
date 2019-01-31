@@ -83,7 +83,9 @@ class ProductVariant extends BaseModel
 
         foreach (json_decode($val, true) as $option => $value) {
             if (! empty($data = $option_data[$option])) {
-                $values[$option] = $data['options'][$value]['values'];
+                $values[$option] = $data['options'][$value]['values'] ?? [
+                    'en' => null,
+                ];
             }
         }
 

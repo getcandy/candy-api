@@ -5,10 +5,10 @@ namespace GetCandy\Api\Providers;
 use Illuminate\Support\ServiceProvider;
 use GetCandy\Api\Core\Baskets\BasketCriteria;
 use GetCandy\Api\Core\Baskets\Factories\BasketFactory;
-use GetCandy\Api\Core\Baskets\Interfaces\BasketInterface;
 use GetCandy\Api\Core\Baskets\Factories\BasketLineFactory;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketLineInterface;
 use GetCandy\Api\Core\Baskets\Factories\BasketDiscountFactory;
+use GetCandy\Api\Core\Baskets\Interfaces\BasketFactoryInterface;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketCriteriaInterface;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketDiscountFactoryInterface;
 
@@ -20,7 +20,7 @@ class BasketServiceProvider extends ServiceProvider
             return $app->make(BasketCriteria::class);
         });
 
-        $this->app->singleton(BasketInterface::class, function ($app) {
+        $this->app->singleton(BasketFactoryInterface::class, function ($app) {
             return $app->make(BasketFactory::class);
         });
 

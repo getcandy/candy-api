@@ -16,7 +16,8 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use GetCandy\Api\Http\Resources\Products\ProductCollection;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use GetCandy\Api\Http\Transformers\Fractal\Products\ProductTransformer;
-use GetCandy\Api\Http\Transformers\Fractal\Products\ProductRecommendationTransformer;
+use GetCandy\Api\Http\Resources\Products\ProductRecommendationCollection;
+use GetCandy\Api\Core\Baskets\Interfaces\BasketCriteriaInterface;
 
 class ProductController extends BaseController
 {
@@ -75,22 +76,22 @@ class ProductController extends BaseController
         return $resource;
     }
 
-    public function recommended(Request $request)
+    public function recommended(Request $request, ProductCriteria $productCriteria, BasketCriteriaInterface $baskets)
     {
         $request->validate([
             'basket_id' => 'required|hashid_is_valid:baskets',
         ]);
 
-        // Get the recommended products based on this basket.
-        $basket = app('api')->baskets()->getByHashedId($request->basket_id);
+        $basket = $baskets->id($request->basket_id)->first();
 
         $products = $basket->lines->map(function ($line) {
             return $line->variant->product_id;
         })->toArray();
 
-        $recommendations = app('api')->products()->getRecommendations($products);
+        $products = app('api')->products()->getRecommendations($products);
 
-        return $this->respondWithCollection($recommendations, new ProductRecommendationTransformer);
+
+        return new ProductRecommendationCollection($products);
     }
 
     /**

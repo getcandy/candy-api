@@ -10,7 +10,7 @@ use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Core\Baskets\Models\SavedBasket;
 use GetCandy\Api\Core\Baskets\Events\BasketStoredEvent;
-use GetCandy\Api\Core\Baskets\Interfaces\BasketInterface;
+use GetCandy\Api\Core\Baskets\Interfaces\BasketFactoryInterface;
 use GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface;
 
 class BasketService extends BaseService
@@ -35,7 +35,7 @@ class BasketService extends BaseService
     protected $variantFactory;
 
     public function __construct(
-        BasketInterface $factory,
+        BasketFactoryInterface $factory,
         ProductVariantInterface $variantFactory
     ) {
         $this->model = new Basket();

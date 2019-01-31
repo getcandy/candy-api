@@ -5,8 +5,9 @@ namespace GetCandy\Api\Core\Currencies\Services;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Currencies\Models\Currency;
 use GetCandy\Exceptions\MinimumRecordRequiredException;
+use GetCandy\Api\Core\Currencies\Interfaces\CurrencyServiceInterface;
 
-class CurrencyService extends BaseService
+class CurrencyService extends BaseService implements CurrencyServiceInterface
 {
     public function __construct()
     {

@@ -94,7 +94,7 @@ class BasketController extends BaseController
     {
         $basket = app('api')->baskets()->deleteDiscount($basketId, $request->discount_id);
 
-        return $this->respondWithItem($basket, new BasketTransformer);
+        return new BasketResource($basket);
     }
 
     /**
@@ -112,7 +112,7 @@ class BasketController extends BaseController
             return $this->errorUnprocessable(trans('getcandy::validation.max_qty'));
         }
 
-        return $this->respondWithItem($basket, new BasketTransformer);
+        return new BasketResource($basket);
     }
 
     /**
@@ -124,8 +124,7 @@ class BasketController extends BaseController
     public function save($id, SaveRequest $request)
     {
         $basket = app('api')->baskets()->save($id, $request->name);
-
-        return $this->respondWithItem($basket, new BasketTransformer);
+        return new BasketResource($basket);
     }
 
     /**
@@ -169,8 +168,7 @@ class BasketController extends BaseController
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
-
-        return $this->respondWithItem($basket, new BasketTransformer);
+        return new BasketResource($basket);
     }
 
     public function deleteUser($basketId)
@@ -180,8 +178,7 @@ class BasketController extends BaseController
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
-
-        return $this->respondWithItem($basket, new BasketTransformer);
+        return new BasketResource($basket);
     }
 
     /**
@@ -196,8 +193,7 @@ class BasketController extends BaseController
         if (! $basket) {
             return $this->errorNotFound("Basket does't exist");
         }
-
-        return $this->respondWithItem($basket, new BasketTransformer);
+        return new BasketResource($basket);
     }
 
     /**
@@ -209,7 +205,6 @@ class BasketController extends BaseController
     public function resolve(Request $request)
     {
         $basket = app('api')->baskets()->resolve($request->user(), $request->basket_id, $request->merge);
-
-        return $this->respondWithItem($basket, new BasketTransformer);
+        return new BasketResource($basket);
     }
 }

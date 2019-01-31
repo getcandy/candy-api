@@ -5,10 +5,10 @@ namespace GetCandy\Api\Core\Baskets\Factories;
 use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Core\Baskets\Events\BasketFetchedEvent;
-use GetCandy\Api\Core\Baskets\Interfaces\BasketInterface;
+use GetCandy\Api\Core\Baskets\Interfaces\BasketFactoryInterface;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketLineInterface;
 
-class BasketFactory implements BasketInterface
+class BasketFactory implements BasketFactoryInterface
 {
     /**
      * The current basket.

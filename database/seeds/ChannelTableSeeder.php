@@ -15,8 +15,8 @@ class ChannelTableSeeder extends Seeder
     public function run()
     {
         Channel::create([
-            'name' => 'Ecommerce',
-            'handle' => 'ecommerce',
+            'name' => 'Webstore',
+            'handle' => 'webstore',
             'default' => true,
         ]);
         if (getenv('APP_ENV') != 'testing') {

@@ -50,9 +50,6 @@
                 "GetCandy\\Api\\Providers\\PluginServiceProvider"
             ],
             "aliases": {
-                "CurrencyConverter" : "GetCandy\\Api\\Core\\Currencies\\Facades\\CurrencyConverter",
-                "TaxCalculator" : "Facades\\GetCandy\\Api\\Core\\Taxes\\TaxCalculator",
-                "PriceCalculator" : "GetCandy\\Api\\Core\\Pricing\\PriceCalculator",
                 "GetCandy" : "Facades\\GetCandy\\Api\\Core\\Helpers\\GetCandy"
             }
         }

@@ -14,15 +14,17 @@ class ProductCollection extends AbstractCollection
     public $collects = ProductResource::class;
 
     /**
-     * Transform the resource collection into an array.
+     * Get additional data that should be returned with the resource array.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    public function toArray($request)
+    public function with($request)
     {
         return [
-            'data' => $this->collection,
+            'meta' => [
+                'key' => 'value',
+            ],
         ];
     }
 }

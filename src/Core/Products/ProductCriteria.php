@@ -28,9 +28,13 @@ class ProductCriteria extends AbstractCriteria
                 $q->where('sku', '=', $this->sku);
             });
         }
+
+        if (count($this->ids)) {
+            return $builder->whereIn('id', $this->ids);
+        }
+
         if ($this->id) {
             $builder->where('id', '=', $product->decodeId($this->id));
-
             return $builder;
         }
 

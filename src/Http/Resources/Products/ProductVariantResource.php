@@ -10,7 +10,7 @@ class ProductVariantResource extends AbstractResource
 {
     public function payload()
     {
-        $factory = new ProductVariantFactory;
+        $factory = app()->getInstance()->make(ProductVariantFactory::class);
         $this->resource = $factory->init($this->resource)->get();
 
         return [

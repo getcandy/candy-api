@@ -21,14 +21,30 @@ use GetCandy\Api\Http\Resources\Shipping\ShippingPriceCollection;
 use GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException;
 use GetCandy\Api\Core\Orders\Exceptions\OrderAlreadyProcessedException;
 use GetCandy\Api\Core\Payments\Exceptions\ThreeDSecureRequiredException;
+use GetCandy\Api\Core\Orders\Interfaces\OrderFactoryInterface;
+use GetCandy\Api\Core\Baskets\Interfaces\BasketCriteriaInterface;
+use GetCandy\Api\Core\Baskets\Interfaces\BasketFactoryInterface;
+use GetCandy\Api\Core\Shipping\Services\ShippingPriceService;
+use GetCandy\Api\Core\Orders\Interfaces\OrderProcessingFactoryInterface;
+use GetCandy\Api\Core\Payments\Services\PaymentTypeService;
 
 class OrderController extends BaseController
 {
     protected $orders;
 
-    public function __construct(OrderCriteriaInterface $orders)
-    {
+    /**
+     * The baskets criteria instance
+     *
+     * @var BasketCriteriaInterface
+     */
+    protected $baskets;
+
+    public function __construct(
+        OrderCriteriaInterface $orders,
+        BasketCriteriaInterface $baskets
+    ) {
         $this->orders = $orders;
+        $this->baskets = $baskets;
     }
 
     /**
@@ -45,6 +61,7 @@ class OrderController extends BaseController
         $criteria = $this->orders;
 
         $criteria->fill($request->all())
+            ->include($request->includes ?: [])
             ->set('without_scopes', [
                 'open',
                 'not_expired',
@@ -96,15 +113,18 @@ class OrderController extends BaseController
      *
      * @return void
      */
-    public function store(CreateRequest $request)
+    public function store(CreateRequest $request, OrderFactoryInterface $factory, BasketFactoryInterface $basketFactory)
     {
+        $basket = $this->baskets->id($request->basket_id)->first();
+        $basket = $basketFactory->init($basket)->get();
+
         try {
-            $order = app('api')->orders()->store($request->basket_id, $request->user());
+            $order = $factory->basket($basket)->user($request->user())->resolve();
         } catch (BasketHasPlacedOrderException $e) {
             return $this->errorForbidden(trans('getcandy::exceptions.basket_already_has_placed_order'));
         }
 
-        return new OrderResource($order);
+        return new OrderResource($order->load($request->includes ?: []));
     }
 
     /**
@@ -114,10 +134,34 @@ class OrderController extends BaseController
      *
      * @return json
      */
-    public function process(ProcessRequest $request)
-    {
+    public function process(
+        ProcessRequest $request,
+        OrderProcessingFactoryInterface $factory,
+        OrderCriteriaInterface $criteria,
+        PaymentTypeService $paymentTypes
+    ) {
         try {
-            $order = app('api')->orders()->process($request->all());
+            // $order = $factory->
+            $paymentType = null;
+
+            if ($request->payment_type_id) {
+                $type = $paymentTypes->getByHashedId($request->payment_type_id);
+            } elseif ($request->payment_type) {
+                $type = $paymentTypes->getByHandle($request->payment_type);
+            } else {
+                $type = null;
+            }
+
+            $order = $criteria->id($request->order_id)->first();
+
+            $order = $factory
+                ->order($order)
+                ->provider($type)
+                ->nonce($request->payment_token)
+                ->type($request->type)
+                ->payload($request->data ?: [])
+                ->resolve();
+
             if (! $order->placed_at) {
                 return $this->errorForbidden('Payment has failed');
             }
@@ -272,13 +316,14 @@ class OrderController extends BaseController
      *
      * @return array
      */
-    public function shippingCost($id, Request $request)
+    public function shippingCost($id, Request $request, OrderFactoryInterface $factory, ShippingPriceService $prices)
     {
-        try {
-            $order = app('api')->orders()->addShippingLine($id, $request->price_id, $request->preference);
-        } catch (ModelNotFoundException $e) {
-            return $this->errorNotFound();
-        }
+        $order = $this->orders->id($id)->first();
+        $price = $prices->getByHashedId($request->price_id);
+
+        $order = $factory->order($order)
+            ->shipping($price, $request->preference)
+            ->resolve();
 
         return new OrderResource($order);
     }

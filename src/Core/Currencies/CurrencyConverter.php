@@ -3,15 +3,28 @@
 namespace GetCandy\Api\Core\Currencies;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use GetCandy\Api\Core\Currencies\Interfaces\CurrencyServiceInterface;
+use GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface;
 
-class CurrencyConverter
+class CurrencyConverter implements CurrencyConverterInterface
 {
     protected $currency;
 
+    /**
+     * The currency service
+     *
+     * @var CurrencyServiceInterface
+     */
+    protected $currencies;
+
+    public function __construct(CurrencyServiceInterface $currencies)
+    {
+        $this->currencies = $currencies;
+    }
+
     public function setDefault()
     {
-        $this->currency = app('api')->currencies()->getDefaultRecord();
-
+        $this->currency = $this->currencies->getDefaultRecord();
         return $this;
     }
 
@@ -28,7 +41,7 @@ class CurrencyConverter
     public function set($currency)
     {
         try {
-            $this->currency = app('api')->currencies()->getByCode($currency);
+            $this->currency = $this->currencies->getByCode($currency);
         } catch (ModelNotFoundException $e) {
             $this->setDefault();
         }
