@@ -45,12 +45,15 @@ class PriceCalculator implements PriceCalculatorInterface
 
         if ($tax == 'default') {
             $taxamount = $this->taxes->amount($converted);
+            $factorTax = $this->taxes->amount($price);
         } else {
             $taxamount = $this->taxes->setTax($tax)->amount($converted);
+            $factorTax = $this->taxes->amount($price);
         }
 
         $this->pricing = [
             'base_cost' => $price,
+            'factor_tax' => $factorTax,
             'unit_cost' => $unitPrice,
             'unit_tax' => round($taxamount / $qty, 2),
             'factor' => $factor,
