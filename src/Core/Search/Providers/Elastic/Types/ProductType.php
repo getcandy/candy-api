@@ -35,6 +35,9 @@ class ProductType extends BaseType
             'type' => 'text',
             'analyzer' => 'standard',
             'fields' => [
+                'sort' => [
+                    'type' => 'text',
+                ],
                 'suggest' => [
                     'type' => 'completion',
                 ],
