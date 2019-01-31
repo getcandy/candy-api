@@ -290,6 +290,7 @@ class ProductService extends BaseService
         $query = $this->model->with([
             'routes',
             'firstVariant',
+            'assets.transforms',
             'variants.product',
             'variants.tiers',
             'variants.tiers.group',
