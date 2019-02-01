@@ -7,6 +7,7 @@ use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Orders\Models\OrderLine;
 use GetCandy\Api\Core\Orders\Events\OrderSavedEvent;
 use GetCandy\Api\Core\Products\Services\ProductVariantService;
+use GetCandy\Api\Core\Pricing\PriceCalculatorInterface;
 
 class OrderLineService extends BaseService
 {
@@ -14,11 +15,17 @@ class OrderLineService extends BaseService
 
     protected $variants;
 
-    public function __construct(OrderService $orders, ProductVariantService $variants)
-    {
+    protected $calculator;
+
+    public function __construct(
+        OrderService $orders,
+        ProductVariantService $variants,
+        PriceCalculatorInterface $calculator
+    ) {
         $this->orders = $orders;
         $this->model = new OrderLine;
         $this->variants = $variants;
+        $this->calculator = $calculator;
     }
 
     /**
@@ -44,7 +51,7 @@ class OrderLineService extends BaseService
             $unitPrice = $data['unit_price'];
         }
 
-        $pricing = PriceCalculator::get($lineTotal, $data['tax_rate'], $data['quantity'] ?? 1);
+        $pricing = $this->calculator->get($lineTotal, $data['tax_rate'], $data['quantity'] ?? 1);
 
         $variant = null;
 
