@@ -189,7 +189,7 @@ class BasketController extends BaseController
      */
     public function current(Request $request)
     {
-        $basket = app('api')->baskets()->getCurrentForUser($request->user());
+        $basket = app('api')->baskets()->getCurrentForUser($request->user(), $request->includes);
         if (! $basket) {
             return $this->errorNotFound("Basket does't exist");
         }
