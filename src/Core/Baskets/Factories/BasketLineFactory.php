@@ -5,15 +5,17 @@ namespace GetCandy\Api\Core\Baskets\Factories;
 use GetCandy\Api\Core\Baskets\Models\BasketLine;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketLineInterface;
 use GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface;
+use GetCandy\Api\Core\Baskets\Interfaces\BasketDiscountFactoryInterface;
+use GetCandy\Api\Core\Taxes\Interfaces\TaxCalculatorInterface;
 
 class BasketLineFactory implements BasketLineInterface
 {
     /**
-     * The basket line.
+     * The basket lines.
      *
-     * @var BasketLine
+     * @var Collection
      */
-    protected $line;
+    public $lines;
 
     /**
      * The variant factory.
@@ -22,9 +24,42 @@ class BasketLineFactory implements BasketLineInterface
      */
     protected $variantFactory;
 
-    public function __construct(ProductVariantInterface $factory)
-    {
+    /**
+     * The discount factory.
+     *
+     * @var DiscountFactoryInterface
+     */
+    protected $discounts;
+
+    /**
+     * The tax calculator instance
+     *
+     * @var TaxCalculatorInterface
+     */
+    protected $tax;
+
+    public function __construct(
+        ProductVariantInterface $factory,
+        BasketDiscountFactoryInterface $discounts,
+        TaxCalculatorInterface $tax
+    ) {
         $this->variantFactory = $factory;
+        $this->lines = collect();
+        $this->discounts = $discounts;
+        $this->tax = $tax;
+    }
+
+    /**
+     * Add lines to the instance.
+     *
+     * @param Collection $lines
+     * @return void
+     */
+    public function add($lines)
+    {
+        $this->lines = $lines;
+
+        return $this;
     }
 
     /**
@@ -41,24 +76,62 @@ class BasketLineFactory implements BasketLineInterface
     }
 
     /**
+     * Add a discount to the instance.
+     *
+     * @param string $coupon
+     * @return self
+     */
+    public function discount($coupon)
+    {
+        $this->discounts->add($coupon);
+
+        return $this;
+    }
+
+    /**
      * Get the basket line.
      *
      * @return BasketLine
      */
     public function get()
     {
-        $variant = $this->variantFactory
-            ->init($this->line->variant)
-            ->get($this->line->quantity);
+        foreach ($this->lines as $line) {
+            $variant = $this->variantFactory
+                ->init($line->variant)
+                ->get($line->quantity);
 
-        // $this->line->original_cost = $this->line->price;
-        $this->line->total_cost = $variant->total_price;
-        $this->line->total_tax = $variant->total_tax;
-        $this->line->unit_cost = $variant->unit_cost;
-        $this->line->unit_tax = $variant->unit_tax;
-        $this->line->unit_qty = $variant->unit_qty;
-        $this->line->base_cost = $variant->base_cost;
+            $line->total_cost = $variant->total_price;
+            $line->total_tax = $variant->total_tax;
+            $line->unit_cost = $variant->unit_cost;
+            $line->unit_tax = $variant->unit_tax;
+            $line->unit_qty = $variant->unit_qty;
+            $line->base_cost = $variant->base_cost;
 
-        return $this->line;
+            foreach ($this->discounts->get() as $discount) {
+                foreach ($discount->rewards as $reward) {
+                    $method = 'apply'.ucfirst($reward->type);
+                    $line = $this->{$method}($line, $reward);
+                }
+            }
+        }
+
+        return $this->lines;
+    }
+
+    protected function applyPercentage($line, $reward)
+    {
+        // Get the decimal
+        $decimal = $reward->value / 100;
+        $amount = $line->total_cost * $decimal;
+        $line->discount_total += $amount;
+
+        // Based on the amount, get the tax total
+        $tax = $this->tax->amount($line->total_cost - $amount);
+
+        // Minus off the difference on the line
+        $line->total_tax -= ($line->total_tax - $tax);
+        $line->total_cost -= $amount;
+
+        return $line;
     }
 }

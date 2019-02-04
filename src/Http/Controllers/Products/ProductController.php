@@ -3,6 +3,7 @@
 namespace GetCandy\Api\Http\Controllers\Products;
 
 use Illuminate\Http\Request;
+use GetCandy\Api\Core\Products\ProductCriteria;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Exceptions\InvalidLanguageException;
 use GetCandy\Api\Http\Requests\Products\CreateRequest;
@@ -10,10 +11,13 @@ use GetCandy\Api\Http\Requests\Products\DeleteRequest;
 use GetCandy\Api\Http\Requests\Products\UpdateRequest;
 use GetCandy\Exceptions\MinimumRecordRequiredException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use GetCandy\Api\Http\Resources\Products\ProductResource;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use GetCandy\Api\Http\Resources\Products\ProductCollection;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use GetCandy\Api\Http\Transformers\Fractal\Products\ProductTransformer;
-use GetCandy\Api\Http\Transformers\Fractal\Products\ProductRecommendationTransformer;
+use GetCandy\Api\Http\Resources\Products\ProductRecommendationCollection;
+use GetCandy\Api\Core\Baskets\Interfaces\BasketCriteriaInterface;
 
 class ProductController extends BaseController
 {
@@ -22,16 +26,14 @@ class ProductController extends BaseController
      * @param  Request $request
      * @return array
      */
-    public function index(Request $request)
+    public function index(Request $request, ProductCriteria $criteria)
     {
-        $paginator = app('api')->products()->getPaginatedData(
-            $request->channel,
-            $request->per_page,
-            $request->current_page ?: $request->page,
-            $request->ids
-        );
+        $products = $criteria
+            ->include($request->includes)
+            ->limit($request->get('limit', 50))
+            ->get();
 
-        return $this->respondWithCollection($paginator, new ProductTransformer);
+        return new ProductCollection($products, $this->parseIncludedFields($request));
     }
 
     /**
@@ -39,41 +41,57 @@ class ProductController extends BaseController
      * @param  string $id
      * @return array|\Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, Request $request, ProductCriteria $criteria)
     {
-        try {
-            $product = app('api')->products()->getByHashedId($id);
-        } catch (ModelNotFoundException $e) {
-            // If it cannot be found by ID, try get the variant by SKU
-            $variant = app('api')->productVariants()->getBySku($id);
+        $product = $criteria
+            ->include($request->includes)
+            ->id($id)
+            ->first();
 
-            $product = app('api')->products()->getByHashedId(
-                $variant->product->encodedId()
-            );
-            if (! $variant) {
-                return $this->errorNotFound();
-            }
+        if (! $product) {
+            $product = $criteria->blank('id')->sku($id)->first();
         }
 
-        return $this->respondWithItem($product, new ProductTransformer);
+        // try {
+        //     $product = app('api')->products()->getByHashedId($id, $request->includes);
+        // } catch (ModelNotFoundException $e) {
+        //     // If it cannot be found by ID, try get the variant by SKU
+        //     $variant = app('api')->productVariants()->getBySku($id);
+
+        //     $product = app('api')->products()->getByHashedId(
+        //         $variant->product->encodedId(),
+        //         $request->includes
+        //     );
+        //     if (! $variant) {
+        //         return $this->errorNotFound();
+        //     }
+        // }
+
+        $resource = new ProductResource($product);
+
+        $resource->only($request->fields);
+
+        // $resource->language($request->getLocale());
+        // -
+        return $resource;
     }
 
-    public function recommended(Request $request)
+    public function recommended(Request $request, ProductCriteria $productCriteria, BasketCriteriaInterface $baskets)
     {
         $request->validate([
             'basket_id' => 'required|hashid_is_valid:baskets',
         ]);
 
-        // Get the recommended products based on this basket.
-        $basket = app('api')->baskets()->getByHashedId($request->basket_id);
+        $basket = $baskets->id($request->basket_id)->first();
 
         $products = $basket->lines->map(function ($line) {
             return $line->variant->product_id;
         })->toArray();
 
-        $recommendations = app('api')->products()->getRecommendations($products);
+        $products = app('api')->products()->getRecommendations($products);
 
-        return $this->respondWithCollection($recommendations, new ProductRecommendationTransformer);
+
+        return new ProductRecommendationCollection($products);
     }
 
     /**

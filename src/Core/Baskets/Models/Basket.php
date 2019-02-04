@@ -36,6 +36,13 @@ class Basket extends BaseModel
     public $total_cost = 0;
 
     /**
+     * The basket discount total
+     *
+     * @var integer
+     */
+    public $discount_total = 0;
+
+    /**
      * The fillable attributes.
      *
      * @var array
@@ -59,6 +66,11 @@ class Basket extends BaseModel
         return $this->belongsToMany(Discount::class)->withPivot('coupon');
     }
 
+    public function discount($coupon)
+    {
+        return $this->discounts()->wherePivot('coupon', '=', $coupon)->first();
+    }
+
     public function getExVatAttribute()
     {
         return $this->total - $this->tax;
@@ -76,12 +88,12 @@ class Basket extends BaseModel
 
     public function order()
     {
-        return $this->hasOne(Order::class)->withoutGlobalScopes();
+        return $this->hasOne(Order::class, 'basket_id')->withoutGlobalScopes();
     }
 
     public function activeOrder()
     {
-        return $this->hasOne(Order::class);
+        return $this->hasOne(Order::class, 'basket_id');
     }
 
     public function placedOrder()

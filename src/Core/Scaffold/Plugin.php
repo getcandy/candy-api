@@ -18,6 +18,12 @@ abstract class Plugin extends ServiceProvider
 
     protected $commands = [];
 
+    protected $plugins;
+
+    protected $translations;
+
+    protected $handle;
+
     public function boot()
     {
         foreach ($this->migrations as $path) {
@@ -40,6 +46,10 @@ abstract class Plugin extends ServiceProvider
             foreach ($listeners as $listener) {
                 $events->listen($event, $listener);
             }
+        }
+
+        if ($this->translations) {
+            $this->loadTranslationsFrom($this->translations, $this->handle);
         }
 
         foreach ($this->subscribe as $subscriber) {

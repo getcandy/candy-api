@@ -130,7 +130,7 @@ class Search implements ClientContract
     public function categories($categories = [])
     {
         if (count($categories)) {
-            $this->catgories = $categories;
+            $this->categories = $categories;
             $filter = $this->findFilter('Category');
             $filter->process($categories);
             $this->builder->addFilter($filter);
@@ -212,7 +212,7 @@ class Search implements ClientContract
         }
 
         if (count($this->categories) && empty($this->sorts)) {
-            foreach ($category as $cat) {
+            foreach ($this->categories as $cat) {
                 $builder->addSort(CategorySort::class, $cat);
             }
         }

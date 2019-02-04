@@ -4,9 +4,22 @@ namespace GetCandy\Api\Http\Middleware;
 
 use Closure;
 use TaxCalculator;
+use GetCandy\Api\Core\Taxes\Interfaces\TaxCalculatorInterface;
 
 class SetTaxMiddleware
 {
+    /**
+     * The tax calculator instance
+     *
+     * @var TaxCalculatorInterface
+     */
+    protected $tax;
+
+    public function __construct(TaxCalculatorInterface $tax)
+    {
+        $this->tax = $tax;
+    }
+
     /**
      * Handle an incoming request.
      *
@@ -17,9 +30,9 @@ class SetTaxMiddleware
     public function handle($request, Closure $next)
     {
         // if (! $request->excl_tax) {
-        TaxCalculator::setTax(
-                app('api')->taxes()->getDefaultRecord()
-            );
+        $this->tax->setTax(
+            app('api')->taxes()->getDefaultRecord()
+        );
         // }
 
         return $next($request);

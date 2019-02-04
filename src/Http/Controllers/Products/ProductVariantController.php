@@ -101,13 +101,6 @@ class ProductVariantController extends BaseController
         return $this->respondWithNoContent();
     }
 
-    /**
-     * Handle the request to update a stocks inventory.
-     *
-     * @param string $variant
-     * @param Request $request
-     * @return void
-     */
     public function updateInventory($variant, Request $request)
     {
         try {

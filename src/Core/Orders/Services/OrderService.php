@@ -6,22 +6,24 @@ use DB;
 use PDF;
 use Event;
 use Carbon\Carbon;
-use PriceCalculator;
-use CurrencyConverter;
 use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Baskets\Models\Basket;
+use GetCandy\Api\Core\Orders\Models\OrderDiscount;
 use GetCandy\Api\Core\Orders\Events\OrderSavedEvent;
 use GetCandy\Api\Core\Orders\Jobs\OrderNotification;
 use GetCandy\Api\Core\Baskets\Services\BasketService;
 use GetCandy\Api\Core\Payments\Services\PaymentService;
+use GetCandy\Api\Core\Pricing\PriceCalculatorInterface;
 use GetCandy\Api\Core\Orders\Events\OrderProcessedEvent;
 use GetCandy\Api\Core\Orders\Events\OrderBeforeSavedEvent;
+use GetCandy\Api\Core\Orders\Interfaces\OrderServiceInterface;
 use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
 use GetCandy\Api\Core\Orders\Exceptions\IncompleteOrderException;
 use GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException;
+use GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface;
 
-class OrderService extends BaseService
+class OrderService extends BaseService implements OrderServiceInterface
 {
     /**
      * The basket service.
@@ -42,12 +44,33 @@ class OrderService extends BaseService
      */
     protected $payments;
 
-    public function __construct(BasketService $baskets, PaymentService $payments, ProductVariantFactory $variants)
-    {
+    /**
+     * The price calculator instance
+     *
+     * @var CurrencyConverterInterface
+     */
+    protected $currencies;
+
+    /**
+     * The price calculator instance
+     *
+     * @var PriceCalculatorInterface
+     */
+    protected $calculator;
+
+    public function __construct(
+        BasketService $baskets,
+        PaymentService $payments,
+        ProductVariantFactory $variants,
+        CurrencyConverterInterface $currencies,
+        PriceCalculatorInterface $calculator
+    ) {
         $this->model = new Order();
         $this->baskets = $baskets;
         $this->payments = $payments;
         $this->variants = $variants;
+        $this->currencies = $currencies;
+        $this->calculator = $calculator;
     }
 
     /**
@@ -60,7 +83,7 @@ class OrderService extends BaseService
     public function store($basketId, $user = null)
     {
         // Get the basket
-        $basket = app('api')->baskets()->getByHashedId($basketId);
+        $basket = $this->baskets->getByHashedId($basketId);
 
         if ($basket->activeOrder) {
             $order = $basket->activeOrder;
@@ -85,7 +108,7 @@ class OrderService extends BaseService
             }
         }
 
-        $order->conversion = CurrencyConverter::rate();
+        $order->conversion = $this->currencies->set($basket->currency)->rate();
         $order->currency = $basket->currency;
 
         $order->save();
@@ -106,6 +129,11 @@ class OrderService extends BaseService
 
         event(new OrderSavedEvent($order, $basket));
 
+        $order->load([
+            'discounts',
+            'lines.variant.product.assets.transforms',
+        ]);
+
         return $order;
     }
 
@@ -121,6 +149,8 @@ class OrderService extends BaseService
     public function addShippingLine($orderId, $shippingPriceId, $preference = null)
     {
         $order = $this->getByHashedId($orderId);
+
+
         $price = app('api')->shippingPrices()->getByHashedId($shippingPriceId);
 
         $updateFields = [
@@ -133,12 +163,11 @@ class OrderService extends BaseService
 
         $order->update($updateFields);
 
-        // TODO Need a better way to do this basket totals thing
         $basket = $this->baskets->getForOrder($order);
 
         $tax = app('api')->taxes()->getDefaultRecord();
 
-        $rate = PriceCalculator::get(
+        $rate = $this->calculator->get(
             $price->rate,
             $tax->percentage
         );
@@ -300,13 +329,15 @@ class OrderService extends BaseService
     {
         $totals = \DB::table('order_lines')->select(
             'order_id',
-            DB::RAW('SUM((CASE WHEN discount_total = 0 THEN line_total ELSE line_total - discount_total END)) as line_total'),
+            // DB::RAW('SUM(line_total) as line_total'),
+            DB::RAW('SUM(line_total) as line_total'),
             DB::RAW('SUM(delivery_total) as delivery_total'),
-            DB::RAW('SUM(CASE WHEN discount_total = 0 THEN tax_total ELSE 0 END) as tax_total'),
+            DB::RAW('SUM(tax_total) as tax_total'),
             DB::RAW('SUM(discount_total) as discount_total'),
             DB::RAW('SUM(discount_total) as tax_discount_total'),
-            DB::RAW('SUM(line_total) + SUM(tax_total) + SUM(delivery_total) - SUM(discount_total) as grand_total')
-        )->where('order_id', '=', $order->id)->whereIsShipping(false)->groupBy('order_id')->first();
+            DB::RAW('SUM(line_total) + SUM(tax_total) + SUM(delivery_total) as grand_total')
+        )->where('order_id', '=', $order->id)
+        ->where('is_shipping', '=', false)->groupBy('order_id')->first();
 
         // If we don't have any totals, then we must have had an order already and deleted all the lines
         // from it and gone back to the checkout.
@@ -341,6 +372,8 @@ class OrderService extends BaseService
             'sub_total' => $totals->line_total ?? 0,
             'order_total' => $totals->grand_total ?? 0,
         ]);
+
+        return $order;
     }
 
     /**
@@ -401,6 +434,8 @@ class OrderService extends BaseService
 
         event(new OrderSavedEvent($order));
 
+        $this->recalculate($order);
+
         return $order;
     }
 
@@ -459,7 +494,7 @@ class OrderService extends BaseService
         $id = $this->model->decodeId($id);
         $query = $this->model->withoutGlobalScope('open')->withoutGlobalScope('not_expired');
 
-        return $query->findOrFail($id);
+        return $query->with(['lines.variant', 'transactions', 'discounts'])->findOrFail($id);
     }
 
     /**
@@ -535,14 +570,13 @@ class OrderService extends BaseService
     protected function mapOrderLines($basket)
     {
         $lines = [];
-
         foreach ($basket->lines as $line) {
             array_push($lines, [
                 'product_variant_id' => $line->variant->id,
                 'sku' => $line->variant->sku,
                 'tax_total' => $line->total_tax * 100,
                 'tax_rate' => $line->variant->tax->percentage,
-                'discount_total' => $line->discount ?? 0,
+                'discount_total' => $line->discount_total ?? 0,
                 'line_total' => $line->total_cost * 100,
                 'unit_price' => $line->base_cost * 100,
                 'unit_qty' => $line->variant->unit_qty,
@@ -764,20 +798,42 @@ class OrderService extends BaseService
      */
     protected function processDiscountLines(Basket $basket, Order $order)
     {
+        $order->discounts()->delete();
         foreach ($basket->discounts as $discount) {
             // Get the eligibles.
             foreach ($discount->sets as $set) {
                 foreach ($set->items as $item) {
-                    // Get all the products from our basket.
-                    // dd($item);
-                    $matched = $basket->lines->filter(function ($line) use ($item) {
-                        return $item->products->contains($line->variant->product);
-                    });
-
                     $quantity = 0;
 
-                    foreach ($matched as $match) {
-                        $quantity += $match->quantity;
+                    if ($item->type == 'product') {
+                        $matched = $basket->lines->filter(function ($line) use ($item) {
+                            return $item->products->contains($line->variant->product);
+                        });
+                        foreach ($matched as $match) {
+                            $quantity += $match->quantity;
+                        }
+                    } else {
+                        $quantity = 1;
+                    }
+                    if ($item->type == 'coupon') {
+                        $coupon = new OrderDiscount([
+                            'coupon' => $item->value,
+                            'order_id' => $order->id,
+                            'name' => $discount->attribute('name'),
+                            'type' => 'coupon',
+                        ]);
+
+                        $total = 0;
+                        $bTotal = $basket->sub_total;
+                        foreach ($discount->rewards as $reward) {
+                            if ($reward->type == 'percentage') {
+                                $total += $bTotal * $reward->value;
+                            }
+                        }
+
+                        $coupon->amount = $total;
+
+                        $coupon->save();
                     }
 
                     foreach ($discount->rewards as $reward) {

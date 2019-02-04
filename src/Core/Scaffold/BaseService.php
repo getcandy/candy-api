@@ -255,7 +255,7 @@ abstract class BaseService
         return $query->where($column, '=', $value)->first();
     }
 
-    public function getUniqueUrl($urls)
+    public function getUniqueUrl($urls, $path = null)
     {
         $unique = [];
 
@@ -263,12 +263,13 @@ abstract class BaseService
             $previousUrl = null;
             foreach ($urls as $locale => $url) {
                 $i = 1;
-                while (app('api')->routes()->slugExists($url) || $previousUrl == $url) {
+                while (app('api')->routes()->slugExists($url, $path) || $previousUrl == $url) {
                     $url = $url.'-'.$i;
                     $i++;
                 }
                 $unique[] = [
                     'locale' => $locale,
+                    'path' => $path,
                     'slug' => $url,
                     'default' => $locale == app()->getLocale() ? true : false,
                 ];

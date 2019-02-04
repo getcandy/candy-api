@@ -50,6 +50,8 @@ Route::group([
      * Categories
      */
     $router->get('categories', 'Categories\CategoryController@index');
+    $router->get('categories/{category}/children', 'Categories\CategoryController@children');
+
 
     /*
      * Countries
@@ -119,4 +121,6 @@ Route::group([
 
     $router->post('users', 'Users\UserController@store');
     $router->post('users/{userid}', 'Users\UserController@update');
+
+    $router->get('plugins', 'Plugins\PluginController@index');
 });

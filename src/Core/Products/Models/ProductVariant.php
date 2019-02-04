@@ -33,16 +33,31 @@ class ProductVariant extends BaseModel
 
     protected $pricing;
 
+    /**
+     * Return the product relation.
+     *
+     * @return BelongsTo
+     */
     public function product()
     {
         return $this->belongsTo(Product::class)->withoutGlobalScopes();
     }
 
+    /**
+     * Return the basket lines.
+     *
+     * @return HasMany
+     */
     public function basketLines()
     {
         return $this->hasMany(BasketLine::class);
     }
 
+    /**
+     * Get the variant name attribute.
+     *
+     * @return string
+     */
     public function getNameAttribute()
     {
         //TODO: Figure out a more dynamic way to do this
@@ -68,7 +83,9 @@ class ProductVariant extends BaseModel
 
         foreach (json_decode($val, true) as $option => $value) {
             if (! empty($data = $option_data[$option])) {
-                $values[$option] = $data['options'][$value]['values'];
+                $values[$option] = $data['options'][$value]['values'] ?? [
+                    'en' => null,
+                ];
             }
         }
 

@@ -33,6 +33,7 @@ Route::group([
      */
 
     $router->put('assets', 'Assets\AssetController@updateAll');
+    $router->post('assets/simple', 'Assets\AssetController@storeSimple');
     $router->resource('assets', 'Assets\AssetController', [
         'except' => ['edit', 'create'],
     ]);
@@ -147,13 +148,13 @@ Route::group([
         'only' => ['index', 'update'],
     ]);
 
-    /*
-     * Pages
-     */
-    $router->get('/pages/{channel}/{lang}/{slug?}', 'Pages\PageController@show');
-    $router->resource('pages', 'Pages\PageController', [
-        'except' => ['edit', 'create'],
-    ]);
+    // /*
+    //  * Pages
+    //  */
+    // $router->get('/pages/{channel}/{lang}/{slug?}', 'Pages\PageController@show');
+    // $router->resource('pages', 'Pages\PageController', [
+    //     'except' => ['edit', 'create'],
+    // ]);
 
     /*
      * Product variants
@@ -167,16 +168,10 @@ Route::group([
     /*
      * Products
      */
-    $router->post('products/{product}/urls', 'Products\ProductController@createUrl');
-    $router->post('products/{product}/redirects', 'Products\ProductRedirectController@store');
-    $router->post('products/{product}/attributes', 'Products\ProductAttributeController@update');
-    $router->post('products/{product}/collections', 'Products\ProductCollectionController@update');
-    $router->post('products/{product}/routes', 'Products\ProductRouteController@store');
-    $router->post('products/{product}/categories', 'Products\ProductCategoryController@update');
-    $router->delete('products/{product}/categories/{category}', 'Products\ProductCategoryController@destroy');
-    $router->delete('products/{product}/collections/{collection}', 'Products\ProductCollectionController@destroy');
-    $router->post('products/{product}/associations', 'Products\ProductAssociationController@store');
-    $router->delete('products/{product}/associations', 'Products\ProductAssociationController@destroy');
+    $router->prefix('products')->namespace('Products')->group(__DIR__ . '/../routes/catalogue-manager/products.php');
+    /**
+     * Resource routes
+     */
     $router->resource('products', 'Products\ProductController', [
         'except' => ['edit', 'create', 'show'],
     ]);

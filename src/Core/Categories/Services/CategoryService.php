@@ -33,7 +33,7 @@ class CategoryService extends BaseService
     {
         $id = $this->model->decodeId($id);
 
-        return $this->model->withDepth()->withoutGlobalScopes()->findOrFail($id);
+        return $this->model->with($this->with)->withDepth()->withoutGlobalScopes()->findOrFail($id);
     }
 
     public function getNestedList()
@@ -72,7 +72,7 @@ class CategoryService extends BaseService
             );
         }
 
-        $urls = $this->getUniqueUrl($data['url']);
+        $urls = $this->getUniqueUrl($data['url'], $data['path'] ?? null);
 
         $category->routes()->createMany($urls);
 
@@ -200,27 +200,15 @@ class CategoryService extends BaseService
         return true;
     }
 
-    public function getCategoryTree($channel = null, $depth = null)
+    public function getCategoryTree($channel = null, $depth = 1, $includes = null)
     {
-        $qb = Category::channel($channel)
-            ->with([
-                'assets',
-                'assets.transforms',
-                'assets.transforms.asset',
-                'assets.transforms.asset.source',
-                'layout',
-                'assets.source',
-                'layout',
-                'routes',
-            ])
+        return Category::channel($channel)
+            ->with()
             ->withCount('products')
-            ->defaultOrder();
-
-        if ($depth) {
-            $qb = $qb->withDepth()->having('depth', '<=', $depth);
-        }
-
-        return $qb->get()
+            ->defaultOrder()
+            ->withDepth()
+            ->having('depth', '<=', $depth)
+            ->get()
             ->toTree();
     }
 

@@ -14,7 +14,7 @@ class AddShippingZoneToPrices extends Migration
     public function up()
     {
         Schema::table('shipping_prices', function (Blueprint $table) {
-            $table->integer('shipping_zone_id')->unsigned()->after('shipping_method_id');
+            $table->integer('shipping_zone_id')->unsigned()->nullable()->after('shipping_method_id');
             $table->foreign('shipping_zone_id')->references('id')->on('shipping_zones')->onDelete('cascade');
         });
     }

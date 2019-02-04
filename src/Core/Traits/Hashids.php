@@ -9,6 +9,11 @@ trait Hashids
         return app('hashids')->connection($this->hashids);
     }
 
+    public function getEncodedIdAttribute()
+    {
+        return app('hashids')->connection($this->hashids)->encode($this->id);
+    }
+
     public function decodeId($value)
     {
         $result = app('hashids')->connection($this->hashids)->decode($value);

@@ -4,44 +4,71 @@ namespace GetCandy\Api\Http\Controllers\Categories;
 
 use Illuminate\Http\Request;
 use GetCandy\Api\Http\Controllers\BaseController;
+use GetCandy\Api\Core\Categories\CategoryCriteria;
 use Intervention\Image\Exception\NotFoundException;
 use GetCandy\Api\Http\Requests\Categories\CreateRequest;
 use GetCandy\Api\Http\Requests\Categories\DeleteRequest;
 use GetCandy\Api\Http\Requests\Categories\UpdateRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use GetCandy\Api\Http\Requests\Categories\ReorderRequest;
+use GetCandy\Api\Http\Resources\Categories\CategoryResource;
+use GetCandy\Api\Http\Resources\Categories\CategoryCollection;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use GetCandy\Api\Http\Transformers\Fractal\Categories\CategoryTransformer;
-use GetCandy\Api\Http\Transformers\Fractal\Categories\CategoryTreeTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Categories\CategoryFancytreeTransformer;
 
 class CategoryController extends BaseController
 {
-    public function index(Request $request)
+    public function index(Request $request, CategoryCriteria $criteria)
     {
-        if ($request->tree) {
-            $collection = app('api')->categories()->getCategoryTree($request->channel, $request->depth);
+        $results = $criteria
+            ->tree($request->tree)
+            ->depth($request->depth)
+            ->include($request->includes)
+            ->limit($request->limit);
 
-            return $this->respondWithItem($collection, new CategoryTreeTransformer);
+        if (! $request->tree) {
+            $criteria
+                ->page($request->page);
         }
 
-        $collection = app('api')->categories()->getPaginatedData(
-            $request->per_page,
-            $request->current_page
+        return new CategoryCollection(
+            $criteria->get(), $this->parseIncludedFields($request)
         );
-
-        return $this->respondWithCollection($collection, new CategoryTransformer);
     }
 
-    public function show($id)
+    public function children($id, Request $request, CategoryCriteria $criteria)
     {
-        try {
-            $category = app('api')->categories()->getByHashedId($id);
-        } catch (ModelNotFoundException $e) {
+        $category = $criteria->id($id)->first();
+
+        $query = $category
+            ->children()
+            ->with($request->includes)
+            ->withCount(['products', 'children']);
+
+        return new CategoryCollection($query->get());
+    }
+
+    public function show($id, Request $request, CategoryCriteria $criteria)
+    {
+        $category = $criteria->include($request->includes)->id($id)->first();
+
+        if (! $category) {
             return $this->errorNotFound();
         }
+        // try {
+        //     $category = $categories->with(
+        //         explode(',', $request->includes)
+        //     )->getByHashedId($id);
+        // } catch (ModelNotFoundException $e) {
+        //     return $this->errorNotFound();
+        // }
 
-        return $this->respondWithItem($category, new CategoryTransformer);
+        $resource = new CategoryResource($category);
+        $resource->only($this->parseIncludedFields($request));
+
+        return $resource;
+        // return $this->respondWithItem($category, new CategoryTransformer);
     }
 
     public function getNested()

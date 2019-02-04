@@ -12,6 +12,6 @@ class RoutesValidator
      */
     public function uniqueRoute($attribute, $value, $parameters, $validator)
     {
-        return app('api')->routes()->uniqueSlug($value);
+        return app('api')->routes()->uniqueSlug($value, $parameters[0]);
     }
 }

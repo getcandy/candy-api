@@ -10,6 +10,7 @@ use League\Fractal\Resource\Collection;
 use Elastica\Exception\InvalidException;
 use GetCandy\Api\Core\Categories\Models\Category;
 use GetCandy\Api\Core\Search\Interfaces\SearchResultInterface;
+use GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface;
 use GetCandy\Api\Http\Transformers\Fractal\Products\ProductTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Categories\CategoryTransformer;
 
@@ -244,6 +245,7 @@ class SearchResultFactory implements SearchResultInterface
     public function get()
     {
         $models = $this->service->getSearchedIds($this->ids, $this->user);
+
         $resource = new Collection($models, $this->transformer);
         $resource->setMeta(
             $this->getMeta()
@@ -375,8 +377,8 @@ class SearchResultFactory implements SearchResultInterface
                     }
 
                     $label = trans('getcandy::search.price.aggregation.'.$label, [
-                        'min' => CurrencyConverter::format($bucket['from']),
-                        'max' => CurrencyConverter::format($bucket['to'] ?? 0),
+                        'min' => app()->getInstance()->make(CurrencyConverterInterface::class)->format($bucket['from']),
+                        'max' => app()->getInstance()->make(CurrencyConverterInterface::class)->format($bucket['to'] ?? 0),
                     ]);
 
                     $bucket['key'] = $label;

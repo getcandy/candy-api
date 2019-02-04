@@ -13,7 +13,7 @@ class Route extends BaseModel
      * @var array
      */
     protected $fillable = [
-        'slug', 'default', 'redirect', 'description', 'locale',
+        'slug', 'default', 'redirect', 'description', 'locale', 'path',
     ];
 
     /**

@@ -2,7 +2,7 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Products;
 
-use PriceCalculator;
+use GetCandy\Api\Core\Pricing\PriceCalculatorInterface;
 use GetCandy\Api\Core\Products\Models\ProductPricingTier;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Customers\CustomerGroupTransformer;
@@ -15,7 +15,7 @@ class ProductPricingTierTransformer extends BaseTransformer
 
     public function transform(ProductPricingTier $model)
     {
-        $pricing = PriceCalculator::get($model->price, 'default');
+        $pricing = app()->getInstance()->make(PriceCalculatorInterface::class)->get($model->price, 'default');
 
         return [
             'id' => $model->encodedId(),

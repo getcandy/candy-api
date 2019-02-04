@@ -76,7 +76,8 @@ class DiscountFactory implements DiscountInterface
     public function getApplied()
     {
         foreach ($this->discounts as $index => $discount) {
-            $discount->applied = $this->checkCriteria($discount, $this->user, $this->basket);
+            $factory = app('api')->discounts()->getFactory($discount);
+            $discount->applied = $this->checkCriteria($factory, $this->user, $this->basket);
             if ($discount->stop) {
                 break;
             }
@@ -97,7 +98,7 @@ class DiscountFactory implements DiscountInterface
      */
     public function checkCriteria($discount, $user = null, $basket = null)
     {
-        foreach ($discount->sets as $criteria) {
+        foreach ($discount->getCriteria() as $criteria) {
             $fail = 0;
             $pass = 0;
 
@@ -109,7 +110,7 @@ class DiscountFactory implements DiscountInterface
 
             if ($criteria->scope == 'any' && $pass) {
                 return true;
-            } elseif ($criteria->scope == 'all' && ($discount->sets->count() == $pass)) {
+            } elseif ($criteria->scope == 'all' && ($discount->getCriteria()->count() == $pass)) {
                 return true;
             }
 

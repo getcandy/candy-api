@@ -2,7 +2,7 @@
 
 namespace GetCandy\Api\Core\Shipping\Providers;
 
-use TaxCalculator;
+use GetCandy\Api\Core\Taxes\TaxCalculator;
 
 class StandardProvider extends AbstractProvider
 {
@@ -21,7 +21,7 @@ class StandardProvider extends AbstractProvider
             } elseif ($users->count()) {
                 return false;
             }
-            $withTax = TaxCalculator::amount($item->min_basket);
+            $withTax = app()->getInstance()->make(TaxCalculator::class)->amount($item->min_basket);
 
             if ($total > (($item->min_basket + $withTax) / 100) && $weight >= $item->min_weight) {
                 return $item;

@@ -6,39 +6,23 @@ use TaxCalculator;
 use Tests\Stubs\User;
 use GetCandy\Api\Providers\ApiServiceProvider;
 use Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables;
+use GetCandy\Api\Core\Baskets\Factories\BasketFactory;
 
 abstract class TestCase extends \Orchestra\Testbench\TestCase
 {
-    protected $requiresRefresh = false;
-
     protected function setUp()
     {
-        // Make sure storage path is there
-
-        if (! file_exists(__DIR__.'/../storage')) {
-            mkdir(__DIR__.'/../storage');
-        }
-        $databaseExists = file_exists(__DIR__.'/../storage/database.sqlite');
-
         parent::setUp();
 
         $this->artisan('cache:forget', ['key' => 'spatie.permission.cache']);
 
-        if (! $databaseExists || $this->requiresRefresh) {
-            if ($databaseExists) {
-                unlink(__DIR__.'/../storage/database.sqlite');
-            }
-            touch(__DIR__.'/../storage/database.sqlite');
+        $this->artisan('migrate', ['--database' => 'testing']);
+        $this->artisan('db:seed', ['--class' => '\Seeds\TestingDatabaseSeeder']);
 
-            $this->loadLaravelMigrations(['--database' => 'testing']);
-            $this->artisan('migrate', ['--database' => 'testing']);
-            $this->artisan('db:seed', ['--class' => '\Seeds\TestingDatabaseSeeder']);
-        }
-
-        // By Default, set up everything as taxable
-        TaxCalculator::setTax(
-            app('api')->taxes()->getDefaultRecord()
-        );
+        // // By Default, set up everything as taxable
+        // TaxCalculator::setTax(
+        //     app('api')->taxes()->getDefaultRecord()
+        // );
     }
 
     /**
@@ -60,7 +44,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         $app['config']->set('database.default', 'testing');
         $app['config']->set('database.connections.testing', [
             'driver' => 'sqlite',
-            'database' => __DIR__.'/../storage/database.sqlite',
+            'database' => ':memory:',
             'prefix' => '',
         ]);
 
@@ -100,5 +84,27 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             'PriceCalculator' => \Facades\GetCandy\Api\Core\Pricing\PriceCalculator::class,
             'GetCandy' => \Facades\GetCandy\Api\Core\Helpers\GetCandy::class,
         ];
+    }
+
+    protected function getinitalbasket($user = null)
+    {
+        $variant = \GetCandy\Api\Core\Products\Models\ProductVariant::first();
+        $basket = \GetCandy\Api\Core\Baskets\Models\Basket::forceCreate([
+            'currency' => 'GBP',
+        ]);
+
+        if ($user) {
+            $basket->user_id = $user->id;
+            $basket->save();
+        }
+
+        \GetCandy\Api\Core\Baskets\Models\BasketLine::forceCreate([
+            'product_variant_id' => $variant->id,
+            'basket_id' => $basket->id,
+            'quantity' => 1,
+            'total' => $variant->price,
+        ]);
+
+        return $this->app->make(BasketFactory::class)->init($basket)->get();
     }
 }

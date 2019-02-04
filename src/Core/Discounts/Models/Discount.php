@@ -22,4 +22,9 @@ class Discount extends BaseModel
     {
         return $this->hasMany(DiscountReward::class);
     }
+
+    public function items()
+    {
+        return $this->hasManyThrough(DiscountCriteriaItem::class, DiscountCriteriaSet::class);
+    }
 }

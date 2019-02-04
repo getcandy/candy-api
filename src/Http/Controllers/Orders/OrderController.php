@@ -3,25 +3,50 @@
 namespace GetCandy\Api\Http\Controllers\Orders;
 
 use Illuminate\Http\Request;
-use GetCandy\Api\Core\Orders\OrderSearchCriteria;
 use GetCandy\Api\Http\Controllers\BaseController;
+use GetCandy\Api\Http\Resources\Files\PdfResource;
 use GetCandy\Api\Http\Requests\Orders\CreateRequest;
 use GetCandy\Api\Http\Requests\Orders\UpdateRequest;
 use GetCandy\Api\Http\Requests\Orders\ProcessRequest;
+use GetCandy\Api\Http\Resources\Orders\OrderResource;
+use GetCandy\Api\Http\Resources\Orders\OrderCollection;
 use GetCandy\Api\Http\Requests\Orders\BulkUpdateRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use GetCandy\Api\Http\Requests\Orders\StoreAddressRequest;
+use GetCandy\Api\Core\Shipping\Services\ShippingMethodService;
+use GetCandy\Api\Http\Resources\Payments\ThreeDSecureResource;
+use GetCandy\Api\Core\Orders\Interfaces\OrderCriteriaInterface;
 use GetCandy\Api\Core\Orders\Exceptions\IncompleteOrderException;
-use GetCandy\Api\Http\Transformers\Fractal\Orders\OrderTransformer;
-use GetCandy\Api\Http\Transformers\Fractal\Documents\PdfTransformer;
+use GetCandy\Api\Http\Resources\Shipping\ShippingPriceCollection;
 use GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException;
 use GetCandy\Api\Core\Orders\Exceptions\OrderAlreadyProcessedException;
 use GetCandy\Api\Core\Payments\Exceptions\ThreeDSecureRequiredException;
-use GetCandy\Api\Http\Transformers\Fractal\Payments\ThreeDSecureTransformer;
-use GetCandy\Api\Http\Transformers\Fractal\Shipping\ShippingPriceTransformer;
+use GetCandy\Api\Core\Orders\Interfaces\OrderFactoryInterface;
+use GetCandy\Api\Core\Baskets\Interfaces\BasketCriteriaInterface;
+use GetCandy\Api\Core\Baskets\Interfaces\BasketFactoryInterface;
+use GetCandy\Api\Core\Shipping\Services\ShippingPriceService;
+use GetCandy\Api\Core\Orders\Interfaces\OrderProcessingFactoryInterface;
+use GetCandy\Api\Core\Payments\Services\PaymentTypeService;
 
 class OrderController extends BaseController
 {
+    protected $orders;
+
+    /**
+     * The baskets criteria instance
+     *
+     * @var BasketCriteriaInterface
+     */
+    protected $baskets;
+
+    public function __construct(
+        OrderCriteriaInterface $orders,
+        BasketCriteriaInterface $baskets
+    ) {
+        $this->orders = $orders;
+        $this->baskets = $baskets;
+    }
+
     /**
      * Returns a listing of channels.
      * @return Json
@@ -33,9 +58,10 @@ class OrderController extends BaseController
             'to' => 'date_format:Y-m-d',
         ]);
 
-        $criteria = new OrderSearchCriteria;
+        $criteria = $this->orders;
 
         $criteria->fill($request->all())
+            ->include($request->includes ?: [])
             ->set('without_scopes', [
                 'open',
                 'not_expired',
@@ -48,7 +74,7 @@ class OrderController extends BaseController
 
         $orders = $criteria->get();
 
-        return $this->respondWithCollection($orders, new OrderTransformer);
+        return new OrderCollection($orders);
     }
 
     public function getTypes(Request $request)
@@ -65,15 +91,19 @@ class OrderController extends BaseController
      * @param  string $id
      * @return Json
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
         try {
-            $order = app('api')->orders()->getByHashedId($id);
+            $order = $this->orders
+                ->set('without_scopes', ['open'])
+                ->include($request->includes)
+                ->id($id)
+                ->firstOrFail();
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
 
-        return $this->respondWithItem($order, new OrderTransformer);
+        return new OrderResource($order);
     }
 
     /**
@@ -83,15 +113,18 @@ class OrderController extends BaseController
      *
      * @return void
      */
-    public function store(CreateRequest $request)
+    public function store(CreateRequest $request, OrderFactoryInterface $factory, BasketFactoryInterface $basketFactory)
     {
+        $basket = $this->baskets->id($request->basket_id)->first();
+        $basket = $basketFactory->init($basket)->get();
+
         try {
-            $order = app('api')->orders()->store($request->basket_id, $request->user());
+            $order = $factory->basket($basket)->user($request->user())->resolve();
         } catch (BasketHasPlacedOrderException $e) {
             return $this->errorForbidden(trans('getcandy::exceptions.basket_already_has_placed_order'));
         }
 
-        return $this->respondWithItem($order->fresh(), new OrderTransformer);
+        return new OrderResource($order->load($request->includes ?: []));
     }
 
     /**
@@ -101,15 +134,41 @@ class OrderController extends BaseController
      *
      * @return json
      */
-    public function process(ProcessRequest $request)
-    {
+    public function process(
+        ProcessRequest $request,
+        OrderProcessingFactoryInterface $factory,
+        OrderCriteriaInterface $criteria,
+        PaymentTypeService $paymentTypes
+    ) {
         try {
-            $order = app('api')->orders()->process($request->all());
+            // $order = $factory->
+            $paymentType = null;
+
+            if ($request->payment_type_id) {
+                $type = $paymentTypes->getByHashedId($request->payment_type_id);
+            } elseif ($request->payment_type) {
+                $type = $paymentTypes->getByHandle($request->payment_type);
+            } else {
+                $type = null;
+            }
+
+            $order = $criteria->id($request->order_id)->first();
+
+            $order = $factory
+                ->order($order)
+                ->provider($type)
+                ->nonce($request->payment_token)
+                ->type($request->type)
+                ->customerReference($request->customer_reference)
+                ->notes($request->notes)
+                ->payload($request->data ?: [])
+                ->resolve();
+
             if (! $order->placed_at) {
                 return $this->errorForbidden('Payment has failed');
             }
 
-            return $this->respondWithItem($order, new OrderTransformer);
+            return new OrderResource($order);
         } catch (IncompleteOrderException $e) {
             return $this->errorForbidden('The order is missing billing information');
         } catch (ModelNotFoundException $e) {
@@ -117,7 +176,7 @@ class OrderController extends BaseController
         } catch (OrderAlreadyProcessedException $e) {
             return $this->errorUnprocessable('This order has already been processed');
         } catch (ThreeDSecureRequiredException $e) {
-            return $this->respondWithItem($e->getResponse(), new ThreeDSecureTransformer);
+            return new ThreeDSecureResource($e->getResponse());
         }
     }
 
@@ -172,7 +231,7 @@ class OrderController extends BaseController
             return $this->errorNotFound();
         }
 
-        return $this->respondWithItem($order, new OrderTransformer);
+        return new OrderResource($order);
     }
 
     /**
@@ -191,7 +250,7 @@ class OrderController extends BaseController
             return $this->errorNotFound();
         }
 
-        return $this->respondWithItem($order, new OrderTransformer);
+        return new OrderResource($order);
     }
 
     /**
@@ -202,15 +261,15 @@ class OrderController extends BaseController
      *
      * @return array
      */
-    public function shippingMethods($orderId, Request $request)
+    public function shippingMethods($orderId, Request $request, ShippingMethodService $methods)
     {
         try {
-            $options = app('api')->shippingMethods()->getForOrder($orderId);
+            $options = $methods->getForOrder($orderId);
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
 
-        return $this->respondWithCollection($options, new ShippingPriceTransformer);
+        return new ShippingPriceCollection($options);
     }
 
     /**
@@ -229,7 +288,7 @@ class OrderController extends BaseController
             return $this->errorNotFound();
         }
 
-        return $this->respondWithItem($order, new OrderTransformer);
+        return new OrderResource($order);
     }
 
     /**
@@ -248,7 +307,7 @@ class OrderController extends BaseController
             return $this->errorNotFound();
         }
 
-        return $this->respondWithItem($order, new OrderTransformer);
+        return new OrderResource($order);
     }
 
     /**
@@ -259,15 +318,16 @@ class OrderController extends BaseController
      *
      * @return array
      */
-    public function shippingCost($id, Request $request)
+    public function shippingCost($id, Request $request, OrderFactoryInterface $factory, ShippingPriceService $prices)
     {
-        try {
-            $order = app('api')->orders()->addShippingLine($id, $request->price_id, $request->preference);
-        } catch (ModelNotFoundException $e) {
-            return $this->errorNotFound();
-        }
+        $order = $this->orders->id($id)->first();
+        $price = $prices->getByHashedId($request->price_id);
 
-        return $this->respondWithItem($order, new OrderTransformer);
+        $order = $factory->order($order)
+            ->shipping($price, $request->preference)
+            ->resolve();
+
+        return new OrderResource($order);
     }
 
     /**
@@ -283,7 +343,7 @@ class OrderController extends BaseController
         $order = app('api')->orders()->getByHashedId($id);
         $pdf = app('api')->orders()->getPdf($order);
 
-        return $this->respondWithItem($pdf, new PdfTransformer);
+        return new PdfResource($pdf);
     }
 
     /**

@@ -27,7 +27,7 @@ class CreateRequest extends FormRequest
     {
         return [
             'attributes.*.value' => 'required|unique_category_attribute:name',
-            'url' => 'required|unique_route',
+            'url' => 'required|unique_route:' . $this->path,
         ];
     }
 

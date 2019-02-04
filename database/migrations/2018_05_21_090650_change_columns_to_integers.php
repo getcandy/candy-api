@@ -88,10 +88,10 @@ class ChangeColumnsToIntegers extends Migration
 
     protected function remapDecimalsToIntegers()
     {
-        DB::table('discount_rewards')->update(['value_new' => DB::raw('IF(value, 100 * value, 0)')]);
-        DB::table('order_discounts')->update(['amount_new' => DB::raw('100 * amount')]);
-        DB::table('shipping_prices')->update(['rate_new' => DB::raw('100 * rate')]);
-        DB::table('transactions')->update(['amount_new' => DB::raw('100 * amount')]);
+        // DB::table('discount_rewards')->update(['value_new' => DB::raw('IF(value, 100 * value, 0)')]);
+        // DB::table('order_discounts')->update(['amount_new' => DB::raw('100 * amount')]);
+        // DB::table('shipping_prices')->update(['rate_new' => DB::raw('100 * rate')]);
+        // DB::table('transactions')->update(['amount_new' => DB::raw('100 * amount')]);
     }
 
     /**

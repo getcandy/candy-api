@@ -8,32 +8,17 @@ use League\Fractal\Manager;
 use GetCandy\Api\Core\Factory;
 use Laravel\Passport\Passport;
 use Illuminate\Support\ServiceProvider;
-use GetCandy\Api\Core\Search\SearchContract;
-use GetCandy\Api\Core\Payments\PaymentManager;
-use GetCandy\Api\Core\Payments\PaymentContract;
-use GetCandy\Api\Core\Discounts\DiscountFactory;
 use GetCandy\Api\Core\Users\Services\UserService;
-use GetCandy\Api\Core\Discounts\DiscountInterface;
 use GetCandy\Api\Http\Middleware\SetTaxMiddleware;
 use GetCandy\Api\Core\Currencies\CurrencyConverter;
 use GetCandy\Api\Core\Users\Contracts\UserContract;
 use GetCandy\Api\Http\Middleware\SetCustomerGroups;
 use GetCandy\Api\Http\Middleware\SetLocaleMiddleware;
 use GetCandy\Api\Console\Commands\ElasticIndexCommand;
-use GetCandy\Api\Core\Baskets\Factories\BasketFactory;
 use GetCandy\Api\Console\Commands\ScoreProductsCommand;
 use GetCandy\Api\Http\Middleware\SetCurrencyMiddleware;
-use GetCandy\Api\Core\Products\Factories\ProductFactory;
 use GetCandy\Api\Http\Middleware\CheckClientCredentials;
 use GetCandy\Api\Console\Commands\InstallGetCandyCommand;
-use GetCandy\Api\Core\Baskets\Interfaces\BasketInterface;
-use GetCandy\Api\Core\Baskets\Factories\BasketLineFactory;
-use GetCandy\Api\Core\Products\Interfaces\ProductInterface;
-use GetCandy\Api\Core\Search\Factories\SearchResultFactory;
-use GetCandy\Api\Core\Baskets\Interfaces\BasketLineInterface;
-use GetCandy\Api\Core\Search\Interfaces\SearchResultInterface;
-use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
-use GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface;
 
 class ApiServiceProvider extends ServiceProvider
 {
@@ -44,6 +29,7 @@ class ApiServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->loadProviders();
         $this->loadTranslations();
         $this->mapValidators();
         $this->publishConfig();
@@ -54,6 +40,30 @@ class ApiServiceProvider extends ServiceProvider
         $this->mapRoutes();
         $this->mapCommands();
         $this->loadMigrations();
+    }
+
+    /**
+     * Load up our module providers
+     *
+     * @return void
+     */
+    protected function loadProviders()
+    {
+        $providers = [
+            BasketServiceProvider::class,
+            CurrencyServiceProvider::class,
+            DiscountServiceProvider::class,
+            OrderServiceProvider::class,
+            PaymentServiceProvider::class,
+            PricingServiceProvider::class,
+            ProductServiceProvider::class,
+            SearchServiceProvider::class,
+            ShippingServiceProvider::class,
+            TaxServiceProvider::class,
+        ];
+        foreach ($providers as $provider) {
+            $this->app->register($provider, true);
+        }
     }
 
     protected function loadTranslations()
@@ -142,16 +152,12 @@ class ApiServiceProvider extends ServiceProvider
             \Alaouy\Youtube\YoutubeServiceProvider::class
         );
 
-        $this->app->bind(\GetCandy\Api\Shipping\ShippingCalculator::class, function ($app) {
-            return $app->make(\GetCandy\Api\Shipping\ShippingCalculator::class);
-        });
-
         $this->app->singleton(UserContract::class, function ($app) {
             return $app->make(UserService::class);
         });
 
         $this->app->singleton('currency_converter', function ($app) {
-            return new CurrencyConverter;
+            return $app->make(CurrencyConverter::class);
         });
 
         $this->app->singleton('api', function ($app) {
@@ -162,9 +168,6 @@ class ApiServiceProvider extends ServiceProvider
             return new Manager();
         });
 
-        $this->app->singleton(SearchContract::class, function ($app) {
-            return $app->make(config('getcandy.search.client'));
-        });
 
         $mediaDrivers = config('assets.upload_drivers', []);
 
@@ -173,35 +176,6 @@ class ApiServiceProvider extends ServiceProvider
                 return $app->make($driver);
             });
         }
-
-        // New factory bindings
-        $this->app->singleton(BasketInterface::class, function ($app) {
-            return $app->make(BasketFactory::class);
-        });
-
-        $this->app->singleton(DiscountInterface::class, function ($app) {
-            return $app->make(DiscountFactory::class);
-        });
-
-        $this->app->bind(ProductVariantInterface::class, function ($app) {
-            return $app->make(ProductVariantFactory::class);
-        });
-
-        $this->app->bind(ProductInterface::class, function ($app) {
-            return $app->make(ProductFactory::class);
-        });
-
-        $this->app->bind(BasketLineInterface::class, function ($app) {
-            return $app->make(BasketLineFactory::class);
-        });
-
-        $this->app->bind(SearchResultInterface::class, function ($app) {
-            return $app->make(SearchResultFactory::class);
-        });
-
-        $this->app->singleton(PaymentContract::class, function ($app) {
-            return new PaymentManager($app);
-        });
     }
 
     /**

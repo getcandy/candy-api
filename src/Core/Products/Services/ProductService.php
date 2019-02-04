@@ -62,7 +62,7 @@ class ProductService extends BaseService
             abort(404);
         }
 
-        $product->attribute_data = $data['attributes'];
+        $product->attribute_data = $data['attribute_data'];
 
         if (! empty($data['family_id'])) {
             $family = app('api')->productFamilies()->getByHashedId($data['family_id']);
@@ -72,16 +72,6 @@ class ProductService extends BaseService
         }
 
         event(new AttributableSavedEvent($product));
-
-        if (! empty($data['channels']['data'])) {
-            $product->channels()->sync(
-                $this->getChannelMapping($data['channels']['data'])
-            );
-        }
-        if (! empty($data['customer_groups'])) {
-            $groupData = $this->mapCustomerGroupData($data['customer_groups']['data']);
-            $product->customerGroups()->sync($groupData);
-        }
 
         event(new IndexableSavedEvent($product));
 
@@ -299,6 +289,8 @@ class ProductService extends BaseService
 
         $query = $this->model->with([
             'routes',
+            'firstVariant',
+            'assets.transforms',
             'variants.product',
             'variants.tiers',
             'variants.tiers.group',
@@ -349,8 +341,11 @@ class ProductService extends BaseService
     {
         return ProductRecommendation::whereIn('product_id', $products)
             ->with(
+                'product.routes',
+                'product.categories.assets.transforms',
                 'product.variants.tiers',
-                'product.assets.transforms'
+                'product.assets.transforms',
+                'product.firstVariant'
             )
             ->whereHas('product')
             ->select(

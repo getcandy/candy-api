@@ -3,6 +3,7 @@
 namespace GetCandy\Api\Http\Controllers\Routes;
 
 use Illuminate\Http\Request;
+use GetCandy\Api\Core\Routes\RouteCriteria;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Routes\UpdateRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -24,10 +25,10 @@ class RouteController extends BaseController
      * @param  string $slug
      * @return Json
      */
-    public function show($slug)
+    public function show(Request $request, RouteCriteria $routes)
     {
         try {
-            $route = app('api')->routes()->getBySlug($slug);
+            $route = $routes->slug($request->slug)->path($request->path)->first();
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }

@@ -74,6 +74,16 @@ class ShippingMethodService extends BaseService
         return $shipping;
     }
 
+    public function all()
+    {
+        return $this->model->with([
+          'zones',
+          'users',
+          'prices',
+          'channels',
+        ])->get();
+    }
+
     /**
      * Gets shipping methods for an order.
      *
@@ -98,6 +108,7 @@ class ShippingMethodService extends BaseService
             if (! $option) {
                 continue;
             }
+            $option->load(['method']);
             if (is_array($option)) {
                 $options = array_merge($options, $option);
             } else {

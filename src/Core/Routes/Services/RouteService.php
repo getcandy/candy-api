@@ -36,9 +36,15 @@ class RouteService extends BaseService
         return $model;
     }
 
-    public function slugExists($slug)
+    public function slugExists($slug, $path = null)
     {
-        return $this->model->where('slug', '=', $slug)->exists();
+        $query = $this->model->where('slug', '=', $slug);
+
+        if ($path) {
+            $query = $query->where('path', '=', $path);
+        }
+
+        return $query->exists();
     }
 
     /**
@@ -76,8 +82,8 @@ class RouteService extends BaseService
         return $this->model->where('default', '=', false)->where('enabled', '=', true)->first();
     }
 
-    public function uniqueSlug($slug)
+    public function uniqueSlug($slug, $path = null)
     {
-        return ! ($this->model->where('slug', $slug)->exists());
+        return ! ($this->model->where('slug', $slug)->where('path', $path)->exists());
     }
 }
