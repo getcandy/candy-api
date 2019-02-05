@@ -5,57 +5,184 @@ namespace GetCandy\Api\Core\Search\Providers\Elastic;
 use Elastica\Client;
 use Elastica\Reindex;
 use Elastica\Document;
-use Elastica\Type\Mapping;
 use Illuminate\Database\Eloquent\Model;
+use Elastica\Type\Mapping;
+use GetCandy\Api\Core\Languages\Services\LanguageService;
+use Carbon\Carbon;
 
 class Indexer
 {
-    use InteractsWithIndex;
+    // use InteractsWithIndex;
 
     protected $batch = 0;
 
-    public function __construct(Client $client)
+    /**
+     * The language service instance
+     *
+     * @var LanguageService
+     */
+    protected $lang;
+
+    /**
+     * The indice resolver
+     *
+     * @var IndiceResolver
+     */
+    protected $resolver;
+
+    public function __construct(Client $client, LanguageService $lang, IndiceResolver $resolver)
     {
         $this->client = $client;
+        $this->lang = $lang;
+        $this->resolver = $resolver;
     }
 
     /**
-     * Updates the mapping for a model.
+     * Reindex a model
      *
      * @param Model $model
      * @return void
      */
-    public function updateMapping($model)
+    public function reindex($model)
     {
-        $this->type = $this->getType($model);
-        $indexName = $this->getDefaultIndex();
-        $baseIndex = $this->getBaseIndexName();
-        $currentSuffix = $this->getCurrentIndexSuffix($indexName);
-        $nextSuffix = $currentSuffix == 'a' ? 'b' : 'a';
-        $languages = app('api')->languages()->all();
+        $type = $this->resolver->getType($model);
+
+        $this->batch = 0;
+
+        $languages = $this->lang->all();
+
+        $index = $this->getIndexName($type);
+
+        $suffix = microtime(true);
+
+        $model = new $model;
 
         $aliases = [];
 
         foreach ($languages as $language) {
-            $indexBasename = $baseIndex."_{$language->lang}";
-
-            $currentIndex = $this->client->getIndex($indexBasename."_{$currentSuffix}");
-
-            $newIndex = $this->createIndex(
-                $indexBasename."_{$nextSuffix}"
-            );
-
-            $reindexer = new Reindex($currentIndex, $newIndex);
-
-            $reindexer->run();
-
-            $aliases[] = $indexBasename;
+            $alias = $index.'_'.$language->lang;
+            $this->createIndex($alias."_{$suffix}", $type);
+            $aliases[$alias] = $alias."_{$suffix}";
         }
 
-        $this->cleanup($nextSuffix, $aliases);
+        $models = $model->withoutGlobalScopes()->limit(1000)->offset($this->batch)->get();
 
-        return true;
+        $type->setSuffix($suffix);
+
+        $aliasMapping = [];
+
+        $indices = $this->client->getStatus()->getIndexNames();
+
+        while ($models->count()) {
+            $indexes = [];
+            foreach ($models as $model) {
+                $indexables = $type->getIndexDocument($model);
+                echo '.';
+                foreach ($indexables as $indexable) {
+                    $document = new Document(
+                        $indexable->getId(),
+                        $indexable->getData()
+                    );
+                    $indexes[$indexable->getIndex()][] = $document;
+                }
+            }
+
+            foreach ($indexes as $key => $documents) {
+                $index = $this->client->getIndex($key);
+                $elasticaType = $index->getType($type->getHandle());
+                $elasticaType->addDocuments($documents);
+            }
+
+            $elasticaType->getIndex()->refresh();
+
+            echo ':batch:'.$this->batch;
+            $this->batch += 1000;
+            $models = $model->withoutGlobalScopes()->limit(1000)->offset($this->batch)->get();
+        }
+
+        foreach ($aliases as $alias => $index) {
+            $index = $this->client->getIndex($index);
+            $index->addAlias($alias);
+
+            $indices = $this->client->getStatus()->getIndicesWithAlias($alias);
+
+            $currentTime = $this->getIndiceTime($index->getName());
+
+            foreach ($indices as $name => $indice) {
+                $fragments = explode('_', $indice->getName());
+                $time = $this->getIndiceTime($indice->getName());
+
+                if (!$time) {
+                    $indice->delete();
+                    continue;
+                }
+
+                if ($currentTime->gt($time)) {
+                    $indice->delete();
+                }
+            }
+        }
     }
+
+    protected function getIndiceTime($name)
+    {
+        $fragments = explode('_', $name);
+        try {
+            return Carbon::createFromTimestampMs(end($fragments));
+        } catch (\ErrorException $e) {
+        }
+        return null;
+    }
+
+     /**
+     * Updates the mappings for the model.
+     * @param  Elastica\Index $index
+     * @return void
+     */
+    public function updateMappings($index, $type)
+    {
+        $elasticaType = $index->getType($type->getHandle());
+
+        $mapping = new Mapping();
+        $mapping->setType($elasticaType);
+
+        $mapping->setProperties($type->getMapping());
+        $mapping->send();
+    }
+
+    /**
+     * Gets a timestamped index
+     *
+     * @param [type] $type
+     * @return void
+     */
+    protected function getIndexName($type)
+    {
+        return config('getcandy.search.index_prefix', 'candy') .
+            '_' .
+            $type->getHandle();
+    }
+
+    /**
+     * NEW METHODS ABOVE
+     * ---------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------------
+     */
+
 
     public function updateDocument($model, $field)
     {
@@ -89,76 +216,6 @@ class Indexer
         }
 
         $index->addDocuments($docs);
-    }
-
-    /**
-     * Reindexes all indexes for a model.
-     *
-     * @param string $model
-     * @return void
-     */
-    public function indexAll($model)
-    {
-        $this->type = $this->getType($model);
-
-        $this->batch = 0;
-
-        $languages = app('api')->languages()->all();
-
-        $indexName = $this->getDefaultIndex();
-
-        $model = new $model;
-
-        $suffix = $this->getNextIndexSuffix($indexName);
-
-        $aliases = [];
-
-        // Go through our languages and create a new index at the correct version
-        foreach ($languages as $language) {
-            $alias = $this->getBaseIndexName().'_'.$language->lang;
-            $this->createIndex(
-                $alias."_{$suffix}"
-            );
-            $aliases[] = $alias;
-        }
-
-        // Do it in batches of 200
-        $models = $model->withoutGlobalScopes()->limit(1000)->offset($this->batch)->get();
-
-        $this->type->setSuffix($suffix);
-
-        while ($models->count()) {
-            $indexes = [];
-
-            foreach ($models as $model) {
-                $indexables = $this->type->getIndexDocument($model);
-                echo '.';
-                foreach ($indexables as $indexable) {
-                    $document = new Document(
-                        $indexable->getId(),
-                        $indexable->getData()
-                    );
-                    $indexes[$indexable->getIndex()][] = $document;
-                }
-            }
-
-            foreach ($indexes as $key => $documents) {
-                $index = $this->client->getIndex($key);
-                $elasticaType = $index->getType($this->type->getHandle());
-                $elasticaType->addDocuments($documents);
-            }
-
-            $elasticaType->addDocuments($documents);
-            $elasticaType->getIndex()->refresh();
-
-            echo ':batch:'.$this->batch;
-            $this->batch += 1000;
-            $models = $model->withoutGlobalScopes()->limit(1000)->offset($this->batch)->get();
-        }
-
-        $this->cleanup($suffix, $aliases);
-
-        return true;
     }
 
     /**
@@ -241,7 +298,7 @@ class Indexer
      * Create an index based on the model.
      * @return void
      */
-    public function createIndex($name)
+    public function createIndex($name, $type)
     {
         $index = $this->client->getIndex($name);
         $index->create([
@@ -266,7 +323,7 @@ class Indexer
                 ],
             ],
         ]);
-        $this->updateMappings($index);
+        $this->updateMappings($index, $type);
 
         return $index;
     }

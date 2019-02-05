@@ -15,11 +15,12 @@ use GetCandy\Api\Core\Users\Contracts\UserContract;
 use GetCandy\Api\Http\Middleware\SetCustomerGroups;
 use GetCandy\Api\Http\Middleware\SetLocaleMiddleware;
 use GetCandy\Api\Console\Commands\ElasticIndexCommand;
+use GetCandy\Api\Http\Middleware\SetChannelMiddleware;
 use GetCandy\Api\Console\Commands\ScoreProductsCommand;
 use GetCandy\Api\Http\Middleware\SetCurrencyMiddleware;
 use GetCandy\Api\Http\Middleware\CheckClientCredentials;
 use GetCandy\Api\Console\Commands\InstallGetCandyCommand;
-use GetCandy\Api\Http\Middleware\SetChannelMiddleware;
+use GetCandy\Api\Console\Commands\CandySearchIndexCommand;
 
 class ApiServiceProvider extends ServiceProvider
 {
@@ -137,6 +138,7 @@ class ApiServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 ElasticIndexCommand::class,
+                CandySearchIndexCommand::class,
                 InstallGetCandyCommand::class,
                 ScoreProductsCommand::class,
             ]);
