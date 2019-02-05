@@ -59,6 +59,23 @@ class Asset extends BaseModel
     }
 
     /**
+     * Get the url attribute.
+     *
+     * @return string
+     */
+    public function getUrlAttribute()
+    {
+        return Storage::disk($this->source->disk)->url($this->location.'/'.$this->filename);
+    }
+
+    public function toArray()
+    {
+        return array_merge(parent::toArray(), [
+            'url' => Storage::disk($this->source->disk)->url($this->location.'/'.$this->filename),
+        ]);
+    }
+
+    /**
      * Get all of the owning commentable models.
      */
     public function assetable()

@@ -10,7 +10,7 @@ use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Core\Baskets\Models\SavedBasket;
 use GetCandy\Api\Core\Baskets\Events\BasketStoredEvent;
-use GetCandy\Api\Core\Baskets\Interfaces\BasketInterface;
+use GetCandy\Api\Core\Baskets\Interfaces\BasketFactoryInterface;
 use GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface;
 
 class BasketService extends BaseService
@@ -35,7 +35,7 @@ class BasketService extends BaseService
     protected $variantFactory;
 
     public function __construct(
-        BasketInterface $factory,
+        BasketFactoryInterface $factory,
         ProductVariantInterface $variantFactory
     ) {
         $this->model = new Basket();
@@ -86,11 +86,15 @@ class BasketService extends BaseService
         $basket = $this->model->with([
             'user',
             'order',
+            'discounts.rewards',
             'lines.basket',
             'lines.variant',
             'lines.variant.tax',
             'lines.variant.tiers',
             'lines.variant.product',
+            'lines.variant.product.assets',
+            'lines.variant.product.assets.transforms',
+            'lines.variant.product.routes',
             'lines.variant.customerPricing',
         ])->findOrFail($id);
 
@@ -294,7 +298,7 @@ class BasketService extends BaseService
      *
      * @return mixed
      */
-    public function getCurrentForUser($user)
+    public function getCurrentForUser($user, $includes = [])
     {
         if (! $user) {
             return;
@@ -304,7 +308,7 @@ class BasketService extends BaseService
             $user = $this->getByHashedId($user);
         }
 
-        $basket = $user->latestBasket;
+        $basket = $user->latestBasket->load($includes);
 
         if ($basket) {
             if ($basket->order && ! $basket->order->placed_at || ! $basket->order) {

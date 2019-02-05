@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Core\Orders\Services;
 
-use PriceCalculator;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Orders\Models\OrderLine;
 use GetCandy\Api\Core\Orders\Events\OrderSavedEvent;
