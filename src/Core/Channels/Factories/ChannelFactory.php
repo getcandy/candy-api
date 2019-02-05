@@ -62,6 +62,9 @@ class ChannelFactory implements ChannelFactoryInterface
      */
     public function getChannel()
     {
+        if (!$this->channel) {
+            $this->set();
+        }
         return $this->channel;
     }
 }
