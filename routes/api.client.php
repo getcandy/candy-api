@@ -5,6 +5,7 @@ Route::group([
         'api.client',
         'api.currency',
         'api.customer_groups',
+        'api.channels',
         'api.locale',
         'api.tax',
     ],

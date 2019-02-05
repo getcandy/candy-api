@@ -19,6 +19,7 @@ use GetCandy\Api\Console\Commands\ScoreProductsCommand;
 use GetCandy\Api\Http\Middleware\SetCurrencyMiddleware;
 use GetCandy\Api\Http\Middleware\CheckClientCredentials;
 use GetCandy\Api\Console\Commands\InstallGetCandyCommand;
+use GetCandy\Api\Http\Middleware\SetChannelMiddleware;
 
 class ApiServiceProvider extends ServiceProvider
 {
@@ -50,6 +51,7 @@ class ApiServiceProvider extends ServiceProvider
     protected function loadProviders()
     {
         $providers = [
+            ChannelServiceProvider::class,
             BasketServiceProvider::class,
             CurrencyServiceProvider::class,
             DiscountServiceProvider::class,
@@ -210,5 +212,6 @@ class ApiServiceProvider extends ServiceProvider
         $this->app['router']->aliasMiddleware('api.customer_groups', SetCustomerGroups::class);
         $this->app['router']->aliasMiddleware('api.locale', SetLocaleMiddleware::class);
         $this->app['router']->aliasMiddleware('api.tax', SetTaxMiddleware::class);
+        $this->app['router']->aliasMiddleware('api.channels', SetChannelMiddleware::class);
     }
 }

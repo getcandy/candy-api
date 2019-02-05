@@ -4,6 +4,7 @@ namespace GetCandy\Api\Core\Traits;
 
 use GetCandy\Api\Core\Attributes\Models\Attribute;
 use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
+use GetCandy\Api\Core\Channels\Interfaces\ChannelFactoryInterface;
 
 trait HasAttributes
 {
@@ -35,7 +36,8 @@ trait HasAttributes
         }
 
         if (! $channel) {
-            $channel = 'webstore';
+            $factory = app()->getInstance()->make(ChannelFactoryInterface::class);
+            $channel = $factory->getChannel()->handle;
         }
 
         if (! empty($this->attribute_data[$handle][$channel][$locale])) {

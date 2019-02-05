@@ -68,5 +68,6 @@ class Kernel extends HttpKernel
         'scopes' => \Laravel\Passport\Http\Middleware\CheckScopes::class,
         'scope' => \Laravel\Passport\Http\Middleware\CheckForAnyScope::class,
         'customer_groups' => \GetCandy\Api\Http\Middleware\SetCustomerGroups::class,
+        'channels' => \GetCandy\Api\Http\Middleware\SetChannelMiddleware::class,
     ];
 }
