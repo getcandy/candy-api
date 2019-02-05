@@ -3,6 +3,7 @@
 namespace Tests\Stubs;
 
 use GetCandy\Api\Core\Payments\Models\Transaction;
+use GetCandy\Api\Core\Payments\PaymentResponse;
 
 
 class TestPaymentDriver
@@ -44,7 +45,7 @@ class TestPaymentDriver
         if ($this->token == 'threed') {
             return new ThreeDSecureResponse;
         }
-        return Transaction::forceCreate([
+        $transaction = Transaction::forceCreate([
             'order_id' => $this->order->id,
             'amount' => $this->order->sub_total,
             'refund' => false,
@@ -54,5 +55,9 @@ class TestPaymentDriver
             'merchant' => 'getcandy',
             'status' => 'OK',
         ]);
+
+        $response = new PaymentResponse(true);
+        $response->transaction($transaction);
+        return $response;
     }
 }
