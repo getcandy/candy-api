@@ -18,6 +18,11 @@ class ChannelService extends BaseService
         $this->model = new Channel();
     }
 
+    public function getByHandle($handle)
+    {
+        return $this->model->where('handle', '=', $handle)->firstOrFail();
+    }
+
     /**
      * Creates a resource from the given data.
      *
