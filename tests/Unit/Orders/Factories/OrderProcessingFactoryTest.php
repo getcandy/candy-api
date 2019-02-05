@@ -32,39 +32,42 @@ class OrderProcessingFactoryTest extends TestCase
         $this->assertSame($order, $factoryOrder);
     }
 
-    // /**
-    //  * @group current
-    //  */
-    // public function test_can_be_processed()
-    // {
-    //     // First swap out the PaymentContract instance for our stub.
-    //     $this->app->instance(PaymentContract::class, new TestPaymentManager);
+    /**
+     * @group current
+     */
+    public function test_can_be_processed()
+    {
+        // First swap out the PaymentContract instance for our stub.
+        $this->app->instance(PaymentContract::class, new TestPaymentManager);
 
-    //     $orders = $this->app->make(OrderFactory::class);
-    //     $factory = $this->app->make(OrderProcessingFactory::class);
-    //     $basket = $this->getinitalbasket();
-    //     $order = $orders->basket($basket)->resolve();
+        $orders = $this->app->make(OrderFactory::class);
+        $factory = $this->app->make(OrderProcessingFactory::class);
+        $basket = $this->getinitalbasket();
+        $order = $orders->basket($basket)->resolve();
 
-    //     // Create a payment type.
-    //     $paymentType = PaymentType::forceCreate([
-    //         'name' => 'Credit/Debit Card',
-    //         'driver' => 'sagepay',
-    //         'success_status' => 'Complete',
-    //     ]);
+        // Create a payment type.
+        $paymentType = PaymentType::forceCreate([
+            'name' => 'Credit/Debit Card',
+            'driver' => 'sagepay',
+            'success_status' => 'Complete',
+        ]);
 
-    //     // use nonce 1234 for an invalid response
-    //     $order = $factory
-    //         ->order($order)
-    //         ->nonce(123456)
-    //         ->provider($paymentType)
-    //         ->resolve();
+        // use nonce 1234 for an invalid response
+        $order = $factory
+            ->order($order)
+            ->nonce(123456)
+            ->notes('notes')
+            ->customerReference(1234)
+            ->provider($paymentType)
+            ->resolve();
 
-    //     $this->assertNotNull($order->placed_at);
-    //     $this->assertCount(1, $order->transactions);
+        $this->assertEquals('notes', $order->notes);
+        $this->assertEquals(1234, $order->customer_reference);
+        $this->assertNotNull($order->placed_at);
+        $this->assertCount(1, $order->transactions);
 
-    //     $transaction = $order->transactions->first();
-    //     $this->assertEquals($order->sub_total, $transaction->amount);
-    //     // dd($order->sub_total);
-    // }
+        $transaction = $order->transactions->first();
 
+        $this->assertEquals($order->sub_total, $transaction->amount);
+    }
 }
