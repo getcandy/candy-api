@@ -83,6 +83,8 @@ abstract class AbstractCriteria
         return $this;
     }
 
+    abstract function getBuilder();
+
     /**
      * Get the first result from the query.
      *

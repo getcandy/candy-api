@@ -52,6 +52,7 @@ class ApiServiceProvider extends ServiceProvider
     protected function loadProviders()
     {
         $providers = [
+            ActivityLogServiceProvider::class,
             ChannelServiceProvider::class,
             BasketServiceProvider::class,
             CurrencyServiceProvider::class,

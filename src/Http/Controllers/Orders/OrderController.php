@@ -53,11 +53,6 @@ class OrderController extends BaseController
      */
     public function index(Request $request)
     {
-        $request->validate([
-            'from' => 'date_format:Y-m-d',
-            'to' => 'date_format:Y-m-d',
-        ]);
-
         $criteria = $this->orders;
 
         $criteria->fill($request->all())

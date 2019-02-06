@@ -6,11 +6,18 @@ use Carbon\Carbon;
 use GetCandy\Api\Core\Auth\Models\User;
 use GetCandy\Api\Core\Scaffold\BaseModel;
 use Illuminate\Database\Eloquent\Builder;
+use Spatie\Activitylog\Traits\LogsActivity;
 use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Core\Payments\Models\Transaction;
 
 class Order extends BaseModel
 {
+    use LogsActivity;
+
+    // protected static $recordEvents = ['created'];
+
+    protected static $logUnguarded = true;
+
     protected $hashids = 'order';
 
     protected $guarded = [];
