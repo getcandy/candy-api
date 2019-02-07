@@ -6,6 +6,11 @@ return [
      */
     'hub_access' => ['editor'],
 
+    /**
+     * Define whether to use internal requests
+     */
+    'internal_requests' => env('CANDY_INTERNAL_REQUESTS', false),
+
     /*
      * The URL to your storefront
      */
