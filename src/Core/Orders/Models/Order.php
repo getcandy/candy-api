@@ -14,9 +14,7 @@ class Order extends BaseModel
 {
     use LogsActivity;
 
-    // protected static $recordEvents = ['created'];
-
-    protected static $logUnguarded = true;
+    protected static $recordEvents = ['created'];
 
     protected $hashids = 'order';
 
