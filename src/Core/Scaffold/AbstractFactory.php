@@ -4,11 +4,10 @@ namespace GetCandy\Api\Core\Scaffold;
 
 use GetCandy\Api\Core\Pricing\PriceCalculatorInterface;
 
-
 abstract class AbstractFactory
 {
     /**
-     * The price calculator instance
+     * The price calculator instance.
      *
      * @var PriceCalculatorInterface
      */

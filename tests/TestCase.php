@@ -5,8 +5,8 @@ namespace Tests;
 use TaxCalculator;
 use Tests\Stubs\User;
 use GetCandy\Api\Providers\ApiServiceProvider;
-use Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables;
 use GetCandy\Api\Core\Baskets\Factories\BasketFactory;
+use Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables;
 
 abstract class TestCase extends \Orchestra\Testbench\TestCase
 {

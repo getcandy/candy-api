@@ -2,13 +2,13 @@
 
 namespace GetCandy\Api\Core\Search\Providers\Elastic;
 
+use Carbon\Carbon;
 use Elastica\Client;
 use Elastica\Reindex;
 use Elastica\Document;
-use Illuminate\Database\Eloquent\Model;
 use Elastica\Type\Mapping;
+use Illuminate\Database\Eloquent\Model;
 use GetCandy\Api\Core\Languages\Services\LanguageService;
-use Carbon\Carbon;
 
 class Indexer
 {
@@ -17,14 +17,14 @@ class Indexer
     protected $batch = 0;
 
     /**
-     * The language service instance
+     * The language service instance.
      *
      * @var LanguageService
      */
     protected $lang;
 
     /**
-     * The indice resolver
+     * The indice resolver.
      *
      * @var IndiceResolver
      */
@@ -38,7 +38,7 @@ class Indexer
     }
 
     /**
-     * Reindex a model
+     * Reindex a model.
      *
      * @param Model $model
      * @return void
@@ -112,7 +112,7 @@ class Indexer
                 $fragments = explode('_', $indice->getName());
                 $time = $this->getIndiceTime($indice->getName());
 
-                if (!$time) {
+                if (! $time) {
                     $indice->delete();
                     continue;
                 }
@@ -131,10 +131,9 @@ class Indexer
             return Carbon::createFromTimestampMs(end($fragments));
         } catch (\ErrorException $e) {
         }
-        return null;
     }
 
-     /**
+    /**
      * Updates the mappings for the model.
      * @param  Elastica\Index $index
      * @return void
@@ -151,15 +150,15 @@ class Indexer
     }
 
     /**
-     * Gets a timestamped index
+     * Gets a timestamped index.
      *
      * @param [type] $type
      * @return void
      */
     protected function getIndexName($type)
     {
-        return config('getcandy.search.index_prefix', 'candy') .
-            '_' .
+        return config('getcandy.search.index_prefix', 'candy').
+            '_'.
             $type->getHandle();
     }
 
@@ -180,10 +179,8 @@ class Indexer
      * ---------------------------------------------------------------------------------------------------
      * ---------------------------------------------------------------------------------------------------
      * ---------------------------------------------------------------------------------------------------
-     * ---------------------------------------------------------------------------------------------------
+     * ---------------------------------------------------------------------------------------------------.
      */
-
-
     public function updateDocument($model, $field)
     {
         $this->against($model);

@@ -45,14 +45,14 @@ class OrderService extends BaseService implements OrderServiceInterface
     protected $payments;
 
     /**
-     * The price calculator instance
+     * The price calculator instance.
      *
      * @var CurrencyConverterInterface
      */
     protected $currencies;
 
     /**
-     * The price calculator instance
+     * The price calculator instance.
      *
      * @var PriceCalculatorInterface
      */
@@ -149,7 +149,6 @@ class OrderService extends BaseService implements OrderServiceInterface
     public function addShippingLine($orderId, $shippingPriceId, $preference = null)
     {
         $order = $this->getByHashedId($orderId);
-
 
         $price = app('api')->shippingPrices()->getByHashedId($shippingPriceId);
 

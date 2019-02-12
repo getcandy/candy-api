@@ -51,7 +51,6 @@ class Asset extends BaseModel
         return Storage::disk($this->source->disk)->url($this->location.'/'.$this->filename);
     }
 
-
     /**
      * Get all of the owning commentable models.
      */

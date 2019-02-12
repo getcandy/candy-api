@@ -2,16 +2,14 @@
 
 namespace Tests\Unit\Orders\Services;
 
+use Carbon\Carbon;
 use Tests\TestCase;
-use Illuminate\Support\Facades\Event;
+use Tests\Stubs\User;
+use GetCandy\Api\Core\Baskets\Models\Basket;
+use GetCandy\Api\Core\Orders\Services\OrderService;
 use GetCandy\Api\Core\Baskets\Services\BasketService;
 use GetCandy\Api\Core\Products\Models\ProductVariant;
-use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
-use GetCandy\Api\Core\Baskets\Models\BasketLine;
-use GetCandy\Api\Core\Orders\Services\OrderService;
-use Carbon\Carbon;
-use Tests\Stubs\User;
 
 /**
  * @group baskets
@@ -69,7 +67,7 @@ class BasketServiceTest extends TestCase
         $this->assertEquals($basket->sub_total, $variant->unit_cost);
         $this->assertEquals($basket->total_tax, $variant->unit_tax);
 
-        foreach($basket->lines as $line) {
+        foreach ($basket->lines as $line) {
             $this->assertEquals($line->variant->unit_cost, $line->total);
         }
     }

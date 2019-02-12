@@ -4,9 +4,9 @@ namespace GetCandy\Api\Core\Baskets\Factories;
 
 use GetCandy\Api\Core\Baskets\Models\BasketLine;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketLineInterface;
+use GetCandy\Api\Core\Taxes\Interfaces\TaxCalculatorInterface;
 use GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketDiscountFactoryInterface;
-use GetCandy\Api\Core\Taxes\Interfaces\TaxCalculatorInterface;
 
 class BasketLineFactory implements BasketLineInterface
 {
@@ -32,7 +32,7 @@ class BasketLineFactory implements BasketLineInterface
     protected $discounts;
 
     /**
-     * The tax calculator instance
+     * The tax calculator instance.
      *
      * @var TaxCalculatorInterface
      */
