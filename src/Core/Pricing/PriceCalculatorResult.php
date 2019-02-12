@@ -13,7 +13,6 @@ class PriceCalculatorResult implements PriceCalculatorInterface
     protected $totalTax;
     protected $qty;
 
-
     public function __construct($data = [])
     {
         foreach ($data as $key => $value) {

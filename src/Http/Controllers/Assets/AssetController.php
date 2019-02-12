@@ -19,7 +19,7 @@ class AssetController extends BaseController
     {
         $file = $request->file('file');
 
-        $directory = 'public/uploads/' . Carbon::now()->format('d/m');
+        $directory = 'public/uploads/'.Carbon::now()->format('d/m');
 
         $path = $file->store($directory);
 
@@ -38,14 +38,13 @@ class AssetController extends BaseController
                 $image->stream($type, 100)->getContents()
             );
         } catch (NotReadableException $e) {
-
         }
 
         return response()->json([
             'path' => $path,
             'url'=> \Storage::url($path),
             'thumbnail' => $thumbnail ?? null,
-            'thumbnail_url' => !empty($thumbnail) ? \Storage::url($thumbnail) : null,
+            'thumbnail_url' => ! empty($thumbnail) ? \Storage::url($thumbnail) : null,
         ]);
     }
 

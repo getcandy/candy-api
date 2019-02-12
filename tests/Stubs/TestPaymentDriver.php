@@ -2,9 +2,8 @@
 
 namespace Tests\Stubs;
 
-use GetCandy\Api\Core\Payments\Models\Transaction;
 use GetCandy\Api\Core\Payments\PaymentResponse;
-
+use GetCandy\Api\Core\Payments\Models\Transaction;
 
 class TestPaymentDriver
 {
@@ -17,18 +16,21 @@ class TestPaymentDriver
     public function order($order)
     {
         $this->order = $order;
+
         return $this;
     }
 
     public function fields($fields = [])
     {
         $this->fields = $fields;
+
         return $this;
     }
 
     public function token($token)
     {
         $this->token = $token;
+
         return $this;
     }
 
@@ -37,6 +39,7 @@ class TestPaymentDriver
         if ($token == 1234) {
             return false;
         }
+
         return true;
     }
 
@@ -58,6 +61,7 @@ class TestPaymentDriver
 
         $response = new PaymentResponse(true);
         $response->transaction($transaction);
+
         return $response;
     }
 }

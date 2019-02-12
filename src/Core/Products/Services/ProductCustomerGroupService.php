@@ -4,7 +4,6 @@ namespace GetCandy\Api\Core\Products\Services;
 
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Products\Models\Product;
-use GetCandy\Api\Core\Products\Models\ProductAssociation;
 use GetCandy\Api\Core\Customers\Services\CustomerGroupService;
 
 class ProductCustomerGroupService extends BaseService
@@ -16,6 +15,7 @@ class ProductCustomerGroupService extends BaseService
         $this->model = new Product;
         $this->groupService = $groups;
     }
+
     /**
      * Stores a product association.
      * @param  string $product
@@ -35,6 +35,7 @@ class ProductCustomerGroupService extends BaseService
         }
         $product->customerGroups()->sync($groupData);
         $product->load('customerGroups');
+
         return $product;
     }
 
@@ -47,6 +48,7 @@ class ProductCustomerGroupService extends BaseService
     {
         $product = $this->getByHashedId($product);
         $product->customerGroups()->detach();
+
         return $product;
     }
 }

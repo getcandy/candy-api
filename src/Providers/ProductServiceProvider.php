@@ -19,6 +19,5 @@ class ProductServiceProvider extends ServiceProvider
         $this->app->bind(ProductInterface::class, function ($app) {
             return $app->make(ProductFactory::class);
         });
-
     }
 }

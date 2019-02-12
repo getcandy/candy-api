@@ -18,6 +18,7 @@ class ProductChannelController extends BaseController
     public function store($product, UpdateChannelRequest $request, ProductChannelService $service)
     {
         $result = $service->store($product, $request->get('channels', []));
+
         return new ProductResource($result);
     }
 

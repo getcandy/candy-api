@@ -53,7 +53,6 @@ Route::group([
     $router->get('categories', 'Categories\CategoryController@index');
     $router->get('categories/{category}/children', 'Categories\CategoryController@children');
 
-
     /*
      * Countries
      */

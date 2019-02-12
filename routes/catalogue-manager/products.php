@@ -12,7 +12,7 @@ $router->delete('/{product}/collections/{collection}', 'ProductCollectionControl
 $router->post('/{product}/associations', 'ProductAssociationController@store');
 $router->delete('/{product}/associations', 'ProductAssociationController@destroy');
 
-/**
+/*
  * Updates
  */
 $router->post('/{product}/customer-groups', 'ProductCustomerGroupController@store');

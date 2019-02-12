@@ -15,6 +15,7 @@ class ProductChannelService extends BaseService
         $this->model = new Product;
         $this->channelService = $channels;
     }
+
     /**
      * Stores a product association.
      * @param  string $product
@@ -28,6 +29,7 @@ class ProductChannelService extends BaseService
             $this->getChannelMapping($channels)
         );
         $product->load('channels');
+
         return $product;
     }
 
@@ -40,6 +42,7 @@ class ProductChannelService extends BaseService
     {
         $product = $this->getByHashedId($product);
         $product->customerGroups()->detach();
+
         return $product;
     }
 }

@@ -168,8 +168,8 @@ Route::group([
     /*
      * Products
      */
-    $router->prefix('products')->namespace('Products')->group(__DIR__ . '/../routes/catalogue-manager/products.php');
-    /**
+    $router->prefix('products')->namespace('Products')->group(__DIR__.'/../routes/catalogue-manager/products.php');
+    /*
      * Resource routes
      */
     $router->resource('products', 'Products\ProductController', [

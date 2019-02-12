@@ -11,12 +11,12 @@ use GetCandy\Api\Core\Addresses\Models\Address;
 use GetCandy\Api\Core\Discounts\Models\Discount;
 use GetCandy\Api\Core\Orders\Events\OrderSavedEvent;
 use GetCandy\Api\Core\Orders\Factories\OrderFactory;
+use GetCandy\Api\Core\Baskets\Factories\BasketFactory;
+use GetCandy\Api\Core\Discounts\Models\DiscountReward;
+use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaSet;
+use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaItem;
 use GetCandy\Api\Core\Orders\Interfaces\OrderFactoryInterface;
 use GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException;
-use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaSet;
-use GetCandy\Api\Core\Discounts\Models\DiscountReward;
-use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaItem;
-use GetCandy\Api\Core\Baskets\Factories\BasketFactory;
 
 /**
  * @group orders
@@ -124,11 +124,11 @@ class OrderFactoryTest extends TestCase
         $order = $factory->basket($basket)->resolve();
 
         foreach ($shippingCheckable as $key => $value) {
-            $this->assertEquals($value, $order->getAttribute('shipping_' . $key));
+            $this->assertEquals($value, $order->getAttribute('shipping_'.$key));
         }
 
         foreach ($billingCheckable as $key => $value) {
-            $this->assertEquals($value, $order->getAttribute('billing_' . $key));
+            $this->assertEquals($value, $order->getAttribute('billing_'.$key));
         }
     }
 
@@ -238,7 +238,7 @@ class OrderFactoryTest extends TestCase
         DiscountReward::forceCreate([
             'discount_id' => $discount->id,
             'type' => 'percentage',
-            'value' => 10
+            'value' => 10,
         ]);
 
         DiscountCriteriaItem::forceCreate([
