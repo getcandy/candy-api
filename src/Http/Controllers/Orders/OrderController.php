@@ -13,27 +13,27 @@ use GetCandy\Api\Http\Resources\Orders\OrderCollection;
 use GetCandy\Api\Http\Requests\Orders\BulkUpdateRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use GetCandy\Api\Http\Requests\Orders\StoreAddressRequest;
+use GetCandy\Api\Core\Payments\Services\PaymentTypeService;
+use GetCandy\Api\Core\Shipping\Services\ShippingPriceService;
+use GetCandy\Api\Core\Orders\Interfaces\OrderFactoryInterface;
 use GetCandy\Api\Core\Shipping\Services\ShippingMethodService;
 use GetCandy\Api\Http\Resources\Payments\ThreeDSecureResource;
 use GetCandy\Api\Core\Orders\Interfaces\OrderCriteriaInterface;
+use GetCandy\Api\Core\Baskets\Interfaces\BasketFactoryInterface;
+use GetCandy\Api\Core\Baskets\Interfaces\BasketCriteriaInterface;
 use GetCandy\Api\Core\Orders\Exceptions\IncompleteOrderException;
 use GetCandy\Api\Http\Resources\Shipping\ShippingPriceCollection;
 use GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException;
 use GetCandy\Api\Core\Orders\Exceptions\OrderAlreadyProcessedException;
-use GetCandy\Api\Core\Payments\Exceptions\ThreeDSecureRequiredException;
-use GetCandy\Api\Core\Orders\Interfaces\OrderFactoryInterface;
-use GetCandy\Api\Core\Baskets\Interfaces\BasketCriteriaInterface;
-use GetCandy\Api\Core\Baskets\Interfaces\BasketFactoryInterface;
-use GetCandy\Api\Core\Shipping\Services\ShippingPriceService;
 use GetCandy\Api\Core\Orders\Interfaces\OrderProcessingFactoryInterface;
-use GetCandy\Api\Core\Payments\Services\PaymentTypeService;
+use GetCandy\Api\Core\Payments\Exceptions\ThreeDSecureRequiredException;
 
 class OrderController extends BaseController
 {
     protected $orders;
 
     /**
-     * The baskets criteria instance
+     * The baskets criteria instance.
      *
      * @var BasketCriteriaInterface
      */
@@ -57,7 +57,7 @@ class OrderController extends BaseController
             'from' => 'date_format:Y-m-d',
             'to' => 'date_format:Y-m-d',
         ]);
-        
+
         $criteria = $this->orders;
 
         $criteria->fill($request->all())

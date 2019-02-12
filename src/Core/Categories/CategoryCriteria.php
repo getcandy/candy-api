@@ -26,6 +26,7 @@ class CategoryCriteria extends AbstractCriteria
         if ($depth) {
             $this->depth = $depth;
         }
+
         return $this;
     }
 
@@ -43,6 +44,7 @@ class CategoryCriteria extends AbstractCriteria
 
         if ($this->id) {
             $builder->where('id', '=', $category->decodeId($this->id));
+
             return $builder;
         }
 

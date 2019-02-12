@@ -21,7 +21,7 @@ class ActivityResource extends AbstractResource
     public function includes()
     {
         return [
-            'user' => $this->include('causer', UserResource::class)
+            'user' => $this->include('causer', UserResource::class),
         ];
     }
 }

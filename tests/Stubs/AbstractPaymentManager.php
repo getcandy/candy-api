@@ -6,5 +6,4 @@ use GetCandy\Api\Core\Payments\PaymentContract;
 
 abstract class AbstractPaymentManager implements PaymentContract
 {
-
 }

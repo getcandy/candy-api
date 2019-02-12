@@ -3,13 +3,12 @@
 namespace GetCandy\Api\Http\Middleware;
 
 use Closure;
-use CurrencyConverter;
 use GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface;
 
 class SetCurrencyMiddleware
 {
     /**
-     * The Currency converter instance
+     * The Currency converter instance.
      *
      * @var CurrencyConverterInterface
      */
@@ -19,6 +18,7 @@ class SetCurrencyMiddleware
     {
         $this->converter = $converter;
     }
+
     /**
      * Handle an incoming request.
      *
@@ -29,6 +29,7 @@ class SetCurrencyMiddleware
     public function handle($request, Closure $next)
     {
         $this->converter->set($request->currency);
+
         return $next($request);
     }
 }

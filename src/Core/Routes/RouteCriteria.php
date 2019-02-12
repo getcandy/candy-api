@@ -8,20 +8,20 @@ use GetCandy\Api\Core\Scaffold\AbstractCriteria;
 class RouteCriteria extends AbstractCriteria
 {
     /**
-     * The route path
+     * The route path.
      *
      * @var string
      */
     protected $path;
 
     /**
-     * The route slug
+     * The route slug.
      *
      * @var string
      */
     protected $slug;
 
-        /**
+    /**
      * Gets the underlying builder for the query.
      *
      * @return \Illuminate\Database\Eloquent\QueryBuilder
@@ -41,10 +41,10 @@ class RouteCriteria extends AbstractCriteria
 
         if ($this->id) {
             $builder->where('id', '=', $route->decodeId($this->id));
+
             return $builder;
         }
 
         return $builder;
     }
-
 }

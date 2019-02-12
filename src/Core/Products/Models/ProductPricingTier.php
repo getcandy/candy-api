@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Core\Products\Models;
 
-use GetCandy\Api\Core\Pricing\PriceCalculatorInterface;
 use GetCandy\Api\Core\Scaffold\BaseModel;
-use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 use Illuminate\Database\Eloquent\Builder;
+use GetCandy\Api\Core\Customers\Models\CustomerGroup;
+use GetCandy\Api\Core\Pricing\PriceCalculatorInterface;
 
 class ProductPricingTier extends BaseModel
 {
@@ -16,7 +16,7 @@ class ProductPricingTier extends BaseModel
         'price',
     ];
 
-        /**
+    /**
      * The "booting" method of the model.
      *
      * @return void
@@ -86,7 +86,6 @@ class ProductPricingTier extends BaseModel
     {
         return $this->belongsTo(CustomerGroup::class, 'customer_group_id');
     }
-
 
     protected function getCustomerGroups()
     {

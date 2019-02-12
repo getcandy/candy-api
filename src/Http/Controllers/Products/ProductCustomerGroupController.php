@@ -3,9 +3,9 @@
 namespace GetCandy\Api\Http\Controllers\Products;
 
 use GetCandy\Api\Http\Controllers\BaseController;
-use GetCandy\Api\Http\Requests\Products\UpdateCustomerGroupsRequest;
-use GetCandy\Api\Core\Products\Services\ProductCustomerGroupService;
 use GetCandy\Api\Http\Resources\Products\ProductResource;
+use GetCandy\Api\Core\Products\Services\ProductCustomerGroupService;
+use GetCandy\Api\Http\Requests\Products\UpdateCustomerGroupsRequest;
 
 class ProductCustomerGroupController extends BaseController
 {
@@ -18,6 +18,7 @@ class ProductCustomerGroupController extends BaseController
     public function store($product, UpdateCustomerGroupsRequest $request, ProductCustomerGroupService $service)
     {
         $result = $service->store($product, $request->get('groups'));
+
         return new ProductResource($result);
     }
 

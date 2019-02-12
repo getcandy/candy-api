@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Http\Resources\Shipping;
 
-use GetCandy\Api\Http\Resources\AbstractResource;
 use GetCandy\Api\Core\Pricing\PriceCalculator;
+use GetCandy\Api\Http\Resources\AbstractResource;
 
 class ShippingPriceResource extends AbstractResource
 {

@@ -5,8 +5,8 @@ namespace GetCandy\Api\Core\Orders\Services;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Orders\Models\OrderLine;
 use GetCandy\Api\Core\Orders\Events\OrderSavedEvent;
-use GetCandy\Api\Core\Products\Services\ProductVariantService;
 use GetCandy\Api\Core\Pricing\PriceCalculatorInterface;
+use GetCandy\Api\Core\Products\Services\ProductVariantService;
 
 class OrderLineService extends BaseService
 {
@@ -54,7 +54,7 @@ class OrderLineService extends BaseService
 
         $variant = null;
 
-        if (!empty($data['variant'])) {
+        if (! empty($data['variant'])) {
             $variant = $this->variants->getByHashedId($data['variant']);
         }
 
