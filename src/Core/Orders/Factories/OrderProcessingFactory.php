@@ -4,25 +4,14 @@ namespace GetCandy\Api\Core\Orders\Factories;
 
 use DB;
 use Carbon\Carbon;
-use Illuminate\Foundation\Auth\User;
 use GetCandy\Api\Core\Orders\Models\Order;
-use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Core\Payments\PaymentManager;
 use GetCandy\Api\Core\Payments\PaymentContract;
 use GetCandy\Api\Core\Payments\PaymentResponse;
-use GetCandy\Api\Core\Orders\Models\OrderDiscount;
 use GetCandy\Api\Core\Payments\Models\PaymentType;
-use GetCandy\Api\Core\Payments\Models\Transaction;
-use GetCandy\Api\Core\Orders\Events\OrderSavedEvent;
 use GetCandy\Api\Core\Orders\Jobs\OrderNotification;
 use GetCandy\Api\Core\Payments\ThreeDSecureResponse;
-use GetCandy\Api\Core\Shipping\Models\ShippingPrice;
-use GetCandy\Api\Core\Pricing\PriceCalculatorInterface;
-use GetCandy\Api\Core\Settings\Services\SettingService;
 use GetCandy\Api\Core\Orders\Events\OrderProcessedEvent;
-use GetCandy\Api\Core\Orders\Interfaces\OrderFactoryInterface;
-use GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException;
-use GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface;
 use GetCandy\Api\Core\Payments\Exceptions\InvalidPaymentTokenException;
 use GetCandy\Api\Core\Orders\Interfaces\OrderProcessingFactoryInterface;
 use GetCandy\Api\Core\Payments\Exceptions\ThreeDSecureRequiredException;
@@ -30,61 +19,60 @@ use GetCandy\Api\Core\Payments\Exceptions\ThreeDSecureRequiredException;
 class OrderProcessingFactory implements OrderProcessingFactoryInterface
 {
     /**
-     * The order instance
+     * The order instance.
      *
      * @var Order
      */
     protected $order;
 
     /**
-     * Additional payload fields
+     * Additional payload fields.
      *
      * @var string
      */
     protected $payload = [];
 
     /**
-     * The payment provider
+     * The payment provider.
      *
      * @var PaymentType
      */
     protected $provider;
 
     /**
-     * The payment token nonce
+     * The payment token nonce.
      *
      * @var string
      */
     protected $nonce;
 
     /**
-     * The payment manager instance
+     * The payment manager instance.
      *
      * @var PaymentManager
      */
     protected $manager;
 
     /**
-     * The order notes
+     * The order notes.
      *
      * @var string
      */
     protected $notes;
 
     /**
-     * The order type
+     * The order type.
      *
      * @var string
      */
     protected $type;
 
     /**
-     * The customer reference
+     * The customer reference.
      *
      * @var string
      */
     protected $customerReference;
-
 
     public function __construct(PaymentContract $manager)
     {
@@ -92,7 +80,7 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
     }
 
     /**
-     * Set the value for nonce
+     * Set the value for nonce.
      *
      * @param string $nonce
      * @return self
@@ -100,11 +88,12 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
     public function nonce($nonce)
     {
         $this->nonce = $nonce;
+
         return $this;
     }
 
     /**
-     * Bulk set the value for payload
+     * Bulk set the value for payload.
      *
      * @param array $payload
      * @return self
@@ -112,11 +101,12 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
     public function payload(array $payload)
     {
         $this->payload = $payload;
+
         return $this;
     }
 
     /**
-     * Set the value for provider
+     * Set the value for provider.
      *
      * @param PaymentType $provider
      * @return self
@@ -124,11 +114,12 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
     public function provider(PaymentType $provider = null)
     {
         $this->provider = $provider;
+
         return $this;
     }
 
     /**
-     * Set a value to the payload
+     * Set a value to the payload.
      *
      * @param string $reference
      * @return self
@@ -136,11 +127,12 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
     public function set($key, $value)
     {
         $this->payload[$key] = $value;
+
         return $this;
     }
 
     /**
-     * Set the value for type
+     * Set the value for type.
      *
      * @param null|string $type
      * @return self
@@ -148,11 +140,12 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
     public function type($type = null)
     {
         $this->type = $type;
+
         return $this;
     }
 
     /**
-     * Set the value for notes
+     * Set the value for notes.
      *
      * @param string $notes
      * @return void
@@ -160,17 +153,19 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
     public function notes($notes = null)
     {
         $this->notes = $notes;
+
         return $this;
     }
 
     public function customerReference($ref = null)
     {
         $this->customerReference = $ref;
+
         return $this;
     }
 
     /**
-     * Set the value of order
+     * Set the value of order.
      *
      * @param Order $order
      * @return void
@@ -178,6 +173,7 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
     public function order($order)
     {
         $this->order = $order;
+
         return $this;
     }
 
@@ -213,7 +209,7 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
     }
 
     /**
-     * Handle the response from the payment driver
+     * Handle the response from the payment driver.
      *
      * @param PaymentResponse $response
      * @return void
@@ -251,7 +247,7 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
     }
 
     /**
-     * Get the order instance
+     * Get the order instance.
      *
      * @return Order
      */
@@ -261,15 +257,16 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
     }
 
     /**
-     * Determines whether an order can be processed
+     * Determines whether an order can be processed.
      *
-     * @return boolean
+     * @return bool
      */
     protected function canProcess()
     {
         $fields = $order->required->filter(function ($field) use ($order) {
             return $order->getAttribute($field);
         });
+
         return $fields->count() === $order->required->count();
     }
 

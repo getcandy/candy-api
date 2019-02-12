@@ -9,65 +9,65 @@ use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Core\Orders\Models\OrderDiscount;
 use GetCandy\Api\Core\Orders\Events\OrderSavedEvent;
 use GetCandy\Api\Core\Shipping\Models\ShippingPrice;
+use GetCandy\Api\Core\Pricing\PriceCalculatorInterface;
 use GetCandy\Api\Core\Settings\Services\SettingService;
 use GetCandy\Api\Core\Orders\Interfaces\OrderFactoryInterface;
 use GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException;
 use GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface;
-use GetCandy\Api\Core\Pricing\PriceCalculatorInterface;
 
 class OrderFactory implements OrderFactoryInterface
 {
     /**
-     * The basket model
+     * The basket model.
      *
      * @var Basket
      */
     protected $basket;
 
     /**
-     * The order model instance
+     * The order model instance.
      *
      * @var Order
      */
     protected $order;
 
     /**
-     * The associated user
+     * The associated user.
      *
      * @var \Illuminate\Foundation\Auth\User
      */
     protected $user;
 
     /**
-     * The site settings provider
+     * The site settings provider.
      *
      * @var SettingService
      */
     protected $settings;
 
     /**
-     * The shipping model instance
+     * The shipping model instance.
      *
      * @var ShippingPrice
      */
     protected $shipping;
 
     /**
-     * The shipping preference
+     * The shipping preference.
      *
      * @var null|string
      */
     protected $shippingPreference;
 
     /**
-     * The currencies instance
+     * The currencies instance.
      *
      * @var CurrencyConverterInterface
      */
     protected $currencies;
 
     /**
-     * The price calculator instance
+     * The price calculator instance.
      *
      * @var PriceCalculatorInterface
      */
@@ -84,7 +84,7 @@ class OrderFactory implements OrderFactoryInterface
     }
 
     /**
-     * Set the value for user
+     * Set the value for user.
      *
      * @param User $user
      * @return self
@@ -92,15 +92,16 @@ class OrderFactory implements OrderFactoryInterface
     public function user(User $user = null)
     {
         $this->user = $user;
+
         return $this;
     }
 
     /**
-     * Set the value for basket
+     * Set the value for basket.
      *
      * @param Basket $basket
      * @return self
-    */
+     */
     public function basket(Basket $basket)
     {
         $this->basket = $basket;
@@ -113,7 +114,7 @@ class OrderFactory implements OrderFactoryInterface
     }
 
     /**
-     * Set the value of order
+     * Set the value of order.
      *
      * @param Order $order
      * @return self
@@ -121,11 +122,12 @@ class OrderFactory implements OrderFactoryInterface
     public function order(Order $order)
     {
         $this->order = $order;
+
         return $this;
     }
 
     /**
-     * Get the value for basket
+     * Get the value for basket.
      *
      * @return Basket
      */
@@ -135,7 +137,7 @@ class OrderFactory implements OrderFactoryInterface
     }
 
     /**
-     * Get the value for user
+     * Get the value for user.
      *
      * @return User
      */
@@ -145,19 +147,19 @@ class OrderFactory implements OrderFactoryInterface
     }
 
     /**
-     * Resolve the basket to an order
+     * Resolve the basket to an order.
      *
      * @return Order
      */
     public function resolve()
     {
-        if (!$this->order) {
+        if (! $this->order) {
             $order = $this->getActiveOrder();
         } else {
             $order = $this->order;
         }
 
-        if (!$this->basket) {
+        if (! $this->basket) {
             $this->basket = $order->basket;
         }
 
@@ -184,7 +186,7 @@ class OrderFactory implements OrderFactoryInterface
     }
 
     /**
-     * Resolve the lines for our order
+     * Resolve the lines for our order.
      *
      * @param Order $order
      * @return Order
@@ -209,12 +211,12 @@ class OrderFactory implements OrderFactoryInterface
             ]);
         }
         $order->lines()->createMany($lines);
+
         return $order;
     }
 
-
     /**
-     * Get the active order
+     * Get the active order.
      *
      * @return Order
      */
@@ -225,11 +227,12 @@ class OrderFactory implements OrderFactoryInterface
         } elseif ($this->basket->placedOrder) {
             throw new BasketHasPlacedOrderException;
         }
+
         return $this->createNewOrder();
     }
 
     /**
-     * Create a new order
+     * Create a new order.
      *
      * @return Order
      */
@@ -266,7 +269,7 @@ class OrderFactory implements OrderFactoryInterface
     }
 
     /**
-     * Sets the user fields
+     * Sets the user fields.
      *
      * @param Order $order
      * @return void
@@ -276,9 +279,9 @@ class OrderFactory implements OrderFactoryInterface
         foreach ($this->user->addresses as $address) {
             $this->setFields($order, $address->fields, $address->billing ? 'billing' : 'shipping');
         }
+
         return $order;
     }
-
 
     /**
      * Recalculates an orders totals.
@@ -338,7 +341,7 @@ class OrderFactory implements OrderFactoryInterface
     }
 
     /**
-     * Set the value for shipping price with preference
+     * Set the value for shipping price with preference.
      *
      * @param ShippingPrice $price
      * @param string $preference
@@ -348,6 +351,7 @@ class OrderFactory implements OrderFactoryInterface
     {
         $this->shipping = $price;
         $this->preference = $preference;
+
         return $this;
     }
 
@@ -410,7 +414,7 @@ class OrderFactory implements OrderFactoryInterface
     }
 
     /**
-     * Resolve the discounts to an order
+     * Resolve the discounts to an order.
      *
      * @param Order $order
      * @return Order

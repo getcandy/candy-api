@@ -124,6 +124,7 @@ class BasketController extends BaseController
     public function save($id, SaveRequest $request)
     {
         $basket = app('api')->baskets()->save($id, $request->name);
+
         return new BasketResource($basket);
     }
 
@@ -168,6 +169,7 @@ class BasketController extends BaseController
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
+
         return new BasketResource($basket);
     }
 
@@ -178,6 +180,7 @@ class BasketController extends BaseController
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
+
         return new BasketResource($basket);
     }
 
@@ -193,6 +196,7 @@ class BasketController extends BaseController
         if (! $basket) {
             return $this->errorNotFound("Basket does't exist");
         }
+
         return new BasketResource($basket);
     }
 
@@ -205,6 +209,7 @@ class BasketController extends BaseController
     public function resolve(Request $request)
     {
         $basket = app('api')->baskets()->resolve($request->user(), $request->basket_id, $request->merge);
+
         return new BasketResource($basket);
     }
 }

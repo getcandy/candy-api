@@ -3,13 +3,12 @@
 namespace GetCandy\Api\Http\Middleware;
 
 use Closure;
-use TaxCalculator;
 use GetCandy\Api\Core\Taxes\Interfaces\TaxCalculatorInterface;
 
 class SetTaxMiddleware
 {
     /**
-     * The tax calculator instance
+     * The tax calculator instance.
      *
      * @var TaxCalculatorInterface
      */

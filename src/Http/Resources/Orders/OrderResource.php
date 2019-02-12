@@ -3,9 +3,9 @@
 namespace GetCandy\Api\Http\Resources\Orders;
 
 use GetCandy\Api\Http\Resources\AbstractResource;
+use GetCandy\Api\Http\Resources\Users\UserResource;
 use GetCandy\Api\Http\Resources\Baskets\BasketResource;
 use GetCandy\Api\Http\Resources\Transactions\TransactionCollection;
-use GetCandy\Api\Http\Resources\Users\UserResource;
 
 class OrderResource extends AbstractResource
 {

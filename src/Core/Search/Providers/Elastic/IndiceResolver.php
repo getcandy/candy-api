@@ -18,7 +18,7 @@ class IndiceResolver
     ];
 
     /**
-     * Get the document type
+     * Get the document type.
      *
      * @param Model $model
      * @return BaseType
