@@ -16,7 +16,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
 
         $this->artisan('cache:forget', ['key' => 'spatie.permission.cache']);
 
-        // $this->artisan('vendor:publish', ['--provider' => 'Spatie\Activitylog\ActivitylogServiceProvider', '--tag' => 'migrations']);
+        $this->artisan('vendor:publish', ['--provider' => 'Spatie\Activitylog\ActivitylogServiceProvider', '--tag' => 'migrations']);
         $this->artisan('migrate', ['--database' => 'testing']);
         $this->artisan('db:seed', ['--class' => '\Seeds\TestingDatabaseSeeder']);
 
