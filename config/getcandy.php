@@ -9,7 +9,7 @@ return [
     /**
      * Define whether to use internal requests
      */
-    'internal_requests' => env('CANDY_INTERNAL_REQUESTS', false),
+    'internal_requests' => env('CANDY_INTERNAL_REQUESTS', true),
 
     /*
      * The URL to your storefront
