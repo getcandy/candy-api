@@ -61,6 +61,7 @@ class Indexer
 
         foreach ($languages as $language) {
             $alias = $index.'_'.$language->lang;
+            $newIndex = $alias."_{$suffix}";
             $this->createIndex($alias."_{$suffix}", $type);
             $aliases[$alias] = $alias."_{$suffix}";
         }
@@ -93,6 +94,7 @@ class Indexer
                 $elasticaType->addDocuments($documents);
             }
 
+            $elasticaType->addDocuments($documents);
             $elasticaType->getIndex()->refresh();
 
             echo ':batch:'.$this->batch;
@@ -164,6 +166,121 @@ class Indexer
     }
 
     /**
+     * Index a single object.
+     *
+     * @param Model $model
+     * @return void
+     */
+    public function indexObject(Model $model)
+    {
+        $type = $this->resolver->getType($model);
+
+        // Get our aliases
+        $status = $this->client->getStatus();
+
+        $index = $this->getIndexName($type);
+
+        $langs = $this->lang->all();
+
+        $indexables = $type->getIndexDocument($model);
+
+        foreach ($langs as $lang) {
+            $alias = $index . '_' . $lang->lang;
+
+            $indices = $status->getIndicesWithAlias($alias);
+
+            $documents = $indexables->filter(function ($doc) use ($alias) {
+                return $doc->getIndex() == $alias;
+            });
+
+            foreach ($indices as $indice) {
+                $elasticaType = $indice->getType($type->getHandle());
+
+                foreach ($indexables as $indexable) {
+                    $document = new Document(
+                        $indexable->getId(),
+                        $indexable->getData()
+                    );
+                    $elasticaType->addDocument($document);
+                }
+            }
+        }
+
+        return true;
+    }
+
+    public function indexObjects($models)
+    {
+        $status = $this->client->getStatus();
+        $langs = $this->lang->all();
+
+        $pending = [];
+
+        foreach ($models as $model) {
+            $type = $this->resolver->getType($model);
+            $index = $this->getIndexName($type);
+
+            $indexables = $type->getIndexDocument($model);
+
+            foreach ($langs as $lang) {
+                $alias = $index . '_' . $lang->lang;
+
+                $indices = $status->getIndicesWithAlias($alias);
+
+                $documents = $indexables->filter(function ($doc) use ($alias) {
+                    return $doc->getIndex() == $alias;
+                });
+
+                foreach ($indices as $indice) {
+                    $elasticaType = $indice->getType($type->getHandle());
+                    $realIndex = $indice->getName();
+                    if (empty($pending[$realIndex])) {
+                        $pending[$realIndex]['docs'] = collect();
+                        $pending[$realIndex]['type'] = $type;
+                    }
+                    foreach ($indexables as $indexable) {
+                        $pending[$indice->getName()]['docs']->push(new Document(
+                            $indexable->getId(),
+                            $indexable->getData()
+                        ));
+                    }
+                }
+            }
+        }
+
+        foreach ($pending as $indexName => $data) {
+            $index = $this->client->getIndex($indexName);
+            $type = $index->getType($data['type']->getHandle());
+            $type->addDocuments($data['docs']->toArray());
+            $index->refresh();
+        }
+    }
+
+    public function updateDocuments($models, $field = null)
+    {
+        dd($models);
+        $this->against($models->first());
+
+        $type = $this->getType($models->first());
+        $index = $this->getCurrentIndex();
+        $documents = $type->getUpdatedDocuments($models, $field, $index);
+
+        $docs = [];
+
+        foreach ($documents as $document) {
+            foreach ($document as $doc) {
+                $docs[] = $document = new Document(
+                    $doc->getId(),
+                    $doc->getData(),
+                    $type->getHandle()
+                );
+            }
+        }
+
+        $index->addDocuments($docs);
+    }
+
+    /**
      * NEW METHODS ABOVE
      * ---------------------------------------------------------------------------------------------------
      * ---------------------------------------------------------------------------------------------------
@@ -195,29 +312,6 @@ class Indexer
         $elasticaType->addDocument($document);
     }
 
-    public function updateDocuments($models, $field)
-    {
-        $this->against($models->first());
-
-        $type = $this->getType($models->first());
-        $index = $this->getCurrentIndex();
-        $documents = $type->getUpdatedDocuments($models, $field, $index);
-
-        $docs = [];
-
-        foreach ($documents as $document) {
-            foreach ($document as $doc) {
-                $docs[] = $document = new Document(
-                    $doc->getId(),
-                    $doc->getData(),
-                    $type->getHandle()
-                );
-            }
-        }
-
-        $index->addDocuments($docs);
-    }
-
     /**
      * Cleans up the indexes for next time.
      *
@@ -239,22 +333,7 @@ class Indexer
         }
     }
 
-    /**
-     * Index a single object.
-     *
-     * @param Model $model
-     * @return void
-     */
-    public function indexObject(Model $model)
-    {
-        $this->type = $this->getType($model);
-        $indexName = $this->getDefaultIndex();
-        if (! $this->suffix) {
-            $this->suffix = $this->getCurrentIndexSuffix($indexName);
-        }
 
-        return $this->addToIndex($model, $this->suffix);
-    }
 
     /**
      * Add a single model to the elastic index.
