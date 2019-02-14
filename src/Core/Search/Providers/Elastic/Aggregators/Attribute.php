@@ -43,7 +43,7 @@ class Attribute
 
     public function getPre()
     {
-        $size = (int)config('getcandy.search.aggregation.attribute.size', 10);
+        $size = (int) config('getcandy.search.aggregation.attribute.size', 10);
 
         if (empty($this->filters)) {
             $agg = new Terms($this->field);
@@ -75,7 +75,7 @@ class Attribute
     {
         $agg = new Filter($this->field.'_after');
 
-        if (!is_array($value)) {
+        if (! is_array($value)) {
             $value = [$value];
         }
 
