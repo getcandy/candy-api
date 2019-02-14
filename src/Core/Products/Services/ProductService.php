@@ -294,6 +294,7 @@ class ProductService extends BaseService
             'variants.product',
             'variants.tiers',
             'variants.tiers.group',
+            'variants.customerPricing',
             'primaryAsset',
             'primaryAsset.transforms.transform',
             'primaryAsset.transforms.asset',
@@ -302,26 +303,6 @@ class ProductService extends BaseService
             'primaryAsset.source',
         ])->whereIn('id', $parsedIds);
 
-        $groups = \GetCandy::getGroups();
-
-        $ids = [];
-
-        foreach ($groups as $group) {
-            $ids[] = $group->id;
-        }
-
-        // If the user is an admin, fall through
-        if (! $user || ($user && ! $user->hasRole('admin'))) {
-            $query->with([
-                'variants' => function ($q1) use ($ids) {
-                    $q1->with(['customerPricing' => function ($q2) use ($ids) {
-                        $q2->whereIn('customer_group_id', $ids)
-                            ->orderBy('price', 'asc')
-                            ->first();
-                    }]);
-                },
-            ]);
-        }
 
         if (count($parsedIds)) {
             $query = $query->orderByRaw("field(id,{$placeholders})", $parsedIds);

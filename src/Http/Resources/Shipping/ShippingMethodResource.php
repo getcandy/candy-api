@@ -3,6 +3,7 @@
 namespace GetCandy\Api\Http\Resources\Shipping;
 
 use GetCandy\Api\Http\Resources\AbstractResource;
+use GetCandy\Api\Http\Resources\Channels\ChannelCollection;
 
 class ShippingMethodResource extends AbstractResource
 {
@@ -18,6 +19,7 @@ class ShippingMethodResource extends AbstractResource
     {
         return [
             'prices' => new ShippingPriceCollection($this->whenLoaded('prices')),
+            'channels' => new ChannelCollection($this->whenLoaded('channels')),
         ];
     }
 }

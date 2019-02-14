@@ -281,10 +281,27 @@ class BasketService extends BaseService
      */
     public function deleteDiscount($basketId, $discountId)
     {
-        $basket = $this->getByHashedId($basketId);
+        $id = $this->model->decodeId($basketId);
+        $basket = $this->model->with([
+            'user',
+            'order',
+            'discounts.rewards',
+            'lines.basket',
+            'lines.variant',
+            'lines.variant.tax',
+            'lines.variant.tiers',
+            'lines.variant.product',
+            'lines.variant.product.assets',
+            'lines.variant.product.assets.transforms',
+            'lines.variant.product.routes',
+            'lines.variant.customerPricing',
+        ])->findOrFail($id);
+
+
         $discount = app('api')->discounts()->getByHashedId($discountId);
 
         $basket->discounts()->detach($discount);
+
 
         event(new BasketStoredEvent($basket));
 

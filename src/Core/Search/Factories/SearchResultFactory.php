@@ -245,7 +245,6 @@ class SearchResultFactory implements SearchResultInterface
     public function get()
     {
         $models = $this->service->getSearchedIds($this->ids, $this->user);
-
         $resource = new Collection($models, $this->transformer);
         $resource->setMeta(
             $this->getMeta()
@@ -355,8 +354,8 @@ class SearchResultFactory implements SearchResultInterface
         $all = [];
 
         foreach ($aggs as $handle => $agg) {
-            if ($handle == 'categories_after') {
-                foreach ($agg['categories_after_filter']['categories_post_inner']['buckets'] as $bucket) {
+            if ($handle == 'categories_post') {
+                foreach ($agg['categories_post_filter']['categories_post_inner']['buckets'] as $bucket) {
                     $selected[] = $bucket['key'];
                 }
             } elseif ($handle == 'categories_before') {

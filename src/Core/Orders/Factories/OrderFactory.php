@@ -402,7 +402,7 @@ class OrderFactory implements OrderFactoryInterface
             'description' => $this->shipping->method->attribute('name'),
             'line_total' => $rate->total_cost,
             'unit_price' => $rate->unit_cost,
-            'option' => $this->shipping->zone->name,
+            'option' => $this->shipping->zone->name ?? null,
             'tax_total' => $rate->total_tax,
             'tax_rate' => $tax->percentage,
             'sku' => $this->shipping->encodedId(),

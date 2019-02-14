@@ -7,6 +7,7 @@ use GetCandy\Api\Core\Shipping\ShippingCalculator;
 use GetCandy\Api\Core\Baskets\Services\BasketService;
 use GetCandy\Api\Core\Shipping\Models\ShippingMethod;
 use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
+use GetCandy\Api\Core\Channels\Interfaces\ChannelFactoryInterface;
 
 class ShippingMethodService extends BaseService
 {
@@ -81,7 +82,7 @@ class ShippingMethodService extends BaseService
           'users',
           'prices',
           'channels',
-        ])->get();
+        ])->channel()->get();
     }
 
     /**
@@ -97,24 +98,29 @@ class ShippingMethodService extends BaseService
         $order = app('api')->orders()->getByHashedId($orderId);
         $basket = $this->baskets->getForOrder($order);
 
-        $methods = $this->all();
+        $zones = app('api')->shippingZones()->getByCountryName($order->shipping_details['country']);
+
         $basket = $order->basket;
         $calculator = new ShippingCalculator(app());
 
         $options = [];
 
-        foreach ($methods as $index => $method) {
-            $option = $calculator->with($method)->calculate($order);
-            if (! $option) {
-                continue;
-            }
-            $option->load(['method']);
-            if (is_array($option)) {
-                $options = array_merge($options, $option);
-            } else {
-                $options[$index] = $option;
+        foreach ($zones as $zone) {
+            foreach ($zone->methods as $index => $method) {
+                $option = $calculator->with($method)->calculate($order);
+                if (! $option) {
+                    continue;
+                }
+                $option->load(['method']);
+                if (is_array($option)) {
+                    $options = array_merge($options, $option);
+                } else {
+                    $options[$index] = $option;
+                }
             }
         }
+
+
 
         return collect($options);
     }

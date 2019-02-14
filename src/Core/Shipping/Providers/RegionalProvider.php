@@ -11,8 +11,8 @@ class RegionalProvider extends AbstractProvider
         $users = $this->method->users;
         $prices = $this->method->prices;
 
-        // Only get prices for this region.
         $prices = $this->method->prices->filter(function ($price) use ($order) {
+
             $region = $price->zone->regions->first(function ($region) use ($order) {
                 $postcode = strtoupper($order->shippingDetails['zip']);
                 $outcode = rtrim(substr($postcode, 0, -3));
@@ -25,6 +25,7 @@ class RegionalProvider extends AbstractProvider
 
             return (bool) $region;
         });
+
 
         if (! $prices->count()) {
 
@@ -41,6 +42,7 @@ class RegionalProvider extends AbstractProvider
             }
         }
 
+
         $user = $basket->user;
         $price = $prices->filter(function ($item) use ($weight, $basket, $user, $users, $order) {
             if ($users->contains($user)) {
@@ -49,7 +51,7 @@ class RegionalProvider extends AbstractProvider
                 return false;
             }
 
-            if ($basket->sub_total > ($item->min_basket / 100) && $weight >= $item->min_weight) {
+            if (!$item->min_basket || $basket->sub_total > ($item->min_basket / 100) && $weight >= $item->min_weight) {
                 return $item;
             }
         })->sortBy('rate')->first();
