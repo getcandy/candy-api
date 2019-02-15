@@ -31,7 +31,7 @@ class ChangeCountryColumns extends Migration
 
         foreach ($countries as $country) {
             \DB::table('countries')->where('id', $country['id'])->update([
-                'name' => $country['name']
+                'name' => $country['name'],
             ]);
         }
     }
