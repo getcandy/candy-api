@@ -11,6 +11,7 @@ use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Shipping\Services\ShippingMethodService;
 use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
+use GetCandy\Api\Core\Countries\Models\Country;
 
 /**
  * @group shipping
@@ -21,6 +22,14 @@ class ShippingMethodServiceTest extends TestCase
 
     public function test_can_get_correct_shipping_methods()
     {
+        $country = Country::forceCreate([
+            'name' => 'United Kingdom',
+            'region' => 'Europe',
+            'iso_a_2' => 'GB',
+            'iso_a_3' => 'GBR',
+            'iso_numeric' => 826,
+        ]);
+
         $methods = [
             $methodA = $this->createMethod('A'),
             $methodB = $this->createMethod('B'),
@@ -34,10 +43,14 @@ class ShippingMethodServiceTest extends TestCase
             $zoneD = $this->createZone('D'),
         ];
 
+        $zoneA->countries()->attach($country);
         $zoneA->methods()->attach($methodA);
         $zoneB->methods()->attach($methodA);
+        $zoneB->countries()->attach($country);
         $zoneC->methods()->attach($methodB);
+        $zoneC->countries()->attach($country);
         $zoneD->methods()->attach($methodC);
+        $zoneD->countries()->attach($country);
 
         $this->createRegion('AL', $zoneA);
         $this->createRegion('E', $zoneA);
@@ -55,6 +68,7 @@ class ShippingMethodServiceTest extends TestCase
         // So create an order
         $order = Order::forceCreate([
             'currency' => 'GBP',
+            'shipping_country' => 'United Kingdom',
             'shipping_zip' => 'CM6 6TH',
             'basket_id' => $basket->id,
         ]);
@@ -136,7 +150,7 @@ class ShippingMethodServiceTest extends TestCase
     private function createRegion($region, $zone)
     {
         return ShippingRegion::forceCreate([
-            'country_id' => 79,
+            'country_id' => 1,
             'shipping_zone_id' => $zone->id,
             'region' => $region,
             'address_field' => 'postcode',

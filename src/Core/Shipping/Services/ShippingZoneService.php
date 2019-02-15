@@ -60,10 +60,10 @@ class ShippingZoneService extends BaseService
         return $shipping;
     }
 
-    public function getByCountryName($name, $locale = 'en')
+    public function getByCountryName($name)
     {
-        $result = ShippingZone::with(['methods', 'methods.prices'])->whereHas('countries', function ($query) use ($name, $locale) {
-            $query->where('name->'.$locale, $name);
+        $result = ShippingZone::with(['methods', 'methods.prices'])->whereHas('countries', function ($query) use ($name) {
+            $query->where('name', $name);
         })->get();
 
         return $result;
