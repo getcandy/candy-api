@@ -8,9 +8,9 @@ use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Core\Countries\Models\Country;
 use GetCandy\Api\Core\Shipping\Models\ShippingZone;
 use GetCandy\Api\Core\Shipping\Models\ShippingPrice;
+use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 use GetCandy\Api\Core\Shipping\Models\ShippingMethod;
 use GetCandy\Api\Core\Shipping\Models\ShippingRegion;
-use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 use GetCandy\Api\Core\Shipping\Services\ShippingMethodService;
 
 /**
