@@ -8,7 +8,7 @@ use Braintree_Configuration;
 use Braintree_Test_Transaction;
 use Braintree_Exception_NotFound;
 use Braintree_PaymentMethodNonce;
-use GetCandy\Api\Core\Orders\Models\Order;
+use GetCandy\Api\Core\Payments\PaymentResponse;
 use GetCandy\Api\Core\Payments\Models\Transaction;
 
 class Braintree extends AbstractProvider
@@ -55,7 +55,7 @@ class Braintree extends AbstractProvider
         return Braintree_Test_Transaction::settle($sale->transaction->id);
     }
 
-    public function validateToken($token)
+    public function validate($token)
     {
         try {
             $token = Braintree_PaymentMethodNonce::find($token);
@@ -88,16 +88,16 @@ class Braintree extends AbstractProvider
         );
     }
 
-    public function charge($token, Order $order)
+    public function charge()
     {
-        $merchant = $this->getMerchant($order->currency);
+        $merchant = $this->getMerchant($this->order->currency);
 
-        $billing = $order->billingDetails;
-        $shipping = $order->shippingDetails;
+        $billing = $this->order->billingDetails;
+        $shipping = $this->order->shippingDetails;
 
         $sale = Braintree_Transaction::sale([
-            'amount' => $order->total,
-            'paymentMethodNonce' => $token,
+            'amount' => $this->order->order_total,
+            'paymentMethodNonce' => $this->token,
             'merchantAccountId' => $merchant,
             'customer' => [
                 'firstName' => $billing['firstname'],
@@ -124,9 +124,12 @@ class Braintree extends AbstractProvider
             ],
         ]);
 
-        $transaction = $this->createTransaction($sale, $order);
+        $response = new PaymentResponse(true, 'Payment Received');
 
-        return $transaction->success;
+        $response->transaction(
+            $this->createTransaction($sale, $this->order)
+        );
+        return $response;
     }
 
     protected function createTransaction($result, $order)
@@ -140,6 +143,8 @@ class Braintree extends AbstractProvider
         $transaction->provider = $result->transaction->paymentInstrumentType;
         $transaction->status = $result->transaction->status;
         $transaction->amount = $result->transaction->amount;
+        $transaction->driver = 'braintree';
+        $transaction->provider = 'Braintree';
         $transaction->card_type = $result->transaction->creditCardDetails->cardType ?? '';
         $transaction->last_four = $result->transaction->creditCardDetails->last4 ?? '';
 
@@ -177,7 +182,7 @@ class Braintree extends AbstractProvider
         }
     }
 
-    public function refund($token, $amount = null)
+    public function refund($token, $amount, $description)
     {
         $transaction = Braintree_Transaction::refund($token, $amount);
 
