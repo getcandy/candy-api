@@ -3,14 +3,14 @@
 namespace Tests\Unit\Shipping\Factories;
 
 use Tests\TestCase;
-use GetCandy\Api\Core\Shipping\Models\ShippingMethod;
-use GetCandy\Api\Core\Shipping\Models\ShippingZone;
-use GetCandy\Api\Core\Shipping\Models\ShippingRegion;
-use GetCandy\Api\Core\Shipping\Models\ShippingPrice;
 use GetCandy\Api\Core\Orders\Models\Order;
-use GetCandy\Api\Core\Shipping\Services\ShippingMethodService;
 use GetCandy\Api\Core\Baskets\Models\Basket;
+use GetCandy\Api\Core\Shipping\Models\ShippingZone;
+use GetCandy\Api\Core\Shipping\Models\ShippingPrice;
+use GetCandy\Api\Core\Shipping\Models\ShippingMethod;
+use GetCandy\Api\Core\Shipping\Models\ShippingRegion;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
+use GetCandy\Api\Core\Shipping\Services\ShippingMethodService;
 
 /**
  * @group shipping
