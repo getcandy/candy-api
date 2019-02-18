@@ -65,6 +65,9 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
                     'eur' => env('BRAINTREE_EUR_MERCHANT'),
                 ],
             ],
+            'sagepay' => [
+                'vendor' => 'SagePay',
+            ]
         ]);
     }
 
