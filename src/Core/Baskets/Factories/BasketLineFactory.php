@@ -110,7 +110,9 @@ class BasketLineFactory implements BasketLineInterface
             foreach ($this->discounts->get() as $discount) {
                 foreach ($discount->rewards as $reward) {
                     $method = 'apply'.ucfirst($reward->type);
-                    $line = $this->{$method}($line, $reward);
+                    if (method_exists($this, $method)) {
+                        $line = $this->{$method}($line, $reward);
+                    }
                 }
             }
         }
