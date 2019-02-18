@@ -18,6 +18,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
 
         $this->artisan('migrate', ['--database' => 'testing']);
         $this->artisan('db:seed', ['--class' => '\Seeds\TestingDatabaseSeeder']);
+        // $this->artisan('passport:install');
 
         // // By Default, set up everything as taxable
         // TaxCalculator::setTax(
