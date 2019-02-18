@@ -115,6 +115,7 @@ class BasketLineFactory implements BasketLineInterface
                     }
                 }
             }
+
         }
 
         return $this->lines;
@@ -128,11 +129,11 @@ class BasketLineFactory implements BasketLineInterface
         $line->discount_total += $amount;
 
         // Based on the amount, get the tax total
-        $tax = $this->tax->amount($line->total_cost - $amount);
+        $tax = $this->tax->amount($amount);
 
         // Minus off the difference on the line
-        $line->total_tax -= ($line->total_tax - $tax);
-        $line->total_cost -= $amount;
+        $line->total_tax = ($line->total_tax - $tax);
+        // $line->total_cost -= $amount;
 
         return $line;
     }

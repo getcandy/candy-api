@@ -125,7 +125,7 @@ class BasketFactoryTest extends TestCase
         $this->assertCount(1, $basket->discounts);
 
         $this->assertEquals(1, $basket->discount_total);
-        $this->assertEquals(9, $basket->sub_total);
+        $this->assertEquals(10, $basket->sub_total);
         $this->assertEquals(1.80, $basket->total_tax);
         $this->assertEquals(10.80, $basket->total_cost);
     }

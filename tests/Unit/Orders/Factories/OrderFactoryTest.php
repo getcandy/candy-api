@@ -210,13 +210,22 @@ class OrderFactoryTest extends TestCase
         $factory->basket($basket)->resolve();
     }
 
-    /**
-     * @group current
-     */
     public function test_percentage_coupon_can_be_set()
     {
         $factory = $this->app->make(OrderFactory::class);
-        $basket = $this->getinitalbasket();
+
+        $variant = \GetCandy\Api\Core\Products\Models\ProductVariant::first();
+        $basket = \GetCandy\Api\Core\Baskets\Models\Basket::forceCreate([
+            'currency' => 'GBP',
+        ]);
+
+
+        \GetCandy\Api\Core\Baskets\Models\BasketLine::forceCreate([
+            'product_variant_id' => $variant->id,
+            'basket_id' => $basket->id,
+            'quantity' => 1,
+            'total' => $variant->price,
+        ]);
 
         $discount = Discount::forceCreate([
             'attribute_data' => [
@@ -253,13 +262,20 @@ class OrderFactoryTest extends TestCase
             'coupon' => 'TESTCOUPON',
         ]);
 
-        $basket = $this->app->make(BasketFactory::class)->init($basket->refresh())->get();
+        $basket = $basket->refresh();
 
         $this->assertCount(1, $basket->discounts);
 
+
+        $basket = $this->app->make(BasketFactory::class)->init($basket)->get();
+
+
         $order = $factory->basket($basket)->resolve();
 
-        $this->assertEquals($basket->sub_total, $order->sub_total / 100);
+        // dump($basket->total_cost, $basket->total_tax);
+        // dd($basket->discount_total, $basket->sub_total, $basket->sub_total - $basket->discount_total, $order->sub_total);
+
+        $this->assertEquals(($basket->sub_total - $basket->discount_total), $order->sub_total / 100);
         $this->assertEquals($basket->discount_total, $order->discount_total / 100);
         $this->assertEquals($basket->total_tax, $order->tax_total / 100);
         $this->assertEquals($basket->total_cost, $order->order_total / 100);
