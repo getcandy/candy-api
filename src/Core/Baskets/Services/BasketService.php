@@ -12,6 +12,7 @@ use GetCandy\Api\Core\Baskets\Models\SavedBasket;
 use GetCandy\Api\Core\Baskets\Events\BasketStoredEvent;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketFactoryInterface;
 use GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface;
+use GetCandy\Api\Core\Discounts\Models\Discount;
 
 class BasketService extends BaseService
 {
@@ -54,7 +55,6 @@ class BasketService extends BaseService
     public function getBasket($id = null, $user = null)
     {
         $basket = new Basket();
-
         if ($id) {
             $basketId = $this->getDecodedId($id);
             $basket = Basket::find($basketId);
@@ -188,6 +188,21 @@ class BasketService extends BaseService
             $this->remapLines($basket, $data['variants']);
         }
         $basket->load('lines');
+
+        $discounts = Discount::all();
+
+        $eligible = [];
+
+        foreach ($discounts as $discount) {
+            foreach ($discount->items as $item) {
+                if ($item->check($basket->user, $basket)) {
+                    $eligible[] = $discount->id;
+                }
+            }
+        }
+
+        $basket->discounts()->sync($eligible);
+
         $basket = $this->factory->init($basket)->get();
 
         $basket->save();

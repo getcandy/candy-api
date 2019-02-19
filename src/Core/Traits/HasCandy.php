@@ -26,6 +26,11 @@ trait HasCandy
         return $this->belongsToMany(CustomerGroup::class);
     }
 
+    public function inGroup($group)
+    {
+        return $this->groups()->where('handle', '=', $group)->exists();
+    }
+
     public function language()
     {
         return $this->belongsTo(Language::class);
