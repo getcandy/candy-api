@@ -1,5 +1,6 @@
 <?php
 
+use DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -14,7 +15,7 @@ class ChangeCountryColumns extends Migration
     public function up()
     {
         // Get our countries.
-        $countries = json_decode(json_encode(\DB::table('countries')->get()->toArray()), true);
+        $countries = json_decode(json_encode(DB::table('countries')->get()->toArray()), true);
 
         foreach ($countries as $index => $country) {
             $nameJson = json_decode($country['name'], true);
@@ -30,7 +31,7 @@ class ChangeCountryColumns extends Migration
         });
 
         foreach ($countries as $country) {
-            \DB::table('countries')->where('id', $country['id'])->update([
+            DB::table('countries')->where('id', $country['id'])->update([
                 'name' => $country['name'],
             ]);
         }
