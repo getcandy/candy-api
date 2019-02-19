@@ -39,9 +39,6 @@ class ChangeCountryColumns extends Migration
 
     public function down()
     {
-        Schema::table('order_lines', function (Blueprint $table) {
-            $table->dropColumn('path');
-            $table->index('slug');
-        });
+        // This is a one way migration...
     }
 }
