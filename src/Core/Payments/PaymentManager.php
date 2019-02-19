@@ -6,6 +6,7 @@ use Illuminate\Support\Manager;
 use GetCandy\Api\Core\Payments\Providers\PayPal;
 use GetCandy\Api\Core\Payments\Providers\Offline;
 use GetCandy\Api\Core\Payments\Providers\SagePay;
+use GetCandy\Api\Core\Payments\Providers\Braintree;
 
 class PaymentManager extends Manager implements PaymentContract
 {
@@ -44,6 +45,18 @@ class PaymentManager extends Manager implements PaymentContract
         );
     }
 
+        /**
+     * Create the sagepay driver.
+     *
+     * @return SagePay
+     */
+    public function createBraintreeDriver()
+    {
+        return $this->buildProvider(
+            Braintree::class
+        );
+    }
+
     /**
      * Create the offline driver.
      *
@@ -65,7 +78,7 @@ class PaymentManager extends Manager implements PaymentContract
      */
     public function buildProvider($provider)
     {
-        return new $provider;
+        return $this->app->make($provider);
     }
 
     /**

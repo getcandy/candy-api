@@ -35,6 +35,7 @@ class ProductCriteria extends AbstractCriteria
 
         if ($this->id) {
             $builder->where('id', '=', $product->decodeId($this->id));
+
             return $builder;
         }
 

@@ -70,7 +70,6 @@ class InstallGetCandyCommand extends Command
         $this->table($headers, [
             ['Username / Email', $this->user->email],
             ['Password', '[hidden]'],
-            ['CMS Login', route('hub.login')],
             ['API URL', url('api/'.config('app.api_version', 'v1'))],
             ['CMS Docs', 'https://getcandy.io/documentation/hub'],
             ['CMS Docs', 'https://getcandy.io/documentation/api'],

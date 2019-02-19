@@ -45,7 +45,7 @@ class ApiServiceProvider extends ServiceProvider
     }
 
     /**
-     * Load up our module providers
+     * Load up our module providers.
      *
      * @return void
      */
@@ -172,7 +172,6 @@ class ApiServiceProvider extends ServiceProvider
         $this->app->singleton('fractal', function ($app) {
             return new Manager();
         });
-
 
         $mediaDrivers = config('assets.upload_drivers', []);
 

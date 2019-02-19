@@ -4,22 +4,21 @@ namespace Tests\Unit\Orders\Services;
 
 use Tests\TestCase;
 use GetCandy\Api\Core\Baskets\Models\Basket;
+use GetCandy\Api\Core\Baskets\Models\BasketLine;
+use GetCandy\Api\Core\Discounts\Models\Discount;
+use GetCandy\Api\Core\Products\Models\ProductVariant;
 use GetCandy\Api\Core\Baskets\Factories\BasketFactory;
-use GetCandy\Api\Core\Baskets\Interfaces\BasketFactoryInterface;
-use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
-use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaItem;
 use GetCandy\Api\Core\Discounts\Models\DiscountReward;
 use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaSet;
-use GetCandy\Api\Core\Discounts\Models\Discount;
-use GetCandy\Api\Core\Baskets\Models\BasketLine;
-use GetCandy\Api\Core\Products\Models\ProductVariant;
+use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaItem;
+use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
+use GetCandy\Api\Core\Baskets\Interfaces\BasketFactoryInterface;
 
 /**
  * @group baskets
  */
 class BasketFactoryTest extends TestCase
 {
-
     public function test_instance_can_be_swapped()
     {
         $current = $this->app->make(BasketFactoryInterface::class);
@@ -67,7 +66,6 @@ class BasketFactoryTest extends TestCase
         $this->assertEquals($basket->sub_total, $subTotal);
         $this->assertEquals($basket->total_tax, $taxTotal);
         $this->assertEquals($basket->total_cost, $total);
-
     }
 
     /**
@@ -107,7 +105,7 @@ class BasketFactoryTest extends TestCase
         DiscountReward::forceCreate([
             'discount_id' => $discount->id,
             'type' => 'percentage',
-            'value' => 10
+            'value' => 10,
         ]);
 
         DiscountCriteriaItem::forceCreate([
@@ -127,7 +125,7 @@ class BasketFactoryTest extends TestCase
         $this->assertCount(1, $basket->discounts);
 
         $this->assertEquals(1, $basket->discount_total);
-        $this->assertEquals(9, $basket->sub_total);
+        $this->assertEquals(10, $basket->sub_total);
         $this->assertEquals(1.80, $basket->total_tax);
         $this->assertEquals(10.80, $basket->total_cost);
     }

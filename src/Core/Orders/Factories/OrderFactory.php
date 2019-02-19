@@ -9,82 +9,97 @@ use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Core\Orders\Models\OrderDiscount;
 use GetCandy\Api\Core\Orders\Events\OrderSavedEvent;
 use GetCandy\Api\Core\Shipping\Models\ShippingPrice;
+use GetCandy\Api\Core\Pricing\PriceCalculatorInterface;
 use GetCandy\Api\Core\Settings\Services\SettingService;
 use GetCandy\Api\Core\Orders\Interfaces\OrderFactoryInterface;
 use GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException;
 use GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface;
-use GetCandy\Api\Core\Pricing\PriceCalculatorInterface;
+use GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface;
+use GetCandy\Api\Core\Taxes\Interfaces\TaxCalculatorInterface;
 
 class OrderFactory implements OrderFactoryInterface
 {
     /**
-     * The basket model
+     * The basket model.
      *
      * @var Basket
      */
     protected $basket;
 
     /**
-     * The order model instance
+     * The order model instance.
      *
      * @var Order
      */
     protected $order;
 
     /**
-     * The associated user
+     * The associated user.
      *
      * @var \Illuminate\Foundation\Auth\User
      */
     protected $user;
 
     /**
-     * The site settings provider
+     * The site settings provider.
      *
      * @var SettingService
      */
     protected $settings;
 
     /**
-     * The shipping model instance
+     * The shipping model instance.
      *
      * @var ShippingPrice
      */
     protected $shipping;
 
     /**
-     * The shipping preference
+     * The shipping preference.
      *
      * @var null|string
      */
     protected $shippingPreference;
 
     /**
-     * The currencies instance
+     * The currencies instance.
      *
      * @var CurrencyConverterInterface
      */
     protected $currencies;
 
     /**
-     * The price calculator instance
+     * The price calculator instance.
      *
      * @var PriceCalculatorInterface
      */
     protected $calculator;
 
+    /**
+     * The product variants factory.
+     *
+     * @var ProductVariantFactory
+     */
+    protected $variants;
+
+    protected $tax;
+
     public function __construct(
         SettingService $settings,
         CurrencyConverterInterface $currencies,
-        PriceCalculatorInterface $calculator
+        PriceCalculatorInterface $calculator,
+        ProductVariantInterface $variants,
+        TaxCalculatorInterface $tax
     ) {
         $this->settings = $settings;
         $this->currencies = $currencies;
         $this->calculator = $calculator;
+        $this->variants = $variants;
+        $this->tax = $tax;
     }
 
     /**
-     * Set the value for user
+     * Set the value for user.
      *
      * @param User $user
      * @return self
@@ -92,15 +107,16 @@ class OrderFactory implements OrderFactoryInterface
     public function user(User $user = null)
     {
         $this->user = $user;
+
         return $this;
     }
 
     /**
-     * Set the value for basket
+     * Set the value for basket.
      *
      * @param Basket $basket
      * @return self
-    */
+     */
     public function basket(Basket $basket)
     {
         $this->basket = $basket;
@@ -113,7 +129,7 @@ class OrderFactory implements OrderFactoryInterface
     }
 
     /**
-     * Set the value of order
+     * Set the value of order.
      *
      * @param Order $order
      * @return self
@@ -121,11 +137,12 @@ class OrderFactory implements OrderFactoryInterface
     public function order(Order $order)
     {
         $this->order = $order;
+
         return $this;
     }
 
     /**
-     * Get the value for basket
+     * Get the value for basket.
      *
      * @return Basket
      */
@@ -135,7 +152,7 @@ class OrderFactory implements OrderFactoryInterface
     }
 
     /**
-     * Get the value for user
+     * Get the value for user.
      *
      * @return User
      */
@@ -145,19 +162,19 @@ class OrderFactory implements OrderFactoryInterface
     }
 
     /**
-     * Resolve the basket to an order
+     * Resolve the basket to an order.
      *
      * @return Order
      */
     public function resolve()
     {
-        if (!$this->order) {
+        if (! $this->order) {
             $order = $this->getActiveOrder();
         } else {
             $order = $this->order;
         }
 
-        if (!$this->basket) {
+        if (! $this->basket) {
             $this->basket = $order->basket;
         }
 
@@ -170,6 +187,7 @@ class OrderFactory implements OrderFactoryInterface
         $order->currency = $this->basket->currency;
 
         $order->save();
+        $order->basketLines()->delete();
 
         $this->resolveDiscounts($order);
         $this->resolveLines($order);
@@ -184,14 +202,13 @@ class OrderFactory implements OrderFactoryInterface
     }
 
     /**
-     * Resolve the lines for our order
+     * Resolve the lines for our order.
      *
      * @param Order $order
      * @return Order
      */
     protected function resolveLines($order)
     {
-        $order->basketLines()->delete();
         $lines = [];
         foreach ($this->basket->lines as $line) {
             array_push($lines, [
@@ -209,12 +226,12 @@ class OrderFactory implements OrderFactoryInterface
             ]);
         }
         $order->lines()->createMany($lines);
+
         return $order;
     }
 
-
     /**
-     * Get the active order
+     * Get the active order.
      *
      * @return Order
      */
@@ -225,11 +242,12 @@ class OrderFactory implements OrderFactoryInterface
         } elseif ($this->basket->placedOrder) {
             throw new BasketHasPlacedOrderException;
         }
+
         return $this->createNewOrder();
     }
 
     /**
-     * Create a new order
+     * Create a new order.
      *
      * @return Order
      */
@@ -266,7 +284,7 @@ class OrderFactory implements OrderFactoryInterface
     }
 
     /**
-     * Sets the user fields
+     * Sets the user fields.
      *
      * @param Order $order
      * @return void
@@ -276,9 +294,9 @@ class OrderFactory implements OrderFactoryInterface
         foreach ($this->user->addresses as $address) {
             $this->setFields($order, $address->fields, $address->billing ? 'billing' : 'shipping');
         }
+
         return $order;
     }
-
 
     /**
      * Recalculates an orders totals.
@@ -291,14 +309,15 @@ class OrderFactory implements OrderFactoryInterface
         $totals = DB::table('order_lines')->select(
             'order_id',
             // DB::RAW('SUM(line_total) as line_total'),
-            DB::RAW('SUM(line_total) as line_total'),
+            DB::RAW('SUM(line_total) - SUM(discount_total) as line_total'),
             DB::RAW('SUM(delivery_total) as delivery_total'),
             DB::RAW('SUM(tax_total) as tax_total'),
             DB::RAW('SUM(discount_total) as discount_total'),
             DB::RAW('SUM(discount_total) as tax_discount_total'),
-            DB::RAW('SUM(line_total) + SUM(tax_total) + SUM(delivery_total) as grand_total')
+            DB::RAW('SUM(line_total) + SUM(tax_total) + SUM(delivery_total) - SUM(discount_total) as grand_total')
         )->where('order_id', '=', $order->id)
         ->where('is_shipping', '=', false)->groupBy('order_id')->first();
+
 
         // If we don't have any totals, then we must have had an order already and deleted all the lines
         // from it and gone back to the checkout.
@@ -319,12 +338,14 @@ class OrderFactory implements OrderFactoryInterface
                 DB::RAW('line_total + tax_total - discount_total as grand_total')
             )->whereIsShipping(true)->first();
 
+
         if ($shipping) {
             $totals->delivery_total += $shipping->line_total;
             $totals->tax_total += $shipping->tax_total;
             $totals->discount_total += $shipping->discount_total;
             $totals->grand_total += $shipping->grand_total;
         }
+
 
         $order->update([
             'delivery_total' => $totals->delivery_total ?? 0,
@@ -338,7 +359,7 @@ class OrderFactory implements OrderFactoryInterface
     }
 
     /**
-     * Set the value for shipping price with preference
+     * Set the value for shipping price with preference.
      *
      * @param ShippingPrice $price
      * @param string $preference
@@ -348,6 +369,7 @@ class OrderFactory implements OrderFactoryInterface
     {
         $this->shipping = $price;
         $this->preference = $preference;
+
         return $this;
     }
 
@@ -398,7 +420,7 @@ class OrderFactory implements OrderFactoryInterface
             'description' => $this->shipping->method->attribute('name'),
             'line_total' => $rate->total_cost,
             'unit_price' => $rate->unit_cost,
-            'option' => $this->shipping->zone->name,
+            'option' => $this->shipping->zone->name ?? null,
             'tax_total' => $rate->total_tax,
             'tax_rate' => $tax->percentage,
             'sku' => $this->shipping->encodedId(),
@@ -410,7 +432,7 @@ class OrderFactory implements OrderFactoryInterface
     }
 
     /**
-     * Resolve the discounts to an order
+     * Resolve the discounts to an order.
      *
      * @param Order $order
      * @return Order
@@ -448,7 +470,7 @@ class OrderFactory implements OrderFactoryInterface
 
                         foreach ($discount->rewards as $reward) {
                             if ($reward->type == 'percentage') {
-                                $total += (($basket->sub_total + $basket->discount_total) * $reward->value) / 100;
+                                $total += $basket->discount_total;
                             }
                         }
 
@@ -464,15 +486,25 @@ class OrderFactory implements OrderFactoryInterface
                                     $product->product->variants->first()
                                 )->get();
 
+
                                 // Work out how many times we need to add this product.
                                 $quantity = floor($quantity / $discount->lower_limit);
 
+                                // Get the line total.
+                                $lineTotal = (($variant->total_price * $quantity) * 100);
+                                $discountTotal = (($variant->total_price * 100)) * $quantity;
+
+                                $taxable = $lineTotal - $discountTotal;
+
+                                $tax = $this->tax->amount($taxable);
+
+
                                 $order->lines()->create([
                                     'sku' => $variant->sku,
-                                    'tax_total' => ($variant->total_tax * $quantity) * 100,
+                                    'tax_total' => $taxable * 100,
                                     'tax_rate' => $variant->tax->percentage,
-                                    'discount_total' => (($variant->total_price * 100) + ($variant->total_tax * 100)) * $quantity,
-                                    'line_total' => (($variant->total_price * $quantity) * 100),
+                                    'discount_total' => $discountTotal,
+                                    'line_total' => $lineTotal,
                                     'unit_price' => $variant->unit_cost * 100,
                                     'unit_qty' => $variant->unit_qty,
                                     'quantity' => $quantity,

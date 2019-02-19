@@ -5,8 +5,9 @@ namespace GetCandy\Api\Core\Baskets\Factories;
 use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Core\Baskets\Events\BasketFetchedEvent;
-use GetCandy\Api\Core\Baskets\Interfaces\BasketFactoryInterface;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketLineInterface;
+use GetCandy\Api\Core\Baskets\Interfaces\BasketFactoryInterface;
+use GetCandy\Api\Core\Taxes\Interfaces\TaxCalculatorInterface;
 
 class BasketFactory implements BasketFactoryInterface
 {
@@ -31,10 +32,15 @@ class BasketFactory implements BasketFactoryInterface
      */
     public $lines;
 
+
+    protected $tax;
+
     public function __construct(
-        BasketLineInterface $lineFactory
+        BasketLineInterface $lineFactory,
+        TaxCalculatorInterface $tax
     ) {
         $this->lines = $lineFactory;
+        $this->tax = $tax;
     }
 
     /**
@@ -67,14 +73,26 @@ class BasketFactory implements BasketFactoryInterface
         $this->basket->total_tax = 0;
         $this->basket->total_cost = 0;
 
+        // Without tax, without discounts.
+        $subTotal = 0;
+        // Discount total, without tax.
+        $discountTotal = 0;
+
+        // Total is subtotal minus discount total
+        // Tax is the amount from taking off the discount total from sub total.
+
         foreach ($this->lines->get() as $line) {
-            $this->basket->sub_total += $line->total_cost;
-            $this->basket->total_tax += $line->total_tax;
+            $subTotal += $line->total_cost;
+            $discountTotal += $line->discount_total;
         }
 
-        $this->basket->discount_total = $this->basket->lines->sum('discount_total');
 
-        $this->basket->total_cost = $this->basket->sub_total + $this->basket->total_tax;
+        $this->basket->sub_total = $subTotal;
+        $this->basket->discount_total = $discountTotal;
+
+
+        $this->basket->total_tax =  $this->tax->amount($subTotal - $discountTotal);
+        $this->basket->total_cost = ($this->basket->sub_total - $discountTotal) + $this->basket->total_tax;
 
         event(new BasketFetchedEvent($this->basket));
 

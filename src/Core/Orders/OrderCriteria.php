@@ -95,14 +95,14 @@ class OrderCriteria extends AbstractCriteria implements OrderCriteriaInterface
     protected $restrict = true;
 
     /**
-     * Set the sort by field
+     * Set the sort by field.
      *
      * @var string
      */
     protected $sortBy = 'created_at';
 
     /**
-     * Set the sort dir
+     * Set the sort dir.
      *
      * @var string
      */
@@ -139,8 +139,10 @@ class OrderCriteria extends AbstractCriteria implements OrderCriteriaInterface
         return $this;
     }
 
-    public function includes($includes) {
+    public function includes($includes)
+    {
         $this->includes = $includes;
+
         return $this;
     }
 
@@ -197,7 +199,7 @@ class OrderCriteria extends AbstractCriteria implements OrderCriteriaInterface
 
         if ($this->sortBy && $this->sortDir) {
             $query->orderBy($this->sortBy, $this->sortDir);
-        } else if ($this->status == 'awaiting-payment') {
+        } elseif ($this->status == 'awaiting-payment') {
             $query->orderBy('created_at', 'desc');
         } else {
             $query->orderBy('placed_at', 'desc');

@@ -67,7 +67,9 @@ class DiscountValidator
         }
 
         return ! $basket->discounts->filter(function ($discount) use ($value) {
-            if ($discount->stop_rules || ($discount->pivot->coupon === $value)) {
+            $incoming = strtoupper($value);
+            $current = strtoupper($discount->pivot->coupon);
+            if ($discount->stop_rules || ($incoming === $current)) {
                 return true;
             }
         })->count();

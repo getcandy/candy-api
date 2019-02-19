@@ -5,8 +5,8 @@ namespace Tests;
 use TaxCalculator;
 use Tests\Stubs\User;
 use GetCandy\Api\Providers\ApiServiceProvider;
-use Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables;
 use GetCandy\Api\Core\Baskets\Factories\BasketFactory;
+use Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables;
 
 abstract class TestCase extends \Orchestra\Testbench\TestCase
 {
@@ -19,6 +19,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         $this->artisan('vendor:publish', ['--provider' => 'Spatie\Activitylog\ActivitylogServiceProvider', '--tag' => 'migrations']);
         $this->artisan('migrate', ['--database' => 'testing']);
         $this->artisan('db:seed', ['--class' => '\Seeds\TestingDatabaseSeeder']);
+        // $this->artisan('passport:install');
 
         // // By Default, set up everything as taxable
         // TaxCalculator::setTax(
@@ -65,6 +66,9 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
                     'eur' => env('BRAINTREE_EUR_MERCHANT'),
                 ],
             ],
+            'sagepay' => [
+                'vendor' => 'SagePay',
+            ]
         ]);
     }
 

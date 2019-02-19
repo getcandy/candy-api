@@ -2,20 +2,20 @@
 
 namespace GetCandy\Api\Core\Pricing;
 
-use GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface;
 use GetCandy\Api\Core\Taxes\Interfaces\TaxCalculatorInterface;
+use GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface;
 
 class PriceCalculator implements PriceCalculatorInterface
 {
     /**
-     * The currency converter instance
+     * The currency converter instance.
      *
      * @var CurrencyConverterInterface
      */
     protected $converter;
 
     /**
-     * The tax calculator instance
+     * The tax calculator instance.
      *
      * @var TaxCalculatorInterface
      */

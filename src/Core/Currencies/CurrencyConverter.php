@@ -11,7 +11,7 @@ class CurrencyConverter implements CurrencyConverterInterface
     protected $currency;
 
     /**
-     * The currency service
+     * The currency service.
      *
      * @var CurrencyServiceInterface
      */
@@ -25,6 +25,7 @@ class CurrencyConverter implements CurrencyConverterInterface
     public function setDefault()
     {
         $this->currency = $this->currencies->getDefaultRecord();
+
         return $this;
     }
 

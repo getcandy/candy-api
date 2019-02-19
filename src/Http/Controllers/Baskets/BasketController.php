@@ -75,15 +75,16 @@ class BasketController extends BaseController
     {
         $discount = $discounts->getByCoupon($request->coupon);
         $basket = $this->baskets->id($basketId)->first();
-
         $factory = $this->factory->init($basket);
         $factory->lines->discount($discount->set->discount);
 
         $discount->uses ? $discount->increment('uses') : 1;
 
         if (! $basket->discount($request->coupon)) {
-            $basket->discounts()->attach($discount->id, ['coupon' => $request->coupon]);
+            $basket->discounts()->attach($discount->set->discount->id, ['coupon' => $request->coupon]);
         }
+
+        $basket->load('discounts');
 
         return new BasketResource(
             $factory->get()
@@ -94,7 +95,7 @@ class BasketController extends BaseController
     {
         $basket = app('api')->baskets()->deleteDiscount($basketId, $request->discount_id);
 
-        return new BasketResource($basket);
+        return new BasketResource($this->factory->init($basket->refresh())->get());
     }
 
     /**
@@ -124,6 +125,7 @@ class BasketController extends BaseController
     public function save($id, SaveRequest $request)
     {
         $basket = app('api')->baskets()->save($id, $request->name);
+
         return new BasketResource($basket);
     }
 
@@ -168,6 +170,7 @@ class BasketController extends BaseController
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
+
         return new BasketResource($basket);
     }
 
@@ -178,6 +181,7 @@ class BasketController extends BaseController
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
+
         return new BasketResource($basket);
     }
 
@@ -193,6 +197,7 @@ class BasketController extends BaseController
         if (! $basket) {
             return $this->errorNotFound("Basket does't exist");
         }
+
         return new BasketResource($basket);
     }
 
@@ -205,6 +210,7 @@ class BasketController extends BaseController
     public function resolve(Request $request)
     {
         $basket = app('api')->baskets()->resolve($request->user(), $request->basket_id, $request->merge);
+
         return new BasketResource($basket);
     }
 }

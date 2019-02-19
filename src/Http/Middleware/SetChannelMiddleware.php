@@ -7,9 +7,8 @@ use GetCandy\Api\Core\Channels\Interfaces\ChannelFactoryInterface;
 
 class SetChannelMiddleware
 {
-
     /**
-     * The channel factory interface
+     * The channel factory interface.
      *
      * @var ChannelFactoryInterface
      */
@@ -19,6 +18,7 @@ class SetChannelMiddleware
     {
         $this->channel = $channel;
     }
+
     /**
      * Handle an incoming request.
      *
@@ -29,6 +29,7 @@ class SetChannelMiddleware
     public function handle($request, Closure $next)
     {
         $this->channel->set($request->channel);
+
         return $next($request);
     }
 }

@@ -19,6 +19,7 @@ class ProductVariantFactory extends AbstractFactory implements ProductVariantInt
     public function init(ProductVariant $variant)
     {
         $this->variant = $variant;
+
         return $this;
     }
 

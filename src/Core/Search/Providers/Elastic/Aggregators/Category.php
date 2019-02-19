@@ -73,7 +73,7 @@ class Category
         foreach ($value as $category) {
             $term = new Term;
             $term->setTerm('departments.id', $category);
-            $postBool->addMust($term);
+            $postBool->addShould($term);
         }
 
         // Need to set another agg on categories_remaining

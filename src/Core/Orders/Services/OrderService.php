@@ -45,14 +45,14 @@ class OrderService extends BaseService implements OrderServiceInterface
     protected $payments;
 
     /**
-     * The price calculator instance
+     * The price calculator instance.
      *
      * @var CurrencyConverterInterface
      */
     protected $currencies;
 
     /**
-     * The price calculator instance
+     * The price calculator instance.
      *
      * @var PriceCalculatorInterface
      */
@@ -149,7 +149,6 @@ class OrderService extends BaseService implements OrderServiceInterface
     public function addShippingLine($orderId, $shippingPriceId, $preference = null)
     {
         $order = $this->getByHashedId($orderId);
-
 
         $price = app('api')->shippingPrices()->getByHashedId($shippingPriceId);
 
@@ -407,10 +406,11 @@ class OrderService extends BaseService implements OrderServiceInterface
     {
         $order = $this->getByHashedId($id);
 
-        if (! empty($data['vat_no'])) {
+        if (!empty($data['vat_no'])) {
             $order->vat_no = $data['vat_no'];
-            unset($data['vat_no']);
         }
+
+        unset($data['vat_no']);
 
         $order->save();
 
@@ -846,12 +846,15 @@ class OrderService extends BaseService implements OrderServiceInterface
                                 // Work out how many times we need to add this product.
                                 $quantity = floor($quantity / $discount->lower_limit);
 
+                                // So we get what line total is.
+                                $lineTotal = (($variant->total_price * $quantity) * 100);
+
                                 $order->lines()->create([
                                     'sku' => $variant->sku,
                                     'tax_total' => ($variant->total_tax * $quantity) * 100,
                                     'tax_rate' => $variant->tax->percentage,
                                     'discount_total' => (($variant->total_price * 100) + ($variant->total_tax * 100)) * $quantity,
-                                    'line_total' => (($variant->total_price * $quantity) * 100),
+                                    'line_total' => $lineTotal,
                                     'unit_price' => $variant->unit_cost * 100,
                                     'unit_qty' => $variant->unit_qty,
                                     'quantity' => $quantity,
