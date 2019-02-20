@@ -70,7 +70,7 @@ class Order extends BaseModel
             return $qb;
         }
         return $qb->whereHas('lines', function ($q) use ($zone) {
-            return $q->where('description', '=', $zone);
+            return $q->where('option', '=', $zone);
         });
     }
 
