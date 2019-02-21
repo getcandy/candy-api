@@ -8,35 +8,35 @@ use GetCandy\Api\Core\ActivityLog\Interfaces\ActivityLogFactoryInterface;
 class ActivityLogFactory implements ActivityLogFactoryInterface
 {
     /**
-     * The related model
+     * The related model.
      *
      * @var Model
      */
     protected $model;
 
     /**
-     * The action taken
+     * The action taken.
      *
      * @var string
      */
     protected $action;
 
     /**
-     * Additional properties to send
+     * Additional properties to send.
      *
      * @var array
      */
     protected $properties = [];
 
     /**
-     * The user who commited the action
+     * The user who commited the action.
      *
      * @var string
      */
     protected $user;
 
     /**
-     * Set the model
+     * Set the model.
      *
      * @param Model $model
      * @return self
@@ -44,11 +44,12 @@ class ActivityLogFactory implements ActivityLogFactoryInterface
     public function against(Model $model)
     {
         $this->model = $model;
+
         return $this;
     }
 
     /**
-     * Set the value for action
+     * Set the value for action.
      *
      * @param string $action
      * @return self
@@ -56,11 +57,12 @@ class ActivityLogFactory implements ActivityLogFactoryInterface
     public function action($action)
     {
         $this->action = $action;
+
         return $this;
     }
 
     /**
-     * Set any additional properties
+     * Set any additional properties.
      *
      * @param array $properties
      * @return self
@@ -68,11 +70,12 @@ class ActivityLogFactory implements ActivityLogFactoryInterface
     public function with($properties = [])
     {
         $this->properties = $properties;
+
         return $this;
     }
 
     /**
-     * Set the value for user
+     * Set the value for user.
      *
      * @param Model $user
      * @return self
@@ -80,11 +83,12 @@ class ActivityLogFactory implements ActivityLogFactoryInterface
     public function as(Model $user = null)
     {
         $this->user = $user;
+
         return $this;
     }
 
     /**
-     * Log the action
+     * Log the action.
      *
      * @param string $type
      * @return void

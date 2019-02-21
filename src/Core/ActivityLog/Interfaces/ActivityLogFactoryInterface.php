@@ -5,7 +5,7 @@ namespace GetCandy\Api\Core\ActivityLog\Interfaces;
 interface ActivityLogFactoryInterface
 {
     /**
-     * Log the action
+     * Log the action.
      *
      * @param string $type
      * @return void

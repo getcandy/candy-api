@@ -9,14 +9,14 @@ use GetCandy\Api\Core\ActivityLog\Interfaces\ActivityLogFactoryInterface;
 class LogRefundListener
 {
     /**
-     * The current requst
+     * The current requst.
      *
      * @var Request
      */
     protected $request;
 
     /**
-     * The log factory
+     * The log factory.
      *
      * @var ActivityLogFactoryInterface
      */

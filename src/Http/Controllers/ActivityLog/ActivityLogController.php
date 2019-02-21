@@ -16,7 +16,7 @@ class ActivityLogController extends BaseController
     ];
 
     /**
-     * Handle the log request
+     * Handle the log request.
      *
      * @param Request $request
      * @return void
@@ -32,7 +32,7 @@ class ActivityLogController extends BaseController
     }
 
     /**
-     * Store the activity log entry
+     * Store the activity log entry.
      *
      * @param Request $request
      * @return void
