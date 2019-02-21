@@ -8,14 +8,14 @@ use GetCandy\Api\Core\Payments\Models\Transaction;
 class OrderRefundEvent
 {
     /**
-     * The related order
+     * The related order.
      *
      * @var Order
      */
     public $order;
 
     /**
-     * The refunded transaction
+     * The refunded transaction.
      *
      * @var Transaction
      */

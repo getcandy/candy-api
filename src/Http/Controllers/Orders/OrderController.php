@@ -57,7 +57,7 @@ class OrderController extends BaseController
             'from' => 'date_format:Y-m-d',
             'to' => 'date_format:Y-m-d',
         ]);
-        
+
         $criteria = $this->orders;
 
         $criteria->fill($request->all())

@@ -10,11 +10,11 @@ use GetCandy\Api\Core\Products\Events\ProductViewedEvent;
 use GetCandy\Api\Core\Products\Events\ProductCreatedEvent;
 use GetCandy\Api\Core\Products\Events\ProductUpdatedEvent;
 use GetCandy\Api\Core\Search\Listeners\IndexObjectListener;
-use GetCandy\Api\Core\Orders\Listeners\RefreshOrderListener;
 use GetCandy\Api\Core\Attributes\Events\AttributeSavedEvent;
-use GetCandy\Api\Core\Search\Listeners\UpdateMappingsListener;
-use GetCandy\Api\Core\Orders\Listeners\SyncWithBasketListener;
+use GetCandy\Api\Core\Orders\Listeners\RefreshOrderListener;
 use GetCandy\Api\Core\ActivityLog\Listeners\LogRefundListener;
+use GetCandy\Api\Core\Orders\Listeners\SyncWithBasketListener;
+use GetCandy\Api\Core\Search\Listeners\UpdateMappingsListener;
 use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
 use GetCandy\Api\Core\Attributes\Listeners\SyncAttributablesListener;
 use GetCandy\Api\Core\Discounts\Listeners\AddDiscountToProductListener;
@@ -54,7 +54,7 @@ class EventServiceProvider extends ServiceProvider
             RefreshOrderListener::class,
         ],
         OrderRefundEvent::class => [
-            LogRefundListener::class
+            LogRefundListener::class,
         ],
     ];
 

@@ -9,7 +9,7 @@ use GetCandy\Api\Core\ActivityLog\Interfaces\ActivityLogCriteriaInterface;
 class ActivityLogCriteria extends AbstractCriteria implements ActivityLogCriteriaInterface
 {
     /**
-     * The model to query on
+     * The model to query on.
      *
      * @var \Illuminate\Database\Eloquent\Model
      */
