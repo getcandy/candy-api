@@ -138,7 +138,7 @@ return [
                 'bigintConversion' => false,
                 'username' => null,
                 'password' => null,
-            ]
+            ],
         ],
         'index_prefix' => env('SEARCH_INDEX_PREFIX', 'candy'),
         'index' => env('SEARCH_INDEX', 'candy_products_en'),
