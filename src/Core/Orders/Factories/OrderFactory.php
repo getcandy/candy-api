@@ -12,10 +12,10 @@ use GetCandy\Api\Core\Shipping\Models\ShippingPrice;
 use GetCandy\Api\Core\Pricing\PriceCalculatorInterface;
 use GetCandy\Api\Core\Settings\Services\SettingService;
 use GetCandy\Api\Core\Orders\Interfaces\OrderFactoryInterface;
+use GetCandy\Api\Core\Taxes\Interfaces\TaxCalculatorInterface;
+use GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface;
 use GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException;
 use GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface;
-use GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface;
-use GetCandy\Api\Core\Taxes\Interfaces\TaxCalculatorInterface;
 
 class OrderFactory implements OrderFactoryInterface
 {
@@ -318,7 +318,6 @@ class OrderFactory implements OrderFactoryInterface
         )->where('order_id', '=', $order->id)
         ->where('is_shipping', '=', false)->groupBy('order_id')->first();
 
-
         // If we don't have any totals, then we must have had an order already and deleted all the lines
         // from it and gone back to the checkout.
         if (! $totals) {
@@ -338,14 +337,12 @@ class OrderFactory implements OrderFactoryInterface
                 DB::RAW('line_total + tax_total - discount_total as grand_total')
             )->whereIsShipping(true)->first();
 
-
         if ($shipping) {
             $totals->delivery_total += $shipping->line_total;
             $totals->tax_total += $shipping->tax_total;
             $totals->discount_total += $shipping->discount_total;
             $totals->grand_total += $shipping->grand_total;
         }
-
 
         $order->update([
             'delivery_total' => $totals->delivery_total ?? 0,
@@ -486,7 +483,6 @@ class OrderFactory implements OrderFactoryInterface
                                     $product->product->variants->first()
                                 )->get();
 
-
                                 // Work out how many times we need to add this product.
                                 $quantity = floor($quantity / $discount->lower_limit);
 
@@ -497,7 +493,6 @@ class OrderFactory implements OrderFactoryInterface
                                 $taxable = $lineTotal - $discountTotal;
 
                                 $tax = $this->tax->amount($taxable);
-
 
                                 $order->lines()->create([
                                     'sku' => $variant->sku,

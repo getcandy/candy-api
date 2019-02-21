@@ -219,7 +219,6 @@ class OrderFactoryTest extends TestCase
             'currency' => 'GBP',
         ]);
 
-
         \GetCandy\Api\Core\Baskets\Models\BasketLine::forceCreate([
             'product_variant_id' => $variant->id,
             'basket_id' => $basket->id,
@@ -266,9 +265,7 @@ class OrderFactoryTest extends TestCase
 
         $this->assertCount(1, $basket->discounts);
 
-
         $basket = $this->app->make(BasketFactory::class)->init($basket)->get();
-
 
         $order = $factory->basket($basket)->resolve();
 

@@ -129,6 +129,7 @@ class Braintree extends AbstractProvider
         $response->transaction(
             $this->createTransaction($sale, $this->order)
         );
+
         return $response;
     }
 

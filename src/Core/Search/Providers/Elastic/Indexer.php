@@ -184,7 +184,7 @@ class Indexer
         $indexables = $type->getIndexDocument($model);
 
         foreach ($langs as $lang) {
-            $alias = $index . '_' . $lang->lang;
+            $alias = $index.'_'.$lang->lang;
 
             $indices = $status->getIndicesWithAlias($alias);
 
@@ -222,7 +222,7 @@ class Indexer
             $indexables = $type->getIndexDocument($model);
 
             foreach ($langs as $lang) {
-                $alias = $index . '_' . $lang->lang;
+                $alias = $index.'_'.$lang->lang;
 
                 $indices = $status->getIndicesWithAlias($alias);
 
@@ -329,8 +329,6 @@ class Indexer
             $this->reset($alias."_{$remove}");
         }
     }
-
-
 
     /**
      * Add a single model to the elastic index.

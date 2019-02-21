@@ -45,7 +45,7 @@ class PaymentManager extends Manager implements PaymentContract
         );
     }
 
-        /**
+    /**
      * Create the sagepay driver.
      *
      * @return SagePay

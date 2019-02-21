@@ -49,7 +49,7 @@ class SagePay extends AbstractProvider
                 'description' => $description,
             ];
 
-            $response = $this->http->post($this->host . 'transactions', [
+            $response = $this->http->post($this->host.'transactions', [
                 'headers' => [
                     'Authorization' => 'Basic '.$this->getCredentials(),
                     'Content-Type' => 'application/json',
@@ -115,7 +115,7 @@ class SagePay extends AbstractProvider
             }
 
             // \Log::info(json_encode($payload));
-            $response = $this->http->post($this->host . 'transactions', [
+            $response = $this->http->post($this->host.'transactions', [
                 'headers' => [
                     'Authorization' => 'Basic '.$this->getCredentials(),
                     'Content-Type' => 'application/json',
@@ -123,7 +123,6 @@ class SagePay extends AbstractProvider
                 ],
                 'json' => $payload,
             ]);
-
         } catch (ClientException $e) {
             $errors = json_decode($e->getResponse()->getBody()->getContents(), true);
             $response = new PaymentResponse(false, 'Payment Failed', $errors);
@@ -193,6 +192,7 @@ class SagePay extends AbstractProvider
             ]);
         } catch (ClientException $e) {
             $errors = json_decode($e->getResponse()->getBody()->getContents(), true);
+
             return $this->createFailedTransaction([
                 'statusDetail' => $errors['description'],
                 'status' => 'failed',
@@ -329,7 +329,7 @@ class SagePay extends AbstractProvider
     public function getClientToken()
     {
         try {
-            $response = $this->http->post($this->host . 'merchant-session-keys', [
+            $response = $this->http->post($this->host.'merchant-session-keys', [
                 'headers' => [
                     'Authorization' => 'Basic '.$this->getCredentials(),
                     'Content-Type' => 'application/json',
@@ -341,6 +341,7 @@ class SagePay extends AbstractProvider
             ]);
         } catch (ClientException $e) {
             Log::error($e->getMessage());
+
             return;
         }
 

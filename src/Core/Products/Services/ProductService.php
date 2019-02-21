@@ -303,7 +303,6 @@ class ProductService extends BaseService
             'primaryAsset.source',
         ])->whereIn('id', $parsedIds);
 
-
         if (count($parsedIds)) {
             $query = $query->orderByRaw("field(id,{$placeholders})", $parsedIds);
         }

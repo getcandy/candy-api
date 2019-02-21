@@ -115,7 +115,6 @@ class BasketLineFactory implements BasketLineInterface
                     }
                 }
             }
-
         }
 
         return $this->lines;
