@@ -6,8 +6,8 @@ use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Core\Baskets\Events\BasketFetchedEvent;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketLineInterface;
-use GetCandy\Api\Core\Baskets\Interfaces\BasketFactoryInterface;
 use GetCandy\Api\Core\Taxes\Interfaces\TaxCalculatorInterface;
+use GetCandy\Api\Core\Baskets\Interfaces\BasketFactoryInterface;
 
 class BasketFactory implements BasketFactoryInterface
 {
@@ -31,7 +31,6 @@ class BasketFactory implements BasketFactoryInterface
      * @var BasketLineInterface
      */
     public $lines;
-
 
     protected $tax;
 
@@ -86,12 +85,10 @@ class BasketFactory implements BasketFactoryInterface
             $discountTotal += $line->discount_total;
         }
 
-
         $this->basket->sub_total = $subTotal;
         $this->basket->discount_total = $discountTotal;
 
-
-        $this->basket->total_tax =  $this->tax->amount($subTotal - $discountTotal);
+        $this->basket->total_tax = $this->tax->amount($subTotal - $discountTotal);
         $this->basket->total_cost = ($this->basket->sub_total - $discountTotal) + $this->basket->total_tax;
 
         event(new BasketFetchedEvent($this->basket));

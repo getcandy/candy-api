@@ -67,7 +67,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             ],
             'sagepay' => [
                 'vendor' => 'SagePay',
-            ]
+            ],
         ]);
     }
 

@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use Tests\Stubs\User;
 use Laravel\Passport\Client;
 
 abstract class FeatureCase extends TestCase
@@ -17,6 +16,7 @@ abstract class FeatureCase extends TestCase
         if ($user) {
             return $this->getUserToken();
         }
+
         return $this->getClientToken();
     }
 
@@ -27,7 +27,6 @@ abstract class FeatureCase extends TestCase
         }
 
         $client = Client::first();
-
 
         dd($client);
     }

@@ -16,7 +16,7 @@ class SetCustomerGroups
      */
     public function handle($request, Closure $next)
     {
-        if (($user = $request->user()) && !count(GetCandy::getGroups())) {
+        if (($user = $request->user()) && ! count(GetCandy::getGroups())) {
             // Are we an admin?
             if ($user->hasRole('admin')) {
                 $groups = app('api')->customerGroups()->all();
