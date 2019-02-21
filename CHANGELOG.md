@@ -1,3 +1,11 @@
+#v0.2.4
+
+- [fixed] Fixed issue with order searching caused by changing variant to description on order lines.
+
+#v0.2.3
+
+- [added] Added created_at to the transaction resource
+
 # v0.2.2
 
 - [added] Ability to set custom attributes on resources, just call `$model->setCustomAttribute('foo', 'bar');`.

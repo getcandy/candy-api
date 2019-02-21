@@ -14,8 +14,13 @@ class AssetTransform extends BaseModel
     public function toArray()
     {
         return array_merge(parent::toArray(), [
-            'url' => Storage::disk($this->asset->source->disk)->url($this->location.'/'.$this->filename),
+            'url' => $this->url,
         ]);
+    }
+
+    public function getUrlAttribute()
+    {
+        return Storage::disk($this->asset->source->disk)->url($this->location.'/'.$this->filename);
     }
 
     public function transform()

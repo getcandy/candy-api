@@ -2,15 +2,14 @@
 
 namespace GetCandy\Api\Http\Controllers\Payments;
 
-use Illuminate\Http\Request;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Core\Payments\Models\Transaction;
 use GetCandy\Api\Http\Requests\Payments\VoidRequest;
+use GetCandy\Api\Http\Resources\Orders\OrderResource;
 use GetCandy\Api\Http\Requests\Payments\RefundRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use GetCandy\Api\Http\Requests\Payments\ValidateThreeDRequest;
 use GetCandy\Api\Payments\Exceptions\AlreadyRefundedException;
-use GetCandy\Api\Http\Transformers\Fractal\Orders\OrderTransformer;
 use GetCandy\Api\Core\Payments\Exceptions\TransactionAmountException;
 use GetCandy\Api\Http\Transformers\Fractal\Payments\ProviderTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Payments\TransactionTransformer;
@@ -105,6 +104,6 @@ class PaymentController extends BaseController
             return $this->errorWrongArgs();
         }
 
-        return $this->respondWithItem($response, new OrderTransformer);
+        return new OrderResource($response);
     }
 }

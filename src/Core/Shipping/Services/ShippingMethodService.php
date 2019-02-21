@@ -7,7 +7,6 @@ use GetCandy\Api\Core\Shipping\ShippingCalculator;
 use GetCandy\Api\Core\Baskets\Services\BasketService;
 use GetCandy\Api\Core\Shipping\Models\ShippingMethod;
 use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
-use GetCandy\Api\Core\Channels\Interfaces\ChannelFactoryInterface;
 
 class ShippingMethodService extends BaseService
 {
@@ -119,8 +118,6 @@ class ShippingMethodService extends BaseService
                 }
             }
         }
-
-
 
         return collect($options);
     }
