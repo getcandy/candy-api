@@ -121,6 +121,25 @@ return [
     */
     'search' => [
         'client' => \GetCandy\Api\Core\Search\Providers\Elastic\Elastic::class,
+        'client_config' => [
+            'elastic' => [
+                'host' => null,
+                'port' => null,
+                'path' => null,
+                'url' => null,
+                'proxy' => null,
+                'transport' => null,
+                'persistent' => true,
+                'timeout' => null,
+                'connections' => [], // host, port, path, timeout, transport, compression, persistent, timeout, username, password, config -> (curl, headers, url)
+                'roundRobin' => false,
+                'log' => false,
+                'retryOnConflict' => 0,
+                'bigintConversion' => false,
+                'username' => null,
+                'password' => null,
+            ]
+        ],
         'index_prefix' => env('SEARCH_INDEX_PREFIX', 'candy'),
         'index' => env('SEARCH_INDEX', 'candy_products_en'),
         /*

@@ -1,3 +1,34 @@
+#v0.2.5
+
+- [changed] The country name column in the database is now a text field, we aim to support translation files instead for this.
+- [added] You can now specify search config for the client.
+
+``` php
+    // Rest of getcandy.php config
+    'search' => [
+        'client_config' => [
+            'elastic' => [
+                'host' => null,
+                'port' => null,
+                'path' => null,
+                'url' => null,
+                'proxy' => null,
+                'transport' => null,
+                'persistent' => true,
+                'timeout' => null,
+                'connections' => [], // host, port, path, timeout, transport, compression, persistent, timeout, username, password, config -> (curl, headers, url)
+                'roundRobin' => false,
+                'log' => false,
+                'retryOnConflict' => 0,
+                'bigintConversion' => false,
+                'username' => null,
+                'password' => null,
+            ]
+        ],
+    ]
+```
+
+
 #v0.2.4
 
 - [fixed] Fixed issue with order searching caused by changing variant to description on order lines.
