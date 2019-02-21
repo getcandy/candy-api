@@ -18,8 +18,6 @@ use GetCandy\Api\Core\Shipping\Services\ShippingMethodService;
  */
 class ShippingMethodServiceTest extends TestCase
 {
-
-
     public function test_can_get_correct_shipping_methods()
     {
         $country = Country::forceCreate([
@@ -122,7 +120,6 @@ class ShippingMethodServiceTest extends TestCase
                     'visible' => 1,
                 ]);
             }
-
 
             $price = new ShippingPrice;
             $price->rate = 795;

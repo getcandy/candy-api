@@ -6,15 +6,15 @@ use Event;
 use Mockery;
 use Tests\TestCase;
 use GuzzleHttp\Client;
+use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Stream\Stream;
-use GetCandy\Api\Core\Payments\PaymentContract;
-use GetCandy\Api\Core\Payments\Providers\SagePay;
-use GetCandy\Api\Core\Orders\Factories\OrderFactory;
 use GuzzleHttp\Handler\MockHandler;
-use GuzzleHttp\HandlerStack;
+use GetCandy\Api\Core\Payments\PaymentContract;
 use GetCandy\Api\Core\Payments\PaymentResponse;
+use GetCandy\Api\Core\Payments\Providers\SagePay;
 use GetCandy\Api\Core\Payments\Models\Transaction;
+use GetCandy\Api\Core\Orders\Factories\OrderFactory;
 use GetCandy\Api\Core\Payments\ThreeDSecureResponse;
 
 /**
@@ -31,7 +31,6 @@ class SagePayTest extends TestCase
     public function test_can_get_client_token()
     {
         // Get our required response
-
 
         // Mock up our client
         $client = Mockery::mock('GuzzleHttp\Client');
@@ -57,7 +56,7 @@ class SagePayTest extends TestCase
         // Mock up our client
         $mock = new MockHandler([
             $this->getMerchantTokenResponse(),
-            $this->getSuccessfulChargeResponse($order->order_total)
+            $this->getSuccessfulChargeResponse($order->order_total),
         ]);
 
         $handler = HandlerStack::create($mock);
@@ -143,7 +142,6 @@ class SagePayTest extends TestCase
             'paRequest' => 1234,
         ], $result->params());
 
-
         $threed = $sagepay->processThreeD('TEST_TRANSACTION', 1234);
 
         $this->assertTrue($threed->success);
@@ -184,7 +182,7 @@ class SagePayTest extends TestCase
     }
 
     /**
-     * Gets a mocked threed secure response
+     * Gets a mocked threed secure response.
      *
      * @return Response
      */
@@ -193,11 +191,12 @@ class SagePayTest extends TestCase
         $body = Stream::factory(json_encode([
             'status' => 'Authenticated',
         ]));
+
         return new Response(200, [], $body);
     }
 
     /**
-     * Get a refund response
+     * Get a refund response.
      *
      * @return Response
      */
@@ -209,15 +208,16 @@ class SagePayTest extends TestCase
             'paymentMethod' => [
                 'card' => [
                     'cardType' => 'Visa',
-                    'lastFourDigits' => 1234
-                ]
-            ]
+                    'lastFourDigits' => 1234,
+                ],
+            ],
         ]));
+
         return new Response(200, [], $body);
     }
 
     /**
-     * Returns a mocked merchant token response
+     * Returns a mocked merchant token response.
      *
      * @return Response
      */
@@ -227,13 +227,14 @@ class SagePayTest extends TestCase
             'expiry' => null,
             'merchantSessionKey' => 'TEST_MERCHANT_KEY',
         ]));
+
         return new Response(200, [], $body);
     }
 
     /**
-     * Returns a mocked successful charge response
+     * Returns a mocked successful charge response.
      *
-     * @param integer $amount
+     * @param int $amount
      * @return Response
      */
     protected function getSuccessfulChargeResponse($amount = 10, $extra = [])
@@ -250,7 +251,7 @@ class SagePayTest extends TestCase
                 'card' => [
                     'cardType' => 'Mastercard',
                     'lastFourDigits' => '1234',
-                ]
+                ],
             ],
             '3DSecure' => [
                 'status' => false,
