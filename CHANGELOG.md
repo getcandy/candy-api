@@ -1,3 +1,9 @@
+#v0.2.5
+
+- [fixed] Fixed order notes and customer reference not saving on order.
+- [fixed] Fixed exception when retrieving the current basket if the authenticated user never had one before.
+- [changed] Don't round tiered pricing, comes back as three decimal places.
+
 #v0.2.4
 
 - [fixed] Fixed issue with order searching caused by changing variant to description on order lines.
