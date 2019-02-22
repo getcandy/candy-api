@@ -47,7 +47,7 @@ class PriceCalculator implements PriceCalculatorInterface
             'unitCost' => $unitPrice,
             'unitTax' => round($taxamount / $qty, 2),
             'factor' => $factor,
-            'totalCost' => round($converted, 2),
+            'totalCost' => $converted,
             'totalTax' => $taxamount,
             'qty' => (int) $qty,
         ]);
