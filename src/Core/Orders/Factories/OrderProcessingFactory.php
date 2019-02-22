@@ -195,6 +195,8 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
         $this->order->customer_reference = $this->customerReference;
         $this->order->type = $this->type;
 
+        $this->order->save();
+
         $response = $driver
             ->token($this->nonce)
             ->order($this->order)
