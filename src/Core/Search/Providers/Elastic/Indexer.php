@@ -30,9 +30,9 @@ class Indexer
      */
     protected $resolver;
 
-    public function __construct(Client $client, LanguageService $lang, IndiceResolver $resolver)
+    public function __construct(LanguageService $lang, IndiceResolver $resolver)
     {
-        $this->client = $client;
+        $this->client = new Client(config('getcandy.search.client_config.elastic', []));
         $this->lang = $lang;
         $this->resolver = $resolver;
     }

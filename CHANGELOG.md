@@ -1,8 +1,38 @@
+#0.2.6
+
+- [added] You can now specify search config for the client.
+
+``` php
+    // Rest of getcandy.php config
+    'search' => [
+        'client_config' => [
+            'elastic' => [
+                'host' => null,
+                'port' => null,
+                'path' => null,
+                'url' => null,
+                'proxy' => null,
+                'transport' => null,
+                'persistent' => true,
+                'timeout' => null,
+                'connections' => [], // host, port, path, timeout, transport, compression, persistent, timeout, username, password, config -> (curl, headers, url)
+                'roundRobin' => false,
+                'log' => false,
+                'retryOnConflict' => 0,
+                'bigintConversion' => false,
+                'username' => null,
+                'password' => null,
+            ]
+        ],
+    ]
+```
+
 #v0.2.5
 
 - [fixed] Fixed order notes and customer reference not saving on order.
 - [fixed] Fixed exception when retrieving the current basket if the authenticated user never had one before.
 - [changed] Don't round tiered pricing, comes back as three decimal places.
+- [changed] The country name column in the database is now a text field, we aim to support translation files instead for this.
 
 #v0.2.4
 
