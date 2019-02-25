@@ -1,3 +1,7 @@
+#0.2.7
+
+- [fix] Remove left over calls to countries json columns
+
 #0.2.6
 
 - [added] You can now specify search config for the client.
