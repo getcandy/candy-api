@@ -22,7 +22,7 @@ class CountryService extends BaseService
         $countries = $this->model->get();
 
         $countries = $countries->sort(function ($a, $b) {
-            return strcmp($a->translation('name'), $b->translation('name'));
+            return strcmp($a->name, $b->name);
         })->groupBy('region');
 
         return $countries;
@@ -35,8 +35,8 @@ class CountryService extends BaseService
      * @param string $locale
      * @return Country
      */
-    public function getByName($name, $locale = 'en')
+    public function getByName($name)
     {
-        return $this->model->where('name->'.$locale, $name)->first();
+        return $this->model->where('name', $name)->first();
     }
 }

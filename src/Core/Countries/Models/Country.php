@@ -3,12 +3,9 @@
 namespace GetCandy\Api\Core\Countries\Models;
 
 use GetCandy\Api\Core\Scaffold\BaseModel;
-use GetCandy\Api\Core\Traits\HasTranslations;
 
 class Country extends BaseModel
 {
-    use HasTranslations;
-
     /**
      * @var string
      */
