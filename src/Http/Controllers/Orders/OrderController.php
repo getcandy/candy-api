@@ -119,7 +119,7 @@ class OrderController extends BaseController
         $basket = $basketFactory->init($basket)->get();
 
         try {
-            $order = $factory->basket($basket)->user($request->user())->resolve();
+            $order = $factory->basket($basket)->type($request->type)->user($request->user())->resolve();
         } catch (BasketHasPlacedOrderException $e) {
             return $this->errorForbidden(trans('getcandy::exceptions.basket_already_has_placed_order'));
         }
