@@ -411,6 +411,7 @@ class OrderService extends BaseService implements OrderServiceInterface
         }
 
         unset($data['vat_no']);
+        unset($data['force']);
 
         $order->save();
 
