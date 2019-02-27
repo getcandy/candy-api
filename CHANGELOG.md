@@ -1,3 +1,9 @@
+#0.2.10
+
+- [fixed] Fixed issue where updating shipping price zeroed out order totals.
+- [changed] Updated the set shipping price method for DI.
+- [fixed] Fixed offline payment driver, was a bit outdated.
+
 #0.2.7
 
 - [fix] Remove left over calls to countries json columns
