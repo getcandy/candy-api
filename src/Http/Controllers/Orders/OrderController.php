@@ -318,12 +318,19 @@ class OrderController extends BaseController
      *
      * @return array
      */
-    public function shippingCost($id, Request $request, OrderFactoryInterface $factory, ShippingPriceService $prices)
-    {
+    public function shippingCost(
+        $id,
+        Request $request,
+        OrderFactoryInterface $factory,
+        ShippingPriceService $prices,
+        BasketFactoryInterface $basketFactory
+    ) {
         $order = $this->orders->id($id)->first();
         $price = $prices->getByHashedId($request->price_id);
+        $basket = $basketFactory->init($order->basket)->get();
 
         $order = $factory->order($order)
+            ->basket($basket)
             ->shipping($price, $request->preference)
             ->resolve();
 
