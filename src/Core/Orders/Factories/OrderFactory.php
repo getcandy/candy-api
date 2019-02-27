@@ -84,6 +84,13 @@ class OrderFactory implements OrderFactoryInterface
 
     protected $tax;
 
+    /**
+     * The order type
+     *
+     * @var string
+     */
+    protected $type;
+
     public function __construct(
         SettingService $settings,
         CurrencyConverterInterface $currencies,
@@ -108,6 +115,18 @@ class OrderFactory implements OrderFactoryInterface
     {
         $this->user = $user;
 
+        return $this;
+    }
+
+    /**
+     * Set the value for type
+     *
+     * @param string $type
+     * @return self
+     */
+    public function type($type)
+    {
+        $this->type = $type;
         return $this;
     }
 
