@@ -398,7 +398,7 @@ class OrderFactory implements OrderFactoryInterface
             $tax->percentage
         );
 
-        $basket = $order->basket;
+        $basket = $this->basket;
 
         // Remove any shipping lines already on there.
         $existing = $order->lines()->where('is_shipping', '=', true)->first();
