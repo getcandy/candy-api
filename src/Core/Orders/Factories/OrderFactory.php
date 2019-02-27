@@ -204,6 +204,7 @@ class OrderFactory implements OrderFactoryInterface
 
         $order->conversion = $this->currencies->set($this->basket->currency)->rate();
         $order->currency = $this->basket->currency;
+        $order->type = $this->type;
 
         $order->save();
         $order->basketLines()->delete();
