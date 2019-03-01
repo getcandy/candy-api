@@ -451,13 +451,8 @@ class InstallGetCandyCommand extends Command
         $countries = json_decode(file_get_contents(__DIR__.'/../../../countries.json'), true);
 
         foreach ($countries as $country) {
-            $name = ['en' => $country['name']['common']];
-
-            foreach ($country['translations'] as $code => $data) {
-                $name[$code] = $data['common'];
-            }
             \GetCandy\Api\Core\Countries\Models\Country::create([
-                'name' => json_encode($name),
+                'name' => $country['name']['common'],
                 'iso_a_2' => $country['cca2'],
                 'iso_a_3' => $country['cca3'],
                 'iso_numeric' => $country['ccn3'],
