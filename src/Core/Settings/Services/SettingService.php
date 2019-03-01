@@ -18,10 +18,7 @@ class SettingService extends BaseService
 
         // If we're getting orders, load up the status info...
         if ($setting && $handle == 'orders') {
-            $statuses = config('getcandy.orders.statuses');
-            $setting->config = collect([
-                'statuses' => $statuses,
-            ]);
+            $setting->config = collect(config('getcandy.orders', []));
         }
 
         return $setting;
