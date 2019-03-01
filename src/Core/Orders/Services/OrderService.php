@@ -258,7 +258,7 @@ class OrderService extends BaseService implements OrderServiceInterface
     {
         $order = $this->getByHashedId($orderId);
 
-        if (! empty($data['tracking_no'])) {
+        if (isset($data['tracking_no']) || is_null($data['tracking_no'])) {
             $order->tracking_no = $data['tracking_no'];
         }
 

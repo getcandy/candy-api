@@ -1,6 +1,7 @@
 #0.2.11
 
 - [changed] Changed plugin loader to not require file extension, this was causing some issues on specific nginx servers.
+- [fixed] Allow tracking no to be set to null on orders
 
 #0.2.10
 
