@@ -1,3 +1,7 @@
+#0.2.13
+
+- [improved] Improved handling of order reference increment
+
 #0.2.12
 
 - [fixed] Fixed issue with installer due to country column change
