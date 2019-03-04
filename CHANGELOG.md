@@ -1,3 +1,9 @@
+#0.2.12
+
+- [fixed] Fixed issue with installer due to country column change
+- [added] Added config for order table columns in the hub
+- [changed] Order settings now pass through all config
+
 #0.2.11
 
 - [changed] Changed plugin loader to not require file extension, this was causing some issues on specific nginx servers.
