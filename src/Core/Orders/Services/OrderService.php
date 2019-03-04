@@ -528,7 +528,8 @@ class OrderService extends BaseService implements OrderServiceInterface
             if (count($segments) == 1) {
                 $increment = 1;
             } else {
-                $increment = $segments[2] + 1;
+                $segment = $segments[2] ?? $segments[1];
+                $increment = is_numeric($segment) ? $segment + 1 : $order->id;
             }
         }
 
