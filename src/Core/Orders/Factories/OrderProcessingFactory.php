@@ -193,7 +193,7 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
 
         $this->order->notes = $this->notes;
         $this->order->customer_reference = $this->customerReference;
-        $this->order->type = $this->type;
+        $this->order->type = $driver->getName();
 
         $this->order->save();
 
