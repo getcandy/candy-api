@@ -11,7 +11,6 @@ class AssetResource extends AbstractResource
     {
         $data = [
             'id' => $this->encodedId(),
-            'id' => $this->encodedId(),
             'title' => $this->title,
             'caption' => $this->caption,
             'kind' => $this->kind,

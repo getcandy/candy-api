@@ -7,6 +7,7 @@ use GetCandy\Api\Core\Shipping\ShippingCalculator;
 use GetCandy\Api\Core\Baskets\Services\BasketService;
 use GetCandy\Api\Core\Shipping\Models\ShippingMethod;
 use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
+use GetCandy\Api\Core\Shipping\Models\ShippingPrice;
 
 class ShippingMethodService extends BaseService
 {
@@ -99,6 +100,7 @@ class ShippingMethodService extends BaseService
 
         $zones = app('api')->shippingZones()->getByCountryName($order->shipping_details['country']);
 
+
         $basket = $order->basket;
         $calculator = new ShippingCalculator(app());
 
@@ -106,6 +108,9 @@ class ShippingMethodService extends BaseService
 
         foreach ($zones as $zone) {
             foreach ($zone->methods as $index => $method) {
+                if ($method->type == $order->type) {
+                    $options[$index] = $method->prices->first()->load('method');
+                }
                 $option = $calculator->with($method)->calculate($order);
                 if (! $option) {
                     continue;

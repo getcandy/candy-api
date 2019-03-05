@@ -116,7 +116,7 @@ class SearchBuilder
         $this->filters = collect($this->filters);
         $this->aggregations = collect($this->aggregations);
         $this->sorts = collect($this->sorts);
-        $this->client = new Client;
+        $this->client = new Client(config('getcandy.search.client_config.elastic', []));
         $this->attributes = $attributes->all();
     }
 

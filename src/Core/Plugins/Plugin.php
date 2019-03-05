@@ -44,8 +44,9 @@ class Plugin
         $resources = [];
 
         foreach ($files as $file) {
-            if (basename($file->getFilename(), '.js') == $this->handle) {
-                $resources[] = $this->handle.'/resources/js/'.$file->getFilename();
+            $filename = basename($file->getFilename(), '.js');
+            if ($filename == $this->handle) {
+                $resources[] = $this->handle.'/resources/js/'.$filename;
             }
         }
 
@@ -54,7 +55,8 @@ class Plugin
 
     public function getResource($type, $file)
     {
-        return $this->getPathToResource($type.'/'.$file);
+        $file = basename($file, '.js');
+        return $this->getPathToResource($type.'/'.$file . '.' . $type);
     }
 
     public function getCssResources()

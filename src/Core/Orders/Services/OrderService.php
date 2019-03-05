@@ -258,7 +258,7 @@ class OrderService extends BaseService implements OrderServiceInterface
     {
         $order = $this->getByHashedId($orderId);
 
-        if (! empty($data['tracking_no'])) {
+        if (isset($data['tracking_no']) || is_null($data['tracking_no'])) {
             $order->tracking_no = $data['tracking_no'];
         }
 
@@ -411,6 +411,7 @@ class OrderService extends BaseService implements OrderServiceInterface
         }
 
         unset($data['vat_no']);
+        unset($data['force']);
 
         $order->save();
 
@@ -527,7 +528,8 @@ class OrderService extends BaseService implements OrderServiceInterface
             if (count($segments) == 1) {
                 $increment = 1;
             } else {
-                $increment = $segments[2] + 1;
+                $segment = $segments[2] ?? $segments[1];
+                $increment = is_numeric($segment) ? $segment + 1 : $order->id;
             }
         }
 

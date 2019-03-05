@@ -84,6 +84,13 @@ class OrderFactory implements OrderFactoryInterface
 
     protected $tax;
 
+    /**
+     * The order type
+     *
+     * @var string
+     */
+    protected $type;
+
     public function __construct(
         SettingService $settings,
         CurrencyConverterInterface $currencies,
@@ -108,6 +115,18 @@ class OrderFactory implements OrderFactoryInterface
     {
         $this->user = $user;
 
+        return $this;
+    }
+
+    /**
+     * Set the value for type
+     *
+     * @param string $type
+     * @return self
+     */
+    public function type($type)
+    {
+        $this->type = $type;
         return $this;
     }
 
@@ -185,6 +204,7 @@ class OrderFactory implements OrderFactoryInterface
 
         $order->conversion = $this->currencies->set($this->basket->currency)->rate();
         $order->currency = $this->basket->currency;
+        $order->type = $this->type;
 
         $order->save();
         $order->basketLines()->delete();
@@ -398,7 +418,7 @@ class OrderFactory implements OrderFactoryInterface
             $tax->percentage
         );
 
-        $basket = $order->basket;
+        $basket = $this->basket;
 
         // Remove any shipping lines already on there.
         $existing = $order->lines()->where('is_shipping', '=', true)->first();

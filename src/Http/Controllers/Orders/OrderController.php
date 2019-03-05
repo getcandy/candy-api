@@ -119,7 +119,7 @@ class OrderController extends BaseController
         $basket = $basketFactory->init($basket)->get();
 
         try {
-            $order = $factory->basket($basket)->user($request->user())->resolve();
+            $order = $factory->basket($basket)->type($request->type)->user($request->user())->resolve();
         } catch (BasketHasPlacedOrderException $e) {
             return $this->errorForbidden(trans('getcandy::exceptions.basket_already_has_placed_order'));
         }
@@ -318,12 +318,19 @@ class OrderController extends BaseController
      *
      * @return array
      */
-    public function shippingCost($id, Request $request, OrderFactoryInterface $factory, ShippingPriceService $prices)
-    {
+    public function shippingCost(
+        $id,
+        Request $request,
+        OrderFactoryInterface $factory,
+        ShippingPriceService $prices,
+        BasketFactoryInterface $basketFactory
+    ) {
         $order = $this->orders->id($id)->first();
         $price = $prices->getByHashedId($request->price_id);
+        $basket = $basketFactory->init($order->basket)->get();
 
         $order = $factory->order($order)
+            ->basket($basket)
             ->shipping($price, $request->preference)
             ->resolve();
 
