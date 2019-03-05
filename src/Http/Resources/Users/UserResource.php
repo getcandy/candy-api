@@ -3,6 +3,7 @@
 namespace GetCandy\Api\Http\Resources\Users;
 
 use GetCandy\Api\Http\Resources\AbstractResource;
+use GetCandy\Api\Http\Resources\Orders\OrderResource;
 
 class UserResource extends AbstractResource
 {
@@ -19,6 +20,7 @@ class UserResource extends AbstractResource
         return [
             // 'details' => $this->include('details', UserDetailsResource::class),
             'details' => $this->include('details', UserDetailsResource::class),
+            'first_order' => $this->include('firstOrder', OrderResource::class),
         ];
     }
 }
