@@ -22,6 +22,16 @@ Route::group([
         'uses' => 'Auth\AccountController@resetPassword',
     ]);
 
+    $router->get('activity-log', [
+        'as' => 'activitylog.index',
+        'uses' => 'ActivityLog\ActivityLogController@index',
+    ]);
+
+    $router->post('activity-log', [
+        'as' => 'activitylog.store',
+        'uses' => 'ActivityLog\ActivityLogController@store',
+    ]);
+
     $router->post('addresses', 'Addresses\AddressController@store');
     $router->post('auth/impersonate', [
         'as' => 'auth.impersonate',

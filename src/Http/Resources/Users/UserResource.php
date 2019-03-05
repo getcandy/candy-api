@@ -10,6 +10,7 @@ class UserResource extends AbstractResource
     {
         return [
             'id' => $this->encoded_id,
+            'email' => $this->email,
         ];
     }
 
