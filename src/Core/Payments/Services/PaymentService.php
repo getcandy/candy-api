@@ -7,6 +7,7 @@ use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Payments\PaymentContract;
 use GetCandy\Api\Core\Payments\Models\Transaction;
 use GetCandy\Api\Core\Payments\ThreeDSecureResponse;
+use GetCandy\Api\Core\Orders\Events\OrderRefundEvent;
 use GetCandy\Api\Core\Payments\Exceptions\TransactionAmountException;
 use GetCandy\Api\Core\Orders\Exceptions\OrderAlreadyProcessedException;
 use GetCandy\Api\Core\Payments\Exceptions\InvalidPaymentTokenException;
@@ -160,6 +161,8 @@ class PaymentService extends BaseService
                 'notes' => $notes,
             ]);
         }
+
+        event(new OrderRefundEvent($transaction->order, $refund));
 
         return $refund;
     }

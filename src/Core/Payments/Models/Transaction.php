@@ -4,9 +4,14 @@ namespace GetCandy\Api\Core\Payments\Models;
 
 use GetCandy\Api\Core\Scaffold\BaseModel;
 use GetCandy\Api\Core\Orders\Models\Order;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Transaction extends BaseModel
 {
+    use LogsActivity;
+
+    protected static $logAttributes = ['transaction_id'];
+
     protected $hashids = 'order';
 
     protected $fillable = [
