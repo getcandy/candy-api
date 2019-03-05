@@ -30,6 +30,13 @@ class OrderCriteria extends AbstractCriteria implements OrderCriteriaInterface
     protected $user;
 
     /**
+     * An array of IDs
+     *
+     * @var array
+     */
+    protected $ids = [];
+
+    /**
      * The order status to filter by.
      *
      * @var string
@@ -210,6 +217,11 @@ class OrderCriteria extends AbstractCriteria implements OrderCriteriaInterface
                 $q->whereId($this->user->id);
             });
         }
+
+        if ($this->ids) {
+            return $query->withoutGlobalScopes()->findMany($order->decodeIds($this->ids));
+        }
+
         if ($this->id) {
             return $query->find($order->decodeId($this->id));
         }

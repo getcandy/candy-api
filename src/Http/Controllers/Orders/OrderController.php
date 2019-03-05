@@ -3,6 +3,7 @@
 namespace GetCandy\Api\Http\Controllers\Orders;
 
 use Illuminate\Http\Request;
+use GetCandy\Api\Core\Orders\OrderExport;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Resources\Files\PdfResource;
 use GetCandy\Api\Http\Requests\Orders\CreateRequest;
@@ -14,8 +15,10 @@ use GetCandy\Api\Http\Requests\Orders\BulkUpdateRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use GetCandy\Api\Http\Requests\Orders\StoreAddressRequest;
 use GetCandy\Api\Core\Payments\Services\PaymentTypeService;
+use GetCandy\Api\Http\Resources\Orders\OrderExportResource;
 use GetCandy\Api\Core\Shipping\Services\ShippingPriceService;
 use GetCandy\Api\Core\Orders\Interfaces\OrderFactoryInterface;
+use GetCandy\Api\Core\Orders\Interfaces\OrderServiceInterface;
 use GetCandy\Api\Core\Shipping\Services\ShippingMethodService;
 use GetCandy\Api\Http\Resources\Payments\ThreeDSecureResource;
 use GetCandy\Api\Core\Orders\Interfaces\OrderCriteriaInterface;
@@ -84,6 +87,28 @@ class OrderController extends BaseController
         return response()->json([
             'data' => $types,
         ]);
+    }
+
+    public function getExport(Request $request, OrderServiceInterface $orders)
+    {
+        $request->validate([
+            'orders' => 'required|string',
+            'format' => 'required',
+        ]);
+
+        $config = config('getcandy.orders.exports.'.$request->format, config('getcandy.orders.exports.csv'));
+
+        if (!view()->exists($config['view'] ?? null)) {
+            return $this->errorWrongArgs("View for \"{$request->format}\" not found.");
+        }
+
+        $orders = $orders->getByHashedIds(explode(':', $request->orders));
+
+        $content = view($config['view'], ['orders' => $orders])->render();
+
+        return new OrderExportResource(
+            new OrderExport($content, $config['format'] ?? 'csv')
+        );
     }
 
     /**
