@@ -3,7 +3,6 @@
 namespace GetCandy\Api\Core\Orders\Models;
 
 use Carbon\Carbon;
-use GetCandy\Api\Core\Auth\Models\User;
 use GetCandy\Api\Core\Scaffold\BaseModel;
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -295,7 +294,8 @@ class Order extends BaseModel
      */
     public function user()
     {
-        return $this->belongsTo(User::class);
+        $class = config('auth.providers.users.model', User::class);
+        return $this->belongsTo($class);
     }
 
     public function transactions()
