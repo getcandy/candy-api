@@ -1,3 +1,7 @@
+#0.2.14
+
+- [fixed] Fixed channel not being set on category query
+
 #0.2.13
 
 - [improved] Improved handling of order reference increment
