@@ -1,6 +1,8 @@
 #0.2.14
 
-- [fixed] Fixed channel not being set on category query
+- [fixed] Fixed channel not being set on category query.
+- [added] Added new Activity Log for orders initially.
+- [added] Added `firstOrder` relation on the User model.
 
 #0.2.13
 
