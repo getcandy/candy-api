@@ -51,7 +51,11 @@ class CategoryController extends BaseController
 
     public function show($id, Request $request, CategoryCriteria $criteria)
     {
-        $category = $criteria->include($request->includes)->id($id)->first();
+        $category = $criteria
+            ->channel($request->channel)
+            ->include($request->includes)
+            ->id($id)
+            ->first();
 
         if (! $category) {
             return $this->errorNotFound();
