@@ -22,7 +22,7 @@ class ProductCriteria extends AbstractCriteria
     public function getBuilder()
     {
         $product = new Product;
-        $builder = $product->with($this->includes ?: []);
+        $builder = $product->channel($this->channel)->with($this->includes ?: []);
         if ($this->sku) {
             $builder->whereHas('variants', function ($q) {
                 $q->where('sku', '=', $this->sku);
