@@ -41,6 +41,40 @@ class Attribute
         return $this;
     }
 
+    public function addFilters(iterable $filters)
+    {
+        if (is_array($filters)) {
+            $filters = collect($filters);
+        }
+        $filters->filter(function ($f) {
+            return $this->field != $f['filter']->getField();
+        })->each(function ($f) {
+            $this->addFilter($f);
+        });
+
+        return $this;
+    }
+
+    public function get($filters)
+    {
+        $filterAgg = new Filter($this->field);
+
+        $agg = new Terms($this->field);
+        $agg->setField($this->field.'.filter');
+        $agg->setSize(50);
+
+        $postBool = new BoolQuery();
+
+        foreach ($this->filters as $filter) {
+            $postBool->addMust($filter['filter']->getQuery());
+        }
+
+        $filterAgg->setFilter($postBool);
+        $filterAgg->addAggregation($agg);
+
+        return $filterAgg;
+    }
+
     public function getPre()
     {
         if (empty($this->filters)) {
@@ -51,6 +85,8 @@ class Attribute
         }
 
         $filterAgg = new Filter($this->field);
+
+        dd($this->field);
 
         $agg = new Terms($this->field);
         $agg->setField($this->field.'.filter');

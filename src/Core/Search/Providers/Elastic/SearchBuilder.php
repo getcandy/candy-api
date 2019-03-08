@@ -108,6 +108,7 @@ class SearchBuilder
 
     protected $topFilters = [
         'category-filter',
+        'channel-filter',
         'customer-group-filter',
     ];
 
@@ -495,45 +496,41 @@ class SearchBuilder
         // Set filters as post filters
         $postFilter = new BoolQuery;
 
-        foreach ($this->filters as $filter) {
-            if (! empty($filter['post'])) {
-                $postFilter->addFilter(
-                    $filter['filter']->getQuery()
-                );
-            } else {
-                $boolQuery->addFilter(
-                    $filter['filter']->getQuery()
-                );
-            }
+        $preFilters = $this->filters->filter(function ($filter) {
+            return in_array($filter['handle'], $this->topFilters);
+        });
 
-            if (method_exists($filter['filter'], 'aggregate')) {
-                $query->addAggregation(
-                    $filter['filter']->aggregate()->getPost(
-                        $filter['filter']->getValue()
-                    )
-                );
-            }
-        }
+        $preFilters->each(function ($filter) use ($boolQuery) {
+            $boolQuery->addFilter(
+                $filter['filter']->getQuery()
+            );
+        });
+
+
+        $postFilters = $this->filters->filter(function ($filter) {
+            return !in_array($filter['handle'], $this->topFilters);
+        });
+
+
+        $postFilters->each(function ($filter) use ($postFilter) {
+            $postFilter->addFilter(
+                $filter['filter']->getQuery()
+            );
+        });
         $query->setPostFilter($postFilter);
 
+
+        // $globalAggregation = new \Elastica\Aggregation\GlobalAggregation('all_products');
+
         foreach ($this->aggregations as $agg) {
-
-            // If we have a category or customer group filter
-            // then make sure the aggregation supports it.
-            $topLevelFilters = $this->filters->filter(function ($filter) {
-                return in_array($filter['handle'], $this->topFilters);
-            });
-
-            foreach ($topLevelFilters as $filter) {
-                $agg = $agg->addFilter($filter);
+            if (method_exists($agg, 'get')) {
+                $query->addAggregation(
+                    $agg->addFilters($postFilters)->get($postFilters)
+                );
+                // $globalAggregation->addAggregation(
+                    // $agg->addFilters($postFilters)->get($postFilters)
+                // );
             }
-
-            $cloned = $query;
-            $query->addAggregation($agg->getPre(
-                $this->getSearch(),
-                $cloned->setQuery($boolQuery),
-                $postFilter
-            ));
         }
 
         $query->setQuery($boolQuery);

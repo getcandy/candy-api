@@ -12,6 +12,8 @@ class ChannelFilter extends AbstractFilter
 
     public $handle = 'channel-filter';
 
+    protected $field = 'departments';
+
     public function process($payload, $type = null)
     {
         $this->channel = $payload;
