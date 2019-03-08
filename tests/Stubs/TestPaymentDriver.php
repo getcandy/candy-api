@@ -13,6 +13,11 @@ class TestPaymentDriver
 
     protected $fields = [];
 
+    public function getName()
+    {
+        return 'TEST_PAYMENT';
+    }
+
     public function order($order)
     {
         $this->order = $order;
