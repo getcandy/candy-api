@@ -1,3 +1,9 @@
+#0.2.18
+
+- [fixed] Fixed SKU mapping that stopped you from sorting on it in Elastic.
+- [fixed] Fixed undefined variable on order processing factory when a closure was used.
+- [fixed] Fixed invalid namespace for listener.
+
 #0.2.17
 
 - [fixed] Fixed exception handling on a route
