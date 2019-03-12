@@ -1,3 +1,7 @@
+#0.2.17
+
+- [fixed] Fixed exception handling on a route
+
 #0.2.16
 
 - [fixed] Fixed issue where `published_at` date for category channel wasn't being returned in the resource.
