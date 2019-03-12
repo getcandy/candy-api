@@ -119,7 +119,7 @@ class ShippingMethodService extends BaseService
                 if (is_array($option)) {
                     $options = array_merge($options, $option);
                 } else {
-                    $options[$index] = $option;
+                    $options[$option->method->id] = $option;
                 }
             }
         }
