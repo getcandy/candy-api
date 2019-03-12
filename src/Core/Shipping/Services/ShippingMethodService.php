@@ -124,7 +124,7 @@ class ShippingMethodService extends BaseService
             }
         }
 
-        return collect($options);
+        return collect($options)->unique('shipping_method_id');
     }
 
     /**
