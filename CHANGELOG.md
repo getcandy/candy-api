@@ -1,3 +1,7 @@
+#0.2.16
+
+- [fixed] Fixed issue where `published_at` date for category channel wasn't being returned in the resource.
+
 #0.2.15
 
 - [fixed] Fixed issue where category children weren't honouring the nested set order when loaded via relation.
