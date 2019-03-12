@@ -73,6 +73,6 @@ class Category extends BaseModel
 
     public function channels()
     {
-        return $this->belongsToMany(Channel::class, 'category_channel');
+        return $this->belongsToMany(Channel::class, 'category_channel')->withPivot('published_at');
     }
 }
