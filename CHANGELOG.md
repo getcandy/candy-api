@@ -1,3 +1,7 @@
+#0.2.15
+
+- [fixed] Fixed issue where category children weren't honouring the nested set order when loaded via relation.
+
 #0.2.14
 
 - [fixed] Fixed channel not being set on category query.
