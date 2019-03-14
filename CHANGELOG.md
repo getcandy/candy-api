@@ -1,3 +1,7 @@
+#0.2.19
+
+- [changed] Changed key check on order `tracking_no` to `array_key_exists` to handle any value
+
 #0.2.18
 
 - [fixed] Fixed SKU mapping that stopped you from sorting on it in Elastic.
