@@ -4,7 +4,7 @@
 - [improved] Add variant and option data to order line when resolving lines.
 - [added] Added a CandyApi util class
 - [changed] Change check on `TaxCalculator` to `is_null` to allow for passing `0`
-- [changed] Tax Calculator now uses bind instead of singleton as this was causing weird behaviour.
+- [changed] Simplified the price calculator logic.
 
 #0.2.18
 
