@@ -9,6 +9,7 @@ class ElementTransformer extends BaseTransformer
 {
     protected $availableIncludes = [
         'element',
+        'routes',
     ];
 
     public function transform(Model $model)
@@ -17,5 +18,10 @@ class ElementTransformer extends BaseTransformer
             'id' => $model->encodedId(),
             'attribute_data' => $model->attribute_data,
         ];
+    }
+
+    public function includeRoutes(Model $model)
+    {
+        return $this->collection($model->routes, new RouteTransformer);
     }
 }
