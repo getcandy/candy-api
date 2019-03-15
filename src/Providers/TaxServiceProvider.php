@@ -10,7 +10,7 @@ class TaxServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->app->bind(TaxCalculatorInterface::class, function ($app) {
+        $this->app->singleton(TaxCalculatorInterface::class, function ($app) {
             return $app->make(TaxCalculator::class);
         });
     }
