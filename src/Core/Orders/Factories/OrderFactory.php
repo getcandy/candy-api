@@ -515,6 +515,7 @@ class OrderFactory implements OrderFactoryInterface
                                 $tax = $this->tax->amount($taxable);
 
                                 $order->lines()->create([
+                                    'product_variant_id' => $variant->id,
                                     'sku' => $variant->sku,
                                     'tax_total' => $taxable * 100,
                                     'tax_rate' => $variant->tax->percentage,
@@ -524,7 +525,7 @@ class OrderFactory implements OrderFactoryInterface
                                     'unit_qty' => $variant->unit_qty,
                                     'quantity' => $quantity,
                                     'description' => $product->product->attribute('name'),
-                                    'variant' => $variant->name,
+                                    'option' => $discount->name,
                                 ]);
                             }
                         }
