@@ -146,6 +146,13 @@ class ProductService extends BaseService
             $product->channels()->sync(
                 $this->getChannelMapping($data['channels']['data'])
             );
+        } else {
+            $defaultChannel = app('api')->channels()->getDefaultRecord();
+            $product->channels()->sync([
+                $defaultChannel->id => [
+                    'published_at' => null,
+                ],
+            ]);
         }
 
         $urls = $this->getUniqueUrl($data['url']);
