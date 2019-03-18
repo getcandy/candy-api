@@ -1,3 +1,7 @@
+#0.2.20
+
+- [fixed] Make sure default channel is set on new products
+
 #0.2.19
 
 - [changed] Changed key check on order `tracking_no` to `array_key_exists` to handle any value
