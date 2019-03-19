@@ -94,6 +94,8 @@ class ShippingPriceService extends BaseService
     {
         $price = $this->getByHashedId($id);
 
+        $price->customerGroups()->detach();
+
         return $price->delete();
     }
 
