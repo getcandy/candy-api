@@ -1,3 +1,10 @@
+#0.2.21
+
+- [fixed] Fixed contraint that prevented shipping prices from being deleted.
+- [added] Added `image` include for `ProductVariantResource`
+- [added] Added `groups` include for `ProductTierResource`
+- [added] Added a `getFullName` getter for user details
+
 #0.2.20
 
 - [fixed] Make sure default channel is set on new products
