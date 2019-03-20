@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use GetCandy\Api\Http\Requests\ProductFamilies\CreateRequest;
 use GetCandy\Api\Http\Requests\ProductFamilies\DeleteRequest;
 use GetCandy\Api\Http\Requests\ProductFamilies\UpdateRequest;
+use GetCandy\Api\Core\Products\Criteria\ProductFamilyCriteria;
+use GetCandy\Api\Http\Resources\Products\ProductFamilyResource;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use GetCandy\Api\Http\Transformers\Fractal\Products\ProductFamilyTransformer;
 
@@ -32,15 +34,15 @@ class ProductFamilyController extends BaseController
      * @param  string $id
      * @return Json
      */
-    public function show($id)
+    public function show($id, Request $request, ProductFamilyCriteria $criteria)
     {
         try {
-            $product = app('api')->productFamilies()->getByHashedId($id);
+            $family = $criteria->id($id)->includes($request->includes)->firstOrFail();
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
 
-        return $this->respondWithItem($product, new ProductFamilyTransformer);
+        return new ProductFamilyResource($family);
     }
 
     /**
