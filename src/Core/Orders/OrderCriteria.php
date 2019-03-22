@@ -30,7 +30,7 @@ class OrderCriteria extends AbstractCriteria implements OrderCriteriaInterface
     protected $user;
 
     /**
-     * An array of IDs
+     * An array of IDs.
      *
      * @var array
      */

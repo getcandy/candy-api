@@ -38,9 +38,9 @@ abstract class AbstractCriteria
      * Set a limit to the number of resources returned.
      */
     protected $limit = 50;
-    
+
     /**
-     * The channel to query on
+     * The channel to query on.
      *
      * @var array|null
      */
