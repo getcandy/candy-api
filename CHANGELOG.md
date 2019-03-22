@@ -1,3 +1,9 @@
+#0.2.22
+
+- [fixed] Fixed issue where 404 wasn't thrown on product endpoint
+- [fixed] Fixed issue where you couldn't search on the users endpoint
+- [fixed] `ChannelResource` now only includes `published_at` if it exists on relation pivot
+
 #0.2.21
 
 - [fixed] Fixed contraint that prevented shipping prices from being deleted.
