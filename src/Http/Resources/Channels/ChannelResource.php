@@ -15,7 +15,9 @@ class ChannelResource extends AbstractResource
             'handle' => $this->handle,
             'url' => $this->url,
             'default' => (bool) $this->default,
-            'published_at' => $this->resource->pivot->published_at ? Carbon::parse($this->resource->pivot->published_at)->toIso8601String() : null,
+            'published_at' => $this->when($this->resource->pivot, function () {
+                return $this->resource->pivot->published_at ? Carbon::parse($this->resource->pivot->published_at)->toIso8601String() : null;
+            }),
         ];
     }
 }
