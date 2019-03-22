@@ -1,3 +1,7 @@
+#0.2.23
+
+- [added] Added factor tax to product variant transformer
+
 #0.2.22
 
 - [fixed] Fixed issue where 404 wasn't thrown on product endpoint

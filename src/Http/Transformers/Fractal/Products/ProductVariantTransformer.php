@@ -25,6 +25,7 @@ class ProductVariantTransformer extends BaseTransformer
             'backorder' => $variant->backorder,
             'requires_shipping' => (bool) $variant->requires_shipping,
             'price' => $variant->price,
+            'factor_tax' => $variant->factor_tax,
             'unit_price' => $variant->unit_cost,
             'tax' => $variant->unit_tax,
             'unit_qty' => $variant->unit_qty,
