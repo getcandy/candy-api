@@ -15,7 +15,7 @@ class UserDetail extends BaseModel
 
     public function getFullNameAttribute()
     {
-        return trim($this->title . ' ' . $this->firstname . ' ' . $this->lastname);
+        return trim($this->title.' '.$this->firstname.' '.$this->lastname);
     }
 
     public function setFieldsAttribute($val)

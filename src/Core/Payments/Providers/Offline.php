@@ -3,7 +3,6 @@
 namespace GetCandy\Api\Core\Payments\Providers;
 
 use GetCandy\Api\Core\Payments\PaymentResponse;
-use GetCandy\Api\Core\Payments\Models\Transaction;
 
 class Offline extends AbstractProvider
 {

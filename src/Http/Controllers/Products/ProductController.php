@@ -52,7 +52,7 @@ class ProductController extends BaseController
             $product = $criteria->blank('id')->sku($id)->first();
         }
 
-        if (!$product) {
+        if (! $product) {
             return $this->errorNotFound();
         }
         $resource = new ProductResource($product);

@@ -27,7 +27,7 @@ trait Hashids
 
         foreach ($value as $id) {
             $realId = app('hashids')->connection($this->hashids)->decode($id);
-            if (!empty($realId[0])) {
+            if (! empty($realId[0])) {
                 $ids[] = $realId[0];
             }
         }

@@ -20,7 +20,7 @@ class ProductTierResource extends AbstractResource
     public function includes()
     {
         return [
-            'group' => new CustomerGroupResource($this->whenLoaded('group'))
+            'group' => new CustomerGroupResource($this->whenLoaded('group')),
         ];
     }
 }
