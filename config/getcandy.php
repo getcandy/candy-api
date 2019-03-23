@@ -101,7 +101,7 @@ return [
         'gateway' => 'braintree',
         'environment' => env('PAYMENT_ENV'),
         'providers' => [
-            'offline' => GetCandy\Api\Core\Payments\Providers\OnAccount::class,
+            'offline' => GetCandy\Api\Core\Payments\Providers\Offline::class,
             'braintree' => GetCandy\Api\Core\Payments\Providers\Braintree::class,
             'sagepay' => GetCandy\Api\Core\Payments\Providers\SagePay::class,
         ],
