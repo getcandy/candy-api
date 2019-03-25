@@ -27,6 +27,7 @@ class ProductVariantResource extends AbstractResource
             'unit_qty' => $this->unit_qty,
             'min_qty' => $this->min_qty,
             'max_qty' => $this->max_qty,
+            'min_batch' => $this->min_batch,
             'inventory' => $this->stock,
             'incoming' => $this->incoming,
             'group_pricing' => (bool) $this->group_pricing,
