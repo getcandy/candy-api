@@ -28,7 +28,7 @@ class CreateRequest extends FormRequest
             'variants' => 'array|unique_lines',
             'variants.*' => 'in_stock',
             'variants.*.id' => 'required|hashid_is_valid:product_variants',
-            'variants.*.quantity' => 'required|numeric|min:1|max:10000|min_quantity',
+            'variants.*.quantity' => 'required|numeric|min:1|max:10000|min_quantity|min_batch',
             'basket_id' => 'hashid_is_valid:baskets',
         ];
 
@@ -40,6 +40,7 @@ class CreateRequest extends FormRequest
         return [
             'variants.*.quantity.max' => trans('getcandy::validation.max_qty'),
             'variants.*.quantity.min_quantity' => trans('getcandy::validation.min_qty'),
+            'variants.*.quantity.min_batch' => trans('getcandy::validation.min_batch'),
         ];
     }
 }

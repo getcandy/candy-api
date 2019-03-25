@@ -1,3 +1,8 @@
+#0.2.24
+
+- [improved] `min_quantity` validation now includes the minimum quantity required in the validation message.
+- [added] Added a `min_batch` column on `product_variants` which defaults to `1` means you can have a minimum batch size a product can be ordered in, validation message is `You must add this item in multiples of :min_batch`
+
 #0.2.23
 
 - [added] Added factor tax to product variant transformer
