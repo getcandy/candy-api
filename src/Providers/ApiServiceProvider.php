@@ -132,6 +132,7 @@ class ApiServiceProvider extends ServiceProvider
         Validator::extend('unique_lines', 'GetCandy\Api\Core\Baskets\Validators\BasketValidator@uniqueLines');
         Validator::extend('in_stock', 'GetCandy\Api\Core\Baskets\Validators\BasketValidator@inStock', trans('getcandy::validation.in_stock'));
         Validator::extend('valid_order', 'GetCandy\Api\Core\Orders\Validators\OrderIsActiveValidator@validate');
+        Validator::extend('min_quantity', 'GetCandy\Api\Core\Baskets\Validators\BasketValidator@minQuantity');
     }
 
     public function mapCommands()
