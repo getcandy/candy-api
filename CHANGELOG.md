@@ -1,3 +1,7 @@
+#0.2.26
+
+- [changed] Changes to the request when adding items to a basket to prevent recursive queries.
+
 #0.2.25
 
 - [fixed] Make sure `min_batch` gets passed to the API resource
