@@ -85,7 +85,7 @@ class OrderFactory implements OrderFactoryInterface
     protected $tax;
 
     /**
-     * The order type
+     * The order type.
      *
      * @var string
      */
@@ -119,7 +119,7 @@ class OrderFactory implements OrderFactoryInterface
     }
 
     /**
-     * Set the value for type
+     * Set the value for type.
      *
      * @param string $type
      * @return self
@@ -127,6 +127,7 @@ class OrderFactory implements OrderFactoryInterface
     public function type($type)
     {
         $this->type = $type;
+
         return $this;
     }
 

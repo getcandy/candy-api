@@ -98,7 +98,7 @@ class OrderController extends BaseController
 
         $config = config('getcandy.orders.exports.'.$request->format, config('getcandy.orders.exports.csv'));
 
-        if (!view()->exists($config['view'] ?? null)) {
+        if (! view()->exists($config['view'] ?? null)) {
             return $this->errorWrongArgs("View for \"{$request->format}\" not found.");
         }
 

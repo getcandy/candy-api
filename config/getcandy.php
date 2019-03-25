@@ -101,7 +101,7 @@ return [
         'gateway' => 'braintree',
         'environment' => env('PAYMENT_ENV'),
         'providers' => [
-            'offline' => GetCandy\Api\Core\Payments\Providers\OnAccount::class,
+            'offline' => GetCandy\Api\Core\Payments\Providers\Offline::class,
             'braintree' => GetCandy\Api\Core\Payments\Providers\Braintree::class,
             'sagepay' => GetCandy\Api\Core\Payments\Providers\SagePay::class,
         ],
@@ -142,11 +142,11 @@ return [
         ],
         'index_prefix' => env('SEARCH_INDEX_PREFIX', 'candy'),
         'index' => env('SEARCH_INDEX', 'candy_products_en'),
-        /**
+        /*
          * These are the table columns that will appear in the hub
          */
         'table_columns' => [
-            'name', 'reference', 'account_no', 'contact_email', 'type', 'account', 'order_total', 'delivery_total', 'zone', 'date'
+            'name', 'reference', 'account_no', 'contact_email', 'type', 'account', 'order_total', 'delivery_total', 'zone', 'date',
         ],
         /*
          * Here you can define the price aggregation break points, similar

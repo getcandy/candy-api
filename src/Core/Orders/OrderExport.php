@@ -5,14 +5,14 @@ namespace GetCandy\Api\Core\Orders;
 class OrderExport
 {
     /**
-     * The export content
+     * The export content.
      *
      * @var string
      */
     protected $content;
 
     /**
-     * The content format
+     * The content format.
      *
      * @var string
      */
@@ -25,7 +25,7 @@ class OrderExport
     }
 
     /**
-     * Set the value for format
+     * Set the value for format.
      *
      * @param string $format
      * @return self
@@ -33,11 +33,12 @@ class OrderExport
     public function setFormat($format)
     {
         $this->format = $format;
+
         return $this;
     }
 
     /**
-     * Get the value for format
+     * Get the value for format.
      *
      * @return string
      */
@@ -55,11 +56,12 @@ class OrderExport
     public function setContent($content)
     {
         $this->content = $content;
+
         return $this;
     }
 
     /**
-     * Get the base encoded content
+     * Get the base encoded content.
      *
      * @return string
      */
