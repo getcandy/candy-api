@@ -1,6 +1,8 @@
 #0.2.23
 
 - [added] Added factor tax to product variant transformer
+- [added] Added `minQuantity` to `BasketValidator` when adding a variant to the basket
+- [fixed] Fixed wrong offline payment type being referenced in base config
 
 #0.2.22
 
