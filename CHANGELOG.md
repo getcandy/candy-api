@@ -1,3 +1,7 @@
+#0.2.25
+
+- [fixed] Make sure `min_batch` gets passed to the API resource
+
 #0.2.24
 
 - [improved] `min_quantity` validation now includes the minimum quantity required in the validation message.
