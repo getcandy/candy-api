@@ -28,7 +28,7 @@ class RouteController extends BaseController
     public function show(Request $request, RouteCriteria $routes)
     {
         try {
-            $route = $routes->slug($request->slug)->path($request->path)->first();
+            $route = $routes->slug($request->slug)->path($request->path)->firstOrFail();
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }

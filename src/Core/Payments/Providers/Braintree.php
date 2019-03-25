@@ -96,7 +96,7 @@ class Braintree extends AbstractProvider
         $shipping = $this->order->shippingDetails;
 
         $sale = Braintree_Transaction::sale([
-            'amount' => $this->order->order_total,
+            'amount' => $this->order->order_total / 100,
             'paymentMethodNonce' => $this->token,
             'merchantAccountId' => $merchant,
             'customer' => [
@@ -143,7 +143,7 @@ class Braintree extends AbstractProvider
 
         $transaction->provider = $result->transaction->paymentInstrumentType;
         $transaction->status = $result->transaction->status;
-        $transaction->amount = $result->transaction->amount;
+        $transaction->amount = $result->transaction->amount * 100;
         $transaction->driver = 'braintree';
         $transaction->provider = 'Braintree';
         $transaction->card_type = $result->transaction->creditCardDetails->cardType ?? '';

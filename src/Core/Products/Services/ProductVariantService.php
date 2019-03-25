@@ -156,14 +156,14 @@ class ProductVariantService extends BaseService
 
         $thumbnailId = null;
 
-        if (! empty($data['thumbnail'])) {
-            $thumbnailId = $data['thumbnail']['data']['id'];
-        } elseif (! empty($data['thumbnail_id'])) {
-            $thumbnailId = $data['thumbnail_id'];
+        if (! empty($data['image'])) {
+            $imageId = $data['image']['id'];
+        } elseif (! empty($data['image_id'])) {
+            $imageId = $data['image_id'];
         }
 
-        if ($thumbnailId) {
-            $asset = app('api')->assets()->getByHashedId($thumbnailId);
+        if ($imageId) {
+            $asset = app('api')->assets()->getByHashedId($imageId);
             $variant->image()->associate($asset);
         }
 

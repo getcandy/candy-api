@@ -1,3 +1,65 @@
+#0.2.26
+
+- [changed] Changes to the request when adding items to a basket to prevent recursive queries.
+
+#0.2.25
+
+- [fixed] Make sure `min_batch` gets passed to the API resource
+
+#0.2.24
+
+- [improved] `min_quantity` validation now includes the minimum quantity required in the validation message.
+- [added] Added a `min_batch` column on `product_variants` which defaults to `1` means you can have a minimum batch size a product can be ordered in, validation message is `You must add this item in multiples of :min_batch`
+
+#0.2.23
+
+- [added] Added factor tax to product variant transformer
+- [added] Added `minQuantity` to `BasketValidator` when adding a variant to the basket
+- [fixed] Fixed wrong offline payment type being referenced in base config
+
+#0.2.22
+
+- [fixed] Fixed issue where 404 wasn't thrown on product endpoint
+- [fixed] Fixed issue where you couldn't search on the users endpoint
+- [fixed] `ChannelResource` now only includes `published_at` if it exists on relation pivot
+
+#0.2.21
+
+- [fixed] Fixed contraint that prevented shipping prices from being deleted.
+- [added] Added `image` include for `ProductVariantResource`
+- [added] Added `groups` include for `ProductTierResource`
+- [added] Added a `getFullName` getter for user details
+
+#0.2.20
+
+- [fixed] Make sure default channel is set on new products
+
+#0.2.19
+
+- [changed] Changed key check on order `tracking_no` to `array_key_exists` to handle any value
+- [improved] Add variant and option data to order line when resolving lines.
+- [added] Added a CandyApi util class
+- [changed] Change check on `TaxCalculator` to `is_null` to allow for passing `0`
+- [changed] Simplified the price calculator logic.
+
+#0.2.18
+
+- [fixed] Fixed SKU mapping that stopped you from sorting on it in Elastic.
+- [fixed] Fixed undefined variable on order processing factory when a closure was used.
+- [fixed] Fixed invalid namespace for listener.
+
+#0.2.17
+
+- [fixed] Fixed exception handling on a route
+
+#0.2.16
+
+- [fixed] Fixed issue where `published_at` date for category channel wasn't being returned in the resource.
+
+#0.2.15
+
+- [fixed] Fixed issue where category children weren't honouring the nested set order when loaded via relation.
+
 #0.2.14
 
 - [fixed] Fixed channel not being set on category query.

@@ -85,7 +85,7 @@ class OrderFactory implements OrderFactoryInterface
     protected $tax;
 
     /**
-     * The order type
+     * The order type.
      *
      * @var string
      */
@@ -119,7 +119,7 @@ class OrderFactory implements OrderFactoryInterface
     }
 
     /**
-     * Set the value for type
+     * Set the value for type.
      *
      * @param string $type
      * @return self
@@ -127,6 +127,7 @@ class OrderFactory implements OrderFactoryInterface
     public function type($type)
     {
         $this->type = $type;
+
         return $this;
     }
 
@@ -515,6 +516,7 @@ class OrderFactory implements OrderFactoryInterface
                                 $tax = $this->tax->amount($taxable);
 
                                 $order->lines()->create([
+                                    'product_variant_id' => $variant->id,
                                     'sku' => $variant->sku,
                                     'tax_total' => $taxable * 100,
                                     'tax_rate' => $variant->tax->percentage,
@@ -524,7 +526,7 @@ class OrderFactory implements OrderFactoryInterface
                                     'unit_qty' => $variant->unit_qty,
                                     'quantity' => $quantity,
                                     'description' => $product->product->attribute('name'),
-                                    'variant' => $variant->name,
+                                    'option' => $discount->name,
                                 ]);
                             }
                         }

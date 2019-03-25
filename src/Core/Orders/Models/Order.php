@@ -295,6 +295,7 @@ class Order extends BaseModel
     public function user()
     {
         $class = config('auth.providers.users.model', User::class);
+
         return $this->belongsTo($class);
     }
 

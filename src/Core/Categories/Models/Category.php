@@ -51,7 +51,7 @@ class Category extends BaseModel
 
     public function children()
     {
-        return $this->hasMany(self::class, 'parent_id');
+        return $this->hasMany(self::class, 'parent_id')->defaultOrder();
     }
 
     public function parent()
@@ -73,6 +73,6 @@ class Category extends BaseModel
 
     public function channels()
     {
-        return $this->belongsToMany(Channel::class, 'category_channel');
+        return $this->belongsToMany(Channel::class, 'category_channel')->withPivot('published_at');
     }
 }

@@ -33,13 +33,8 @@ class PriceCalculator implements PriceCalculatorInterface
 
         $converted = $this->converter->convert($unitPrice * $qty);
 
-        if ($tax == 'default') {
-            $taxamount = $this->taxes->amount($converted);
-            $factorTax = $this->taxes->amount($price);
-        } else {
-            $taxamount = $this->taxes->setTax($tax)->amount($converted);
-            $factorTax = $this->taxes->amount($price);
-        }
+        $taxamount = $this->taxes->setTax($tax)->amount($converted);
+        $factorTax = $this->taxes->setTax($tax)->amount($price);
 
         return new PriceCalculatorResult([
             'baseCost' => $price,

@@ -46,13 +46,17 @@ class UserService extends BaseService implements UserContract
      */
     public function getPaginatedData($length = 50, $page = null, $keywords = null, $ids = [])
     {
-        $query = $this->model;
+        $query = $this->model->with(['details']);
         if ($keywords) {
-            $query = $query
-                ->where('firstname', 'LIKE', '%'.$keywords.'%')
-                ->orWhere('lastname', 'LIKE', '%'.$keywords.'%')
-                ->orWhere('company_name', 'LIKE', '%'.$keywords.'%')
-                ->orWhere('email', 'LIKE', '%'.$keywords.'%');
+            $keywords = explode(' ', $keywords);
+            foreach ($keywords as $keyword) {
+                $query = $query->whereHas('details', function ($q) use ($keyword) {
+                    $q->where('firstname', 'LIKE', '%'.$keyword.'%')
+                        ->orWhere('lastname', 'LIKE', '%'.$keyword.'%')
+                        ->orWhere('company_name', 'LIKE', '%'.$keyword.'%')
+                        ->orWhere('email', 'LIKE', '%'.$keyword.'%');
+                });
+            }
         }
 
         if (! empty($ids)) {

@@ -35,7 +35,7 @@ class ProductType extends BaseType
             'type' => 'text',
             'analyzer' => 'standard',
             'fields' => [
-                'sort' => [
+                'sortable' => [
                     'type' => 'keyword',
                 ],
                 'suggest' => [

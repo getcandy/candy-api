@@ -13,6 +13,11 @@ class UserDetail extends BaseModel
         return json_decode($val);
     }
 
+    public function getFullNameAttribute()
+    {
+        return trim($this->title.' '.$this->firstname.' '.$this->lastname);
+    }
+
     public function setFieldsAttribute($val)
     {
         $this->attributes['fields'] = json_encode($val);

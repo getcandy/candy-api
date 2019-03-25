@@ -52,28 +52,12 @@ class ProductController extends BaseController
             $product = $criteria->blank('id')->sku($id)->first();
         }
 
-        // try {
-        //     $product = app('api')->products()->getByHashedId($id, $request->includes);
-        // } catch (ModelNotFoundException $e) {
-        //     // If it cannot be found by ID, try get the variant by SKU
-        //     $variant = app('api')->productVariants()->getBySku($id);
-
-        //     $product = app('api')->products()->getByHashedId(
-        //         $variant->product->encodedId(),
-        //         $request->includes
-        //     );
-        //     if (! $variant) {
-        //         return $this->errorNotFound();
-        //     }
-        // }
-
+        if (! $product) {
+            return $this->errorNotFound();
+        }
         $resource = new ProductResource($product);
 
-        $resource->only($request->fields);
-
-        // $resource->language($request->getLocale());
-        // -
-        return $resource;
+        return $resource->only($request->fields);
     }
 
     public function recommended(Request $request, ProductCriteria $productCriteria, BasketCriteriaInterface $baskets)

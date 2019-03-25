@@ -91,6 +91,7 @@ class BasketService extends BaseService
             'lines.variant',
             'lines.variant.tax',
             'lines.variant.tiers',
+            'lines.variant.image.transforms',
             'lines.variant.product',
             'lines.variant.product.assets',
             'lines.variant.product.assets.transforms',
@@ -187,7 +188,11 @@ class BasketService extends BaseService
         if (! empty($data['variants'])) {
             $this->remapLines($basket, $data['variants']);
         }
-        $basket->load('lines');
+        $basket->load([
+            'lines',
+            'lines.variant.product.routes',
+            'lines.variant.image.transforms',
+        ]);
 
         $discounts = Discount::all();
 
@@ -342,7 +347,7 @@ class BasketService extends BaseService
             $basket = $user->latestBasket->load($includes);
         }
 
-        if (!empty($basket)) {
+        if (! empty($basket)) {
             if ($basket->order && ! $basket->order->placed_at || ! $basket->order) {
                 return $this->factory->init($basket)->get();
             }

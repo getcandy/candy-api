@@ -12,8 +12,8 @@ class CustomerGroupResource extends AbstractResource
             'id' => $this->encoded_id,
             'name' => $this->name,
             'handle' => $this->handle,
-            'visible' => $this->pivot->visible ? true : false,
-            'purchasable' => $this->pivot->purchasable ? true : false,
+            'visible' => $this->pivot->visible ?? false,
+            'purchasable' => $this->pivot->purchasable ?? false,
         ];
     }
 }

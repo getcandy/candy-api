@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Providers;
 
+use Validator;
 use Illuminate\Support\ServiceProvider;
 use GetCandy\Api\Core\Baskets\BasketCriteria;
 use GetCandy\Api\Core\Baskets\Factories\BasketFactory;
@@ -14,6 +15,16 @@ use GetCandy\Api\Core\Baskets\Interfaces\BasketDiscountFactoryInterface;
 
 class BasketServiceProvider extends ServiceProvider
 {
+    public function boot()
+    {
+        Validator::replacer('min_batch', function ($message, $attribute, $rule, $parameters) {
+            return str_replace([':min_batch'], [$parameters[0] ?? 1], $message);
+        });
+        Validator::replacer('min_quantity', function ($message, $attribute, $rule, $parameters) {
+            return str_replace([':min_qty'], [$parameters[0] ?? 1], $message);
+        });
+    }
+
     public function register()
     {
         $this->app->bind(BasketCriteriaInterface::class, function ($app) {

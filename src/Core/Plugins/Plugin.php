@@ -56,7 +56,8 @@ class Plugin
     public function getResource($type, $file)
     {
         $file = basename($file, '.js');
-        return $this->getPathToResource($type.'/'.$file . '.' . $type);
+
+        return $this->getPathToResource($type.'/'.$file.'.'.$type);
     }
 
     public function getCssResources()
