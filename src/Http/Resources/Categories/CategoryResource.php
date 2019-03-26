@@ -27,7 +27,9 @@ class CategoryResource extends AbstractResource
     {
         return [
             'children' => new CategoryCollection($this->whenLoaded('children'), $this->only),
+            'parent' => ['data' => new CategoryResource($this->whenLoaded('parent'))],
             'channels' => new ChannelCollection($this->whenLoaded('channels')),
+            'ancestors' => new CategoryCollection($this->whenLoaded('ancestors')),
             'routes' => new RouteCollection($this->whenLoaded('routes')),
             'layout' => ['data' => new LayoutResource($this->whenLoaded('layout'))],
             'assets' => new AssetCollection($this->whenLoaded('assets')),
