@@ -1,3 +1,7 @@
+#0.2.27
+
+- [added] Make `ancestor` and `parent`, in `CategoryResource`, available to include.
+
 #0.2.26
 
 - [changed] Changes to the request when adding items to a basket to prevent recursive queries.
