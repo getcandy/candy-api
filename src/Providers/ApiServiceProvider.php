@@ -140,7 +140,6 @@ class ApiServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
-                ElasticIndexCommand::class,
                 CandySearchIndexCommand::class,
                 InstallGetCandyCommand::class,
                 ScoreProductsCommand::class,
