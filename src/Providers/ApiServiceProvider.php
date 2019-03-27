@@ -14,7 +14,6 @@ use GetCandy\Api\Core\Currencies\CurrencyConverter;
 use GetCandy\Api\Core\Users\Contracts\UserContract;
 use GetCandy\Api\Http\Middleware\SetCustomerGroups;
 use GetCandy\Api\Http\Middleware\SetLocaleMiddleware;
-use GetCandy\Api\Console\Commands\ElasticIndexCommand;
 use GetCandy\Api\Http\Middleware\SetChannelMiddleware;
 use GetCandy\Api\Console\Commands\ScoreProductsCommand;
 use GetCandy\Api\Http\Middleware\SetCurrencyMiddleware;
