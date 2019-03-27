@@ -1,3 +1,7 @@
+#0.2.28
+
+- [removed] Removed `candy:elastic:index` in favour of `candy:search:index`
+
 #0.2.27
 
 - [added] Make `ancestor` and `parent`, in `CategoryResource`, available to include.
