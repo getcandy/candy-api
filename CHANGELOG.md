@@ -1,3 +1,8 @@
+#0.2.29
+
+- [improved] Added support for adding an address to a customer
+- [fixed] Fixed missing `ElasticIndexCommand` being referenced in service provider
+
 #0.2.28
 
 - [removed] Removed `candy:elastic:index` in favour of `candy:search:index`
