@@ -1,3 +1,7 @@
+#0.2.30
+
+- [added] Added total tax to `ProductVariantTransformer`
+
 #0.2.29
 
 - [improved] Added support for adding an address to a customer
