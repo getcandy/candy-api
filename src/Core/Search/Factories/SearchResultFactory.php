@@ -399,7 +399,6 @@ class SearchResultFactory implements SearchResultInterface
 
         $selected = collect($selected);
 
-
         $models = app('api')->categories()->getSearchedIds(array_keys($all));
 
         foreach ($models as $category) {

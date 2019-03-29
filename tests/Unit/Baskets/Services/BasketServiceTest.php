@@ -87,8 +87,8 @@ class BasketServiceTest extends TestCase
                     'id' => $variant->encodedId(),
                     'quantity' => 1,
                     'meta' => [
-                        'backorder' => 5
-                    ]
+                        'backorder' => 5,
+                    ],
                 ],
             ],
         ];
