@@ -3,6 +3,7 @@
 namespace GetCandy\Api\Core\Orders\Models;
 
 use Carbon\Carbon;
+use GetCandy\Api\Core\Traits\HasMeta;
 use GetCandy\Api\Core\Scaffold\BaseModel;
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -11,7 +12,7 @@ use GetCandy\Api\Core\Payments\Models\Transaction;
 
 class Order extends BaseModel
 {
-    use LogsActivity;
+    use LogsActivity, HasMeta;
 
     protected static $recordEvents = ['created'];
 

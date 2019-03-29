@@ -177,6 +177,8 @@ class BasketService extends BaseService
             $user
         );
 
+        $basket->meta = $data['meta'] ?? null;
+
         if (empty($data['currency'])) {
             $basket->currency = app('api')->currencies()->getDefaultRecord()->code;
         } else {
@@ -266,6 +268,7 @@ class BasketService extends BaseService
                 'product_variant_id' => $variant->id,
                 'quantity' => $item['quantity'],
                 'total' => $item['quantity'] * $variant->price,
+                'meta' => $item['meta'] ?? [],
             ];
         });
 

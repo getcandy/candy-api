@@ -11,11 +11,14 @@ use GetCandy\Api\Core\Addresses\Models\Address;
 use GetCandy\Api\Core\Discounts\Models\Discount;
 use GetCandy\Api\Core\Orders\Events\OrderSavedEvent;
 use GetCandy\Api\Core\Orders\Factories\OrderFactory;
-use GetCandy\Api\Core\Baskets\Factories\BasketFactory;
+use GetCandy\Api\Core\Baskets\Services\BasketService;
+use GetCandy\Api\Core\Products\Models\ProductVariant;
 use GetCandy\Api\Core\Discounts\Models\DiscountReward;
+use GetCandy\Api\Core\Baskets\Factories\BasketFactory;
 use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaSet;
 use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaItem;
 use GetCandy\Api\Core\Orders\Interfaces\OrderFactoryInterface;
+use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
 use GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException;
 
 /**
@@ -279,6 +282,47 @@ class OrderFactoryTest extends TestCase
 
         foreach ($order->discounts as $discount) {
             $this->assertEquals(100, $discount->amount);
+        }
+    }
+
+    /**
+     * @group current
+     */
+    public function test_can_set_meta_from_basket()
+    {
+        $service = $this->app->make(BasketService::class);
+        $variant = ProductVariant::first();
+        $variant = $this->app->make(ProductVariantFactory::class)->init($variant)->get();
+
+        $payload = [
+            'meta' => [
+                'big_basket' => true,
+            ],
+            'variants' => [
+                [
+                    'id' => $variant->encodedId(),
+                    'quantity' => 1,
+                    'meta' => [
+                        'backorder' => 5
+                    ]
+                ],
+            ],
+        ];
+
+        $basket = $service->store($payload);
+
+        $factory = $this->app->make(OrderFactory::class);
+        $order = $factory->basket($basket)->resolve();
+
+        $this->assertSame($basket->meta, $order->meta);
+
+        foreach ($order->lines as $line) {
+            // Get the basket line.
+            $basketLine = $basket->lines->first(function ($bl) use ($line) {
+                return $line->sku === $bl->variant->sku;
+            });
+
+            $this->assertSame($basketLine->meta, $line->meta);
         }
     }
 

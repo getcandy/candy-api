@@ -206,6 +206,7 @@ class OrderFactory implements OrderFactoryInterface
         $order->conversion = $this->currencies->set($this->basket->currency)->rate();
         $order->currency = $this->basket->currency;
         $order->type = $this->type;
+        $order->meta = $this->basket->meta;
 
         $order->save();
         $order->basketLines()->delete();
@@ -244,6 +245,7 @@ class OrderFactory implements OrderFactoryInterface
                 'quantity' => $line->quantity,
                 'description' => $line->variant->product->attribute('name'),
                 'option' => $line->variant->name,
+                'meta' => $line->meta,
             ]);
         }
         $order->lines()->createMany($lines);
