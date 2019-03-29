@@ -1,3 +1,7 @@
+#0.2.31
+
+- [added] Added custom meta field to baskets and orders
+
 #0.2.30
 
 - [added] Added total tax to `ProductVariantTransformer`
