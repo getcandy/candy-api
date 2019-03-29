@@ -6,6 +6,7 @@ use GetCandy\Api\Core\Scaffold\BaseModel;
 use Illuminate\Database\Eloquent\Builder;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 use GetCandy\Api\Core\Pricing\PriceCalculatorInterface;
+use GetCandy\Api\Core\Scopes\ProductPricingScope;
 
 class ProductPricingTier extends BaseModel
 {
@@ -24,24 +25,7 @@ class ProductPricingTier extends BaseModel
     protected static function boot()
     {
         parent::boot();
-
-        $roles = app('api')->roles()->getHubAccessRoles();
-
-        if ($user = app('auth')->user()) {
-            $groups = $user->groups->pluck('id')->toArray();
-        } else {
-            $groups = [app('api')->customerGroups()->getGuestId()];
-        }
-
-        $user = app('auth')->user();
-
-        static::addGlobalScope('available', function (Builder $builder) use ($user, $groups, $roles) {
-            if (! $user || ! $user->hasAnyRole($roles)) {
-                $builder->whereHas('group', function ($query) use ($groups) {
-                    $query->whereIn('id', $groups);
-                });
-            }
-        });
+        static::addGlobalScope(new ProductPricingScope);
     }
 
     public function scopeInGroups($query, $groups)

@@ -7,19 +7,21 @@ use Carbon\Carbon;
 use League\Fractal\Manager;
 use GetCandy\Api\Core\Factory;
 use Laravel\Passport\Passport;
+use GetCandy\Api\Core\CandyApi;
 use Illuminate\Support\ServiceProvider;
 use GetCandy\Api\Core\Users\Services\UserService;
 use GetCandy\Api\Http\Middleware\SetTaxMiddleware;
+use GetCandy\Api\Http\Middleware\SetCustomerGroups;
 use GetCandy\Api\Core\Currencies\CurrencyConverter;
 use GetCandy\Api\Core\Users\Contracts\UserContract;
-use GetCandy\Api\Http\Middleware\SetCustomerGroups;
 use GetCandy\Api\Http\Middleware\SetLocaleMiddleware;
 use GetCandy\Api\Http\Middleware\SetChannelMiddleware;
-use GetCandy\Api\Console\Commands\ScoreProductsCommand;
 use GetCandy\Api\Http\Middleware\SetCurrencyMiddleware;
+use GetCandy\Api\Console\Commands\ScoreProductsCommand;
 use GetCandy\Api\Http\Middleware\CheckClientCredentials;
 use GetCandy\Api\Console\Commands\InstallGetCandyCommand;
 use GetCandy\Api\Console\Commands\CandySearchIndexCommand;
+use GetCandy\Api\Http\Middleware\DetectHubRequestMiddleware;
 
 class ApiServiceProvider extends ServiceProvider
 {
@@ -175,6 +177,10 @@ class ApiServiceProvider extends ServiceProvider
 
         $mediaDrivers = config('assets.upload_drivers', []);
 
+        $this->app->singleton(CandyApi::class, function ($app) {
+            return new CandyApi;
+        });
+
         foreach ($mediaDrivers as $name => $driver) {
             $this->app->singleton($name.'.driver', function ($app) use ($driver) {
                 return $app->make($driver);
@@ -215,5 +221,6 @@ class ApiServiceProvider extends ServiceProvider
         $this->app['router']->aliasMiddleware('api.locale', SetLocaleMiddleware::class);
         $this->app['router']->aliasMiddleware('api.tax', SetTaxMiddleware::class);
         $this->app['router']->aliasMiddleware('api.channels', SetChannelMiddleware::class);
+        $this->app['router']->aliasMiddleware('api.detect_hub', DetectHubRequestMiddleware::class);
     }
 }

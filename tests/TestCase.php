@@ -4,6 +4,7 @@ namespace Tests;
 
 use TaxCalculator;
 use Tests\Stubs\User;
+use CreateActivityLogTable;
 use GetCandy\Api\Providers\ApiServiceProvider;
 use GetCandy\Api\Core\Baskets\Factories\BasketFactory;
 use Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables;
@@ -15,7 +16,6 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         parent::setUp();
 
         $this->artisan('cache:forget', ['key' => 'spatie.permission.cache']);
-
         $this->artisan('vendor:publish', ['--provider' => 'Spatie\Activitylog\ActivitylogServiceProvider', '--tag' => 'migrations']);
         $this->artisan('migrate', ['--database' => 'testing']);
         $this->artisan('db:seed', ['--class' => '\Seeds\TestingDatabaseSeeder']);

@@ -13,6 +13,7 @@ Route::group([
         'api.customer_groups',
         'api.locale',
         'api.tax',
+        'api.detect_hub',
     ],
     'prefix' => 'api/'.config('app.api_version', 'v1'),
     'namespace' => 'GetCandy\Api\Http\Controllers',

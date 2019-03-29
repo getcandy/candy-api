@@ -4,6 +4,7 @@ Route::group([
     'middleware' => [
         'api.client',
         'api.currency',
+        'api.detect_hub',
         'api.customer_groups',
         'api.channels',
         'api.locale',
