@@ -49,7 +49,7 @@ class Basket extends BaseModel
      * @var array
      */
     protected $fillable = [
-        'lines', 'completed_at', 'merged_id', 'meta'
+        'lines', 'completed_at', 'merged_id', 'meta',
     ];
 
     /**

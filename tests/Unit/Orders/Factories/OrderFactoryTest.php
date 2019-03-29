@@ -13,8 +13,8 @@ use GetCandy\Api\Core\Orders\Events\OrderSavedEvent;
 use GetCandy\Api\Core\Orders\Factories\OrderFactory;
 use GetCandy\Api\Core\Baskets\Services\BasketService;
 use GetCandy\Api\Core\Products\Models\ProductVariant;
-use GetCandy\Api\Core\Discounts\Models\DiscountReward;
 use GetCandy\Api\Core\Baskets\Factories\BasketFactory;
+use GetCandy\Api\Core\Discounts\Models\DiscountReward;
 use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaSet;
 use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaItem;
 use GetCandy\Api\Core\Orders\Interfaces\OrderFactoryInterface;
@@ -303,8 +303,8 @@ class OrderFactoryTest extends TestCase
                     'id' => $variant->encodedId(),
                     'quantity' => 1,
                     'meta' => [
-                        'backorder' => 5
-                    ]
+                        'backorder' => 5,
+                    ],
                 ],
             ],
         ];

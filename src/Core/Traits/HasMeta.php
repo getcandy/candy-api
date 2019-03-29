@@ -5,7 +5,7 @@ namespace GetCandy\Api\Core\Traits;
 trait HasMeta
 {
     /**
-     * Mutator for setting meta column
+     * Mutator for setting meta column.
      *
      * @param array $val
      * @return void
@@ -16,7 +16,7 @@ trait HasMeta
     }
 
     /**
-     * Mutator for setting meta attribute
+     * Mutator for setting meta attribute.
      *
      * @param string $val
      * @return array

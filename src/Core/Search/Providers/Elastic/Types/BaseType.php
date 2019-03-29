@@ -269,7 +269,7 @@ abstract class BaseType
 
                 if ($attribute->filterable) {
                     $payload[$attribute->handle]['fields']['filter'] = [
-                        'type' => $attribute->type == 'number' ? 'integer' : 'keyword'
+                        'type' => $attribute->type == 'number' ? 'integer' : 'keyword',
                     ];
                 }
             }
