@@ -1,3 +1,7 @@
+#0.2.32
+
+- [added] Added CandyHub detection
+
 #0.2.31
 
 - [added] Added custom meta field to baskets and orders
