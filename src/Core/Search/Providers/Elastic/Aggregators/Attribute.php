@@ -54,7 +54,7 @@ class Attribute
 
         $agg = new Terms($this->field);
         $agg->setField($this->field.'.filter');
-
+        $agg->setOrder('_term', 'asc');
         $postBool = new BoolQuery();
 
         foreach ($this->filters as $filter) {
