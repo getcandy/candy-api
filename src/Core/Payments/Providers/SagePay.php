@@ -142,6 +142,11 @@ class SagePay extends AbstractProvider
                 ->setTransactionId($content['transactionId'])
                 ->setPaRequest($content['paReq'])
                 ->setRedirect($content['acsUrl']);
+        } elseif ($content['status'] == 'Rejected') {
+            $response = new PaymentResponse(false, $content['statusDetail'] ?? 'Rejected', $content);
+            return $response->transaction(
+                $this->createFailedTransaction($content)
+            );
         }
 
         $response = new PaymentResponse(true, 'Payment Received');
