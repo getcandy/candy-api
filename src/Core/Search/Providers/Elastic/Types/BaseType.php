@@ -194,7 +194,7 @@ abstract class BaseType
      */
     protected function getCategories(Model $model, $lang = 'en')
     {
-        $categories = $model->categories;
+        $categories = $model->categories()->withoutChannelScope()->get();
 
         $cats = collect();
 
