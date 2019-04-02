@@ -8,10 +8,12 @@ use GetCandy\Api\Core\Traits\HasRoutes;
 use GetCandy\Api\Core\Traits\HasLayouts;
 use GetCandy\Api\Core\Scaffold\BaseModel;
 use GetCandy\Api\Core\Traits\HasChannels;
+use GetCandy\Api\Core\Scopes\ChannelScope;
 use GetCandy\Api\Core\Traits\HasAttributes;
 use GetCandy\Api\Core\Channels\Models\Channel;
 use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Traits\HasCustomerGroups;
+use GetCandy\Api\Core\Scopes\CustomerGroupScope;
 
 class Category extends BaseModel
 {
@@ -22,6 +24,19 @@ class Category extends BaseModel
         HasChannels,
         HasRoutes,
         HasCustomerGroups;
+
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope(new CustomerGroupScope);
+        static::addGlobalScope(new ChannelScope);
+    }
 
     protected $hashids = 'main';
 
