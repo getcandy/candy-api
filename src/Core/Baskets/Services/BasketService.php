@@ -347,7 +347,7 @@ class BasketService extends BaseService
         }
 
         if ($user->latestBasket) {
-            $basket = $user->latestBasket->load($includes);
+            $basket = $user->latestBasket->load($includes ?? []);
         }
 
         if (! empty($basket)) {
