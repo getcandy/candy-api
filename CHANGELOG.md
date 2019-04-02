@@ -1,3 +1,8 @@
+#0.2.33
+
+- [fixed] Fixed default getcandy config
+- [added] Added global channel scope to categories
+
 #0.2.32
 
 - [added] Added CandyHub detection
