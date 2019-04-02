@@ -1,3 +1,8 @@
+#0.2.35
+
+- [fixed] Fixed handling of non existent includes when getting a users basket
+- [fixed] Fixed handling of SagePay charge when rejected for fraud reasons
+
 #0.2.34
 
 - [fixed] Fixed issue where indexer wasn't getting categories
