@@ -32,6 +32,18 @@ class ChannelScope extends AbstractScope
     }
 
     /**
+     * Extend the query builder with the needed functions.
+     *
+     * @param Builder $builder
+     */
+    public function extend(Builder $builder)
+    {
+        $builder->macro('withoutChannelScope', function (Builder $builder) {
+            return $builder->withoutGlobalScope($this);
+        });
+    }
+
+    /**
      * Remove the scope from the given Eloquent query builder.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $builder
