@@ -1,3 +1,7 @@
+#0.2.34
+
+- [fixed] Fixed issue where indexer wasn't getting categories
+
 #0.2.33
 
 - [fixed] Fixed default getcandy config
