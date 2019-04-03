@@ -19,28 +19,23 @@ class CustomerGroupScope extends AbstractScope
      */
     public function apply(Builder $builder, Model $model)
     {
-        $isHub = $this->api->isHubRequest();
-        if (! $this->user || ! $this->hasHubRoles || ($this->hasHubRoles && ! $isHub)) {
+        $this->resolve(function () use ($builder) {
             $builder->whereHas('customerGroups', function ($q) {
-                $q->whereIn('customer_groups.id', $this->groups)->where('visible', '=', true);
+                $q->whereIn('customer_groups.id', $this->getGroups())->where('visible', '=', true);
             });
-        }
-    }
-
-    protected function getCustomerGroups()
-    {
-
+        });
     }
 
     /**
-     * Remove the scope from the given Eloquent query builder.
+     * Extend the query builder with the needed functions.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $builder
-     * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @return void
+     * @param Builder $builder
      */
-    public function remove(Builder $builder, Model $model)
+    public function extend(Builder $builder)
     {
-        dd('hit');
+        $builder->macro('forAnyCustomerGroup', function (Builder $builder) {
+            return $builder->withoutGlobalScope($this);
+        });
+        return $builder;
     }
 }

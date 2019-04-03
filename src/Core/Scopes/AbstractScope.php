@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Core\Scopes;
 
-use Auth;
 use GetCandy\Api\Core\CandyApi;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
@@ -46,16 +45,61 @@ abstract class AbstractScope implements Scope
     {
         $this->roles = app('api')->roles()->getHubAccessRoles();
         $this->api = app()->getInstance()->make(CandyApi::class);
-        $this->user = Auth::user();
+    }
 
-        $this->groups = [app('api')->customerGroups()->getGuestId()];
-
-        if ($this->user) {
-            $this->hasHubRoles = $this->user->hasAnyRole($this->roles);
-            $this->groups = $this->user->groups->pluck('id')->toArray();
-            if ($this->hasHubRoles && !$this->api->isHubRequest()) {
-                $this->groups = [app('api')->customerGroups()->getGuestId()];
-            }
+    /**
+     * Resolves the scope if criteria is met
+     *
+     * @param \Closure $callback
+     * @return void
+     */
+    protected function resolve(\Closure $callback)
+    {
+        if (
+            ! $this->getUser()
+            || ! $this->canAccessHub()
+            || ($this->canAccessHub() && ! $this->api->isHubRequest())
+        ) {
+            $callback();
         }
+    }
+
+    /**
+     * Gets the authenticated user
+     *
+     * @return Model
+     */
+    protected function getUser()
+    {
+        return app()->auth->user();
+    }
+
+    /**
+     * Getter for hub access check
+     *
+     * @return boolean
+     */
+    protected function canAccessHub()
+    {
+        $user = $this->getUser();
+        return $user ? $user->hasAnyRole($this->roles) : false;
+    }
+
+    /**
+     * Get the customer groups
+     *
+     * @return array
+     */
+    protected function getGroups()
+    {
+        $user = $this->getUser();
+        $guestGroups = [app('api')->customerGroups()->getGuestId()];
+        if (!$user) {
+            return $guestGroups;
+        }
+        if ($this->canAccessHub() && $this->api->isHubRequest()) {
+            return $user->groups->pluck('id')->toArray();
+        }
+        return $guestGroups;
     }
 }

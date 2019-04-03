@@ -19,15 +19,11 @@ class ChannelScope extends AbstractScope
     public function apply(Builder $builder, Model $model)
     {
         $channel = app()->getInstance()->make(ChannelFactoryInterface::class);
-        $isHub = $this->api->isHubRequest();
-
-        if (! $channel && ($this->user && $this->hasHubRoles && $isHub)) {
-            return $builder;
-        }
-
-        $builder->whereHas('channels', function ($query) use ($channel) {
-            $query->whereHandle($channel->current())
-                ->whereDate('published_at', '<=', Carbon::now());
+        $this->resolve(function () use ($builder, $channel) {
+            $builder->whereHas('channels', function ($query) use ($channel) {
+                $query->whereHandle($channel->current())
+                    ->whereDate('published_at', '<=', Carbon::now());
+            });
         });
     }
 
@@ -41,17 +37,5 @@ class ChannelScope extends AbstractScope
         $builder->macro('withoutChannelScope', function (Builder $builder) {
             return $builder->withoutGlobalScope($this);
         });
-    }
-
-    /**
-     * Remove the scope from the given Eloquent query builder.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $builder
-     * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @return void
-     */
-    public function remove(Builder $builder, Model $model)
-    {
-        dd('hit');
     }
 }

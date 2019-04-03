@@ -8,6 +8,8 @@ use Elastica\Reindex;
 use Elastica\Document;
 use Elastica\Type\Mapping;
 use Illuminate\Database\Eloquent\Model;
+use GetCandy\Api\Core\Scopes\ChannelScope;
+use GetCandy\Api\Core\Scopes\CustomerGroupScope;
 use GetCandy\Api\Core\Languages\Services\LanguageService;
 
 class Indexer
@@ -66,7 +68,12 @@ class Indexer
             $aliases[$alias] = $alias."_{$suffix}";
         }
 
-        $models = $model->withoutGlobalScopes()->limit(1000)->offset($this->batch)->get();
+        $models = $model->withoutGlobalScopes([
+            CustomerGroupScope::class,
+            ChannelScope::class
+        ])->limit(1000)
+            ->offset($this->batch)
+            ->get();
 
         $type->setSuffix($suffix);
 
