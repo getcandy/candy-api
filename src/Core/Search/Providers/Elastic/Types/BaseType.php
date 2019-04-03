@@ -5,6 +5,8 @@ namespace GetCandy\Api\Core\Search\Providers\Elastic\Types;
 use Carbon\Carbon;
 use GetCandy\Api\Core\Search\Indexable;
 use Illuminate\Database\Eloquent\Model;
+use GetCandy\Api\Core\Scopes\ChannelScope;
+use GetCandy\Api\Core\Scopes\CustomerGroupScope;
 
 abstract class BaseType
 {
@@ -194,7 +196,10 @@ abstract class BaseType
      */
     protected function getCategories(Model $model, $lang = 'en')
     {
-        $categories = $model->categories()->withoutChannelScope()->get();
+        $categories = $model->categories()->withoutGlobalScopes([
+            CustomerGroupScope::class,
+            ChannelScope::class
+        ])->get();
 
         $cats = collect();
 
@@ -205,6 +210,7 @@ abstract class BaseType
                 $parent = $parent->parent;
             }
         }
+
 
         return $categories->map(function ($item) use ($lang) {
             return [
@@ -217,7 +223,10 @@ abstract class BaseType
 
     protected function getCustomerGroups(Model $model, $lang = 'en')
     {
-        return $model->customerGroups->filter(function ($group) {
+        return $model->customerGroups()->withoutGlobalScopes([
+            CustomerGroupScope::class,
+            ChannelScope::class
+        ])->get()->filter(function ($group) {
             return $group->pivot->purchasable && $group->pivot->visible;
         })->map(function ($item) {
             return [

@@ -71,7 +71,7 @@ class Category extends BaseModel
 
     public function parent()
     {
-        return $this->belongsTo($this, 'parent_id');
+        return $this->belongsTo($this, 'parent_id')->withoutGlobalScopes();
     }
 
     public function getProductCount()
