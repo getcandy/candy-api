@@ -30,7 +30,7 @@ trait HasChannels
 
         // dump($channel, $this);
         return $query->whereHas('channels', function ($query) use ($channel) {
-            $query->whereHandle('webstore')
+            $query->whereHandle($channel)
                 ->whereNotNull('published_at')
                 ->whereDate('published_at', '<=', Carbon::now());
         });
