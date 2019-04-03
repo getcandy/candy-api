@@ -8,8 +8,10 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use GetCandy\Api\Http\Requests\Collections\CreateRequest;
 use GetCandy\Api\Http\Requests\Collections\DeleteRequest;
 use GetCandy\Api\Http\Requests\Collections\UpdateRequest;
+use GetCandy\Api\Core\Collections\Criteria\CollectionCriteria;
+use GetCandy\Api\Http\Resources\Collections\CollectionResource;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use GetCandy\Api\Http\Transformers\Fractal\Collections\CollectionTransformer;
+use GetCandy\Api\Http\Resources\Collections\CollectionCollection;
 
 class CollectionController extends BaseController
 {
@@ -20,8 +22,7 @@ class CollectionController extends BaseController
     public function index(Request $request)
     {
         $paginator = app('api')->collections()->getPaginatedData($request->keywords, $request->per_page, $request->current_page);
-
-        return $this->respondWithCollection($paginator, new CollectionTransformer);
+        return new CollectionCollection($paginator);
     }
 
     /**
@@ -29,15 +30,14 @@ class CollectionController extends BaseController
      * @param  string $id
      * @return Json
      */
-    public function show($id)
+    public function show($id, Request $request, CollectionCriteria $criteria)
     {
         try {
-            $channel = app('api')->collections()->getByHashedId($id);
+            $collection = $criteria->id($id)->include($request->includes)->firstOrFail();
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
-
-        return $this->respondWithItem($channel, new CollectionTransformer);
+        return new CollectionResource($collection);
     }
 
     /**
@@ -48,8 +48,7 @@ class CollectionController extends BaseController
     public function store(CreateRequest $request)
     {
         $result = app('api')->collections()->create($request->all());
-
-        return $this->respondWithItem($result, new CollectionTransformer);
+        return new CollectionResource($result);
     }
 
     /**
@@ -66,7 +65,7 @@ class CollectionController extends BaseController
             return $this->errorNotFound();
         }
 
-        return $this->respondWithItem($result, new CollectionTransformer);
+        return new CollectionResource($result);
     }
 
     /**
