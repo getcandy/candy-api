@@ -3,6 +3,7 @@
 namespace GetCandy\Api\Http\Resources\Products;
 
 use GetCandy\Api\Http\Resources\AbstractResource;
+use GetCandy\Api\Http\Resources\Associations\AssociationGroupResource;
 
 class ProductAssociationResource extends AbstractResource
 {
@@ -17,6 +18,7 @@ class ProductAssociationResource extends AbstractResource
     {
         return [
             'association' => ['data' => new ProductResource($this->whenLoaded('association'), $this->only)],
+            'group' => ['data' => new AssociationGroupResource($this->whenLoaded('group'), $this->only)],
         ];
     }
 }

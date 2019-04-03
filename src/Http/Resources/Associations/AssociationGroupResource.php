@@ -10,6 +10,8 @@ class AssociationGroupResource extends AbstractResource
     {
         return [
             'id' => $this->encoded_id,
+            'name' => $this->name,
+            'handle' => $this->handle,
         ];
     }
 }
