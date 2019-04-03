@@ -1,3 +1,7 @@
+#0.2.37
+
+- [fixed] Various fixes for global scopes and indexing
+
 #0.2.36
 
 - [changed] Initial work on moving Collections to resources
