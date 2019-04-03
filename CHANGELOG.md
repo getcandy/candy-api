@@ -1,3 +1,10 @@
+#0.2.36
+
+- [changed] Initial work on moving Collections to resources
+- [improved] Hashids validator now accepts class reference
+- [changed] Changed way some global scopes are added
+- [improved] Improved product association resources
+
 #0.2.35
 
 - [fixed] Fixed handling of non existent includes when getting a users basket
