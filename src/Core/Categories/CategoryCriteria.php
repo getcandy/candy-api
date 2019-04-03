@@ -40,12 +40,10 @@ class CategoryCriteria extends AbstractCriteria
         $category = new Category;
 
         $builder = $category->with($this->includes ?: [])
-            ->withCount(['products', 'children'])
-            ->channel($this->channel);
+            ->withCount(['products', 'children']);
 
         if ($this->id) {
             $builder->where('id', '=', $category->decodeId($this->id));
-
             return $builder;
         }
 
