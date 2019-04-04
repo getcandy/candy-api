@@ -34,12 +34,12 @@ class StoreAddressRequest extends FormRequest
             'firstname' => 'required',
             'lastname' => 'required',
             'address_id' => 'hashid_is_valid:addresses',
-            'address' => 'required_without:address_id',
-            'city' => 'required_without:address_id',
-            'county' => 'required_without_all:address_id,state',
+            'address' => 'required_without:address_id|max:40',
+            'city' => 'required_without:address_id|max:40',
+            'county' => 'required_without_all:address_id,state|max:40',
             'email' => 'email',
-            'state' => 'required_without_all:address_id,county',
-            'zip' => 'required_without:address_id',
+            'state' => 'required_without_all:address_id,county|max:40',
+            'zip' => 'required_without:address_id|max:8',
             'country' => 'required_without:address_id',
         ];
     }
