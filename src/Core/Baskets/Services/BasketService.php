@@ -408,12 +408,24 @@ class BasketService extends BaseService
             'resolved_at' => Carbon::now(),
             'merged_id' => $userBasket->id,
         ]);
+
+        // Need to determine whether the basket was changed.
+        $oldProducts = $guestBasket->lines->mapWithKeys(function ($l) {
+            return [$l->variant->sku => $l->quantity];
+        })->toArray();
+
+        $currentProducts = $userBasket->lines->mapWithKeys(function ($l) {
+            return [$l->variant->sku => $l->quantity];
+        })->toArray();
+
         $userBasket->lines()->delete();
         $userBasket->lines()->createMany(
             $newLines->merge($oldLines)->toArray()
         );
 
-        return $this->factory->init($userBasket)->get();
+        return $this->factory->init($userBasket)->changed(
+            !empty($oldProducts) ? !($currentProducts === $oldProducts) : false
+        )->get();
     }
 
     /**
