@@ -1,3 +1,7 @@
+#0.2.38
+
+- [added] Added bool for if a basket was changed during merge.
+
 #0.2.37
 
 - [fixed] Various fixes for global scopes and indexing
