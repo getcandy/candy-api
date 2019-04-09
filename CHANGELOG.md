@@ -1,3 +1,10 @@
+#0.2.39
+
+- [fixed] Fixed global scopes not honouring a users groups
+- [improved] Product customer group pricing now uses global scope
+- [added] You can now pass through order meta at more points in the checkout lifecycle
+- [added] Added a basket claim endpoint
+
 #0.2.38
 
 - [added] Added bool for if a basket was changed during merge.
