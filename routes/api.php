@@ -77,6 +77,7 @@ Route::group([
     $router->get('baskets/current', 'Baskets\BasketController@current');
     $router->get('baskets/saved', 'Baskets\BasketController@saved');
     $router->post('baskets/{id}/save', 'Baskets\BasketController@save');
+    $router->post('baskets/{id}/claim', 'Baskets\BasketController@claim');
     $router->delete('baskets/{basket}', 'Baskets\BasketController@destroy');
     $router->put('baskets/saved/{basket}', 'Baskets\SavedBasketController@update');
 
