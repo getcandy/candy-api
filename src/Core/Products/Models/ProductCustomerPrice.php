@@ -4,6 +4,7 @@ namespace GetCandy\Api\Core\Products\Models;
 
 use GetCandy\Api\Core\Taxes\Models\Tax;
 use GetCandy\Api\Core\Scaffold\BaseModel;
+use GetCandy\Api\Core\Scopes\ProductPricingScope;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 
 class ProductCustomerPrice extends BaseModel
@@ -14,6 +15,17 @@ class ProductCustomerPrice extends BaseModel
         'price',
         'compare_at_price',
     ];
+
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope(new ProductPricingScope);
+    }
 
     /**
      * The Hashid Channel for encoding the id.
