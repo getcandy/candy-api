@@ -82,6 +82,8 @@ class OrderFactory implements OrderFactoryInterface
      */
     protected $variants;
 
+    protected $includes = [];
+
     protected $tax;
 
     /**
@@ -128,6 +130,12 @@ class OrderFactory implements OrderFactoryInterface
     {
         $this->type = $type;
 
+        return $this;
+    }
+
+    public function include($includes)
+    {
+        $this->includes = $includes;
         return $this;
     }
 
@@ -206,7 +214,14 @@ class OrderFactory implements OrderFactoryInterface
         $order->conversion = $this->currencies->set($this->basket->currency)->rate();
         $order->currency = $this->basket->currency;
         $order->type = $this->type;
-        $order->meta = $this->basket->meta;
+
+        if ($this->basket->meta) {
+            $order->meta = array_merge($order->meta ?? [], $this->basket->meta);
+        }
+
+        if (!empty($this->includes) && is_array($this->includes)) {
+            $order->load($this->includes);
+        }
 
         $order->save();
         $order->basketLines()->delete();

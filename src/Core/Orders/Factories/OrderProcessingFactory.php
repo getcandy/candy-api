@@ -68,6 +68,13 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
     protected $type;
 
     /**
+     * The order meta
+     *
+     * @var array
+     */
+    protected $meta;
+
+    /**
      * The customer reference.
      *
      * @var string
@@ -89,6 +96,12 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
     {
         $this->nonce = $nonce;
 
+        return $this;
+    }
+
+    public function meta($meta)
+    {
+        $this->meta = $meta;
         return $this;
     }
 
@@ -194,6 +207,8 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
         $this->order->notes = $this->notes;
         $this->order->customer_reference = $this->customerReference;
         $this->order->type = $this->type ?: $driver->getName();
+
+        $this->order->meta = array_merge($this->order->meta ?? [], $this->meta ?? []);
 
         $this->order->save();
 
