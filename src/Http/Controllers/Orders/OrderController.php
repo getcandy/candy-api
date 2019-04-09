@@ -310,6 +310,11 @@ class OrderController extends BaseController
     {
         try {
             $order = app('api')->orders()->setContact($orderId, $request->all());
+            if ($request->meta) {
+                $order->update([
+                    'meta' => array_merge($order->meta ?? [], $request->meta ?? []),
+                ]);
+            }
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
