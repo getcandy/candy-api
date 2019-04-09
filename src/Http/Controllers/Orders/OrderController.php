@@ -26,6 +26,7 @@ use GetCandy\Api\Core\Baskets\Interfaces\BasketFactoryInterface;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketCriteriaInterface;
 use GetCandy\Api\Core\Orders\Exceptions\IncompleteOrderException;
 use GetCandy\Api\Http\Resources\Shipping\ShippingPriceCollection;
+use GetCandy\Api\Http\Requests\Orders\Shipping\AddShippingRequest;
 use GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException;
 use GetCandy\Api\Core\Orders\Exceptions\OrderAlreadyProcessedException;
 use GetCandy\Api\Core\Orders\Interfaces\OrderProcessingFactoryInterface;
@@ -345,7 +346,7 @@ class OrderController extends BaseController
      */
     public function shippingCost(
         $id,
-        Request $request,
+        AddShippingRequest $request,
         OrderFactoryInterface $factory,
         ShippingPriceService $prices,
         BasketFactoryInterface $basketFactory
@@ -356,6 +357,7 @@ class OrderController extends BaseController
 
         $order = $factory->order($order)
             ->basket($basket)
+            ->include($request->includes ?? [])
             ->shipping($price, $request->preference)
             ->resolve();
 
