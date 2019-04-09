@@ -2,10 +2,7 @@
 
 namespace GetCandy\Api\Core\Scopes;
 
-use Auth;
-use GetCandy\Api\Core\CandyApi;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Database\Eloquent\Builder;
 
 class CustomerGroupScope extends AbstractScope
