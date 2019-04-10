@@ -1,3 +1,7 @@
+#0.2.40
+
+- [improved] Added earlier exception if an order is already placed on checkout
+
 #0.2.39
 
 - [fixed] Fixed global scopes not honouring a users groups
