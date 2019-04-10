@@ -1,3 +1,9 @@
+#0.2.41
+
+- [fixed] Firstname and lastname on order address store isn't required with Address ID.
+- [changed] Set channel on middleware only if it's not already set.
+- [fixed] Fixed setting order address from address id
+
 #0.2.40
 
 - [improved] Added earlier exception if an order is already placed on checkout
