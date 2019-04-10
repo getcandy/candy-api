@@ -418,7 +418,18 @@ class OrderService extends BaseService implements OrderServiceInterface
         // If this address doesn't exist, create it.
         if (! empty($data['address_id'])) {
             $shipping = app('api')->addresses()->getByHashedId($data['address_id']);
-            $data = $shipping->toArray();
+            $data = $shipping->only([
+                'firstname',
+                'lastname',
+                'address',
+                'address_two',
+                'address_three',
+                'city',
+                'county',
+                'state',
+                'country',
+                'zip',
+            ]);
         } elseif ($user) {
             $address = app('api')->addresses()->addAddress($user, $data, $type);
             $data = $address->fields;
