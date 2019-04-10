@@ -180,6 +180,14 @@ class OrderController extends BaseController
 
             $order = $criteria->id($request->order_id)->first();
 
+            if (!$order) {
+                // Does this order exist, but has already been placed?
+                $placedOrder = $criteria->id($request->order_id)->getBuilder()->withoutGlobalScopes()->first();
+                if ($placedOrder && $placedOrder->placed_at) {
+                    throw new OrderAlreadyProcessedException;
+                }
+            }
+
             $order = $factory
                 ->order($order)
                 ->provider($type)
