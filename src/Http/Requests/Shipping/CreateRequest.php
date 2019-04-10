@@ -24,7 +24,7 @@ class CreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'type' => 'required|in:standard,dhl',
+            'type' => 'required|in:standard,dhl,regional',
             'name' => 'required|valid_structure:shipping_methods',
         ];
     }
