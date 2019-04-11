@@ -33,7 +33,7 @@ class CreateRequest extends FormRequest
             collect($this->variants)->pluck('id')->toArray()
         );
 
-        foreach ($this->variants as $i => $v) {
+        foreach ($this->variants ?? [] as $i => $v) {
             $variant = $variants->first(function ($variant) use ($v) {
                 return $variant->encodedId() === $v['id'] ?? null;
             });
