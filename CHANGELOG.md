@@ -1,3 +1,9 @@
+#0.2.42
+
+- [fixed] CreateRequest for basket handles no variants better
+- [improved] If asset is external, just return the url
+- [improved] Get default channel when getting an attribute
+
 #0.2.41
 
 - [fixed] Firstname and lastname on order address store isn't required with Address ID.
