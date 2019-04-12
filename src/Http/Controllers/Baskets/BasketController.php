@@ -191,6 +191,7 @@ class BasketController extends BaseController
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
+
         return new BasketResource($basket);
     }
 

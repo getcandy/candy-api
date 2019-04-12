@@ -7,11 +7,8 @@ use Carbon\Carbon;
 use GetCandy\Api\Core\CandyApi;
 use GetCandy\Api\Core\Channels\Models\Channel;
 
-
 trait HasChannels
 {
-
-
     public function scopeChannel($query, $channel = null)
     {
         $roles = app('api')->roles()->getHubAccessRoles();

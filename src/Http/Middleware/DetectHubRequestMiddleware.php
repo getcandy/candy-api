@@ -26,6 +26,7 @@ class DetectHubRequestMiddleware
         if ($request->headers->has('X-CANDY-HUB')) {
             $this->api->setIsHubRequest(true);
         }
+
         return $next($request);
     }
 }

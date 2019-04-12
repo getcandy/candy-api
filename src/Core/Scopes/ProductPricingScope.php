@@ -33,6 +33,7 @@ class ProductPricingScope extends AbstractScope
         $builder->macro('withoutPricingScope', function (Builder $builder) {
             return $builder->withoutGlobalScope($this);
         });
+
         return $builder;
     }
 }

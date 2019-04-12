@@ -144,6 +144,7 @@ class SagePay extends AbstractProvider
                 ->setRedirect($content['acsUrl']);
         } elseif ($content['status'] == 'Rejected') {
             $response = new PaymentResponse(false, $content['statusDetail'] ?? 'Rejected', $content);
+
             return $response->transaction(
                 $this->createFailedTransaction($content)
             );

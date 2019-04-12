@@ -44,9 +44,9 @@ class Basket extends BaseModel
     public $discount_total = 0;
 
     /**
-     * If the basket has been changed
+     * If the basket has been changed.
      *
-     * @var boolean
+     * @var bool
      */
     public $changed = false;
 

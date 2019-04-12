@@ -9,35 +9,35 @@ use Illuminate\Database\Eloquent\Scope;
 abstract class AbstractScope implements Scope
 {
     /**
-     * The Candy API instance
+     * The Candy API instance.
      */
     protected $api;
 
     /**
-     * The customer groups
+     * The customer groups.
      *
      * @var array
      */
     protected $groups;
 
     /**
-     * The hub roles
+     * The hub roles.
      *
      * @var array
      */
     protected $roles;
 
     /**
-     * The current user
+     * The current user.
      *
      * @var Model
      */
     protected $user;
 
     /**
-     * Whether the user has Hub roles
+     * Whether the user has Hub roles.
      *
-     * @var boolean
+     * @var bool
      */
     protected $hasHubRoles = false;
 
@@ -48,7 +48,7 @@ abstract class AbstractScope implements Scope
     }
 
     /**
-     * Resolves the scope if criteria is met
+     * Resolves the scope if criteria is met.
      *
      * @param \Closure $callback
      * @return void
@@ -65,7 +65,7 @@ abstract class AbstractScope implements Scope
     }
 
     /**
-     * Gets the authenticated user
+     * Gets the authenticated user.
      *
      * @return Model
      */
@@ -75,18 +75,19 @@ abstract class AbstractScope implements Scope
     }
 
     /**
-     * Getter for hub access check
+     * Getter for hub access check.
      *
-     * @return boolean
+     * @return bool
      */
     protected function canAccessHub()
     {
         $user = $this->getUser();
+
         return $user ? $user->hasAnyRole($this->roles) : false;
     }
 
     /**
-     * Get the customer groups
+     * Get the customer groups.
      *
      * @return array
      */
@@ -94,11 +95,11 @@ abstract class AbstractScope implements Scope
     {
         $user = $this->getUser();
         $guestGroups = [app('api')->customerGroups()->getGuestId()];
-        if (!$user) {
+        if (! $user) {
             return $guestGroups;
         }
         if (($this->canAccessHub() && $this->api->isHubRequest()) ||
-            (!$this->api->isHubRequest() && !$this->canAccessHub())
+            (! $this->api->isHubRequest() && ! $this->canAccessHub())
         ) {
             return $user->groups->pluck('id')->toArray();
         }

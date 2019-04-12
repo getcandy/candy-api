@@ -70,7 +70,7 @@ class Indexer
 
         $models = $model->withoutGlobalScopes([
             CustomerGroupScope::class,
-            ChannelScope::class
+            ChannelScope::class,
         ])->limit(1000)
             ->offset($this->batch)
             ->get();
