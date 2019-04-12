@@ -21,7 +21,7 @@ class CandyApi
     }
 
     /**
-     * Sets whether it's a hub request or not
+     * Sets whether it's a hub request or not.
      *
      * @param bool $bool
      * @return self
@@ -29,13 +29,14 @@ class CandyApi
     public function setIsHubRequest($bool)
     {
         $this->isHubRequest = $bool;
+
         return $this;
     }
 
     /**
-     * Gets the value for isHubRequest
+     * Gets the value for isHubRequest.
      *
-     * @return boolean
+     * @return bool
      */
     public function isHubRequest()
     {

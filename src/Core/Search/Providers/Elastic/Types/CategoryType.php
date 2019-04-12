@@ -109,7 +109,7 @@ class CategoryType extends BaseType
     {
         return $model->children()->withoutGlobalScopes([
             CustomerGroupScope::class,
-            ChannelScope::class
+            ChannelScope::class,
         ])->get()->map(function ($item) use ($lang) {
             return [
                 'id' => $item->encodedId(),

@@ -4,7 +4,6 @@ namespace Tests;
 
 use TaxCalculator;
 use Tests\Stubs\User;
-use CreateActivityLogTable;
 use GetCandy\Api\Providers\ApiServiceProvider;
 use GetCandy\Api\Core\Baskets\Factories\BasketFactory;
 use Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables;

@@ -32,6 +32,7 @@ class SetChannelMiddleware
         $this->channel->set(
             $request->header('X-CANDY-CHANNEL') ?: $request->channel
         );
+
         return $next($request);
     }
 }

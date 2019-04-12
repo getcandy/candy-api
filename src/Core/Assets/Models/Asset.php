@@ -51,6 +51,7 @@ class Asset extends BaseModel
         if ($this->external) {
             return $this->location;
         }
+
         return Storage::disk($this->source->disk)->url($this->location.'/'.$this->filename);
     }
 

@@ -10,8 +10,8 @@ use GetCandy\Api\Http\Requests\Collections\DeleteRequest;
 use GetCandy\Api\Http\Requests\Collections\UpdateRequest;
 use GetCandy\Api\Core\Collections\Criteria\CollectionCriteria;
 use GetCandy\Api\Http\Resources\Collections\CollectionResource;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use GetCandy\Api\Http\Resources\Collections\CollectionCollection;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CollectionController extends BaseController
 {
@@ -22,6 +22,7 @@ class CollectionController extends BaseController
     public function index(Request $request)
     {
         $paginator = app('api')->collections()->getPaginatedData($request->keywords, $request->per_page, $request->current_page);
+
         return new CollectionCollection($paginator);
     }
 
@@ -37,6 +38,7 @@ class CollectionController extends BaseController
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
+
         return new CollectionResource($collection);
     }
 
@@ -48,6 +50,7 @@ class CollectionController extends BaseController
     public function store(CreateRequest $request)
     {
         $result = app('api')->collections()->create($request->all());
+
         return new CollectionResource($result);
     }
 
