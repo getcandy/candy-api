@@ -1,3 +1,7 @@
+#0.2.43
+
+- [added] Added product images on basket update
+
 #0.2.42
 
 - [fixed] CreateRequest for basket handles no variants better
