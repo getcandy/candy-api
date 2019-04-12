@@ -1,3 +1,7 @@
+#0.2.44
+
+- [added] Added support for channel to be passed as a header
+
 #0.2.43
 
 - [added] Added product images on basket update
