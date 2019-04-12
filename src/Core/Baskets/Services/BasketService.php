@@ -194,6 +194,7 @@ class BasketService extends BaseService
             'lines',
             'lines.variant.product.routes',
             'lines.variant.image.transforms',
+            'lines.variant.product.assets.transforms',
         ]);
 
         $discounts = Discount::all();
