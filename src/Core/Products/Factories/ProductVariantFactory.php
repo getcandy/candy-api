@@ -118,7 +118,11 @@ class ProductVariantFactory extends AbstractFactory implements ProductVariantInt
             $ids[] = $group->id;
         }
 
-        $pricing = $this->variant->customerPricing->sortBy('price')->first();
+        $pricing = null;
+
+        if (! $user || ($user && ! $user->hasRole('admin')) || ! $this->api->isHubRequest()) {
+            $pricing = $this->variant->customerPricing->sortBy('price')->first();
+        }
 
         $taxRate = $this->variant->tax->percentage ?? 0;
         $price = $this->variant->price;
