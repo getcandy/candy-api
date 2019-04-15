@@ -83,7 +83,6 @@ Route::group([
         $router->put('baskets/saved/{basket}', 'Baskets\SavedBasketController@update');
     });
 
-
     /*
      * Payments
      */
