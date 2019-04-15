@@ -2,24 +2,20 @@
 
 namespace GetCandy\Api\Core\Payments\Providers;
 
-use Braintree_ClientToken;
-use Braintree_Transaction;
-use Braintree_Configuration;
-use Braintree_Test_Transaction;
-use Braintree_Exception_NotFound;
-use Braintree_PaymentMethodNonce;
 use Braintree_Gateway;
+use Braintree_Transaction;
+use Braintree_Exception_NotFound;
 use GetCandy\Api\Core\Payments\PaymentResponse;
 use GetCandy\Api\Core\Payments\Models\Transaction;
 
 class Braintree extends AbstractProvider
 {
     protected $name = 'Braintree';
-    
+
     /**
-    * The Braintree api gateway
-    * @var Braintree_Gateway
-    */
+     * The Braintree api gateway.
+     * @var Braintree_Gateway
+     */
     protected $gateway;
 
     public function __construct()
@@ -124,6 +120,7 @@ class Braintree extends AbstractProvider
 
         if ($sale->success) {
             $response = new PaymentResponse(true, 'Payment Pending');
+
             return $response->transaction(
                 $this->createSuccessTransaction($sale)
             );
@@ -185,7 +182,6 @@ class Braintree extends AbstractProvider
 
         return $transaction;
     }
-
 
     public function updateTransaction($transaction)
     {

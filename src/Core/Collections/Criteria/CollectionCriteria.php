@@ -20,8 +20,10 @@ class CollectionCriteria extends AbstractCriteria
 
         if ($this->id) {
             $builder->where('id', '=', $collection->decodeId($this->id));
+
             return $builder;
         }
+
         return $builder;
     }
 }

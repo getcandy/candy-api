@@ -198,7 +198,7 @@ abstract class BaseType
     {
         $categories = $model->categories()->withoutGlobalScopes([
             CustomerGroupScope::class,
-            ChannelScope::class
+            ChannelScope::class,
         ])->get();
 
         $cats = collect();
@@ -210,7 +210,6 @@ abstract class BaseType
                 $parent = $parent->parent;
             }
         }
-
 
         return $categories->map(function ($item) use ($lang) {
             return [
@@ -225,7 +224,7 @@ abstract class BaseType
     {
         return $model->customerGroups()->withoutGlobalScopes([
             CustomerGroupScope::class,
-            ChannelScope::class
+            ChannelScope::class,
         ])->get()->filter(function ($group) {
             return $group->pivot->purchasable && $group->pivot->visible;
         })->map(function ($item) {

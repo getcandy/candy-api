@@ -68,7 +68,7 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
     protected $type;
 
     /**
-     * The order meta
+     * The order meta.
      *
      * @var array
      */
@@ -102,6 +102,7 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
     public function meta($meta)
     {
         $this->meta = $meta;
+
         return $this;
     }
 

@@ -33,6 +33,7 @@ class CustomerGroupScope extends AbstractScope
         $builder->macro('forAnyCustomerGroup', function (Builder $builder) {
             return $builder->withoutGlobalScope($this);
         });
+
         return $builder;
     }
 }

@@ -3,8 +3,8 @@
 namespace GetCandy\Api\Core\Products\Models;
 
 use GetCandy\Api\Core\Traits\Assetable;
-use GetCandy\Api\Core\Traits\Indexable;
 use GetCandy\Api\Core\Traits\HasRoutes;
+use GetCandy\Api\Core\Traits\Indexable;
 use GetCandy\Api\Core\Pages\Models\Page;
 use GetCandy\Api\Core\Scaffold\BaseModel;
 use GetCandy\Api\Core\Traits\HasChannels;
@@ -80,7 +80,6 @@ class Product extends BaseModel
         static::addGlobalScope(new CustomerGroupScope);
         static::addGlobalScope(new ChannelScope);
     }
-
 
     /**
      * Sets the option data attribute

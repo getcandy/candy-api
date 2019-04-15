@@ -136,6 +136,7 @@ class OrderFactory implements OrderFactoryInterface
     public function include($includes)
     {
         $this->includes = $includes;
+
         return $this;
     }
 
@@ -219,7 +220,7 @@ class OrderFactory implements OrderFactoryInterface
             $order->meta = array_merge($order->meta ?? [], $this->basket->meta);
         }
 
-        if (!empty($this->includes) && is_array($this->includes)) {
+        if (! empty($this->includes) && is_array($this->includes)) {
             $order->load($this->includes);
         }
 

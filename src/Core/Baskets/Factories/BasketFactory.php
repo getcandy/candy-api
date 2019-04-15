@@ -35,9 +35,9 @@ class BasketFactory implements BasketFactoryInterface
     protected $tax;
 
     /**
-     * Whether the basket has been changed
+     * Whether the basket has been changed.
      *
-     * @var boolean
+     * @var bool
      */
     protected $changed = false;
 
@@ -69,14 +69,15 @@ class BasketFactory implements BasketFactoryInterface
     }
 
     /**
-     * Whether the basket has been changed
+     * Whether the basket has been changed.
      *
-     * @param boolean $bool
+     * @param bool $bool
      * @return self
      */
     public function changed($bool)
     {
         $this->changed = $bool;
+
         return $this;
     }
 

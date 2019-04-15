@@ -425,7 +425,7 @@ class BasketService extends BaseService
         );
 
         return $this->factory->init($userBasket)->changed(
-            !empty($oldProducts) ? !($currentProducts === $oldProducts) : false
+            ! empty($oldProducts) ? ! ($currentProducts === $oldProducts) : false
         )->get();
     }
 
