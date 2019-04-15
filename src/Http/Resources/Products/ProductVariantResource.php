@@ -61,6 +61,7 @@ class ProductVariantResource extends AbstractResource
             'product' => ['data' => new ProductResource($this->whenLoaded('product'), $this->only)],
             'image' => new AssetResource($this->whenLoaded('image')),
             'tiers' => new ProductTierCollection($this->whenLoaded('tiers')),
+            'customer_pricing' => new ProductCustomerPriceCollection($this->whenLoaded('customerPricing')),
             'tax' => $this->include('tax', TaxResource::class),
         ];
     }
