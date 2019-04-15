@@ -12,7 +12,8 @@ class ProductVariantResource extends AbstractResource
     public function payload()
     {
         $factory = app()->getInstance()->make(ProductVariantFactory::class);
-        $this->resource = $factory->init($this->resource)->get();
+
+        $this->resource = $factory->init($this->resource)->get(1, app()->request->user());
 
         return [
             'id' => $this->encodedId(),
