@@ -1,3 +1,7 @@
+#0.2.46
+
+- [changed] Added hub request detect on ProductVariantFactory
+
 #0.2.45
 
 - [added] Add customer group pricing resources
