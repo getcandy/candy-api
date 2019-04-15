@@ -1,3 +1,8 @@
+#0.2.45
+
+- [added] Add customer group pricing resources
+- [changed] Basket routes now go through set channel middleware
+
 #0.2.44
 
 - [added] Added support for channel to be passed as a header
