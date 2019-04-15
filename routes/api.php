@@ -73,13 +73,16 @@ Route::group([
     /*
      * Baskets
      */
-    $router->post('baskets/resolve', 'Baskets\BasketController@resolve');
-    $router->get('baskets/current', 'Baskets\BasketController@current');
-    $router->get('baskets/saved', 'Baskets\BasketController@saved');
-    $router->post('baskets/{id}/save', 'Baskets\BasketController@save');
-    $router->post('baskets/{id}/claim', 'Baskets\BasketController@claim');
-    $router->delete('baskets/{basket}', 'Baskets\BasketController@destroy');
-    $router->put('baskets/saved/{basket}', 'Baskets\SavedBasketController@update');
+    Route::group(['middleware', ['api:channels']], function ($router) {
+        $router->post('baskets/resolve', 'Baskets\BasketController@resolve');
+        $router->get('baskets/current', 'Baskets\BasketController@current');
+        $router->get('baskets/saved', 'Baskets\BasketController@saved');
+        $router->post('baskets/{id}/save', 'Baskets\BasketController@save');
+        $router->post('baskets/{id}/claim', 'Baskets\BasketController@claim');
+        $router->delete('baskets/{basket}', 'Baskets\BasketController@destroy');
+        $router->put('baskets/saved/{basket}', 'Baskets\SavedBasketController@update');
+    });
+
 
     /*
      * Payments
