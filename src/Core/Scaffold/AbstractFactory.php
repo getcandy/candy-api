@@ -3,6 +3,7 @@
 namespace GetCandy\Api\Core\Scaffold;
 
 use GetCandy\Api\Core\Pricing\PriceCalculatorInterface;
+use GetCandy\Api\Core\CandyApi;
 
 abstract class AbstractFactory
 {
@@ -13,8 +14,16 @@ abstract class AbstractFactory
      */
     protected $calculator;
 
-    public function __construct(PriceCalculatorInterface $calculator)
+    /**
+     * The CandyApi manager
+     *
+     * @var CandyApi
+     */
+    protected $api;
+
+    public function __construct(PriceCalculatorInterface $calculator, CandyApi $api)
     {
         $this->calculator = $calculator;
+        $this->api = $api;
     }
 }
