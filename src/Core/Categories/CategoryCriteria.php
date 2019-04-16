@@ -39,7 +39,14 @@ class CategoryCriteria extends AbstractCriteria
     {
         $category = new Category;
 
-        $builder = $category->with($this->includes ?: [])
+        $includes = $this->includes ?: [];
+
+        if ($this->tree) {
+            $includes[] = 'channels';
+            $includes[] = 'customerGroups';
+        }
+
+        $builder = $category->with($includes)
             ->withCount(['products', 'children']);
 
         if ($this->id) {
@@ -51,6 +58,7 @@ class CategoryCriteria extends AbstractCriteria
         if ($this->limit && ! $this->tree) {
             $builder->limit($this->limit);
         }
+
         $builder->defaultOrder()
             ->withDepth()
             ->having('depth', '<=', $this->depth);
