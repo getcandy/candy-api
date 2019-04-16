@@ -1,3 +1,15 @@
+#0.2.48
+
+- [improved] Added support for custom order invoices from the hub
+
+To use your own custom template for invoices downloaded from the hub, simply add this to your `config/getcandy.php`:
+
+```
+    'invoicing' => [
+        'pdf' => 'your.invoice.view',
+    ],
+```
+
 #0.2.47
 
 - [improved] Eager load `channels` and `customerGroups` when loading Categories into a tree
