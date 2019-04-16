@@ -21,7 +21,7 @@ class CategoryController extends BaseController
 {
     public function index(Request $request, CategoryCriteria $criteria)
     {
-        $results = $criteria
+        $criteria
             ->tree($request->tree)
             ->depth($request->depth)
             ->include($request->includes)
@@ -33,7 +33,8 @@ class CategoryController extends BaseController
         }
 
         return new CategoryCollection(
-            $criteria->get(), $this->parseIncludedFields($request)
+            $criteria->get(),
+            $this->parseIncludedFields($request)
         );
     }
 
