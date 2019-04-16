@@ -1,3 +1,7 @@
+#0.2.47
+
+- [improved] Eager load `channels` and `customerGroups` when loading Categories into a tree
+
 #0.2.46
 
 - [changed] Added hub request detect on ProductVariantFactory
