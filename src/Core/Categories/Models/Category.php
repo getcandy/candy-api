@@ -46,14 +46,6 @@ class Category extends BaseModel
         'attribute_data', 'parent_id',
     ];
 
-    // public function toArray()
-    // {
-    //     return array_merge(parent::toArray(), [
-    //         'id' => $this->encodedId(),
-    //         'parent_id' => $this->encode($this->parent_id),
-    //     ]);
-    // }
-
     public function getParentIdAttribute($val)
     {
         return $val;
