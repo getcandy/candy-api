@@ -1,3 +1,8 @@
+#0.2.49
+
+- [added] Added product importer
+- [fixed] Added missing channel scope to products
+
 #0.2.48
 
 - [improved] Added support for custom order invoices from the hub

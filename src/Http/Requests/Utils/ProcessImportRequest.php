@@ -1,11 +1,10 @@
 <?php
 
-namespace GetCandy\Api\Http\Requests\Shipping\Pricing;
+namespace GetCandy\Api\Http\Requests\Utils;
 
 use GetCandy\Api\Http\Requests\FormRequest;
-use GetCandy\Api\Core\Shipping\Models\ShippingZone;
 
-class StoreRequest extends FormRequest
+class ProcessImportRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,9 +24,9 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'rate' => 'required|numeric',
-            'zone_id' => 'required|hashid_is_valid:'.ShippingZone::class,
-            'currency_id' => 'required|hashid_is_valid:currencies',
+            'email' => 'required|email',
+            'file' => 'required|file|mimes:csv,txt',
+            'type' => 'in:product,category',
         ];
     }
 }

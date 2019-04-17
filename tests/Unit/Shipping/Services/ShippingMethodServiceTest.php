@@ -12,6 +12,7 @@ use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 use GetCandy\Api\Core\Shipping\Models\ShippingMethod;
 use GetCandy\Api\Core\Shipping\Models\ShippingRegion;
 use GetCandy\Api\Core\Shipping\Services\ShippingMethodService;
+use GetCandy\Api\Core\Channels\Models\Channel;
 
 /**
  * @group shipping
@@ -165,7 +166,7 @@ class ShippingMethodServiceTest extends TestCase
      */
     private function createMethod($suffix)
     {
-        return ShippingMethod::forceCreate([
+        $method = ShippingMethod::forceCreate([
             'attribute_data' => [
                 'name' => [
                     'en' => "Shipping Method {$suffix}",
@@ -173,5 +174,12 @@ class ShippingMethodServiceTest extends TestCase
             ],
             'type' => 'regional',
         ]);
+
+        // Make sure we have channels set up.
+        foreach (Channel::all() as $channel) {
+            $method->channels()->save($channel, ['published_at' => now()]);
+        }
+
+        return $method;
     }
 }

@@ -23,7 +23,8 @@
         "vinkla/hashids": "^5.1.0",
         "vimeo/laravel": "5.2.*",
         "doctrine/dbal": "2.9.2",
-        "paypal/rest-api-sdk-php": "*"
+        "paypal/rest-api-sdk-php": "*",
+        "maatwebsite/excel": "2.1.*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
