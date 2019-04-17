@@ -7,6 +7,7 @@ use GetCandy\Api\Core\Scaffold\BaseModel;
 use GetCandy\Api\Core\Traits\HasChannels;
 use GetCandy\Api\Core\Traits\HasAttributes;
 use GetCandy\Api\Core\Channels\Models\Channel;
+use GetCandy\Api\Core\Scopes\ChannelScope;
 
 class ShippingMethod extends BaseModel
 {
@@ -17,6 +18,17 @@ class ShippingMethod extends BaseModel
      * @var string
      */
     protected $hashids = 'main';
+
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope(new ChannelScope);
+    }
 
     protected $fillable = [
         'attribute_data',
