@@ -24,10 +24,12 @@ class ShippingPriceService extends BaseService
     {
         $method = app('api')->shippingMethods()->getByHashedId($shippingMethodId);
         $currency = app('api')->currencies()->getByHashedId($data['currency_id']);
+        $zone = app('api')->shippingZones()->getByHashedId($data['zone_id']);
         $price = new ShippingPrice;
         $price->fill($data);
         $price->method()->associate($method);
         $price->currency()->associate($currency);
+        $price->zone()->associate($zone);
         $price->save();
 
         if (! empty($data['customer_groups'])) {
