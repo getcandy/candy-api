@@ -28,7 +28,7 @@ class Product extends AbstractImporter
         $this->rows->each(function ($line) use ($created, $updated, $deleted) {
             $variant = $this->getBySku($line->sku);
 
-            if (!$variant) {
+            if (! $variant) {
                 return;
             }
 
@@ -41,7 +41,7 @@ class Product extends AbstractImporter
         });
 
         $this->import->update([
-            'completed_at' => Carbon::now()
+            'completed_at' => Carbon::now(),
         ]);
 
         $message = "Your import has finished successfully
@@ -56,7 +56,7 @@ class Product extends AbstractImporter
     }
 
     /**
-     * Get the variant by the SKU
+     * Get the variant by the SKU.
      *
      * @param [type] $sku
      * @return void

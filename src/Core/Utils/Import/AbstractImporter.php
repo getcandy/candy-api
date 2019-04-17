@@ -8,7 +8,7 @@ use GetCandy\Api\Core\Utils\Import\Models\Import;
 abstract class AbstractImporter
 {
     /**
-     * The import to process
+     * The import to process.
      *
      * @var Import
      */
@@ -20,11 +20,12 @@ abstract class AbstractImporter
     {
         $this->import = $import;
         $this->rows = Excel::load(storage_path("app/{$import->file}"));
+
         return $this;
     }
 
     /**
-     * Handle the import
+     * Handle the import.
      *
      * @return void
      */

@@ -26,7 +26,7 @@ class StoreRequest extends FormRequest
     {
         return [
             'rate' => 'required|numeric',
-            'zone_id' => 'required|hashid_is_valid:' . ShippingZone::class,
+            'zone_id' => 'required|hashid_is_valid:'.ShippingZone::class,
             'currency_id' => 'required|hashid_is_valid:currencies',
         ];
     }

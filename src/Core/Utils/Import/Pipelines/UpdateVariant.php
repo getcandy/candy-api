@@ -13,7 +13,7 @@ class UpdateVariant implements PipesContract
         $line = $data[1];
         $import = $data[2];
 
-        if (!$line->enabled) {
+        if (! $line->enabled) {
             return $next([$variant, $line, $import]);
         }
 

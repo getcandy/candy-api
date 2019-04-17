@@ -16,14 +16,13 @@ class UpdateState implements PipesContract
 
         $product = $variant->product;
 
-        if (!$line->enabled) {
+        if (! $line->enabled) {
             $import->increment('deleted');
         }
 
         $product->update([
-            'deleted_at' => !$line->enabled ? Carbon::now() : null,
+            'deleted_at' => ! $line->enabled ? Carbon::now() : null,
         ]);
-
 
         return $next([$variant, $line, $import]);
     }

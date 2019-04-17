@@ -3,7 +3,6 @@
 namespace GetCandy\Api\Core\Utils\Import\Pipelines;
 
 use Closure;
-use GetCandy\Api\Core\Utils\Import\Pipelines;
 use GetCandy\Api\Core\Utils\Import\PipesContract;
 
 class UpdateAttributes implements PipesContract

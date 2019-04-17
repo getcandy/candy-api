@@ -3,8 +3,8 @@
 namespace GetCandy\Api\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use GetCandy\Api\Core\Utils\Import\ImportManagerContract;
 use GetCandy\Api\Core\Utils\Import\ImportManager;
+use GetCandy\Api\Core\Utils\Import\ImportManagerContract;
 
 class UtilServiceProvider extends ServiceProvider
 {
