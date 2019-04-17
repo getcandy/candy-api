@@ -18,6 +18,12 @@ Route::group([
     'prefix' => 'api/'.config('app.api_version', 'v1'),
     'namespace' => 'GetCandy\Api\Http\Controllers',
 ], function ($router) {
+
+    /*
+    * Imports
+    */
+    $router->post('import', 'Utils\ImportController@process');
+
     $router->post('account/password', [
         'as' => 'account.password.reset',
         'uses' => 'Auth\AccountController@resetPassword',

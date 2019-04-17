@@ -65,6 +65,7 @@ class ApiServiceProvider extends ServiceProvider
             SearchServiceProvider::class,
             ShippingServiceProvider::class,
             TaxServiceProvider::class,
+            UtilServiceProvider::class,
         ];
         foreach ($providers as $provider) {
             $this->app->register($provider, true);
