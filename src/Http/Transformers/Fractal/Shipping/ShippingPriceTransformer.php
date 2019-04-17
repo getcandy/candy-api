@@ -13,6 +13,7 @@ class ShippingPriceTransformer extends BaseTransformer
     protected $availableIncludes = [
         'method',
         'customer_groups',
+        'zone',
     ];
 
     protected $defaultIncludes = [
@@ -64,5 +65,10 @@ class ShippingPriceTransformer extends BaseTransformer
         $groups = app('api')->customerGroups()->getGroupsWithAvailability($price, 'shipping_prices');
 
         return $this->collection($groups, new CustomerGroupTransformer);
+    }
+
+    public function includeZone(ShippingPrice $price)
+    {
+        return $this->item($price->zone, new ShippingZoneTransformer);
     }
 }
