@@ -1,3 +1,8 @@
+#0.2.50
+
+- [improved] Improved the way the regional provider checked delivery postcodes
+- [fixed] Stopped data override when saving a new users address in checkout
+
 #0.2.49
 
 - [added] Added product importer
