@@ -431,8 +431,7 @@ class OrderService extends BaseService implements OrderServiceInterface
                 'zip',
             ]);
         } elseif ($user) {
-            $address = app('api')->addresses()->addAddress($user, $data, $type);
-            $data = $address->fields;
+            app('api')->addresses()->addAddress($user, $data, $type);
         }
 
         if ($user) {
