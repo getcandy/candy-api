@@ -14,7 +14,7 @@
         "hashids/hashids": "^3.0",
         "intervention/image": "^2.4.2",
         "kalnoy/nestedset": "^4.3",
-        "laravel/framework": "5.7.*",
+        "laravel/framework": "^5.7.*",
         "laravel/passport": "^7.0",
         "laravel/tinker": "^1.0",
         "league/fractal": "^0.17.0",
