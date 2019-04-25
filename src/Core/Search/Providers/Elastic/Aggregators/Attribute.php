@@ -43,9 +43,12 @@ class Attribute
 
     public function getPre()
     {
+        $size = (int) config('getcandy.search.aggregation.attribute.size', 10);
+
         if (empty($this->filters)) {
             $agg = new Terms($this->field);
             $agg->setField($this->field.'.filter');
+            $agg->setSize($size);
 
             return $agg;
         }
@@ -55,6 +58,7 @@ class Attribute
         $agg = new Terms($this->field);
         $agg->setField($this->field.'.filter');
         $agg->setOrder('_term', 'asc');
+        $agg->setSize($size);
         $postBool = new BoolQuery();
 
         foreach ($this->filters as $filter) {

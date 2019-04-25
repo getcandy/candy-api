@@ -161,6 +161,9 @@ return [
                     'large' => [500, 600, 700, 800],
                 ],
             ],
+            'attribute' => [
+                'size' => env('SEARCH_AGGREGATION_ATTRIBUTE_SIZE', 10),
+            ],
         ],
         /*
          * This is some experimental ranking, text searching has it's limits
