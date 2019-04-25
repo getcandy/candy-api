@@ -11,6 +11,8 @@ class TaxTransformer extends BaseTransformer
 
     public function transform(Tax $tax)
     {
+        $tax = makeGenericTaxIfNotObject($tax);
+
         return [
             'id' => $tax->encodedId(),
             'name' => $tax->name,

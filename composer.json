@@ -34,6 +34,9 @@
         "orchestra/testbench": "~3.6"
     },
     "autoload": {
+        "files": [
+            "src/Helpers/helpers.php"
+        ],
         "psr-4": {
             "GetCandy\\Api\\": "src/"
         }

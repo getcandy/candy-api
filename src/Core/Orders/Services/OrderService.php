@@ -165,6 +165,7 @@ class OrderService extends BaseService implements OrderServiceInterface
         $basket = $this->baskets->getForOrder($order);
 
         $tax = app('api')->taxes()->getDefaultRecord();
+        $tax = makeGenericTaxIfNotObject($tax);
 
         $rate = $this->calculator->get(
             $price->rate,
@@ -583,11 +584,14 @@ class OrderService extends BaseService implements OrderServiceInterface
     {
         $lines = [];
         foreach ($basket->lines as $line) {
+            $lineVariantTax = $line->variant->tax;
+            $lineVariantTax = makeGenericTaxIfNotObject($lineVariantTax);
+
             array_push($lines, [
                 'product_variant_id' => $line->variant->id,
                 'sku' => $line->variant->sku,
                 'tax_total' => $line->total_tax * 100,
-                'tax_rate' => $line->variant->tax->percentage,
+                'tax_rate' => $lineVariantTax->percentage,
                 'discount_total' => $line->discount_total ?? 0,
                 'line_total' => $line->total_cost * 100,
                 'unit_price' => $line->base_cost * 100,
