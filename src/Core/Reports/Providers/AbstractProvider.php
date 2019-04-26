@@ -8,28 +8,28 @@ use GetCandy\Api\Core\Orders\Models\Order;
 abstract class AbstractProvider
 {
     /**
-     * The report mode
+     * The report mode.
      *
      * @var string
      */
     protected $mode;
 
     /**
-     * The from date for the query
+     * The from date for the query.
      *
      * @var DateTime
      */
     protected $from;
 
     /**
-     * The from date for the query
+     * The from date for the query.
      *
      * @var DateTime
      */
     protected $to;
 
     /**
-     * Sets the date range for the provider
+     * Sets the date range for the provider.
      *
      * @param DateTime $from
      * @param DateTime $to
@@ -44,14 +44,14 @@ abstract class AbstractProvider
     }
 
     /**
-     * Get the report result
+     * Get the report result.
      *
      * @return array
      */
     abstract public function get();
 
     /**
-     * Set the mode value
+     * Set the mode value.
      *
      * @param string $mode
      * @return self
@@ -59,11 +59,12 @@ abstract class AbstractProvider
     public function mode($mode)
     {
         $this->mode = $mode;
+
         return $this;
     }
 
     /**
-     * Gets order within the date range
+     * Gets order within the date range.
      * @return \Illuminate\Support\Collection
      */
     protected function getOrderQuery(DateTime $from = null, DateTime $to = null)
