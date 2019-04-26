@@ -3,8 +3,8 @@
 namespace GetCandy\Api\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use GetCandy\Api\Core\Reports\Contracts\ReportManagerContract;
 use GetCandy\Api\Core\Reports\ReportManager;
+use GetCandy\Api\Core\Reports\Contracts\ReportManagerContract;
 
 class ReportsServiceProvider extends ServiceProvider
 {

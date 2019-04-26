@@ -21,7 +21,7 @@ class ReportManager extends Manager implements ReportManagerContract
     }
 
     /**
-     * Create the Sales driver
+     * Create the Sales driver.
      *
      * @return Sales
      */
@@ -33,7 +33,7 @@ class ReportManager extends Manager implements ReportManagerContract
     }
 
     /**
-     * Create the Sales driver
+     * Create the Sales driver.
      *
      * @return Orders
      */

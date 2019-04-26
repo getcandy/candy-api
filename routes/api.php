@@ -191,7 +191,7 @@ Route::group([
      */
     $router->prefix('products')->namespace('Products')->group(__DIR__.'/../routes/catalogue-manager/products.php');
 
-    /**
+    /*
      * Reporting
      */
 
