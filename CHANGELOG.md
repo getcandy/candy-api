@@ -1,3 +1,7 @@
+#0.2.51
+
+- [added] Added some initial reporting endpoints
+
 #0.2.50
 
 - [improved] Improved the way the regional provider checked delivery postcodes
