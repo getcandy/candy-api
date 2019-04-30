@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Core\Reports\Providers;
 
-use DB;
 use Carbon\Carbon;
 
 class Sales extends AbstractProvider
@@ -39,7 +38,7 @@ class Sales extends AbstractProvider
                 $from = Carbon::now()->setISODate($fragments[0], $fragments[1])->startOfWeek();
                 $to = Carbon::now()->setISODate($fragments[0], $fragments[1])->endOfWeek();
 
-                $label = $from->format('dS') . '/' . $to->format('dS') . ' ' . $date->format('M Y');
+                $label = $from->format('dS').'/'.$to->format('dS').' '.$date->format('M Y');
             } else {
                 $label = Carbon::createFromFormat($format, $time)->format($displayFormat);
             }

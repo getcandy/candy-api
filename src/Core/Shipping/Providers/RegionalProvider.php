@@ -7,7 +7,7 @@ use GetCandy\Api\Core\Shipping\Models\ShippingRegion;
 class RegionalProvider extends AbstractProvider
 {
     /**
-     * Calculates the shipping prices available
+     * Calculates the shipping prices available.
      *
      * @param \GetCandy\Api\Core\Orders\Models\Order $order
      * @return ShippingPrice|null
@@ -56,14 +56,14 @@ class RegionalProvider extends AbstractProvider
     }
 
     /**
-     * Gets the postcode which should be used to check prices
+     * Gets the postcode which should be used to check prices.
      *
      * @param \GetCandy\Api\Core\Orders\Models\Order $order
      * @return string
      */
     protected function getPostcodeToCheck($order)
     {
-        $postcode = str_replace(" ", "", strtoupper($order->shippingDetails['zip']));
+        $postcode = str_replace(' ', '', strtoupper($order->shippingDetails['zip']));
 
         if (ShippingRegion::whereRegion($postcode)->exists()) {
             return $postcode;
