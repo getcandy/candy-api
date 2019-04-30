@@ -322,6 +322,11 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
             }
         }
 
-        return $year.'-'.$month.'-'.str_pad($increment, 4, 0, STR_PAD_LEFT);
+        return config('getcandy.orders.reference_prefix', null) .
+            $year .
+            '-' .
+            $month .
+            '-' .
+            str_pad($increment, 4, 0, STR_PAD_LEFT);
     }
 }
