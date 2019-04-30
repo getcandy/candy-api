@@ -1,3 +1,7 @@
+#0.2.52
+
+- [added] Support for invoice reference prefix `getcandystore.orders.invoice_prefix`
+
 #0.2.51
 
 - [added] Added some initial reporting endpoints
