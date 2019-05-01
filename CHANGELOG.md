@@ -1,3 +1,8 @@
+#0.2.53
+
+- [fixed] Fixed product association loading when a product didn't exist
+- [fixed] Fixed shipping/billing fields being overwritten on order create.
+
 #0.2.52
 
 - [added] Support for invoice reference prefix `getcandystore.orders.invoice_prefix`
