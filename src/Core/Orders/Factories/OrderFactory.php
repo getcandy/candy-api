@@ -317,7 +317,10 @@ class OrderFactory implements OrderFactoryInterface
     {
         $attributes = [];
         foreach ($fields as $field => $value) {
-            $attributes[$prefix.'_'.$field] = $value;
+            $column = $prefix.'_'.$field;
+            if (!$order->getAttribute($column)) {
+                $attributes[$column] = $value;
+            }
         }
         $order->fill($attributes);
     }
