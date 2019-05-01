@@ -434,10 +434,6 @@ class OrderService extends BaseService implements OrderServiceInterface
             app('api')->addresses()->addAddress($user, $data, $type);
         }
 
-        if ($user) {
-            $order->shipping_phone = $user->contact_number;
-            $order->billing_phone = $user->contact_number;
-        }
 
         $this->setFields($order, $data, $type);
 
