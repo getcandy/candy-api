@@ -30,7 +30,7 @@ class ProductCriteria extends AbstractCriteria
         }
 
         if (count($this->ids)) {
-            return $builder->whereIn('id', $this->ids);
+            return $builder->whereIn('id', $product->decodeIds($this->ids));
         }
 
         if ($this->id) {
