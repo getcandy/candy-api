@@ -351,8 +351,9 @@ class BasketService extends BaseService
             $basket = $user->latestBasket->load($includes ?? []);
         }
 
+
         if (! empty($basket)) {
-            if ($basket->order && ! $basket->order->placed_at || ! $basket->order) {
+            if (($basket->order && ! $basket->order->placed_at) || (!$basket->order && $basket->doesntHave('savedBasket'))) {
                 return $this->factory->init($basket)->get();
             }
         }

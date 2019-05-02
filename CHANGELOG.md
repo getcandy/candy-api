@@ -1,3 +1,20 @@
+#0.2.54
+
+- [added] Added ability to restrict products by ids
+
+#0.2.53
+
+- [fixed] Fixed product association loading when a product didn't exist
+- [fixed] Fixed shipping/billing fields being overwritten on order create.
+
+#0.2.52
+
+- [added] Support for invoice reference prefix `getcandystore.orders.invoice_prefix`
+
+#0.2.51
+
+- [added] Added some initial reporting endpoints
+
 #0.2.50
 
 - [improved] Improved the way the regional provider checked delivery postcodes

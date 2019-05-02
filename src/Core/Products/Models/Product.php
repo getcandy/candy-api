@@ -179,7 +179,7 @@ class Product extends BaseModel
 
     public function associations()
     {
-        return $this->hasMany(ProductAssociation::class);
+        return $this->hasMany(ProductAssociation::class)->whereHas('association');
     }
 
     public function discounts()

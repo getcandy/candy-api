@@ -190,6 +190,17 @@ Route::group([
      * Products
      */
     $router->prefix('products')->namespace('Products')->group(__DIR__.'/../routes/catalogue-manager/products.php');
+
+    /*
+     * Reporting
+     */
+
+    $router->prefix('reports')->namespace('Reports')->group(function ($router) {
+        $router->get('/sales', 'ReportController@sales');
+        $router->get('/orders', 'ReportController@orders');
+        $router->get('/metrics/{subject}', 'ReportController@metrics');
+    });
+
     /*
      * Resource routes
      */
