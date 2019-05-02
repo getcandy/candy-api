@@ -1,3 +1,7 @@
+#0.2.54
+
+- [added] Added ability to restrict products by ids
+
 #0.2.53
 
 - [fixed] Fixed product association loading when a product didn't exist
