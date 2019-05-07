@@ -1,3 +1,7 @@
+#0.2.55
+
+- [added] Added Alt contact number to user details
+
 #0.2.54
 
 - [added] Added ability to restrict products by ids
