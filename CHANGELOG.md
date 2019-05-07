@@ -1,3 +1,7 @@
+#0.2.56
+
+- [improved] Set up sensible defaults when creating a category for customer groups and channels
+
 #0.2.55
 
 - [added] Added Alt contact number to user details
