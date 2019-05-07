@@ -15,6 +15,7 @@ class UserDetailsResource extends AbstractResource
             'lastname' => $this->lastname,
             'company_name' => $this->company_name,
             'contact_number' => $this->contact_number,
+            'alt_contact_number' => $this->alt_contact_number,
             'vat_no' => $this->vat_no,
             'fields' => $this->fields,
         ];
