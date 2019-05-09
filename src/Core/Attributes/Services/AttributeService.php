@@ -53,7 +53,7 @@ class AttributeService extends BaseService
     {
         $attribute = $this->getLastItem($groupId);
 
-        return $attribute->position + 1;
+        return $attribute ? $attribute->position + 1 : 1;
     }
 
     public function getAttributables(array $hashedIds, $type = null)
