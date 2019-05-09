@@ -1,3 +1,10 @@
+#0.2.57
+
+- [fixed] Fixed `MissingValue` check on Eloquent Resources
+- [improved] Added default customer groups when creating a product if none specified
+- [added] Method to get encodedIds by an array of "real" IDs
+- [fixed] Fix position being set correctly when adding attribute group
+
 #0.2.56
 
 - [improved] Set up sensible defaults when creating a category for customer groups and channels
