@@ -94,6 +94,15 @@ abstract class BaseService
         return $decoded;
     }
 
+    public function getEncodedIds(array $ids)
+    {
+        $encoded = [];
+        foreach ($ids as $id) {
+            $encoded[] = $this->getEncodedId($id);
+        }
+        return $encoded;
+    }
+
     /**
      * Returns the record considered the default.
      * @return mixed
