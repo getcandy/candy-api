@@ -119,10 +119,9 @@ abstract class AbstractResource extends JsonResource
 
     protected function relationLoaded($relation)
     {
-        if ($this->whenLoaded($relation) == MissingValue::class) {
+        if ($this->whenLoaded($relation) instanceof MissingValue) {
             return false;
         }
-
         return true;
     }
 
