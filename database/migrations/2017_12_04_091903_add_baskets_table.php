@@ -15,7 +15,7 @@ class AddBasketsTable extends Migration
     {
         Schema::create('baskets', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->unsigned()->nullable();
+            $table->bigInteger('user_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')->on('users');
             $table->integer('merged_id')->unsigned()->nullable();
             $table->foreign('merged_id')->references('id')->on('baskets')->onDelete('cascade');

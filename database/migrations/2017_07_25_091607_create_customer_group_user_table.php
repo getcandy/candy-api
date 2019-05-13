@@ -17,7 +17,7 @@ class CreateCustomerGroupUserTable extends Migration
             $table->increments('id');
             $table->integer('customer_group_id')->unsigned();
             $table->foreign('customer_group_id')->references('id')->onDelete('cascade')->on('customer_groups');
-            $table->integer('user_id')->unsigned();
+            $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->onDelete('cascade')->on('users');
             $table->timestamps();
         });
