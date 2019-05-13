@@ -88,7 +88,7 @@ class ProductVariantFactory extends AbstractFactory implements ProductVariantInt
             return;
         }
 
-        $tax = 0;
+        $taxRate = 0;
 
         if ($this->variant->tax) {
             $taxRate = $this->variant->tax->percentage;
