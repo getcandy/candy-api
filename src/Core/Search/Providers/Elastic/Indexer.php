@@ -390,6 +390,11 @@ class Indexer
                         'tokenizer' => 'standard',
                         'filter' => ['standard', 'shingle'],
                     ],
+                    'standard_lowercase' => [
+                        'type' => 'custom',
+                        'tokenizer' => 'standard',
+                        'filter' => ['lowercase'],
+                    ],
                     'candy' => [
                         'tokenizer' => 'standard',
                         'filter' => ['standard', 'lowercase', 'stop', 'porter_stem'],
