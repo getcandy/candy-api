@@ -112,6 +112,7 @@ Route::group([
 
     $router->get('search', 'Search\SearchController@search');
     $router->get('search/suggest', 'Search\SearchController@suggest');
+    $router->get('search/sku', 'Search\SearchController@sku');
     $router->get('search/products', 'Search\SearchController@products');
 
     /*
