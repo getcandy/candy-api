@@ -318,7 +318,7 @@ class OrderFactory implements OrderFactoryInterface
         $attributes = [];
         foreach ($fields as $field => $value) {
             $column = $prefix.'_'.$field;
-            if (!$order->getAttribute($column)) {
+            if (! $order->getAttribute($column)) {
                 $attributes[$column] = $value;
             }
         }
