@@ -100,6 +100,7 @@ abstract class BaseService
         foreach ($ids as $id) {
             $encoded[] = $this->getEncodedId($id);
         }
+
         return $encoded;
     }
 

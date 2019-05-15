@@ -64,7 +64,7 @@ abstract class AbstractCriteria
 
     public function setIds($ids = null)
     {
-        if (!$ids) {
+        if (! $ids) {
             return $this;
         }
 

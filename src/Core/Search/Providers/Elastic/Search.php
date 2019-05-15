@@ -191,10 +191,10 @@ class Search implements ClientContract
     }
 
     /**
-     * Perform a wildcard search on an SKU
+     * Perform a wildcard search on an SKU.
      *
      * @param string $sku
-     * @param integer $limit
+     * @param int $limit
      * @return \Illuminate\Support\Collection
      */
     public function searchSkus($sku, $limit = 10)
@@ -211,9 +211,9 @@ class Search implements ClientContract
             'post_tags' => ['', ''],
             'fields' => [
                 'sku.lowercase' => [
-                    'type' => 'unified'
+                    'type' => 'unified',
                 ],
-            ]
+            ],
         ]);
 
         $results = collect($search->search($query)->getResults());

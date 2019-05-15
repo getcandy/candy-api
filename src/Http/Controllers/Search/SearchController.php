@@ -118,7 +118,7 @@ class SearchController extends BaseController
     }
 
     /**
-     * Handle the request to do an SKU search
+     * Handle the request to do an SKU search.
      *
      * @param Request $request
      * @param SearchContract $client
@@ -136,7 +136,7 @@ class SearchController extends BaseController
             ->searchSkus($request->sku, $request->get('per_page', 10));
 
         return response()->json([
-            'data' => $results
+            'data' => $results,
         ]);
     }
 }
