@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Assets\Drivers;
 
+use Carbon\Carbon;
 use Symfony\Component\Finder\SplFileInfo;
 use GetCandy\Api\Core\Assets\Models\Asset;
 
@@ -58,7 +59,8 @@ abstract class BaseUploadDriver
         ]);
 
         $asset->source()->associate($source);
-        $path = $source->path.'/'.substr($asset->filename, 0, 2);
+
+        $path = $source->path . '/' . Carbon::now()->format('Y/m/d');
 
         $asset->location = $path;
 
