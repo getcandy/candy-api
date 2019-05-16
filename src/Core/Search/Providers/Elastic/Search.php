@@ -2,7 +2,9 @@
 
 namespace GetCandy\Api\Core\Search\Providers\Elastic;
 
+use Elastica\Query;
 use Elastica\Suggest;
+use Elastica\Query\Wildcard;
 use GetCandy\Api\Core\Search\ClientContract;
 use GetCandy\Api\Core\Search\Providers\Elastic\Sorts\CategorySort;
 
@@ -186,6 +188,50 @@ class Search implements ClientContract
         $suggest->addSuggestion($term);
 
         return $search->search($suggest);
+    }
+
+    /**
+     * Perform a wildcard search on an SKU.
+     *
+     * @param string $sku
+     * @param int $limit
+     * @return \Illuminate\Support\Collection
+     */
+    public function searchSkus($sku, $limit = 10)
+    {
+        $sku = strtolower($sku);
+        $search = $this->builder->getSearch();
+
+        $query = new Query;
+        $wildcard = new Wildcard('sku.lowercase', "*{$sku}*");
+        $query->setQuery($wildcard);
+        $query->setParam('size', $limit);
+        $query->setHighlight([
+            'pre_tags' => ['', ''],
+            'post_tags' => ['', ''],
+            'fields' => [
+                'sku.lowercase' => [
+                    'type' => 'unified',
+                ],
+            ],
+        ]);
+
+        $results = collect($search->search($query)->getResults());
+
+        $products = collect();
+
+        $results->each(function ($result) use ($products) {
+            $skus = collect($result->getHighlights()['sku.lowercase']);
+            $skus->each(function ($sku) use ($products, $result) {
+                $products->push([
+                    'name' => $result->name,
+                    'breadcrumbs' => $result->breadcrumbs,
+                    'sku' => $sku,
+                ]);
+            });
+        });
+
+        return $products;
     }
 
     /**
