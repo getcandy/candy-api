@@ -1,3 +1,33 @@
+#0.2.60
+
+- [improved] Assets saving uses timebased folder structure
+- [fixed] Fixed incorrect invoice reference increment when multiple `-` in the reference
+- [added] Added channels middleware to API routes
+- [improved] Make sure currency converted amounts get passed on PriceCalculator
+
+#0.2.59
+
+- [added] #143
+
+#0.2.58
+
+- [fixed] #142
+
+#0.2.57
+
+- [fixed] Fixed `MissingValue` check on Eloquent Resources
+- [improved] Added default customer groups when creating a product if none specified
+- [added] Method to get encodedIds by an array of "real" IDs
+- [fixed] Fix position being set correctly when adding attribute group
+
+#0.2.56
+
+- [improved] Set up sensible defaults when creating a category for customer groups and channels
+
+#0.2.55
+
+- [added] Added Alt contact number to user details
+
 #0.2.54
 
 - [added] Added ability to restrict products by ids

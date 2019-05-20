@@ -48,7 +48,7 @@ return [
     |
     */
     'orders' => [
-        /**
+        /*
          * The invoice reference prefix for an order
          * e.g {prefix}2019-04-15
          */

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Scopes\CustomerGroupScope;
+use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 use GetCandy\Api\Core\Search\Events\IndexableSavedEvent;
 use GetCandy\Api\Core\Products\Events\ProductCreatedEvent;
 use GetCandy\Api\Core\Products\Interfaces\ProductInterface;
@@ -140,6 +141,11 @@ class ProductService extends BaseService
         if (! empty($data['customer_groups'])) {
             $groupData = $this->mapCustomerGroupData($data['customer_groups']['data']);
             $product->customerGroups()->sync($groupData);
+        } else {
+            $product->customerGroups()->sync(CustomerGroup::select('id')->get(), [
+                'visible' => false,
+                'purchasable' => false,
+            ]);
         }
 
         if (! empty($data['channels']['data'])) {

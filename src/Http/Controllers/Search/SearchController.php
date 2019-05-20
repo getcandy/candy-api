@@ -116,4 +116,27 @@ class SearchController extends BaseController
 
         return $this->respondWithCollection($results, new SearchSuggestionTransformer);
     }
+
+    /**
+     * Handle the request to do an SKU search.
+     *
+     * @param Request $request
+     * @param SearchContract $client
+     * @return json
+     */
+    public function sku(Request $request, SearchContract $client)
+    {
+        $this->validate($request, [
+            'sku' => 'required|min:3',
+        ]);
+
+        $results = $client->client()
+            ->on($request->channel)
+            ->against('product')
+            ->searchSkus($request->sku, $request->get('per_page', 10));
+
+        return response()->json([
+            'data' => $results,
+        ]);
+    }
 }

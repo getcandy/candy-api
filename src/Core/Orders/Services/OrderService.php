@@ -435,7 +435,6 @@ class OrderService extends BaseService implements OrderServiceInterface
             app('api')->addresses()->addAddress($user, $data, $type);
         }
 
-
         $this->setFields($order, $data, $type);
 
         $order->save();
