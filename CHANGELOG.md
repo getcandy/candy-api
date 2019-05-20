@@ -1,3 +1,18 @@
+#0.2.60
+
+- [improved] Assets saving uses timebased folder structure
+- [fixed] Fixed incorrect invoice reference increment when multiple `-` in the reference
+- [added] Added channels middleware to API routes
+- [improved] Make sure currency converted amounts get passed on PriceCalculator
+
+#0.2.59
+
+- [added] #143
+
+#0.2.58
+
+- [fixed] #142
+
 #0.2.57
 
 - [fixed] Fixed `MissingValue` check on Eloquent Resources
