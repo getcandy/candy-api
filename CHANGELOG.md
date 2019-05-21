@@ -1,3 +1,7 @@
+#0.2.61
+
+- [fixed] Fixed phone/email not saving on orders when using address ID
+
 #0.2.60
 
 - [improved] Assets saving uses timebased folder structure
