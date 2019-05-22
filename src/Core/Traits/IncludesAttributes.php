@@ -4,6 +4,7 @@ namespace GetCandy\Api\Core\Traits;
 
 use Illuminate\Database\Eloquent\Model;
 use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
+use GetCandy\Api\Http\Transformers\Fractal\Attributes\AttributeTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Attributes\AttributeGroupTransformer;
 
 trait IncludesAttributes
@@ -24,6 +25,11 @@ trait IncludesAttributes
         }
 
         return $this->attributeGroups;
+    }
+
+    public function includeAttributes(Model $model)
+    {
+        return $this->collection($model->attributes, new AttributeTransformer);
     }
 
     /**
