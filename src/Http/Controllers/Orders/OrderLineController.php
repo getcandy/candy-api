@@ -29,7 +29,7 @@ class OrderLineController extends BaseController
     public function store($orderId, CreateRequest $request)
     {
         try {
-            $result = $this->orderLines->store($orderId, $request->all());
+            $result = $this->orderLines->store($orderId, $request->all(), $request->is_manual);
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
