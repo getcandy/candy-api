@@ -427,9 +427,7 @@ class OrderFactory implements OrderFactoryInterface
             'shipping_method' => $this->shipping->method->name,
         ];
 
-        if ($this->preference) {
-            $updateFields['shipping_preference'] = $this->preference;
-        }
+        $updateFields['shipping_preference'] = $this->preference;
 
         $order->update($updateFields);
 
