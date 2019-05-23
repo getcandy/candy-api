@@ -3,14 +3,15 @@
 namespace GetCandy\Api\Core\Categories\Models;
 
 use Kalnoy\Nestedset\NodeTrait;
-use GetCandy\Api\Core\Traits\Assetable;
 use GetCandy\Api\Core\Traits\HasRoutes;
+use GetCandy\Api\Core\Traits\Assetable;
 use GetCandy\Api\Core\Traits\HasLayouts;
 use GetCandy\Api\Core\Scaffold\BaseModel;
 use GetCandy\Api\Core\Traits\HasChannels;
 use GetCandy\Api\Core\Scopes\ChannelScope;
 use GetCandy\Api\Core\Traits\HasAttributes;
 use GetCandy\Api\Core\Channels\Models\Channel;
+use GetCandy\Api\Core\Categories\QueryBuilder;
 use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Traits\HasCustomerGroups;
 use GetCandy\Api\Core\Scopes\CustomerGroupScope;
@@ -81,5 +82,26 @@ class Category extends BaseModel
     public function channels()
     {
         return $this->belongsToMany(Channel::class, 'category_channel')->withPivot('published_at');
+    }
+
+    /**
+     * @param string $table
+     *
+     * @return QueryBuilder
+     */
+    public function newUnscopedQuery($table = null)
+    {
+        return $this->applyNestedSetScope($this->newQuery()->withoutGlobalScopes(), $table);
+    }
+
+    /**
+     * We use our own QueryBuilder here as withDepth was causing
+     * a serious query issue when looking through category channels.
+     *
+     * @since 2.0
+     */
+    public function newEloquentBuilder($query)
+    {
+        return new QueryBuilder($query);
     }
 }
