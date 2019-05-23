@@ -1,3 +1,14 @@
+#0.2.62
+
+- [added] Added attributes include to shipping methods
+- [added] You can now pass through `is_manual` when creating an order line.
+- [added] Tax rate indicator when saving order lines
+- [changed] Order calculator now handles multiple shipping lines
+
+#0.2.61
+
+- [fixed] Fixed phone/email not saving on orders when using address ID
+
 #0.2.60
 
 - [improved] Assets saving uses timebased folder structure

@@ -419,7 +419,7 @@ class OrderService extends BaseService implements OrderServiceInterface
         // If this address doesn't exist, create it.
         if (! empty($data['address_id'])) {
             $shipping = app('api')->addresses()->getByHashedId($data['address_id']);
-            $data = $shipping->only([
+            $payload = $shipping->only([
                 'firstname',
                 'lastname',
                 'address',
@@ -431,6 +431,9 @@ class OrderService extends BaseService implements OrderServiceInterface
                 'country',
                 'zip',
             ]);
+            $payload['email'] = $data['email'] ?? null;
+            $payload['phone'] = $data['phone'] ?? null;
+            $data = $payload;
         } elseif ($user) {
             app('api')->addresses()->addAddress($user, $data, $type);
         }
