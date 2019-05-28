@@ -1,4 +1,4 @@
-#0.2.64
+#0.2.65
 
 - [changed] Add country check when getting shipping methods via a catch all zip
 - [changed] Zip code is no longer required
