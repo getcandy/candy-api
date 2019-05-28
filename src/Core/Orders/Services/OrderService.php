@@ -545,9 +545,9 @@ class OrderService extends BaseService implements OrderServiceInterface
             if (count($segments) == 1) {
                 $increment = 1;
             } else {
-                $segment = $segments[2] ?? $segments[1];
-                $increment = is_numeric($segment) ? $segment + 1 : $order->id;
+                $increment = end($segments) + 1;
             }
+
         }
 
         return $year.'-'.$month.'-'.str_pad($increment, 4, 0, STR_PAD_LEFT);
