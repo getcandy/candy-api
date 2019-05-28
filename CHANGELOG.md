@@ -1,3 +1,12 @@
+#0.2.64
+
+- [changed] Add country check when getting shipping methods via a catch all zip
+- [changed] Zip code is no longer required
+- [changed] Updated logic on order address saving to allow emptying fields
+- [changed] `getDetails($type)` is now a public method on orders
+- [changed] Stopped automatic assignment of values when creating an order for a user as lead to unexpected values.
+- [changed] Simplified the way order references get incremented.
+
 #0.2.63
 
 - [fixed] #147
