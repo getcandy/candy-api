@@ -209,7 +209,6 @@ class OrderFactory implements OrderFactoryInterface
 
         if ($this->user) {
             $order->user()->associate($this->user);
-            $this->setUserFields($order);
         }
 
         $order->conversion = $this->currencies->set($this->basket->currency)->rate();
