@@ -217,7 +217,7 @@ class Order extends BaseModel
      *
      * @return array
      */
-    protected function getDetails($type)
+    public function getDetails($type)
     {
         return collect($this->attributes)->filter(function ($value, $key) use ($type) {
             return strpos($key, $type.'_') === 0;
