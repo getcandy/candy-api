@@ -30,7 +30,7 @@ class RegionalProvider extends AbstractProvider
             // If there is no region, see if we have a "catch all" and use that.
             $prices = $this->method->prices->filter(function ($price) use ($order) {
                 return $price->zone->regions->first(function ($region) use ($order) {
-                    return $region->region == '*';
+                    return $region->region == '*' && $region->country->name == $order->shipping_country;
                 });
             });
 
