@@ -7,7 +7,6 @@ use Tests\TestCase;
 use Tests\Stubs\User;
 use Illuminate\Support\Facades\Event;
 use GetCandy\Api\Core\Orders\Models\Order;
-use GetCandy\Api\Core\Addresses\Models\Address;
 use GetCandy\Api\Core\Discounts\Models\Discount;
 use GetCandy\Api\Core\Orders\Events\OrderSavedEvent;
 use GetCandy\Api\Core\Orders\Factories\OrderFactory;

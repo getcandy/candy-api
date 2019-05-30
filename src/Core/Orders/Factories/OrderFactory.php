@@ -378,7 +378,7 @@ class OrderFactory implements OrderFactoryInterface
                 DB::RAW('line_total + tax_total - discount_total as grand_total')
             )->whereIsShipping(true)->get();
 
-        foreach($shippingLines as $shipping) {
+        foreach ($shippingLines as $shipping) {
             $totals->delivery_total += $shipping->line_total;
             $totals->tax_total += $shipping->tax_total;
             $totals->discount_total += $shipping->discount_total;
