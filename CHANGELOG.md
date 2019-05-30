@@ -1,3 +1,7 @@
+#0.2.67
+
+- [fixed] Fixed products being associated to a category not reindexing on search
+
 #0.2.66
 
 - [improved] Improved handling for duplicate saved cards on SagePay
