@@ -16,12 +16,12 @@ class QueryBuilder extends KalnoyQueryBuilder
     public function withDepth($as = 'depth')
     {
         if ($this->query->columns === null) {
-            $this->query->columns = [ '*' ];
-        };
+            $this->query->columns = ['*'];
+        }
 
         $table = $this->wrappedTable();
 
-        list($lft, $rgt) = $this->wrappedColumns();
+        [$lft, $rgt] = $this->wrappedColumns();
 
         $alias = '_d';
         $wrappedAlias = $this->query->getGrammar()->wrapTable($alias);

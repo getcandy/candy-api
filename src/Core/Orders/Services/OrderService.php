@@ -547,7 +547,6 @@ class OrderService extends BaseService implements OrderServiceInterface
             } else {
                 $increment = end($segments) + 1;
             }
-
         }
 
         return $year.'-'.$month.'-'.str_pad($increment, 4, 0, STR_PAD_LEFT);
