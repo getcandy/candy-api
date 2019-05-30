@@ -60,7 +60,7 @@ abstract class BaseUploadDriver
 
         $asset->source()->associate($source);
 
-        $path = $source->path . '/' . Carbon::now()->format('Y/m/d');
+        $path = $source->path.'/'.Carbon::now()->format('Y/m/d');
 
         $asset->location = $path;
 
