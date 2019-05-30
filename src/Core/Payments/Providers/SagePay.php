@@ -167,13 +167,9 @@ class SagePay extends AbstractProvider
     {
         $identifier = $details['cardIdentifier'];
         $userId = $this->order->user_id;
-        $exists = ReusablePayment::where('token', '=', $identifier)
-                    ->where('user_id', '=', $userId)->exists();
-
-        // If this card already exists for this user. Don't add it again.
-        if ($exists) {
-            return;
-        }
+        // Delete one if it exists.
+        $exists = ReusablePayment::where('last_four', '=', $details['lastFourDigits'])
+                    ->where('user_id', '=', $userId)->delete();
 
         $payment = new ReusablePayment;
         $payment->type = strtolower($details['cardType']);
