@@ -46,7 +46,10 @@ class TaxCalculator implements TaxCalculatorInterface
             } elseif ($rate instanceof Tax) {
                 $this->percent = $rate->percentage;
             } else {
-                $this->percent = app('api')->taxes()->getByName($rate)->percentage;
+                $lineVariantTax = app('api')->taxes()->getByName($rate);
+                $lineVariantTax = makeGenericTaxIfNotObject($lineVariantTax);
+
+                $this->percent = $lineVariantTax->percentage;
             }
         } catch (ModelNotFoundException $e) {
             $this->setDefault();
