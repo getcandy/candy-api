@@ -1,3 +1,7 @@
+#0.2.66
+
+- [improved] Improved handling for duplicate saved cards on SagePay
+
 #0.2.65
 
 - [changed] Add country check when getting shipping methods via a catch all zip
