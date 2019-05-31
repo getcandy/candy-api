@@ -23,6 +23,7 @@ class Address extends BaseModel
         'country',
         'county',
         'firstname',
+        'is_default',
         'lastname',
         'shipping',
         'state',
