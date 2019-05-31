@@ -1,3 +1,7 @@
+#0.2.69
+
+- [added] Added support for SKU attribute in shipping method when adding shipping line.
+
 #0.2.68
 
 - [changed] Changed logic for sending out order emails
