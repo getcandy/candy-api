@@ -34,10 +34,10 @@ class OrderNotification implements ShouldQueue
             return;
         }
 
-        $contactEmail = $this->order->contact_email ?? ($this->order->user ? $this->order->user->email : null);
+        $contactEmail = $this->order->billing_email ?: $this->order->contact_email;
 
         if (! $contactEmail) {
-            return;
+            $contactEmail = ($this->order->user ? $this->order->user->email : null);
         }
 
         $mailer = new $mailer($this->order);
