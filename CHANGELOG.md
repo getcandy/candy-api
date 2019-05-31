@@ -1,3 +1,7 @@
+#0.2.68
+
+- [changed] Changed logic for sending out order emails
+
 #0.2.67
 
 - [fixed] Fixed products being associated to a category not reindexing on search
