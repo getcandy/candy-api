@@ -459,7 +459,7 @@ class OrderFactory implements OrderFactoryInterface
             'option' => $this->shipping->zone->name ?? null,
             'tax_total' => $rate->total_tax,
             'tax_rate' => $tax->percentage,
-            'sku' => $this->shipping->encodedId(),
+            'sku' => $this->shipping->method->attribute('sku') ?: $this->shipping->encodedId(),
         ]);
 
         event(new OrderSavedEvent($order->refresh()));
