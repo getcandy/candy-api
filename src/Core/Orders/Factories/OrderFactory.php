@@ -209,6 +209,9 @@ class OrderFactory implements OrderFactoryInterface
 
         if ($this->user) {
             $order->user()->associate($this->user);
+            if ($order->wasRecentlyCreated()) {
+                $this->setUserFields($order);
+            }
         }
 
         $order->conversion = $this->currencies->set($this->basket->currency)->rate();
@@ -328,12 +331,16 @@ class OrderFactory implements OrderFactoryInterface
      * Sets the user fields.
      *
      * @param Order $order
-     * @return void
+     * @return Order
      */
     protected function setUserFields(&$order)
     {
-        foreach ($this->user->addresses as $address) {
-            $this->setFields($order, $address->fields, $address->billing ? 'billing' : 'shipping');
+        $defaultAddresses = $this->user->addresses->default()->get();
+
+        if ($defaultAddresses->isNotEmpty()) {
+            foreach ($defaultAddresses as $address) {
+                $this->setFields($order, $address->fields, $address->billing ? 'billing' : 'shipping');
+            }
         }
 
         return $order;
