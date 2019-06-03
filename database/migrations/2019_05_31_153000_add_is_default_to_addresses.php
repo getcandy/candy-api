@@ -14,14 +14,14 @@ class AddIsDefaultToAddresses extends Migration
     public function up()
     {
         Schema::table('addresses', function (Blueprint $table) {
-            $table->boolean('is_default')->default(false)->after('billing');
+            $table->boolean('default')->default(false)->after('billing');
         });
     }
 
     public function down()
     {
         Schema::table('addresses', function (Blueprint $table) {
-            $table->dropColumn('is_default');
+            $table->dropColumn('default');
         });
     }
 }

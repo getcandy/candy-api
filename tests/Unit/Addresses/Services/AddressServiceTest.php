@@ -38,7 +38,7 @@ class AddressServiceTest extends TestCase
         $newAddress = $originalAddress->replicate();
         $newAddress->save();
 
-        $originalAddress->is_default = true;
+        $originalAddress->default = true;
         $originalAddress->save();
 
         $this->assertDefaultAddress($originalAddress);
@@ -55,7 +55,7 @@ class AddressServiceTest extends TestCase
     public function test_can_remove_default_from_address()
     {
         $address = Address::first();
-        $address->is_default = true;
+        $address->default = true;
         $address->save();
 
         $this->assertDefaultAddress($address);
@@ -68,11 +68,11 @@ class AddressServiceTest extends TestCase
 
     private function assertDefaultAddress(Address $address)
     {
-        $this->assertTrue((bool) $address->is_default);
+        $this->assertTrue((bool) $address->default);
     }
 
     private function assertNotDefaultAddress(Address $address)
     {
-        $this->assertFalse((bool) $address->is_default);
+        $this->assertFalse((bool) $address->default);
     }
 }

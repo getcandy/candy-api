@@ -108,7 +108,7 @@ class UserTableSeeder extends Seeder
             'zip' => 'N1 1CE',
             'shipping' => 1,
             'billing' => 0,
-            'is_default' => 0,
+            'default' => 0,
         ];
     }
 }

@@ -70,7 +70,7 @@ class User extends Authenticatable
      */
     public function scopeDefault($qb)
     {
-        return $qb->where('is_default', 1);
+        return $qb->where('default', 1);
     }
 
     public function groups()

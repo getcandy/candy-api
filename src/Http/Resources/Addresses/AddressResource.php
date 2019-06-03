@@ -23,7 +23,7 @@ class AddressResource extends AbstractResource
             'zip' => $this->zip,
             'billing' => (bool) $this->billing,
             'shipping' => (bool) $this->shipping,
-            'is_default' => (bool) $this->is_default,
+            'default' => (bool) $this->default,
         ];
     }
 }

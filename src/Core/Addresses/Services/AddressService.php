@@ -87,7 +87,7 @@ class AddressService extends BaseService
 
         $this->removeAllDefaultForType($address->user_id, $address->type());
 
-        $address->is_default = true;
+        $address->default = true;
         $address->save();
 
         return $address;
@@ -102,7 +102,7 @@ class AddressService extends BaseService
         /** @var Address $address */
         $address = $this->getByHashedId($hashedAddressId);
 
-        $address->is_default = false;
+        $address->default = false;
         $address->save();
 
         return $address;
@@ -117,6 +117,6 @@ class AddressService extends BaseService
         $this->model
             ->where('user_id', '=', $userId)
             ->where($type, '=', true)
-            ->update(['is_default' => false]);
+            ->update(['default' => false]);
     }
 }
