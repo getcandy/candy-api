@@ -52,6 +52,32 @@ class AddressServiceTest extends TestCase
         $this->assertDefaultAddress($newAddress);
     }
 
+    public function test_can_undefault_only_addresses_of_same_type()
+    {
+        $billingAddress = Address::where('billing', 1)->first();
+        $shippingAddress = Address::where('shipping', 1)->first();
+        $newAddress = $billingAddress->replicate();
+        $newAddress->save();
+
+        $billingAddress->default = true;
+        $billingAddress->save();
+        $shippingAddress->default = true;
+        $shippingAddress->save();
+
+        $this->assertDefaultAddress($billingAddress);
+        $this->assertDefaultAddress($shippingAddress);
+        $this->assertNotDefaultAddress($newAddress);
+
+        $this->service->makeDefault($newAddress->encode($newAddress->id));
+
+        $billingAddress = Address::findOrFail($billingAddress->id);
+        $shippingAddress = Address::findOrFail($shippingAddress->id);
+        $newAddress = Address::findOrFail($newAddress->id);
+        $this->assertNotDefaultAddress($billingAddress);
+        $this->assertDefaultAddress($shippingAddress);
+        $this->assertDefaultAddress($newAddress);
+    }
+
     public function test_can_remove_default_from_address()
     {
         $address = Address::first();
