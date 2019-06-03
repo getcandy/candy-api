@@ -210,7 +210,7 @@ class OrderFactory implements OrderFactoryInterface
 
         if ($this->user) {
             $order->user()->associate($this->user);
-            if ($order->wasRecentlyCreated()) {
+            if ($order->wasRecentlyCreated) {
                 $this->setUserFields($order);
             }
         }
