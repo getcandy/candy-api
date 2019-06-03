@@ -66,11 +66,11 @@ class AddressServiceTest extends TestCase
 
     private function assertDefaultAddress(Address $address)
     {
-        $this->assertTrue($address->is_default);
+        $this->assertTrue((bool) $address->is_default);
     }
 
     private function assertNotDefaultAddress(Address $address)
     {
-        $this->assertFalse($address->is_default);
+        $this->assertFalse((bool) $address->is_default);
     }
 }
