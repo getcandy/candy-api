@@ -6,6 +6,7 @@ use DB;
 use Illuminate\Foundation\Auth\User;
 use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Baskets\Models\Basket;
+use GetCandy\Api\Core\Addresses\Models\Address;
 use GetCandy\Api\Core\Orders\Models\OrderDiscount;
 use GetCandy\Api\Core\Orders\Events\OrderSavedEvent;
 use GetCandy\Api\Core\Shipping\Models\ShippingPrice;
@@ -335,11 +336,13 @@ class OrderFactory implements OrderFactoryInterface
      */
     protected function setUserFields(&$order)
     {
+        /** @var \Illuminate\Support\Collection $defaultAddresses */
         $defaultAddresses = $this->user->addresses->default()->get();
 
         if ($defaultAddresses->isNotEmpty()) {
+            /** @var Address $address */
             foreach ($defaultAddresses as $address) {
-                $this->setFields($order, $address->fields, $address->billing ? 'billing' : 'shipping');
+                $this->setFields($order, $address->fields, $address->type());
             }
         }
 

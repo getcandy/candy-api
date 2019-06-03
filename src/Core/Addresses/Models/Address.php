@@ -50,4 +50,9 @@ class Address extends BaseModel
     {
         return $this->belongsTo(User::class);
     }
+
+    public function type(): string
+    {
+        return $this->billing ? 'billing' : 'shipping';
+    }
 }
