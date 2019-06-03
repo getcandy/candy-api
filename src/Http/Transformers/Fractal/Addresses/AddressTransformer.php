@@ -24,6 +24,7 @@ class AddressTransformer extends BaseTransformer
             'zip' => $address->zip,
             'billing' => (bool) $address->billing,
             'shipping' => (bool) $address->shipping,
+            'is_default' => (bool) $address->is_default,
         ];
     }
 }
