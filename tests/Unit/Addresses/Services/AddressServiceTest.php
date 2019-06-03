@@ -2,9 +2,7 @@
 
 namespace Tests\Unit\Addresses\Services;
 
-use Carbon\Carbon;
 use Tests\TestCase;
-use Tests\Stubs\User;
 use GetCandy\Api\Core\Addresses\Models\Address;
 use GetCandy\Api\Core\Addresses\Services\AddressService;
 
