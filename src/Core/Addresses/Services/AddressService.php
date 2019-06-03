@@ -7,6 +7,8 @@ use GetCandy\Api\Core\Addresses\Models\Address;
 
 class AddressService extends BaseService
 {
+    protected $model;
+
     public function __construct()
     {
         $this->model = new Address;
