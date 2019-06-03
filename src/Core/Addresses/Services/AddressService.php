@@ -75,4 +75,42 @@ class AddressService extends BaseService
 
         return $address->delete();
     }
+
+    /**
+     * @param Address $address
+     * @return Address
+     */
+    public function makeDefault(Address $address): Address
+    {
+        $this->removeAllDefaultForType($address->user_id, $address->type());
+
+        $address->is_default = true;
+        $address->save();
+
+        return $address;
+    }
+
+    /**
+     * @param Address $address
+     * @return Address
+     */
+    public function removeDefault(Address $address): Address
+    {
+        $address->is_default = false;
+        $address->save();
+
+        return $address;
+    }
+
+    /**
+     * @param int $userId
+     * @param string $type - 'billing' or 'shipping'
+     */
+    private function removeAllDefaultForType(int $userId, string $type)
+    {
+        $this->model
+            ->where('user_id', '=', $userId)
+            ->where($type, '=', true)
+            ->update('default', false);
+    }
 }
