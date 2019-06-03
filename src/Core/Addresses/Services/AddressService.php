@@ -77,10 +77,10 @@ class AddressService extends BaseService
     }
 
     /**
-     * @param int $hashedAddressId
+     * @param string $hashedAddressId
      * @return Address
      */
-    public function makeDefault(int $hashedAddressId): Address
+    public function makeDefault(string $hashedAddressId): Address
     {
         /** @var Address $address */
         $address = $this->getByHashedId($hashedAddressId);
@@ -94,10 +94,10 @@ class AddressService extends BaseService
     }
 
     /**
-     * @param int $hashedAddressId
+     * @param string $hashedAddressId
      * @return Address
      */
-    public function removeDefault(int $hashedAddressId): Address
+    public function removeDefault(string $hashedAddressId): Address
     {
         /** @var Address $address */
         $address = $this->getByHashedId($hashedAddressId);
@@ -117,6 +117,6 @@ class AddressService extends BaseService
         $this->model
             ->where('user_id', '=', $userId)
             ->where($type, '=', true)
-            ->update('default', false);
+            ->update(['is_default' => false]);
     }
 }

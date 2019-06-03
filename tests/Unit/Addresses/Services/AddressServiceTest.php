@@ -30,6 +30,7 @@ class AddressServiceTest extends TestCase
 
         $this->service->makeDefault($address->encode($address->id));
 
+        $address = Address::findOrFail($address->id);
         $this->assertDefaultAddress($address);
     }
 
@@ -47,6 +48,8 @@ class AddressServiceTest extends TestCase
 
         $this->service->makeDefault($newAddress->encode($newAddress->id));
 
+        $originalAddress = Address::findOrFail($originalAddress->id);
+        $newAddress = Address::findOrFail($newAddress->id);
         $this->assertNotDefaultAddress($originalAddress);
         $this->assertDefaultAddress($newAddress);
     }
@@ -61,6 +64,7 @@ class AddressServiceTest extends TestCase
 
         $this->service->removeDefault($address->encode($address->id));
 
+        $address = Address::findOrFail($address->id);
         $this->assertNotDefaultAddress($address);
     }
 
