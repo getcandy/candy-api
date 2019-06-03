@@ -56,8 +56,8 @@ class AddressServiceTest extends TestCase
     {
         $billingAddress = Address::where('billing', 1)->first();
         $shippingAddress = Address::where('shipping', 1)->first();
-        $newAddress = $billingAddress->replicate();
-        $newAddress->save();
+        $newBillingAddress = $billingAddress->replicate();
+        $newBillingAddress->save();
 
         $billingAddress->default = true;
         $billingAddress->save();
@@ -66,16 +66,16 @@ class AddressServiceTest extends TestCase
 
         $this->assertDefaultAddress($billingAddress);
         $this->assertDefaultAddress($shippingAddress);
-        $this->assertNotDefaultAddress($newAddress);
+        $this->assertNotDefaultAddress($newBillingAddress);
 
-        $this->service->makeDefault($newAddress->encode($newAddress->id));
+        $this->service->makeDefault($newBillingAddress->encode($newBillingAddress->id));
 
         $billingAddress = Address::findOrFail($billingAddress->id);
         $shippingAddress = Address::findOrFail($shippingAddress->id);
-        $newAddress = Address::findOrFail($newAddress->id);
+        $newBillingAddress = Address::findOrFail($newBillingAddress->id);
         $this->assertNotDefaultAddress($billingAddress);
         $this->assertDefaultAddress($shippingAddress);
-        $this->assertDefaultAddress($newAddress);
+        $this->assertDefaultAddress($newBillingAddress);
     }
 
     public function test_can_remove_default_from_address()
