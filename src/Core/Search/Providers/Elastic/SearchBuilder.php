@@ -134,6 +134,19 @@ class SearchBuilder
     }
 
     /**
+     * Set the language.
+     *
+     * @param $lang
+     * @return SearchBuilder
+     */
+    public function setLang($lang)
+    {
+        $this->lang = $lang;
+
+        return $this;
+    }
+
+    /**
      * Set the search term.
      *
      * @param string $term
