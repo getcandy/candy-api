@@ -137,6 +137,9 @@ class ProductTransformer extends BaseTransformer
 
     public function includePrimaryAsset(Product $product)
     {
+        if (!$product->primaryAsset) {
+            return $this->null();
+        }
         return $this->item($product->primaryAsset, new AssetTransformer);
     }
 
