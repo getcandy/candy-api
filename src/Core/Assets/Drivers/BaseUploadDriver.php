@@ -14,6 +14,18 @@ abstract class BaseUploadDriver
     protected $upload = true;
 
     /**
+     * Get the video unique id.
+     *
+     * @param string $url
+     *
+     * @return string
+     */
+    public function getUniqueId($url)
+    {
+        return $url;
+    }
+
+    /**
      * @param array $data
      * @param       $source
      *
