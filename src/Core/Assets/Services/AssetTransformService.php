@@ -4,6 +4,7 @@ namespace GetCandy\Api\Core\Assets\Services;
 
 use Image;
 use Storage;
+use Carbon\Carbon;
 use GetCandy\Api\Core\Assets\Models\Asset;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Assets\Models\Transform;
@@ -50,9 +51,7 @@ class AssetTransformService extends BaseService
         $source = $asset->source;
 
         if ($asset->external) {
-            $driver = $asset->uploader();
-            $id = $driver->hashName();
-            $path = $source->path.'/'.substr($id, 0, 2);
+            $path = $source->path . '/' . Carbon::now()->format('Y/m/d');
         } else {
             $path = $asset->location;
         }
@@ -97,7 +96,7 @@ class AssetTransformService extends BaseService
         $assetTransform->transform()->associate($transformer);
 
         $assetTransform->location = $thumbPath;
-        $assetTransform->filename = $transformer->handle.'_'.($asset->external ? $id.'.jpg' : $asset->filename);
+        $assetTransform->filename = $transformer->handle.'_'.($asset->external ? $asset->location.'.jpg' : $asset->filename);
         $assetTransform->file_exists = true;
 
         $assetTransform->save();
