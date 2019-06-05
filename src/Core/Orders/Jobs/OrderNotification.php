@@ -45,7 +45,10 @@ class OrderNotification implements ShouldQueue
         foreach ($this->content as $key => $value) {
             $mailer->with($key, $value);
         }
-
-        Mail::to($contactEmail)->send($mailer);
+        if ($mailQueue = config('getcandy.mail.queue', null)) {
+            Mail::to($contactEmail)->queue($mailer->onQueue($mailQueue));
+        } else {
+            Mail::to($contactEmail)->send($mailer);
+        }
     }
 }
