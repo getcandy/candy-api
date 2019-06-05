@@ -1,3 +1,21 @@
+#0.2.70
+
+- [changed] When uploading external asset from service such as YouTube, only the ID is stored
+- [fixed] Fixed asset transform location, was using old path generation when asset was external
+- [improved] Order confirmation emails are now queuable, just add config (see below)
+- [changed] `RouteResource` is now returned when fetching a route
+- [changed] Changed `primaryAsset` relation to `morphOne`
+- [added] Added `primary_asset` to ProductTransformer
+- [added] Added `primary_asset` to category resource
+
+To queue mailers from orders add the below to the root of `config/getcandy.php`
+
+```
+    'mail' => [
+        'queue' => 'default',
+    ],
+```
+
 #0.2.69
 
 - [added] Added support for SKU attribute in shipping method when adding shipping line.
