@@ -3,7 +3,6 @@
 namespace GetCandy\Api\Core\Orders\Services;
 
 use DB;
-
 use PDF;
 use Event;
 use Carbon\Carbon;
