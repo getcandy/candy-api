@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Controllers\Orders;
 
+use GetCandy\Api\Core\Traits\CanProcessOrder;
 use Illuminate\Http\Request;
 use GetCandy\Api\Core\Orders\OrderExport;
 use GetCandy\Api\Http\Controllers\BaseController;
@@ -34,6 +35,8 @@ use GetCandy\Api\Core\Payments\Exceptions\ThreeDSecureRequiredException;
 
 class OrderController extends BaseController
 {
+    use CanProcessOrder;
+
     protected $orders;
 
     /**
@@ -158,61 +161,10 @@ class OrderController extends BaseController
      *
      * @param ProcessRequest $request
      *
-     * @return json
+     * @return OrderResource|ThreeDSecureResource|Response
      */
-    public function process(
-        ProcessRequest $request,
-        OrderProcessingFactoryInterface $factory,
-        OrderCriteriaInterface $criteria,
-        PaymentTypeService $paymentTypes
-    ) {
-        try {
-            // $order = $factory->
-            $paymentType = null;
-
-            if ($request->payment_type_id) {
-                $type = $paymentTypes->getByHashedId($request->payment_type_id);
-            } elseif ($request->payment_type) {
-                $type = $paymentTypes->getByHandle($request->payment_type);
-            } else {
-                $type = null;
-            }
-
-            $order = $criteria->id($request->order_id)->first();
-
-            if (! $order) {
-                // Does this order exist, but has already been placed?
-                $placedOrder = $criteria->id($request->order_id)->getBuilder()->withoutGlobalScopes()->first();
-                if ($placedOrder && $placedOrder->placed_at) {
-                    throw new OrderAlreadyProcessedException;
-                }
-            }
-
-            $order = $factory
-                ->order($order)
-                ->provider($type)
-                ->nonce($request->payment_token)
-                ->type($request->type)
-                ->customerReference($request->customer_reference)
-                ->meta($request->meta ?? [])
-                ->notes($request->notes)
-                ->payload($request->data ?: [])
-                ->resolve();
-
-            if (! $order->placed_at) {
-                return $this->errorForbidden('Payment has failed');
-            }
-
-            return new OrderResource($order);
-        } catch (IncompleteOrderException $e) {
-            return $this->errorForbidden('The order is missing billing information');
-        } catch (ModelNotFoundException $e) {
-            return $this->errorNotFound();
-        } catch (OrderAlreadyProcessedException $e) {
-            return $this->errorUnprocessable('This order has already been processed');
-        } catch (ThreeDSecureRequiredException $e) {
-            return new ThreeDSecureResource($e->getResponse());
-        }
+    public function process(ProcessRequest $request) {
+        return $this->processOrder($request->order_id, $request->toArray());
     }
 
     public function bulkUpdate(BulkUpdateRequest $request)
