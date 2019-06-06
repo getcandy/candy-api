@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Http\Controllers\Orders;
 
-use GetCandy\Api\Core\Traits\CanProcessOrder;
 use Illuminate\Http\Request;
 use GetCandy\Api\Core\Orders\OrderExport;
+use GetCandy\Api\Core\Traits\CanProcessOrder;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Resources\Files\PdfResource;
 use GetCandy\Api\Http\Requests\Orders\CreateRequest;
@@ -163,7 +163,8 @@ class OrderController extends BaseController
      *
      * @return OrderResource|ThreeDSecureResource|Response
      */
-    public function process(ProcessRequest $request) {
+    public function process(ProcessRequest $request)
+    {
         return $this->processOrder($request->order_id, $request->toArray());
     }
 
