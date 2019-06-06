@@ -3,25 +3,35 @@
 namespace GetCandy\Api\Core\Orders\Services;
 
 use DB;
+
 use PDF;
 use Event;
 use Carbon\Carbon;
+use Illuminate\Http\Response;
 use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Core\Orders\Models\OrderDiscount;
+use GetCandy\Api\Core\Payments\Models\PaymentType;
 use GetCandy\Api\Core\Orders\Events\OrderSavedEvent;
 use GetCandy\Api\Core\Orders\Jobs\OrderNotification;
 use GetCandy\Api\Core\Baskets\Services\BasketService;
+use GetCandy\Api\Http\Resources\Orders\OrderResource;
 use GetCandy\Api\Core\Payments\Services\PaymentService;
 use GetCandy\Api\Core\Pricing\PriceCalculatorInterface;
 use GetCandy\Api\Core\Orders\Events\OrderProcessedEvent;
 use GetCandy\Api\Core\Orders\Events\OrderBeforeSavedEvent;
+use GetCandy\Api\Core\Payments\Services\PaymentTypeService;
 use GetCandy\Api\Core\Orders\Interfaces\OrderServiceInterface;
+use GetCandy\Api\Http\Resources\Payments\ThreeDSecureResource;
+use GetCandy\Api\Core\Orders\Exceptions\PaymentFailedException;
+use GetCandy\Api\Core\Orders\Interfaces\OrderCriteriaInterface;
 use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
-use GetCandy\Api\Core\Orders\Exceptions\IncompleteOrderException;
 use GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException;
 use GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface;
+use GetCandy\Api\Core\Orders\Exceptions\OrderAlreadyProcessedException;
+use GetCandy\Api\Core\Orders\Interfaces\OrderProcessingFactoryInterface;
+use GetCandy\Api\Core\Payments\Exceptions\ThreeDSecureRequiredException;
 
 class OrderService extends BaseService implements OrderServiceInterface
 {
@@ -638,41 +648,85 @@ class OrderService extends BaseService implements OrderServiceInterface
     }
 
     /**
-     * Process an order for payment.
+     * @param array $orderData
      *
-     * @param array $data
-     * @return mixed
+     * @throws OrderAlreadyProcessedException
+     * @throws PaymentFailedException
+     *
+     * @return OrderResource|ThreeDSecureResource|Response
      */
-    public function process(array $data)
+    public function process(array $orderData)
     {
-        $order = $this->getByHashedId($data['order_id']);
+        $factory = app(OrderProcessingFactoryInterface::class);
+        $criteria = app(OrderCriteriaInterface::class);
 
-        if (! $this->isProcessable($order) && empty($data['force'])) {
-            throw new IncompleteOrderException;
+        $orderId = $orderData['order_id'];
+
+        try {
+            $paymentType = $this->getPaymentType($orderData);
+
+            $order = $criteria->id($orderId)->first();
+
+            if (! $order) {
+                if ($this->isOrderAlreadyProcessed($orderId)) {
+                    throw new OrderAlreadyProcessedException();
+                }
+            }
+
+            $order = $factory
+                ->order($order)
+                ->provider($paymentType)
+                ->nonce($orderData['payment_token'])
+                ->type($orderData['type'])
+                ->customerReference($orderData['customer_reference'])
+                ->meta($orderData['meta'] ?? [])
+                ->notes($orderData['notes'])
+                ->payload($orderData['data'] ?: [])
+                ->resolve();
+
+            if (! $order->placed_at) {
+                throw new PaymentFailedException();
+            }
+
+            return new OrderResource($order);
+        } catch (ThreeDSecureRequiredException $e) {
+            return new ThreeDSecureResource($e->getResponse());
+        }
+    }
+
+    /**
+     * The order type may be passed by ID or by handle, so this method
+     * identifies which, and then calls the correct method to retrieve it.
+     *
+     * @param array $orderData
+     *
+     * @return PaymentType|null
+     */
+    private function getPaymentType(array $orderData): ?PaymentType
+    {
+        $paymentTypes = app(PaymentTypeService::class);
+
+        if ($orderData['payment_type_id']) {
+            return $paymentTypes->getByHashedId($orderData['payment_type_id']);
         }
 
-        $order->notes = $data['notes'] ?? null;
-        $order->customer_reference = $data['customer_reference'] ?? null;
-        $order->type = $data['type'] ?? null;
-
-        $order->save();
-
-        if (! empty($data['payment_type_id'])) {
-            $type = app('api')->paymentTypes()->getByHashedId($data['payment_type_id']);
-        } elseif (! empty($data['payment_type'])) {
-            $type = app('api')->paymentTypes()->getByHandle($data['payment_type']);
-        } else {
-            $type = null;
+        if ($orderData['payment_type']) {
+            return $paymentTypes->getByHandle($orderData['payment_type']);
         }
 
-        $result = $this->payments->process(
-            $order,
-            $data['payment_token'] ?? null,
-            $type ?? null,
-            $data['data'] ?? []
-        );
+        return null;
+    }
 
-        return $this->handleProcessResponse($result, $order, $type);
+    private function isOrderAlreadyProcessed(int $orderId): bool
+    {
+        $criteria = app(OrderCriteriaInterface::class);
+
+        $placedOrder = $criteria->id($orderId)->getBuilder()->withoutGlobalScopes()->first();
+        if ($placedOrder && $placedOrder->placed_at) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
