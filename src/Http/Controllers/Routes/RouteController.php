@@ -29,7 +29,7 @@ class RouteController extends BaseController
     public function show(Request $request, RouteCriteria $routes)
     {
         try {
-            $route = $routes->slug($request->slug)->path($request->path)->includes(['element.layout'])->firstOrFail();
+            $route = $routes->slug($request->slug)->path($request->path)->includes($request->includes)->firstOrFail();
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
