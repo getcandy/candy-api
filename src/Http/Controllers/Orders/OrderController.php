@@ -5,7 +5,6 @@ namespace GetCandy\Api\Http\Controllers\Orders;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use GetCandy\Api\Core\Orders\OrderExport;
-use GetCandy\Api\Core\Traits\CanProcessOrder;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Resources\Files\PdfResource;
 use GetCandy\Api\Http\Requests\Orders\CreateRequest;
@@ -31,8 +30,6 @@ use GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException;
 
 class OrderController extends BaseController
 {
-    use CanProcessOrder;
-
     protected $orders;
 
     /**
@@ -161,7 +158,17 @@ class OrderController extends BaseController
      */
     public function process(ProcessRequest $request)
     {
-        return $this->processOrder($request->toArray());
+        try {
+            return app('api')->orders()->process($request->toArray());
+        } catch (PaymentFailedException $e) {
+            return $this->errorForbidden('Payment has failed');
+        } catch (IncompleteOrderException $e) {
+            return $this->errorForbidden('The order is missing billing information');
+        } catch (ModelNotFoundException $e) {
+            return $this->errorNotFound();
+        } catch (OrderAlreadyProcessedException $e) {
+            return $this->errorUnprocessable('This order has already been processed');
+        }
     }
 
     public function bulkUpdate(BulkUpdateRequest $request)
