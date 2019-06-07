@@ -21,12 +21,15 @@ use GetCandy\Api\Core\Orders\Interfaces\OrderFactoryInterface;
 use GetCandy\Api\Core\Orders\Interfaces\OrderServiceInterface;
 use GetCandy\Api\Core\Shipping\Services\ShippingMethodService;
 use GetCandy\Api\Http\Resources\Payments\ThreeDSecureResource;
+use GetCandy\Api\Core\Orders\Exceptions\PaymentFailedException;
 use GetCandy\Api\Core\Orders\Interfaces\OrderCriteriaInterface;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketFactoryInterface;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketCriteriaInterface;
+use GetCandy\Api\Core\Orders\Exceptions\IncompleteOrderException;
 use GetCandy\Api\Http\Resources\Shipping\ShippingPriceCollection;
 use GetCandy\Api\Http\Requests\Orders\Shipping\AddShippingRequest;
 use GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException;
+use GetCandy\Api\Core\Orders\Exceptions\OrderAlreadyProcessedException;
 
 class OrderController extends BaseController
 {
