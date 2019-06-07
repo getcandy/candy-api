@@ -1,3 +1,7 @@
+#0.2.71
+
+- [improved] Allow includes to be passed to route fetch
+
 #0.2.70
 
 - [changed] When uploading external asset from service such as YouTube, only the ID is stored
