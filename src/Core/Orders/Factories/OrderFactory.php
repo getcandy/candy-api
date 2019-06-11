@@ -13,6 +13,7 @@ use GetCandy\Api\Core\Pricing\PriceCalculatorInterface;
 use GetCandy\Api\Core\Settings\Services\SettingService;
 use GetCandy\Api\Core\Orders\Interfaces\OrderFactoryInterface;
 use GetCandy\Api\Core\Taxes\Interfaces\TaxCalculatorInterface;
+use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
 use GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface;
 use GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException;
 use GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface;
@@ -271,6 +272,7 @@ class OrderFactory implements OrderFactoryInterface
     /**
      * Get the active order.
      *
+     * @throws BasketHasPlacedOrderException
      * @return Order
      */
     protected function getActiveOrder()
@@ -328,7 +330,7 @@ class OrderFactory implements OrderFactoryInterface
      * Sets the user fields.
      *
      * @param Order $order
-     * @return void
+     * @return Order
      */
     protected function setUserFields(&$order)
     {
@@ -343,7 +345,7 @@ class OrderFactory implements OrderFactoryInterface
      * Recalculates an orders totals.
      *
      * @param Order $order
-     * @return void
+     * @return Order
      */
     public function recalculate($order)
     {
@@ -414,10 +416,7 @@ class OrderFactory implements OrderFactoryInterface
     /**
      * Adds a shipping line to an order.
      *
-     * @param string $orderId
-     * @param string $shippingPriceId
-     * @param string $preference
-     *
+     * @param Order $order
      * @return Order
      */
     protected function addShippingLine($order)
