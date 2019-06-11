@@ -142,9 +142,8 @@ class SagePay extends AbstractProvider
                 ->setTransactionId($content['transactionId'])
                 ->setPaRequest($content['paReq'])
                 ->setRedirect($content['acsUrl']);
-        } elseif ($content['status'] == 'Rejected') {
+        } elseif ($content['status'] != 'Ok') {
             $response = new PaymentResponse(false, $content['statusDetail'] ?? 'Rejected', $content);
-
             return $response->transaction(
                 $this->createFailedTransaction($content)
             );
@@ -203,14 +202,6 @@ class SagePay extends AbstractProvider
         }
 
         $content = json_decode($response->getBody()->getContents(), true);
-
-        if ($content['status'] != 'Authenticated') {
-            return $this->createFailedTransaction([
-                'statusDetail' => '3D Secure Failed',
-                'status' => 'failed',
-                'transactionId' => $transaction,
-            ]);
-        }
 
         // We are authenticated, so lets get the transaction from the API
         $transaction = $this->getTransactionFromApi($transaction);
