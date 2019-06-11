@@ -1,3 +1,7 @@
+#0.2.72
+
+- [fixed] Fixed SagePay integration
+
 #0.2.71
 
 - [improved] Allow includes to be passed to route fetch
