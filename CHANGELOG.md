@@ -1,3 +1,7 @@
+#0.2.73
+
+- [changed] Tax rounds down in TaxCalculator
+
 #0.2.72
 
 - [fixed] Fixed SagePay integration
