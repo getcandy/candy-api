@@ -40,11 +40,9 @@ class Kernel extends HttpKernel
             \GetCandy\Api\Http\Middleware\Hub\HubAccess::class,
         ],
         'api' => [
-            'throttle:600,1',
             'bindings',
         ],
         'api:client' => [
-            'throttle:600,1',
             'bindings',
             \GetCandy\Api\Http\Middleware\CheckClientCredentials::class,
         ],
