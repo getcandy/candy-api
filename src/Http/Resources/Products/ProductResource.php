@@ -3,6 +3,7 @@
 namespace GetCandy\Api\Http\Resources\Products;
 
 use GetCandy\Api\Http\Resources\AbstractResource;
+use GetCandy\Api\Http\Resources\Assets\AssetResource;
 use GetCandy\Api\Http\Resources\Assets\AssetCollection;
 use GetCandy\Api\Http\Resources\Routes\RouteCollection;
 use GetCandy\Api\Http\Resources\Channels\ChannelCollection;
@@ -37,6 +38,7 @@ class ProductResource extends AbstractResource
             'routes' => new RouteCollection($this->whenLoaded('routes')),
             'channels' => new ChannelCollection($this->whenLoaded('channels'), $this->only),
             'first_variant' => $this->include('firstVariant', ProductVariantResource::class),
+            'primary_asset' => $this->include('primaryAsset', AssetResource::class),
             'categories' => new CategoryCollection($this->whenLoaded('categories'), $this->only),
             'variants' => new ProductVariantCollection($this->whenLoaded('variants'), $this->only),
             'discounts' => new DiscountModelCollection($this->whenLoaded('discounts'), $this->only),
