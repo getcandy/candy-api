@@ -129,7 +129,6 @@ Route::group([
     /*
      * Customers
      */
-
     $router->resource('customers/groups', 'Customers\CustomerGroupController', [
         'except' => ['edit', 'create', 'show'],
     ]);
@@ -268,6 +267,7 @@ Route::group([
     /*
      * Users
      */
+    $router->get('users/fields', 'Users\UserController@fields');
     $router->get('users/current', 'Users\UserController@getCurrentUser');
     $router->delete('users/payments/{id}', 'Users\UserController@deleteReusablePayment');
     $router->resource('users', 'Users\UserController', [
