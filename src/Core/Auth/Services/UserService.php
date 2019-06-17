@@ -47,58 +47,6 @@ class UserService extends BaseService
         return $query->paginate($length, ['*'], 'page', $page);
     }
 
-    /**
-     * Creates a resource from the given data.
-     *
-     * @param  array  $data
-     *
-     * @return GetCandy\Api\Core\Auth\Models\User
-     */
-    public function create($data)
-    {
-        $user = new User();
-
-        if (isset($data['id'])) {
-            $user->id = $data['id'];
-        }
-        if (isset($data['contact_number'])) {
-            $user->contact_number = $data['contact_number'];
-        }
-
-        $user->password = bcrypt($data['password']);
-
-        // $user->title = $data['title'];
-        $user->firstname = $data['firstname'];
-        $user->lastname = $data['lastname'];
-        $user->email = $data['email'];
-
-        if (empty($data['language'])) {
-            $lang = app('api')->languages()->getDefaultRecord();
-        } else {
-            $lang = app('api')->languages()->getEnabledByLang($data['language']);
-        }
-
-        if (! empty($data['fields'])) {
-            $user->fields = $data['fields'];
-        }
-
-        $user->save();
-
-        if (! empty($data['customer_groups'])) {
-            $groupData = app('api')->customerGroups()->getDecodedIds($data['customer_groups']);
-            $user->groups()->sync($groupData);
-        } else {
-            $default = app('api')->customerGroups()->getDefaultRecord();
-            $user->groups()->attach($default);
-        }
-
-        $user->language()->associate($lang);
-
-        $user->save();
-
-        return $user;
-    }
-
     public function update($userId, array $data)
     {
         $user = $this->getByHashedId($userId);
