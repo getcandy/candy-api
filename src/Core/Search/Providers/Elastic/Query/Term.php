@@ -4,6 +4,7 @@ namespace GetCandy\Api\Core\Search\Providers\Elastic\Query;
 
 use Elastica\Query\DisMax;
 use Elastica\Query\MultiMatch;
+use Elastica\Query\Wildcard;
 
 class Term
 {
@@ -63,6 +64,10 @@ class Term
                 }
             }
         }
+
+        $skuTerm = strtolower($this->text);
+        $wildcard = new Wildcard('sku.lowercase', "*{$skuTerm}*");
+        $disMaxQuery->addQuery($wildcard);
 
         return $disMaxQuery;
     }
