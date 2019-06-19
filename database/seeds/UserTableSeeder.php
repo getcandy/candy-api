@@ -21,16 +21,16 @@ class UserTableSeeder extends Seeder
 
         $admin = User::create([
             'id' => 2,
-            'name' => 'Alec',
-            'email' => 'hello@itsalec.co.uk',
+            'name' => 'Thanos Balancer',
+            'email' => 'perfectly@balanced.co.uk',
             'password' => \Hash::make('password'),
         ]);
 
         UserDetail::forceCreate([
             'user_id' => $admin->id,
-            'title' => 'Mr',
-            'firstname' => 'Alec',
-            'lastname' => 'Ritson',
+            'title' => 'Lord',
+            'firstname' => 'Thanos',
+            'lastname' => 'Balancer',
         ]);
         $admin->language()->associate($language);
         $admin->save();
