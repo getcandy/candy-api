@@ -69,9 +69,9 @@ class UserTableSeeder extends Seeder
     {
         return [
             'title' => 'Mr',
-            'firstname' => 'Shaun',
-            'lastname' => 'Rainer',
-            'email' => 'shaun@neondigital.co.uk',
+            'firstname' => 'Tony',
+            'lastname' => 'Stark',
+            'email' => 'me@starkindustries.com',
             'password' => \Hash::make('password'),
         ];
     }
