@@ -6,7 +6,6 @@ use DB;
 use Illuminate\Foundation\Auth\User;
 use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Baskets\Models\Basket;
-use GetCandy\Api\Core\Addresses\Models\Address;
 use GetCandy\Api\Core\Orders\Models\OrderDiscount;
 use GetCandy\Api\Core\Orders\Events\OrderSavedEvent;
 use GetCandy\Api\Core\Shipping\Models\ShippingPrice;
