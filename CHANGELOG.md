@@ -1,3 +1,11 @@
+#0.2.74
+
+- [added] Added Partial SKU search
+- [added] Added custom fields to user creation
+- [added] Added endpoint to get user fields
+- [changed] When creating a product, all channels will be synced as `published_at = null` as opposed to just the default channel
+- [changed] Changed reporting metric timelines for the dashboard
+
 #0.2.73
 
 - [changed] Tax rounds down in TaxCalculator
