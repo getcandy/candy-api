@@ -11,7 +11,6 @@ use GetCandy\Api\Core\Addresses\Services\AddressService;
  */
 class AddressServiceTest extends TestCase
 {
-    /** @var AddressService */
     protected $service;
 
     public function setUp()

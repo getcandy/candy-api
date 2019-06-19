@@ -82,7 +82,6 @@ class AddressService extends BaseService
      */
     public function makeDefault(string $hashedAddressId): Address
     {
-        /** @var Address $address */
         $address = $this->getByHashedId($hashedAddressId);
 
         $this->removeAllDefaultForType($address->user_id, $address->type());
@@ -99,7 +98,6 @@ class AddressService extends BaseService
      */
     public function removeDefault(string $hashedAddressId): Address
     {
-        /** @var Address $address */
         $address = $this->getByHashedId($hashedAddressId);
 
         $address->default = false;
