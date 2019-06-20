@@ -1,3 +1,8 @@
+#0.2.76
+
+- [changed] If no alt provided on asset upload, use parents name
+- [changed] Move `option_data` into payload on product
+
 #0.2.75
 
 - [added] Allow addresses to be marked as default #152
