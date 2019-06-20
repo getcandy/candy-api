@@ -22,6 +22,7 @@ class Address extends BaseModel
         'city',
         'country',
         'county',
+        'default',
         'firstname',
         'lastname',
         'shipping',
@@ -48,5 +49,10 @@ class Address extends BaseModel
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function type()
+    {
+        return $this->billing ? 'billing' : 'shipping';
     }
 }
