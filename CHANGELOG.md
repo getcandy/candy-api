@@ -1,13 +1,13 @@
-#0.2.76
+# 0.2.76
 
 - [changed] If no alt provided on asset upload, use parents name
 - [changed] Move `option_data` into payload on product
 
-#0.2.75
+# 0.2.75
 
 - [added] Allow addresses to be marked as default #152
 
-#0.2.74
+# 0.2.74
 
 - [added] Added Partial SKU search
 - [added] Added custom fields to user creation
@@ -15,19 +15,19 @@
 - [changed] When creating a product, all channels will be synced as `published_at = null` as opposed to just the default channel
 - [changed] Changed reporting metric timelines for the dashboard
 
-#0.2.73
+# 0.2.73
 
 - [changed] Tax rounds down in TaxCalculator
 
-#0.2.72
+# 0.2.72
 
 - [fixed] Fixed SagePay integration
 
-#0.2.71
+# 0.2.71
 
 - [improved] Allow includes to be passed to route fetch
 
-#0.2.70
+# 0.2.70
 
 - [changed] When uploading external asset from service such as YouTube, only the ID is stored
 - [fixed] Fixed asset transform location, was using old path generation when asset was external
@@ -45,23 +45,23 @@ To queue mailers from orders add the below to the root of `config/getcandy.php`
     ],
 ```
 
-#0.2.69
+# 0.2.69
 
 - [added] Added support for SKU attribute in shipping method when adding shipping line.
 
-#0.2.68
+# 0.2.68
 
 - [changed] Changed logic for sending out order emails
 
-#0.2.67
+# 0.2.67
 
 - [fixed] Fixed products being associated to a category not reindexing on search
 
-#0.2.66
+# 0.2.66
 
 - [improved] Improved handling for duplicate saved cards on SagePay
 
-#0.2.65
+# 0.2.65
 
 - [changed] Add country check when getting shipping methods via a catch all zip
 - [changed] Zip code is no longer required
@@ -70,7 +70,7 @@ To queue mailers from orders add the below to the root of `config/getcandy.php`
 - [changed] Stopped automatic assignment of values when creating an order for a user as lead to unexpected values.
 - [changed] Simplified the way order references get incremented.
 
-#0.2.63
+# 0.2.63
 
 - [fixed] #147
 - [added] Added custom query builder for category tree*
@@ -78,75 +78,75 @@ To queue mailers from orders add the below to the root of `config/getcandy.php`
 
 The was an issue when using nested set on alot of categories. The way category depth was calculated, combined with the channel scope caused indexes to not be honoured on MySQL 5.7, causing a HUGE query, which most of the time crashed the site, we're taking off global scopes when calculating the depth as it should have zero negative effect on what gets returned, but should drastically speed things up.
 
-#0.2.62
+# 0.2.62
 
 - [added] Added attributes include to shipping methods
 - [added] You can now pass through `is_manual` when creating an order line.
 - [added] Tax rate indicator when saving order lines
 - [changed] Order calculator now handles multiple shipping lines
 
-#0.2.61
+# 0.2.61
 
 - [fixed] Fixed phone/email not saving on orders when using address ID
 
-#0.2.60
+# 0.2.60
 
 - [improved] Assets saving uses timebased folder structure
 - [fixed] Fixed incorrect invoice reference increment when multiple `-` in the reference
 - [added] Added channels middleware to API routes
 - [improved] Make sure currency converted amounts get passed on PriceCalculator
 
-#0.2.59
+# 0.2.59
 
 - [added] #143
 
-#0.2.58
+# 0.2.58
 
 - [fixed] #142
 
-#0.2.57
+# 0.2.57
 
 - [fixed] Fixed `MissingValue` check on Eloquent Resources
 - [improved] Added default customer groups when creating a product if none specified
 - [added] Method to get encodedIds by an array of "real" IDs
 - [fixed] Fix position being set correctly when adding attribute group
 
-#0.2.56
+# 0.2.56
 
 - [improved] Set up sensible defaults when creating a category for customer groups and channels
 
-#0.2.55
+# 0.2.55
 
 - [added] Added Alt contact number to user details
 
-#0.2.54
+# 0.2.54
 
 - [added] Added ability to restrict products by ids
 
-#0.2.53
+# 0.2.53
 
 - [fixed] Fixed product association loading when a product didn't exist
 - [fixed] Fixed shipping/billing fields being overwritten on order create.
 
-#0.2.52
+# 0.2.52
 
 - [added] Support for invoice reference prefix `getcandystore.orders.invoice_prefix`
 
-#0.2.51
+# 0.2.51
 
 - [added] Added some initial reporting endpoints
 
-#0.2.50
+# 0.2.50
 
 - [improved] Improved the way the regional provider checked delivery postcodes
 - [fixed] Stopped data override when saving a new users address in checkout
 
-#0.2.49
+# 0.2.49
 
 - [added] Added product importer
 - [fixed] Added missing channel scope to products
 
-#0.2.48
+# 0.2.48
 
 - [improved] Added support for custom order invoices from the hub
 
@@ -158,141 +158,141 @@ To use your own custom template for invoices downloaded from the hub, simply add
     ],
 ```
 
-#0.2.47
+# 0.2.47
 
 - [improved] Eager load `channels` and `customerGroups` when loading Categories into a tree
 
-#0.2.46
+# 0.2.46
 
 - [changed] Added hub request detect on ProductVariantFactory
 
-#0.2.45
+# 0.2.45
 
 - [added] Add customer group pricing resources
 - [changed] Basket routes now go through set channel middleware
 
-#0.2.44
+# 0.2.44
 
 - [added] Added support for channel to be passed as a header
 
-#0.2.43
+# 0.2.43
 
 - [added] Added product images on basket update
 
-#0.2.42
+# 0.2.42
 
 - [fixed] CreateRequest for basket handles no variants better
 - [improved] If asset is external, just return the url
 - [improved] Get default channel when getting an attribute
 
-#0.2.41
+# 0.2.41
 
 - [fixed] Firstname and lastname on order address store isn't required with Address ID.
 - [changed] Set channel on middleware only if it's not already set.
 - [fixed] Fixed setting order address from address id
 
-#0.2.40
+# 0.2.40
 
 - [improved] Added earlier exception if an order is already placed on checkout
 
-#0.2.39
+# 0.2.39
 
 - [fixed] Fixed global scopes not honouring a users groups
 - [improved] Product customer group pricing now uses global scope
 - [added] You can now pass through order meta at more points in the checkout lifecycle
 - [added] Added a basket claim endpoint
 
-#0.2.38
+# 0.2.38
 
 - [added] Added bool for if a basket was changed during merge.
 
-#0.2.37
+# 0.2.37
 
 - [fixed] Various fixes for global scopes and indexing
 
-#0.2.36
+# 0.2.36
 
 - [changed] Initial work on moving Collections to resources
 - [improved] Hashids validator now accepts class reference
 - [changed] Changed way some global scopes are added
 - [improved] Improved product association resources
 
-#0.2.35
+# 0.2.35
 
 - [fixed] Fixed handling of non existent includes when getting a users basket
 - [fixed] Fixed handling of SagePay charge when rejected for fraud reasons
 
-#0.2.34
+# 0.2.34
 
 - [fixed] Fixed issue where indexer wasn't getting categories
 
-#0.2.33
+# 0.2.33
 
 - [fixed] Fixed default getcandy config
 - [added] Added global channel scope to categories
 
-#0.2.32
+# 0.2.32
 
 - [added] Added CandyHub detection
 
-#0.2.31
+# 0.2.31
 
 - [added] Added custom meta field to baskets and orders
 
-#0.2.30
+# 0.2.30
 
 - [added] Added total tax to `ProductVariantTransformer`
 
-#0.2.29
+# 0.2.29
 
 - [improved] Added support for adding an address to a customer
 - [fixed] Fixed missing `ElasticIndexCommand` being referenced in service provider
 
-#0.2.28
+# 0.2.28
 
 - [removed] Removed `candy:elastic:index` in favour of `candy:search:index`
 
-#0.2.27
+# 0.2.27
 
 - [added] Make `ancestor` and `parent`, in `CategoryResource`, available to include.
 
-#0.2.26
+# 0.2.26
 
 - [changed] Changes to the request when adding items to a basket to prevent recursive queries.
 
-#0.2.25
+# 0.2.25
 
 - [fixed] Make sure `min_batch` gets passed to the API resource
 
-#0.2.24
+# 0.2.24
 
 - [improved] `min_quantity` validation now includes the minimum quantity required in the validation message.
 - [added] Added a `min_batch` column on `product_variants` which defaults to `1` means you can have a minimum batch size a product can be ordered in, validation message is `You must add this item in multiples of :min_batch`
 
-#0.2.23
+# 0.2.23
 
 - [added] Added factor tax to product variant transformer
 - [added] Added `minQuantity` to `BasketValidator` when adding a variant to the basket
 - [fixed] Fixed wrong offline payment type being referenced in base config
 
-#0.2.22
+# 0.2.22
 
 - [fixed] Fixed issue where 404 wasn't thrown on product endpoint
 - [fixed] Fixed issue where you couldn't search on the users endpoint
 - [fixed] `ChannelResource` now only includes `published_at` if it exists on relation pivot
 
-#0.2.21
+# 0.2.21
 
 - [fixed] Fixed contraint that prevented shipping prices from being deleted.
 - [added] Added `image` include for `ProductVariantResource`
 - [added] Added `groups` include for `ProductTierResource`
 - [added] Added a `getFullName` getter for user details
 
-#0.2.20
+# 0.2.20
 
 - [fixed] Make sure default channel is set on new products
 
-#0.2.19
+# 0.2.19
 
 - [changed] Changed key check on order `tracking_no` to `array_key_exists` to handle any value
 - [improved] Add variant and option data to order line when resolving lines.
@@ -300,56 +300,56 @@ To use your own custom template for invoices downloaded from the hub, simply add
 - [changed] Change check on `TaxCalculator` to `is_null` to allow for passing `0`
 - [changed] Simplified the price calculator logic.
 
-#0.2.18
+# 0.2.18
 
 - [fixed] Fixed SKU mapping that stopped you from sorting on it in Elastic.
 - [fixed] Fixed undefined variable on order processing factory when a closure was used.
 - [fixed] Fixed invalid namespace for listener.
 
-#0.2.17
+# 0.2.17
 
 - [fixed] Fixed exception handling on a route
 
-#0.2.16
+# 0.2.16
 
 - [fixed] Fixed issue where `published_at` date for category channel wasn't being returned in the resource.
 
-#0.2.15
+# 0.2.15
 
 - [fixed] Fixed issue where category children weren't honouring the nested set order when loaded via relation.
 
-#0.2.14
+# 0.2.14
 
 - [fixed] Fixed channel not being set on category query.
 - [added] Added new Activity Log for orders initially.
 - [added] Added `firstOrder` relation on the User model.
 
-#0.2.13
+# 0.2.13
 
 - [improved] Improved handling of order reference increment
 
-#0.2.12
+# 0.2.12
 
 - [fixed] Fixed issue with installer due to country column change
 - [added] Added config for order table columns in the hub
 - [changed] Order settings now pass through all config
 
-#0.2.11
+# 0.2.11
 
 - [changed] Changed plugin loader to not require file extension, this was causing some issues on specific nginx servers.
 - [fixed] Allow tracking no to be set to null on orders
 
-#0.2.10
+# 0.2.10
 
 - [fixed] Fixed issue where updating shipping price zeroed out order totals.
 - [changed] Updated the set shipping price method for DI.
 - [fixed] Fixed offline payment driver, was a bit outdated.
 
-#0.2.7
+# 0.2.7
 
 - [fix] Remove left over calls to countries json columns
 
-#0.2.6
+# 0.2.6
 
 - [added] You can now specify search config for the client.
 
@@ -378,22 +378,22 @@ To use your own custom template for invoices downloaded from the hub, simply add
     ]
 ```
 
-#v0.2.5
+# 0.2.5
 
 - [fixed] Fixed order notes and customer reference not saving on order.
 - [fixed] Fixed exception when retrieving the current basket if the authenticated user never had one before.
 - [changed] Don't round tiered pricing, comes back as three decimal places.
 - [changed] The country name column in the database is now a text field, we aim to support translation files instead for this.
 
-#v0.2.4
+# 0.2.4
 
 - [fixed] Fixed issue with order searching caused by changing variant to description on order lines.
 
-#v0.2.3
+# 0.2.3
 
 - [added] Added created_at to the transaction resource
 
-# v0.2.2
+# 0.2.2
 
 - [added] Ability to set custom attributes on resources, just call `$model->setCustomAttribute('foo', 'bar');`.
 - [improved] Improved the way basket totals were displaying when discounts were applied.
