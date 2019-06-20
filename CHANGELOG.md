@@ -1,3 +1,7 @@
+#0.2.75
+
+- [added] Allow addresses to be marked as default #152
+
 #0.2.74
 
 - [added] Added Partial SKU search
