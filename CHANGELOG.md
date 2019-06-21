@@ -1,3 +1,25 @@
+# 0.2.77
+
+- [changed] Changed the way PayPal handles config
+
+If you use the PayPal provider for payments, you need to update your config in `config/services.php` to the following:
+
+```
+    'paypal' => [
+        'live' => [
+            'client_id' => env('PAYPAL_LIVE_CLIENT_ID'),
+            'client_secret' => env('PAYPAL_LIVE_CLIENT_SECRET'),
+        ],
+        'sandbox' => [
+            'client_id' => env('PAYPAL_SANDBOX_CLIENT_ID'),
+            'client_secret' => env('PAYPAL_SANDBOX_CLIENT_SECRET'),
+        ],
+        'settings' => [
+            'mode' => env('PAYPAL_ENV'),
+        ]
+    ],
+```
+
 # 0.2.76
 
 - [changed] If no alt provided on asset upload, use parents name
