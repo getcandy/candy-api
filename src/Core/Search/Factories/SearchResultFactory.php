@@ -45,6 +45,11 @@ class SearchResultFactory implements SearchResultInterface
     protected $ids = [];
 
     /**
+     * @var array
+     */
+    protected $includes = [];
+
+    /**
      * The result category.
      *
      * @var Category
@@ -208,6 +213,7 @@ class SearchResultFactory implements SearchResultInterface
      */
     public function include($includes = [])
     {
+        $this->includes = $includes ? explode(',', $includes) : [];
         $this->fractal->parseIncludes($includes ?? []);
 
         return $this;
@@ -397,18 +403,20 @@ class SearchResultFactory implements SearchResultInterface
             }
         }
 
-        $selected = collect($selected);
+        if (in_array('categories', $this->includes)) {
+            $selected = collect($selected);
 
-        $models = app('api')->categories()->getSearchedIds(array_keys($all));
+            $models = app('api')->categories()->getSearchedIds(array_keys($all));
 
-        foreach ($models as $category) {
-            $category->aggregate_selected = $selected->contains($category->encodedId());
-            $category->doc_count = $all[$category->encodedId()];
+            foreach ($models as $category) {
+                $category->aggregate_selected = $selected->contains($category->encodedId());
+                $category->doc_count = $all[$category->encodedId()];
+            }
+
+            $resource = new Collection($models, new CategoryTransformer);
+
+            $results['categories'] = app()->fractal->createData($resource)->toArray();
         }
-
-        $resource = new Collection($models, new CategoryTransformer);
-
-        $results['categories'] = app()->fractal->createData($resource)->toArray();
 
         return $results;
     }
