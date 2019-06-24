@@ -140,13 +140,13 @@ class CategoryService extends BaseService
         $category->products()->sync($ids);
 
         if ($existingProducts->count()) {
-            app(SearchContract::class)->indexer()->updateDocuments(
+            app(SearchContract::class)->indexer()->indexObjects(
                 $existingProducts,
                 'categories'
             );
         }
 
-        app(SearchContract::class)->indexer()->updateDocuments(
+        app(SearchContract::class)->indexer()->indexObjects(
             $category->products()->get(),
             'categories'
         );

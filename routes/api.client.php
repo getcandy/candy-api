@@ -17,6 +17,8 @@ Route::group([
     // Address Route
     $router->delete('addresses/{id}', 'Addresses\AddressController@destroy');
     $router->put('addresses/{id}', 'Addresses\AddressController@update');
+    $router->post('addresses/{id}/default', 'Addresses\AddressController@makeDefault');
+    $router->post('addresses/{id}/default/remove', 'Addresses\AddressController@removeDefault');
     /*
         |--------------------------------------------------------------------------
         | API Client Routes

@@ -7,7 +7,6 @@ use Tests\TestCase;
 use Tests\Stubs\User;
 use Illuminate\Support\Facades\Event;
 use GetCandy\Api\Core\Orders\Models\Order;
-use GetCandy\Api\Core\Addresses\Models\Address;
 use GetCandy\Api\Core\Discounts\Models\Discount;
 use GetCandy\Api\Core\Orders\Events\OrderSavedEvent;
 use GetCandy\Api\Core\Orders\Factories\OrderFactory;
@@ -78,61 +77,6 @@ class OrderFactoryTest extends TestCase
 
         $this->assertInstanceOf(Order::class, $order);
         $this->assertEquals($user->id, $order->user_id);
-    }
-
-    public function test_user_fields_are_set_when_resolved()
-    {
-        $user = User::first();
-
-        $shippingCheckable = [
-            'firstname' => 'Jake',
-            'lastname' => 'Perolta',
-            'address' => '123 Someroad',
-            'address_two' => 'Some lane',
-            'address_three' => 'Some place',
-            'city' => 'Some City',
-            'state' => 'Some State',
-            'country' => 'United Kingdom',
-            'zip' => 'AB12 3CD',
-        ];
-
-        $shipping = Address::forceCreate(array_merge([
-            'user_id' => $user->id,
-            'shipping' => true,
-        ], $shippingCheckable));
-
-        $billingCheckable = [
-            'firstname' => 'Boyle',
-            'lastname' => 'Perolta',
-            'address' => '123 Another road',
-            'address_two' => 'Another lane',
-            'address_three' => 'Another place',
-            'city' => 'Another City',
-            'state' => 'Another State',
-            'country' => 'United Kingdom',
-            'zip' => 'EF45 6GH',
-        ];
-
-        $billing = Address::forceCreate(array_merge([
-            'user_id' => $user->id,
-            'billing' => true,
-        ], $billingCheckable));
-
-        $factory = $this->app->make(OrderFactory::class);
-        Event::fake();
-
-        $basket = $this->getinitalbasket();
-        $basket->user()->associate($user);
-
-        $order = $factory->basket($basket)->resolve();
-
-        foreach ($shippingCheckable as $key => $value) {
-            $this->assertEquals($value, $order->getAttribute('shipping_'.$key));
-        }
-
-        foreach ($billingCheckable as $key => $value) {
-            $this->assertEquals($value, $order->getAttribute('billing_'.$key));
-        }
     }
 
     public function test_user_can_be_set_manually()

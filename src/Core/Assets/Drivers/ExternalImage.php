@@ -105,7 +105,7 @@ class ExternalImage extends BaseUrlDriver
 
         $asset->source()->associate($this->source);
 
-        $path = $this->source->path . '/' . Carbon::now()->format('Y/m/d');
+        $path = $this->source->path.'/'.Carbon::now()->format('Y/m/d');
         $asset->location = $path;
 
         return $asset;

@@ -14,6 +14,18 @@ abstract class BaseUploadDriver
     protected $upload = true;
 
     /**
+     * Get the video unique id.
+     *
+     * @param string $url
+     *
+     * @return string
+     */
+    public function getUniqueId($url)
+    {
+        return $url;
+    }
+
+    /**
      * @param array $data
      * @param       $source
      *
@@ -60,7 +72,7 @@ abstract class BaseUploadDriver
 
         $asset->source()->associate($source);
 
-        $path = $source->path . '/' . Carbon::now()->format('Y/m/d');
+        $path = $source->path.'/'.Carbon::now()->format('Y/m/d');
 
         $asset->location = $path;
 

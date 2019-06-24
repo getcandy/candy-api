@@ -57,6 +57,6 @@ class ScoreProductsCommand extends Command
             $documents[] = $document;
         }
 
-        $index->updateDocuments($documents);
+        $index->indexObjects($documents);
     }
 }

@@ -473,10 +473,19 @@ class OrderService extends BaseService implements OrderServiceInterface
      */
     protected function setFields($order, $fields, $prefix)
     {
+        $current = $order->getDetails($prefix);
+
+        foreach ($current as $key => $value) {
+            if (empty($fields[$key])) {
+                $fields[$key] = null;
+            }
+        }
+
         $attributes = [];
         foreach ($fields as $field => $value) {
             $attributes[$prefix.'_'.$field] = $value;
         }
+
         $order->fill($attributes);
     }
 
@@ -537,8 +546,7 @@ class OrderService extends BaseService implements OrderServiceInterface
             if (count($segments) == 1) {
                 $increment = 1;
             } else {
-                $segment = $segments[2] ?? $segments[1];
-                $increment = is_numeric($segment) ? $segment + 1 : $order->id;
+                $increment = end($segments) + 1;
             }
         }
 

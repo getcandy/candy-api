@@ -5,6 +5,7 @@ namespace GetCandy\Api\Core\Products\Services;
 use Illuminate\Database\Eloquent\Model;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Products\Models\Product;
+use GetCandy\Api\Core\Channels\Models\Channel;
 use GetCandy\Api\Core\Scopes\CustomerGroupScope;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 use GetCandy\Api\Core\Search\Events\IndexableSavedEvent;
@@ -153,12 +154,11 @@ class ProductService extends BaseService
                 $this->getChannelMapping($data['channels']['data'])
             );
         } else {
-            $defaultChannel = app('api')->channels()->getDefaultRecord();
-            $product->channels()->sync([
-                $defaultChannel->id => [
+            $product->channels()->sync(Channel::select('id')->get()->mapWithKeys(function ($c) {
+                return [$c->id => [
                     'published_at' => null,
-                ],
-            ]);
+                ]];
+            })->toArray());
         }
 
         $urls = $this->getUniqueUrl($data['url']);

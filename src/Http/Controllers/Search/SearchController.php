@@ -77,13 +77,15 @@ class SearchController extends BaseController
             return $this->errorInternalError($e->getMessage());
         }
 
+
         $results = app('api')->search()->getResults(
             $results,
             $request->type,
             $request->includes,
-            $request->page ?: 1,
+            $page ?: 1,
             $request->category,
-            $request->user()
+            $request->user(),
+            $request->ids_only ?: false
         );
 
         return response($results, 200);

@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Reports\Providers;
 
+use DB;
 use Carbon\Carbon;
 
 class Sales extends AbstractProvider
@@ -43,9 +44,10 @@ class Sales extends AbstractProvider
                 $label = Carbon::createFromFormat($format, $time)->format($displayFormat);
             }
             $labels[] = $label;
-
             $ordersData[] = $orders->count();
-            $salesData[] = $orders->sum('order_total');
+            $salesData[] = $orders->sum(function ($o) {
+                return $o->sub_total + $o->delivery_total - $o->discount_total;
+            });
         }
 
         $datasets[] = [
@@ -58,7 +60,7 @@ class Sales extends AbstractProvider
         ];
 
         $datasets[] = [
-            'label'           => 'Sales',
+            'label'           => 'Revenue',
             'backgroundColor' => '#0099e5',
             'yAxisID'         => 'B',
             'borderColor'     => '#0099e5',
@@ -76,28 +78,41 @@ class Sales extends AbstractProvider
     {
         // Get orders this month
         $currentMonth = $this->getOrderQuery(
-            Carbon::now()->subMonth(),
+            Carbon::now()->startOfMonth(),
             Carbon::now()
-        )->sum('order_total');
+        )->sum(DB::raw('sub_total + delivery_total - discount_total'));
 
         $previousMonth = $this->getOrderQuery(
-            Carbon::now()->subMonth(2),
+            Carbon::now()->subMonth()->startOfMonth(),
             Carbon::now()->subMonth()
-        )->sum('order_total');
+        )->sum(DB::raw('sub_total + delivery_total - discount_total'));
 
         $currentWeek = $this->getOrderQuery(
-            Carbon::now()->subWeek(1),
+            Carbon::now()->startOfWeek(),
             Carbon::now()
-        )->sum('order_total');
+        )->sum(DB::raw('sub_total + delivery_total - discount_total'));
 
         $previousWeek = $this->getOrderQuery(
-            Carbon::now()->subWeek(2),
+            Carbon::now()->subWeek()->startOfWeek(),
             Carbon::now()->subWeek()
-        )->sum('order_total');
+        )->sum(DB::raw('sub_total + delivery_total - discount_total'));
+
+        $today = $this->getOrderQuery(
+            Carbon::now()->startOfDay(),
+            Carbon::now()
+        )->sum(DB::raw('sub_total + delivery_total - discount_total'));
+
+        $yesterday = $this->getOrderQuery(
+            Carbon::now()->subDay()->startOfDay(),
+            Carbon::now()->subDay()
+        )->sum(DB::raw('sub_total + delivery_total - discount_total'));
 
         return [
+
             'current_month' => $currentMonth,
             'previous_month' => $previousMonth,
+            'today' => $today,
+            'yesterday' => $yesterday,
             'current_week' => $currentWeek,
             'previous_week' => $previousWeek,
         ];

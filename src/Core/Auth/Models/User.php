@@ -6,6 +6,7 @@ use Laravel\Passport\HasApiTokens;
 use GetCandy\Api\Core\Traits\Hashids;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Builder;
 use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Core\Users\Models\UserDetail;
@@ -62,6 +63,15 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
     ];
+
+    /**
+     * @param Builder $qb
+     * @return Builder
+     */
+    public function scopeDefault($qb)
+    {
+        return $qb->where('default', 1);
+    }
 
     public function groups()
     {

@@ -48,4 +48,26 @@ class AddressController extends BaseController
 
         return $this->respondWithNoContent();
     }
+
+    public function makeDefault($id, Request $request)
+    {
+        try {
+            $address = app('api')->addresses()->makeDefault($id);
+        } catch (NotFoundHttpException $e) {
+            return $this->errorNotFound();
+        }
+
+        return $this->respondWithItem($address, new AddressTransformer);
+    }
+
+    public function removeDefault($id, Request $request)
+    {
+        try {
+            $address = app('api')->addresses()->removeDefault($id);
+        } catch (NotFoundHttpException $e) {
+            return $this->errorNotFound();
+        }
+
+        return $this->respondWithItem($address, new AddressTransformer);
+    }
 }

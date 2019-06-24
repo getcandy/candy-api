@@ -13,6 +13,6 @@ trait Assetable
 
     public function primaryAsset()
     {
-        return $this->assets()->where('primary', '=', 1)->with('transforms');
+        return $this->morphOne(Asset::class, 'assetable')->where('primary', '=', 1)->with('transforms');
     }
 }

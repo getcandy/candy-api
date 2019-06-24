@@ -264,7 +264,6 @@ class Indexer
 
     public function updateDocuments($models, $field = null)
     {
-        dd($models);
         $this->against($models->first());
 
         $type = $this->getType($models->first());

@@ -96,6 +96,7 @@ class UserService extends BaseService implements UserContract
 
         $data['details']['firstname'] = $data['firstname'];
         $data['details']['lastname'] = $data['lastname'];
+        $data['details']['fields'] = $data['fields'] ?? [];
 
         if (! empty($data['details'])) {
             $data['details']['user_id'] = $user->id;
