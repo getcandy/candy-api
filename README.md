@@ -32,7 +32,7 @@ git tag -d 0.2.77 # Replace this with the actual latest tag
 - Checkout the `production` branch, and merge our new `master` in to it
 
 ```bash
-git merge master
+git checkout production && git pull origin production && git merge master
 ```
 
 - Finally, tag this new commit on the `production` branch, and push to origin
