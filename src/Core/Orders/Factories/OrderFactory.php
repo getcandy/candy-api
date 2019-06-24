@@ -441,6 +441,8 @@ class OrderFactory implements OrderFactoryInterface
 
         $tax = app('api')->taxes()->getDefaultRecord();
 
+        $tax = makeGenericTaxIfNotObject($tax);
+
         $rate = $this->calculator->get(
             $this->shipping->rate,
             $tax->percentage

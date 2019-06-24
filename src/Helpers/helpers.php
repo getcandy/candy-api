@@ -3,7 +3,7 @@
 use \GetCandy\Api\Core\Taxes\Models\Tax;
 use Illuminate\Support\Facades\Log;
 
-if (!function_exists('makeGenericTaxIfNull')) {
+if (!function_exists('makeGenericTaxIfNotObject')) {
     /**
      * If the tax object passed in is null, or not an object, then it will
      * create the default tax object manually and return it. Otherwise it returns
