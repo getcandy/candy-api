@@ -106,7 +106,7 @@ class OrderCriteria extends AbstractCriteria implements OrderCriteriaInterface
      *
      * @var string
      */
-    protected $sortBy = 'created_at';
+    protected $sortBy = null;
 
     /**
      * Set the sort dir.
