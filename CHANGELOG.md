@@ -1,3 +1,7 @@
+# 0.2.78
+
+- [fixed] Fixed issue with wrong global scopes being taken off when indexing
+
 # 0.2.77
 
 - [changed] Changed the way PayPal handles config
