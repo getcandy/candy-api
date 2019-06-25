@@ -204,6 +204,10 @@ class OrderCriteria extends AbstractCriteria implements OrderCriteriaInterface
             $query = $query->withoutGlobalScope($scope);
         }
 
+        foreach ($this->scopes as $scope) {
+            $query = $query->{$scope}();
+        }
+
         if ($this->sortBy && $this->sortDir) {
             $query->orderBy($this->sortBy, $this->sortDir);
         } elseif ($this->status == 'awaiting-payment') {
