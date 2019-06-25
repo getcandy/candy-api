@@ -93,6 +93,7 @@ class Indexer
                     );
                     $indexes[$indexable->getIndex()][] = $document;
                 }
+
             }
 
             foreach ($indexes as $key => $documents) {
@@ -106,7 +107,10 @@ class Indexer
 
             echo ':batch:'.$this->batch;
             $this->batch += 1000;
-            $models = $model->withoutGlobalScopes()->limit(1000)->offset($this->batch)->get();
+            $models = $model->withoutGlobalScopes([
+                CustomerGroupScope::class,
+                ChannelScope::class,
+            ])->limit(1000)->offset($this->batch)->get();
         }
 
         foreach ($aliases as $alias => $index) {
