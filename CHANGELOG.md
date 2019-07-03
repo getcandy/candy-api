@@ -1,3 +1,7 @@
+# 0.2.80
+
+- [fixed] Only sync basket with order if it exists and is active.
+
 # 0.2.79
 
 - [added] Added local `placed` scope for `Order`, returns all orders that have a `placed_at` value in the DB.
