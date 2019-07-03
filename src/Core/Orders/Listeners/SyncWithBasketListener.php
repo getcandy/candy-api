@@ -22,9 +22,9 @@ class SyncWithBasketListener
      */
     public function handle(BasketStoredEvent $event)
     {
-        if (! $event->basket->order || ! $event->basket->activeOrder) {
+        if (!$event->basket->activeOrder) {
             return true;
         }
-        app('api')->orders()->syncWithBasket($event->basket->order, $event->basket);
+        app('api')->orders()->syncWithBasket($event->basket->activeOrder, $event->basket);
     }
 }
