@@ -116,7 +116,7 @@ class PayPal extends AbstractProvider
             foreach ($resources as $resource) {
                 $candyTrans->success = $resource->getSale()->getState() == 'completed';
                 $candyTrans->status = $resource->getSale()->getState();
-                $candyTrans->transaction_id = $resource->getSale()->getParentPayment();
+                $candyTrans->transaction_id = $resource->getSale()->getId();
             }
 
             $candyTrans->order()->associate($this->order);
