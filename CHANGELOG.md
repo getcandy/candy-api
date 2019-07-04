@@ -1,3 +1,9 @@
+# 0.2.81
+
+- [changed] PayPal driver records proper Transaction ID from PayPal
+- [fixed] Fix reindexer job
+- [fixed] Fix undefined index in `AttributeService`
+
 # 0.2.80
 
 - [fixed] Only sync basket with order if it exists and is active.
