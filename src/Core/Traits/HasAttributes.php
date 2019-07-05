@@ -28,7 +28,7 @@ trait HasAttributes
 
     public function attribute($handle, $channel = null, $locale = null)
     {
-        // $defaultChannel = app('api')->channels()->getDefaultRecord();
+        $defaultChannel = app('api')->channels()->getDefaultRecord();
         $userLocale = app()->getLocale();
 
         if (! $locale) {
@@ -38,6 +38,10 @@ trait HasAttributes
         if (! $channel) {
             $factory = app()->getInstance()->make(ChannelFactoryInterface::class);
             $channel = $factory->getChannel()->handle;
+        }
+
+        if (empty($this->attribute_data[$handle][$channel])) {
+            $channel = $defaultChannel->handle;
         }
 
         if (! empty($this->attribute_data[$handle][$channel][$locale])) {

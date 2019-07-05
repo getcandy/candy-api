@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Baskets\Models;
 
+use GetCandy\Api\Core\Traits\HasMeta;
 use GetCandy\Api\Core\Scaffold\BaseModel;
 use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Traits\HasCompletion;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Basket extends BaseModel
 {
-    use HasCompletion;
+    use HasCompletion, HasMeta;
 
     protected $hashids = 'basket';
 
@@ -43,12 +44,19 @@ class Basket extends BaseModel
     public $discount_total = 0;
 
     /**
+     * If the basket has been changed.
+     *
+     * @var bool
+     */
+    public $changed = false;
+
+    /**
      * The fillable attributes.
      *
      * @var array
      */
     protected $fillable = [
-        'lines', 'completed_at', 'merged_id',
+        'lines', 'completed_at', 'merged_id', 'meta',
     ];
 
     /**

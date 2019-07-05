@@ -23,6 +23,7 @@ class OrderLineResource extends AbstractResource
             'sku' => $this->sku,
             'is_shipping' => (bool) $this->is_shipping,
             'is_manual' => (bool) $this->is_manual,
+            'meta' => $this->meta,
         ];
     }
 

@@ -5,6 +5,7 @@ namespace GetCandy\Api\Core\Shipping\Models;
 use GetCandy\Api\Core\Auth\Models\User;
 use GetCandy\Api\Core\Scaffold\BaseModel;
 use GetCandy\Api\Core\Traits\HasChannels;
+use GetCandy\Api\Core\Scopes\ChannelScope;
 use GetCandy\Api\Core\Traits\HasAttributes;
 use GetCandy\Api\Core\Channels\Models\Channel;
 
@@ -17,6 +18,17 @@ class ShippingMethod extends BaseModel
      * @var string
      */
     protected $hashids = 'main';
+
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope(new ChannelScope);
+    }
 
     protected $fillable = [
         'attribute_data',

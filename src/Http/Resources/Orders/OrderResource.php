@@ -42,6 +42,7 @@ class OrderResource extends AbstractResource
             'updated_at' => $this->updated_at,
             'placed_at' => $this->placed_at,
             'notes' => $this->notes,
+            'meta' => $this->meta,
         ];
     }
 
@@ -52,6 +53,7 @@ class OrderResource extends AbstractResource
             'discounts' => new OrderDiscountCollection($this->whenLoaded('discounts')),
             'transactions' => new TransactionCollection($this->whenLoaded('transactions')),
             'lines' => new OrderLineCollection($this->whenLoaded('lines')),
+            'shipping' => new OrderLineResource($this->whenLoaded('shipping')),
             'logs' => new ActivityCollection($this->whenLoaded('activities')),
             'user' => $this->include('user', UserResource::class),
         ];

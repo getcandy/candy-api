@@ -21,7 +21,7 @@ class AddPathToRoutes extends Migration
 
     public function down()
     {
-        Schema::table('order_lines', function (Blueprint $table) {
+        Schema::table('routes', function (Blueprint $table) {
             $table->dropColumn('path');
             $table->index('slug');
         });

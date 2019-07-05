@@ -23,7 +23,13 @@ class AddressController extends BaseController
     public function store(Request $request)
     {
         try {
-            $user = app('api')->users()->getByHashedId($request->user()->encodedId());
+            $authUser = $request->user();
+            if ($request->user_id && $authUser->hasRole('admin')) {
+                $id = $request->user_id;
+            } else {
+                $id = $authUser->encodedId();
+            }
+            $user = app('api')->users()->getByHashedId($id);
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
@@ -41,5 +47,27 @@ class AddressController extends BaseController
         }
 
         return $this->respondWithNoContent();
+    }
+
+    public function makeDefault($id, Request $request)
+    {
+        try {
+            $address = app('api')->addresses()->makeDefault($id);
+        } catch (NotFoundHttpException $e) {
+            return $this->errorNotFound();
+        }
+
+        return $this->respondWithItem($address, new AddressTransformer);
+    }
+
+    public function removeDefault($id, Request $request)
+    {
+        try {
+            $address = app('api')->addresses()->removeDefault($id);
+        } catch (NotFoundHttpException $e) {
+            return $this->errorNotFound();
+        }
+
+        return $this->respondWithItem($address, new AddressTransformer);
     }
 }

@@ -84,7 +84,7 @@ abstract class BaseUrlDriver
     protected function prepare()
     {
         $asset = new Asset([
-            'location' => $this->data['url'],
+            'location' => $this->getUniqueId($this->data['url']),
             'title' => $this->info['title'],
             'kind' => $this->handle,
             'external' => true,

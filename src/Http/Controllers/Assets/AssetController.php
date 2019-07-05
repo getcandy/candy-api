@@ -56,8 +56,14 @@ class AssetController extends BaseController
             return $this->errorWrongArgs($e->getMessage());
         }
 
+        $data = $request->all();
+
+        if (empty($data['alt'])) {
+            $data['alt'] = $parent->attribute('name');
+        }
+
         $asset = app('api')->assets()->upload(
-            $request->all(),
+            $data,
             $parent,
             $parent->assets()->count() + 1
         );

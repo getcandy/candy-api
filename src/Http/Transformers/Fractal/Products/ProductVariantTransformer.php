@@ -28,6 +28,7 @@ class ProductVariantTransformer extends BaseTransformer
             'factor_tax' => $variant->factor_tax,
             'unit_price' => $variant->unit_cost,
             'tax' => $variant->unit_tax,
+            'total_tax' => $variant->total_tax,
             'unit_qty' => $variant->unit_qty,
             'min_qty' => $variant->min_qty,
             'max_qty' => $variant->max_qty,

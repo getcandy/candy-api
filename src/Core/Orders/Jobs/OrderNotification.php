@@ -34,10 +34,10 @@ class OrderNotification implements ShouldQueue
             return;
         }
 
-        $contactEmail = $this->order->contact_email ?? ($this->order->user ? $this->order->user->email : null);
+        $contactEmail = $this->order->billing_email ?: $this->order->contact_email;
 
         if (! $contactEmail) {
-            return;
+            $contactEmail = ($this->order->user ? $this->order->user->email : null);
         }
 
         $mailer = new $mailer($this->order);
@@ -45,7 +45,10 @@ class OrderNotification implements ShouldQueue
         foreach ($this->content as $key => $value) {
             $mailer->with($key, $value);
         }
-
-        Mail::to($contactEmail)->send($mailer);
+        if ($mailQueue = config('getcandy.mail.queue', null)) {
+            Mail::to($contactEmail)->queue($mailer->onQueue($mailQueue));
+        } else {
+            Mail::to($contactEmail)->send($mailer);
+        }
     }
 }

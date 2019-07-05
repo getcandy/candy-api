@@ -12,7 +12,8 @@ class ProductVariantResource extends AbstractResource
     public function payload()
     {
         $factory = app()->getInstance()->make(ProductVariantFactory::class);
-        $this->resource = $factory->init($this->resource)->get();
+
+        $this->resource = $factory->init($this->resource)->get(1, app()->request->user());
 
         return [
             'id' => $this->encodedId(),
@@ -61,6 +62,7 @@ class ProductVariantResource extends AbstractResource
             'product' => ['data' => new ProductResource($this->whenLoaded('product'), $this->only)],
             'image' => new AssetResource($this->whenLoaded('image')),
             'tiers' => new ProductTierCollection($this->whenLoaded('tiers')),
+            'customer_pricing' => new ProductCustomerPriceCollection($this->whenLoaded('customerPricing')),
             'tax' => $this->include('tax', TaxResource::class),
         ];
     }

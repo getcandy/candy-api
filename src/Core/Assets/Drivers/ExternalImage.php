@@ -3,6 +3,7 @@
 namespace GetCandy\Api\Core\Assets\Drivers;
 
 use Storage;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use GetCandy\Api\Core\Assets\Models\Asset;
 use GetCandy\Api\Core\Assets\Jobs\GenerateTransforms;
@@ -103,7 +104,8 @@ class ExternalImage extends BaseUrlDriver
         ]);
 
         $asset->source()->associate($this->source);
-        $path = $this->source->path.'/'.substr($asset->filename, 0, 2);
+
+        $path = $this->source->path.'/'.Carbon::now()->format('Y/m/d');
         $asset->location = $path;
 
         return $asset;

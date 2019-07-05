@@ -29,6 +29,7 @@ class ProductTransformer extends BaseTransformer
         'channels',
         'collections',
         'discounts',
+        'primary_asset',
         'thumbnail',
         'customer_groups',
         'family',
@@ -132,6 +133,14 @@ class ProductTransformer extends BaseTransformer
     public function includeAssociations(Product $product)
     {
         return $this->collection($product->associations, new ProductAssociationTransformer);
+    }
+
+    public function includePrimaryAsset(Product $product)
+    {
+        if (!$product->primaryAsset) {
+            return $this->null();
+        }
+        return $this->item($product->primaryAsset, new AssetTransformer);
     }
 
     /**

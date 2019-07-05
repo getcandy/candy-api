@@ -5,7 +5,7 @@ namespace GetCandy\Api\Http\Controllers\Shipping;
 use Illuminate\Http\Request;
 use GetCandy\Api\Http\Controllers\BaseController;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use GetCandy\Api\Http\Requests\Shipping\Pricing\CreateRequest;
+use GetCandy\Api\Http\Requests\Shipping\Pricing\StoreRequest;
 use GetCandy\Api\Http\Requests\Shipping\Pricing\EstimateRequest;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use GetCandy\Api\Http\Transformers\Fractal\Shipping\ShippingPriceTransformer;
@@ -44,14 +44,14 @@ class ShippingPriceController extends BaseController
      * @param  CreateRequest $request
      * @return Json
      */
-    public function store($id, CreateRequest $request)
+    public function store($id, StoreRequest $request)
     {
         $result = app('api')->shippingPrices()->create($id, $request->all());
 
         return $this->respondWithItem($result, new ShippingPriceTransformer);
     }
 
-    public function update($id, Request $request)
+    public function update($id, StoreRequest $request)
     {
         try {
             $result = app('api')->shippingPrices()->update($id, $request->all());

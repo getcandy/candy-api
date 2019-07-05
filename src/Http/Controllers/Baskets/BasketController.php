@@ -13,6 +13,7 @@ use GetCandy\Api\Http\Resources\Baskets\BasketResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use GetCandy\Api\Core\Discounts\Services\DiscountService;
 use GetCandy\Api\Http\Requests\Baskets\AddDiscountRequest;
+use GetCandy\Api\Http\Requests\Baskets\ClaimBasketRequest;
 use GetCandy\Api\Http\Requests\Baskets\DeleteDiscountRequest;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketCriteriaInterface;
 use GetCandy\Api\Http\Transformers\Fractal\Baskets\BasketTransformer;
@@ -160,13 +161,33 @@ class BasketController extends BaseController
      * Associate a user to a basket request.
      *
      * @param PutUserRequest $request
-     *
+     * @deprecated 0.2.39
+     * @deprecated Use claim instead, this function will be removed in 0.3.0
      * @return void
      */
     public function putUser($basketId, PutUserRequest $request)
     {
+        // TODO Remove in 0.3.0
         try {
             $basket = app('api')->baskets()->addUser($basketId, $request->user_id);
+        } catch (ModelNotFoundException $e) {
+            return $this->errorNotFound();
+        }
+
+        return new BasketResource($basket);
+    }
+
+    /**
+     * Associate a user to a basket request.
+     *
+     * @param ClaimBasketRequest $request
+     *
+     * @return void
+     */
+    public function claim($basketId, ClaimBasketRequest $request)
+    {
+        try {
+            $basket = app('api')->baskets()->addUser($basketId, $request->user()->encodedId());
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }

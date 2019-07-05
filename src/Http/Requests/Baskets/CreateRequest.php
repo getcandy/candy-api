@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Http\Requests\Baskets;
 
-use DB;
 use GetCandy\Api\Http\Requests\FormRequest;
 
 class CreateRequest extends FormRequest
@@ -34,12 +33,12 @@ class CreateRequest extends FormRequest
             collect($this->variants)->pluck('id')->toArray()
         );
 
-        foreach($this->variants as $i => $v) {
+        foreach ($this->variants ?? [] as $i => $v) {
             $variant = $variants->first(function ($variant) use ($v) {
                 return $variant->encodedId() === $v['id'] ?? null;
             });
             if ($variant) {
-                $rules["variants.{$i}.quantity"] = 'required|numeric|min:1|max:10000|min_quantity:' . $variant->min_qty . '|min_batch:' . $variant->min_batch . '|in_stock:' . $v['id'] ?? '0';
+                $rules["variants.{$i}.quantity"] = 'required|numeric|min:1|max:10000|min_quantity:'.$variant->min_qty.'|min_batch:'.$variant->min_batch.'|in_stock:'.$v['id'] ?? '0';
             }
             $rules["variants.{$i}.id"] = 'required|hashid_is_valid:product_variants';
         }

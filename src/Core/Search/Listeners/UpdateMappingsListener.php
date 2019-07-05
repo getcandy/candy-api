@@ -3,8 +3,8 @@
 namespace GetCandy\Api\Core\Search\Listeners;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
-use GetCandy\Api\Core\Search\SearchContract;
 use GetCandy\Api\Core\Products\Models\Product;
+use GetCandy\Api\Core\Search\Jobs\ReindexSearchJob;
 use GetCandy\Api\Core\Attributes\Events\AttributeSavedEvent;
 
 class UpdateMappingsListener implements ShouldQueue
@@ -24,6 +24,6 @@ class UpdateMappingsListener implements ShouldQueue
      */
     public function handle(AttributeSavedEvent $event)
     {
-        app(SearchContract::class)->indexer()->updateMapping(Product::class);
+        ReindexSearchJob::dispatch(Product::class);
     }
 }

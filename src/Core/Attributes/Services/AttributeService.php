@@ -37,7 +37,7 @@ class AttributeService extends BaseService
         $result = $attributeGroup->attributes()->create([
             'name' => $data['name'],
             'handle' => $data['handle'],
-            'type' => $data['type'],
+            'type' => $data['type'] ?? 'text',
             'position' => $this->getNewPositionForGroup($attributeGroup->id),
             'variant' => ! empty($data['variant']) ? $data['variant'] : false,
             'searchable' => ! empty($data['searchable']) ? $data['searchable'] : false,
@@ -53,7 +53,7 @@ class AttributeService extends BaseService
     {
         $attribute = $this->getLastItem($groupId);
 
-        return $attribute->position + 1;
+        return $attribute ? $attribute->position + 1 : 1;
     }
 
     public function getAttributables(array $hashedIds, $type = null)

@@ -30,9 +30,6 @@ class OrderProcessingFactoryTest extends TestCase
         $this->assertSame($order, $factoryOrder);
     }
 
-    /**
-     * @group current
-     */
     public function test_can_be_processed()
     {
         // First swap out the PaymentContract instance for our stub.

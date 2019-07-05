@@ -142,6 +142,11 @@ class SagePay extends AbstractProvider
                 ->setTransactionId($content['transactionId'])
                 ->setPaRequest($content['paReq'])
                 ->setRedirect($content['acsUrl']);
+        } elseif ($content['status'] != 'Ok') {
+            $response = new PaymentResponse(false, $content['statusDetail'] ?? 'Rejected', $content);
+            return $response->transaction(
+                $this->createFailedTransaction($content)
+            );
         }
 
         $response = new PaymentResponse(true, 'Payment Received');
@@ -161,13 +166,9 @@ class SagePay extends AbstractProvider
     {
         $identifier = $details['cardIdentifier'];
         $userId = $this->order->user_id;
-        $exists = ReusablePayment::where('token', '=', $identifier)
-                    ->where('user_id', '=', $userId)->exists();
-
-        // If this card already exists for this user. Don't add it again.
-        if ($exists) {
-            return;
-        }
+        // Delete one if it exists.
+        $exists = ReusablePayment::where('last_four', '=', $details['lastFourDigits'])
+                    ->where('user_id', '=', $userId)->delete();
 
         $payment = new ReusablePayment;
         $payment->type = strtolower($details['cardType']);
@@ -201,14 +202,6 @@ class SagePay extends AbstractProvider
         }
 
         $content = json_decode($response->getBody()->getContents(), true);
-
-        if ($content['status'] != 'Authenticated') {
-            return $this->createFailedTransaction([
-                'statusDetail' => '3D Secure Failed',
-                'status' => 'failed',
-                'transactionId' => $transaction,
-            ]);
-        }
 
         // We are authenticated, so lets get the transaction from the API
         $transaction = $this->getTransactionFromApi($transaction);

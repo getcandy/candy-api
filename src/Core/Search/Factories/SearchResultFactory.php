@@ -348,6 +348,9 @@ class SearchResultFactory implements SearchResultInterface
 
         $aggs = $this->results->getAggregations();
 
+        // Get our filterable attributes;
+        $attributes = app('api')->attributes()->getFilterable();
+
         $results = [];
 
         $selected = [];
@@ -388,6 +391,9 @@ class SearchResultFactory implements SearchResultInterface
                 $results[$handle] = ['buckets' => $buckets];
             } else {
                 $results[$handle] = $agg;
+                $results[$handle]['attribute'] = $attributes->first(function ($a) use ($handle) {
+                    return $a->handle === $handle;
+                });
             }
         }
 

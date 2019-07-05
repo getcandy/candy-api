@@ -13,6 +13,7 @@ use GetCandy\Api\Core\Pricing\PriceCalculatorInterface;
 use GetCandy\Api\Core\Settings\Services\SettingService;
 use GetCandy\Api\Core\Orders\Interfaces\OrderFactoryInterface;
 use GetCandy\Api\Core\Taxes\Interfaces\TaxCalculatorInterface;
+use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
 use GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface;
 use GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException;
 use GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface;
@@ -82,6 +83,8 @@ class OrderFactory implements OrderFactoryInterface
      */
     protected $variants;
 
+    protected $includes = [];
+
     protected $tax;
 
     /**
@@ -127,6 +130,13 @@ class OrderFactory implements OrderFactoryInterface
     public function type($type)
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function include($includes)
+    {
+        $this->includes = $includes;
 
         return $this;
     }
@@ -200,12 +210,22 @@ class OrderFactory implements OrderFactoryInterface
 
         if ($this->user) {
             $order->user()->associate($this->user);
-            $this->setUserFields($order);
+            if ($order->wasRecentlyCreated) {
+                $this->setUserFields($order);
+            }
         }
 
         $order->conversion = $this->currencies->set($this->basket->currency)->rate();
         $order->currency = $this->basket->currency;
         $order->type = $this->type;
+
+        if ($this->basket->meta) {
+            $order->meta = array_merge($order->meta ?? [], $this->basket->meta);
+        }
+
+        if (! empty($this->includes) && is_array($this->includes)) {
+            $order->load($this->includes);
+        }
 
         $order->save();
         $order->basketLines()->delete();
@@ -244,6 +264,7 @@ class OrderFactory implements OrderFactoryInterface
                 'quantity' => $line->quantity,
                 'description' => $line->variant->product->attribute('name'),
                 'option' => $line->variant->name,
+                'meta' => $line->meta,
             ]);
         }
         $order->lines()->createMany($lines);
@@ -254,6 +275,7 @@ class OrderFactory implements OrderFactoryInterface
     /**
      * Get the active order.
      *
+     * @throws BasketHasPlacedOrderException
      * @return Order
      */
     protected function getActiveOrder()
@@ -299,7 +321,10 @@ class OrderFactory implements OrderFactoryInterface
     {
         $attributes = [];
         foreach ($fields as $field => $value) {
-            $attributes[$prefix.'_'.$field] = $value;
+            $column = $prefix.'_'.$field;
+            if (! $order->getAttribute($column)) {
+                $attributes[$column] = $value;
+            }
         }
         $order->fill($attributes);
     }
@@ -308,12 +333,16 @@ class OrderFactory implements OrderFactoryInterface
      * Sets the user fields.
      *
      * @param Order $order
-     * @return void
+     * @return Order
      */
     protected function setUserFields(&$order)
     {
-        foreach ($this->user->addresses as $address) {
-            $this->setFields($order, $address->fields, $address->billing ? 'billing' : 'shipping');
+        $defaultAddresses = $this->user->addresses->default()->get();
+
+        if ($defaultAddresses->isNotEmpty()) {
+            foreach ($defaultAddresses as $address) {
+                $this->setFields($order, $address->fields, $address->type());
+            }
         }
 
         return $order;
@@ -323,7 +352,7 @@ class OrderFactory implements OrderFactoryInterface
      * Recalculates an orders totals.
      *
      * @param Order $order
-     * @return void
+     * @return Order
      */
     public function recalculate($order)
     {
@@ -350,15 +379,15 @@ class OrderFactory implements OrderFactoryInterface
             $totals->grand_total = 0;
         }
 
-        $shipping = $order->lines()
+        $shippingLines = $order->lines()
             ->select(
                 'line_total',
                 'tax_total',
                 'discount_total',
                 DB::RAW('line_total + tax_total - discount_total as grand_total')
-            )->whereIsShipping(true)->first();
+            )->whereIsShipping(true)->get();
 
-        if ($shipping) {
+        foreach ($shippingLines as $shipping) {
             $totals->delivery_total += $shipping->line_total;
             $totals->tax_total += $shipping->tax_total;
             $totals->discount_total += $shipping->discount_total;
@@ -394,10 +423,7 @@ class OrderFactory implements OrderFactoryInterface
     /**
      * Adds a shipping line to an order.
      *
-     * @param string $orderId
-     * @param string $shippingPriceId
-     * @param string $preference
-     *
+     * @param Order $order
      * @return Order
      */
     protected function addShippingLine($order)
@@ -406,9 +432,7 @@ class OrderFactory implements OrderFactoryInterface
             'shipping_method' => $this->shipping->method->name,
         ];
 
-        if ($this->preference) {
-            $updateFields['shipping_preference'] = $this->preference;
-        }
+        $updateFields['shipping_preference'] = $this->preference;
 
         $order->update($updateFields);
 
@@ -441,7 +465,7 @@ class OrderFactory implements OrderFactoryInterface
             'option' => $this->shipping->zone->name ?? null,
             'tax_total' => $rate->total_tax,
             'tax_rate' => $tax->percentage,
-            'sku' => $this->shipping->encodedId(),
+            'sku' => $this->shipping->method->attribute('sku') ?: $this->shipping->encodedId(),
         ]);
 
         event(new OrderSavedEvent($order->refresh()));

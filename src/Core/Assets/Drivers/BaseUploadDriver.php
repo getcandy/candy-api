@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Assets\Drivers;
 
+use Carbon\Carbon;
 use Symfony\Component\Finder\SplFileInfo;
 use GetCandy\Api\Core\Assets\Models\Asset;
 
@@ -11,6 +12,18 @@ abstract class BaseUploadDriver
      * @var bool
      */
     protected $upload = true;
+
+    /**
+     * Get the video unique id.
+     *
+     * @param string $url
+     *
+     * @return string
+     */
+    public function getUniqueId($url)
+    {
+        return $url;
+    }
 
     /**
      * @param array $data
@@ -58,7 +71,8 @@ abstract class BaseUploadDriver
         ]);
 
         $asset->source()->associate($source);
-        $path = $source->path.'/'.substr($asset->filename, 0, 2);
+
+        $path = $source->path.'/'.Carbon::now()->format('Y/m/d');
 
         $asset->location = $path;
 

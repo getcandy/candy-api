@@ -5,6 +5,7 @@ namespace Tests\Unit\Shipping\Factories;
 use Tests\TestCase;
 use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Baskets\Models\Basket;
+use GetCandy\Api\Core\Channels\Models\Channel;
 use GetCandy\Api\Core\Countries\Models\Country;
 use GetCandy\Api\Core\Shipping\Models\ShippingZone;
 use GetCandy\Api\Core\Shipping\Models\ShippingPrice;
@@ -165,7 +166,7 @@ class ShippingMethodServiceTest extends TestCase
      */
     private function createMethod($suffix)
     {
-        return ShippingMethod::forceCreate([
+        $method = ShippingMethod::forceCreate([
             'attribute_data' => [
                 'name' => [
                     'en' => "Shipping Method {$suffix}",
@@ -173,5 +174,12 @@ class ShippingMethodServiceTest extends TestCase
             ],
             'type' => 'regional',
         ]);
+
+        // Make sure we have channels set up.
+        foreach (Channel::all() as $channel) {
+            $method->channels()->save($channel, ['published_at' => now()]);
+        }
+
+        return $method;
     }
 }

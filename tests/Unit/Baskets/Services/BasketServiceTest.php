@@ -71,4 +71,35 @@ class BasketServiceTest extends TestCase
             $this->assertEquals($line->variant->unit_cost, $line->total);
         }
     }
+
+    public function test_can_set_meta_on()
+    {
+        $service = $this->app->make(BasketService::class);
+        $variant = ProductVariant::first();
+        $variant = $this->app->make(ProductVariantFactory::class)->init($variant)->get();
+
+        $payload = [
+            'meta' => [
+                'big_basket' => true,
+            ],
+            'variants' => [
+                [
+                    'id' => $variant->encodedId(),
+                    'quantity' => 1,
+                    'meta' => [
+                        'backorder' => 5,
+                    ],
+                ],
+            ],
+        ];
+
+        $basket = $service->store($payload);
+        // Get the basket line
+        $line = $basket->lines->first(function ($line) use ($variant) {
+            return $line->variant->sku === $variant->sku;
+        });
+
+        $this->assertSame(['backorder' => 5], $line->meta);
+        $this->assertSame(['big_basket' => true], $basket->meta);
+    }
 }

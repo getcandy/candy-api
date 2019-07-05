@@ -4,6 +4,8 @@ namespace GetCandy\Api\Core\Search\Providers\Elastic\Types;
 
 use Elastica\Document;
 use Illuminate\Database\Eloquent\Model;
+use GetCandy\Api\Core\Scopes\ChannelScope;
+use GetCandy\Api\Core\Scopes\CustomerGroupScope;
 use GetCandy\Api\Core\Categories\Models\Category;
 
 class CategoryType extends BaseType
@@ -105,7 +107,10 @@ class CategoryType extends BaseType
 
     protected function getCategories(Model $model, $lang = 'en')
     {
-        return $model->children()->get()->map(function ($item) use ($lang) {
+        return $model->children()->withoutGlobalScopes([
+            CustomerGroupScope::class,
+            ChannelScope::class,
+        ])->get()->map(function ($item) use ($lang) {
             return [
                 'id' => $item->encodedId(),
                 'name' => $item->attribute('name', null, $lang),

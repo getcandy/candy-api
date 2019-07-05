@@ -62,6 +62,21 @@ abstract class AbstractCriteria
         return $this;
     }
 
+    public function setIds($ids = null)
+    {
+        if (! $ids) {
+            return $this;
+        }
+
+        if (is_string($ids)) {
+            $this->ids = explode(',', $ids);
+        } else {
+            $this->ids = $ids;
+        }
+
+        return $this;
+    }
+
     /**
      * Set the includes to eager load.
      *

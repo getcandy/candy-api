@@ -94,6 +94,16 @@ abstract class BaseService
         return $decoded;
     }
 
+    public function getEncodedIds(array $ids)
+    {
+        $encoded = [];
+        foreach ($ids as $id) {
+            $encoded[] = $this->getEncodedId($id);
+        }
+
+        return $encoded;
+    }
+
     /**
      * Returns the record considered the default.
      * @return mixed
@@ -120,7 +130,7 @@ abstract class BaseService
      */
     public function getPaginatedData($length = 50, $page = null)
     {
-        return $this->model->paginate($length, ['*'], 'page', $page);
+        return $this->model->orderBy('created_at', 'desc')->paginate($length, ['*'], 'page', $page);
     }
 
     /**

@@ -68,6 +68,13 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
     protected $type;
 
     /**
+     * The order meta.
+     *
+     * @var array
+     */
+    protected $meta;
+
+    /**
      * The customer reference.
      *
      * @var string
@@ -88,6 +95,13 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
     public function nonce($nonce)
     {
         $this->nonce = $nonce;
+
+        return $this;
+    }
+
+    public function meta($meta)
+    {
+        $this->meta = $meta;
 
         return $this;
     }
@@ -194,6 +208,8 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
         $this->order->notes = $this->notes;
         $this->order->customer_reference = $this->customerReference;
         $this->order->type = $this->type ?: $driver->getName();
+
+        $this->order->meta = array_merge($this->order->meta ?? [], $this->meta ?? []);
 
         $this->order->save();
 
@@ -302,10 +318,15 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
             if (count($segments) == 1) {
                 $increment = 1;
             } else {
-                $increment = $segments[2] + 1;
+                $increment = end($segments) + 1;
             }
         }
 
-        return $year.'-'.$month.'-'.str_pad($increment, 4, 0, STR_PAD_LEFT);
+        return config('getcandy.orders.reference_prefix', null).
+            $year.
+            '-'.
+            $month.
+            '-'.
+            str_pad($increment, 4, 0, STR_PAD_LEFT);
     }
 }

@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use GetCandy\Api\Http\Transformers\Fractal\Routes\RouteTransformer;
+use GetCandy\Api\Http\Resources\Routes\RouteResource;
 
 class RouteController extends BaseController
 {
@@ -28,12 +29,12 @@ class RouteController extends BaseController
     public function show(Request $request, RouteCriteria $routes)
     {
         try {
-            $route = $routes->slug($request->slug)->path($request->path)->firstOrFail();
+            $route = $routes->slug($request->slug)->path($request->path)->includes($request->includes)->firstOrFail();
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
 
-        return $this->respondWithItem($route, new RouteTransformer);
+        return new RouteResource($route);
     }
 
     /**

@@ -34,6 +34,13 @@ class BasketFactory implements BasketFactoryInterface
 
     protected $tax;
 
+    /**
+     * Whether the basket has been changed.
+     *
+     * @var bool
+     */
+    protected $changed = false;
+
     public function __construct(
         BasketLineInterface $lineFactory,
         TaxCalculatorInterface $tax
@@ -62,6 +69,19 @@ class BasketFactory implements BasketFactoryInterface
     }
 
     /**
+     * Whether the basket has been changed.
+     *
+     * @param bool $bool
+     * @return self
+     */
+    public function changed($bool)
+    {
+        $this->changed = $bool;
+
+        return $this;
+    }
+
+    /**
      * Set the basket totals.
      *
      * @return BasketFactory
@@ -71,6 +91,7 @@ class BasketFactory implements BasketFactoryInterface
         $this->basket->sub_total = 0;
         $this->basket->total_tax = 0;
         $this->basket->total_cost = 0;
+        $this->basket->changed = $this->changed;
 
         // Without tax, without discounts.
         $subTotal = 0;

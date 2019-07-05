@@ -48,9 +48,20 @@ return [
     |
     */
     'orders' => [
+        /*
+         * The invoice reference prefix for an order
+         * e.g {prefix}2019-04-15
+         */
+        'reference_prefix' => null,
         'mailers' => [
             // 'dispatched' => \Your\OrderDispatchedMailer::class,
             // 'payment-processing' => \Your\ConfirmationMailer::class,
+        ],
+        /*
+         * These are the table columns that will appear in the hub
+         */
+        'table_columns' => [
+            'name', 'reference', 'account_no', 'contact_email', 'type', 'account', 'order_total', 'delivery_total', 'zone', 'date',
         ],
         'statuses' => [
 
@@ -142,12 +153,7 @@ return [
         ],
         'index_prefix' => env('SEARCH_INDEX_PREFIX', 'candy'),
         'index' => env('SEARCH_INDEX', 'candy_products_en'),
-        /*
-         * These are the table columns that will appear in the hub
-         */
-        'table_columns' => [
-            'name', 'reference', 'account_no', 'contact_email', 'type', 'account', 'order_total', 'delivery_total', 'zone', 'date',
-        ],
+
         /*
          * Here you can define the price aggregation break points, similar
          * to how it's done on Amazon.

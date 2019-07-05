@@ -69,10 +69,28 @@ class TaxCalculator implements TaxCalculatorInterface
         if (! $this->taxable) {
             return 0;
         }
-        $exVat = $price * (($this->percent + 100) / 100);
-        $amount = $exVat - $price;
 
-        return round($amount, 2);
+        $incVat = $price * $this->getVatMultiplier();
+        $vatAmount = $incVat - $price;
+
+        return $this->floorDec($vatAmount, 2);
+    }
+
+    /**
+     * This will force a round down regardless of decimal
+     */
+    protected function floorDec($val, $precision = 2) {
+        if ($precision < 0) { $precision = 0; }
+        $numPointPosition = intval(strpos($val, '.'));
+        if ($numPointPosition === 0) { //$val is an integer
+            return $val;
+        }
+        return floatval(substr($val, 0, $numPointPosition + $precision + 1));
+    }
+
+    protected function getVatMultiplier()
+    {
+        return (($this->percent + 100) / 100);
     }
 
     public function add($price)

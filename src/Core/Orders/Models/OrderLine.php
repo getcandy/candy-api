@@ -2,17 +2,21 @@
 
 namespace GetCandy\Api\Core\Orders\Models;
 
+use GetCandy\Api\Core\Traits\HasMeta;
 use GetCandy\Api\Core\Scaffold\BaseModel;
 use GetCandy\Api\Core\Products\Models\ProductVariant;
 
 class OrderLine extends BaseModel
 {
+    use HasMeta;
+
     protected $hashids = 'order';
 
     protected $fillable = [
         'quantity',
         'description',
         'option',
+        'meta',
         'line_amount',
         'sku',
         'tax',

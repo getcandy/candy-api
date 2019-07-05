@@ -177,6 +177,8 @@ class BasketService extends BaseService
             $user
         );
 
+        $basket->meta = $data['meta'] ?? null;
+
         if (empty($data['currency'])) {
             $basket->currency = app('api')->currencies()->getDefaultRecord()->code;
         } else {
@@ -192,6 +194,7 @@ class BasketService extends BaseService
             'lines',
             'lines.variant.product.routes',
             'lines.variant.image.transforms',
+            'lines.variant.product.assets.transforms',
         ]);
 
         $discounts = Discount::all();
@@ -266,6 +269,7 @@ class BasketService extends BaseService
                 'product_variant_id' => $variant->id,
                 'quantity' => $item['quantity'],
                 'total' => $item['quantity'] * $variant->price,
+                'meta' => $item['meta'] ?? [],
             ];
         });
 
@@ -344,11 +348,11 @@ class BasketService extends BaseService
         }
 
         if ($user->latestBasket) {
-            $basket = $user->latestBasket->load($includes);
+            $basket = $user->latestBasket->load($includes ?? []);
         }
 
         if (! empty($basket)) {
-            if ($basket->order && ! $basket->order->placed_at || ! $basket->order) {
+            if (($basket->order && ! $basket->order->placed_at) || (! $basket->order && $basket->doesntHave('savedBasket'))) {
                 return $this->factory->init($basket)->get();
             }
         }
@@ -405,12 +409,24 @@ class BasketService extends BaseService
             'resolved_at' => Carbon::now(),
             'merged_id' => $userBasket->id,
         ]);
+
+        // Need to determine whether the basket was changed.
+        $oldProducts = $guestBasket->lines->mapWithKeys(function ($l) {
+            return [$l->variant->sku => $l->quantity];
+        })->toArray();
+
+        $currentProducts = $userBasket->lines->mapWithKeys(function ($l) {
+            return [$l->variant->sku => $l->quantity];
+        })->toArray();
+
         $userBasket->lines()->delete();
         $userBasket->lines()->createMany(
             $newLines->merge($oldLines)->toArray()
         );
 
-        return $this->factory->init($userBasket)->get();
+        return $this->factory->init($userBasket)->changed(
+            ! empty($oldProducts) ? ! ($currentProducts === $oldProducts) : false
+        )->get();
     }
 
     /**

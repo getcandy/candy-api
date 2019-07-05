@@ -26,6 +26,7 @@ use GetCandy\Api\Core\Baskets\Interfaces\BasketFactoryInterface;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketCriteriaInterface;
 use GetCandy\Api\Core\Orders\Exceptions\IncompleteOrderException;
 use GetCandy\Api\Http\Resources\Shipping\ShippingPriceCollection;
+use GetCandy\Api\Http\Requests\Orders\Shipping\AddShippingRequest;
 use GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException;
 use GetCandy\Api\Core\Orders\Exceptions\OrderAlreadyProcessedException;
 use GetCandy\Api\Core\Orders\Interfaces\OrderProcessingFactoryInterface;
@@ -69,6 +70,12 @@ class OrderController extends BaseController
                 'open',
                 'not_expired',
             ]);
+
+        if (!$request->status) {
+            $criteria->set('scopes', [
+                'placed',
+            ]);
+        }
 
         if ($request->user()->hasRole('admin') && ! $request->only_own) {
             $criteria->set('restrict', false);
@@ -179,12 +186,21 @@ class OrderController extends BaseController
 
             $order = $criteria->id($request->order_id)->first();
 
+            if (! $order) {
+                // Does this order exist, but has already been placed?
+                $placedOrder = $criteria->id($request->order_id)->getBuilder()->withoutGlobalScopes()->first();
+                if ($placedOrder && $placedOrder->placed_at) {
+                    throw new OrderAlreadyProcessedException;
+                }
+            }
+
             $order = $factory
                 ->order($order)
                 ->provider($type)
                 ->nonce($request->payment_token)
                 ->type($request->type)
                 ->customerReference($request->customer_reference)
+                ->meta($request->meta ?? [])
                 ->notes($request->notes)
                 ->payload($request->data ?: [])
                 ->resolve();
@@ -309,6 +325,11 @@ class OrderController extends BaseController
     {
         try {
             $order = app('api')->orders()->setContact($orderId, $request->all());
+            if ($request->meta) {
+                $order->update([
+                    'meta' => array_merge($order->meta ?? [], $request->meta ?? []),
+                ]);
+            }
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
@@ -345,7 +366,7 @@ class OrderController extends BaseController
      */
     public function shippingCost(
         $id,
-        Request $request,
+        AddShippingRequest $request,
         OrderFactoryInterface $factory,
         ShippingPriceService $prices,
         BasketFactoryInterface $basketFactory
@@ -356,6 +377,7 @@ class OrderController extends BaseController
 
         $order = $factory->order($order)
             ->basket($basket)
+            ->include($request->includes ?? [])
             ->shipping($price, $request->preference)
             ->resolve();
 

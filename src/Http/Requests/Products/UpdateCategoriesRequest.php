@@ -15,7 +15,7 @@ class UpdateCategoriesRequest extends FormRequest
     {
         return [
             'categories' => 'required|array|min:1',
-            'categories.*' => 'required|hashid_is_valid:categories',
+            'categories.*' => 'required|hashid_is_valid:GetCandy\Api\Core\Categories\Models\Category',
         ];
     }
 

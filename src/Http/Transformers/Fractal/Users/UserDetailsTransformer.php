@@ -15,6 +15,7 @@ class UserDetailsTransformer extends BaseTransformer
             'lastname' => $details->lastname,
             'company_name' => $details->company_name,
             'contact_number' => $details->contact_number,
+            'alt_contact_number' => $details->alt_contact_number,
             'vat_no' => $details->vat_no,
             'fields' => $details->fields,
         ];

@@ -11,12 +11,15 @@ class ShippingPriceResource extends AbstractResource
     {
         $prices = app()->getInstance()->make(PriceCalculator::class)->get($this->rate, 'default');
 
+        $minBasketPrices = app()->getInstance()->make(PriceCalculator::class)->get($this->min_basket, 'default');
+
         return [
             'id' => $this->encodedId(),
             'rate' => $prices->total_cost,
             'tax' => $prices->total_tax,
             'fixed' => (bool) $this->fixed,
-            'min_basket' => $this->min_basket,
+            'min_basket' => $minBasketPrices->total_cost,
+            'min_basket_tax' => $minBasketPrices->total_tax,
             'min_weight' => $this->min_weight,
             'weight_unit' => $this->weight_unit,
             'min_height' => $this->min_height,

@@ -5,7 +5,9 @@ namespace GetCandy\Api\Core\Categories\Services;
 use GetCandy\Api\Core\Routes\Models\Route;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Search\SearchContract;
+use GetCandy\Api\Core\Channels\Models\Channel;
 use GetCandy\Api\Core\Categories\Models\Category;
+use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 use GetCandy\Api\Core\Search\Events\IndexableSavedEvent;
 use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
 
@@ -64,12 +66,21 @@ class CategoryService extends BaseService
         if (! empty($data['customer_groups'])) {
             $groupData = $this->mapCustomerGroupData($data['customer_groups']['data']);
             $category->customerGroups()->sync($groupData);
+        } else {
+            $category->customerGroups()->sync(CustomerGroup::select('id')->get(), [
+                'visible' => false,
+                'purchasable' => false,
+            ]);
         }
 
         if (! empty($data['channels']['data'])) {
             $category->channels()->sync(
                 $this->getChannelMapping($data['channels']['data'])
             );
+        } else {
+            $category->channels()->sync(Channel::select('id')->get(), [
+                'published_at' => null,
+            ]);
         }
 
         $urls = $this->getUniqueUrl($data['url'], $data['path'] ?? null);
@@ -129,13 +140,13 @@ class CategoryService extends BaseService
         $category->products()->sync($ids);
 
         if ($existingProducts->count()) {
-            app(SearchContract::class)->indexer()->updateDocuments(
+            app(SearchContract::class)->indexer()->indexObjects(
                 $existingProducts,
                 'categories'
             );
         }
 
-        app(SearchContract::class)->indexer()->updateDocuments(
+        app(SearchContract::class)->indexer()->indexObjects(
             $category->products()->get(),
             'categories'
         );

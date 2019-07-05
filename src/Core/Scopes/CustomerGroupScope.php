@@ -2,12 +2,10 @@
 
 namespace GetCandy\Api\Core\Scopes;
 
-use Auth;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Database\Eloquent\Builder;
 
-class CustomerGroupScope implements Scope
+class CustomerGroupScope extends AbstractScope
 {
     /**
      * Apply the scope to a given Eloquent query builder.
@@ -18,37 +16,24 @@ class CustomerGroupScope implements Scope
      */
     public function apply(Builder $builder, Model $model)
     {
-        $roles = app('api')->roles()->getHubAccessRoles();
-
-        $groups = $this->getCustomerGroups();
-        $user = app('auth')->user();
-
-        if (! $user || ! $user->hasAnyRole($roles)) {
-            $builder->whereHas('customerGroups', function ($q) use ($groups) {
-                $q->whereIn('customer_groups.id', $groups)->where('visible', '=', true);
+        $this->resolve(function () use ($builder) {
+            $builder->whereHas('customerGroups', function ($q) {
+                $q->whereIn('customer_groups.id', $this->getGroups())->where('visible', '=', true);
             });
-        }
-    }
-
-    protected function getCustomerGroups()
-    {
-        // If there is a user, get their groups.
-        if ($user = app('auth')->user()) {
-            return $user->groups->pluck('id')->toArray();
-        } else {
-            return [app('api')->customerGroups()->getGuestId()];
-        }
+        });
     }
 
     /**
-     * Remove the scope from the given Eloquent query builder.
+     * Extend the query builder with the needed functions.
      *
-     * @param  \Illuminate\Database\Eloquent\Builder  $builder
-     * @param  \Illuminate\Database\Eloquent\Model  $model
-     * @return void
+     * @param Builder $builder
      */
-    public function remove(Builder $builder, Model $model)
+    public function extend(Builder $builder)
     {
-        dd('hit');
+        $builder->macro('forAnyCustomerGroup', function (Builder $builder) {
+            return $builder->withoutGlobalScope($this);
+        });
+
+        return $builder;
     }
 }

@@ -30,6 +30,7 @@ class ProductController extends BaseController
     {
         $products = $criteria
             ->include($request->includes)
+            ->ids($request->ids)
             ->limit($request->get('limit', 50))
             ->get();
 

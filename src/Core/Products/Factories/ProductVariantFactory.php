@@ -30,6 +30,7 @@ class ProductVariantFactory extends AbstractFactory implements ProductVariantInt
 
         $tieredPrice = $this->getTieredPrice($qty, $user);
         $variantPrice = $this->getVariantPrice($qty, $user);
+
         $basePrice = $variantPrice->base_cost;
         $unitCost = $variantPrice->unit_cost;
         $unitTax = $variantPrice->unit_tax;
@@ -87,7 +88,7 @@ class ProductVariantFactory extends AbstractFactory implements ProductVariantInt
             return;
         }
 
-        $tax = 0;
+        $taxRate = 0;
 
         if ($this->variant->tax) {
             $taxRate = $this->variant->tax->percentage;
@@ -119,11 +120,8 @@ class ProductVariantFactory extends AbstractFactory implements ProductVariantInt
 
         $pricing = null;
 
-        // If the user is an admin, fall through
-        if (! $user || ($user && ! $user->hasRole('admin'))) {
-            $pricing = $this->variant->customerPricing
-                ->whereIn('customer_group_id', $ids)
-                ->sortBy('price')->first();
+        if (! $user || ($user && ! $user->hasRole('admin')) || ! $this->api->isHubRequest()) {
+            $pricing = $this->variant->customerPricing->sortBy('price')->first();
         }
 
         $taxRate = $this->variant->tax->percentage ?? 0;

@@ -28,7 +28,10 @@ class SetChannelMiddleware
      */
     public function handle($request, Closure $next)
     {
-        $this->channel->set($request->channel);
+        // Only set if one isn't set so it's easier to override it.
+        $this->channel->set(
+            $request->header('X-CANDY-CHANNEL') ?: $request->channel
+        );
 
         return $next($request);
     }

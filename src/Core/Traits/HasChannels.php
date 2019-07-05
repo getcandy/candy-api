@@ -2,7 +2,9 @@
 
 namespace GetCandy\Api\Core\Traits;
 
+use Auth;
 use Carbon\Carbon;
+use GetCandy\Api\Core\CandyApi;
 use GetCandy\Api\Core\Channels\Models\Channel;
 
 trait HasChannels
@@ -10,21 +12,24 @@ trait HasChannels
     public function scopeChannel($query, $channel = null)
     {
         $roles = app('api')->roles()->getHubAccessRoles();
-        $groups = $this->getCustomerGroups();
-        $user = app('auth')->user();
+        $api = app()->getInstance()->make(CandyApi::class);
+        $user = Auth::user();
         $channels = app('api')->channels();
 
-        if (! $channel && ($user && $user->hasAnyRole($roles))) {
+        if (! $channel && ($user && $user->hasAnyRole($roles) && $api->isHubRequest())) {
             return $query;
         }
 
-        // If no channel is set, we need to get the default one.
+        // // If no channel is set, we need to get the default one.
         if (! $channel) {
             $channel = $channels->getDefaultRecord()->handle;
         }
 
+        // dump($channel, $this);
         return $query->whereHas('channels', function ($query) use ($channel) {
-            $query->whereHandle($channel)->whereDate('published_at', '<=', Carbon::now());
+            $query->whereHandle($channel)
+                ->whereNotNull('published_at')
+                ->whereDate('published_at', '<=', Carbon::now());
         });
     }
 

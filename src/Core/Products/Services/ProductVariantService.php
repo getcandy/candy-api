@@ -162,7 +162,7 @@ class ProductVariantService extends BaseService
             $imageId = $data['image_id'];
         }
 
-        if ($imageId) {
+        if (! empty($imageId)) {
             $asset = app('api')->assets()->getByHashedId($imageId);
             $variant->image()->associate($asset);
         }

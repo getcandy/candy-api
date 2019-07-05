@@ -4,9 +4,11 @@ namespace Tests;
 
 use TaxCalculator;
 use Tests\Stubs\User;
+use GetCandy\Api\Core\Channels\Models\Channel;
 use GetCandy\Api\Providers\ApiServiceProvider;
 use GetCandy\Api\Core\Baskets\Factories\BasketFactory;
 use Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables;
+use GetCandy\Api\Core\Channels\Interfaces\ChannelFactoryInterface;
 
 abstract class TestCase extends \Orchestra\Testbench\TestCase
 {
@@ -15,7 +17,6 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         parent::setUp();
 
         $this->artisan('cache:forget', ['key' => 'spatie.permission.cache']);
-
         $this->artisan('vendor:publish', ['--provider' => 'Spatie\Activitylog\ActivitylogServiceProvider', '--tag' => 'migrations']);
         $this->artisan('migrate', ['--database' => 'testing']);
         $this->artisan('db:seed', ['--class' => '\Seeds\TestingDatabaseSeeder']);
@@ -25,6 +26,10 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         // TaxCalculator::setTax(
         //     app('api')->taxes()->getDefaultRecord()
         // );
+
+        // Make sure our channel is set.
+        $channel = app()->getInstance()->make(ChannelFactoryInterface::class);
+        $channel->set(Channel::first());
     }
 
     /**

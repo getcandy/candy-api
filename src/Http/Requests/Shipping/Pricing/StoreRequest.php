@@ -3,8 +3,9 @@
 namespace GetCandy\Api\Http\Requests\Shipping\Pricing;
 
 use GetCandy\Api\Http\Requests\FormRequest;
+use GetCandy\Api\Core\Shipping\Models\ShippingZone;
 
-class CreateRequest extends FormRequest
+class StoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,6 +26,7 @@ class CreateRequest extends FormRequest
     {
         return [
             'rate' => 'required|numeric',
+            'zone_id' => 'required|hashid_is_valid:'.ShippingZone::class,
             'currency_id' => 'required|hashid_is_valid:currencies',
         ];
     }
