@@ -4,7 +4,7 @@ namespace GetCandy\Api\Http\Controllers\Addresses;
 
 use Illuminate\Http\Request;
 use GetCandy\Api\Http\Controllers\BaseController;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use GetCandy\Api\Http\Transformers\Fractal\Addresses\AddressTransformer;
 
 class AddressController extends BaseController
@@ -13,7 +13,7 @@ class AddressController extends BaseController
     {
         try {
             $address = app('api')->addresses()->update($id, $request->all());
-        } catch (NotFoundHttpException $e) {
+        } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
 
@@ -42,7 +42,7 @@ class AddressController extends BaseController
     {
         try {
             $result = app('api')->addresses()->delete($id);
-        } catch (NotFoundHttpException $e) {
+        } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
 
@@ -53,7 +53,7 @@ class AddressController extends BaseController
     {
         try {
             $address = app('api')->addresses()->makeDefault($id);
-        } catch (NotFoundHttpException $e) {
+        } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
 
@@ -64,7 +64,7 @@ class AddressController extends BaseController
     {
         try {
             $address = app('api')->addresses()->removeDefault($id);
-        } catch (NotFoundHttpException $e) {
+        } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
 
