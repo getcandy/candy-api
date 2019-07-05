@@ -13,7 +13,7 @@ process to follow:
 - Add a new remote for the original API, called `upstream`:
 
 ```bash
-git remote add upstream getcandy/candy-api
+git remote add upstream git://github.com/getcandy/candy-api.git
 ```
 
 - Pull in the latest version from `upstream` and merge into the `master` branch:
