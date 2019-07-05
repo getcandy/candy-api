@@ -7,19 +7,22 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use GetCandy\Api\Core\Search\SearchContract;
 
 class ReindexSearchJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    protected $model;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($model)
     {
-        //
+        $this->model = $model;
     }
 
     /**
@@ -27,8 +30,8 @@ class ReindexSearchJob implements ShouldQueue
      *
      * @return void
      */
-    public function handle()
+    public function handle(SearchContract $search)
     {
-        \Log::info('Hit it!');
+        $search->indexer()->reindex($this->model);
     }
 }
