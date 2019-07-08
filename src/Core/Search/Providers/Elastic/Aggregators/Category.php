@@ -9,7 +9,7 @@ use Elastica\Aggregation\Terms;
 use Elastica\Aggregation\Filter;
 use Elastica\Aggregation\Nested;
 
-class Category
+class Category extends AbstractAggregator
 {
     /**
      * The categories.
@@ -17,6 +17,8 @@ class Category
      * @var array
      */
     protected $categories = [];
+
+    protected $field = 'departments';
 
     /**
      * The filter to apply.
@@ -51,6 +53,51 @@ class Category
         $nestedAggBefore->addAggregation($childAgg);
 
         return $nestedAggBefore;
+    }
+
+    public function get($filters)
+    {
+        $nestedAgg = new Nested(
+            'categories',
+            'departments'
+        );
+
+
+        dd($nestedAgg);
+        // $agg = new Terms('departments');
+        // $agg->setField('departments');
+        // $agg->setSize(50);
+
+        // $postBool = new BoolQuery();
+
+        // foreach ($this->filters as $filter) {
+        //     $postBool->addMust($filter['filter']->getQuery());
+        // }
+
+        // $nestedAgg->setFilter($postBool);
+        // $nestedAgg->addAggregation($agg);
+
+        // $agg = new Filter('categories');
+
+        // // Add boolean
+        // $postBool = new BoolQuery();
+
+        // // foreach ($this->filters as $filter) {
+        // //     dd($filter['filter']->getQuery());
+        // //     $postBool->addMust($filter['filter']->getQuery());
+        // // }
+
+        // // Need to set another agg on categories_remaining
+        // $childAgg = new Terms('categories_post_inner');
+        // $childAgg->setField('departments.id');
+
+        // // Do the terms in the categories loop...
+        // $agg->setFilter($postBool);
+        // $agg->addAggregation($childAgg);
+
+        // $nestedAggPost->addAggregation($agg);
+
+        // return $nestedAggPost;
     }
 
     /**

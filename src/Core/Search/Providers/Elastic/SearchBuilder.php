@@ -107,7 +107,6 @@ class SearchBuilder
     protected $user;
 
     protected $topFilters = [
-        'category-filter',
         'channel-filter',
         'customer-group-filter',
     ];
@@ -506,22 +505,19 @@ class SearchBuilder
             );
         });
 
-
         $postFilters = $this->filters->filter(function ($filter) {
             return !in_array($filter['handle'], $this->topFilters);
         });
-
 
         $postFilters->each(function ($filter) use ($postFilter) {
             $postFilter->addFilter(
                 $filter['filter']->getQuery()
             );
         });
+
         $query->setPostFilter($postFilter);
 
-
         // $globalAggregation = new \Elastica\Aggregation\GlobalAggregation('all_products');
-
         foreach ($this->aggregations as $agg) {
             if (method_exists($agg, 'get')) {
                 $query->addAggregation(

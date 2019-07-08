@@ -14,13 +14,6 @@ abstract class AbstractAggregator
     protected $filters = [];
 
     /**
-     * Get the aggregator.
-     *
-     * @return mixed
-     */
-    abstract public function getPre(Search $search = null, $query = null, $postFilter = null);
-
-    /**
      * Get the post aggregation query.
      *
      * @return bool
@@ -39,6 +32,20 @@ abstract class AbstractAggregator
     public function addFilter($filter = null)
     {
         $this->filters[] = $filter;
+
+        return $this;
+    }
+
+    public function addFilters(iterable $filters)
+    {
+        if (is_array($filters)) {
+            $filters = collect($filters);
+        }
+        $filters->filter(function ($f) {
+            return $this->field != $f['filter']->getField();
+        })->each(function ($f) {
+            $this->addFilter($f);
+        });
 
         return $this;
     }

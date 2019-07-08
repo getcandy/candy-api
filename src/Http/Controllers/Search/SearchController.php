@@ -76,7 +76,7 @@ class SearchController extends BaseController
         } catch (\Elastica\Exception\ResponseException $e) {
             return $this->errorInternalError($e->getMessage());
         }
-
+        dd($results->getAggregations());
 
         $results = app('api')->search()->getResults(
             $results,
