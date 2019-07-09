@@ -1,3 +1,8 @@
+# 0.2.82
+
+- [changed] Assets now order by `position` by default
+- [changed] When uploading a YouTube video, make sure OEM data is always fetched.
+
 # 0.2.81
 
 - [changed] PayPal driver records proper Transaction ID from PayPal
