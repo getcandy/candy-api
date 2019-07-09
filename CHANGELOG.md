@@ -1,4 +1,4 @@
-# 0.2.82
+# 0.2.83
 
 - [changed] Assets now order by `position` by default
 - [changed] When uploading a YouTube video, make sure OEM data is always fetched.
