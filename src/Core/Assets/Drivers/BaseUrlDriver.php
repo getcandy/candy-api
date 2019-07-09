@@ -54,11 +54,10 @@ abstract class BaseUrlDriver
         $this->model = $model;
         $this->data = $data;
 
-        if (! $this->info) {
-            $this->getInfo($this->data['url']);
-        }
+        $this->getInfo($this->data['url']);
 
         $asset = $this->prepare();
+
 
         if ($model->assets()->count()) {
             // Get anything that isn't an "application";
@@ -70,6 +69,7 @@ abstract class BaseUrlDriver
             $asset->primary = true;
         }
         $model->assets()->save($asset);
+
         dispatch(new GenerateTransforms($asset));
 
         return $asset;
