@@ -1,3 +1,14 @@
+# 0.2.84
+
+- [fixed] Fixed job handling of class on reindex
+- [improved] Allow reindex command to be queued
+
+You can now queue the reindex job by doing the following:
+
+```
+php artisan candy:search:index --queue
+```
+
 # 0.2.83
 
 - [changed] Assets now order by `position` by default
