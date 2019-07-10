@@ -3,9 +3,9 @@
 namespace GetCandy\Api\Http\Controllers\Baskets;
 
 use GetCandy\Api\Http\Controllers\BaseController;
+use GetCandy\Api\Http\Resources\Baskets\BasketResource;
 use GetCandy\Api\Http\Requests\Baskets\CreateLineRequest;
 use GetCandy\Api\Core\Baskets\Factories\BasketLineFactory;
-use GetCandy\Api\Http\Resources\Baskets\BasketResource;
 
 class BasketLineController extends BaseController
 {
