@@ -51,6 +51,11 @@ Route::group([
     ]);
 
     /*
+     * Basket Lines
+     */
+    $router->post('basket/{id}/lines', 'Baskets\BasketLineController@store');
+
+    /*
      * Categories
      */
     $router->get('categories', 'Categories\CategoryController@index');
