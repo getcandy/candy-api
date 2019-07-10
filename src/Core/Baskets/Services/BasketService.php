@@ -167,6 +167,7 @@ class BasketService extends BaseService
      * Store a basket.
      *
      * @param array $data
+     * @param ?User $user
      *
      * @return Basket
      */
@@ -187,6 +188,34 @@ class BasketService extends BaseService
 
         $basket->lines()->delete();
 
+        return $this->storeAndUpdateBasket($basket, $data);
+    }
+
+    /**
+     * Add new lines to a basket, without remapping the existing lines.
+     *
+     * @param array $data
+     * @param ?User $user
+     *
+     * @return Basket
+     */
+    public function addLines(array $data, $user = null)
+    {
+        $basket = $this->getBasket(
+            ! empty($data['basket_id']) ? $data['basket_id'] : null,
+            $user
+        );
+
+        return $this->storeAndUpdateBasket($basket, $data);
+    }
+
+    /**
+     * @param Basket $basket
+     * @param array  $data
+     * @return Basket
+     */
+    private function storeAndUpdateBasket(Basket $basket, array $data)
+    {
         if (! empty($data['variants'])) {
             $this->remapLines($basket, $data['variants']);
         }
