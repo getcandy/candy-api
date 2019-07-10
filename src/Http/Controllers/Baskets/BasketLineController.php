@@ -32,7 +32,7 @@ class BasketLineController extends BaseController
         $request['basket_id'] = $id;
 
         try {
-            $basket = app('api')->basketLines()->addLines($request->all(), $request->user());
+            $basket = app('api')->baskets()->addLines($request->all(), $request->user());
         } catch (\Illuminate\Database\QueryException $e) {
             return $this->errorUnprocessable(trans('getcandy::validation.max_qty'));
         }
