@@ -39,6 +39,6 @@ class ReindexSearchJob implements ShouldQueue
      */
     public function handle(SearchContract $search)
     {
-        $search->indexer()->reindex($this->model);
+        $search->indexer()->reindex(new $this->model);
     }
 }
