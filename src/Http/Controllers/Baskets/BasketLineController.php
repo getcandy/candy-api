@@ -4,7 +4,7 @@ namespace GetCandy\Api\Http\Controllers\Baskets;
 
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Resources\Baskets\BasketResource;
-use GetCandy\Api\Http\Requests\Baskets\CreateLineRequest;
+use GetCandy\Api\Http\Requests\Baskets\CreateLinesRequest;
 use GetCandy\Api\Http\Requests\Baskets\UpdateLineRequest;
 use GetCandy\Api\Core\Baskets\Factories\BasketLineFactory;
 use GetCandy\Api\Http\Requests\Baskets\DeleteLinesRequest;
@@ -23,28 +23,14 @@ class BasketLineController extends BaseController
     }
 
     /**
-     * @param CreateLineRequest $request
-     * @return array|BasketResource
-     */
-    public function storeCurrent(CreateLineRequest $request)
-    {
-        return $this->store(null, $request);
-    }
-
-    /**
      * Store one or more new basket lines, and associate them with a basket ID.
      *
-     * @param string $id
-     * @param CreateLineRequest $request
+     * @param CreateLinesRequest $request
      *
      * @return array|BasketResource
      */
-    public function store(string $id, CreateLineRequest $request)
+    public function store(CreateLinesRequest $request)
     {
-        if ($request['basket_id'] !== 'current') {
-            $request['basket_id'] = $id;
-        }
-
         try {
             $basket = app('api')->baskets()->addLines($request->all(), $request->user());
         } catch (\Illuminate\Database\QueryException $e) {

@@ -178,13 +178,7 @@ class BasketService extends BaseService
             $user
         );
 
-        $basket->meta = $data['meta'] ?? null;
-
-        if (empty($data['currency'])) {
-            $basket->currency = app('api')->currencies()->getDefaultRecord()->code;
-        } else {
-            $basket->currency = $data['currency'];
-        }
+        $basket = $this->setupBasket($basket, $data);
 
         $basket->lines()->delete();
 
@@ -206,7 +200,30 @@ class BasketService extends BaseService
             $user
         );
 
+        $this->setupBasket($basket, $data);
+
         return $this->storeAndUpdateBasket($basket, $data);
+    }
+
+    /**
+     * @param Basket $basket
+     * @param array $data
+     * @return Basket
+     */
+    protected function setupBasket(Basket $basket, array $data)
+    {
+        if (isset($data['meta'])) {
+            $basket->meta = $data['meta'];
+        }
+
+        if (isset($data['currency'])) {
+            $basket->currency = $data['currency'];
+        }
+        if (is_null($basket->currency)) {
+            $basket->currency = app('api')->currencies()->getDefaultRecord()->code;
+        }
+
+        return $basket;
     }
 
     /**
@@ -214,7 +231,7 @@ class BasketService extends BaseService
      * @param array  $data
      * @return Basket
      */
-    private function storeAndUpdateBasket(Basket $basket, array $data)
+    protected function storeAndUpdateBasket(Basket $basket, array $data)
     {
         if (! empty($data['variants'])) {
             $this->remapLines($basket, $data['variants']);

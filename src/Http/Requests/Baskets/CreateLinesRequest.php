@@ -4,7 +4,7 @@ namespace GetCandy\Api\Http\Requests\Baskets;
 
 use GetCandy\Api\Http\Requests\FormRequest;
 
-class CreateLineRequest extends FormRequest
+class CreateLinesRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,6 +24,7 @@ class CreateLineRequest extends FormRequest
     public function rules()
     {
         $rules = [
+            'basket_id' => 'sometimes|hashid_is_valid:baskets',
             'variants' => 'array|unique_lines',
         ];
 
