@@ -74,7 +74,11 @@ class BasketLineService extends BaseService
         return $basket;
     }
 
-    public function destroy($lines)
+    /**
+     * @param array $lines
+     * @return Basket
+     */
+    public function destroy(array $lines)
     {
         $basket = null;
 
@@ -94,12 +98,18 @@ class BasketLineService extends BaseService
         return $basket;
     }
 
-    protected function saveQuantity($basketLine, $quantity)
+    /**
+     * @param BasketLine $basketLine
+     * @param int $quantity
+     * @return bool
+     */
+    protected function saveQuantity(BasketLine $basketLine, int $quantity)
     {
         $basketLine->quantity = $quantity;
 
         if ($basketLine->quantity <= 0) {
-            return $basketLine->delete();
+            $basketLine->delete();
+            return true;
         }
 
         return $basketLine->save();
