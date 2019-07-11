@@ -53,6 +53,7 @@ Route::group([
     /*
      * Basket Lines
      */
+    $router->post('baskets/current/lines', 'Baskets\BasketLineController@storeCurrent');
     $router->post('baskets/{id}/lines', 'Baskets\BasketLineController@store');
     $router->put('baskets/lines/{id}', 'Baskets\BasketLineController@update');
     $router->post('baskets/lines/{id}/add', 'Baskets\BasketLineController@addQuantity');

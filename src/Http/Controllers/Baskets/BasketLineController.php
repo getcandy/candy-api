@@ -23,16 +23,27 @@ class BasketLineController extends BaseController
     }
 
     /**
+     * @param CreateLineRequest $request
+     * @return array|BasketResource
+     */
+    public function storeCurrent(CreateLineRequest $request)
+    {
+        return $this->store(null, $request);
+    }
+
+    /**
      * Store one or more new basket lines, and associate them with a basket ID.
      *
      * @param string $id
      * @param CreateLineRequest $request
      *
-     * @return BasketResource|array
+     * @return array|BasketResource
      */
     public function store(string $id, CreateLineRequest $request)
     {
-        $request['basket_id'] = $id;
+        if ($request['basket_id'] !== 'current') {
+            $request['basket_id'] = $id;
+        }
 
         try {
             $basket = app('api')->baskets()->addLines($request->all(), $request->user());
