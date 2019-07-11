@@ -52,7 +52,7 @@ class BasketLineController extends BaseController
     {
         $quantity = $request['quantity'];
 
-        $basket = app('api')->basketLines()->updateQuantity($id, $quantity);
+        $basket = app('api')->basketLines()->setQuantity($id, $quantity);
 
         return new BasketResource($basket);
     }

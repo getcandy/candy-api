@@ -43,11 +43,11 @@ class BasketLineService extends BaseService
      * @param int $quantity
      * @return Basket
      */
-    public function updateQuantity(string $id, int $quantity)
+    public function setQuantity(string $id, int $quantity)
     {
         $id = $this->getDecodedId($id);
 
-        $basketLine = $this->model->where('id', '=', $id)->with('basket')->get();
+        $basketLine = $this->model->where('id', '=', $id)->with('basket')->firstOrFail();
 
         $this->saveQuantity($basketLine, $quantity);
 
@@ -65,8 +65,10 @@ class BasketLineService extends BaseService
     {
         $id = $this->getDecodedId($id);
 
-        $basketLine = $this->model->where('id', '=', $id)->with('basket')->get();
+        $basketLine = $this->model->where('id', '=', $id)->with('basket')->firstOrFail();
 
+        // @todo quantity doesn't exist on the basketLine for some reason???
+        \Log::critical('basketLine', [$basketLine]);
         $this->saveQuantity($basketLine, $basketLine->quantity + $quantity);
 
         $basket = $this->factory->init($basketLine->basket)->get();
@@ -85,7 +87,7 @@ class BasketLineService extends BaseService
         collect($lines)->each(function ($basketLine) use (&$basket) {
             $id = $this->getDecodedId($basketLine['id']);
 
-            $basketLine = $this->model->where('id', '=', $id)->with('basket')->get();
+            $basketLine = $this->model->where('id', '=', $id)->with('basket')->firstOrFail();
 
             $basket = $basketLine->basket;
             $basketLine->delete();
