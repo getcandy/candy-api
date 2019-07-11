@@ -78,7 +78,7 @@ class BasketLineService extends BaseService
     {
         $basket = null;
 
-        collect($lines)->each(function ($basketLine, $key) {
+        collect($lines)->each(function ($basketLine) use (&$basket) {
             $id = $this->getDecodedId($basketLine['id']);
 
             $basketLine = $this->model->where('id', '=', $id)->with('basket')->get();
