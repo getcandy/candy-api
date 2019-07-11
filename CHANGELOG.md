@@ -1,3 +1,7 @@
+# 0.2.85
+
+- [added] Added duplicate product functionality
+
 # 0.2.84
 
 - [fixed] Fixed job handling of class on reindex
