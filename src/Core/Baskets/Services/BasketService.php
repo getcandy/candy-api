@@ -306,12 +306,20 @@ class BasketService extends BaseService
     {
         $service = app('api')->productVariants();
 
-        $variants = collect($variants)->map(function ($item) use ($service, $basket) {
-            $variant = $this->variantFactory->init(
-                $service->getByHashedId($item['id'])
-            )->get($item['quantity']);
+        $collectedVariants = [];
 
-            return [
+        // Collect variants with the same ID and add up their quantities
+        collect($variants)->each(function ($item) use (&$collectedVariants, $service) {
+            $variant = $this->variantFactory
+                ->init($service->getByHashedId($item['id']))
+                ->get($item['quantity']);
+
+            if (array_key_exists($variant->id, $collectedVariants)) {
+                $collectedVariants[$variant->id]['quantity'] += $item['quantity'];
+                return;
+            }
+
+            $collectedVariants[$variant->id] = [
                 'product_variant_id' => $variant->id,
                 'quantity' => $item['quantity'],
                 'total' => $item['quantity'] * $variant->price,
@@ -319,7 +327,19 @@ class BasketService extends BaseService
             ];
         });
 
-        $basket->lines()->createMany($variants->toArray());
+        // If a basket line with this variant already exists, increase that instead
+        $basket->lines->map(function ($line) use (&$collectedVariants) {
+            $variant_id = $line->product_variant_id;
+
+            if (array_key_exists($variant_id, $collectedVariants)) {
+                $line->quantity += $collectedVariants[$variant_id]['quantity'];
+                unset($collectedVariants[$variant_id]);
+            };
+
+            $line->save();
+        });
+
+        $basket->lines()->createMany($collectedVariants);
     }
 
     /**
