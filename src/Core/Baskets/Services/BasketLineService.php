@@ -67,8 +67,6 @@ class BasketLineService extends BaseService
 
         $basketLine = $this->model->where('id', '=', $id)->with('basket')->firstOrFail();
 
-        // @todo quantity doesn't exist on the basketLine for some reason???
-        \Log::critical('basketLine', [$basketLine]);
         $this->saveQuantity($basketLine, $basketLine->quantity + $quantity);
 
         $basket = $this->factory->init($basketLine->basket)->get();
