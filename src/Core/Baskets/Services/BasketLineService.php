@@ -24,7 +24,7 @@ class BasketLineService extends BaseService
     /**
      * @var string $includes
      */
-    protected $includes;
+    protected $includes = [];
 
     public function __construct(BasketFactoryInterface $factory)
     {
@@ -32,11 +32,19 @@ class BasketLineService extends BaseService
         $this->factory = $factory;
     }
 
-    public function setIncludes(string $includes)
+    /**
+     * @param null|string $includes
+     */
+    public function setIncludes(?string $includes)
     {
-        $this->includes = $includes;
+        $this->includes = $includes ?? [];
     }
 
+    /**
+     * @param $id
+     * @param $variant
+     * @return mixed
+     */
     public function variantExists($id, $variant)
     {
         $id = $this->getDecodedId($id);

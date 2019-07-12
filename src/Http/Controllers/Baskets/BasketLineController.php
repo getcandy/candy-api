@@ -29,7 +29,7 @@ class BasketLineController extends BaseController
     {
         $this->factory = $factory;
         $this->basketLines = app('api')->basketLines();
-        $this->basketLines->setIncludes(Request::get('includes') ?? '');
+        $this->basketLines->setIncludes(Request::get('includes'));
     }
 
     /**
