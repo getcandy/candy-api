@@ -61,7 +61,8 @@ class BasketLineService extends BaseService
 
         $this->saveQuantity($basketLine, $quantity);
 
-        $basket = $this->factory->init($basketLine->basket)->get();
+        $basket = $basketLine->basket->load($this->includes);
+        $basket = $this->factory->init($basket)->get();
 
         return $basket;
     }
@@ -105,6 +106,7 @@ class BasketLineService extends BaseService
 
         // @todo Not sure what to return here, as theoretically these basket lines
         // could be for different baskets...?
+        $basket = $basket->load($this->includes);
         $basket = $this->factory->init($basket)->get();
 
         return $basket;
