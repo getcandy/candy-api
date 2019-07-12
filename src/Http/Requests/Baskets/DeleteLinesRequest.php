@@ -13,14 +13,6 @@ class DeleteLinesRequest extends FormRequest
      */
     public function authorize()
     {
-        foreach ($this->lines as $line) {
-            $basket = app('api')->basketLines()->getByHashedId($line['id'])->basket;
-
-            if ($basket->user->id !== $this->user()->id) {
-                return false;
-            }
-        }
-
         return true;
     }
 
