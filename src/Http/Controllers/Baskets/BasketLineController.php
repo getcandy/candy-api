@@ -21,7 +21,7 @@ class BasketLineController extends BaseController
     protected $factory;
 
     /**
-     * @var BasketLineService $basketLines
+     * @var BasketLineService
      */
     protected $basketLines;
 

@@ -22,7 +22,7 @@ class BasketLineService extends BaseService
     protected $factory;
 
     /**
-     * @var string $includes
+     * @var string
      */
     protected $includes = [];
 
