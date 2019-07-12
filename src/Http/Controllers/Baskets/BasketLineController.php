@@ -60,9 +60,7 @@ class BasketLineController extends BaseController
      */
     public function update(string $id, UpdateLineRequest $request)
     {
-        $quantity = $request['quantity'];
-
-        $basket = $this->basketLines->setQuantity($id, $quantity);
+        $basket = $this->basketLines->setQuantity($id, $request->quantity);
 
         return new BasketResource($basket);
     }
