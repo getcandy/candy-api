@@ -2,13 +2,16 @@
 
 namespace GetCandy\Api\Http\Controllers\Baskets;
 
+use Illuminate\Support\Facades\Request;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Resources\Baskets\BasketResource;
-use GetCandy\Api\Http\Requests\Baskets\CreateLinesRequest;
+use GetCandy\Api\Core\Baskets\Services\BasketLineService;
 use GetCandy\Api\Http\Requests\Baskets\UpdateLineRequest;
 use GetCandy\Api\Core\Baskets\Factories\BasketLineFactory;
+use GetCandy\Api\Http\Requests\Baskets\CreateLinesRequest;
 use GetCandy\Api\Http\Requests\Baskets\DeleteLinesRequest;
 use GetCandy\Api\Http\Requests\Baskets\ChangeQuantityRequest;
+
 
 class BasketLineController extends BaseController
 {
@@ -17,9 +20,16 @@ class BasketLineController extends BaseController
      */
     protected $factory;
 
+    /**
+     * @var BasketLineService $basketLines
+     */
+    protected $basketLines;
+
     public function __construct(BasketLineFactory $factory)
     {
         $this->factory = $factory;
+        $this->basketLines = app('api')->basketLines();
+        $this->basketLines->setIncludes(Request::get('includes') ?? '');
     }
 
     /**
@@ -32,7 +42,7 @@ class BasketLineController extends BaseController
     public function store(CreateLinesRequest $request)
     {
         try {
-            $basket = app('api')->baskets()->addLines($request->all(), $request->user());
+            $basket = $this->basketLines->addLines($request->all(), $request->user());
         } catch (\Illuminate\Database\QueryException $e) {
             return $this->errorUnprocessable(trans('getcandy::validation.max_qty'));
         }
@@ -52,7 +62,7 @@ class BasketLineController extends BaseController
     {
         $quantity = $request['quantity'];
 
-        $basket = app('api')->basketLines()->setQuantity($id, $quantity);
+        $basket = $this->basketLines->setQuantity($id, $quantity);
 
         return new BasketResource($basket);
     }
@@ -69,7 +79,7 @@ class BasketLineController extends BaseController
     {
         $quantity = $request['quantity'] ?? 1;
 
-        $basket = app('api')->basketLines()->changeQuantity($id, $quantity);
+        $basket = $this->basketLines->changeQuantity($id, $quantity);
 
         return new BasketResource($basket);
     }
@@ -86,7 +96,7 @@ class BasketLineController extends BaseController
     {
         $quantity = ($request['quantity'] ?? 1) * -1;
 
-        $basket = app('api')->basketLines()->changeQuantity($id, $quantity);
+        $basket = $this->basketLines->changeQuantity($id, $quantity);
 
         return new BasketResource($basket);
     }
@@ -100,7 +110,7 @@ class BasketLineController extends BaseController
      */
     public function destroy(DeleteLinesRequest $request)
     {
-        $basket = app('api')->basketLines()->destroy($request->lines);
+        $basket = $this->basketLines->destroy($request->lines);
 
         return new BasketResource($basket);
     }

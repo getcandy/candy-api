@@ -21,10 +21,20 @@ class BasketLineService extends BaseService
      */
     protected $factory;
 
+    /**
+     * @var string $includes
+     */
+    protected $includes;
+
     public function __construct(BasketFactoryInterface $factory)
     {
         $this->model = new BasketLine();
         $this->factory = $factory;
+    }
+
+    public function setIncludes(string $includes)
+    {
+        $this->includes = $includes;
     }
 
     public function variantExists($id, $variant)
@@ -59,6 +69,7 @@ class BasketLineService extends BaseService
     /**
      * @param string $id
      * @param int $quantity
+     * @param array $includes
      * @return Basket
      */
     public function changeQuantity(string $id, int $quantity)
@@ -69,7 +80,8 @@ class BasketLineService extends BaseService
 
         $this->saveQuantity($basketLine, $basketLine->quantity + $quantity);
 
-        $basket = $this->factory->init($basketLine->basket)->get();
+        $basket = $basketLine->basket->load($this->includes);
+        $basket = $this->factory->init($basket)->get();
 
         return $basket;
     }
