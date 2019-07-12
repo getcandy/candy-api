@@ -53,11 +53,11 @@ Route::group([
     /*
      * Basket Lines
      */
-    $router->post('baskets/lines', 'Baskets\BasketLineController@store');
-    $router->put('baskets/lines/{id}', 'Baskets\BasketLineController@update');
-    $router->post('baskets/lines/{id}/add', 'Baskets\BasketLineController@addQuantity');
-    $router->post('baskets/lines/{id}/remove', 'Baskets\BasketLineController@removeQuantity');
-    $router->delete('baskets/lines', 'Baskets\BasketLineController@destroy');
+    $router->post('basket-lines', 'Baskets\BasketLineController@store');
+    $router->put('basket-lines/{id}', 'Baskets\BasketLineController@update');
+    $router->post('basket-lines/{id}/add', 'Baskets\BasketLineController@addQuantity');
+    $router->post('basket-lines/{id}/remove', 'Baskets\BasketLineController@removeQuantity');
+    $router->delete('basket-lines', 'Baskets\BasketLineController@destroy');
 
     /*
      * Categories
