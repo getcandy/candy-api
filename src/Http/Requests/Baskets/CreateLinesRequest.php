@@ -28,7 +28,7 @@ class CreateLinesRequest extends FormRequest
             'variants' => 'array|unique_lines',
         ];
 
-        $variants = app('api')->productVariants()->getDecodedIds(
+        $variants = app('api')->productVariants()->getByHashedIds(
             collect($this->variants)->pluck('id')->toArray()
         );
 
