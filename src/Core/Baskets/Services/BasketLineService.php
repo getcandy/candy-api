@@ -131,6 +131,7 @@ class BasketLineService extends BaseService
 
         if ($basketLine->quantity <= 0) {
             $basketLine->delete();
+
             return true;
         }
 

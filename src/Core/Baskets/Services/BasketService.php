@@ -316,6 +316,7 @@ class BasketService extends BaseService
 
             if (array_key_exists($variant->id, $collectedVariants)) {
                 $collectedVariants[$variant->id]['quantity'] += $item['quantity'];
+
                 return;
             }
 
