@@ -1,3 +1,7 @@
+# 0.2.87
+
+- [improved] Pull out a `getRegionFromZip` method
+
 # 0.2.86
 
 - [added] Added ability to specify pipelines when retrieving shipping methods
