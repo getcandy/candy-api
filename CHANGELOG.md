@@ -1,3 +1,7 @@
+# 0.2.86
+
+- [added] Added ability to specify pipelines when retrieving shipping methods
+
 # 0.2.85
 
 - [added] Added duplicate product functionality
