@@ -10,6 +10,7 @@ use GetCandy\Api\Http\Resources\Channels\ChannelCollection;
 use GetCandy\Api\Http\Resources\Products\ProductCollection;
 use GetCandy\Api\Http\Resources\Attributes\AttributeCollection;
 use GetCandy\Api\Http\Resources\Customers\CustomerGroupCollection;
+use GetCandy\Api\Http\Resources\Assets\AssetResource;
 
 class CategoryResource extends AbstractResource
 {
@@ -32,6 +33,7 @@ class CategoryResource extends AbstractResource
             'routes' => new RouteCollection($this->whenLoaded('routes')),
             'layout' => ['data' => new LayoutResource($this->whenLoaded('layout'))],
             'assets' => new AssetCollection($this->whenLoaded('assets')),
+            'primary_asset' => ['data' => new AssetResource($this->whenLoaded('primaryAsset'))],
             'attributes' => new AttributeCollection($this->whenLoaded('attributes')),
             'routes' => new RouteCollection($this->whenLoaded('routes')),
             'customer_groups' => new CustomerGroupCollection($this->whenLoaded('customerGroups')),

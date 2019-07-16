@@ -13,6 +13,7 @@ Route::group([
         'api.customer_groups',
         'api.locale',
         'api.tax',
+        'api.channels',
         'api.detect_hub',
     ],
     'prefix' => 'api/'.config('app.api_version', 'v1'),
@@ -128,7 +129,6 @@ Route::group([
     /*
      * Customers
      */
-
     $router->resource('customers/groups', 'Customers\CustomerGroupController', [
         'except' => ['edit', 'create', 'show'],
     ]);
@@ -185,6 +185,7 @@ Route::group([
     ]);
     $router->put('products/variants/{variant}/inventory', 'Products\ProductVariantController@updateInventory');
     $router->post('products/{product}/variants', 'Products\ProductVariantController@store');
+    $router->post('products/{product}/duplicate', 'Products\ProductController@duplicate');
 
     /*
      * Products
@@ -267,6 +268,7 @@ Route::group([
     /*
      * Users
      */
+    $router->get('users/fields', 'Users\UserController@fields');
     $router->get('users/current', 'Users\UserController@getCurrentUser');
     $router->delete('users/payments/{id}', 'Users\UserController@deleteReusablePayment');
     $router->resource('users', 'Users\UserController', [

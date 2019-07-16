@@ -17,6 +17,8 @@ Route::group([
     // Address Route
     $router->delete('addresses/{id}', 'Addresses\AddressController@destroy');
     $router->put('addresses/{id}', 'Addresses\AddressController@update');
+    $router->post('addresses/{id}/default', 'Addresses\AddressController@makeDefault');
+    $router->post('addresses/{id}/default/remove', 'Addresses\AddressController@removeDefault');
     /*
         |--------------------------------------------------------------------------
         | API Client Routes
@@ -112,6 +114,7 @@ Route::group([
 
     $router->get('search', 'Search\SearchController@search');
     $router->get('search/suggest', 'Search\SearchController@suggest');
+    $router->get('search/sku', 'Search\SearchController@sku');
     $router->get('search/products', 'Search\SearchController@products');
 
     /*

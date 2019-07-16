@@ -67,6 +67,7 @@ class OrderLineService extends BaseService
             'line_total' => $pricing->total_cost,
             'unit_price' => $pricing->unit_cost,
             'tax_total' => $pricing->total_tax,
+            'tax_rate' => $data['tax_rate'] ?? null,
             'option' => $data['option'] ?? null,
             'sku' => $data['sku'] ?? null,
             'discount_total' => $data['discount_total'] ?? 0,

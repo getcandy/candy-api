@@ -2,7 +2,7 @@
 
 namespace GetCandy\Api\Http\Requests\Routes;
 
-use GetCandy\Api\Routes\Models\Route;
+use GetCandy\Api\Core\Routes\Models\Route;
 use GetCandy\Api\Http\Requests\FormRequest;
 
 class UpdateRequest extends FormRequest

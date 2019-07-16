@@ -2,14 +2,20 @@
 
 namespace GetCandy\Api\Core\Shipping\Services;
 
+use Illuminate\Pipeline\Pipeline;
+use GetCandy\Api\Core\Shipping\Events;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Shipping\ShippingCalculator;
 use GetCandy\Api\Core\Baskets\Services\BasketService;
 use GetCandy\Api\Core\Shipping\Models\ShippingMethod;
 use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
+use GetCandy\Api\Core\Shipping\Events\ShippingMethodsFetchedEvent;
 
 class ShippingMethodService extends BaseService
 {
+
+    protected $pipes = [];
+
     /**
      * The basket service.
      *
@@ -21,6 +27,7 @@ class ShippingMethodService extends BaseService
     {
         $this->model = new ShippingMethod();
         $this->baskets = $baskets;
+        $this->pipes = config('getcandy.pipelines.shipping_methods', []);
     }
 
     /**
@@ -122,7 +129,9 @@ class ShippingMethodService extends BaseService
             }
         }
 
-        return collect($options)->unique('shipping_method_id');
+        return app(Pipeline::class)->send([collect($options), $order])->through($this->pipes)->then(function ($options) {
+            return collect($options[0] ?? [])->unique('shipping_method_id');
+        });
     }
 
     /**

@@ -39,7 +39,7 @@ class StoreAddressRequest extends FormRequest
             'county' => 'required_without_all:address_id,state|max:40',
             'email' => 'email',
             'state' => 'required_without_all:address_id,county|max:40',
-            'zip' => 'required_without:address_id|max:8',
+            'zip' => 'max:8',
             'country' => 'required_without:address_id',
         ];
     }

@@ -7,6 +7,8 @@ use GetCandy\Api\Core\Addresses\Models\Address;
 
 class AddressService extends BaseService
 {
+    protected $model;
+
     public function __construct()
     {
         $this->model = new Address;
@@ -72,5 +74,47 @@ class AddressService extends BaseService
         $address = $this->getByHashedId($address);
 
         return $address->delete();
+    }
+
+    /**
+     * @param string $hashedAddressId
+     * @return Address
+     */
+    public function makeDefault(string $hashedAddressId): Address
+    {
+        $address = $this->getByHashedId($hashedAddressId);
+
+        $this->removeAllDefaultForType($address->user_id, $address->type());
+
+        $address->default = true;
+        $address->save();
+
+        return $address;
+    }
+
+    /**
+     * @param string $hashedAddressId
+     * @return Address
+     */
+    public function removeDefault(string $hashedAddressId): Address
+    {
+        $address = $this->getByHashedId($hashedAddressId);
+
+        $address->default = false;
+        $address->save();
+
+        return $address;
+    }
+
+    /**
+     * @param int $userId
+     * @param string $type - 'billing' or 'shipping'
+     */
+    private function removeAllDefaultForType(int $userId, string $type)
+    {
+        $this->model
+            ->where('user_id', '=', $userId)
+            ->where($type, '=', true)
+            ->update(['default' => false]);
     }
 }

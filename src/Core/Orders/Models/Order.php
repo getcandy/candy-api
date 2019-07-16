@@ -63,6 +63,17 @@ class Order extends BaseModel
     }
 
     /**
+     * Define the placed scope
+     *
+     * @param Builder $qb
+     * @return Builder
+     */
+    public function scopePlaced($qb)
+    {
+        return $qb->whereNotNull('placed_at');
+    }
+
+    /**
      * Define the Zone scope.
      *
      * @param Builder $qb
@@ -217,7 +228,7 @@ class Order extends BaseModel
      *
      * @return array
      */
-    protected function getDetails($type)
+    public function getDetails($type)
     {
         return collect($this->attributes)->filter(function ($value, $key) use ($type) {
             return strpos($key, $type.'_') === 0;

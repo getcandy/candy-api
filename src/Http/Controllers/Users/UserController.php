@@ -94,4 +94,19 @@ class UserController extends BaseController
 
         return $this->respondWithNoContent();
     }
+
+    /**
+     * Get the configured fields for a user
+     *
+     * @param Request $request
+     * @return json
+     */
+    public function fields(Request $request)
+    {
+        return response()->json([
+            'data' => [
+                'fields' => config('getcandy.users.fields', []),
+            ],
+        ]);
+    }
 }

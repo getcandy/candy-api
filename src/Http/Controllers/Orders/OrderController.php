@@ -71,6 +71,12 @@ class OrderController extends BaseController
                 'not_expired',
             ]);
 
+        if (!$request->status) {
+            $criteria->set('scopes', [
+                'placed',
+            ]);
+        }
+
         if ($request->user()->hasRole('admin') && ! $request->only_own) {
             $criteria->set('restrict', false);
         }

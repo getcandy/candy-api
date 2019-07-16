@@ -35,13 +35,19 @@ class PayPal extends AbstractProvider
 
     public function __construct()
     {
+        $config = config('services.paypal');
+        $settings = $config['settings'] ?? [
+            'mode' => 'sandbox',
+        ];
+        $credentials = $config[$settings['mode'] ?? 'sandbox'];
+
         $this->context = new ApiContext(
             new OAuthTokenCredential(
-                config('services.paypal.client_id'),
-                config('services.paypal.client_secret')
+                $credentials['client_id'],
+                $credentials['client_secret']
             )
         );
-        $this->context->setConfig(config('services.paypal.settings', []));
+        $this->context->setConfig($settings);
     }
 
     public function getName()
@@ -110,7 +116,7 @@ class PayPal extends AbstractProvider
             foreach ($resources as $resource) {
                 $candyTrans->success = $resource->getSale()->getState() == 'completed';
                 $candyTrans->status = $resource->getSale()->getState();
-                $candyTrans->transaction_id = $resource->getSale()->getParentPayment();
+                $candyTrans->transaction_id = $resource->getSale()->getId();
             }
 
             $candyTrans->order()->associate($this->order);

@@ -41,6 +41,10 @@ class ProductType extends BaseType
                 'suggest' => [
                     'type' => 'completion',
                 ],
+                'lowercase' => [
+                    'type' => 'text',
+                    'analyzer' => 'standard_lowercase',
+                ],
             ],
         ],
         'created_at'  => [

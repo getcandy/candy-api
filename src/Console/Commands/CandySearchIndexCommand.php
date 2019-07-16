@@ -3,9 +3,11 @@
 namespace GetCandy\Api\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Events\Dispatcher;
 use GetCandy\Api\Core\Search\SearchContract;
 use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Categories\Models\Category;
+use GetCandy\Api\Core\Search\Jobs\ReindexSearchJob;
 
 class CandySearchIndexCommand extends Command
 {
@@ -14,7 +16,7 @@ class CandySearchIndexCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'candy:search:index {--reset=false}';
+    protected $signature = 'candy:search:index {--queue}';
 
     /**
      * The console command description.
@@ -47,11 +49,14 @@ class CandySearchIndexCommand extends Command
     {
         $search = app(SearchContract::class);
 
-        //TODO: DO this dynamically.
         foreach ($this->indexables as $indexable) {
             $this->info('Indexing '.$indexable);
             $model = new $indexable;
-            $search->indexer()->reindex($model);
+            if ($this->option('queue')) {
+                ReindexSearchJob::dispatch($indexable);
+            } else {
+                $search->indexer()->reindex($model);
+            }
         }
 
         $this->info('Done!');

@@ -106,7 +106,7 @@ class OrderCriteria extends AbstractCriteria implements OrderCriteriaInterface
      *
      * @var string
      */
-    protected $sortBy = 'created_at';
+    protected $sortBy = null;
 
     /**
      * Set the sort dir.
@@ -202,6 +202,10 @@ class OrderCriteria extends AbstractCriteria implements OrderCriteriaInterface
 
         foreach ($this->without_scopes as $scope) {
             $query = $query->withoutGlobalScope($scope);
+        }
+
+        foreach ($this->scopes as $scope) {
+            $query = $query->{$scope}();
         }
 
         if ($this->sortBy && $this->sortDir) {

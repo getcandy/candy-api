@@ -49,7 +49,7 @@ abstract class BaseTransformer extends TransformerAbstract
 
     protected function includeThumbnail($model)
     {
-        $asset = $model->primaryAsset->first();
+        $asset = $model->primaryAsset;
         if (! $asset) {
             return;
         }

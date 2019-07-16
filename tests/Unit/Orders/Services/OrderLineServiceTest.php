@@ -8,9 +8,6 @@ use GetCandy\Api\Core\Orders\Models\OrderLine;
 use GetCandy\Api\Core\Orders\Factories\OrderFactory;
 use GetCandy\Api\Core\Orders\Services\OrderLineService;
 
-/**
- * @group current
- */
 class OrderLineServiceTest extends TestCase
 {
     public function test_can_add_orderline_without_tax()

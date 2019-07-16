@@ -122,6 +122,7 @@ abstract class AbstractResource extends JsonResource
         if ($this->whenLoaded($relation) instanceof MissingValue) {
             return false;
         }
+
         return true;
     }
 
