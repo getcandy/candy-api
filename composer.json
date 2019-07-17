@@ -18,7 +18,7 @@
         "laravel/passport": "^7.0",
         "laravel/tinker": "^1.0",
         "league/fractal": "^0.17.0",
-        "ruflin/elastica": "7.0.*",
+        "ruflin/elastica": "^7.0",
         "spatie/laravel-permission": "2.37.*",
         "vinkla/hashids": "^5.1.0",
         "vimeo/laravel": "5.3.*",
