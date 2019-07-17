@@ -386,31 +386,33 @@ class Indexer
     {
         $index = $this->client->getIndex($name);
         $index->create([
-            'analysis' => [
-                'analyzer' => [
-                    'trigram' => [
-                        'type' => 'custom',
-                        'tokenizer' => 'standard',
-                        'filter' => ['standard', 'shingle'],
+            'settings' => [
+                'analysis' => [
+                    'analyzer' => [
+                        'trigram' => [
+                            'type' => 'custom',
+                            'tokenizer' => 'standard',
+                            'filter' => ['shingle'],
+                        ],
+                        'standard_lowercase' => [
+                            'type' => 'custom',
+                            'tokenizer' => 'standard',
+                            'filter' => ['lowercase'],
+                        ],
+                        'candy' => [
+                            'tokenizer' => 'standard',
+                            'filter' => ['lowercase', 'stop', 'porter_stem'],
+                        ],
                     ],
-                    'standard_lowercase' => [
-                        'type' => 'custom',
-                        'tokenizer' => 'standard',
-                        'filter' => ['lowercase'],
-                    ],
-                    'candy' => [
-                        'tokenizer' => 'standard',
-                        'filter' => ['standard', 'lowercase', 'stop', 'porter_stem'],
+                    'filter' => [
+                        'shingle' => [
+                            'type' => 'shingle',
+                            'min_shingle_size' => 2,
+                            'max_shingle_size' => 3,
+                        ],
                     ],
                 ],
-                'filter' => [
-                    'shingle' => [
-                        'type' => 'shingle',
-                        'min_shingle_size' => 2,
-                        'max_shingle_size' => 3,
-                    ],
-                ],
-            ],
+            ]
         ]);
         $this->updateMappings($index, $type);
 
