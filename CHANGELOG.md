@@ -1,3 +1,7 @@
+#0.2.88
+
+- [added] Added #161
+
 # 0.2.87
 
 - [improved] Pull out a `getRegionFromZip` method
