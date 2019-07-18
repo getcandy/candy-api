@@ -109,6 +109,7 @@ class SearchBuilder
     protected $topFilters = [
         'channel-filter',
         'customer-group-filter',
+        'category-filter'
     ];
 
     public function __construct(AttributeService $attributes)
