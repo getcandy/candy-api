@@ -62,21 +62,19 @@ class Category extends AbstractAggregator
             'departments'
         );
 
-        $filterAgg = new Filter('departments');
-
         $childAgg = new Terms('categories');
         $childAgg->setField('departments.id');
+        // $nestedAgg->addAggregation($childAgg);
+
+        // $postBool = new BoolQuery();
+
+        // // dd($this->filters);
+        // foreach ($this->filters as $filter) {
+        //     $postBool->addMust($filter['filter']->getQuery());
+        // }
+
+        // $filterAgg->setFilter($postBool);
         $nestedAgg->addAggregation($childAgg);
-
-        $postBool = new BoolQuery();
-
-        // dd($this->filters);
-        foreach ($this->filters as $filter) {
-            $postBool->addMust($filter['filter']->getQuery());
-        }
-
-        $filterAgg->setFilter($postBool);
-        $nestedAgg->addAggregation($filterAgg);
         // $nestedAgg->setFilter($postBool);
         // $nestedAgg->addAggregation($agg);
 
