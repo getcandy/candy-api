@@ -185,6 +185,7 @@ Route::group([
     ]);
     $router->put('products/variants/{variant}/inventory', 'Products\ProductVariantController@updateInventory');
     $router->post('products/{product}/variants', 'Products\ProductVariantController@store');
+    $router->post('products/{product}/duplicate', 'Products\ProductController@duplicate');
 
     /*
      * Products

@@ -1,3 +1,35 @@
+#0.2.88
+
+- [added] Added #161
+
+# 0.2.87
+
+- [improved] Pull out a `getRegionFromZip` method
+
+# 0.2.86
+
+- [added] Added ability to specify pipelines when retrieving shipping methods
+
+# 0.2.85
+
+- [added] Added duplicate product functionality
+
+# 0.2.84
+
+- [fixed] Fixed job handling of class on reindex
+- [improved] Allow reindex command to be queued
+
+You can now queue the reindex job by doing the following:
+
+```
+php artisan candy:search:index --queue
+```
+
+# 0.2.83
+
+- [changed] Assets now order by `position` by default
+- [changed] When uploading a YouTube video, make sure OEM data is always fetched.
+
 # 0.2.81
 
 - [changed] PayPal driver records proper Transaction ID from PayPal

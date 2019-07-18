@@ -12,7 +12,6 @@ use GetCandy\Api\Http\Requests\Baskets\CreateLinesRequest;
 use GetCandy\Api\Http\Requests\Baskets\DeleteLinesRequest;
 use GetCandy\Api\Http\Requests\Baskets\ChangeQuantityRequest;
 
-
 class BasketLineController extends BaseController
 {
     /**
@@ -21,7 +20,7 @@ class BasketLineController extends BaseController
     protected $factory;
 
     /**
-     * @var BasketLineService $basketLines
+     * @var BasketLineService
      */
     protected $basketLines;
 

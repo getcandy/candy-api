@@ -8,7 +8,7 @@ trait Assetable
 {
     public function assets()
     {
-        return $this->morphMany(Asset::class, 'assetable');
+        return $this->morphMany(Asset::class, 'assetable')->orderBy('position');
     }
 
     public function primaryAsset()
