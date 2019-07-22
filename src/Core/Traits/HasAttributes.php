@@ -28,9 +28,6 @@ trait HasAttributes
 
     public function attribute($handle, $channel = null, $locale = null)
     {
-        $defaultChannel = app('api')->channels()->getDefaultRecord();
-        $userLocale = app()->getLocale();
-
         if (! $locale) {
             $locale = app()->getLocale();
         }
@@ -40,14 +37,18 @@ trait HasAttributes
             $channel = $factory->getChannel()->handle;
         }
 
-        if (empty($this->attribute_data[$handle][$channel])) {
-            $channel = $defaultChannel->handle;
-        }
-
-        if (! empty($this->attribute_data[$handle][$channel][$locale])) {
+        if (! empty($this->attribute_data[$handle][$channel]) &&
+            is_array($this->attribute_data[$handle][$channel]) &&
+            array_key_exists($locale, $this->attribute_data[$handle][$channel])) {
             return $this->attribute_data[$handle][$channel][$locale];
         }
 
+        if (empty($this->attribute_data[$handle][$channel])) {
+            $defaultChannel = app('api')->channels()->getDefaultRecord();
+            $channel = $defaultChannel->handle;
+        }
+
+        $userLocale = app()->getLocale();
         if (! empty($this->attribute_data[$handle][$channel][$userLocale])) {
             return $this->attribute_data[$handle][$channel][$userLocale];
         } elseif (empty($this->attribute_data[$handle][$channel][$userLocale])) {
