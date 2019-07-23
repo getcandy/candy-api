@@ -1,3 +1,7 @@
+# 0.2.90
+
+- [fixed] Fixed issue where asset thumbnails weren't being generated on a product if they already had an image.
+
 # 0.2.89
 
 - [fixed] Fixed issue when calculating the amount of products are rewarding for a discount
