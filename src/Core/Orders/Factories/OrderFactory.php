@@ -493,10 +493,8 @@ class OrderFactory implements OrderFactoryInterface
                     if ($item->type == 'product') {
                         $matched = $basket->lines->filter(function ($line) use ($item) {
                             return $item->products->contains($line->variant->product);
-                        });
-                        foreach ($matched as $match) {
-                            $quantity += $match->quantity;
-                        }
+                        })->sum('quantity');
+                        $quantity = floor($matched / $item->value) * $set->outcome;
                     } else {
                         $quantity = 1;
                     }
