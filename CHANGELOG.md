@@ -1,4 +1,8 @@
-#0.2.88
+# 0.2.89
+
+- [fixed] Fixed issue when calculating the amount of products are rewarding for a discount
+
+# 0.2.88
 
 - [added] Added #161
 
