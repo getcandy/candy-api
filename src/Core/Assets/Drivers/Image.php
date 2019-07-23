@@ -49,7 +49,7 @@ class Image extends BaseUploadDriver implements AssetDriverContract
         }
 
         if (! empty($image)) {
-            dispatch(new GenerateTransforms($asset));
+            GenerateTransforms::dispatch($asset);
         }
 
         return $asset;
