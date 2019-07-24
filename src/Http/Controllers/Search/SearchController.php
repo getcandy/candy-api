@@ -63,7 +63,7 @@ class SearchController extends BaseController
                 ->client()
                 ->language(app()->getLocale())
                 ->on($channel)
-                ->against($request->type)
+                ->against($request->get('search_type', 'product'))
                 ->user($request->user())
                 ->categories($categories)
                 ->filters($request->only($filterable))
@@ -80,8 +80,8 @@ class SearchController extends BaseController
 
         $results = app('api')->search()->getResults(
             $results,
-            $request->type,
-            $request->includes,
+            $request->get('search_type', 'product'),
+            $request->include,
             $page ?: 1,
             $request->category,
             $request->user(),
