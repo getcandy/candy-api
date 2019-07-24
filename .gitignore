@@ -17,3 +17,4 @@ public/images/vendor/jquery.fancytree/dist/skin-win8/icons-rtl.gif
 public/images/vendor/jquery.fancytree/dist/skin-win8/icons.gif
 public/images/vendor/jquery.fancytree/dist/skin-win8/vline-rtl.gif
 /.vscode
+composer.lock
