@@ -48,7 +48,7 @@ class DiscountCriteriaItem extends BaseModel
         $items = $this->products;
 
         // Get the main discount
-        $lowerLimit = $this->set->discount->lower_limit;
+        $lowerLimit = $this->value;
 
         $quantity = 0;
 
