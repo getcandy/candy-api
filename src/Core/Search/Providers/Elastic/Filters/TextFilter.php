@@ -21,17 +21,17 @@ class TextFilter extends AbstractFilter
             if (strpos($value, '-') && preg_match('/^[0-9-*]+$/', $value)) {
                 $value = explode('-', $value);
             }
-
             if (is_array($value)) {
-                $range = new Range($this->field, [
+                $range = new Range($this->field . '.filter', [
                     'gte' => (int) $value[0],
                     'lte' => $value[1] == '*' ? null : (int) $value[1],
                 ]);
                 $filter->addShould($range);
             } else {
                 $match = new Match;
-                $match->setFieldAnalyzer($this->field, 'standard');
-                $match->setFieldQuery($this->field, $value);
+                $match->setFieldAnalyzer($this->field . '.filter', 'keyword');
+                $match->setFieldQuery($this->field . '.filter', $value);
+
                 $filter->addShould($match);
             }
         }
