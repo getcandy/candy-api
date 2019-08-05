@@ -1,3 +1,8 @@
+# 0.2.91
+
+- [fixed] Fixes to asset copying when duplicating a product
+- [added] Added `CategoryStoredEvent` when editing categories
+
 # 0.2.90
 
 - [fixed] Fixed issue where asset thumbnails weren't being generated on a product if they already had an image.
