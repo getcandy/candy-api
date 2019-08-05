@@ -1,3 +1,7 @@
+# 0.3.8
+
+- [added] Added CategoryStoredEvent when editing categories
+
 # 0.3.7
 
 - [changed] Changed the `TextFilter` field to use the `filter` field in the mapping, seemed to give more accurate results.
