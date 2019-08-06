@@ -10,6 +10,7 @@ use GetCandy\Api\Core\Payments\PaymentResponse;
 use GetCandy\Api\Core\Payments\Models\Transaction;
 use GetCandy\Api\Core\Payments\ThreeDSecureResponse;
 use GetCandy\Api\Core\Payments\Models\ReusablePayment;
+use GetCandy\Api\Core\Payments\Events\PaymentFailedEvent;
 
 class SagePay extends AbstractProvider
 {
@@ -297,6 +298,11 @@ class SagePay extends AbstractProvider
      */
     protected function createFailedTransaction($errors, $amount = null, $notes = null)
     {
+        /**
+         * Trigger an event so apps can do stuff
+         */
+        event(new PaymentFailedEvent($errors));
+
         $transaction = new Transaction;
         $transaction->success = false;
         $transaction->order()->associate($this->order);
