@@ -1,3 +1,7 @@
+# 0.2.93
+
+- [improved] Improved the way config is fetched from API.
+
 # 0.2.92
 
 - [added] Added `PaymentFailedEvent` to SagePay driver
