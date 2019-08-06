@@ -1,3 +1,7 @@
+# 0.2.92
+
+- [added] Added `PaymentFailedEvent` to SagePay driver
+
 # 0.2.91
 
 - [fixed] Fixes to asset copying when duplicating a product
