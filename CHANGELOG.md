@@ -1,3 +1,7 @@
+# 0.2.94
+
+- [changed] Regional shipping calculator math is now `>=` for `min_basket`
+
 # 0.2.93
 
 - [improved] Improved the way config is fetched from API.
