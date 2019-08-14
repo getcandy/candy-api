@@ -4,7 +4,7 @@ namespace GetCandy\Api\Core\Orders\Services;
 
 use DB;
 use PDF;
-use Event;
+use Auth;
 use Carbon\Carbon;
 use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Scaffold\BaseService;
@@ -22,6 +22,7 @@ use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
 use GetCandy\Api\Core\Orders\Exceptions\IncompleteOrderException;
 use GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException;
 use GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface;
+use GetCandy\Api\Core\ActivityLog\Interfaces\ActivityLogFactoryInterface;
 
 class OrderService extends BaseService implements OrderServiceInterface
 {
@@ -63,7 +64,8 @@ class OrderService extends BaseService implements OrderServiceInterface
         PaymentService $payments,
         ProductVariantFactory $variants,
         CurrencyConverterInterface $currencies,
-        PriceCalculatorInterface $calculator
+        PriceCalculatorInterface $calculator,
+        ActivityLogFactoryInterface $activity
     ) {
         $this->model = new Order();
         $this->baskets = $baskets;
@@ -71,6 +73,7 @@ class OrderService extends BaseService implements OrderServiceInterface
         $this->variants = $variants;
         $this->currencies = $currencies;
         $this->calculator = $calculator;
+        $this->activity = $activity;
     }
 
     /**
@@ -214,9 +217,22 @@ class OrderService extends BaseService implements OrderServiceInterface
 
         $query = Order::withoutGlobalScopes()->whereIn('id', $realIds);
 
+        $orders = $query->get();
+
+        $orders->each(function ($order) use ($field, $value) {
+            $this->activity->as(Auth::user())
+                ->action('status-update')
+                ->against($order)
+                ->with([
+                    'previous' => $order->{$field},
+                    'new' => $value,
+                ])->log();
+        });
+
         $payload = [
             $field => $value,
         ];
+
 
         $result = $query->update($payload);
 
@@ -235,7 +251,7 @@ class OrderService extends BaseService implements OrderServiceInterface
             }
 
             if ($sendEmails) {
-                $query->get()->each(function ($order) use ($value, $data) {
+                $orders->each(function ($order) use ($value, $data) {
                     OrderNotification::dispatch(
                         $order,
                         $value,
@@ -263,6 +279,15 @@ class OrderService extends BaseService implements OrderServiceInterface
         }
 
         if (! empty($data['status'])) {
+
+            $this->activity->as(Auth::user())
+                ->action('status-update')
+                ->against($order)
+                ->with([
+                    'previous' => $order->status,
+                    'new' => $data['status'],
+                ])->log();
+
             $order->status = $data['status'];
 
             $dispatchedStatus = config('getcandy.orders.statuses.dispatched');
