@@ -281,10 +281,18 @@ class SearchResultFactory implements SearchResultInterface
     protected function getPagination()
     {
         $query = $this->results->getQuery();
-        $totalPages = ceil($this->results->getTotalHits() / $query->getParam('size'));
+        $data = $this->results->getResponse()->getData();
+
+        if (isset($data['hits']['total']['value'])) {
+            $hits = (int) $data['hits']['total']['value'] ?? 0;
+        } else {
+            $hits = (int) $data['hits']['total'] ?? 0;
+        }
+
+        $totalPages = ceil($hits / $query->getParam('size'));
 
         $pagination = [
-            'total' => $this->results->getTotalHits(),
+            'total' => $hits,
             'count' => $this->results->count(),
             'per_page' => (int) $query->getParam('size'),
             'current_page' => (int) $this->page,
