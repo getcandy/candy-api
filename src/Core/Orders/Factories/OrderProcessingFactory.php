@@ -75,6 +75,13 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
     protected $meta;
 
     /**
+     * The company name for the order
+     *
+     * @var string
+     */
+    protected $companyName;
+
+    /**
      * The customer reference.
      *
      * @var string
@@ -178,6 +185,12 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
         return $this;
     }
 
+    public function companyName($name = null)
+    {
+        $this->companyName = $name;
+        return $this;
+    }
+
     /**
      * Set the value of order.
      *
@@ -210,6 +223,7 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
         $this->order->type = $this->type ?: $driver->getName();
 
         $this->order->meta = array_merge($this->order->meta ?? [], $this->meta ?? []);
+        $this->order->company_name = $this->companyName;
 
         $this->order->save();
 

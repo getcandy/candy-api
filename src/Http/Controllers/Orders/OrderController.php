@@ -202,6 +202,7 @@ class OrderController extends BaseController
                 ->customerReference($request->customer_reference)
                 ->meta($request->meta ?? [])
                 ->notes($request->notes)
+                ->companyName($request->company_name)
                 ->payload($request->data ?: [])
                 ->resolve();
 
