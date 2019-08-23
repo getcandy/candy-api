@@ -136,7 +136,7 @@ class ShippingPriceService extends BaseService
     {
         $postcode = strtoupper($zip);
         $outcode = rtrim(substr($postcode, 0, -3));
-        $strippedOutcode = rtrim($outcode, '0..9');
+        $strippedOutcode = substr($postcode, 0, 2);
 
         return ShippingRegion::where('region', '=', $postcode)
             ->orWhere('region', '=', $outcode)
