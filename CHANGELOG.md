@@ -1,3 +1,7 @@
+# 0.2.95
+
+- [fixed] Fixed reference to sortable field on category sort.
+
 # 0.2.94
 
 - [changed] Regional shipping calculator math is now `>=` for `min_basket`
