@@ -111,7 +111,6 @@ class ShippingPriceService extends BaseService
     public function estimate($amount, $zip, $limit = 1)
     {
         $region = $this->getRegionFromZip($zip);
-
         if (! $region) {
             // Is there a "catch all" region?
             $region = ShippingRegion::where('region', '=', '*')->first();
@@ -136,7 +135,7 @@ class ShippingPriceService extends BaseService
     {
         $postcode = strtoupper($zip);
         $outcode = rtrim(substr($postcode, 0, -3));
-        $strippedOutcode = substr($postcode, 0, 2);
+        $strippedOutcode = substr($outcode, 0, 2);
 
         return ShippingRegion::where('region', '=', $postcode)
             ->orWhere('region', '=', $outcode)
