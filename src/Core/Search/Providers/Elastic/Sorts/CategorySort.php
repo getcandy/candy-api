@@ -46,10 +46,7 @@ class CategorySort extends AbstractSort
         } else {
             // sort
             $sort = explode(':', $this->category->sort);
-            if ($sort[0] == 'sku') {
-                $sort[0] = 'sku.sort';
-            }
-            $defaultSort = [$sort[0] => $sort[1] ?? 'asc'];
+            $defaultSort = [$sort[0] . '.sortable' => $sort[1] ?? 'asc'];
         }
 
         return $defaultSort;
