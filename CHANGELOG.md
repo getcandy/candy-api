@@ -1,3 +1,24 @@
+# 0.2.95
+
+- [fixed] Fixed reference to sortable field on category sort.
+
+# 0.2.94
+
+- [changed] Regional shipping calculator math is now `>=` for `min_basket`
+
+# 0.2.93
+
+- [improved] Improved the way config is fetched from API.
+
+# 0.2.92
+
+- [added] Added `PaymentFailedEvent` to SagePay driver
+
+# 0.2.91
+
+- [fixed] Fixes to asset copying when duplicating a product
+- [added] Added `CategoryStoredEvent` when editing categories
+
 # 0.2.90
 
 - [fixed] Fixed issue where asset thumbnails weren't being generated on a product if they already had an image.

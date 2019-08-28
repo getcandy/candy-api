@@ -10,6 +10,7 @@ use GetCandy\Api\Core\Categories\Models\Category;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 use GetCandy\Api\Core\Search\Events\IndexableSavedEvent;
 use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
+use GetCandy\Api\Core\Categories\Events\CategoryStoredEvent;
 
 class CategoryService extends BaseService
 {
@@ -95,6 +96,7 @@ class CategoryService extends BaseService
 
         event(new AttributableSavedEvent($category));
         event(new IndexableSavedEvent($category));
+        event(new CategoryStoredEvent($category));
 
         return $category;
     }
@@ -119,6 +121,7 @@ class CategoryService extends BaseService
 
         event(new AttributableSavedEvent($model));
         event(new IndexableSavedEvent($model));
+        event(new CategoryStoredEvent($model));
 
         return $model;
     }
@@ -151,6 +154,8 @@ class CategoryService extends BaseService
             'categories'
         );
 
+        event(new CategoryStoredEvent($category));
+
         return $category;
     }
 
@@ -167,6 +172,8 @@ class CategoryService extends BaseService
         $category = $this->getByHashedId($categoryId);
         $category->layout()->associate($layout);
         $category->save();
+
+        event(new CategoryStoredEvent($category));
 
         return $category;
     }
@@ -190,6 +197,8 @@ class CategoryService extends BaseService
                 $response = $node->prependNode($movedNode);
                 break;
         }
+
+        event(new CategoryStoredEvent($node));
 
         return $response;
     }
@@ -249,6 +258,8 @@ class CategoryService extends BaseService
         $category->products()->sync([]);
         $category->customerGroups()->sync([]);
         $category->channels()->sync([]);
+
+        event(new CategoryStoredEvent($category));
 
         return $category->delete();
     }

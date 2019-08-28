@@ -5,6 +5,7 @@ namespace GetCandy\Api\Core\Products\Factories;
 use DB;
 use Storage;
 use Illuminate\Support\Collection;
+use League\Flysystem\FileNotFoundException;
 use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Search\Events\IndexableSavedEvent;
 use GetCandy\Api\Core\Products\Interfaces\ProductInterface;
@@ -85,12 +86,17 @@ class ProductDuplicateFactory implements ProductInterface
 
             $newFilename = uniqid() . '_' . $newAsset->filename;
 
-            Storage::disk($newAsset->source->disk)->copy(
-                "{$newAsset->location}/{$newAsset->filename}",
-                "{$newAsset->location}/{$newFilename}"
-            );
+            try {
+                Storage::disk($newAsset->source->disk)->copy(
+                    "{$newAsset->location}/{$newAsset->filename}",
+                    "{$newAsset->location}/{$newFilename}"
+                );
+                $newAsset->filename = $newFilename;
+            } catch (FileNotFoundException $e) {
+                $newAsset->save();
+                return;
+            }
 
-            $newAsset->filename = $newFilename;
             $newAsset->save();
 
 
@@ -98,10 +104,15 @@ class ProductDuplicateFactory implements ProductInterface
                 $newTransform = $transform->replicate();
                 $newTransform->asset_id = $newAsset->id;
                 $newFilename = uniqid() . '_' . $newTransform->filename;
-                Storage::disk($newAsset->source->disk)->copy(
-                    "{$newTransform->location}/{$newTransform->filename}",
-                    "{$newTransform->location}/{$newFilename}"
-                );
+
+                try {
+                    Storage::disk($newAsset->source->disk)->copy(
+                        "{$newTransform->location}/{$newTransform->filename}",
+                        "{$newTransform->location}/{$newFilename}"
+                    );
+                } catch (FileNotFoundException $e) {
+                    continue;
+                }
 
                 $newTransform->filename = $newFilename;
                 $newTransform->save();
