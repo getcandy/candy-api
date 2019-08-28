@@ -142,9 +142,14 @@ class ShippingPriceService extends BaseService
 
         $strippedOutcode = rtrim($outcode, '0..9');
 
-        return ShippingRegion::where('region', '=', $postcode)
-            ->orWhere('region', '=', $outcode)
-            ->orWhere('region', '=', $strippedOutcode)
-            ->first();
+        if ($region = ShippingRegion::whereRegion($postcode)->first()) {
+            return $region;
+        }
+
+        if ($region = ShippingRegion::whereRegion($outcode)->first()) {
+            return $region;
+        }
+
+        return ShippingRegion::whereRegion($strippedOutcode)->first();
     }
 }
