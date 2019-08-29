@@ -13,6 +13,7 @@ use GetCandy\Api\Core\Baskets\Models\SavedBasket;
 use GetCandy\Api\Core\Baskets\Events\BasketStoredEvent;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketFactoryInterface;
 use GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface;
+use GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface;
 
 class BasketService extends BaseService
 {
@@ -29,6 +30,13 @@ class BasketService extends BaseService
     protected $factory;
 
     /**
+     * The currency converter
+     *
+     * @var CurrencyConverterInterface
+     */
+    protected $currencies;
+
+    /**
      * The variant factory.
      *
      * @var ProductVariantInterface
@@ -37,11 +45,13 @@ class BasketService extends BaseService
 
     public function __construct(
         BasketFactoryInterface $factory,
-        ProductVariantInterface $variantFactory
+        ProductVariantInterface $variantFactory,
+        CurrencyConverterInterface $currencies
     ) {
         $this->model = new Basket();
         $this->factory = $factory;
         $this->variantFactory = $variantFactory;
+        $this->currencies = $currencies;
     }
 
     /**
@@ -65,9 +75,7 @@ class BasketService extends BaseService
             $basket->user()->associate($user);
         }
 
-        if (! $basket->currency) {
-            $basket->currency = app('api')->currencies()->getDefaultRecord()->code;
-        }
+        $basket->currency = $this->currencies->get()->code;
 
         $basket->save();
 
