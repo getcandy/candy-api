@@ -1,3 +1,9 @@
+# 0.2.97
+
+- [added] Added support for `X-CANDY-CURRENCY` on middleware
+- [improved] Allow `vat_no` to be nulled on an order
+- [improved] Better currency detection when creating a basket
+
 # 0.2.95
 
 - [fixed] Fixed reference to sortable field on category sort.
