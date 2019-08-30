@@ -293,7 +293,7 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
      *
      * @return string
      */
-    protected function getNextInvoiceReference($year = null, $month = null)
+    public function getNextInvoiceReference($year = null, $month = null)
     {
         if (! $year) {
             $year = (string) Carbon::now()->year;
