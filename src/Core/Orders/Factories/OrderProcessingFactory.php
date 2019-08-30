@@ -243,8 +243,12 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
 
             $callback = config('getcandy.orders.reference_callback', null);
 
-            if ($callback && $callback instanceof \Closure) {
-                $this->order->reference = $callback($this->order);
+            if ($callback) {
+                if ($callback instanceof \Closure) {
+                    $this->order->reference = $callback($this->order);
+                } elseif (class_exists($callback)) {
+                    $this->order->reference = app($callback)->handle($this->order);
+                }
             } else {
                 $this->order->reference = $this->getNextInvoiceReference();
             }
