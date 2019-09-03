@@ -1,3 +1,8 @@
+# 0.2.98
+
+- [added] Added extra events to payment handling
+- [added] Allow order reference callback to be a class
+
 # 0.2.97
 
 - [added] Added support for `X-CANDY-CURRENCY` on middleware
