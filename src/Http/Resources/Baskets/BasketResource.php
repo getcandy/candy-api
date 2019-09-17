@@ -18,6 +18,7 @@ class BasketResource extends AbstractResource
             'tax_total' => $this->total_tax,
             'discount_total' => round($this->discount_total, 2),
             'changed' => $this->changed,
+            'has_exclusions' => $this->hasExclusions,
             'meta' => $this->meta,
         ];
     }

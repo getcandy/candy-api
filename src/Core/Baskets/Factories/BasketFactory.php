@@ -65,6 +65,15 @@ class BasketFactory implements BasketFactoryInterface
         }
         $this->lines->add($basket->lines);
 
+        // Get exclusions
+
+        $exclusions = $basket->lines->filter(function ($line) {
+            return $line->variant->product->exclusions->count();
+        });
+
+        $this->basket->hasExclusions = (bool) $exclusions->count();
+
+
         return $this;
     }
 

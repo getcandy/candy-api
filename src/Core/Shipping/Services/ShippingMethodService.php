@@ -105,11 +105,11 @@ class ShippingMethodService extends BaseService
         $basket = $this->baskets->getForOrder($order);
 
         $zones = app('api')->shippingZones()->getByCountryName($order->shipping_details['country']);
-
         $basket = $order->basket;
         $calculator = new ShippingCalculator(app());
 
         $options = [];
+
 
         foreach ($zones as $zone) {
             foreach ($zone->methods as $index => $method) {
@@ -129,8 +129,27 @@ class ShippingMethodService extends BaseService
             }
         }
 
+        $options = collect($options);
+
+        if ($basket->hasExclusions) {
+            $exclusions = collect();
+            $basket->lines->each(function ($l) use ($exclusions) {
+                if (!$l->variant) {
+                    return;
+                }
+                $exclusions->push(
+                    $l->variant->product->exclusions
+                );
+            });
+
+            $options = $options->reject(function ($option) use ($exclusions) {
+                return $exclusions->flatten()->contains('shipping_zone_id', $option->shipping_zone_id);
+            });
+        }
+        // dd($options);
+
         return app(Pipeline::class)->send([collect($options), $order])->through($this->pipes)->then(function ($options) {
-            return collect($options[0] ?? [])->unique('shipping_method_id');
+            return collect($options[0])->unique('shipping_method_id');
         });
     }
 

@@ -51,6 +51,13 @@ class Basket extends BaseModel
     public $changed = false;
 
     /**
+     * Whether the basket has exclusions
+     *
+     * @var boolean
+     */
+    public $hasExclusions = false;
+
+    /**
      * The fillable attributes.
      *
      * @var array
