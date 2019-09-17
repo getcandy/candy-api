@@ -13,7 +13,7 @@ class CreateShippingZoneExclusionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('shipping_zone_exclusions', function (Blueprint $table) {
+        Schema::create('shipping_exclusions', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('shipping_zone_id')->unsigned();
             $table->foreign('shipping_zone_id')->references('id')->on('shipping_zones');
@@ -24,6 +24,6 @@ class CreateShippingZoneExclusionsTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('shipping_zone_exclusions');
+        Schema::dropIfExists('shipping_exclusions');
     }
 }
