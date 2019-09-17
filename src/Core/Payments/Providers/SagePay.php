@@ -12,7 +12,7 @@ use GetCandy\Api\Core\Payments\ThreeDSecureResponse;
 use GetCandy\Api\Core\Payments\Models\ReusablePayment;
 use GetCandy\Api\Core\Payments\Events\PaymentFailedEvent;
 use GetCandy\Api\Core\Payments\Events\PaymentAttemptedEvent;
-use GetCandy\Api\Core\Payments\Events\ThreeDSecureAttemptedEvent;
+use GetCandy\Api\Core\Payments\Events\ThreeDSecureAttemptEvent;
 
 class SagePay extends AbstractProvider
 {
@@ -198,7 +198,7 @@ class SagePay extends AbstractProvider
             ]);
 
             $content = json_decode($response->getBody()->getContents(), true);
-            event(new ThreeDSecureAttemptedEvent($content));
+            event(new ThreeDSecureAttemptEvent($content));
 
         } catch (ClientException $e) {
             $errors = json_decode($e->getResponse()->getBody()->getContents(), true);
