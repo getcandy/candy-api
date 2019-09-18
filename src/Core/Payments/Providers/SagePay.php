@@ -224,10 +224,10 @@ class SagePay extends AbstractProvider
         return $this->createSuccessTransaction($transaction);
     }
 
-    protected function getTransactionFromApi($id)
+    protected function getTransactionFromApi($id, $attempt = 1)
     {
         try {
-            $response = $this->http->get($this->host.'transactions/'.$id, [
+            $response = $this->http->get($this->host.'transactions/123'.$id, [
                 'headers' => [
                     'Authorization' => 'Basic '.$this->getCredentials(),
                     'Content-Type' => 'application/json',
@@ -238,7 +238,14 @@ class SagePay extends AbstractProvider
             $content = json_decode($response->getBody()->getContents(), true);
             event(new TransactionFetchedEvent($content));
         } catch (ClientException $e) {
-            return;
+            $errors = json_decode($e->getResponse()->getBody()->getContents(), true);
+            event(new TransactionFetchedEvent($errors));
+            if ($attempt > 4) {
+                return;
+            }
+            $attempt++;
+            sleep(1);
+            return $this->getTransactionFromApi($id, $attempt);
         }
 
         return $content;
