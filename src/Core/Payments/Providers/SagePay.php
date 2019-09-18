@@ -241,13 +241,16 @@ class SagePay extends AbstractProvider
             $errors = json_decode($e->getResponse()->getBody()->getContents(), true);
             event(new TransactionFetchedEvent($errors));
             if ($attempt > 4) {
-                return;
+                return [
+                    'transactionId' => $id,
+                    'status' => $errors['code'],
+                    'statusDetail' => $errors['description'],
+                ];
             }
             $attempt++;
             sleep(1);
             return $this->getTransactionFromApi($id, $attempt);
         }
-
         return $content;
     }
 
