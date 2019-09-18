@@ -227,7 +227,7 @@ class SagePay extends AbstractProvider
     protected function getTransactionFromApi($id, $attempt = 1)
     {
         try {
-            $response = $this->http->get($this->host.'transactions/123'.$id, [
+            $response = $this->http->get($this->host.'transactions/'.$id, [
                 'headers' => [
                     'Authorization' => 'Basic '.$this->getCredentials(),
                     'Content-Type' => 'application/json',
