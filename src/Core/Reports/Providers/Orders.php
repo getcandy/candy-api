@@ -12,23 +12,22 @@ class Orders extends AbstractProvider
         $labels = [];
 
         // Get all orders for the last six months.
-        $orders = $this->getOrderQuery()->get();
-
-        $months = $orders->groupBy(function ($item) {
-            return Carbon::parse($item->placed_at)->format('F Y');
-        });
+        $orders = $this->getOrderQuery()
+            ->select(
+                \DB::RAW('SUM(order_total) as order_total'),
+                \DB::RAW('SUM(delivery_total) as delivery_total'),
+                \DB::RAW('SUM(discount_total) as discount_total'),
+                \DB::RAW('SUM(sub_total) as sub_total'),
+                \DB::RAW('SUM(tax_total) as tax_total'),
+                \DB::RAW("DATE_FORMAT(placed_at, '%M %Y') as month")
+            )->groupBy(
+                \DB::RAW("DATE_FORMAT(placed_at, '%Y-%m')")
+            )->get();
 
         $data = [];
-        foreach ($months as $month => $orders) {
-            $labels[] = $month;
-
-            $total = 0;
-
-            foreach ($orders as $order) {
-                $total += $order->sub_total + $order->delivery_total - $order->discount_total;
-            }
-
-            $data[] = $total;
+        foreach ($orders as $month) {
+            $labels[] = $month->month;
+            $data[] = $month->sub_total;
         }
 
         $dataset = [
@@ -51,6 +50,8 @@ class Orders extends AbstractProvider
             Carbon::now()
         )->count();
 
+
+        dd(2);
         $previousMonth = $this->getOrderQuery(
             Carbon::now()->subMonth()->startOfMonth(),
             Carbon::now()->subMonth()
