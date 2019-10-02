@@ -40,6 +40,8 @@ class Category
 
     public function getPre(Search $search, $query)
     {
+        $size = (int) config('getcandy.search.aggregation.categories.size', 10);
+
         // Get our category aggregations
         $nestedAggBefore = new Nested(
             'categories_before',
@@ -48,6 +50,7 @@ class Category
 
         $childAgg = new Terms('categories_before_inner');
         $childAgg->setField('departments.id');
+        $childAgg->setSize($size);
         $nestedAggBefore->addAggregation($childAgg);
 
         return $nestedAggBefore;
