@@ -19,11 +19,12 @@ class CollectionController extends BaseController
      * Returns a listing of channels.
      * @return Json
      */
-    public function index(Request $request)
+    public function index(Request $request, CollectionCriteria $criteria)
     {
-        $paginator = app('api')->collections()->getPaginatedData($request->keywords, $request->per_page, $request->current_page);
-
-        return new CollectionCollection($paginator);
+        $collection = $criteria->include($request->includes)->limit(
+            $request->per_page
+        )->get();
+        return new CollectionCollection($collection);
     }
 
     /**
