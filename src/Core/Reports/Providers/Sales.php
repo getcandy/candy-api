@@ -77,9 +77,6 @@ class Sales extends AbstractProvider
             Carbon::now()
         )->select('sub_total', 'discount_total')->get();
 
-        dd($orders);
-
-
         // Get orders this month
         $currentMonth = $this->getOrderQuery(
             Carbon::now()->startOfMonth(),
@@ -124,13 +121,12 @@ class Sales extends AbstractProvider
         )->first()->sub_total;
 
         return [
-
-            'current_month' => $currentMonth,
-            'previous_month' => $previousMonth,
-            'today' => $today,
-            'yesterday' => $yesterday,
-            'current_week' => $currentWeek,
-            'previous_week' => $previousWeek,
+            'current_month' => $currentMonth ?? 0,
+            'previous_month' => $previousMonth ?? 0,
+            'today' => $today ?? 0,
+            'yesterday' => $yesterday ?? 0,
+            'current_week' => $currentWeek ?? 0,
+            'previous_week' => $previousWeek ?? 0,
         ];
     }
 }
