@@ -25,7 +25,7 @@ class ChangeQuantityRequest extends FormRequest
     public function rules()
     {
         return [
-            'quantity' => 'sometimes|numeric|min:1|max:10000',
+            'quantity' => 'sometimes|numeric|min:1',
         ];
     }
 }

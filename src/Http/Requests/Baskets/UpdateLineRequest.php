@@ -25,7 +25,7 @@ class UpdateLineRequest extends FormRequest
     public function rules()
     {
         return [
-            'quantity' => 'required|numeric|min:1|max:10000',
+            'quantity' => 'required|numeric|min:1',
         ];
     }
 }
