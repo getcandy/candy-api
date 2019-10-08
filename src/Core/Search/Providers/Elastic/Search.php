@@ -223,13 +223,15 @@ class Search implements ClientContract
         $results->each(function ($result) use ($products) {
             $skus = collect($result->getHighlights()['sku.lowercase']);
             $skus->each(function ($sku) use ($products, $result) {
+                $name = $result->name;
                 $products->push([
-                    'name' => $result->name,
+                    'name' => is_array($name) ? reset($name) : $name,
                     'breadcrumbs' => $result->breadcrumbs,
                     'sku' => $sku,
                 ]);
             });
         });
+
 
         return $products;
     }
