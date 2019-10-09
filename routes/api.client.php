@@ -42,6 +42,7 @@ Route::group([
      * Baskets
      */
     $router->get('baskets', 'Products\ProductController@index');
+    $router->post('baskets/{id}/meta', 'Baskets\BasketController@addMeta');
     $router->put('baskets/{id}/discounts', 'Baskets\BasketController@addDiscount');
     $router->delete('baskets/{id}/discounts', 'Baskets\BasketController@deleteDiscount');
     $router->put('baskets/{id}/user', 'Baskets\BasketController@putUser');

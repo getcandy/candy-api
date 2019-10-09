@@ -9,6 +9,7 @@ use GetCandy\Api\Http\Requests\Baskets\CreateRequest;
 use GetCandy\Api\Http\Requests\Baskets\DeleteRequest;
 use GetCandy\Api\Core\Baskets\Factories\BasketFactory;
 use GetCandy\Api\Http\Requests\Baskets\PutUserRequest;
+use GetCandy\Api\Http\Requests\Baskets\AddMetaRequest;
 use GetCandy\Api\Http\Resources\Baskets\BasketResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use GetCandy\Api\Core\Discounts\Services\DiscountService;
@@ -57,6 +58,25 @@ class BasketController extends BaseController
     {
         try {
             $basket = app('api')->baskets()->getByHashedId($id);
+        } catch (ModelNotFoundException $e) {
+            return $this->errorNotFound();
+        }
+
+        return new BasketResource($basket);
+    }
+
+    /**
+     * Handles the request to add meta data to a basket.
+     * @param  string $id
+     * @param  AddMetaRequest $request
+     * @return Json
+     */
+    public function addMeta($id, AddMetaRequest $request)
+    {
+        try {
+            $basket = app('api')->baskets()->getByHashedId($id);
+            $basket->meta = array_merge($basket->meta, [$request->key => $request->value]);
+            $basket->save();
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
