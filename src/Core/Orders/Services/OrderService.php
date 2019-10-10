@@ -406,9 +406,7 @@ class OrderService extends BaseService implements OrderServiceInterface
     {
         $order = $this->getByHashedId($id);
 
-        if (! empty($data['vat_no'])) {
-            $order->vat_no = $data['vat_no'];
-        }
+        $order->vat_no = $data['vat_no'] ?? null;
 
         unset($data['vat_no']);
         unset($data['force']);

@@ -38,15 +38,7 @@ class Image extends BaseUploadDriver implements AssetDriverContract
             //
         }
 
-        if ($model->assets()->count()) {
-            // Get anything that isn't an "application";
-            $image = $model->assets()->where('kind', '!=', 'application')->first();
-            if (! $image) {
-                $asset->primary = true;
-            }
-        } else {
-            $asset->primary = true;
-        }
+        $asset->primary = !$model->assets()->where('kind', '!=', 'application')->exists();
 
         $model->assets()->save($asset);
 
@@ -57,7 +49,7 @@ class Image extends BaseUploadDriver implements AssetDriverContract
         }
 
         if (! empty($image)) {
-            dispatch(new GenerateTransforms($asset));
+            GenerateTransforms::dispatch($asset);
         }
 
         return $asset;

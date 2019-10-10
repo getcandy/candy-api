@@ -45,13 +45,9 @@ class YouTube extends BaseUrlDriver
      */
     public function getInfo($url)
     {
-        if (! $this->info) {
-            return $this->info = $this->getOemData([
-                'format' => 'json',
-                'url' => $url,
-            ]);
-        }
-
-        return $this->info;
+        return $this->info = $this->getOemData([
+            'format' => 'json',
+            'url' => $url,
+        ]);
     }
 }

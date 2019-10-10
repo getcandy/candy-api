@@ -145,14 +145,6 @@ class Braintree extends AbstractProvider
         $transaction->success = false;
         $transaction->order()->associate($this->order);
         $transaction->merchant = $result->transaction->merchantAccountId;
-<<<<<<< HEAD
-
-        $transaction->provider = $result->transaction->paymentInstrumentType;
-        $transaction->status = $result->transaction->status;
-        $transaction->amount = $result->transaction->amount * 100;
-        $transaction->driver = 'braintree';
-=======
->>>>>>> master
         $transaction->provider = 'Braintree';
         $transaction->driver = 'braintree';
         $transaction->amount = $result->transaction->amount * 100;

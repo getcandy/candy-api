@@ -243,8 +243,12 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
 
             $callback = config('getcandy.orders.reference_callback', null);
 
-            if ($callback && $callback instanceof \Closure) {
-                $this->order->reference = $callback($this->order);
+            if ($callback) {
+                if ($callback instanceof \Closure) {
+                    $this->order->reference = $callback($this->order);
+                } elseif (class_exists($callback)) {
+                    $this->order->reference = app($callback)->handle($this->order);
+                }
             } else {
                 $this->order->reference = $this->getNextInvoiceReference();
             }
@@ -293,7 +297,7 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
      *
      * @return string
      */
-    protected function getNextInvoiceReference($year = null, $month = null)
+    public function getNextInvoiceReference($year = null, $month = null)
     {
         if (! $year) {
             $year = (string) Carbon::now()->year;

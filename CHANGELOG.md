@@ -1,3 +1,75 @@
+# 0.2.98
+
+- [added] Added extra events to payment handling
+- [added] Allow order reference callback to be a class
+
+# 0.2.97
+
+- [added] Added support for `X-CANDY-CURRENCY` on middleware
+- [improved] Allow `vat_no` to be nulled on an order
+- [improved] Better currency detection when creating a basket
+
+# 0.2.95
+
+- [fixed] Fixed reference to sortable field on category sort.
+
+# 0.2.94
+
+- [changed] Regional shipping calculator math is now `>=` for `min_basket`
+
+# 0.2.93
+
+- [improved] Improved the way config is fetched from API.
+
+# 0.2.92
+
+- [added] Added `PaymentFailedEvent` to SagePay driver
+
+# 0.2.91
+
+- [fixed] Fixes to asset copying when duplicating a product
+- [added] Added `CategoryStoredEvent` when editing categories
+
+# 0.2.90
+
+- [fixed] Fixed issue where asset thumbnails weren't being generated on a product if they already had an image.
+
+# 0.2.89
+
+- [fixed] Fixed issue when calculating the amount of products are rewarding for a discount
+
+# 0.2.88
+
+- [added] Added #161
+
+# 0.2.87
+
+- [improved] Pull out a `getRegionFromZip` method
+
+# 0.2.86
+
+- [added] Added ability to specify pipelines when retrieving shipping methods
+
+# 0.2.85
+
+- [added] Added duplicate product functionality
+
+# 0.2.84
+
+- [fixed] Fixed job handling of class on reindex
+- [improved] Allow reindex command to be queued
+
+You can now queue the reindex job by doing the following:
+
+```
+php artisan candy:search:index --queue
+```
+
+# 0.2.83
+
+- [changed] Assets now order by `position` by default
+- [changed] When uploading a YouTube video, make sure OEM data is always fetched.
+
 # 0.2.81
 
 - [changed] PayPal driver records proper Transaction ID from PayPal

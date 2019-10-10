@@ -77,6 +77,7 @@ class SearchController extends BaseController
             return $this->errorInternalError($e->getMessage());
         }
 
+
         $results = app('api')->search()->getResults(
             $results,
             $request->type,

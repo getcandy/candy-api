@@ -14,12 +14,10 @@ class SettingService extends BaseService
 
     public function get($handle)
     {
-        $setting = $this->model->where('handle', '=', $handle)->first();
+        $setting = $this->model->where('handle', '=', $handle)->firstOrFail();
 
         // If we're getting orders, load up the status info...
-        if ($setting && $handle == 'orders') {
-            $setting->config = collect(config('getcandy.orders', []));
-        }
+        $setting->config = collect(config('getcandy.' . $handle, []));
 
         return $setting;
     }
