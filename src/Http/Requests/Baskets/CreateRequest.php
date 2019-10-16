@@ -25,7 +25,7 @@ class CreateRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'variants' => 'array|unique_lines',
+            'variants' => 'array',
             'basket_id' => 'hashid_is_valid:baskets',
         ];
 
