@@ -21,11 +21,11 @@ class PriceRange extends AbstractAggregator
 
         $boolQuery = $query->getQuery();
 
-        if ($postFilter) {
-            foreach ($postFilter->getParam('filter') as $filter) {
-                $boolQuery->addFilter($filter);
-            }
-        }
+        // if ($postFilter) {
+        //     foreach ($postFilter->getParam('filter') as $filter) {
+        //         $boolQuery->addFilter($filter);
+        //     }
+        // }
 
         $query->setQuery($boolQuery);
         $query->addAggregation($max->getPre());

@@ -17,6 +17,8 @@ class CustomerGroupFilter extends AbstractFilter
 
     public $handle = 'customer-group-filter';
 
+    protected $field = 'customer-groups';
+
     public function process($payload, $type = null)
     {
         $this->user = $payload;
