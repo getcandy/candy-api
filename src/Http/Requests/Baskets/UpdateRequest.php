@@ -26,7 +26,7 @@ class UpdateRequest extends FormRequest
     {
         return [
             'variants' => 'required|array',
-            'variants.*.id' => 'required|hashid_is_valid:product_variants',
+            'variants.*.id' => 'required|hashid_is_valid:product_variants|available',
             'variants.*.price' => 'required|numeric',
             'variants.*.quantity' => 'required|numeric|min:1|max:10000',
         ];

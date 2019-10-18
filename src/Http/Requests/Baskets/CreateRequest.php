@@ -40,7 +40,7 @@ class CreateRequest extends FormRequest
             if ($variant) {
                 $rules["variants.{$i}.quantity"] = 'required|numeric|min:1|max:10000|min_quantity:'.$variant->min_qty.'|min_batch:'.$variant->min_batch.'|in_stock:'.$v['id'] ?? '0';
             }
-            $rules["variants.{$i}.id"] = 'required|hashid_is_valid:product_variants';
+            $rules["variants.{$i}.id"] = 'required|hashid_is_valid:product_variants|available';
         }
 
         return $rules;

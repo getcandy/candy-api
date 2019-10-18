@@ -44,6 +44,16 @@ class ProductVariant extends BaseModel
     }
 
     /**
+     * Return the product relation.
+     *
+     * @return BelongsTo
+     */
+    public function availableProduct()
+    {
+        return $this->belongsTo(Product::class, 'product_id');
+    }
+
+    /**
      * Return the basket lines.
      *
      * @return HasMany

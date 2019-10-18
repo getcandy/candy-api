@@ -112,6 +112,12 @@ class ProductVariantService extends BaseService
         return $quantity <= $variant->stock;
     }
 
+    public function variantIsAvailable($variantId)
+    {
+        $variant = $this->getByHashedId($variantId);
+        return $variant->availableProduct()->exists();
+    }
+
     /**
      * Checks whether a variant exists by its SKU.
      *
