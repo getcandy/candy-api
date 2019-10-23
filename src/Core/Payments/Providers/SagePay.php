@@ -208,6 +208,25 @@ class SagePay extends AbstractProvider
     }
 
     /**
+     * Run a clean up task on anything to be voided
+     *
+     * @return void
+     */
+    public function cleanup()
+    {
+        $transactions = Transaction::whereShouldVoid(true)
+            ->whereNull('voided_at')
+            ->get();
+
+        foreach ($transactions as $transaction) {
+            $response = $this->voidTransaction($transaction->transaction_id);
+            if ($response['status'] == 1014) {
+                $response = $this->abortTransaction($transaction->transaction_id);
+            }
+        }
+    }
+
+    /**
      * Save a card for later use
      *
      * @param array $details
