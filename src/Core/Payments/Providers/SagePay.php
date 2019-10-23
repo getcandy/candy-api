@@ -293,14 +293,14 @@ class SagePay extends AbstractProvider
     /**
      * Get a transaction from the API
      *
-     * @param string $id
+     * @param string $transactionId
      * @param integer $attempt
      * @return array
      */
-    public function getTransactionFromApi($id, $attempt = 1)
+    public function getTransactionFromApi($transactionId, $attempt = 1)
     {
         try {
-            $response = $this->http->get('transactions/'.$id);
+            $response = $this->http->get('transactions/'.$transactionId);
             $content = json_decode($response->getBody()->getContents(), true);
             event(new TransactionFetchedEvent($content));
         } catch (ClientException $e) {
@@ -308,14 +308,14 @@ class SagePay extends AbstractProvider
             event(new TransactionFetchedEvent($errors));
             if ($attempt > 4) {
                 return [
-                    'transactionId' => $id,
+                    'transactionId' => $transactionId,
                     'status' => $errors['code'],
                     'statusDetail' => $errors['description'],
                 ];
             }
             $attempt++;
             sleep(1);
-            return $this->getTransactionFromApi($id, $attempt);
+            return $this->getTransactionFromApi($transactionId, $attempt);
         }
         return $content;
     }
@@ -391,13 +391,12 @@ class SagePay extends AbstractProvider
     {
         $transaction = Transaction::where('transaction_id', '=', $transactionId)->first();
         try {
-            $response = $this->http->post($this->host.'transactions/'.$transactionId.'/instructions', [
+            $this->http->post('transactions/'.$transactionId.'/instructions', [
                 'json' => [
                     'instructionType' => 'release',
                     'amount' => $amount ?: $transaction->amount,
                 ],
             ]);
-            $content = json_decode($response->getBody()->getContents(), true);
             $transaction->released_at = now();
             $transaction->save();
             return $transaction;
