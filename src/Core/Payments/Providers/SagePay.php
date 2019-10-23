@@ -17,23 +17,71 @@ use GetCandy\Api\Core\Payments\Events\ThreeDSecureAttemptEvent;
 
 class SagePay extends AbstractProvider
 {
+    /**
+     * The SagePay host URL
+     *
+     * @var string
+     */
     protected $host;
 
+    /**
+     * When the token expires
+     *
+     * @var string
+     */
     protected $tokenExpires;
 
+    /**
+     * The Http client
+     *
+     * @var Client
+     */
     protected $http;
 
-    public function __construct(Client $client)
+    /**
+     * Whether the payment should be deferred
+     *
+     * @var boolean
+     */
+    protected $shouldDefer;
+
+    /**
+     * Whether payments should auto release
+     *
+     * @var boolean
+     */
+    protected $autoRelease;
+
+    public function __construct()
     {
-        $this->host = config('services.sagepay.host', 'https://pi-test.sagepay.com/api/v1/');
-        $this->http = $client;
+        $this->shouldDefer = (bool) config('getcandy.payments.deferred', false);
+        $this->autoRelease = (bool) config('getcandy.payments.auto_release', true);
+        $this->http = new Client([
+            'base_uri' => config('services.sagepay.host', 'https://pi-test.sagepay.com/api/v1/'),
+            'headers' => [
+                'Authorization' => 'Basic '.$this->getCredentials(),
+                'Content-Type' => 'application/json',
+                'Cache-Control' => 'no-cache',
+            ]
+        ]);
     }
 
+    /**
+     * Get the name of the provider
+     *
+     * @return string
+     */
     public function getName()
     {
         return 'SagePay';
     }
 
+    /**
+     * Validate our token
+     *
+     * @param string $token
+     * @return boolean
+     */
     public function validate($token)
     {
         // SagePay doesn't seem to have a good way to
@@ -41,56 +89,50 @@ class SagePay extends AbstractProvider
         return true;
     }
 
+    /**
+     * Refund a payment
+     *
+     * @param string $token
+     * @param int $amount
+     * @param string $description
+     * @return Transaction
+     */
     public function refund($token, $amount, $description)
     {
         try {
-            $payload = [
-                'transactionType' => 'Refund',
-                'amount' => $amount,
-                'referenceTransactionId' => $token,
-                'currency' => $this->order->currency, // Get currency from order.
-                'vendorTxCode' => str_random(40),
-                'description' => $description,
-            ];
-
-            $response = $this->http->post($this->host.'transactions', [
-                'headers' => [
-                    'Authorization' => 'Basic '.$this->getCredentials(),
-                    'Content-Type' => 'application/json',
-                    'Cache-Control' => 'no-cache',
+            $response = $this->http->post('transactions', [
+                'json' => [
+                    'transactionType' => 'Refund',
+                    'amount' => $amount,
+                    'referenceTransactionId' => $token,
+                    'currency' => $this->order->currency, // Get currency from order.
+                    'vendorTxCode' => str_random(40),
+                    'description' => $description,
                 ],
-                'json' => $payload,
             ]);
         } catch (ClientException $e) {
             $errors = json_decode($e->getResponse()->getBody()->getContents(), true);
             $response = new PaymentResponse(false, 'Refund Failed', $errors);
-
             return $this->createFailedTransaction($errors, $amount, $description);
         }
 
         $content = json_decode($response->getBody()->getContents(), true);
-
         return $this->createRefundTransaction($content, $amount, $description);
     }
 
+    /**
+     * Make a payment
+     *
+     * @return PaymentResponse
+     */
     public function charge()
     {
-        $country = $this->order->billing_country;
-
-        // Sage pay requires the country iso code, so we should find that to use.
-        // $countryModel = app('api')->countries()->getByName($country);
-
-        // if ($countryModel) {
-        //     $country = $countryModel->iso_a_2;
-        // }
-        // // This breaks maria DB
-
         try {
             $payload = [
-                'transactionType' => 'Payment',
+                'transactionType' => $this->shouldDefer ? 'Deferred' : 'Payment',
                 'paymentMethod' => [
                     'card' => [
-                        'merchantSessionKey' => $this->fields['merchant_key'] ?? $this->getClientToken(),
+                        'merchantSessionKey' => $this->fields['merchant_key'],
                         'cardIdentifier' => $this->token,
                     ],
                 ],
@@ -118,20 +160,13 @@ class SagePay extends AbstractProvider
                 $payload['paymentMethod']['card']['reusable'] = true;
             }
 
-            // \Log::info(json_encode($payload));
-            $response = $this->http->post($this->host.'transactions', [
-                'headers' => [
-                    'Authorization' => 'Basic '.$this->getCredentials(),
-                    'Content-Type' => 'application/json',
-                    'Cache-Control' => 'no-cache',
-                ],
+            $response = $this->http->post('transactions', [
                 'json' => $payload,
             ]);
 
             $content = json_decode($response->getBody()->getContents(), true);
 
             event(new PaymentAttemptedEvent($content));
-
         } catch (ClientException $e) {
             $errors = json_decode($e->getResponse()->getBody()->getContents(), true);
             $response = new PaymentResponse(false, 'Payment Failed', $errors);
@@ -162,18 +197,28 @@ class SagePay extends AbstractProvider
         }
 
         $response->transaction(
-            $this->createSuccessTransaction($content, $this->order)
+            $this->createSuccessTransaction($content)
         );
+
+        if ($this->autoRelease) {
+            $this->releaseTransaction($content['transactionId']);
+        }
 
         return $response;
     }
 
+    /**
+     * Save a card for later use
+     *
+     * @param array $details
+     * @return void
+     */
     protected function saveCard($details)
     {
-        $identifier = $details['cardIdentifier'];
         $userId = $this->order->user_id;
+
         // Delete one if it exists.
-        $exists = ReusablePayment::where('last_four', '=', $details['lastFourDigits'])
+        ReusablePayment::where('last_four', '=', $details['lastFourDigits'])
                     ->where('user_id', '=', $userId)->delete();
 
         $payment = new ReusablePayment;
@@ -186,58 +231,76 @@ class SagePay extends AbstractProvider
         $payment->save();
     }
 
-    public function processThreeD($transaction, $paRes)
+    /**
+     * Process a ThreeD secure transaction
+     *
+     * @param string $transactionId
+     * @param string $paRes
+     * @return Transaction
+     */
+    public function processThreeD($transactionId, $paRes)
     {
         try {
-            $response = $this->http->post($this->host.'transactions/'.$transaction.'/3d-secure', [
-                'headers' => [
-                    'Authorization' => 'Basic '.$this->getCredentials(),
-                    'Content-Type' => 'application/json',
-                    'Cache-Control' => 'no-cache',
-                ],
+            $response = $this->http->post('transactions/'.$transactionId.'/3d-secure', [
                 'json' => ['paRes' => $paRes],
             ]);
-
             $content = json_decode($response->getBody()->getContents(), true);
             event(new ThreeDSecureAttemptEvent($content));
-
         } catch (ClientException $e) {
             $errors = json_decode($e->getResponse()->getBody()->getContents(), true);
-
             return $this->createFailedTransaction([
                 'statusDetail' => $errors['description'],
                 'status' => 'failed',
-                'transactionId' => $transaction,
+                'transactionId' => $transactionId,
             ]);
         }
 
-
-
         // We are authenticated, so lets get the transaction from the API
-        $transaction = $this->getTransactionFromApi($transaction);
+        $transaction = $this->getTransactionFromApi($transactionId);
 
         if ($transaction['status'] != 'Ok') {
-            return $this->createFailedTransaction($transaction);
+            $candyTransaction = $this->createFailedTransaction($transaction);
+            $this->markTransactionToVoid($transaction['transactionId']);
+            return $candyTransaction;
         }
 
         if (! empty($transaction['paymentMethod']['card']['reusable'])) {
             $this->saveCard($transaction['paymentMethod']['card']);
         }
 
-        return $this->createSuccessTransaction($transaction);
+        $candyTransaction = $this->createSuccessTransaction($transaction);
+
+        if ($this->autoRelease) {
+            $this->releaseTransaction($transaction['transactionId']);
+        }
+
+        return $candyTransaction;
     }
 
-    protected function getTransactionFromApi($id, $attempt = 1)
+    /**
+     * Marks a transaction to be voided
+     *
+     * @param string $transationId
+     * @return void
+     */
+    protected function markTransactionToVoid($transactionId)
+    {
+        $transaction = Transaction::where('transaction_id', '=', $transactionId)->first();
+        $transaction->should_void = true;
+        $transaction->save();
+    }
+
+    /**
+     * Get a transaction from the API
+     *
+     * @param string $id
+     * @param integer $attempt
+     * @return array
+     */
+    public function getTransactionFromApi($id, $attempt = 1)
     {
         try {
-            $response = $this->http->get($this->host.'transactions/'.$id, [
-                'headers' => [
-                    'Authorization' => 'Basic '.$this->getCredentials(),
-                    'Content-Type' => 'application/json',
-                    'Cache-Control' => 'no-cache',
-                ],
-            ]);
-
+            $response = $this->http->get('transactions/'.$id);
             $content = json_decode($response->getBody()->getContents(), true);
             event(new TransactionFetchedEvent($content));
         } catch (ClientException $e) {
@@ -257,11 +320,114 @@ class SagePay extends AbstractProvider
         return $content;
     }
 
+    /**
+     * Void a transaction
+     *
+     * @param string $transactionId
+     * @param string $reason
+     * @return void
+     */
+    public function voidTransaction($transactionId, $reason = null)
+    {
+        $transaction = Transaction::where('transaction_id', '=', $transactionId)->first();
+        try {
+            $this->http->post('transactions/'.$transactionId.'/instructions', [
+                'json' => [
+                    'instructionType' => 'void',
+                ],
+            ]);
+            $transaction->voided_at = now();
+            $transaction->voided_reason = $reason;
+            $transaction->save();
+            return $transaction;
+        } catch (ClientException $e) {
+            $errors = json_decode($e->getResponse()->getBody()->getContents(), true);
+            return [
+                'transactionId' => $transactionId,
+                'status' => $errors['code'],
+                'statusDetail' => $errors['description'],
+            ];
+        }
+    }
+
+    /**
+     * Abort the transaction
+     *
+     * @param string $transactionId
+     * @return Transaction
+     */
+    public function abortTransaction($transactionId)
+    {
+        $transaction = Transaction::where('transaction_id', '=', $transactionId)->first();
+        try {
+            $this->http->post('transactions/'.$transactionId.'/instructions', [
+                'json' => [
+                    'instructionType' => 'abort',
+                ],
+            ]);
+            $transaction->voided_at = now();
+            $transaction->voided_reason = 'Abort Payment Release';
+            $transaction->status = 'Aborted';
+            $transaction->save();
+            return $transaction;
+        } catch (ClientException $e) {
+            $errors = json_decode($e->getResponse()->getBody()->getContents(), true);
+            return [
+                'transactionId' => $transactionId,
+                'status' => $errors['code'],
+                'statusDetail' => $errors['description'],
+            ];
+        }
+    }
+
+    /**
+     * Release a transaction on SagePay
+     *
+     * @param string $transactionId
+     * @param integer $amount
+     * @return Transaction
+     */
+    public function releaseTransaction($transactionId, $amount = null)
+    {
+        $transaction = Transaction::where('transaction_id', '=', $transactionId)->first();
+        try {
+            $response = $this->http->post($this->host.'transactions/'.$transactionId.'/instructions', [
+                'json' => [
+                    'instructionType' => 'release',
+                    'amount' => $amount ?: $transaction->amount,
+                ],
+            ]);
+            $content = json_decode($response->getBody()->getContents(), true);
+            $transaction->released_at = now();
+            $transaction->save();
+            return $transaction;
+        } catch (ClientException $e) {
+            $errors = json_decode($e->getResponse()->getBody()->getContents(), true);
+            return [
+                'transactionId' => $transactionId,
+                'status' => $errors['code'],
+                'statusDetail' => $errors['description'],
+            ];
+        }
+    }
+
+    /**
+     * Get the Vendor TX Code
+     *
+     * @param Order $order
+     * @return void
+     */
     protected function getVendorTxCode($order)
     {
         return base64_encode($order->encodedId().'-'.microtime(true));
     }
 
+    /**
+     * Create a base transaction
+     *
+     * @param array $content
+     * @return Transaction
+     */
     protected function getBaseTransaction($content)
     {
         $transaction = new Transaction;
@@ -273,6 +439,14 @@ class SagePay extends AbstractProvider
         return $transaction;
     }
 
+    /**
+     * Create a refunded transaction
+     *
+     * @param array $content
+     * @param integer $amount
+     * @param string $notes
+     * @return Transaction
+     */
     protected function createRefundTransaction($content, $amount, $notes)
     {
         $transaction = $this->getBaseTransaction($content);
@@ -290,6 +464,12 @@ class SagePay extends AbstractProvider
         return $transaction;
     }
 
+    /**
+     * Create a successful transaction
+     *
+     * @param array $content
+     * @return Transaction
+     */
     protected function createSuccessTransaction($content)
     {
         $transaction = new Transaction;
@@ -297,6 +477,7 @@ class SagePay extends AbstractProvider
         $transaction->order()->associate($this->order);
         $transaction->merchant = $this->getVendor();
         $transaction->provider = 'SagePay';
+        $transaction->deferred = $content['transactionType'] == 'Deferred';
         $transaction->driver = 'sagepay';
         $transaction->status = $content['status'];
         $transaction->amount = $content['amount']['totalAmount'];
