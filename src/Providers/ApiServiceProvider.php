@@ -21,6 +21,7 @@ use GetCandy\Api\Http\Middleware\SetCurrencyMiddleware;
 use GetCandy\Api\Http\Middleware\CheckClientCredentials;
 use GetCandy\Api\Console\Commands\InstallGetCandyCommand;
 use GetCandy\Api\Console\Commands\CandySearchIndexCommand;
+use GetCandy\Api\Console\Commands\CleanUpTransactionsCommand;
 use GetCandy\Api\Http\Middleware\DetectHubRequestMiddleware;
 
 class ApiServiceProvider extends ServiceProvider
@@ -147,6 +148,7 @@ class ApiServiceProvider extends ServiceProvider
                 CandySearchIndexCommand::class,
                 InstallGetCandyCommand::class,
                 ScoreProductsCommand::class,
+                CleanUpTransactionsCommand::class,
             ]);
         }
     }
