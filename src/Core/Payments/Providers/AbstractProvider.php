@@ -107,4 +107,11 @@ abstract class AbstractProvider
      * @return mixed
      */
     abstract public function getClientToken();
+
+    /**
+     * A method for cleaning up any errorneous transactions
+     *
+     * @return void
+     */
+    abstract public function cleanup();
 }
