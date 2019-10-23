@@ -143,4 +143,9 @@ class PayPal extends AbstractProvider
     public function getClientToken()
     {
     }
+
+    public function cleanup()
+    {
+        return;
+    }
 }

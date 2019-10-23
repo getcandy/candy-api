@@ -44,4 +44,9 @@ class Offline extends AbstractProvider
     {
         return true;
     }
+
+    public function cleanup()
+    {
+        return;
+    }
 }

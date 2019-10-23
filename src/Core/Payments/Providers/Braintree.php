@@ -219,4 +219,9 @@ class Braintree extends AbstractProvider
 
         return $result;
     }
+
+    public function cleanup()
+    {
+        return;
+    }
 }
