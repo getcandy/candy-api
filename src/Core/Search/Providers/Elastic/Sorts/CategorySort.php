@@ -42,7 +42,7 @@ class CategorySort extends AbstractSort
                     ],
                 ],
             ];
-            $defaultSort[] = $sort;
+            $defaultSort = $sort;
         } else {
             // sort
             $sort = explode(':', $this->category->sort);
