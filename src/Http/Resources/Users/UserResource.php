@@ -4,6 +4,7 @@ namespace GetCandy\Api\Http\Resources\Users;
 
 use GetCandy\Api\Http\Resources\AbstractResource;
 use GetCandy\Api\Http\Resources\Orders\OrderResource;
+use GetCandy\Api\Http\Resources\Acl\RoleCollection;
 
 class UserResource extends AbstractResource
 {
@@ -21,6 +22,7 @@ class UserResource extends AbstractResource
             // 'details' => $this->include('details', UserDetailsResource::class),
             'details' => $this->include('details', UserDetailsResource::class),
             'first_order' => $this->include('firstOrder', OrderResource::class),
+            'roles' => new RoleCollection($this->whenLoaded('roles')),
         ];
     }
 }
