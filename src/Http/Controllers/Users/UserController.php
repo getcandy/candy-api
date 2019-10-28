@@ -9,6 +9,7 @@ use GetCandy\Api\Http\Requests\Users\CreateRequest;
 use GetCandy\Api\Http\Requests\Users\UpdateRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use GetCandy\Api\Http\Transformers\Fractal\Users\UserTransformer;
+use GetCandy\Api\Http\Resources\Users\UserResource;
 
 class UserController extends BaseController
 {
@@ -65,11 +66,9 @@ class UserController extends BaseController
 
     public function getCurrentUser(Request $request)
     {
-        $user = $this->users->getByHashedId(
-            $request->user()->encodedId()
-        );
+        $user = $request->user()->with('roles.permissions')->first();
 
-        return $this->respondWithItem($user, new UserTransformer);
+        return new UserResource($user);
     }
 
     public function update($userId, UpdateRequest $request)
