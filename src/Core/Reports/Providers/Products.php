@@ -20,9 +20,10 @@ class Products extends AbstractProvider
             DB::RAW($this->getJsonColumn($attribute)),
             $this->getExpression($expression),
             $value
-        )->join('product_variants', 'products.id', '=', 'product_variants.product_id')
+        )->whereNull('deleted_at')
+            ->join('product_variants', 'products.id', '=', 'product_variants.product_id')
             ->groupBy('products.id')
-            ->paginate(25);
+            ->paginate(60);
     }
 
     public function get()

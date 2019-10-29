@@ -11,7 +11,10 @@ class Attributes extends AbstractProvider
         return DB::table('products')->select(
             DB::raw($this->getJsonColumn($attribute) . 'as value'),
             DB::RAW('COUNT(*) as count')
-        )->groupBy(DB::raw($this->getJsonColumn($attribute)))->paginate(25);
+        )->whereNull('deleted_at')
+        ->groupBy(
+            DB::raw($this->getJsonColumn($attribute))
+        )->paginate(100);
     }
 
     public function get()
