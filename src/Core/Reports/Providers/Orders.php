@@ -44,6 +44,8 @@ class Orders extends AbstractProvider
 
     public function metrics()
     {
+        Carbon::useMonthsOverflow(false);
+
         // Get orders this month
         $currentMonth = $this->getOrderQuery(
             Carbon::now()->startOfMonth(),

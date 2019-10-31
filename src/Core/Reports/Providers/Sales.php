@@ -72,6 +72,8 @@ class Sales extends AbstractProvider
 
     public function metrics()
     {
+        Carbon::useMonthsOverflow(false);
+
         $orders = $this->getOrderQuery(
             Carbon::now()->subMonth()->startOfMonth(),
             Carbon::now()
