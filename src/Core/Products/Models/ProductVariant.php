@@ -29,6 +29,7 @@ class ProductVariant extends BaseModel
         'unit_qty',
         'min_qty',
         'max_qty',
+        'min_batch',
     ];
 
     protected $pricing;
