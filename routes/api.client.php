@@ -14,6 +14,17 @@ Route::group([
     'namespace' => 'GetCandy\Api\Http\Controllers',
 ], function ($router) {
 
+    $router->get('/', function () {
+        $channel = app()->make(GetCandy\Api\Core\Channels\Interfaces\ChannelFactoryInterface::class);
+        $currency = app()->make(GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface::class);
+        return response()->json([
+            'version' => GetCandy\Api\Core\CandyApi::version(),
+            'locale' => app()->getLocale(),
+            'channel' => new GetCandy\Api\Http\Resources\Channels\ChannelResource($channel->getChannel()),
+            'currency' => new GetCandy\Api\Http\Resources\Currencies\CurrencyResource($currency->get()),
+        ]);
+    });
+
     // Address Route
     $router->delete('addresses/{id}', 'Addresses\AddressController@destroy');
     $router->put('addresses/{id}', 'Addresses\AddressController@update');
