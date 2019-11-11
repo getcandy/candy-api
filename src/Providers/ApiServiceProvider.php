@@ -7,7 +7,7 @@ use Carbon\Carbon;
 use League\Fractal\Manager;
 use GetCandy\Api\Core\Factory;
 use Laravel\Passport\Passport;
-use GetCandy\Api\Core\CandyApi;
+use GetCandy\Api\Core\GetCandy;
 use Illuminate\Support\ServiceProvider;
 use GetCandy\Api\Core\Users\Services\UserService;
 use GetCandy\Api\Http\Middleware\SetTaxMiddleware;
@@ -179,8 +179,8 @@ class ApiServiceProvider extends ServiceProvider
 
         $mediaDrivers = config('assets.upload_drivers', []);
 
-        $this->app->singleton(CandyApi::class, function ($app) {
-            return new CandyApi;
+        $this->app->singleton(GetCandy::class, function ($app) {
+            return new GetCandy;
         });
 
         foreach ($mediaDrivers as $name => $driver) {
