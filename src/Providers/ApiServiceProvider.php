@@ -101,8 +101,8 @@ class ApiServiceProvider extends ServiceProvider
      */
     protected function mapRoutes()
     {
-        $this->loadRoutesFrom(__DIR__.'/../../routes/api.php');
-        $this->loadRoutesFrom(__DIR__.'/../../routes/api.client.php');
+        // $this->loadRoutesFrom(__DIR__.'/../../routes/api.php');
+        // $this->loadRoutesFrom(__DIR__.'/../../routes/api.client.php');
     }
 
     /**
