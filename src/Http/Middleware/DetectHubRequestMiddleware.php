@@ -3,13 +3,13 @@
 namespace GetCandy\Api\Http\Middleware;
 
 use Closure;
-use GetCandy\Api\Core\CandyApi;
+use GetCandy\Api\Core\GetCandy;
 
 class DetectHubRequestMiddleware
 {
     protected $api;
 
-    public function __construct(CandyApi $api)
+    public function __construct(GetCandy $api)
     {
         $this->api = $api;
     }

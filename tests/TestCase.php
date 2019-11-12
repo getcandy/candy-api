@@ -7,12 +7,30 @@ use GetCandy\Api\Core\Channels\Interfaces\ChannelFactoryInterface;
 use GetCandy\Api\Core\Channels\Models\Channel;
 use GetCandy\Api\Providers\ApiServiceProvider;
 use Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables;
-use TaxCalculator;
 use Tests\Stubs\User;
 
 abstract class TestCase extends \Orchestra\Testbench\TestCase
 {
-    protected function setUp()
+    protected $adminRoutes = [
+        'import',
+        'activity-log',
+        'associations/groups',
+        'categories/parent/{parentID?}',
+        'collections/{collection}/routes',
+        'products/variants',
+        'products/{product}/urls',
+    ];
+
+    protected $clientRoutes = [
+        'orders/process',
+        'basket-lines',
+        'payments/3d-secure',
+        'payments/provider',
+        'payments/providers',
+        'payments/types',
+    ];
+
+    protected function setUp() : void
     {
         parent::setUp();
 
@@ -20,12 +38,6 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         $this->artisan('vendor:publish', ['--provider' => 'Spatie\Activitylog\ActivitylogServiceProvider', '--tag' => 'migrations']);
         $this->artisan('migrate', ['--database' => 'testing']);
         $this->artisan('db:seed', ['--class' => '\Seeds\TestingDatabaseSeeder']);
-        // $this->artisan('passport:install');
-
-        // // By Default, set up everything as taxable
-        // TaxCalculator::setTax(
-        //     app('api')->taxes()->getDefaultRecord()
-        // );
 
         // Make sure our channel is set.
         $channel = app()->getInstance()->make(ChannelFactoryInterface::class);
@@ -93,7 +105,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             'CurrencyConverter' => \GetCandy\Api\Core\Currencies\Facades\CurrencyConverter::class,
             'TaxCalculator' => \Facades\GetCandy\Api\Core\Taxes\TaxCalculator::class,
             'PriceCalculator' => \Facades\GetCandy\Api\Core\Pricing\PriceCalculator::class,
-            'GetCandy' => \Facades\GetCandy\Api\Core\Helpers\GetCandy::class,
+            'GetCandy' => \GetCandy\Api\Core\Facades\GetCandyFacade::class,
         ];
     }
 
