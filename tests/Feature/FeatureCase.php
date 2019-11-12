@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
 use Laravel\Passport\Client;
+use Tests\TestCase;
 
 abstract class FeatureCase extends TestCase
 {

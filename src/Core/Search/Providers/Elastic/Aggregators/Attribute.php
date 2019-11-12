@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Core\Search\Providers\Elastic\Aggregators;
 
-use Elastica\Query\Match;
-use Elastica\Query\BoolQuery;
-use Elastica\Aggregation\Terms;
 use Elastica\Aggregation\Filter;
+use Elastica\Aggregation\Terms;
+use Elastica\Query\BoolQuery;
+use Elastica\Query\Match;
 
 class Attribute
 {

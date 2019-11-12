@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Core\Baskets\Services;
 
-use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Core\Baskets\Models\SavedBasket;
+use GetCandy\Api\Core\Scaffold\BaseService;
 
 class SavedBasketService extends BaseService
 {

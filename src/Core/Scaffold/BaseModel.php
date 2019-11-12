@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Core\Scaffold;
 
+use GetCandy\Api\Core\Routes\Models\Route;
 use GetCandy\Api\Core\Traits\Hashids;
 use Illuminate\Database\Eloquent\Model;
-use GetCandy\Api\Core\Routes\Models\Route;
 
 abstract class BaseModel extends Model
 {

@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Http\Controllers\Categories;
 
-use Illuminate\Http\Request;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Layouts\AttachRequest;
 use GetCandy\Api\Http\Transformers\Fractal\Categories\CategoryTransformer;
+use Illuminate\Http\Request;
 
 class LayoutController extends BaseController
 {

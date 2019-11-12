@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Core\Pages\Models;
 
-use GetCandy\Api\Core\Scaffold\BaseModel;
-use GetCandy\Api\Core\Layouts\Models\Layout;
 use GetCandy\Api\Core\Channels\Models\Channel;
 use GetCandy\Api\Core\Languages\Models\Language;
+use GetCandy\Api\Core\Layouts\Models\Layout;
+use GetCandy\Api\Core\Scaffold\BaseModel;
 
 class Page extends BaseModel
 {

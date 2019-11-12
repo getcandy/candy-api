@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Baskets;
 
-use GetCandy\Api\Core\Baskets\Models\SavedBasket;
 use GetCandy\Api\Core\Baskets\Factories\BasketFactory;
+use GetCandy\Api\Core\Baskets\Models\SavedBasket;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 
 class SavedBasketTransformer extends BaseTransformer

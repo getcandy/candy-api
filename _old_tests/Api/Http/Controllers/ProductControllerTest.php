@@ -3,10 +3,10 @@
 namespace Tests;
 
 use Event;
-use GetCandy\Api\Layouts\Models\Layout;
-use GetCandy\Api\Products\Models\Product;
 use GetCandy\Api\Attributes\Models\Attribute;
 use GetCandy\Api\Collections\Models\Collection;
+use GetCandy\Api\Layouts\Models\Layout;
+use GetCandy\Api\Products\Models\Product;
 use GetCandy\Api\Products\Models\ProductFamily;
 
 /**

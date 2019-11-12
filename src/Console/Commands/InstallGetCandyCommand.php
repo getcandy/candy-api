@@ -2,20 +2,19 @@
 
 namespace GetCandy\Api\Console\Commands;
 
-use Hash;
-use Laravel\Passport\Client;
-use Illuminate\Console\Command;
-use Spatie\Permission\Models\Role;
-use GetCandy\Api\Core\Auth\Models\User;
-use GetCandy\Api\Core\Taxes\Models\Tax;
-use GetCandy\Api\Core\Products\Models\Product;
-use GetCandy\Api\Core\Languages\Models\Language;
-use GetCandy\Api\Core\Categories\Models\Category;
-use GetCandy\Api\Core\Currencies\Models\Currency;
-use GetCandy\Api\Core\Attributes\Models\Attribute;
-use GetCandy\Api\Core\Customers\Models\CustomerGroup;
-use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
 use GetCandy\Api\Core\Associations\Models\AssociationGroup;
+use GetCandy\Api\Core\Attributes\Models\Attribute;
+use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
+use GetCandy\Api\Core\Auth\Models\User;
+use GetCandy\Api\Core\Currencies\Models\Currency;
+use GetCandy\Api\Core\Customers\Models\CustomerGroup;
+use GetCandy\Api\Core\Languages\Models\Language;
+use GetCandy\Api\Core\Products\Models\Product;
+use GetCandy\Api\Core\Taxes\Models\Tax;
+use Hash;
+use Illuminate\Console\Command;
+use Laravel\Passport\Client;
+use Spatie\Permission\Models\Role;
 
 class InstallGetCandyCommand extends Command
 {

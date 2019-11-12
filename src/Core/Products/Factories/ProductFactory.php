@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Core\Products\Factories;
 
-use Illuminate\Support\Collection;
-use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Products\Interfaces\ProductInterface;
 use GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface;
+use GetCandy\Api\Core\Products\Models\Product;
+use Illuminate\Support\Collection;
 
 class ProductFactory implements ProductInterface
 {

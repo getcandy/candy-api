@@ -2,11 +2,11 @@
 
 namespace Seeds;
 
-use Illuminate\Database\Seeder;
-use GetCandy\Api\Core\Auth\Models\User;
-use GetCandy\Api\Core\Users\Models\UserDetail;
 use GetCandy\Api\Core\Addresses\Models\Address;
+use GetCandy\Api\Core\Auth\Models\User;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
+use GetCandy\Api\Core\Users\Models\UserDetail;
+use Illuminate\Database\Seeder;
 
 class UserTableSeeder extends Seeder
 {

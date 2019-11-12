@@ -11,7 +11,7 @@ class RoleResource extends AbstractResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'guard_name' => $this->guard_name
+            'guard_name' => $this->guard_name,
         ];
     }
 

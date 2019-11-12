@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Http\Controllers\Settings;
 
-use Illuminate\Http\Request;
 use GetCandy\Api\Http\Controllers\BaseController;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use GetCandy\Api\Http\Transformers\Fractal\Settings\SettingTransformer;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
 
 class SettingController extends BaseController
 {

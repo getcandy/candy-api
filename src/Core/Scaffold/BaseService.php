@@ -3,8 +3,8 @@
 namespace GetCandy\Api\Core\Scaffold;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
+use Illuminate\Database\Eloquent\Model;
 
 abstract class BaseService
 {

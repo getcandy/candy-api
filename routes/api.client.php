@@ -13,10 +13,10 @@ Route::group([
     'prefix' => 'api/'.config('app.api_version', 'v1'),
     'namespace' => 'GetCandy\Api\Http\Controllers',
 ], function ($router) {
-
     $router->get('/', function () {
         $channel = app()->make(GetCandy\Api\Core\Channels\Interfaces\ChannelFactoryInterface::class);
         $currency = app()->make(GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface::class);
+
         return response()->json([
             'version' => GetCandy\Api\Core\CandyApi::version(),
             'locale' => app()->getLocale(),

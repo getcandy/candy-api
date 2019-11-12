@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Core\Products\Services;
 
-use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Products\Models\ProductAssociation;
+use GetCandy\Api\Core\Scaffold\BaseService;
 
 class ProductAssociationService extends BaseService
 {

@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Core\Products\Factories;
 
-use Illuminate\Database\Eloquent\Model;
-use GetCandy\Api\Core\Scaffold\AbstractFactory;
-use GetCandy\Api\Core\Products\Models\ProductVariant;
 use GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface;
+use GetCandy\Api\Core\Products\Models\ProductVariant;
+use GetCandy\Api\Core\Scaffold\AbstractFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class ProductVariantFactory extends AbstractFactory implements ProductVariantInterface
 {

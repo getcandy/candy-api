@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Core\Search\Providers\Elastic\Filters;
 
-use Elastica\Query\Term;
-use Elastica\Query\Nested;
 use Elastica\Query\BoolQuery;
+use Elastica\Query\Nested;
+use Elastica\Query\Term;
 use GetCandy\Api\Core\Search\Providers\Elastic\Aggregators\Category;
 
 class CategoryFilter extends AbstractFilter

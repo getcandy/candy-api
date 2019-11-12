@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Associations\Services;
 
-use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Associations\Models\AssociationGroup;
+use GetCandy\Api\Core\Scaffold\BaseService;
 
 class AssociationGroupService extends BaseService
 {

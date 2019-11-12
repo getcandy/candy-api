@@ -2,15 +2,15 @@
 
 namespace GetCandy\Api\Http\Controllers\Channels;
 
-use Illuminate\Http\Request;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Channels\CreateRequest;
 use GetCandy\Api\Http\Requests\Channels\DeleteRequest;
 use GetCandy\Api\Http\Requests\Channels\UpdateRequest;
+use GetCandy\Api\Http\Transformers\Fractal\Channels\ChannelTransformer;
 use GetCandy\Exceptions\MinimumRecordRequiredException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use GetCandy\Api\Http\Transformers\Fractal\Channels\ChannelTransformer;
 
 class ChannelController extends BaseController
 {

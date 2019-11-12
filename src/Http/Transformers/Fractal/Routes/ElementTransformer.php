@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Routes;
 
-use Illuminate\Database\Eloquent\Model;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Layouts\LayoutTransformer;
+use Illuminate\Database\Eloquent\Model;
 
 class ElementTransformer extends BaseTransformer
 {

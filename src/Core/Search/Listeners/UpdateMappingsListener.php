@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Core\Search\Listeners;
 
-use Illuminate\Contracts\Queue\ShouldQueue;
+use GetCandy\Api\Core\Attributes\Events\AttributeSavedEvent;
 use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Search\Jobs\ReindexSearchJob;
-use GetCandy\Api\Core\Attributes\Events\AttributeSavedEvent;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
 class UpdateMappingsListener implements ShouldQueue
 {

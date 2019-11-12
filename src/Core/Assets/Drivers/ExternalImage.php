@@ -2,11 +2,11 @@
 
 namespace GetCandy\Api\Core\Assets\Drivers;
 
-use Storage;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
-use GetCandy\Api\Core\Assets\Models\Asset;
 use GetCandy\Api\Core\Assets\Jobs\GenerateTransforms;
+use GetCandy\Api\Core\Assets\Models\Asset;
+use Illuminate\Database\Eloquent\Model;
+use Storage;
 
 class ExternalImage extends BaseUrlDriver
 {

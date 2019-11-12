@@ -2,13 +2,13 @@
 
 namespace GetCandy\Api\Http\Controllers\Shipping;
 
-use Illuminate\Http\Request;
 use GetCandy\Api\Http\Controllers\BaseController;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use GetCandy\Api\Http\Requests\Shipping\Zones\CreateRequest;
 use GetCandy\Api\Http\Requests\Shipping\Zones\UpdateRequest;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use GetCandy\Api\Http\Transformers\Fractal\Shipping\ShippingZoneTransformer;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ShippingZoneController extends BaseController
 {

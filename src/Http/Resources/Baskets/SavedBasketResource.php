@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Http\Resources\Baskets;
 
-use GetCandy\Api\Http\Resources\AbstractResource;
 use GetCandy\Api\Core\Baskets\Factories\BasketFactory;
+use GetCandy\Api\Http\Resources\AbstractResource;
 
 class SavedBasketResource extends AbstractResource
 {

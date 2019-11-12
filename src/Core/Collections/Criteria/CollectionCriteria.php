@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Collections\Criteria;
 
-use GetCandy\Api\Core\Scaffold\AbstractCriteria;
 use GetCandy\Api\Core\Collections\Models\Collection;
+use GetCandy\Api\Core\Scaffold\AbstractCriteria;
 
 class CollectionCriteria extends AbstractCriteria
 {

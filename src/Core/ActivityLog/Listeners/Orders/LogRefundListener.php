@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Core\ActivityLog\Listeners\Orders;
 
-use Illuminate\Http\Request;
-use GetCandy\Api\Core\Orders\Events\OrderRefundEvent;
 use GetCandy\Api\Core\ActivityLog\Interfaces\ActivityLogFactoryInterface;
+use GetCandy\Api\Core\Orders\Events\OrderRefundEvent;
+use Illuminate\Http\Request;
 
 class LogRefundListener
 {

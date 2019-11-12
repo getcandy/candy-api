@@ -3,12 +3,12 @@
 namespace GetCandy\Api\Core\Discounts\Services;
 
 use Carbon\Carbon;
+use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
+use GetCandy\Api\Core\Discounts\Discount as DiscountFactory;
+use GetCandy\Api\Core\Discounts\Models\Discount;
+use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaItem;
 use GetCandy\Api\Core\Discounts\RewardSet;
 use GetCandy\Api\Core\Scaffold\BaseService;
-use GetCandy\Api\Core\Discounts\Models\Discount;
-use GetCandy\Api\Core\Discounts\Discount as DiscountFactory;
-use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaItem;
-use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
 
 class DiscountService extends BaseService
 {

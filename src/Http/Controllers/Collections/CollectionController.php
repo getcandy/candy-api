@@ -2,15 +2,15 @@
 
 namespace GetCandy\Api\Http\Controllers\Collections;
 
-use Illuminate\Http\Request;
+use GetCandy\Api\Core\Collections\Criteria\CollectionCriteria;
 use GetCandy\Api\Http\Controllers\BaseController;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use GetCandy\Api\Http\Requests\Collections\CreateRequest;
 use GetCandy\Api\Http\Requests\Collections\DeleteRequest;
 use GetCandy\Api\Http\Requests\Collections\UpdateRequest;
-use GetCandy\Api\Core\Collections\Criteria\CollectionCriteria;
-use GetCandy\Api\Http\Resources\Collections\CollectionResource;
 use GetCandy\Api\Http\Resources\Collections\CollectionCollection;
+use GetCandy\Api\Http\Resources\Collections\CollectionResource;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CollectionController extends BaseController
@@ -24,6 +24,7 @@ class CollectionController extends BaseController
         $collection = $criteria->include($request->includes)->limit(
             $request->per_page
         )->get();
+
         return new CollectionCollection($collection);
     }
 
