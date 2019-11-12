@@ -4,8 +4,8 @@ namespace GetCandy\Api\Core\Traits;
 
 use Auth;
 use Carbon\Carbon;
-use GetCandy\Api\Core\GetCandy;
 use GetCandy\Api\Core\Channels\Models\Channel;
+use GetCandy\Api\Core\GetCandy;
 
 trait HasChannels
 {
