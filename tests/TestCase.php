@@ -12,7 +12,26 @@ use GetCandy\Api\Core\Channels\Interfaces\ChannelFactoryInterface;
 
 abstract class TestCase extends \Orchestra\Testbench\TestCase
 {
-    protected function setUp()
+    protected $adminRoutes = [
+        'import',
+        'activity-log',
+        'associations/groups',
+        'categories/parent/{parentID?}',
+        'collections/{collection}/routes',
+        'products/variants',
+        'products/{product}/urls',
+    ];
+
+    protected $clientRoutes = [
+        'orders/process',
+        'basket-lines',
+        'payments/3d-secure',
+        'payments/provider',
+        'payments/providers',
+        'payments/types',
+    ];
+
+    protected function setUp() : void
     {
         parent::setUp();
 
