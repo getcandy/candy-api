@@ -44,13 +44,13 @@ class RouteRegistrar
     {
         $this->router->group([
             'middleware' => 'api.client',
-        ], realpath(__DIR__.'/../../routes/api.client.php'));
+        ], __DIR__.'/../../routes/api.client.php');
     }
 
     public function forAdmins()
     {
         $this->router->group([
             'middleware' => 'auth:api',
-        ], realpath(__DIR__.'/../../routes/api.php'));
+        ], __DIR__.'/../../routes/api.php');
     }
 }

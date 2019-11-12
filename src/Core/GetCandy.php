@@ -2,6 +2,8 @@
 
 namespace GetCandy\Api\Core;
 
+use File;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Facades\Route;
 
 class GetCandy
@@ -30,8 +32,8 @@ class GetCandy
     public static function version()
     {
         try {
-            $packages = collect(json_decode(file_get_contents(base_path('vendor/composer/installed.json'))));
-        } catch (\ErrorException $e) {
+            $packages = collect(json_decode(File::get(base_path('vendor/composer/installed.json'))));
+        } catch (FileNotFoundException $e) {
             return 'Unknown';
         }
 
