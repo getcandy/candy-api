@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use GetCandy\Api\Core\Utils\Import\ImportManager;
 use GetCandy\Api\Core\Utils\Import\ImportManagerContract;
+use Illuminate\Support\ServiceProvider;
 
 class UtilServiceProvider extends ServiceProvider
 {

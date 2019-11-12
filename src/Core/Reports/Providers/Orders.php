@@ -52,7 +52,6 @@ class Orders extends AbstractProvider
             Carbon::now()
         )->count();
 
-
         $previousMonth = $this->getOrderQuery(
             Carbon::now()->subMonth()->startOfMonth(),
             Carbon::now()->subMonth()

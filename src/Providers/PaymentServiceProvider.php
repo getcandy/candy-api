@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use GetCandy\Api\Core\Payments\PaymentManager;
 use GetCandy\Api\Core\Payments\PaymentContract;
+use GetCandy\Api\Core\Payments\PaymentManager;
+use Illuminate\Support\ServiceProvider;
 
 class PaymentServiceProvider extends ServiceProvider
 {

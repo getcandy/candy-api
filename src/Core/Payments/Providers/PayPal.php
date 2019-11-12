@@ -2,13 +2,13 @@
 
 namespace GetCandy\Api\Core\Payments\Providers;
 
-use PayPal\Api\Payment;
-use PayPal\Rest\ApiContext;
-use PayPal\Auth\OAuthTokenCredential;
 use GetCandy\Api\Core\Orders\Models\Order;
-use GetCandy\Api\Core\Payments\PaymentResponse;
-use PayPal\Exception\PayPalConnectionException;
 use GetCandy\Api\Core\Payments\Models\Transaction;
+use GetCandy\Api\Core\Payments\PaymentResponse;
+use PayPal\Api\Payment;
+use PayPal\Auth\OAuthTokenCredential;
+use PayPal\Exception\PayPalConnectionException;
+use PayPal\Rest\ApiContext;
 
 class PayPal extends AbstractProvider
 {

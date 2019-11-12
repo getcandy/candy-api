@@ -2,27 +2,27 @@
 
 namespace GetCandy\Api\Core\Orders\Services;
 
-use DB;
-use PDF;
 use Auth;
 use Carbon\Carbon;
-use GetCandy\Api\Core\Orders\Models\Order;
-use GetCandy\Api\Core\Scaffold\BaseService;
+use DB;
+use GetCandy\Api\Core\ActivityLog\Interfaces\ActivityLogFactoryInterface;
 use GetCandy\Api\Core\Baskets\Models\Basket;
-use GetCandy\Api\Core\Orders\Models\OrderDiscount;
-use GetCandy\Api\Core\Orders\Events\OrderSavedEvent;
-use GetCandy\Api\Core\Orders\Jobs\OrderNotification;
 use GetCandy\Api\Core\Baskets\Services\BasketService;
+use GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface;
+use GetCandy\Api\Core\Orders\Events\OrderBeforeSavedEvent;
+use GetCandy\Api\Core\Orders\Events\OrderProcessedEvent;
+use GetCandy\Api\Core\Orders\Events\OrderSavedEvent;
+use GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException;
+use GetCandy\Api\Core\Orders\Exceptions\IncompleteOrderException;
+use GetCandy\Api\Core\Orders\Interfaces\OrderServiceInterface;
+use GetCandy\Api\Core\Orders\Jobs\OrderNotification;
+use GetCandy\Api\Core\Orders\Models\Order;
+use GetCandy\Api\Core\Orders\Models\OrderDiscount;
 use GetCandy\Api\Core\Payments\Services\PaymentService;
 use GetCandy\Api\Core\Pricing\PriceCalculatorInterface;
-use GetCandy\Api\Core\Orders\Events\OrderProcessedEvent;
-use GetCandy\Api\Core\Orders\Events\OrderBeforeSavedEvent;
-use GetCandy\Api\Core\Orders\Interfaces\OrderServiceInterface;
 use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
-use GetCandy\Api\Core\Orders\Exceptions\IncompleteOrderException;
-use GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException;
-use GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface;
-use GetCandy\Api\Core\ActivityLog\Interfaces\ActivityLogFactoryInterface;
+use GetCandy\Api\Core\Scaffold\BaseService;
+use PDF;
 
 class OrderService extends BaseService implements OrderServiceInterface
 {
@@ -233,7 +233,6 @@ class OrderService extends BaseService implements OrderServiceInterface
             $field => $value,
         ];
 
-
         $result = $query->update($payload);
 
         if (! $result) {
@@ -279,7 +278,6 @@ class OrderService extends BaseService implements OrderServiceInterface
         }
 
         if (! empty($data['status'])) {
-
             $this->activity->as(Auth::user())
                 ->action('status-update')
                 ->against($order)

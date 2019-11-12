@@ -2,8 +2,8 @@
 
 namespace Seeds;
 
-use Illuminate\Database\Seeder;
 use GetCandy\Api\Core\Taxes\Models\Tax;
+use Illuminate\Database\Seeder;
 
 class TaxTableSeeder extends Seeder
 {

@@ -2,11 +2,11 @@
 
 namespace GetCandy\Api\Http\Controllers\Auth;
 
-use Illuminate\Support\Facades\Password;
 use GetCandy\Api\Http\Controllers\BaseController;
-use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use GetCandy\Api\Http\Requests\Auth\ForgotPasswordRequest;
 use GetCandy\Api\Http\Transformers\Fractal\Auth\PasswordTokenTransformer;
+use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
+use Illuminate\Support\Facades\Password;
 
 class ForgotPasswordController extends BaseController
 {

@@ -3,9 +3,9 @@
 namespace GetCandy\Api\Core\Traits;
 
 use Illuminate\Http\Response;
-use League\Fractal\Resource\Item;
-use League\Fractal\Resource\Collection;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
+use League\Fractal\Resource\Collection;
+use League\Fractal\Resource\Item;
 
 trait Fractal
 {

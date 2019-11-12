@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Traits;
 
-use GetCandy\Api\Core\Scopes\CustomerGroupScope;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
+use GetCandy\Api\Core\Scopes\CustomerGroupScope;
 
 trait HasCustomerGroups
 {

@@ -3,13 +3,13 @@
 namespace GetCandy\Api\Jobs\Utils;
 
 use Carbon\Carbon;
+use GetCandy\Api\Core\Utils\Import\ImportManagerContract;
+use GetCandy\Api\Core\Utils\Import\Models\Import;
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use GetCandy\Api\Core\Utils\Import\Models\Import;
-use GetCandy\Api\Core\Utils\Import\ImportManagerContract;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
 class ImportJob implements ShouldQueue
 {

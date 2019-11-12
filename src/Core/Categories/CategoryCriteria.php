@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Categories;
 
-use GetCandy\Api\Core\Scaffold\AbstractCriteria;
 use GetCandy\Api\Core\Categories\Models\Category;
+use GetCandy\Api\Core\Scaffold\AbstractCriteria;
 
 class CategoryCriteria extends AbstractCriteria
 {

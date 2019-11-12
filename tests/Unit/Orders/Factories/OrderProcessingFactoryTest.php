@@ -2,13 +2,13 @@
 
 namespace Tests\Unit\Orders\Services;
 
-use Tests\TestCase;
-use Tests\Stubs\TestPaymentManager;
-use GetCandy\Api\Core\Payments\PaymentContract;
-use GetCandy\Api\Core\Payments\Models\PaymentType;
 use GetCandy\Api\Core\Orders\Factories\OrderFactory;
 use GetCandy\Api\Core\Orders\Factories\OrderProcessingFactory;
 use GetCandy\Api\Core\Orders\Interfaces\OrderProcessingFactoryInterface;
+use GetCandy\Api\Core\Payments\Models\PaymentType;
+use GetCandy\Api\Core\Payments\PaymentContract;
+use Tests\Stubs\TestPaymentManager;
+use Tests\TestCase;
 
 class OrderProcessingFactoryTest extends TestCase
 {

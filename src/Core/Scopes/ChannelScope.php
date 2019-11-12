@@ -3,9 +3,9 @@
 namespace GetCandy\Api\Core\Scopes;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Builder;
 use GetCandy\Api\Core\Channels\Interfaces\ChannelFactoryInterface;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 class ChannelScope extends AbstractScope
 {

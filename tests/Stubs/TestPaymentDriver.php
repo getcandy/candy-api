@@ -2,8 +2,8 @@
 
 namespace Tests\Stubs;
 
-use GetCandy\Api\Core\Payments\PaymentResponse;
 use GetCandy\Api\Core\Payments\Models\Transaction;
+use GetCandy\Api\Core\Payments\PaymentResponse;
 
 class TestPaymentDriver
 {

@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use GetCandy\Api\Core\Taxes\TaxCalculator;
 use GetCandy\Api\Core\Taxes\Interfaces\TaxCalculatorInterface;
+use GetCandy\Api\Core\Taxes\TaxCalculator;
+use Illuminate\Support\ServiceProvider;
 
 class TaxServiceProvider extends ServiceProvider
 {

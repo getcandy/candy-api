@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Core\Shipping;
 
-use Illuminate\Support\Manager;
+use GetCandy\Api\Core\Shipping\Providers\CollectionProvider;
 use GetCandy\Api\Core\Shipping\Providers\RegionalProvider;
 use GetCandy\Api\Core\Shipping\Providers\StandardProvider;
-use GetCandy\Api\Core\Shipping\Providers\CollectionProvider;
+use Illuminate\Support\Manager;
 
 class ShippingCalculator extends Manager
 {

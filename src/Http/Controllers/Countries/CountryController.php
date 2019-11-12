@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Http\Controllers\Countries;
 
-use Illuminate\Http\Request;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Transformers\Fractal\Countries\CountryGroupTransformer;
+use Illuminate\Http\Request;
 
 class CountryController extends BaseController
 {

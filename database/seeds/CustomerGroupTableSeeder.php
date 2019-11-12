@@ -2,8 +2,8 @@
 
 namespace Seeds;
 
-use Illuminate\Database\Seeder;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
+use Illuminate\Database\Seeder;
 
 class CustomerGroupTableSeeder extends Seeder
 {

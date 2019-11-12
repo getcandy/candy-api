@@ -2,18 +2,18 @@
 
 namespace GetCandy\Api\Http\Controllers\Products;
 
-use Illuminate\Http\Request;
+use GetCandy\Api\Core\Products\Criteria\ProductFamilyCriteria;
 use GetCandy\Api\Http\Controllers\BaseController;
-use GetCandy\Exceptions\InvalidLanguageException;
-use GetCandy\Exceptions\MinimumRecordRequiredException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use GetCandy\Api\Http\Requests\ProductFamilies\CreateRequest;
 use GetCandy\Api\Http\Requests\ProductFamilies\DeleteRequest;
 use GetCandy\Api\Http\Requests\ProductFamilies\UpdateRequest;
-use GetCandy\Api\Core\Products\Criteria\ProductFamilyCriteria;
 use GetCandy\Api\Http\Resources\Products\ProductFamilyResource;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use GetCandy\Api\Http\Transformers\Fractal\Products\ProductFamilyTransformer;
+use GetCandy\Exceptions\InvalidLanguageException;
+use GetCandy\Exceptions\MinimumRecordRequiredException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ProductFamilyController extends BaseController
 {

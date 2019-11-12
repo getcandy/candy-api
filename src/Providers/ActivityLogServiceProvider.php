@@ -2,11 +2,11 @@
 
 namespace GetCandy\Api\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use GetCandy\Api\Core\ActivityLog\Criteria\ActivityLogCriteria;
 use GetCandy\Api\Core\ActivityLog\Factories\ActivityLogFactory;
-use GetCandy\Api\Core\ActivityLog\Interfaces\ActivityLogFactoryInterface;
 use GetCandy\Api\Core\ActivityLog\Interfaces\ActivityLogCriteriaInterface;
+use GetCandy\Api\Core\ActivityLog\Interfaces\ActivityLogFactoryInterface;
+use Illuminate\Support\ServiceProvider;
 
 class ActivityLogServiceProvider extends ServiceProvider
 {

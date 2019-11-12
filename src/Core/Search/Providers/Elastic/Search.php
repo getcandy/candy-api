@@ -3,8 +3,8 @@
 namespace GetCandy\Api\Core\Search\Providers\Elastic;
 
 use Elastica\Query;
-use Elastica\Suggest;
 use Elastica\Query\Wildcard;
+use Elastica\Suggest;
 use GetCandy\Api\Core\Search\ClientContract;
 use GetCandy\Api\Core\Search\Providers\Elastic\Sorts\CategorySort;
 

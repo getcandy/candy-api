@@ -2,12 +2,12 @@
 
 namespace GetCandy\Api\Core\Assets\Drivers;
 
-use Storage;
-use Image as InterventionImage;
-use Symfony\Component\Finder\SplFileInfo;
-use GetCandy\Api\Core\Assets\Jobs\GenerateTransforms;
-use Intervention\Image\Exception\NotReadableException;
 use GetCandy\Api\Core\Assets\Contracts\AssetDriverContract;
+use GetCandy\Api\Core\Assets\Jobs\GenerateTransforms;
+use Image as InterventionImage;
+use Intervention\Image\Exception\NotReadableException;
+use Storage;
+use Symfony\Component\Finder\SplFileInfo;
 
 class Image extends BaseUploadDriver implements AssetDriverContract
 {
@@ -38,7 +38,7 @@ class Image extends BaseUploadDriver implements AssetDriverContract
             //
         }
 
-        $asset->primary = !$model->assets()->where('kind', '!=', 'application')->exists();
+        $asset->primary = ! $model->assets()->where('kind', '!=', 'application')->exists();
 
         $model->assets()->save($asset);
 

@@ -2,15 +2,15 @@
 
 namespace GetCandy\Api\Http\Controllers\Baskets;
 
-use Illuminate\Support\Facades\Request;
-use GetCandy\Api\Http\Controllers\BaseController;
-use GetCandy\Api\Http\Resources\Baskets\BasketResource;
-use GetCandy\Api\Core\Baskets\Services\BasketLineService;
-use GetCandy\Api\Http\Requests\Baskets\UpdateLineRequest;
 use GetCandy\Api\Core\Baskets\Factories\BasketLineFactory;
+use GetCandy\Api\Core\Baskets\Services\BasketLineService;
+use GetCandy\Api\Http\Controllers\BaseController;
+use GetCandy\Api\Http\Requests\Baskets\ChangeQuantityRequest;
 use GetCandy\Api\Http\Requests\Baskets\CreateLinesRequest;
 use GetCandy\Api\Http\Requests\Baskets\DeleteLinesRequest;
-use GetCandy\Api\Http\Requests\Baskets\ChangeQuantityRequest;
+use GetCandy\Api\Http\Requests\Baskets\UpdateLineRequest;
+use GetCandy\Api\Http\Resources\Baskets\BasketResource;
+use Illuminate\Support\Facades\Request;
 
 class BasketLineController extends BaseController
 {

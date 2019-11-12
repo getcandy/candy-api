@@ -2,12 +2,12 @@
 
 namespace GetCandy\Api\Core\Baskets\Factories;
 
-use GetCandy\Api\Core\Orders\Models\Order;
-use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Core\Baskets\Events\BasketFetchedEvent;
-use GetCandy\Api\Core\Baskets\Interfaces\BasketLineInterface;
-use GetCandy\Api\Core\Taxes\Interfaces\TaxCalculatorInterface;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketFactoryInterface;
+use GetCandy\Api\Core\Baskets\Interfaces\BasketLineInterface;
+use GetCandy\Api\Core\Baskets\Models\Basket;
+use GetCandy\Api\Core\Orders\Models\Order;
+use GetCandy\Api\Core\Taxes\Interfaces\TaxCalculatorInterface;
 
 class BasketFactory implements BasketFactoryInterface
 {
@@ -72,7 +72,6 @@ class BasketFactory implements BasketFactoryInterface
         });
 
         $this->basket->hasExclusions = (bool) $exclusions->count();
-
 
         return $this;
     }

@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Channels\Services;
 
-use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Channels\Models\Channel;
+use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Exceptions\MinimumRecordRequiredException;
 
 class ChannelService extends BaseService

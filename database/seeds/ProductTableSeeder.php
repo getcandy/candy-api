@@ -3,14 +3,14 @@
 namespace Seeds;
 
 use Carbon\Carbon;
-use Illuminate\Database\Seeder;
-use GetCandy\Api\Core\Layouts\Models\Layout;
-use GetCandy\Api\Core\Channels\Models\Channel;
-use GetCandy\Api\Core\Products\Models\Product;
-use GetCandy\Api\Core\Languages\Models\Language;
 use GetCandy\Api\Core\Attributes\Models\Attribute;
-use GetCandy\Api\Core\Products\Models\ProductFamily;
+use GetCandy\Api\Core\Channels\Models\Channel;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
+use GetCandy\Api\Core\Languages\Models\Language;
+use GetCandy\Api\Core\Layouts\Models\Layout;
+use GetCandy\Api\Core\Products\Models\Product;
+use GetCandy\Api\Core\Products\Models\ProductFamily;
+use Illuminate\Database\Seeder;
 
 class ProductTableSeeder extends Seeder
 {

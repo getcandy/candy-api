@@ -2,19 +2,19 @@
 
 namespace GetCandy\Api\Core\Categories\Models;
 
-use Kalnoy\Nestedset\NodeTrait;
-use GetCandy\Api\Core\Traits\Assetable;
-use GetCandy\Api\Core\Traits\HasRoutes;
-use GetCandy\Api\Core\Traits\HasLayouts;
-use GetCandy\Api\Core\Scaffold\BaseModel;
-use GetCandy\Api\Core\Traits\HasChannels;
-use GetCandy\Api\Core\Scopes\ChannelScope;
-use GetCandy\Api\Core\Traits\HasAttributes;
 use GetCandy\Api\Core\Categories\QueryBuilder;
 use GetCandy\Api\Core\Channels\Models\Channel;
 use GetCandy\Api\Core\Products\Models\Product;
-use GetCandy\Api\Core\Traits\HasCustomerGroups;
+use GetCandy\Api\Core\Scaffold\BaseModel;
+use GetCandy\Api\Core\Scopes\ChannelScope;
 use GetCandy\Api\Core\Scopes\CustomerGroupScope;
+use GetCandy\Api\Core\Traits\Assetable;
+use GetCandy\Api\Core\Traits\HasAttributes;
+use GetCandy\Api\Core\Traits\HasChannels;
+use GetCandy\Api\Core\Traits\HasCustomerGroups;
+use GetCandy\Api\Core\Traits\HasLayouts;
+use GetCandy\Api\Core\Traits\HasRoutes;
+use Kalnoy\Nestedset\NodeTrait;
 
 class Category extends BaseModel
 {

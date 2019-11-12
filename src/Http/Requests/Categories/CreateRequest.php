@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Http\Requests\Categories;
 
-use GetCandy\Api\Http\Requests\FormRequest;
 use GetCandy\Api\Categories\Models\Category;
+use GetCandy\Api\Http\Requests\FormRequest;
 
 class CreateRequest extends FormRequest
 {

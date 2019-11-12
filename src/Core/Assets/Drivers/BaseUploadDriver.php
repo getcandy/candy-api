@@ -3,8 +3,8 @@
 namespace GetCandy\Api\Core\Assets\Drivers;
 
 use Carbon\Carbon;
-use Symfony\Component\Finder\SplFileInfo;
 use GetCandy\Api\Core\Assets\Models\Asset;
+use Symfony\Component\Finder\SplFileInfo;
 
 abstract class BaseUploadDriver
 {

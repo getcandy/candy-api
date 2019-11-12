@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Search\Providers\Elastic\Filters;
 
-use Elastica\Query\Range;
 use Elastica\Query\BoolQuery;
+use Elastica\Query\Range;
 
 class PriceFilter extends AbstractFilter
 {

@@ -2,11 +2,11 @@
 
 namespace GetCandy\Api\Core\Payments;
 
-use Illuminate\Support\Manager;
-use GetCandy\Api\Core\Payments\Providers\PayPal;
-use GetCandy\Api\Core\Payments\Providers\Offline;
-use GetCandy\Api\Core\Payments\Providers\SagePay;
 use GetCandy\Api\Core\Payments\Providers\Braintree;
+use GetCandy\Api\Core\Payments\Providers\Offline;
+use GetCandy\Api\Core\Payments\Providers\PayPal;
+use GetCandy\Api\Core\Payments\Providers\SagePay;
+use Illuminate\Support\Manager;
 
 class PaymentManager extends Manager implements PaymentContract
 {

@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use GetCandy\Api\Core\Pricing\PriceCalculator;
 use GetCandy\Api\Core\Pricing\PriceCalculatorInterface;
+use Illuminate\Support\ServiceProvider;
 
 class PricingServiceProvider extends ServiceProvider
 {

@@ -3,11 +3,11 @@
 namespace Seeds;
 
 use Carbon\Carbon;
-use Illuminate\Database\Seeder;
 use GetCandy\Api\Core\Discounts\Models\Discount;
-use GetCandy\Api\Core\Discounts\Models\DiscountReward;
-use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaSet;
 use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaItem;
+use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaSet;
+use GetCandy\Api\Core\Discounts\Models\DiscountReward;
+use Illuminate\Database\Seeder;
 
 class DiscountTableSeeder extends Seeder
 {

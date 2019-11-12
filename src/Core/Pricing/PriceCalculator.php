@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Pricing;
 
-use GetCandy\Api\Core\Taxes\Interfaces\TaxCalculatorInterface;
 use GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface;
+use GetCandy\Api\Core\Taxes\Interfaces\TaxCalculatorInterface;
 
 class PriceCalculator implements PriceCalculatorInterface
 {

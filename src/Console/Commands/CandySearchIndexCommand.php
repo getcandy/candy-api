@@ -2,12 +2,11 @@
 
 namespace GetCandy\Api\Console\Commands;
 
-use Illuminate\Console\Command;
-use Illuminate\Contracts\Events\Dispatcher;
-use GetCandy\Api\Core\Search\SearchContract;
-use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Categories\Models\Category;
+use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Search\Jobs\ReindexSearchJob;
+use GetCandy\Api\Core\Search\SearchContract;
+use Illuminate\Console\Command;
 
 class CandySearchIndexCommand extends Command
 {

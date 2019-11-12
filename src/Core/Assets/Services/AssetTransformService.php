@@ -2,15 +2,15 @@
 
 namespace GetCandy\Api\Core\Assets\Services;
 
-use Image;
-use Storage;
 use Carbon\Carbon;
 use GetCandy\Api\Core\Assets\Models\Asset;
-use GetCandy\Api\Core\Scaffold\BaseService;
-use GetCandy\Api\Core\Assets\Models\Transform;
 use GetCandy\Api\Core\Assets\Models\AssetTransform;
-use Intervention\Image\Exception\NotReadableException;
+use GetCandy\Api\Core\Assets\Models\Transform;
+use GetCandy\Api\Core\Scaffold\BaseService;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Image;
+use Intervention\Image\Exception\NotReadableException;
+use Storage;
 
 class AssetTransformService extends BaseService
 {
@@ -51,7 +51,7 @@ class AssetTransformService extends BaseService
         $source = $asset->source;
 
         if ($asset->external) {
-            $path = $source->path . '/' . Carbon::now()->format('Y/m/d');
+            $path = $source->path.'/'.Carbon::now()->format('Y/m/d');
         } else {
             $path = $asset->location;
         }

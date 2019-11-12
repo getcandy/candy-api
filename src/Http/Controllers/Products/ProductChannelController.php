@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Http\Controllers\Products;
 
-use GetCandy\Api\Http\Controllers\BaseController;
-use GetCandy\Api\Http\Resources\Products\ProductResource;
-use GetCandy\Api\Http\Requests\Products\UpdateChannelRequest;
 use GetCandy\Api\Core\Products\Services\ProductChannelService;
+use GetCandy\Api\Http\Controllers\BaseController;
+use GetCandy\Api\Http\Requests\Products\UpdateChannelRequest;
+use GetCandy\Api\Http\Resources\Products\ProductResource;
 
 class ProductChannelController extends BaseController
 {

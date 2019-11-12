@@ -2,18 +2,15 @@
 
 namespace GetCandy\Api\Core\Shipping\Services;
 
-use Illuminate\Pipeline\Pipeline;
-use GetCandy\Api\Core\Shipping\Events;
-use GetCandy\Api\Core\Scaffold\BaseService;
-use GetCandy\Api\Core\Shipping\ShippingCalculator;
-use GetCandy\Api\Core\Baskets\Services\BasketService;
-use GetCandy\Api\Core\Shipping\Models\ShippingMethod;
 use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
-use GetCandy\Api\Core\Shipping\Events\ShippingMethodsFetchedEvent;
+use GetCandy\Api\Core\Baskets\Services\BasketService;
+use GetCandy\Api\Core\Scaffold\BaseService;
+use GetCandy\Api\Core\Shipping\Models\ShippingMethod;
+use GetCandy\Api\Core\Shipping\ShippingCalculator;
+use Illuminate\Pipeline\Pipeline;
 
 class ShippingMethodService extends BaseService
 {
-
     protected $pipes = [];
 
     /**
@@ -110,7 +107,6 @@ class ShippingMethodService extends BaseService
 
         $options = [];
 
-
         foreach ($zones as $zone) {
             foreach ($zone->methods as $index => $method) {
                 if ($method->type == $order->type) {
@@ -134,7 +130,7 @@ class ShippingMethodService extends BaseService
         if ($basket->hasExclusions) {
             $exclusions = collect();
             $basket->lines->each(function ($l) use ($exclusions) {
-                if (!$l->variant) {
+                if (! $l->variant) {
                     return;
                 }
                 $exclusions->push(

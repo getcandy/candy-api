@@ -2,8 +2,8 @@
 
 namespace Seeds;
 
-use Illuminate\Database\Seeder;
 use GetCandy\Api\Core\Settings\Models\Setting;
+use Illuminate\Database\Seeder;
 
 class SettingTableSeeder extends Seeder
 {

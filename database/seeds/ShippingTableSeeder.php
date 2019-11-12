@@ -3,12 +3,12 @@
 namespace Seeds;
 
 use Carbon\Carbon;
-use Illuminate\Database\Seeder;
 use GetCandy\Api\Core\Channels\Models\Channel;
 use GetCandy\Api\Core\Currencies\Models\Currency;
-use GetCandy\Api\Core\Shipping\Models\ShippingPrice;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 use GetCandy\Api\Core\Shipping\Models\ShippingMethod;
+use GetCandy\Api\Core\Shipping\Models\ShippingPrice;
+use Illuminate\Database\Seeder;
 
 class ShippingTableSeeder extends Seeder
 {

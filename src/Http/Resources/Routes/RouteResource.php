@@ -3,7 +3,6 @@
 namespace GetCandy\Api\Http\Resources\Routes;
 
 use GetCandy\Api\Http\Resources\AbstractResource;
-use GetCandy\Api\Http\Resources\Categories\CategoryResource;
 
 class RouteResource extends AbstractResource
 {
@@ -27,12 +26,11 @@ class RouteResource extends AbstractResource
             'element' => ['data' => $this->whenLoaded('element', function () {
                 // Need to guess the element
                 $class = class_basename(get_class($this->element));
-                $resource = 'GetCandy\Api\Http\Resources\\' . str_plural($class) . '\\' . $class . 'Resource';
+                $resource = 'GetCandy\Api\Http\Resources\\'.str_plural($class).'\\'.$class.'Resource';
                 if (class_exists($resource)) {
                     return new $resource($this->element);
                 }
-                return null;
-            })]
+            })],
         ];
     }
 }

@@ -2,16 +2,16 @@
 
 namespace GetCandy\Api\Http\Controllers\Assets;
 
+use Carbon\Carbon;
+use GetCandy\Api\Http\Controllers\BaseController;
+use GetCandy\Api\Http\Requests\Assets\UpdateAllRequest;
+use GetCandy\Api\Http\Requests\Assets\UploadRequest;
+use GetCandy\Api\Http\Transformers\Fractal\Assets\AssetTransformer;
+use GetCandy\Exceptions\InvalidServiceException;
+use Illuminate\Http\Request;
 use Image;
 use Storage;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
-use GetCandy\Exceptions\InvalidServiceException;
-use GetCandy\Api\Http\Controllers\BaseController;
-use GetCandy\Api\Http\Requests\Assets\UploadRequest;
-use GetCandy\Api\Http\Requests\Assets\UpdateAllRequest;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use GetCandy\Api\Http\Transformers\Fractal\Assets\AssetTransformer;
 
 class AssetController extends BaseController
 {

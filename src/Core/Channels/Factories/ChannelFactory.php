@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Core\Channels\Factories;
 
+use GetCandy\Api\Core\Channels\Interfaces\ChannelFactoryInterface;
 use GetCandy\Api\Core\Channels\Services\ChannelService;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use GetCandy\Api\Core\Channels\Interfaces\ChannelFactoryInterface;
 
 class ChannelFactory implements ChannelFactoryInterface
 {

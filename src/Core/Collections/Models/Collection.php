@@ -2,13 +2,13 @@
 
 namespace GetCandy\Api\Core\Collections\Models;
 
-use GetCandy\Api\Core\Traits\Assetable;
-use GetCandy\Api\Core\Traits\HasRoutes;
-use GetCandy\Api\Core\Scaffold\BaseModel;
-use GetCandy\Api\Core\Traits\HasChannels;
-use GetCandy\Api\Core\Traits\HasAttributes;
 use GetCandy\Api\Core\Products\Models\Product;
+use GetCandy\Api\Core\Scaffold\BaseModel;
+use GetCandy\Api\Core\Traits\Assetable;
+use GetCandy\Api\Core\Traits\HasAttributes;
+use GetCandy\Api\Core\Traits\HasChannels;
 use GetCandy\Api\Core\Traits\HasCustomerGroups;
+use GetCandy\Api\Core\Traits\HasRoutes;
 
 class Collection extends BaseModel
 {

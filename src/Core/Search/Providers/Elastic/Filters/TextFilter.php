@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Core\Search\Providers\Elastic\Filters;
 
+use Elastica\Query\BoolQuery;
 use Elastica\Query\Match;
 use Elastica\Query\Range;
-use Elastica\Query\BoolQuery;
 use GetCandy\Api\Core\Search\Providers\Elastic\Aggregators\Attribute;
 
 class TextFilter extends AbstractFilter
@@ -22,15 +22,15 @@ class TextFilter extends AbstractFilter
                 $value = explode('-', $value);
             }
             if (is_array($value)) {
-                $range = new Range($this->field . '.filter', [
+                $range = new Range($this->field.'.filter', [
                     'gte' => (int) $value[0],
                     'lte' => $value[1] == '*' ? null : (int) $value[1],
                 ]);
                 $filter->addShould($range);
             } else {
                 $match = new Match;
-                $match->setFieldAnalyzer($this->field . '.filter', 'keyword');
-                $match->setFieldQuery($this->field . '.filter', $value);
+                $match->setFieldAnalyzer($this->field.'.filter', 'keyword');
+                $match->setFieldQuery($this->field.'.filter', $value);
 
                 $filter->addShould($match);
             }

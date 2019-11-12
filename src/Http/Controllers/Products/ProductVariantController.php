@@ -2,16 +2,16 @@
 
 namespace GetCandy\Api\Http\Controllers\Products;
 
-use Illuminate\Http\Request;
 use GetCandy\Api\Http\Controllers\BaseController;
-use GetCandy\Exceptions\InvalidLanguageException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use GetCandy\Api\Http\Requests\ProductVariants\CreateRequest;
 use GetCandy\Api\Http\Requests\ProductVariants\DeleteRequest;
 use GetCandy\Api\Http\Requests\ProductVariants\UpdateRequest;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use GetCandy\Api\Http\Transformers\Fractal\Products\ProductTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Products\ProductVariantTransformer;
+use GetCandy\Exceptions\InvalidLanguageException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ProductVariantController extends BaseController
 {

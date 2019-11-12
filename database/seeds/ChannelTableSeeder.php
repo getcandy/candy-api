@@ -2,8 +2,8 @@
 
 namespace Seeds;
 
-use Illuminate\Database\Seeder;
 use GetCandy\Api\Core\Channels\Models\Channel;
+use Illuminate\Database\Seeder;
 
 class ChannelTableSeeder extends Seeder
 {

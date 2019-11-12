@@ -2,15 +2,15 @@
 
 namespace GetCandy\Api\Http\Controllers\Attributes;
 
-use Illuminate\Http\Request;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Attributes\CreateRequest;
 use GetCandy\Api\Http\Requests\Attributes\DeleteRequest;
-use GetCandy\Api\Http\Requests\Attributes\UpdateRequest;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use GetCandy\Api\Http\Requests\Attributes\ReorderRequest;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use GetCandy\Api\Http\Requests\Attributes\UpdateRequest;
 use GetCandy\Api\Http\Transformers\Fractal\Attributes\AttributeTransformer;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class AttributeController extends BaseController
 {
