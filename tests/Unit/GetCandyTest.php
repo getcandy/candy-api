@@ -5,6 +5,7 @@ namespace Tests\Unit\Shipping\Factories;
 use Route;
 use Tests\TestCase;
 use GetCandy\Api\Core\GetCandy;
+use GetCandy as GetCandyFacade;
 
 /**
  * @group core
@@ -14,6 +15,21 @@ class GetCandyTest extends TestCase
     public function test_can_set_routes()
     {
         GetCandy::routes();
+
+        $testCases = array_merge($this->clientRoutes, $this->adminRoutes);
+
+        $routes = collect(Route::getRoutes()->getIterator())->map(function ($route) {
+            return $route->uri;
+        });
+
+        foreach ($testCases as $testCase) {
+            $this->assertTrue($routes->contains($testCase));
+        }
+    }
+
+    public function test_can_be_used_as_facade()
+    {
+        GetCandyFacade::routes();
 
         $testCases = array_merge($this->clientRoutes, $this->adminRoutes);
 

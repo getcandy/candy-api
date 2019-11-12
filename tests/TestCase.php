@@ -106,7 +106,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             'CurrencyConverter' => \GetCandy\Api\Core\Currencies\Facades\CurrencyConverter::class,
             'TaxCalculator' => \Facades\GetCandy\Api\Core\Taxes\TaxCalculator::class,
             'PriceCalculator' => \Facades\GetCandy\Api\Core\Pricing\PriceCalculator::class,
-            'GetCandy' => \Facades\GetCandy\Api\Core\Helpers\GetCandy::class,
+            'GetCandy' => \GetCandy\Api\Core\Facades\GetCandyFacade::class,
         ];
     }
 
