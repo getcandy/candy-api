@@ -3,9 +3,9 @@
 namespace Tests\Unit\Payments\Providers;
 
 use Event;
-use Tests\TestCase;
-use Tests\Stubs\TestPaymentProvider;
 use GetCandy\Api\Core\Orders\Factories\OrderFactory;
+use Tests\Stubs\TestPaymentProvider;
+use Tests\TestCase;
 
 /**
  * @group payments

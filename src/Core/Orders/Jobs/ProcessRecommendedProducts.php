@@ -3,13 +3,13 @@
 namespace GetCandy\Api\Core\Orders\Jobs;
 
 use DB;
-use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
 use GetCandy\Api\Core\Orders\Models\Order;
+use GetCandy\Api\Core\Products\Models\ProductVariant;
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use GetCandy\Api\Core\Products\Models\ProductVariant;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
 
 class ProcessRecommendedProducts implements ShouldQueue
 {

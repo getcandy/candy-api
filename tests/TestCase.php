@@ -2,13 +2,12 @@
 
 namespace Tests;
 
-use TaxCalculator;
-use Tests\Stubs\User;
+use GetCandy\Api\Core\Baskets\Factories\BasketFactory;
+use GetCandy\Api\Core\Channels\Interfaces\ChannelFactoryInterface;
 use GetCandy\Api\Core\Channels\Models\Channel;
 use GetCandy\Api\Providers\ApiServiceProvider;
-use GetCandy\Api\Core\Baskets\Factories\BasketFactory;
 use Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables;
-use GetCandy\Api\Core\Channels\Interfaces\ChannelFactoryInterface;
+use Tests\Stubs\User;
 
 abstract class TestCase extends \Orchestra\Testbench\TestCase
 {

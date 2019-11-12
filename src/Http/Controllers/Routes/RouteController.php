@@ -2,15 +2,15 @@
 
 namespace GetCandy\Api\Http\Controllers\Routes;
 
-use Illuminate\Http\Request;
 use GetCandy\Api\Core\Routes\RouteCriteria;
+use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Routes\UpdateRequest;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use GetCandy\Api\Http\Transformers\Fractal\Routes\RouteTransformer;
 use GetCandy\Api\Http\Resources\Routes\RouteResource;
+use GetCandy\Api\Http\Transformers\Fractal\Routes\RouteTransformer;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class RouteController extends BaseController
 {

@@ -3,19 +3,19 @@
 namespace Tests\Unit\Payments\Providers;
 
 use Event;
-use Mockery;
-use Tests\TestCase;
-use GuzzleHttp\Client;
-use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Psr7\Response;
-use GuzzleHttp\Stream\Stream;
-use GuzzleHttp\Handler\MockHandler;
+use GetCandy\Api\Core\Orders\Factories\OrderFactory;
+use GetCandy\Api\Core\Payments\Models\Transaction;
 use GetCandy\Api\Core\Payments\PaymentContract;
 use GetCandy\Api\Core\Payments\PaymentResponse;
 use GetCandy\Api\Core\Payments\Providers\SagePay;
-use GetCandy\Api\Core\Payments\Models\Transaction;
-use GetCandy\Api\Core\Orders\Factories\OrderFactory;
 use GetCandy\Api\Core\Payments\ThreeDSecureResponse;
+use GuzzleHttp\Client;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Stream\Stream;
+use Mockery;
+use Tests\TestCase;
 
 /**
  * @group payments

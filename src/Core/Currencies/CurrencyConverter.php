@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Core\Currencies;
 
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use GetCandy\Api\Core\Currencies\Interfaces\CurrencyServiceInterface;
 use GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface;
+use GetCandy\Api\Core\Currencies\Interfaces\CurrencyServiceInterface;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CurrencyConverter implements CurrencyConverterInterface
 {

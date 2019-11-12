@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Http\Controllers\Search;
 
-use Illuminate\Http\Request;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Search\StoreRequest;
 use GetCandy\Api\Http\Transformers\Fractal\Search\SavedSearchTransformer;
+use Illuminate\Http\Request;
 
 class SavedSearchController extends BaseController
 {

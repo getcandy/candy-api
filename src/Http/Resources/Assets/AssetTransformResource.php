@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Http\Resources\Assets;
 
-use Storage;
 use GetCandy\Api\Http\Resources\AbstractResource;
+use Storage;
 
 class AssetTransformResource extends AbstractResource
 {

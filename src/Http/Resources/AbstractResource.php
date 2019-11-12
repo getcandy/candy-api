@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Http\Resources;
 
-use Illuminate\Support\Collection;
-use Illuminate\Http\Resources\MissingValue;
-use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\MissingValue;
+use Illuminate\Support\Collection;
 
 abstract class AbstractResource extends JsonResource
 {

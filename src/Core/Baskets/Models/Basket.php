@@ -2,11 +2,11 @@
 
 namespace GetCandy\Api\Core\Baskets\Models;
 
-use GetCandy\Api\Core\Traits\HasMeta;
-use GetCandy\Api\Core\Scaffold\BaseModel;
-use GetCandy\Api\Core\Orders\Models\Order;
-use GetCandy\Api\Core\Traits\HasCompletion;
 use GetCandy\Api\Core\Discounts\Models\Discount;
+use GetCandy\Api\Core\Orders\Models\Order;
+use GetCandy\Api\Core\Scaffold\BaseModel;
+use GetCandy\Api\Core\Traits\HasCompletion;
+use GetCandy\Api\Core\Traits\HasMeta;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Basket extends BaseModel
@@ -51,9 +51,9 @@ class Basket extends BaseModel
     public $changed = false;
 
     /**
-     * Whether the basket has exclusions
+     * Whether the basket has exclusions.
      *
-     * @var boolean
+     * @var bool
      */
     public $hasExclusions = false;
 

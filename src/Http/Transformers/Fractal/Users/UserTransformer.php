@@ -2,14 +2,14 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Users;
 
-use Illuminate\Database\Eloquent\Model;
-use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
-use GetCandy\Api\Http\Transformers\Fractal\Orders\OrderTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Addresses\AddressTransformer;
-use GetCandy\Api\Http\Transformers\Fractal\Languages\LanguageTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Baskets\SavedBasketTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Customers\CustomerGroupTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\Languages\LanguageTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\Orders\OrderTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Payments\ReusablePaymentTransformer;
+use Illuminate\Database\Eloquent\Model;
 
 class UserTransformer extends BaseTransformer
 {

@@ -3,8 +3,8 @@
 namespace GetCandy\Api\Core\Search\Services;
 
 use Elastica\ResultSet;
-use GetCandy\Api\Core\Products\Services\ProductService;
 use GetCandy\Api\Core\Categories\Services\CategoryService;
+use GetCandy\Api\Core\Products\Services\ProductService;
 use GetCandy\Api\Core\Search\Interfaces\SearchResultInterface;
 
 class SearchService

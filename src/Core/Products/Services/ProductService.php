@@ -2,17 +2,17 @@
 
 namespace GetCandy\Api\Core\Products\Services;
 
-use Illuminate\Database\Eloquent\Model;
-use GetCandy\Api\Core\Scaffold\BaseService;
-use GetCandy\Api\Core\Products\Models\Product;
+use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
 use GetCandy\Api\Core\Channels\Models\Channel;
-use GetCandy\Api\Core\Scopes\CustomerGroupScope;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
-use GetCandy\Api\Core\Search\Events\IndexableSavedEvent;
 use GetCandy\Api\Core\Products\Events\ProductCreatedEvent;
 use GetCandy\Api\Core\Products\Interfaces\ProductInterface;
+use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Products\Models\ProductRecommendation;
-use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
+use GetCandy\Api\Core\Scaffold\BaseService;
+use GetCandy\Api\Core\Scopes\CustomerGroupScope;
+use GetCandy\Api\Core\Search\Events\IndexableSavedEvent;
+use Illuminate\Database\Eloquent\Model;
 
 class ProductService extends BaseService
 {

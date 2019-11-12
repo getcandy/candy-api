@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Http\Controllers\Auth;
 
-use Illuminate\Support\Facades\Password;
-use Illuminate\Foundation\Auth\ResetsPasswords;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Auth\ResetPasswordRequest;
+use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Support\Facades\Password;
 
 class ResetPasswordController extends BaseController
 {

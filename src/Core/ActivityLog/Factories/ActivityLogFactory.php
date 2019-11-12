@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\ActivityLog\Factories;
 
-use Illuminate\Database\Eloquent\Model;
 use GetCandy\Api\Core\ActivityLog\Interfaces\ActivityLogFactoryInterface;
+use Illuminate\Database\Eloquent\Model;
 
 class ActivityLogFactory implements ActivityLogFactoryInterface
 {

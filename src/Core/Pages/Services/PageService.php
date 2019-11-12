@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Core\Pages\Services;
 
-use Illuminate\Database\Eloquent\Model;
 use GetCandy\Api\Core\Pages\Models\Page;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Exceptions\InvalidLanguageException;
+use Illuminate\Database\Eloquent\Model;
 
 class PageService extends BaseService
 {

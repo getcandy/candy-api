@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Http\Requests\ProductVariants;
 
-use Illuminate\Foundation\Http\FormRequest;
 use GetCandy\Api\Core\Products\Models\ProductVariant;
+use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateRequest extends FormRequest
 {

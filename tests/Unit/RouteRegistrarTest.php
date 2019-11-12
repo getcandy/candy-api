@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Shipping\Factories;
 
+use GetCandy\Api\Core\RouteRegistrar;
 use Route;
 use Tests\TestCase;
-use GetCandy\Api\Core\RouteRegistrar;
 
 /**
  * @group core

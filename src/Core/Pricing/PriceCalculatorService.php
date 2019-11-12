@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Core\Pricing;
 
-use TaxCalculator;
 use CurrencyConverter;
 use InvalidArgumentException;
+use TaxCalculator;
 
 class PriceCalculatorService
 {

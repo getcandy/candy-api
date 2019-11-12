@@ -2,19 +2,19 @@
 
 namespace GetCandy\Api\Core\Auth\Models;
 
-use Laravel\Passport\HasApiTokens;
-use GetCandy\Api\Core\Traits\Hashids;
-use Spatie\Permission\Traits\HasRoles;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Builder;
-use GetCandy\Api\Core\Orders\Models\Order;
-use GetCandy\Api\Core\Baskets\Models\Basket;
-use GetCandy\Api\Core\Users\Models\UserDetail;
 use GetCandy\Api\Core\Addresses\Models\Address;
-use GetCandy\Api\Core\Languages\Models\Language;
+use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use GetCandy\Api\Core\Languages\Models\Language;
+use GetCandy\Api\Core\Orders\Models\Order;
+use GetCandy\Api\Core\Traits\Hashids;
+use GetCandy\Api\Core\Users\Models\UserDetail;
 use GetCandy\Plugins\LegacyPassword\Models\LegacyPassword;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Passport\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {

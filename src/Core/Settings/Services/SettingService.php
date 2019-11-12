@@ -17,7 +17,7 @@ class SettingService extends BaseService
         $setting = $this->model->where('handle', '=', $handle)->firstOrFail();
 
         // If we're getting orders, load up the status info...
-        $setting->config = collect(config('getcandy.' . $handle, []));
+        $setting->config = collect(config('getcandy.'.$handle, []));
 
         return $setting;
     }

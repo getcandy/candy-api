@@ -3,8 +3,8 @@
 namespace GetCandy\Api\Http\Transformers\Fractal\Products;
 
 use GetCandy\Api\Core\Products\Factories\ProductFactory;
-use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use GetCandy\Api\Core\Products\Models\ProductRecommendation;
+use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 
 class ProductRecommendationTransformer extends BaseTransformer
 {

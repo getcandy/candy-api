@@ -2,11 +2,11 @@
 
 namespace GetCandy\Api\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use GetCandy\Api\Core\Currencies\CurrencyConverter;
-use GetCandy\Api\Core\Currencies\Services\CurrencyService;
-use GetCandy\Api\Core\Currencies\Interfaces\CurrencyServiceInterface;
 use GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface;
+use GetCandy\Api\Core\Currencies\Interfaces\CurrencyServiceInterface;
+use GetCandy\Api\Core\Currencies\Services\CurrencyService;
+use Illuminate\Support\ServiceProvider;
 
 class CurrencyServiceProvider extends ServiceProvider
 {

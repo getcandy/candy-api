@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Core\ActivityLog\Criteria;
 
-use Spatie\Activitylog\Models\Activity;
-use GetCandy\Api\Core\Scaffold\AbstractCriteria;
 use GetCandy\Api\Core\ActivityLog\Interfaces\ActivityLogCriteriaInterface;
+use GetCandy\Api\Core\Scaffold\AbstractCriteria;
+use Spatie\Activitylog\Models\Activity;
 
 class ActivityLogCriteria extends AbstractCriteria implements ActivityLogCriteriaInterface
 {

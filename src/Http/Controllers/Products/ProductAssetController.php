@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Http\Controllers\Products;
 
-use Illuminate\Http\Request;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Assets\UploadRequest;
 use GetCandy\Api\Http\Transformers\Fractal\Assets\AssetTransformer;
+use Illuminate\Http\Request;
 
 class ProductAssetController extends BaseController
 {

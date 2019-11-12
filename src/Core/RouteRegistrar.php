@@ -12,6 +12,7 @@ class RouteRegistrar
      * @var \Illuminate\Contracts\Routing\Registrar
      */
     protected $router;
+
     /**
      * Create a new route registrar instance.
      *
@@ -24,7 +25,7 @@ class RouteRegistrar
     }
 
     /**
-     * Register routes for clients and admins
+     * Register routes for clients and admins.
      *
      * @return void
      */
@@ -35,21 +36,21 @@ class RouteRegistrar
     }
 
     /**
-     * Register the client routes
+     * Register the client routes.
      *
      * @return void
      */
     public function forClients()
     {
         $this->router->group([
-            'middleware' => 'api.client'
+            'middleware' => 'api.client',
         ], realpath(__DIR__.'/../../routes/api.client.php'));
     }
 
     public function forAdmins()
     {
         $this->router->group([
-            'middleware' => 'auth:api'
+            'middleware' => 'auth:api',
         ], realpath(__DIR__.'/../../routes/api.php'));
     }
 }

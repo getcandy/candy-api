@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Utils\Import;
 
-use Illuminate\Support\Manager;
 use GetCandy\Api\Core\Utils\Import\Providers\Product;
+use Illuminate\Support\Manager;
 
 class ImportManager extends Manager implements ImportManagerContract
 {

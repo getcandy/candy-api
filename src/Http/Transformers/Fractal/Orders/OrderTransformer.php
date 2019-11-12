@@ -4,9 +4,9 @@ namespace GetCandy\Api\Http\Transformers\Fractal\Orders;
 
 use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
-use GetCandy\Api\Http\Transformers\Fractal\Users\UserTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Baskets\BasketTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Payments\TransactionTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\Users\UserTransformer;
 
 class OrderTransformer extends BaseTransformer
 {

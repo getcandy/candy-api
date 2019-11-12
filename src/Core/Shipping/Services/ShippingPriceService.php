@@ -126,7 +126,7 @@ class ShippingPriceService extends BaseService
     }
 
     /**
-     * Get a region from a zip code
+     * Get a region from a zip code.
      *
      * @param string $zip
      * @return ShippingRegion|null
@@ -136,7 +136,7 @@ class ShippingPriceService extends BaseService
         $postcode = rtrim(strtoupper($zip));
 
         $outcode = rtrim(
-            rtrim(substr($postcode,0,-3)),
+            rtrim(substr($postcode, 0, -3)),
             'a..zA..Z'
         );
 

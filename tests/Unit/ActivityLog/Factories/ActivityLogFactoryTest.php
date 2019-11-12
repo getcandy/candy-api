@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\ActivityLog\Factories;
 
-use Tests\TestCase;
-use Tests\Stubs\User;
-use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\ActivityLog\Factories\ActivityLogFactory;
 use GetCandy\Api\Core\ActivityLog\Interfaces\ActivityLogFactoryInterface;
+use GetCandy\Api\Core\Orders\Models\Order;
+use Tests\Stubs\User;
+use Tests\TestCase;
 
 /**
  * @group logging

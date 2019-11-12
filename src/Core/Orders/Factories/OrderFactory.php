@@ -3,20 +3,20 @@
 namespace GetCandy\Api\Core\Orders\Factories;
 
 use DB;
-use Illuminate\Foundation\Auth\User;
-use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Baskets\Models\Basket;
-use GetCandy\Api\Core\Orders\Models\OrderDiscount;
+use GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface;
 use GetCandy\Api\Core\Orders\Events\OrderSavedEvent;
-use GetCandy\Api\Core\Shipping\Models\ShippingPrice;
-use GetCandy\Api\Core\Pricing\PriceCalculatorInterface;
-use GetCandy\Api\Core\Settings\Services\SettingService;
+use GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException;
 use GetCandy\Api\Core\Orders\Interfaces\OrderFactoryInterface;
-use GetCandy\Api\Core\Taxes\Interfaces\TaxCalculatorInterface;
+use GetCandy\Api\Core\Orders\Models\Order;
+use GetCandy\Api\Core\Orders\Models\OrderDiscount;
+use GetCandy\Api\Core\Pricing\PriceCalculatorInterface;
 use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
 use GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface;
-use GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException;
-use GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface;
+use GetCandy\Api\Core\Settings\Services\SettingService;
+use GetCandy\Api\Core\Shipping\Models\ShippingPrice;
+use GetCandy\Api\Core\Taxes\Interfaces\TaxCalculatorInterface;
+use Illuminate\Foundation\Auth\User;
 
 class OrderFactory implements OrderFactoryInterface
 {

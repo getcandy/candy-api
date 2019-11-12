@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Core\Baskets\Services;
 
-use GetCandy\Api\Core\Scaffold\BaseService;
+use GetCandy\Api\Core\Baskets\Interfaces\BasketFactoryInterface;
 use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Core\Baskets\Models\BasketLine;
-use GetCandy\Api\Core\Baskets\Interfaces\BasketFactoryInterface;
+use GetCandy\Api\Core\Scaffold\BaseService;
 
 class BasketLineService extends BaseService
 {

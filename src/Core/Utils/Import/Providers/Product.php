@@ -2,14 +2,14 @@
 
 namespace GetCandy\Api\Core\Utils\Import\Providers;
 
-use Mail;
 use Carbon\Carbon;
-use Illuminate\Pipeline\Pipeline;
-use GetCandy\Api\Core\Utils\Import\AbstractImporter;
 use GetCandy\Api\Core\Products\Models\ProductVariant;
+use GetCandy\Api\Core\Utils\Import\AbstractImporter;
+use GetCandy\Api\Core\Utils\Import\Pipelines\UpdateAttributes;
 use GetCandy\Api\Core\Utils\Import\Pipelines\UpdateState;
 use GetCandy\Api\Core\Utils\Import\Pipelines\UpdateVariant;
-use GetCandy\Api\Core\Utils\Import\Pipelines\UpdateAttributes;
+use Illuminate\Pipeline\Pipeline;
+use Mail;
 
 class Product extends AbstractImporter
 {

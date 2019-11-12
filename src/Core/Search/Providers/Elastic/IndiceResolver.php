@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Core\Search\Providers\Elastic;
 
-use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Categories\Models\Category;
-use GetCandy\Api\Core\Search\Providers\Elastic\Types\ProductType;
+use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Search\Providers\Elastic\Types\CategoryType;
+use GetCandy\Api\Core\Search\Providers\Elastic\Types\ProductType;
 
 class IndiceResolver
 {

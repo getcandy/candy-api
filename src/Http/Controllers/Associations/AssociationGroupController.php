@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Http\Controllers\Associations;
 
-use Illuminate\Http\Request;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Transformers\Fractal\Associations\AssociationGroupTransformer;
+use Illuminate\Http\Request;
 
 class AssociationGroupController extends BaseController
 {

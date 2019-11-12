@@ -4,15 +4,15 @@ namespace GetCandy\Api\Http\Transformers\Fractal\Products;
 
 use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Traits\IncludesAttributes;
-use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Assets\AssetTransformer;
-use GetCandy\Api\Http\Transformers\Fractal\Routes\RouteTransformer;
-use GetCandy\Api\Http\Transformers\Fractal\Layouts\LayoutTransformer;
-use GetCandy\Api\Http\Transformers\Fractal\Channels\ChannelTransformer;
-use GetCandy\Api\Http\Transformers\Fractal\Discounts\DiscountTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Categories\CategoryTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\Channels\ChannelTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Collections\CollectionTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Customers\CustomerGroupTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\Discounts\DiscountTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\Layouts\LayoutTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\Routes\RouteTransformer;
 
 class ProductTransformer extends BaseTransformer
 {
@@ -137,9 +137,10 @@ class ProductTransformer extends BaseTransformer
 
     public function includePrimaryAsset(Product $product)
     {
-        if (!$product->primaryAsset) {
+        if (! $product->primaryAsset) {
             return $this->null();
         }
+
         return $this->item($product->primaryAsset, new AssetTransformer);
     }
 

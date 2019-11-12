@@ -2,11 +2,11 @@
 
 namespace GetCandy\Api\Core\Channels\Models;
 
-use GetCandy\Api\Core\Scaffold\BaseModel;
-use GetCandy\Api\Core\Products\Models\Product;
-use GetCandy\Api\Core\Discounts\Models\Discount;
 use GetCandy\Api\Core\Categories\Models\Category;
 use GetCandy\Api\Core\Collections\Models\Collection;
+use GetCandy\Api\Core\Discounts\Models\Discount;
+use GetCandy\Api\Core\Products\Models\Product;
+use GetCandy\Api\Core\Scaffold\BaseModel;
 use GetCandy\Api\Core\Shipping\Models\ShippingMethod;
 
 class Channel extends BaseModel

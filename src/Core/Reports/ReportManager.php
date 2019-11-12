@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Core\Reports;
 
-use Illuminate\Support\Manager;
-use GetCandy\Api\Core\Reports\Providers\Sales;
-use GetCandy\Api\Core\Reports\Providers\Orders;
 use GetCandy\Api\Core\Reports\Contracts\ReportManagerContract;
+use GetCandy\Api\Core\Reports\Providers\Orders;
+use GetCandy\Api\Core\Reports\Providers\Sales;
+use Illuminate\Support\Manager;
 
 class ReportManager extends Manager implements ReportManagerContract
 {

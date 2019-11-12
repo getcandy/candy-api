@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Orders\Events;
 
-use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Baskets\Models\Basket;
+use GetCandy\Api\Core\Orders\Models\Order;
 
 class OrderSavedEvent
 {

@@ -2,16 +2,16 @@
 
 namespace GetCandy\Api\Http\Controllers\Attributes;
 
-use Illuminate\Http\Request;
-use GetCandy\Exceptions\DuplicateValueException;
 use GetCandy\Api\Http\Controllers\BaseController;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use GetCandy\Api\Http\Requests\AttributeGroups\CreateRequest;
 use GetCandy\Api\Http\Requests\AttributeGroups\DeleteRequest;
-use GetCandy\Api\Http\Requests\AttributeGroups\UpdateRequest;
 use GetCandy\Api\Http\Requests\AttributeGroups\ReorderRequest;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use GetCandy\Api\Http\Requests\AttributeGroups\UpdateRequest;
 use GetCandy\Api\Http\Transformers\Fractal\Attributes\AttributeGroupTransformer;
+use GetCandy\Exceptions\DuplicateValueException;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class AttributeGroupController extends BaseController
 {

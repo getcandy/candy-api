@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Taxes\Services;
 
-use GetCandy\Api\Core\Taxes\Models\Tax;
 use GetCandy\Api\Core\Scaffold\BaseService;
+use GetCandy\Api\Core\Taxes\Models\Tax;
 
 class TaxService extends BaseService
 {

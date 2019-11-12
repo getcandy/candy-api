@@ -3,9 +3,9 @@
 namespace GetCandy\Api\Http\Controllers\Reports;
 
 use Carbon\Carbon;
-use Illuminate\Http\Request;
-use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Core\Reports\Contracts\ReportManagerContract;
+use GetCandy\Api\Http\Controllers\BaseController;
+use Illuminate\Http\Request;
 
 class ReportController extends BaseController
 {

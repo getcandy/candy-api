@@ -2,12 +2,12 @@
 
 namespace GetCandy\Api\Core\Assets\Drivers;
 
-use GuzzleHttp\Client;
-use Illuminate\Support\Str;
-use Illuminate\Database\Eloquent\Model;
-use GuzzleHttp\Exception\ClientException;
-use GetCandy\Api\Core\Assets\Models\Asset;
 use GetCandy\Api\Core\Assets\Jobs\GenerateTransforms;
+use GetCandy\Api\Core\Assets\Models\Asset;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use Intervention\Image\Exception\NotReadableException;
 
 abstract class BaseUrlDriver
@@ -57,7 +57,6 @@ abstract class BaseUrlDriver
         $this->getInfo($this->data['url']);
 
         $asset = $this->prepare();
-
 
         if ($model->assets()->count()) {
             // Get anything that isn't an "application";

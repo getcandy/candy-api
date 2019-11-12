@@ -13,6 +13,7 @@
 $router->get('/', function () {
     $channel = app()->make(GetCandy\Api\Core\Channels\Interfaces\ChannelFactoryInterface::class);
     $currency = app()->make(GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface::class);
+
     return response()->json([
         'version' => GetCandy\Api\Core\GetCandy::version(),
         'locale' => app()->getLocale(),

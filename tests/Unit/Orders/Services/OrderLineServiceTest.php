@@ -3,10 +3,10 @@
 namespace Tests\Unit\Orders\Services;
 
 use Event;
-use Tests\TestCase;
-use GetCandy\Api\Core\Orders\Models\OrderLine;
 use GetCandy\Api\Core\Orders\Factories\OrderFactory;
+use GetCandy\Api\Core\Orders\Models\OrderLine;
 use GetCandy\Api\Core\Orders\Services\OrderLineService;
+use Tests\TestCase;
 
 class OrderLineServiceTest extends TestCase
 {

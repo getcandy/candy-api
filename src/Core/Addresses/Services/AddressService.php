@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Addresses\Services;
 
-use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Addresses\Models\Address;
+use GetCandy\Api\Core\Scaffold\BaseService;
 
 class AddressService extends BaseService
 {

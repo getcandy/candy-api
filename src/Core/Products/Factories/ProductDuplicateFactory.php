@@ -3,12 +3,12 @@
 namespace GetCandy\Api\Core\Products\Factories;
 
 use DB;
-use Storage;
-use Illuminate\Support\Collection;
-use League\Flysystem\FileNotFoundException;
+use GetCandy\Api\Core\Products\Interfaces\ProductInterface;
 use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Search\Events\IndexableSavedEvent;
-use GetCandy\Api\Core\Products\Interfaces\ProductInterface;
+use Illuminate\Support\Collection;
+use League\Flysystem\FileNotFoundException;
+use Storage;
 
 class ProductDuplicateFactory implements ProductInterface
 {
@@ -22,11 +22,12 @@ class ProductDuplicateFactory implements ProductInterface
     public function init(Product $product)
     {
         $this->product = $product;
+
         return $this;
     }
 
     /**
-     * Duplicate a product
+     * Duplicate a product.
      *
      * @param Collection $data
      * @return Product
@@ -67,7 +68,7 @@ class ProductDuplicateFactory implements ProductInterface
     }
 
     /**
-     * Process the assets for a duplicated product
+     * Process the assets for a duplicated product.
      *
      * @param Product $newProduct
      * @return void
@@ -77,14 +78,13 @@ class ProductDuplicateFactory implements ProductInterface
         $currentAssets = $this->product->assets;
         $assets = collect();
 
-
         $currentAssets->each(function ($a) use ($assets, $newProduct) {
             $newAsset = $a->replicate();
 
             // Move the file to it's new location
             $newAsset->assetable_id = $newProduct->id;
 
-            $newFilename = uniqid() . '_' . $newAsset->filename;
+            $newFilename = uniqid().'_'.$newAsset->filename;
 
             try {
                 Storage::disk($newAsset->source->disk)->copy(
@@ -94,16 +94,16 @@ class ProductDuplicateFactory implements ProductInterface
                 $newAsset->filename = $newFilename;
             } catch (FileNotFoundException $e) {
                 $newAsset->save();
+
                 return;
             }
 
             $newAsset->save();
 
-
             foreach ($a->transforms as $transform) {
                 $newTransform = $transform->replicate();
                 $newTransform->asset_id = $newAsset->id;
-                $newFilename = uniqid() . '_' . $newTransform->filename;
+                $newFilename = uniqid().'_'.$newTransform->filename;
 
                 try {
                     Storage::disk($newAsset->source->disk)->copy(
@@ -121,7 +121,7 @@ class ProductDuplicateFactory implements ProductInterface
     }
 
     /**
-     * Process the duplicated product categories
+     * Process the duplicated product categories.
      *
      * @param Product $newProduct
      * @return void
@@ -135,7 +135,7 @@ class ProductDuplicateFactory implements ProductInterface
     }
 
     /**
-     * Process the customer groups for the duplicated product
+     * Process the customer groups for the duplicated product.
      *
      * @param Product $newProduct
      * @return void
@@ -158,7 +158,7 @@ class ProductDuplicateFactory implements ProductInterface
     }
 
     /**
-     * Process channels for a duplicated product
+     * Process channels for a duplicated product.
      *
      * @param Product $newProduct
      * @return void
@@ -178,11 +178,10 @@ class ProductDuplicateFactory implements ProductInterface
         }
 
         $newProduct->channels()->sync($newChannels->toArray());
-
     }
 
     /**
-     * Process the variants for duplication
+     * Process the variants for duplication.
      *
      * @param Product $newProduct
      * @param Collection $currentVariants
@@ -194,7 +193,7 @@ class ProductDuplicateFactory implements ProductInterface
         foreach ($data['skus'] as $sku) {
             // Get the existing variant with this SKU.
             $variant = $this->getVariantToCopy($currentVariants, $sku['current']);
-            if (!$variant) {
+            if (! $variant) {
                 continue;
             }
             $variant->product_id = $newProduct->id;
@@ -204,7 +203,7 @@ class ProductDuplicateFactory implements ProductInterface
     }
 
     /**
-     * Process the routes for duplication
+     * Process the routes for duplication.
      *
      * @param Product $newProduct
      * @param Collection $currentRoutes
@@ -218,7 +217,7 @@ class ProductDuplicateFactory implements ProductInterface
                 return $r->slug == $route['current'];
             });
 
-            if (!$route) {
+            if (! $route) {
                 continue;
             }
             $newRoute = $routeToCopy->replicate();
@@ -229,7 +228,7 @@ class ProductDuplicateFactory implements ProductInterface
     }
 
     /**
-     * Get the variant to copy
+     * Get the variant to copy.
      *
      * @param array $variants
      * @param string $sku
@@ -240,13 +239,13 @@ class ProductDuplicateFactory implements ProductInterface
         $variant = $variants->first(function ($v) use ($sku) {
             return $v->sku == $sku;
         });
-        if (!$variant) {
-            return null;
+        if (! $variant) {
+            return;
         }
+
         return $variant->load([
             'tiers',
             'customerPricing',
         ])->replicate();
     }
-
 }

@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Utils\Import\Pipelines;
 
-use Closure;
 use Carbon\Carbon;
+use Closure;
 use GetCandy\Api\Core\Utils\Import\PipesContract;
 
 class UpdateState implements PipesContract
