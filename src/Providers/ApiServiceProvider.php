@@ -39,7 +39,6 @@ class ApiServiceProvider extends ServiceProvider
         $this->mapBindings();
         $this->initPassport();
         $this->registerMiddleware();
-        $this->mapRoutes();
         $this->mapCommands();
         $this->loadMigrations();
     }
@@ -91,17 +90,6 @@ class ApiServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(
             __DIR__.'/../../config/services.php', 'services'
         );
-    }
-
-    /**
-     * Get some routes mapped.
-     *
-     * @return void
-     */
-    protected function mapRoutes()
-    {
-        // $this->loadRoutesFrom(__DIR__.'/../../routes/api.php');
-        // $this->loadRoutesFrom(__DIR__.'/../../routes/api.client.php');
     }
 
     /**
