@@ -8,6 +8,20 @@ class GetCandy
 {
     protected $isHubRequest = false;
 
+    protected $groups = [];
+
+    public function setGroups($groups)
+    {
+        $this->groups = $groups;
+
+        return $this;
+    }
+
+    public function getGroups()
+    {
+        return $this->groups;
+    }
+
     /**
      * Gets the GetCandy version via composer.
      *
@@ -15,8 +29,11 @@ class GetCandy
      */
     public static function version()
     {
-        $packages = collect(json_decode(file_get_contents(base_path('vendor/composer/installed.json'))));
-
+        try {
+            $packages = collect(json_decode(file_get_contents(base_path('vendor/composer/installed.json'))));
+        } catch (\ErrorException $e) {
+            return 'Unknown';
+        }
         return $packages->first(function ($p) {
             return $p->name === 'getcandy/candy-api';
         })->version;
@@ -45,6 +62,23 @@ class GetCandy
         return $this->isHubRequest;
     }
 
+    /**
+     * Get the default middleware
+     *
+     * @return array
+     */
+    public static function getDefaultMiddleware()
+    {
+        return [
+            'api.currency',
+            'api.customer_groups',
+            'api.locale',
+            'api.tax',
+            'api.channels',
+            'api.detect_hub'
+        ];
+    }
+
     public static function routes(array $options = [], $callback = null)
     {
         $callback = $callback ?: function ($router) {
@@ -53,17 +87,10 @@ class GetCandy
 
         $defaultOptions = [
             'namespace' => 'GetCandy\Api\Http\Controllers',
-            'middleware' => [
-                'api.currency',
-                'api.customer_groups',
-                'api.locale',
-                'api.tax',
-                'api.channels',
-                'api.detect_hub'
-            ]
+            'middleware' => self::getDefaultMiddleware(),
         ];
 
-        $options = array_merge($defaultOptions, $options);
+        $options = array_merge_recursive($defaultOptions, $options);
 
         Route::group($options, function ($router) use ($callback) {
             $callback(new RouteRegistrar($router));
