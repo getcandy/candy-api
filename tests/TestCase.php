@@ -7,7 +7,6 @@ use GetCandy\Api\Core\Channels\Interfaces\ChannelFactoryInterface;
 use GetCandy\Api\Core\Channels\Models\Channel;
 use GetCandy\Api\Providers\ApiServiceProvider;
 use Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables;
-use TaxCalculator;
 use Tests\Stubs\User;
 
 abstract class TestCase extends \Orchestra\Testbench\TestCase

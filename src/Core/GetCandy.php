@@ -34,6 +34,7 @@ class GetCandy
         } catch (\ErrorException $e) {
             return 'Unknown';
         }
+
         return $packages->first(function ($p) {
             return $p->name === 'getcandy/candy-api';
         })->version;
@@ -63,7 +64,7 @@ class GetCandy
     }
 
     /**
-     * Get the default middleware
+     * Get the default middleware.
      *
      * @return array
      */
@@ -75,7 +76,7 @@ class GetCandy
             'api.locale',
             'api.tax',
             'api.channels',
-            'api.detect_hub'
+            'api.detect_hub',
         ];
     }
 
