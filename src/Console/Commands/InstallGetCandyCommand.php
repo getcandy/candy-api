@@ -15,6 +15,9 @@ use Hash;
 use Illuminate\Console\Command;
 use Laravel\Passport\Client;
 use Spatie\Permission\Models\Role;
+use GetCandy\Api\Installer\GetCandyInstaller;
+use Illuminate\Contracts\Events\Dispatcher;
+use GetCandy\Api\Installer\Events\PreflightCompletedEvent;
 
 class InstallGetCandyCommand extends Command
 {
@@ -49,32 +52,44 @@ class InstallGetCandyCommand extends Command
      *
      * @return mixed
      */
-    public function handle()
+    public function handle(Dispatcher $events, GetCandyInstaller $installer)
     {
-        $this->disclaimer();
-        $this->requirements();
-        $this->preflight();
-        $this->printTitle();
-        $this->stepOne();
-        $this->stepTwo();
+        $events->listen(PreflightCompletedEvent::class, function ($event) {
+            $database = $event->response['database'];
+            if (!$database['connected']) {
+                $this->error('Unable to connect to database');
+                return;
+            }
+            $this->info('Preflight complete');
+        });
 
-        $this->line('--------------------------------------------------------');
+        // Run the installer...
+        $installer->onCommand($this)->run();
 
-        $this->info('All done! Here is some useful info to get started');
+        // $this->disclaimer();
+        // $this->requirements();
+        // $this->preflight();
+        // $this->printTitle();
+        // $this->stepOne();
+        // $this->stepTwo();
 
-        $headers = ['', ''];
+        // $this->line('--------------------------------------------------------');
 
-        $client = Client::first();
+        // $this->info('All done! Here is some useful info to get started');
 
-        $this->table($headers, [
-            ['Username / Email', $this->user->email],
-            ['Password', '[hidden]'],
-            ['API URL', url('api/'.config('app.api_version', 'v1'))],
-            ['CMS Docs', 'https://getcandy.io/documentation/hub'],
-            ['CMS Docs', 'https://getcandy.io/documentation/api'],
-            ['OAuth Client ID', $client->id],
-            ['OAuth Secret', $client->secret],
-        ]);
+        // $headers = ['', ''];
+
+        // $client = Client::first();
+
+        // $this->table($headers, [
+        //     ['Username / Email', $this->user->email],
+        //     ['Password', '[hidden]'],
+        //     ['API URL', url('api/'.config('app.api_version', 'v1'))],
+        //     ['CMS Docs', 'https://getcandy.io/documentation/hub'],
+        //     ['CMS Docs', 'https://getcandy.io/documentation/api'],
+        //     ['OAuth Client ID', $client->id],
+        //     ['OAuth Secret', $client->secret],
+        // ]);
     }
 
     protected function disclaimer()
@@ -209,23 +224,6 @@ class InstallGetCandyCommand extends Command
 
         Role::create(['name' => 'admin']);
         Role::create(['name' => 'customer']);
-
-        $this->info('Adding base languages');
-
-        Language::create([
-            'lang' => 'en',
-            'iso' => 'gb',
-            'name' => 'English',
-            'default' => true,
-        ]);
-
-        $this->info('Adding VAT...');
-
-        Tax::create([
-            'percentage' => 20,
-            'name' => 'VAT',
-            'default' => true,
-        ]);
 
         $this->info('Adding Attributes');
 
