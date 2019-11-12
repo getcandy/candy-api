@@ -3,16 +3,16 @@
 namespace GetCandy\Api\Core\Search\Factories;
 
 use CurrencyConverter;
-use Elastica\ResultSet;
-use League\Fractal\Manager;
-use Illuminate\Database\Eloquent\Model;
-use League\Fractal\Resource\Collection;
 use Elastica\Exception\InvalidException;
+use Elastica\ResultSet;
 use GetCandy\Api\Core\Categories\Models\Category;
-use GetCandy\Api\Core\Search\Interfaces\SearchResultInterface;
 use GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface;
-use GetCandy\Api\Http\Transformers\Fractal\Products\ProductTransformer;
+use GetCandy\Api\Core\Search\Interfaces\SearchResultInterface;
 use GetCandy\Api\Http\Transformers\Fractal\Categories\CategoryTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\Products\ProductTransformer;
+use Illuminate\Database\Eloquent\Model;
+use League\Fractal\Manager;
+use League\Fractal\Resource\Collection;
 
 class SearchResultFactory implements SearchResultInterface
 {

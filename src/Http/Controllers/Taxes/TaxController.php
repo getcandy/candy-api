@@ -2,14 +2,14 @@
 
 namespace GetCandy\Api\Http\Controllers\Taxes;
 
-use Illuminate\Http\Request;
+use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Taxes\CreateRequest;
 use GetCandy\Api\Http\Requests\Taxes\DeleteRequest;
 use GetCandy\Api\Http\Requests\Taxes\UpdateRequest;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
 use GetCandy\Api\Http\Transformers\Fractal\Taxes\TaxTransformer;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class TaxController extends BaseController

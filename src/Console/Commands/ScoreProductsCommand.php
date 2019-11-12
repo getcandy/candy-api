@@ -2,12 +2,12 @@
 
 namespace GetCandy\Api\Console\Commands;
 
-use DB;
 use Carbon\Carbon;
+use DB;
 use Elastica\Document;
-use Illuminate\Console\Command;
-use GetCandy\Api\Core\Search\SearchContract;
 use GetCandy\Api\Core\Products\Models\Product;
+use GetCandy\Api\Core\Search\SearchContract;
+use Illuminate\Console\Command;
 
 class ScoreProductsCommand extends Command
 {

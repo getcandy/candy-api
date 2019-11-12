@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Http\Requests\Attributes;
 
-use GetCandy\Http\Requests\FormRequest;
 use GetCandy\Api\Attributes\AttributeManager;
 use GetCandy\Api\Attributes\Models\AttributeGroup;
+use GetCandy\Http\Requests\FormRequest;
 
 class ReorderRequest extends FormRequest
 {

@@ -2,23 +2,23 @@
 
 namespace GetCandy\Api\Core\Products\Models;
 
-use GetCandy\Api\Core\Traits\Assetable;
-use GetCandy\Api\Core\Traits\Indexable;
-use GetCandy\Api\Core\Traits\HasRoutes;
-use GetCandy\Api\Core\Pages\Models\Page;
-use GetCandy\Api\Core\Scaffold\BaseModel;
-use GetCandy\Api\Core\Traits\HasChannels;
-use GetCandy\Api\Core\Scopes\ChannelScope;
-use GetCandy\Api\Core\Traits\HasAttributes;
-use GetCandy\Api\Core\Layouts\Models\Layout;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use GetCandy\Api\Core\Traits\HasCustomerGroups;
-use GetCandy\Api\Core\Scopes\CustomerGroupScope;
 use GetCandy\Api\Core\Categories\Models\Category;
-use GetCandy\Api\Core\Traits\HasShippingExclusions;
 use GetCandy\Api\Core\Collections\Models\Collection;
 use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaModel;
 use GetCandy\Api\Core\Http\Transformers\Fractal\Products\ProductTransformer;
+use GetCandy\Api\Core\Layouts\Models\Layout;
+use GetCandy\Api\Core\Pages\Models\Page;
+use GetCandy\Api\Core\Scaffold\BaseModel;
+use GetCandy\Api\Core\Scopes\ChannelScope;
+use GetCandy\Api\Core\Scopes\CustomerGroupScope;
+use GetCandy\Api\Core\Traits\Assetable;
+use GetCandy\Api\Core\Traits\HasAttributes;
+use GetCandy\Api\Core\Traits\HasChannels;
+use GetCandy\Api\Core\Traits\HasCustomerGroups;
+use GetCandy\Api\Core\Traits\HasRoutes;
+use GetCandy\Api\Core\Traits\HasShippingExclusions;
+use GetCandy\Api\Core\Traits\Indexable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends BaseModel
 {

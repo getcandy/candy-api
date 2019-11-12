@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Http\Requests\Currencies;
 
-use GetCandy\Api\Http\Requests\FormRequest;
 use GetCandy\Api\Currencies\Models\Currency;
+use GetCandy\Api\Http\Requests\FormRequest;
 
 class UpdateRequest extends FormRequest
 {

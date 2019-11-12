@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Products\Factories;
 
-use Tests\TestCase;
-use GetCandy\Api\Core\Products\Models\ProductVariant;
 use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
+use GetCandy\Api\Core\Products\Models\ProductVariant;
+use Tests\TestCase;
 
 /**
  * @group products

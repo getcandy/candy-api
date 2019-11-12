@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Http\Middleware;
 
-use Locale;
 use Closure;
 use GetCandy\Api\Core\Traits\Fractal;
+use Locale;
 
 class SetLocaleMiddleware
 {

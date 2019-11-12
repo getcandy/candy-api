@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Core\Orders;
 
+use GetCandy\Api\Core\Orders\Interfaces\OrderCriteriaInterface;
 use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Scaffold\AbstractCriteria;
-use GetCandy\Api\Core\Orders\Interfaces\OrderCriteriaInterface;
 
 class OrderCriteria extends AbstractCriteria implements OrderCriteriaInterface
 {

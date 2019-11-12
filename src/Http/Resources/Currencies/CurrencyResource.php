@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Http\Resources\Currencies;
 
-use Carbon\Carbon;
 use GetCandy\Api\Http\Resources\AbstractResource;
 
 class CurrencyResource extends AbstractResource
@@ -17,7 +16,7 @@ class CurrencyResource extends AbstractResource
             'format' => $this->format,
             'decimal_point' => $this->decimal_point,
             'thousand_point' => $this->thousand_point,
-            'default' => (bool) $this->default
+            'default' => (bool) $this->default,
         ];
     }
 }

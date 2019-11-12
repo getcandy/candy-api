@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Countries\Services;
 
-use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Countries\Models\Country;
+use GetCandy\Api\Core\Scaffold\BaseService;
 
 class CountryService extends BaseService
 {

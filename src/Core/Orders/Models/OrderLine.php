@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Core\Orders\Models;
 
-use GetCandy\Api\Core\Traits\HasMeta;
-use GetCandy\Api\Core\Scaffold\BaseModel;
 use GetCandy\Api\Core\Products\Models\ProductVariant;
+use GetCandy\Api\Core\Scaffold\BaseModel;
+use GetCandy\Api\Core\Traits\HasMeta;
 
 class OrderLine extends BaseModel
 {

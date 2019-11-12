@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Discounts;
 
-use Illuminate\Database\Eloquent\Model;
 use GetCandy\Api\Core\Baskets\Models\Basket;
+use Illuminate\Database\Eloquent\Model;
 
 class DiscountFactory implements DiscountInterface
 {

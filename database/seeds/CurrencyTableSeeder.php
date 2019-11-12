@@ -2,8 +2,8 @@
 
 namespace Seeds;
 
-use Illuminate\Database\Seeder;
 use GetCandy\Api\Core\Currencies\Models\Currency;
+use Illuminate\Database\Seeder;
 
 class CurrencyTableSeeder extends Seeder
 {

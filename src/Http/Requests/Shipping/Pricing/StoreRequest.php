@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Http\Requests\Shipping\Pricing;
 
-use GetCandy\Api\Http\Requests\FormRequest;
 use GetCandy\Api\Core\Shipping\Models\ShippingZone;
+use GetCandy\Api\Http\Requests\FormRequest;
 
 class StoreRequest extends FormRequest
 {

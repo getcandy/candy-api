@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Core\Collections\Services;
 
-use GetCandy\Api\Core\Scaffold\BaseService;
-use GetCandy\Api\Core\Collections\Models\Collection;
 use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
+use GetCandy\Api\Core\Collections\Models\Collection;
+use GetCandy\Api\Core\Scaffold\BaseService;
 
 class CollectionService extends BaseService
 {

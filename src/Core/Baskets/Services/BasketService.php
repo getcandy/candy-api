@@ -4,15 +4,15 @@ namespace GetCandy\Api\Core\Baskets\Services;
 
 use Carbon\Carbon;
 use GetCandy\Api\Core\Auth\Models\User;
-use GetCandy\Api\Core\Discounts\Factory;
-use GetCandy\Api\Core\Orders\Models\Order;
-use GetCandy\Api\Core\Scaffold\BaseService;
-use GetCandy\Api\Core\Baskets\Models\Basket;
-use GetCandy\Api\Core\Discounts\Models\Discount;
-use GetCandy\Api\Core\Baskets\Models\SavedBasket;
 use GetCandy\Api\Core\Baskets\Events\BasketStoredEvent;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketFactoryInterface;
+use GetCandy\Api\Core\Baskets\Models\Basket;
+use GetCandy\Api\Core\Baskets\Models\SavedBasket;
+use GetCandy\Api\Core\Discounts\Factory;
+use GetCandy\Api\Core\Discounts\Models\Discount;
+use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface;
+use GetCandy\Api\Core\Scaffold\BaseService;
 
 class BasketService extends BaseService
 {

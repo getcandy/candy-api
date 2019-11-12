@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Core\Taxes;
 
+use GetCandy\Api\Core\Taxes\Interfaces\TaxCalculatorInterface;
 use GetCandy\Api\Core\Taxes\Models\Tax;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use GetCandy\Api\Core\Taxes\Interfaces\TaxCalculatorInterface;
 
 class TaxCalculator implements TaxCalculatorInterface
 {
@@ -77,20 +77,24 @@ class TaxCalculator implements TaxCalculatorInterface
     }
 
     /**
-     * This will force a round down regardless of decimal
+     * This will force a round down regardless of decimal.
      */
-    protected function floorDec($val, $precision = 2) {
-        if ($precision < 0) { $precision = 0; }
+    protected function floorDec($val, $precision = 2)
+    {
+        if ($precision < 0) {
+            $precision = 0;
+        }
         $numPointPosition = intval(strpos($val, '.'));
         if ($numPointPosition === 0) { //$val is an integer
             return $val;
         }
+
         return floatval(substr($val, 0, $numPointPosition + $precision + 1));
     }
 
     protected function getVatMultiplier()
     {
-        return (($this->percent + 100) / 100);
+        return ($this->percent + 100) / 100;
     }
 
     public function add($price)

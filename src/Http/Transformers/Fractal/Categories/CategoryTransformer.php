@@ -2,17 +2,17 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Categories;
 
-use League\Fractal\ParamBag;
-use GetCandy\Api\Core\Categories\Models\Category;
 use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
-use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
+use GetCandy\Api\Core\Categories\Models\Category;
 use GetCandy\Api\Http\Transformers\Fractal\Assets\AssetTransformer;
-use GetCandy\Api\Http\Transformers\Fractal\Routes\RouteTransformer;
-use GetCandy\Api\Http\Transformers\Fractal\Layouts\LayoutTransformer;
-use GetCandy\Api\Http\Transformers\Fractal\Channels\ChannelTransformer;
-use GetCandy\Api\Http\Transformers\Fractal\Products\ProductTransformer;
-use GetCandy\Api\Http\Transformers\Fractal\Customers\CustomerGroupTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Attributes\AttributeGroupTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\Channels\ChannelTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\Customers\CustomerGroupTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\Layouts\LayoutTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\Products\ProductTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\Routes\RouteTransformer;
+use League\Fractal\ParamBag;
 
 class CategoryTransformer extends BaseTransformer
 {

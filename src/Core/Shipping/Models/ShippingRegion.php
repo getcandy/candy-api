@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Shipping\Models;
 
-use GetCandy\Api\Core\Scaffold\BaseModel;
 use GetCandy\Api\Core\Countries\Models\Country;
+use GetCandy\Api\Core\Scaffold\BaseModel;
 
 class ShippingRegion extends BaseModel
 {

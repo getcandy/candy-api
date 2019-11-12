@@ -2,15 +2,15 @@
 
 namespace GetCandy\Api\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use GetCandy\Api\Core\Orders\OrderCriteria;
-use GetCandy\Api\Core\Orders\Services\OrderService;
 use GetCandy\Api\Core\Orders\Factories\OrderFactory;
 use GetCandy\Api\Core\Orders\Factories\OrderProcessingFactory;
-use GetCandy\Api\Core\Orders\Interfaces\OrderFactoryInterface;
-use GetCandy\Api\Core\Orders\Interfaces\OrderServiceInterface;
 use GetCandy\Api\Core\Orders\Interfaces\OrderCriteriaInterface;
+use GetCandy\Api\Core\Orders\Interfaces\OrderFactoryInterface;
 use GetCandy\Api\Core\Orders\Interfaces\OrderProcessingFactoryInterface;
+use GetCandy\Api\Core\Orders\Interfaces\OrderServiceInterface;
+use GetCandy\Api\Core\Orders\OrderCriteria;
+use GetCandy\Api\Core\Orders\Services\OrderService;
+use Illuminate\Support\ServiceProvider;
 
 class OrderServiceProvider extends ServiceProvider
 {

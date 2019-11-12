@@ -1,6 +1,5 @@
 <?php
 
-
 // Route::middleware()
 //     ->namespace('')
 //     ->prefix($apiPrefix)

@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Tags\Services;
 
-use GetCandy\Api\Core\Tags\Models\Tag;
 use GetCandy\Api\Core\Scaffold\BaseService;
+use GetCandy\Api\Core\Tags\Models\Tag;
 
 class TagService extends BaseService
 {

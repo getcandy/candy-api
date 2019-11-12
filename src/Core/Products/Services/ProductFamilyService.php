@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Products\Services;
 
-use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Products\Models\ProductFamily;
+use GetCandy\Api\Core\Scaffold\BaseService;
 
 class ProductFamilyService extends BaseService
 {

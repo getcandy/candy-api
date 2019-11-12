@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Http\Controllers\Baskets;
 
-use Illuminate\Http\Request;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Transformers\Fractal\Baskets\SavedBasketTransformer;
+use Illuminate\Http\Request;
 
 class SavedBasketController extends BaseController
 {

@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Http\Controllers\Customers;
 
-use Illuminate\Http\Request;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Customers\CreateRequest;
 use GetCandy\Api\Http\Transformers\Fractal\Users\UserTransformer;
+use Illuminate\Http\Request;
 
 class CustomerController extends BaseController
 {

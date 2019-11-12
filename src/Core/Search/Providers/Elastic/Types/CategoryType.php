@@ -3,10 +3,10 @@
 namespace GetCandy\Api\Core\Search\Providers\Elastic\Types;
 
 use Elastica\Document;
-use Illuminate\Database\Eloquent\Model;
+use GetCandy\Api\Core\Categories\Models\Category;
 use GetCandy\Api\Core\Scopes\ChannelScope;
 use GetCandy\Api\Core\Scopes\CustomerGroupScope;
-use GetCandy\Api\Core\Categories\Models\Category;
+use Illuminate\Database\Eloquent\Model;
 
 class CategoryType extends BaseType
 {

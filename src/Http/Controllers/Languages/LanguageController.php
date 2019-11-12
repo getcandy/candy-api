@@ -2,15 +2,15 @@
 
 namespace GetCandy\Api\Http\Controllers\Languages;
 
-use Illuminate\Http\Request;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Languages\CreateRequest;
 use GetCandy\Api\Http\Requests\Languages\DeleteRequest;
 use GetCandy\Api\Http\Requests\Languages\UpdateRequest;
+use GetCandy\Api\Http\Transformers\Fractal\Languages\LanguageTransformer;
 use GetCandy\Exceptions\MinimumRecordRequiredException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use GetCandy\Api\Http\Transformers\Fractal\Languages\LanguageTransformer;
 
 class LanguageController extends BaseController
 {

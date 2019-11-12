@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Users;
 
-use Spatie\Permission\Models\Role;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
+use Spatie\Permission\Models\Role;
 
 class UserRoleTransformer extends BaseTransformer
 {

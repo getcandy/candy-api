@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Http\Controllers\Auth;
 
-use Illuminate\Support\Facades\Password;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Auth\ResetAccountPasswordRequest;
 

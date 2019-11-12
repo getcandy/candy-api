@@ -2,19 +2,19 @@
 
 namespace GetCandy\Api\Core\Orders\Factories;
 
-use DB;
 use Carbon\Carbon;
-use GetCandy\Api\Core\Orders\Models\Order;
-use GetCandy\Api\Core\Payments\PaymentManager;
-use GetCandy\Api\Core\Payments\PaymentContract;
-use GetCandy\Api\Core\Payments\PaymentResponse;
-use GetCandy\Api\Core\Payments\Models\PaymentType;
-use GetCandy\Api\Core\Orders\Jobs\OrderNotification;
-use GetCandy\Api\Core\Payments\ThreeDSecureResponse;
+use DB;
 use GetCandy\Api\Core\Orders\Events\OrderProcessedEvent;
-use GetCandy\Api\Core\Payments\Exceptions\InvalidPaymentTokenException;
 use GetCandy\Api\Core\Orders\Interfaces\OrderProcessingFactoryInterface;
+use GetCandy\Api\Core\Orders\Jobs\OrderNotification;
+use GetCandy\Api\Core\Orders\Models\Order;
+use GetCandy\Api\Core\Payments\Exceptions\InvalidPaymentTokenException;
 use GetCandy\Api\Core\Payments\Exceptions\ThreeDSecureRequiredException;
+use GetCandy\Api\Core\Payments\Models\PaymentType;
+use GetCandy\Api\Core\Payments\PaymentContract;
+use GetCandy\Api\Core\Payments\PaymentManager;
+use GetCandy\Api\Core\Payments\PaymentResponse;
+use GetCandy\Api\Core\Payments\ThreeDSecureResponse;
 
 class OrderProcessingFactory implements OrderProcessingFactoryInterface
 {
@@ -75,7 +75,7 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
     protected $meta;
 
     /**
-     * The company name for the order
+     * The company name for the order.
      *
      * @var string
      */
@@ -188,6 +188,7 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
     public function companyName($name = null)
     {
         $this->companyName = $name;
+
         return $this;
     }
 

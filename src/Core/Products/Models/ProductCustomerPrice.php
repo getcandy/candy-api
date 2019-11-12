@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Core\Products\Models;
 
-use GetCandy\Api\Core\Taxes\Models\Tax;
+use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 use GetCandy\Api\Core\Scaffold\BaseModel;
 use GetCandy\Api\Core\Scopes\ProductPricingScope;
-use GetCandy\Api\Core\Customers\Models\CustomerGroup;
+use GetCandy\Api\Core\Taxes\Models\Tax;
 
 class ProductCustomerPrice extends BaseModel
 {

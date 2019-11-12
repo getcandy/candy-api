@@ -2,11 +2,11 @@
 
 namespace GetCandy\Api\Core\Orders\Services;
 
-use GetCandy\Api\Core\Scaffold\BaseService;
-use GetCandy\Api\Core\Orders\Models\OrderLine;
 use GetCandy\Api\Core\Orders\Events\OrderSavedEvent;
+use GetCandy\Api\Core\Orders\Models\OrderLine;
 use GetCandy\Api\Core\Pricing\PriceCalculatorInterface;
 use GetCandy\Api\Core\Products\Services\ProductVariantService;
+use GetCandy\Api\Core\Scaffold\BaseService;
 
 class OrderLineService extends BaseService
 {

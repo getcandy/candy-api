@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Products\Models;
 
-use GetCandy\Api\Core\Scaffold\BaseModel;
 use GetCandy\Api\Core\Associations\Models\AssociationGroup;
+use GetCandy\Api\Core\Scaffold\BaseModel;
 
 class ProductAssociation extends BaseModel
 {

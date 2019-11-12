@@ -2,12 +2,12 @@
 
 namespace GetCandy\Api\Installer;
 
+use GetCandy\Api\Installer\Factories\ApiAttributeFactory;
+use GetCandy\Api\Installer\Factories\CurrencyFactory;
+use GetCandy\Api\Installer\Factories\CustomerGroupFactory;
+use GetCandy\Api\Installer\Factories\LanguageFactory;
 use GetCandy\Api\Installer\Factories\TaxFactory;
 use GetCandy\Api\Installer\Factories\UserFactory;
-use GetCandy\Api\Installer\Factories\CurrencyFactory;
-use GetCandy\Api\Installer\Factories\LanguageFactory;
-use GetCandy\Api\Installer\Factories\ApiAttributeFactory;
-use GetCandy\Api\Installer\Factories\CustomerGroupFactory;
 
 class GetCandyInstaller
 {

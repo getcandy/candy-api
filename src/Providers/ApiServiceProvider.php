@@ -2,26 +2,26 @@
 
 namespace GetCandy\Api\Providers;
 
-use Validator;
 use Carbon\Carbon;
-use League\Fractal\Manager;
-use GetCandy\Api\Core\Factory;
-use Laravel\Passport\Passport;
+use GetCandy\Api\Console\Commands\CandySearchIndexCommand;
+use GetCandy\Api\Console\Commands\InstallGetCandyCommand;
+use GetCandy\Api\Console\Commands\ScoreProductsCommand;
 use GetCandy\Api\Core\CandyApi;
-use Illuminate\Support\ServiceProvider;
-use GetCandy\Api\Core\Users\Services\UserService;
-use GetCandy\Api\Http\Middleware\SetTaxMiddleware;
 use GetCandy\Api\Core\Currencies\CurrencyConverter;
+use GetCandy\Api\Core\Factory;
 use GetCandy\Api\Core\Users\Contracts\UserContract;
+use GetCandy\Api\Core\Users\Services\UserService;
+use GetCandy\Api\Http\Middleware\CheckClientCredentials;
+use GetCandy\Api\Http\Middleware\DetectHubRequestMiddleware;
+use GetCandy\Api\Http\Middleware\SetChannelMiddleware;
+use GetCandy\Api\Http\Middleware\SetCurrencyMiddleware;
 use GetCandy\Api\Http\Middleware\SetCustomerGroups;
 use GetCandy\Api\Http\Middleware\SetLocaleMiddleware;
-use GetCandy\Api\Http\Middleware\SetChannelMiddleware;
-use GetCandy\Api\Console\Commands\ScoreProductsCommand;
-use GetCandy\Api\Http\Middleware\SetCurrencyMiddleware;
-use GetCandy\Api\Http\Middleware\CheckClientCredentials;
-use GetCandy\Api\Console\Commands\InstallGetCandyCommand;
-use GetCandy\Api\Console\Commands\CandySearchIndexCommand;
-use GetCandy\Api\Http\Middleware\DetectHubRequestMiddleware;
+use GetCandy\Api\Http\Middleware\SetTaxMiddleware;
+use Illuminate\Support\ServiceProvider;
+use Laravel\Passport\Passport;
+use League\Fractal\Manager;
+use Validator;
 
 class ApiServiceProvider extends ServiceProvider
 {

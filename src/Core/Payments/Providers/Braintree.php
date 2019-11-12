@@ -2,11 +2,11 @@
 
 namespace GetCandy\Api\Core\Payments\Providers;
 
+use Braintree_Exception_NotFound;
 use Braintree_Gateway;
 use Braintree_Transaction;
-use Braintree_Exception_NotFound;
-use GetCandy\Api\Core\Payments\PaymentResponse;
 use GetCandy\Api\Core\Payments\Models\Transaction;
+use GetCandy\Api\Core\Payments\PaymentResponse;
 
 class Braintree extends AbstractProvider
 {

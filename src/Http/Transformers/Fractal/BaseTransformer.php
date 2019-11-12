@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal;
 
-use League\Fractal\TransformerAbstract;
-use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 use GetCandy\Api\Http\Transformers\Fractal\Assets\AssetTransformer;
+use League\Fractal\Pagination\IlluminatePaginatorAdapter;
+use League\Fractal\TransformerAbstract;
 
 abstract class BaseTransformer extends TransformerAbstract
 {

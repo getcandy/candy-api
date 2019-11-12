@@ -2,9 +2,9 @@
 
 namespace Seeds;
 
-use Illuminate\Database\Seeder;
 use GetCandy\Api\Core\Attributes\Models\Attribute;
 use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
+use Illuminate\Database\Seeder;
 
 class AttributesTableSeeder extends Seeder
 {

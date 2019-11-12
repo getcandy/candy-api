@@ -2,8 +2,8 @@
 
 namespace Seeds;
 
-use Illuminate\Database\Seeder;
 use GetCandy\Api\Core\Languages\Models\Language;
+use Illuminate\Database\Seeder;
 
 class LanguageTableSeeder extends Seeder
 {
