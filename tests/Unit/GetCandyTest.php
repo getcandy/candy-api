@@ -113,13 +113,13 @@ class GetCandyTest extends TestCase
     {
         Route::group([
             'prefix' => 'foo',
-        ], function ($router) {
+        ], function () {
             GetCandy::routes();
         });
 
         $routeIterator = Route::getRoutes()->getIterator();
 
-        $routes = collect($routeIterator)->map(function ($route) {
+        collect($routeIterator)->map(function ($route) {
             return $route->uri;
         })->reject(function ($route) {
             // Remove any OAuth routes...
