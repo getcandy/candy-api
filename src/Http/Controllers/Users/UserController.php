@@ -66,7 +66,7 @@ class UserController extends BaseController
 
     public function getCurrentUser(Request $request)
     {
-        $user = $request->user()->with('roles.permissions')->first();
+        $user = $request->user()->with(['roles.permissions', 'addresses'])->first();
 
         return new UserResource($user);
     }
