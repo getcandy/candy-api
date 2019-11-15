@@ -33,20 +33,8 @@ class LanguageRunner implements InstallRunnerContract
             return;
         }
 
-        $chosenLangs = $this->command->choice(
-            'Which Languages should we install? (seperate choices by a comma, you can always add more later)',
-            $this->availableLanguages->mapWithKeys(function ($lang, $key) {
-                return [$key => $lang['name']];
-            })->toArray(),
-            null,
-            null,
-            true
-        );
-
-        $languages = $this->availableLanguages->filter(function ($lang, $key) use ($chosenLangs) {
-            return in_array($key, $chosenLangs);
-        })->map(function ($lang, $key) use ($chosenLangs) {
-            $lang['default'] = $chosenLangs[0] == $key;
+        $languages = $this->availableLanguages->map(function ($lang, $key) {
+            $lang['default'] = $key == 'gb';
             $lang['created_at'] = now();
             $lang['updated_at'] = now();
             return $lang;

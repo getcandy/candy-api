@@ -6,7 +6,6 @@ use DB;
 use GetCandy\Api\Core\GetCandy;
 use Tests\TestCase;
 use GetCandy\Api\Installer\Runners\LanguageRunner;
-use Illuminate\Console\Command;
 
 /**
  * @group installer
@@ -14,16 +13,6 @@ use Illuminate\Console\Command;
 class LanguageRunnerTest extends TestCase
 {
     protected $withSeedData = false;
-
-    public function setUp() : void
-    {
-        parent::setUp();
-        $this->mock(Command::class, function ($mock) {
-            $mock->shouldReceive('choice')->andReturn([
-                0 => 'gb',
-            ]);
-        });
-    }
 
     public function test_install_can_run()
     {
