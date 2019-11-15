@@ -28,105 +28,13 @@ class AttributeRunner implements InstallRunnerContract
         if (!DB::table('attributes')->where('group_id', '=', $seoGroupId)->count()) {
             $this->addSeoAttributes($seoGroupId);
         }
-        // $attribute = new Attribute();
-        // $attribute->name = ['en' => 'Name'];
-        // $attribute->handle = 'name';
-        // $attribute->position = 1;
-        // $attribute->group_id = $group->id;
-        // $attribute->required = true;
-        // $attribute->scopeable = 1;
-        // $attribute->searchable = 1;
-        // $attribute->save();
-
-        // $attribute = new Attribute();
-        // $attribute->name = ['en' => 'Short Description'];
-        // $attribute->handle = 'short_description';
-        // $attribute->position = 2;
-        // $attribute->group_id = $group->id;
-        // $attribute->channeled = 1;
-        // $attribute->required = true;
-        // $attribute->type = 'richtext';
-        // $attribute->scopeable = 1;
-        // $attribute->searchable = 1;
-        // $attribute->save();
-
-        // $attribute = new Attribute();
-        // $attribute->name = ['en' => 'Description'];
-        // $attribute->handle = 'description';
-        // $attribute->position = 2;
-        // $attribute->group_id = $group->id;
-        // $attribute->channeled = 1;
-        // $attribute->required = true;
-        // $attribute->type = 'richtext';
-        // $attribute->scopeable = 1;
-        // $attribute->searchable = 1;
-        // $attribute->save();
-
-        // // $group = AttributeGroup::create([
-        // //     'name' => ['en' => 'General', 'sv' => 'Allmän'],
-        // //     'handle' => 'general',
-        // //     'position' => 2
-        // // ]);
-
-        // $group = AttributeGroup::forceCreate([
-        //     'name' => ['en' => 'SEO', 'sv' => 'SEO'],
-        //     'handle' => 'seo',
-        //     'position' => 3,
-        // ]);
-
-        // $attribute = new Attribute();
-        // $attribute->name = ['en' => 'Page Title'];
-        // $attribute->handle = 'page_title';
-        // $attribute->position = 1;
-        // $attribute->group_id = $group->id;
-        // $attribute->channeled = 1;
-        // $attribute->required = false;
-        // $attribute->scopeable = 1;
-        // $attribute->searchable = 1;
-        // $attribute->save();
-
-        // $attribute = new Attribute();
-        // $attribute->name = ['en' => 'Meta description'];
-        // $attribute->handle = 'meta_description';
-        // $attribute->position = 2;
-        // $attribute->group_id = $group->id;
-        // $attribute->channeled = 1;
-        // $attribute->required = false;
-        // $attribute->scopeable = 1;
-        // $attribute->searchable = 1;
-        // $attribute->type = 'textarea';
-        // $attribute->save();
-
-        // $attribute = new Attribute();
-        // $attribute->name = ['en' => 'Meta Keywords'];
-        // $attribute->handle = 'meta_keywords';
-        // $attribute->position = 3;
-        // $attribute->group_id = $group->id;
-        // $attribute->channeled = 1;
-        // $attribute->required = false;
-        // $attribute->scopeable = 1;
-        // $attribute->searchable = 1;
-        // $attribute->save();
-
-
     }
 
-    protected function addSeoAttributes($groupId)
-    {
-
-    }
-
-    protected function addMarketingAttributes($groupId)
-    {
-        dd(1);
-        $attributes = [
-            [
-                'name' => json_encode(['en' => 'Name']),
-                '' => ''
-            ]
-        ];
-    }
-
+    /**
+     * Add the SEO attribute group
+     *
+     * @return int
+     */
     protected function addSeoGroup()
     {
         return DB::table('attribute_groups')->insertGetId([
@@ -138,6 +46,11 @@ class AttributeRunner implements InstallRunnerContract
         ]);
     }
 
+    /**
+     * Add the marketing attribute group
+     *
+     * @return int
+     */
     protected function addMarketingGroup()
     {
         return DB::table('attribute_groups')->insertGetId([
@@ -147,5 +60,127 @@ class AttributeRunner implements InstallRunnerContract
             'created_at' => now(),
             'updated_at' => now(),
         ]);
+    }
+
+    /**
+     * Add the SEO attributes
+     *
+     * @param int $groupId
+     * @return void
+     */
+    protected function addSeoAttributes($groupId)
+    {
+        DB::table('attributes')->insert(
+            $this->getSeoAttributes($groupId)
+        );
+    }
+
+    /**
+     * Add the marketing attributes
+     *
+     * @param int $groupId
+     * @return void
+     */
+    protected function addMarketingAttributes($groupId)
+    {
+        DB::table('attributes')->insert(
+            $this->getMarketingAttributes($groupId)
+        );
+    }
+
+    /**
+     * Get the marketing attributes
+     *
+     * @param int $groupId
+     * @return array
+     */
+    public function getMarketingAttributes($groupId)
+    {
+        return [
+            [
+                'name' => json_encode(['en' => 'Name']),
+                'handle' => 'name',
+                'position' => 1,
+                'group_id' => $groupId,
+                'required' => true,
+                'scopeable' => 1,
+                'searchable' => 1,
+                'type' => 'text',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => json_encode(['en' => 'Short Description']),
+                'handle' => 'short_description',
+                'position' => 2,
+                'group_id' => $groupId,
+                'required' => false,
+                'scopeable' => 1,
+                'searchable' => 1,
+                'type' => 'textarea',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => json_encode(['en' => 'Description']),
+                'handle' => 'description',
+                'position' => 3,
+                'group_id' => $groupId,
+                'required' => false,
+                'scopeable' => 1,
+                'searchable' => 1,
+                'type' => 'richtext',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ];
+    }
+
+    /**
+     * Get the SEO attributes to be installed
+     *
+     * @param int $groupId
+     * @return array
+     */
+    public function getSeoAttributes($groupId)
+    {
+        return [
+            [
+                'name' => json_encode(['en' => 'Page Title']),
+                'handle' => 'page_title',
+                'position' => 1,
+                'group_id' => $groupId,
+                'required' => true,
+                'scopeable' => 1,
+                'searchable' => 1,
+                'type' => 'text',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => json_encode(['en' => 'Meta description']),
+                'handle' => 'meta_description',
+                'position' => 2,
+                'group_id' => $groupId,
+                'required' => false,
+                'scopeable' => 1,
+                'searchable' => 1,
+                'type' => 'textarea',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => json_encode(['en' => 'Meta Keywords']),
+                'handle' => 'meta_keywords',
+                'position' => 3,
+                'group_id' => $groupId,
+                'required' => false,
+                'scopeable' => 1,
+                'searchable' => 1,
+                'type' => 'text',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ];
     }
 }
