@@ -1,24 +1,5 @@
 <?php
 
-// Route::middleware()
-//     ->namespace('')
-//     ->prefix($apiPrefix)
-//     ->group(__DIR__ . '../../routes/api.php');
-
-Route::group([
-    'middleware' => [
-        'auth:api',
-        'api.currency',
-        'api.customer_groups',
-        'api.locale',
-        'api.tax',
-        'api.channels',
-        'api.detect_hub',
-    ],
-    'prefix' => 'api/'.config('app.api_version', 'v1'),
-    'namespace' => 'GetCandy\Api\Http\Controllers',
-], function ($router) {
-
     /*
     * Imports
     */
@@ -189,7 +170,24 @@ Route::group([
     /*
      * Products
      */
-    $router->prefix('products')->namespace('Products')->group(__DIR__.'/../routes/catalogue-manager/products.php');
+    $router->prefix('products')->namespace('Products')->group(function ($router) {
+        $router->post('/{product}/urls', 'ProductController@createUrl');
+        $router->post('/{product}/redirects', 'ProductRedirectController@store');
+        $router->post('/{product}/attributes', 'ProductAttributeController@update');
+        $router->post('/{product}/collections', 'ProductCollectionController@update');
+        $router->post('/{product}/routes', 'ProductRouteController@store');
+        $router->post('/{product}/categories', 'ProductCategoryController@update');
+        $router->post('/{product}/channels', 'ProductChannelController@store');
+        $router->delete('/{product}/categories/{category}', 'ProductCategoryController@destroy');
+        $router->delete('/{product}/collections/{collection}', 'ProductCollectionController@destroy');
+        $router->post('/{product}/associations', 'ProductAssociationController@store');
+        $router->delete('/{product}/associations', 'ProductAssociationController@destroy');
+
+        /*
+        * Updates
+        */
+        $router->post('/{product}/customer-groups', 'ProductCustomerGroupController@store');
+    });
 
     /*
      * Reporting
@@ -281,4 +279,3 @@ Route::group([
         'as' => 'account.password.reset',
         'uses' => 'Auth\AccountController@resetPassword',
     ]);
-});

@@ -51,7 +51,7 @@
                 "GetCandy\\Api\\Providers\\PluginServiceProvider"
             ],
             "aliases": {
-                "GetCandy" : "Facades\\GetCandy\\Api\\Core\\Helpers\\GetCandy"
+                "GetCandy" : "GetCandy\\Api\\Core\\Facades\\GetCandyFacade"
             }
         }
     }

@@ -2,7 +2,7 @@
 
 namespace GetCandy\Api\Core\Scopes;
 
-use GetCandy\Api\Core\CandyApi;
+use GetCandy\Api\Core\GetCandy;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
 
@@ -44,7 +44,7 @@ abstract class AbstractScope implements Scope
     public function __construct()
     {
         $this->roles = app('api')->roles()->getHubAccessRoles();
-        $this->api = app()->getInstance()->make(CandyApi::class);
+        $this->api = app()->getInstance()->make(GetCandy::class);
     }
 
     /**

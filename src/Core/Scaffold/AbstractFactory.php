@@ -2,7 +2,7 @@
 
 namespace GetCandy\Api\Core\Scaffold;
 
-use GetCandy\Api\Core\CandyApi;
+use GetCandy\Api\Core\GetCandy;
 use GetCandy\Api\Core\Pricing\PriceCalculatorInterface;
 
 abstract class AbstractFactory
@@ -15,13 +15,13 @@ abstract class AbstractFactory
     protected $calculator;
 
     /**
-     * The CandyApi manager.
+     * The GetCandy manager.
      *
-     * @var CandyApi
+     * @var GetCandy
      */
     protected $api;
 
-    public function __construct(PriceCalculatorInterface $calculator, CandyApi $api)
+    public function __construct(PriceCalculatorInterface $calculator, GetCandy $api)
     {
         $this->calculator = $calculator;
         $this->api = $api;

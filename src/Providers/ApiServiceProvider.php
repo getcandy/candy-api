@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use GetCandy\Api\Console\Commands\CandySearchIndexCommand;
 use GetCandy\Api\Console\Commands\InstallGetCandyCommand;
 use GetCandy\Api\Console\Commands\ScoreProductsCommand;
-use GetCandy\Api\Core\CandyApi;
 use GetCandy\Api\Core\Currencies\CurrencyConverter;
 use GetCandy\Api\Core\Factory;
 use GetCandy\Api\Core\Users\Contracts\UserContract;
@@ -40,7 +39,6 @@ class ApiServiceProvider extends ServiceProvider
         $this->mapBindings();
         $this->initPassport();
         $this->registerMiddleware();
-        $this->mapRoutes();
         $this->mapCommands();
         $this->loadMigrations();
     }
@@ -92,17 +90,6 @@ class ApiServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(
             __DIR__.'/../../config/services.php', 'services'
         );
-    }
-
-    /**
-     * Get some routes mapped.
-     *
-     * @return void
-     */
-    protected function mapRoutes()
-    {
-        $this->loadRoutesFrom(__DIR__.'/../../routes/api.php');
-        $this->loadRoutesFrom(__DIR__.'/../../routes/api.client.php');
     }
 
     /**
@@ -179,8 +166,8 @@ class ApiServiceProvider extends ServiceProvider
 
         $mediaDrivers = config('assets.upload_drivers', []);
 
-        $this->app->singleton(CandyApi::class, function ($app) {
-            return new CandyApi;
+        $this->app->singleton(GetCandy::class, function ($app) {
+            return new GetCandy;
         });
 
         foreach ($mediaDrivers as $name => $driver) {
