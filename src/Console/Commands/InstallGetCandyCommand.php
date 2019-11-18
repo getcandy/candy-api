@@ -66,8 +66,6 @@ class InstallGetCandyCommand extends Command
         // Run the installer...
         $installer->onCommand($this)->run();
 
-        // $this->disclaimer();
-        // $this->requirements();
         // $this->preflight();
         // $this->printTitle();
         // $this->stepOne();
@@ -90,27 +88,6 @@ class InstallGetCandyCommand extends Command
         //     ['OAuth Client ID', $client->id],
         //     ['OAuth Secret', $client->secret],
         // ]);
-    }
-
-    protected function disclaimer()
-    {
-        $this->warn('*** BEFORE YOU CONTINUE ***');
-        $this->line(' ');
-        $this->warn('Please note, this software is very much considered in an Alpha Release state, if you are installing this on an existing project, please reconsider.');
-        $this->line(' ');
-        $this->warn('We do not want to cause any damage to your data and at this stage we cannot guarantee this wont\'t happen.');
-        $this->warn('The API needs certain data to "work" at this point so this installer will add data for things such as Taxes, Currencies, Attributes etc');
-
-        if ($this->confirm('Are you happy to continue?')) {
-            $this->info('Sweet :)');
-        } else {
-            exit;
-        }
-    }
-
-    protected function requirements()
-    {
-        $this->info('Checking requirements');
     }
 
     /**
@@ -219,174 +196,10 @@ class InstallGetCandyCommand extends Command
      */
     protected function preflight()
     {
-        $this->info('Initialising...');
-        $this->call('migrate');
-
         Role::create(['name' => 'admin']);
         Role::create(['name' => 'customer']);
 
-        $this->info('Adding Attributes');
-
-        $group = AttributeGroup::forceCreate([
-            'name' => ['en' => 'Marketing'],
-            'handle' => 'marketing',
-            'position' => 1,
-        ]);
-
-        $attribute = new Attribute();
-        $attribute->name = ['en' => 'Name', 'sv' => 'Namn'];
-        $attribute->handle = 'name';
-        $attribute->position = 1;
-        $attribute->group_id = $group->id;
-        $attribute->required = true;
-        $attribute->scopeable = 1;
-        $attribute->searchable = 1;
-        $attribute->save();
-
-        $attribute = new Attribute();
-        $attribute->name = ['en' => 'Short Description'];
-        $attribute->handle = 'short_description';
-        $attribute->position = 2;
-        $attribute->group_id = $group->id;
-        $attribute->channeled = 1;
-        $attribute->required = true;
-        $attribute->type = 'richtext';
-        $attribute->scopeable = 1;
-        $attribute->searchable = 1;
-        $attribute->save();
-
-        $attribute = new Attribute();
-        $attribute->name = ['en' => 'Description'];
-        $attribute->handle = 'description';
-        $attribute->position = 2;
-        $attribute->group_id = $group->id;
-        $attribute->channeled = 1;
-        $attribute->required = true;
-        $attribute->type = 'richtext';
-        $attribute->scopeable = 1;
-        $attribute->searchable = 1;
-        $attribute->save();
-
-        // $group = AttributeGroup::create([
-        //     'name' => ['en' => 'General', 'sv' => 'Allmän'],
-        //     'handle' => 'general',
-        //     'position' => 2
-        // ]);
-
-        $group = AttributeGroup::forceCreate([
-            'name' => ['en' => 'SEO', 'sv' => 'SEO'],
-            'handle' => 'seo',
-            'position' => 3,
-        ]);
-
-        $attribute = new Attribute();
-        $attribute->name = ['en' => 'Page Title'];
-        $attribute->handle = 'page_title';
-        $attribute->position = 1;
-        $attribute->group_id = $group->id;
-        $attribute->channeled = 1;
-        $attribute->required = false;
-        $attribute->scopeable = 1;
-        $attribute->searchable = 1;
-        $attribute->save();
-
-        $attribute = new Attribute();
-        $attribute->name = ['en' => 'Meta description'];
-        $attribute->handle = 'meta_description';
-        $attribute->position = 2;
-        $attribute->group_id = $group->id;
-        $attribute->channeled = 1;
-        $attribute->required = false;
-        $attribute->scopeable = 1;
-        $attribute->searchable = 1;
-        $attribute->type = 'textarea';
-        $attribute->save();
-
-        $attribute = new Attribute();
-        $attribute->name = ['en' => 'Meta Keywords'];
-        $attribute->handle = 'meta_keywords';
-        $attribute->position = 3;
-        $attribute->group_id = $group->id;
-        $attribute->channeled = 1;
-        $attribute->required = false;
-        $attribute->scopeable = 1;
-        $attribute->searchable = 1;
-        $attribute->save();
-
-        $this->info('Adding some base settings');
-
-        \GetCandy\Api\Core\Settings\Models\Setting::forceCreate([
-            'name' => 'Products',
-            'handle' => 'products',
-            'content' => [
-                'asset_source' => 'products',
-                'transforms' => ['large_thumbnail'],
-            ],
-        ]);
-
-        \GetCandy\Api\Core\Settings\Models\Setting::forceCreate([
-            'name' => 'Categories',
-            'handle' => 'categories',
-            'content' => [
-                'asset_source' => 'categories',
-                'transforms' => ['large_thumbnail'],
-            ],
-        ]);
-
-        \GetCandy\Api\Core\Settings\Models\Setting::forceCreate([
-            'name' => 'Orders',
-            'handle' => 'orders',
-            'content' => [],
-        ]);
-
-        $this->info('Setting up some customer groups');
-
-        CustomerGroup::forceCreate([
-            'name' => 'Retail',
-            'handle' => 'retail',
-            'default' => true,
-            'system' => true,
-        ]);
-
-        CustomerGroup::forceCreate([
-            'name' => 'Guest',
-            'handle' => 'guest',
-            'default' => false,
-            'system' => true,
-        ]);
-
         $this->info('Adding some currencies');
-
-        Currency::create([
-            'code' => 'GBP',
-            'name' => 'British Pound',
-            'enabled' => true,
-            'exchange_rate' => 1,
-            'format' => '&#xa3;{price}',
-            'decimal_point' => '.',
-            'thousand_point' => ',',
-            'default' => true,
-        ]);
-
-        Currency::create([
-            'code' => 'EUR',
-            'name' => 'Euro',
-            'enabled' => true,
-            'exchange_rate' => 0.87260,
-            'format' => '&euro;{price}',
-            'decimal_point' => '.',
-            'thousand_point' => ',',
-        ]);
-
-        Currency::create([
-            'code' => 'USD',
-            'name' => 'US Dollars',
-            'enabled' => true,
-            'exchange_rate' => 0.71,
-            'format' => '${price}',
-            'decimal_point' => '.',
-            'thousand_point' => ',',
-        ]);
 
         $this->info('Initialising Assets');
 

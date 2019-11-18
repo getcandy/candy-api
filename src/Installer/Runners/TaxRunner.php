@@ -5,7 +5,7 @@ namespace GetCandy\Api\Installer\Runners;
 use DB;
 use GetCandy\Api\Installer\Contracts\InstallRunnerContract;
 
-class TaxRunner implements InstallRunnerContract
+class TaxRunner extends AbstractRunner implements InstallRunnerContract
 {
     public function run()
     {
@@ -29,5 +29,6 @@ class TaxRunner implements InstallRunnerContract
                 'updated_at' => now(),
             ]
         ]);
+
     }
 }

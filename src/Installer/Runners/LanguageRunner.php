@@ -6,11 +6,11 @@ use DB;
 use GetCandy\Api\Installer\Contracts\InstallRunnerContract;
 use Illuminate\Console\Command;
 
-class LanguageRunner implements InstallRunnerContract
+class LanguageRunner extends AbstractRunner implements InstallRunnerContract
 {
     protected $command;
 
-    protected $available;
+    protected $availableLanguages;
 
     public function __construct(Command $command)
     {

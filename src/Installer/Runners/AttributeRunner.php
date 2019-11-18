@@ -5,7 +5,7 @@ namespace GetCandy\Api\Installer\Runners;
 use DB;
 use GetCandy\Api\Installer\Contracts\InstallRunnerContract;
 
-class AttributeRunner implements InstallRunnerContract
+class AttributeRunner extends AbstractRunner implements InstallRunnerContract
 {
     public function run()
     {

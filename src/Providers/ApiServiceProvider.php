@@ -8,6 +8,7 @@ use GetCandy\Api\Console\Commands\InstallGetCandyCommand;
 use GetCandy\Api\Console\Commands\ScoreProductsCommand;
 use GetCandy\Api\Core\Currencies\CurrencyConverter;
 use GetCandy\Api\Core\Factory;
+use GetCandy\Api\Core\GetCandy;
 use GetCandy\Api\Core\Users\Contracts\UserContract;
 use GetCandy\Api\Core\Users\Services\UserService;
 use GetCandy\Api\Http\Middleware\CheckClientCredentials;
@@ -144,9 +145,9 @@ class ApiServiceProvider extends ServiceProvider
      */
     protected function mapBindings()
     {
-        $this->app->register(
-            \Alaouy\Youtube\YoutubeServiceProvider::class
-        );
+        // $this->app->register(
+        //     \Alaouy\Youtube\YoutubeServiceProvider::class
+        // );
 
         $this->app->singleton(UserContract::class, function ($app) {
             return $app->make(UserService::class);

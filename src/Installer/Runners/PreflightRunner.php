@@ -6,10 +6,18 @@ use DB;
 use GetCandy;
 use GetCandy\Api\Installer\Contracts\InstallRunnerContract;
 use GetCandy\Api\Installer\Events\PreflightCompletedEvent;
+use Illuminate\Console\Command;
 use Illuminate\Database\QueryException;
 
-class PreflightRunner implements InstallRunnerContract
+class PreflightRunner extends AbstractRunner implements InstallRunnerContract
 {
+    protected $command;
+
+    public function __construct(Command $command)
+    {
+        $this->command = $command;
+    }
+
     public function run()
     {
         $apiVersion = GetCandy::version();
@@ -35,5 +43,13 @@ class PreflightRunner implements InstallRunnerContract
                 'success' => (bool) $dbVersion,
             ]
         ]));
+
+        return $this;
+    }
+
+    public function after()
+    {
+        $this->command->call('migrate');
+        return;
     }
 }
