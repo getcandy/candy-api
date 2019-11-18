@@ -42,6 +42,7 @@ class CurrencyRunner extends AbstractRunner implements InstallRunnerContract
                 'format' => '&euro;{price}',
                 'decimal_point' => '.',
                 'thousand_point' => ',',
+                'default' => false,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]

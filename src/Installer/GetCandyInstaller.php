@@ -3,10 +3,11 @@
 namespace GetCandy\Api\Installer;
 
 use GetCandy\Api\Installer\Runners\AttributeRunner;
+use GetCandy\Api\Installer\Runners\CurrencyRunner;
+use GetCandy\Api\Installer\Runners\CustomerGroupRunner;
 use GetCandy\Api\Installer\Runners\LanguageRunner;
 use GetCandy\Api\Installer\Runners\PreflightRunner;
 use GetCandy\Api\Installer\Runners\SettingsRunner;
-use GetCandy\Api\Installer\Runners\CustomerGroupRunner;
 use GetCandy\Api\Installer\Runners\TaxRunner;
 use Illuminate\Console\Command;
 
@@ -21,6 +22,7 @@ class GetCandyInstaller
         'languages' => LanguageRunner::class,
         'taxes' => TaxRunner::class,
         'attributes' => AttributeRunner::class,
+        'currencies' => CurrencyRunner::class,
     ];
 
     /**
