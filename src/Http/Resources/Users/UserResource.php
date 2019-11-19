@@ -4,6 +4,7 @@ namespace GetCandy\Api\Http\Resources\Users;
 
 use GetCandy\Api\Http\Resources\AbstractResource;
 use GetCandy\Api\Http\Resources\Orders\OrderResource;
+use GetCandy\Api\Http\Resources\Customers\CustomerGroupCollection;
 
 class UserResource extends AbstractResource
 {
@@ -21,6 +22,7 @@ class UserResource extends AbstractResource
             // 'details' => $this->include('details', UserDetailsResource::class),
             'details' => $this->include('details', UserDetailsResource::class),
             'first_order' => $this->include('firstOrder', OrderResource::class),
+            'groups' => new CustomerGroupCollection($this->whenLoaded('groups')),
         ];
     }
 }

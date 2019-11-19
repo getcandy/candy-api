@@ -11,6 +11,11 @@ abstract class AbstractFilter
      */
     protected $post = false;
 
+    public function getField()
+    {
+        return $this->field;
+    }
+
     /**
      * Get the filter.
      *

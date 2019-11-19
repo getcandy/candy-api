@@ -20,7 +20,7 @@ class AddMinBatchToVariantsTable extends Migration
 
     public function down()
     {
-        Schema::table('order_lines', function (Blueprint $table) {
+        Schema::table('product_variants', function (Blueprint $table) {
             $table->dropColumn('min_batch');
         });
     }

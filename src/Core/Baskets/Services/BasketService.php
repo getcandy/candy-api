@@ -13,6 +13,7 @@ use GetCandy\Api\Core\Baskets\Models\SavedBasket;
 use GetCandy\Api\Core\Baskets\Events\BasketStoredEvent;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketFactoryInterface;
 use GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface;
+use GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface;
 
 class BasketService extends BaseService
 {
@@ -29,6 +30,13 @@ class BasketService extends BaseService
     protected $factory;
 
     /**
+     * The currency converter
+     *
+     * @var CurrencyConverterInterface
+     */
+    protected $currencies;
+
+    /**
      * The variant factory.
      *
      * @var ProductVariantInterface
@@ -37,11 +45,13 @@ class BasketService extends BaseService
 
     public function __construct(
         BasketFactoryInterface $factory,
-        ProductVariantInterface $variantFactory
+        ProductVariantInterface $variantFactory,
+        CurrencyConverterInterface $currencies
     ) {
         $this->model = new Basket();
         $this->factory = $factory;
         $this->variantFactory = $variantFactory;
+        $this->currencies = $currencies;
     }
 
     /**
@@ -65,9 +75,7 @@ class BasketService extends BaseService
             $basket->user()->associate($user);
         }
 
-        if (! $basket->currency) {
-            $basket->currency = app('api')->currencies()->getDefaultRecord()->code;
-        }
+        $basket->currency = $this->currencies->get()->code;
 
         $basket->save();
 
@@ -308,38 +316,52 @@ class BasketService extends BaseService
 
         $collectedVariants = [];
 
-        // Collect variants with the same ID and add up their quantities
-        collect($variants)->each(function ($item) use (&$collectedVariants, $service) {
-            $variant = $this->variantFactory
-                ->init($service->getByHashedId($item['id']))
-                ->get($item['quantity']);
+        $allowNonUniqueLines = config('getcandy.basket.allow_non_unique_lines', false);
 
-            if (array_key_exists($variant->id, $collectedVariants)) {
-                $collectedVariants[$variant->id]['quantity'] += $item['quantity'];
-                return;
-            }
+        if ($allowNonUniqueLines) {
+            $basket->lines()->delete();
+            $collectedVariants = collect($variants)->map(function ($item) use ($service) {
+                $variant = $this->variantFactory
+                    ->init($service->getByHashedId($item['id']))
+                    ->get($item['quantity']);
+                return [
+                    'product_variant_id' => $variant->id,
+                    'quantity' => $item['quantity'],
+                    'total' => $item['quantity'] * $variant->price,
+                    'meta' => $item['meta'] ?? null,
+                ];
+            })->toArray();
+        } else {
+            // Collect variants with the same ID and add up their quantities
+            collect($variants)->each(function ($item) use (&$collectedVariants, $service) {
+                $variant = $this->variantFactory
+                    ->init($service->getByHashedId($item['id']))
+                    ->get($item['quantity']);
 
-            $collectedVariants[$variant->id] = [
-                'product_variant_id' => $variant->id,
-                'quantity' => $item['quantity'],
-                'total' => $item['quantity'] * $variant->price,
-                'meta' => $item['meta'] ?? [],
-            ];
-        });
-
-        // If a basket line with this variant already exists, increase that instead
-        $basket->lines->map(function ($line) use (&$collectedVariants) {
-            $variant_id = $line->product_variant_id;
-
-            if (array_key_exists($variant_id, $collectedVariants)) {
-                $line->quantity += $collectedVariants[$variant_id]['quantity'];
-                unset($collectedVariants[$variant_id]);
-            }
-
-            $line->save();
-        });
-
+                if (array_key_exists($variant->id, $collectedVariants)) {
+                    $collectedVariants[$variant->id]['quantity'] += $item['quantity'];
+                    return;
+                }
+                $collectedVariants[$variant->id] = [
+                    'product_variant_id' => $variant->id,
+                    'quantity' => $item['quantity'],
+                    'total' => $item['quantity'] * $variant->price,
+                    'meta' => $item['meta'] ?? [],
+                ];
+            });
+            // If a basket line with this variant already exists, increase that instead
+            $basket->lines->map(function ($line) use (&$collectedVariants) {
+                $variant_id = $line->product_variant_id;
+                if (array_key_exists($variant_id, $collectedVariants)) {
+                    $line->quantity += $collectedVariants[$variant_id]['quantity'];
+                    unset($collectedVariants[$variant_id]);
+                }
+                $line->save();
+            });
+        }
         $basket->lines()->createMany($collectedVariants);
+
+        return $basket;
     }
 
     /**

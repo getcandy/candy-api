@@ -28,7 +28,9 @@ class SetCurrencyMiddleware
      */
     public function handle($request, Closure $next)
     {
-        $this->converter->set($request->currency);
+        $this->converter->set(
+            $request->header('X-CANDY-CURRENCY') ?: $request->currency
+        );
 
         return $next($request);
     }

@@ -200,6 +200,13 @@ Route::group([
         $router->get('/sales', 'ReportController@sales');
         $router->get('/orders', 'ReportController@orders');
         $router->get('/metrics/{subject}', 'ReportController@metrics');
+        $router->get('/shipping', 'ReportController@shipping');
+        $router->group(['prefix' => 'products'], function ($router) {
+            $router->get('attributes', 'ReportController@productAttributes');
+        });
+        $router->group(['prefix' => 'attributes'], function ($router) {
+            $router->get('/', 'ReportController@attributes');
+        });
     });
 
     /*

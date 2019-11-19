@@ -117,10 +117,20 @@ class ProductType extends BaseType
         'min_price' => [
             'type' => 'scaled_float',
             'scaling_factor' => 100,
+            'fields' => [
+                'sortable' => [
+                    'type' => 'keyword',
+                ],
+            ],
         ],
         'max_price' => [
             'type' => 'scaled_float',
             'scaling_factor' => 100,
+            'fields' => [
+                'sortable' => [
+                    'type' => 'keyword',
+                ],
+            ],
         ],
         'breadcrumbs' => [
             'type' => 'text',

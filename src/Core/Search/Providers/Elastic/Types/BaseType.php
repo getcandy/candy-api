@@ -271,10 +271,9 @@ abstract class BaseType
 
                 $payload[$attribute->handle]['fields'] = [
                     'sortable' => [
-                        'type' => 'keyword',
+                        'type' => $attribute->type == 'number' ? 'integer' : 'keyword',
                     ],
                 ];
-
                 if ($attribute->filterable) {
                     $payload[$attribute->handle]['fields']['filter'] = [
                         'type' => $attribute->type == 'number' ? 'integer' : 'keyword',

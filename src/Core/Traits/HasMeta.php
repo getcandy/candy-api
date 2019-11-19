@@ -12,7 +12,7 @@ trait HasMeta
      */
     public function setMetaAttribute(array $val = null)
     {
-        $this->attributes['meta'] = json_encode($val);
+        $this->attributes['meta'] = $val ? json_encode($val) : null;
     }
 
     /**

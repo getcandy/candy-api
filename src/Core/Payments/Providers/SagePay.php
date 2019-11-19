@@ -11,6 +11,9 @@ use GetCandy\Api\Core\Payments\Models\Transaction;
 use GetCandy\Api\Core\Payments\ThreeDSecureResponse;
 use GetCandy\Api\Core\Payments\Models\ReusablePayment;
 use GetCandy\Api\Core\Payments\Events\PaymentFailedEvent;
+use GetCandy\Api\Core\Payments\Events\PaymentAttemptedEvent;
+use GetCandy\Api\Core\Payments\Events\TransactionFetchedEvent;
+use GetCandy\Api\Core\Payments\Events\ThreeDSecureAttemptEvent;
 
 class SagePay extends AbstractProvider
 {
@@ -124,17 +127,19 @@ class SagePay extends AbstractProvider
                 ],
                 'json' => $payload,
             ]);
+
+            $content = json_decode($response->getBody()->getContents(), true);
+
+            event(new PaymentAttemptedEvent($content));
+
         } catch (ClientException $e) {
             $errors = json_decode($e->getResponse()->getBody()->getContents(), true);
             $response = new PaymentResponse(false, 'Payment Failed', $errors);
             $response->transaction(
                 $this->createFailedTransaction($errors)
             );
-
             return $response;
         }
-
-        $content = json_decode($response->getBody()->getContents(), true);
 
         // If it's 3DSecured then we return the relevant response
         if ($content['status'] == '3DAuth') {
@@ -192,6 +197,10 @@ class SagePay extends AbstractProvider
                 ],
                 'json' => ['paRes' => $paRes],
             ]);
+
+            $content = json_decode($response->getBody()->getContents(), true);
+            event(new ThreeDSecureAttemptEvent($content));
+
         } catch (ClientException $e) {
             $errors = json_decode($e->getResponse()->getBody()->getContents(), true);
 
@@ -202,7 +211,7 @@ class SagePay extends AbstractProvider
             ]);
         }
 
-        $content = json_decode($response->getBody()->getContents(), true);
+
 
         // We are authenticated, so lets get the transaction from the API
         $transaction = $this->getTransactionFromApi($transaction);
@@ -218,7 +227,7 @@ class SagePay extends AbstractProvider
         return $this->createSuccessTransaction($transaction);
     }
 
-    protected function getTransactionFromApi($id)
+    protected function getTransactionFromApi($id, $attempt = 1)
     {
         try {
             $response = $this->http->get($this->host.'transactions/'.$id, [
@@ -228,11 +237,24 @@ class SagePay extends AbstractProvider
                     'Cache-Control' => 'no-cache',
                 ],
             ]);
-        } catch (ClientException $e) {
-            return;
-        }
 
-        return json_decode($response->getBody()->getContents(), true);
+            $content = json_decode($response->getBody()->getContents(), true);
+            event(new TransactionFetchedEvent($content));
+        } catch (ClientException $e) {
+            $errors = json_decode($e->getResponse()->getBody()->getContents(), true);
+            event(new TransactionFetchedEvent($errors));
+            if ($attempt > 4) {
+                return [
+                    'transactionId' => $id,
+                    'status' => $errors['code'],
+                    'statusDetail' => $errors['description'],
+                ];
+            }
+            $attempt++;
+            sleep(1);
+            return $this->getTransactionFromApi($id, $attempt);
+        }
+        return $content;
     }
 
     protected function getVendorTxCode($order)

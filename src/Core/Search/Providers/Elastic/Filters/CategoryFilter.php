@@ -13,6 +13,8 @@ class CategoryFilter extends AbstractFilter
 
     public $handle = 'category-filter';
 
+    protected $field = 'departments';
+
     public function __construct()
     {
         $this->categories = collect();

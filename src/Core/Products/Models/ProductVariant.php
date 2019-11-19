@@ -29,6 +29,7 @@ class ProductVariant extends BaseModel
         'unit_qty',
         'min_qty',
         'max_qty',
+        'min_batch',
     ];
 
     protected $pricing;
@@ -41,6 +42,16 @@ class ProductVariant extends BaseModel
     public function product()
     {
         return $this->belongsTo(Product::class)->withoutGlobalScopes();
+    }
+
+    /**
+     * Return the product relation.
+     *
+     * @return BelongsTo
+     */
+    public function availableProduct()
+    {
+        return $this->belongsTo(Product::class, 'product_id');
     }
 
     /**

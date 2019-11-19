@@ -361,8 +361,8 @@ class SearchResultFactory implements SearchResultInterface
                 foreach ($agg['categories_post_filter']['categories_post_inner']['buckets'] as $bucket) {
                     $selected[] = $bucket['key'];
                 }
-            } elseif ($handle == 'categories_before') {
-                foreach ($agg['categories_before_inner']['buckets'] as $bucket) {
+            } elseif ($handle == 'categories') {
+                foreach ($agg['categories']['buckets'] as $bucket) {
                     $all[$bucket['key']] = $bucket['doc_count'];
                 }
             } elseif ($handle == 'price') {

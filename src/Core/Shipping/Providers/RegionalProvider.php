@@ -21,8 +21,11 @@ class RegionalProvider extends AbstractProvider
 
         $postcode = $this->getPostcodeToCheck($order);
 
-        $prices = $this->method->prices->filter(function ($price) use ($postcode) {
-            return $price->zone->regions()->whereRegion($postcode)->exists();
+        $prices = $this->method->prices->filter(function ($price) use ($postcode, $order) {
+            return $price->zone->regions()->where('shipping_regions.region', '=', $postcode)
+                ->join('countries', 'countries.id', '=', 'shipping_regions.country_id')
+                ->where('countries.name', '=', $order->shipping_country)
+                ->exists();
         });
 
         if (! $prices->count()) {
@@ -33,6 +36,7 @@ class RegionalProvider extends AbstractProvider
                     return $region->region == '*' && $region->country->name == $order->shipping_country;
                 });
             });
+
 
             if (! $prices->count()) {
                 return false;

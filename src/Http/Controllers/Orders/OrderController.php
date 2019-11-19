@@ -77,6 +77,14 @@ class OrderController extends BaseController
             ]);
         }
 
+        if ($request->sortBy) {
+            $criteria->set('sortBy', $request->sortBy);
+        }
+
+        if ($request->sortDir) {
+            $criteria->set('sortDir', $request->sortDir);
+        }
+
         if ($request->user()->hasRole('admin') && ! $request->only_own) {
             $criteria->set('restrict', false);
         }

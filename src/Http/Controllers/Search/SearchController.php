@@ -68,8 +68,10 @@ class SearchController extends BaseController
                 ->categories($categories)
                 ->filters($request->only($filterable))
                 ->sorting($request->sort)
-                ->pagination($page ?: 1, $request->per_page ?: 30)
-                ->keywords($request->keywords)
+                ->pagination(
+                    is_numeric($page) ? $page : 1,
+                    is_numeric($request->per_page) ? $request->per_page : 30
+                )->keywords($request->keywords)
                 ->search((bool) $request->get('rank', true));
         } catch (\Elastica\Exception\Connection\HttpException $e) {
             return $this->errorInternalError($e->getMessage());
