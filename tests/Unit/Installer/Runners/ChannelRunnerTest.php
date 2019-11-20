@@ -1,0 +1,38 @@
+<?php
+
+namespace Tests\Unit\Installer\Runners;
+
+use DB;
+use GetCandy\Api\Core\GetCandy;
+use Tests\TestCase;
+use Illuminate\Console\Command;
+use GetCandy\Api\Installer\Runners\ChannelRunner;
+
+/**
+ * @group installer
+ */
+class ChannelRunnerTest extends TestCase
+{
+    protected $withSeedData = false;
+
+    public function test_install_can_run()
+    {
+        $this->mock(Command::class, function ($mock) {
+            $mock->shouldReceive('anticipate')->andReturn('webstore');
+            $mock->shouldReceive('ask')->andReturn('localhost');
+        });
+
+        $runner = app()->make(ChannelRunner::class);
+
+        $this->assertEquals(0, DB::table('channels')->count());
+
+        $runner->run();
+
+        $this->assertDatabaseHas('channels', [
+            'name' => 'webstore',
+            'handle' => 'webstore',
+            'default' => 1,
+            'url' => 'localhost',
+        ]);
+    }
+}

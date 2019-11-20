@@ -5,6 +5,7 @@ namespace GetCandy\Api\Installer\Runners;
 use DB;
 use GetCandy\Api\Installer\Contracts\InstallRunnerContract;
 use Illuminate\Console\Command;
+use Spatie\Permission\Models\Role;
 
 class UserRunner extends AbstractRunner implements InstallRunnerContract
 {
@@ -21,13 +22,25 @@ class UserRunner extends AbstractRunner implements InstallRunnerContract
             $this->installRoles();
         }
 
-        $adminRole = $this->getAdminRole();
+        $model = config('auth.providers.users.model');
 
-
-        if (DB::table('users')->count()) {
-            return;
+        if (!DB::table('users')->count()) {
+            $user = $this->setUpUser($model);
+        } else {
+            $user = (new $model)->first();
         }
 
+        $user->assignRole('admin');
+    }
+
+    /**
+     * Set up the user based on a model reference
+     *
+     * @param string $model
+     * @return Illuminate\Database\Eloquent\Model
+     */
+    protected function setUpUser($model)
+    {
         $this->command->info('Setting up user account');
 
         $name = $this->command->ask('What\'s your name?');
@@ -37,22 +50,6 @@ class UserRunner extends AbstractRunner implements InstallRunnerContract
         $email = $this->command->ask("What's your email?");
 
         $tries = 0;
-
-        while (! filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            if ($tries < 3) {
-                $message = 'Oops! That email looks invalid, can we try again?';
-            } elseif ($tries >= 3 && $tries <= 6) {
-                $message = 'No really, give me a proper email...';
-            } elseif ($tries >= 6 && $tries <= 9) {
-                $message = 'Seriously now, lets not do this all day... what is it?';
-            } elseif ($tries >= 10) {
-                $this->command->error('I give up');
-                exit();
-            }
-
-            $email = $this->ask($message);
-            $tries++;
-        }
 
         $password = $this->command->secret('Choose a password (hidden)');
 
@@ -66,9 +63,6 @@ class UserRunner extends AbstractRunner implements InstallRunnerContract
         $this->command->info('Just creating your account now');
 
         // Get our auth user model..
-
-        $model = config('auth.providers.users.model');
-
         $user = new $model;
 
         $user->fill([
@@ -79,25 +73,19 @@ class UserRunner extends AbstractRunner implements InstallRunnerContract
 
         $user->save();
 
-        $user->assignRole('admin');
+        return $user;
     }
 
-    protected function getAdminRole()
-    {
-        return DB::table('roles')->whereName('admin')->first();
-    }
-
+    /**
+     * Install the roles
+     *
+     * @return void
+     */
     protected function installRoles()
     {
-        DB::table('roles')->insert([
-            [
-                'name' => 'admin',
-                'guard_name' => 'admin',
-            ],
-            [
-                'name' => 'customer',
-                'guard_name' => 'customer',
-            ],
-        ]);
+        // We have to install roles via the modals
+        // otherwise the package won't recognise them
+        Role::create(['name' => 'admin']);
+        Role::create(['name' => 'customer']);
     }
 }

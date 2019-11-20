@@ -17,12 +17,12 @@ class AssociationGroupRunner extends AbstractRunner implements InstallRunnerCont
 
     public function run()
     {
-        $this->command->info('Installing Association Groups');
-
         // Are languages already installed?
         if (DB::table('association_groups')->count()) {
             return;
         }
+
+        $this->command->info('Installing Association Groups');
 
         DB::table('association_groups')->insert([
             [

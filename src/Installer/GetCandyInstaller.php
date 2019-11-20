@@ -5,11 +5,13 @@ namespace GetCandy\Api\Installer;
 use GetCandy\Api\Installer\Runners\AssetRunner;
 use GetCandy\Api\Installer\Runners\AssociationGroupRunner;
 use GetCandy\Api\Installer\Runners\AttributeRunner;
+use GetCandy\Api\Installer\Runners\ChannelRunner;
 use GetCandy\Api\Installer\Runners\CountryRunner;
 use GetCandy\Api\Installer\Runners\CurrencyRunner;
 use GetCandy\Api\Installer\Runners\CustomerGroupRunner;
 use GetCandy\Api\Installer\Runners\LanguageRunner;
 use GetCandy\Api\Installer\Runners\PreflightRunner;
+use GetCandy\Api\Installer\Runners\ProductFamilyRunner;
 use GetCandy\Api\Installer\Runners\SettingsRunner;
 use GetCandy\Api\Installer\Runners\TaxRunner;
 use GetCandy\Api\Installer\Runners\UserRunner;
@@ -31,6 +33,8 @@ class GetCandyInstaller
         'association_groups' => AssociationGroupRunner::class,
         'countries' => CountryRunner::class,
         'users' => UserRunner::class,
+        'channels' => ChannelRunner::class,
+        'product_families' => ProductFamilyRunner::class,
     ];
 
     /**
@@ -55,9 +59,8 @@ class GetCandyInstaller
         if (!$this->command) {
             throw new \Exception('You must attach a command instance to the installer');
         }
-
         $this->getRunners()->each(function ($runner) {
-            $runner = new $runner($this->command);
+            $runner = app()->make($runner);
             $runner->run();
             $runner->after();
         });
