@@ -3,9 +3,8 @@
 namespace Tests\Unit\Installer\Runners;
 
 use DB;
-use GetCandy\Api\Core\GetCandy;
-use Tests\TestCase;
 use GetCandy\Api\Installer\Runners\SettingsRunner;
+use Tests\TestCase;
 
 /**
  * @group installer
@@ -26,7 +25,7 @@ class SettingsRunnerTest extends TestCase
 
         foreach ($settings as $setting) {
             $this->assertDatabaseHas('settings', [
-                'handle' => $setting
+                'handle' => $setting,
             ]);
         }
     }

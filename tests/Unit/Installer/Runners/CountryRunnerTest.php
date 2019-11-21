@@ -3,7 +3,6 @@
 namespace Tests\Unit\Installer\Runners;
 
 use DB;
-use GetCandy\Api\Core\GetCandy;
 use GetCandy\Api\Installer\Runners\CountryRunner;
 use Illuminate\Console\Command;
 use Mockery;

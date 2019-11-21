@@ -44,8 +44,9 @@ class InstallGetCandyCommand extends Command
         $this->printTitle();
         $events->listen(PreflightCompletedEvent::class, function ($event) {
             $database = $event->response['database'];
-            if (!$database['connected']) {
+            if (! $database['connected']) {
                 $this->error('Unable to connect to database');
+
                 return;
             }
             $this->info('Preflight complete');
@@ -72,6 +73,6 @@ class InstallGetCandyCommand extends Command
 / /_/ /  __/ /_/ /___/ /_/ / / / / /_/ / /_/ /
 \____/\___/\__/\____/\__,_/_/ /_/\__,_/\__, /
                                       /____/ ');
-        $this->line(str_pad(' ' . GetCandy::version() . ' =', 48, '=', STR_PAD_LEFT));
+        $this->line(str_pad(' '.GetCandy::version().' =', 48, '=', STR_PAD_LEFT));
     }
 }

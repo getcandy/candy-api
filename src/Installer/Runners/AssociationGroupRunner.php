@@ -36,7 +36,7 @@ class AssociationGroupRunner extends AbstractRunner implements InstallRunnerCont
             [
                 'name' => 'Alternate',
                 'handle' => 'alternate',
-            ]
+            ],
         ]);
     }
 }

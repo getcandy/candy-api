@@ -2,11 +2,8 @@
 
 namespace Tests\Unit\Installer\Runners;
 
-use DB;
-use GetCandy\Api\Core\GetCandy;
 use GetCandy\Api\Installer\GetCandyInstaller;
 use Illuminate\Console\Command;
-use Mockery;
 use Tests\TestCase;
 
 /**
@@ -29,7 +26,7 @@ class GetCandyInstallerTest extends TestCase
                 $mock->shouldReceive('run')->once();
                 $mock->shouldReceive('after')->once();
             });
-        };
+        }
 
         $installer->run();
     }
@@ -38,7 +35,7 @@ class GetCandyInstallerTest extends TestCase
     {
         config()->set('getcandy.installer.runners', [
             'mocked_installer' => 'My\Test\Runner',
-            'product_families' => 'My\Test\Runner\Override'
+            'product_families' => 'My\Test\Runner\Override',
         ]);
 
         $commandMock = $this->spy(Command::class);
@@ -55,7 +52,7 @@ class GetCandyInstallerTest extends TestCase
                 $mock->shouldReceive('run')->once();
                 $mock->shouldReceive('after')->once();
             });
-        };
+        }
 
         $installer->run();
     }

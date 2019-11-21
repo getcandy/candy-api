@@ -37,6 +37,7 @@ class LanguageRunner extends AbstractRunner implements InstallRunnerContract
             $lang['default'] = $key == 'gb';
             $lang['created_at'] = now();
             $lang['updated_at'] = now();
+
             return $lang;
         });
 
