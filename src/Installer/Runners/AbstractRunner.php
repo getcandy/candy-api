@@ -8,7 +8,7 @@ use GetCandy\Api\Installer\Contracts\InstallRunnerContract;
 abstract class AbstractRunner implements InstallRunnerContract
 {
     /**
-     * The instance of the command
+     * The instance of the command.
      *
      * @var Command
      */

@@ -5,7 +5,6 @@ namespace GetCandy\Api\Installer\Runners;
 use DB;
 use File;
 use GetCandy\Api\Installer\Contracts\InstallRunnerContract;
-use Illuminate\Console\Command;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 class CountryRunner extends AbstractRunner implements InstallRunnerContract

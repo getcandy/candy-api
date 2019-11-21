@@ -4,7 +4,6 @@ namespace GetCandy\Api\Installer\Runners;
 
 use DB;
 use GetCandy\Api\Installer\Contracts\InstallRunnerContract;
-use Illuminate\Console\Command;
 
 class LanguageRunner extends AbstractRunner implements InstallRunnerContract
 {
