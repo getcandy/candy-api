@@ -32,6 +32,7 @@ abstract class AbstractRunner implements InstallRunnerContract
     public function onCommand(Command $command)
     {
         $this->command = $command;
+
         return $this;
     }
 }

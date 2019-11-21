@@ -31,6 +31,7 @@ class CountryRunner extends AbstractRunner implements InstallRunnerContract
 
         if (! $countries) {
             $this->command->error('Unable to install countries - JSON file missing');
+
             return;
         }
 
