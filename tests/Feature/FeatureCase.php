@@ -2,8 +2,11 @@
 
 namespace Tests\Feature;
 
+use GetCandy;
 use Laravel\Passport\Client;
+use Tests\Stubs\User;
 use Tests\TestCase;
+use Illuminate\Contracts\Auth\Authenticatable;
 
 abstract class FeatureCase extends TestCase
 {
@@ -11,23 +14,34 @@ abstract class FeatureCase extends TestCase
 
     protected $clientToken;
 
-    protected function getToken($user = false)
+    public function setUp() : void
     {
-        if ($user) {
-            return $this->getUserToken();
-        }
-
-        return $this->getClientToken();
+        parent::setUp();
+        GetCandy::routes();
+        $this->artisan('key:generate');
+        $this->artisan('passport:install');
     }
 
-    protected function getClientToken()
+    public function admin()
     {
-        if ($this->clientToken) {
-            return $this->clientToken;
-        }
+        $user = User::first();
+        $user->assignRole('admin');
+        return $user;
+    }
 
-        $client = Client::first();
+    public function actingAs(Authenticatable $user, $driver = null)
+    {
+        $token = $user->createToken('TestToken', [])->accessToken;
 
-        dd($client);
+        // dd($token);
+        $this->headers['Accept'] = 'application/json';
+        $this->headers['Authorization'] = 'Bearer '.$token;
+
+        return $this;
+    }
+
+    public function json($method, $uri, array $data = [], array $headers = [])
+    {
+        return parent::json($method, $uri, $data, array_merge($this->headers, $headers));
     }
 }
