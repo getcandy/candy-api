@@ -8,14 +8,10 @@ use Illuminate\Console\Command;
 
 class LanguageRunner extends AbstractRunner implements InstallRunnerContract
 {
-    protected $command;
-
     protected $availableLanguages;
 
-    public function __construct(Command $command)
+    public function __construct()
     {
-        $this->command = $command;
-
         $this->availableLanguages = collect([
             'gb' => [
                 'lang' => 'en',

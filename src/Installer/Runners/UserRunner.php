@@ -4,18 +4,10 @@ namespace GetCandy\Api\Installer\Runners;
 
 use DB;
 use GetCandy\Api\Installer\Contracts\InstallRunnerContract;
-use Illuminate\Console\Command;
 use Spatie\Permission\Models\Role;
 
 class UserRunner extends AbstractRunner implements InstallRunnerContract
 {
-    protected $command;
-
-    public function __construct(Command $command)
-    {
-        $this->command = $command;
-    }
-
     public function run()
     {
         if (! DB::table('roles')->count()) {

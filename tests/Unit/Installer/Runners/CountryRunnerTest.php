@@ -41,6 +41,7 @@ class CountryRunnerTest extends TestCase
 
         $this->assertEquals(0, DB::table('countries')->count());
 
+        $runner->onCommand(app()->make(Command::class));
         $runner->run();
 
         $this->assertDatabaseHas('countries', [

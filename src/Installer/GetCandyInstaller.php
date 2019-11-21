@@ -62,6 +62,7 @@ class GetCandyInstaller
         }
         $this->getRunners()->each(function ($runner) {
             $runner = app()->make($runner);
+            $runner->onCommand($this->command);
             $runner->run();
             $runner->after();
         });

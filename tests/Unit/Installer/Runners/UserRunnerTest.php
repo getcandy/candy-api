@@ -42,7 +42,7 @@ class UserRunnerTest extends TestCase
         $runner = app()->make(UserRunner::class);
 
         $this->assertEquals(0, DB::table('users')->count());
-
+        $runner->onCommand(app()->make(Command::class));
         $runner->run();
 
         $this->assertDatabaseHas('users', [

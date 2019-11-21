@@ -10,13 +10,6 @@ use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 class CountryRunner extends AbstractRunner implements InstallRunnerContract
 {
-    protected $command;
-
-    public function __construct(Command $command)
-    {
-        $this->command = $command;
-    }
-
     protected function getCountries()
     {
         try {
@@ -35,13 +28,10 @@ class CountryRunner extends AbstractRunner implements InstallRunnerContract
             return;
         }
 
-        $this->command->info('Installing Countries');
-
         $countries = $this->getCountries();
 
         if (! $countries) {
             $this->command->error('Unable to install countries - JSON file missing');
-
             return;
         }
 

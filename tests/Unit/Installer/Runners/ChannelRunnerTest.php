@@ -24,7 +24,7 @@ class ChannelRunnerTest extends TestCase
         $runner = app()->make(ChannelRunner::class);
 
         $this->assertEquals(0, DB::table('channels')->count());
-
+        $runner->onCommand(app()->make(Command::class));
         $runner->run();
 
         $this->assertDatabaseHas('channels', [

@@ -5,17 +5,9 @@ namespace GetCandy\Api\Installer\Runners;
 use DB;
 use GetCandy\Api\Core\Products\Models\ProductFamily;
 use GetCandy\Api\Installer\Contracts\InstallRunnerContract;
-use Illuminate\Console\Command;
 
 class ProductFamilyRunner extends AbstractRunner implements InstallRunnerContract
 {
-    protected $command;
-
-    public function __construct(Command $command)
-    {
-        $this->command = $command;
-    }
-
     public function getChannelHandle()
     {
         $channel = DB::table('channels')->select('handle')->whereDefault(true)->first();

@@ -23,6 +23,7 @@ class GetCandyInstallerTest extends TestCase
 
         foreach ($installer->getRunners() as $runner) {
             $this->mock($runner, function ($mock) {
+                $mock->shouldReceive('onCommand')->once();
                 $mock->shouldReceive('run')->once();
                 $mock->shouldReceive('after')->once();
             });
@@ -49,6 +50,7 @@ class GetCandyInstallerTest extends TestCase
 
         foreach ($runners as $runner) {
             $this->mock($runner, function ($mock) {
+                $mock->shouldReceive('onCommand')->once();
                 $mock->shouldReceive('run')->once();
                 $mock->shouldReceive('after')->once();
             });
