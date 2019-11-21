@@ -3,14 +3,13 @@
 namespace Tests\Unit\Installer\Runners;
 
 use DB;
-use GetCandy\Api\Core\GetCandy;
-use Tests\TestCase;
 use GetCandy\Api\Installer\Runners\AssociationGroupRunner;
+use Tests\TestCase;
 
 /**
  * @group installer
  */
-class AssociationGroupRunnerTest extends TestCase
+class AssociationGroupRunner extends TestCase
 {
     protected $withSeedData = false;
 

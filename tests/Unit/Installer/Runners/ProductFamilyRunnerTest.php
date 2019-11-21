@@ -3,7 +3,6 @@
 namespace Tests\Unit\Installer\Runners;
 
 use DB;
-use GetCandy\Api\Core\GetCandy;
 use GetCandy\Api\Core\Products\Models\ProductFamily;
 use GetCandy\Api\Installer\Runners\ProductFamilyRunner;
 use Tests\TestCase;
@@ -36,10 +35,10 @@ class ProductFamilyRunnerTest extends TestCase
             'attribute_data' => json_encode([
                 'name' => [
                     'webstore' => [
-                        'en' => 'Default'
-                    ]
-                ]
-            ])
+                        'en' => 'Default',
+                    ],
+                ],
+            ]),
         ]);
 
         $this->assertDatabaseHas('attributables', [

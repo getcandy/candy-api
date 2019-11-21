@@ -10,7 +10,6 @@ class AssetRunner extends AbstractRunner implements InstallRunnerContract
 {
     protected $command;
 
-
     public function __construct(Command $command)
     {
         $this->command = $command;
@@ -19,10 +18,10 @@ class AssetRunner extends AbstractRunner implements InstallRunnerContract
     public function run()
     {
         // Are asset sources already installed?
-        if (!DB::table('asset_sources')->count()) {
+        if (! DB::table('asset_sources')->count()) {
             $this->installSources();
         }
-        if (!DB::table('transforms')->count()) {
+        if (! DB::table('transforms')->count()) {
             $this->installTransforms();
         }
     }
@@ -45,12 +44,12 @@ class AssetRunner extends AbstractRunner implements InstallRunnerContract
                 'position' => 'center-center',
                 'width' => 800,
                 'height' => 800,
-            ]
+            ],
         ]);
     }
 
     /**
-     * Install asset sources
+     * Install asset sources.
      *
      * @return void
      */

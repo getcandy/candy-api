@@ -19,6 +19,7 @@ class ProductFamilyRunner extends AbstractRunner implements InstallRunnerContrac
     public function getChannelHandle()
     {
         $channel = DB::table('channels')->select('handle')->whereDefault(true)->first();
+
         return $channel->handle;
     }
 
@@ -40,8 +41,8 @@ class ProductFamilyRunner extends AbstractRunner implements InstallRunnerContrac
                 'name' => [
                     $channelHandle => [
                         'en' => 'Default',
-                    ]
-                ]
+                    ],
+                ],
             ]),
             'created_at' => now(),
             'updated_at' => now(),

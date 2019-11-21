@@ -37,7 +37,7 @@ class CustomerGroupRunner extends AbstractRunner implements InstallRunnerContrac
                 'system' => true,
                 'created_at' => now(),
                 'updated_at' => now(),
-            ]
+            ],
         ]);
     }
 }

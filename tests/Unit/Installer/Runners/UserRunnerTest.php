@@ -3,8 +3,6 @@
 namespace Tests\Unit\Installer\Runners;
 
 use DB;
-use GetCandy\Api\Core\GetCandy;
-use GetCandy\Api\Core\Products\Models\ProductFamily;
 use GetCandy\Api\Installer\Runners\UserRunner;
 use Illuminate\Console\Command;
 use Tests\TestCase;
@@ -18,7 +16,7 @@ class UserRunnerTest extends TestCase
 
     public function test_install_can_run()
     {
-        if (!config('auth.providers.users.model')) {
+        if (! config('auth.providers.users.model')) {
             config()->set('auth.providers.users.model', 'Tests\Stubs\User');
         }
 

@@ -3,10 +3,9 @@
 namespace Tests\Unit\Installer\Runners;
 
 use DB;
-use GetCandy\Api\Core\GetCandy;
-use Tests\TestCase;
-use Illuminate\Console\Command;
 use GetCandy\Api\Installer\Runners\ChannelRunner;
+use Illuminate\Console\Command;
+use Tests\TestCase;
 
 /**
  * @group installer

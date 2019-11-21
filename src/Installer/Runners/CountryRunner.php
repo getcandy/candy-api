@@ -24,7 +24,7 @@ class CountryRunner extends AbstractRunner implements InstallRunnerContract
                 __DIR__.'/../../../countries.json'
             ), true));
         } catch (FileNotFoundException $e) {
-            return null;
+            return;
         }
     }
 
@@ -39,8 +39,9 @@ class CountryRunner extends AbstractRunner implements InstallRunnerContract
 
         $countries = $this->getCountries();
 
-        if (!$countries) {
+        if (! $countries) {
             $this->command->error('Unable to install countries - JSON file missing');
+
             return;
         }
 

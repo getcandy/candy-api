@@ -41,7 +41,7 @@ class PreflightRunner extends AbstractRunner implements InstallRunnerContract
                 'version' => $dbVersion,
                 'connected' => $dbVersion ?? false,
                 'success' => (bool) $dbVersion,
-            ]
+            ],
         ]));
 
         return $this;
@@ -50,6 +50,5 @@ class PreflightRunner extends AbstractRunner implements InstallRunnerContract
     public function after()
     {
         $this->command->call('migrate');
-        return;
     }
 }
