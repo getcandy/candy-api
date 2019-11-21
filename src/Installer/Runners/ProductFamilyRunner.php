@@ -49,7 +49,7 @@ class ProductFamilyRunner extends AbstractRunner implements InstallRunnerContrac
             $attributeInsert[] = [
                 'attribute_id' => $attribute->id,
                 'attributable_type' => ProductFamily::class,
-                'attributable_id' => 1,
+                'attributable_id' => $familyId,
                 'created_at' => now(),
                 'updated_at' => now(),
             ];
