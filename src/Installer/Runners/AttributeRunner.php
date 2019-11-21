@@ -9,29 +9,29 @@ class AttributeRunner extends AbstractRunner implements InstallRunnerContract
 {
     public function run()
     {
-        if (!DB::table('attribute_groups')->whereHandle('marketing')->exists()) {
+        if (! DB::table('attribute_groups')->whereHandle('marketing')->exists()) {
             $marketingGroupId = $this->addMarketingGroup();
         } else {
             $marketingGroupId = DB::table('attribute_groups')->select('id')->whereHandle('marketing')->first()->id;
         }
 
-        if (!DB::table('attribute_groups')->whereHandle('seo')->exists()) {
+        if (! DB::table('attribute_groups')->whereHandle('seo')->exists()) {
             $seoGroupId = $this->addSeoGroup();
         } else {
             $seoGroupId = DB::table('attribute_groups')->whereHandle('seo')->select('id')->first()->id;
         }
 
-        if (!DB::table('attributes')->where('group_id', '=', $marketingGroupId)->count()) {
+        if (! DB::table('attributes')->where('group_id', '=', $marketingGroupId)->count()) {
             $this->addMarketingAttributes($marketingGroupId);
         }
 
-        if (!DB::table('attributes')->where('group_id', '=', $seoGroupId)->count()) {
+        if (! DB::table('attributes')->where('group_id', '=', $seoGroupId)->count()) {
             $this->addSeoAttributes($seoGroupId);
         }
     }
 
     /**
-     * Add the SEO attribute group
+     * Add the SEO attribute group.
      *
      * @return int
      */
@@ -47,7 +47,7 @@ class AttributeRunner extends AbstractRunner implements InstallRunnerContract
     }
 
     /**
-     * Add the marketing attribute group
+     * Add the marketing attribute group.
      *
      * @return int
      */
@@ -63,7 +63,7 @@ class AttributeRunner extends AbstractRunner implements InstallRunnerContract
     }
 
     /**
-     * Add the SEO attributes
+     * Add the SEO attributes.
      *
      * @param int $groupId
      * @return void
@@ -76,7 +76,7 @@ class AttributeRunner extends AbstractRunner implements InstallRunnerContract
     }
 
     /**
-     * Add the marketing attributes
+     * Add the marketing attributes.
      *
      * @param int $groupId
      * @return void
@@ -89,7 +89,7 @@ class AttributeRunner extends AbstractRunner implements InstallRunnerContract
     }
 
     /**
-     * Get the marketing attributes
+     * Get the marketing attributes.
      *
      * @param int $groupId
      * @return array
@@ -137,7 +137,7 @@ class AttributeRunner extends AbstractRunner implements InstallRunnerContract
     }
 
     /**
-     * Get the SEO attributes to be installed
+     * Get the SEO attributes to be installed.
      *
      * @param int $groupId
      * @return array

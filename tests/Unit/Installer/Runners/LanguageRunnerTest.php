@@ -3,9 +3,8 @@
 namespace Tests\Unit\Installer\Runners;
 
 use DB;
-use GetCandy\Api\Core\GetCandy;
-use Tests\TestCase;
 use GetCandy\Api\Installer\Runners\LanguageRunner;
+use Tests\TestCase;
 
 /**
  * @group installer

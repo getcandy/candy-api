@@ -38,7 +38,7 @@ class GetCandyInstaller
     ];
 
     /**
-     * Sets the command instance for running the installer
+     * Sets the command instance for running the installer.
      *
      * @param Command $command
      * @return self
@@ -46,17 +46,18 @@ class GetCandyInstaller
     public function onCommand(Command $command)
     {
         $this->command = $command;
+
         return $this;
     }
 
     /**
-     * Run the installer
+     * Run the installer.
      *
      * @return void
      */
     public function run()
     {
-        if (!$this->command) {
+        if (! $this->command) {
             throw new \Exception('You must attach a command instance to the installer');
         }
         $this->getRunners()->each(function ($runner) {

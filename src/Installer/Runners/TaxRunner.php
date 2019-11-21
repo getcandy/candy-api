@@ -27,8 +27,7 @@ class TaxRunner extends AbstractRunner implements InstallRunnerContract
                 'default' => false,
                 'created_at' => now(),
                 'updated_at' => now(),
-            ]
+            ],
         ]);
-
     }
 }

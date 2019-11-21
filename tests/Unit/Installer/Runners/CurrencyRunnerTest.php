@@ -3,9 +3,8 @@
 namespace Tests\Unit\Installer\Runners;
 
 use DB;
-use GetCandy\Api\Core\GetCandy;
-use Tests\TestCase;
 use GetCandy\Api\Installer\Runners\CurrencyRunner;
+use Tests\TestCase;
 
 /**
  * @group installer
@@ -43,6 +42,5 @@ class CurrencyRunnerTest extends TestCase
             'thousand_point' => ',',
             'default' => false,
         ]);
-
     }
 }

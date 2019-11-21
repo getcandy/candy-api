@@ -3,9 +3,8 @@
 namespace Tests\Unit\Installer\Runners;
 
 use DB;
-use GetCandy\Api\Core\GetCandy;
-use Tests\TestCase;
 use GetCandy\Api\Installer\Runners\AttributeRunner;
+use Tests\TestCase;
 
 /**
  * @group installer
@@ -25,7 +24,7 @@ class AttributeRunnerTest extends TestCase
 
         $groups = DB::table('attribute_groups')->select([
             'id',
-            'handle'
+            'handle',
         ])->get();
 
         $marketingGroup = $groups->first(function ($group) {

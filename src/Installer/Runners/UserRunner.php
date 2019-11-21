@@ -18,13 +18,13 @@ class UserRunner extends AbstractRunner implements InstallRunnerContract
 
     public function run()
     {
-        if (!DB::table('roles')->count()) {
+        if (! DB::table('roles')->count()) {
             $this->installRoles();
         }
 
         $model = config('auth.providers.users.model');
 
-        if (!DB::table('users')->count()) {
+        if (! DB::table('users')->count()) {
             $user = $this->setUpUser($model);
         } else {
             $user = (new $model)->first();
@@ -34,7 +34,7 @@ class UserRunner extends AbstractRunner implements InstallRunnerContract
     }
 
     /**
-     * Set up the user based on a model reference
+     * Set up the user based on a model reference.
      *
      * @param string $model
      * @return Illuminate\Database\Eloquent\Model
@@ -77,7 +77,7 @@ class UserRunner extends AbstractRunner implements InstallRunnerContract
     }
 
     /**
-     * Install the roles
+     * Install the roles.
      *
      * @return void
      */

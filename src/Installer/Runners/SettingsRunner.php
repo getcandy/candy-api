@@ -10,7 +10,6 @@ class SettingsRunner extends AbstractRunner implements InstallRunnerContract
 {
     protected $command;
 
-
     public function __construct(Command $command)
     {
         $this->command = $command;
@@ -55,7 +54,7 @@ class SettingsRunner extends AbstractRunner implements InstallRunnerContract
                 'content' => json_encode([]),
                 'created_at' => now(),
                 'updated_at' => now(),
-            ]
+            ],
         ]);
     }
 }
