@@ -24,11 +24,11 @@ class UserRunnerTest extends TestCase
             $mock->shouldReceive('info');
             $mock->shouldReceive('ask')->withArgs(function ($arg) {
                 return $arg == 'What\'s your name?';
-            })->andReturn('Alec');
+            })->andReturn('User');
 
             $mock->shouldReceive('ask')->withArgs(function ($arg) {
                 return $arg == "What's your email?";
-            })->andReturn('alec@neondigital.co.uk');
+            })->andReturn('someone@example.com');
 
             $mock->shouldReceive('secret')->withArgs(function ($arg) {
                 return $arg == 'Choose a password (hidden)';
@@ -46,8 +46,8 @@ class UserRunnerTest extends TestCase
         $runner->run();
 
         $this->assertDatabaseHas('users', [
-            'email' => 'alec@neondigital.co.uk',
-            'name' => 'Alec',
+            'email' => 'someone@example.com',
+            'name' => 'User',
         ]);
 
         // Make sure password doesn't exist in plain text.
