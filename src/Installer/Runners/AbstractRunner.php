@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Installer\Runners;
 
-use Illuminate\Console\Command;
 use GetCandy\Api\Installer\Contracts\InstallRunnerContract;
+use Illuminate\Console\Command;
 
 abstract class AbstractRunner implements InstallRunnerContract
 {
