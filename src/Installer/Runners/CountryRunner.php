@@ -35,7 +35,7 @@ class CountryRunner extends AbstractRunner implements InstallRunnerContract
             return;
         }
 
-        DB::table('countries')->insert($countries->map(function ($country) {
+        $countries->map(function ($country) {
             return [
                 'name' => $country['name']['common'],
                 'iso_a_2' => $country['cca2'],
@@ -46,6 +46,8 @@ class CountryRunner extends AbstractRunner implements InstallRunnerContract
                 'created_at' => now(),
                 'updated_at' => now(),
             ];
-        })->toArray());
+        })->chunk(50)->each(function ($rows) {
+            DB::table('countries')->insert($rows->toArray());
+        });
     }
 }
