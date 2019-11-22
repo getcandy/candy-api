@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use GetCandy;
-use Laravel\Passport\Client;
 use Tests\Stubs\User;
 use Tests\TestCase;
 use Illuminate\Contracts\Auth\Authenticatable;
@@ -22,6 +21,11 @@ abstract class FeatureCase extends TestCase
         GetCandy::routes();
         $this->artisan('key:generate');
         $this->artisan('passport:install');
+    }
+
+    protected function getResponseContents($response)
+    {
+        return json_decode($response->content());
     }
 
     public function admin()
