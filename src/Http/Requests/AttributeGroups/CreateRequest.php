@@ -15,7 +15,7 @@ class CreateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|unique:attribute_groups,name',
+            'name' => 'required|unique:attribute_groups,name|array',
             'handle' => 'required|unique:attribute_groups,handle',
         ];
     }
