@@ -2,10 +2,8 @@
 
 namespace Tests\Feature;
 
-use DB;
 use GetCandy;
 use Illuminate\Contracts\Auth\Authenticatable;
-use Laravel\Passport\ClientRepository;
 use Tests\Stubs\User;
 use Tests\TestCase;
 
