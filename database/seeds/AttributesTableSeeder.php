@@ -55,12 +55,6 @@ class AttributesTableSeeder extends Seeder
         $attribute->searchable = 1;
         $attribute->save();
 
-        // $group = AttributeGroup::create([
-        //     'name' => ['en' => 'General', 'sv' => 'Allmän'],
-        //     'handle' => 'general',
-        //     'position' => 2
-        // ]);
-
         $group = AttributeGroup::create([
             'name' => ['en' => 'SEO', 'sv' => 'SEO'],
             'handle' => 'seo',
