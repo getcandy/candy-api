@@ -97,6 +97,28 @@ class AttributeGroupControllerTest extends FeatureCase
         ]);
     }
 
+    public function test_cant_create_attribute_group_with_same_handle()
+    {
+        $user = $this->admin();
+
+        $response = $this->actingAs($user)->json('POST', 'attribute-groups', [
+            'name' => [
+                'en' => 'Duplicate handle',
+            ],
+            'handle' => 'marketing',
+        ])->assertStatus(422);
+    }
+
+    public function test_name_must_be_an_array_on_creation()
+    {
+        $user = $this->admin();
+
+        $response = $this->actingAs($user)->json('POST', 'attribute-groups', [
+            'name' => 'Duplicate handle',
+            'handle' => 'some-handle',
+        ])->assertStatus(422);
+    }
+
     public function test_can_update_attribute_group()
     {
         $user = $this->admin();
