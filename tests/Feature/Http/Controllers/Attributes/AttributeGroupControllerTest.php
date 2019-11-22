@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Http\Controllers\Attributes;
 
-use Tests\Feature\FeatureCase;
 use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
+use Tests\Feature\FeatureCase;
 
 /**
  * @group feature
@@ -17,7 +17,7 @@ class AttributeGroupControllerTest extends FeatureCase
         $response = $this->actingAs($user)->json('GET', 'attribute-groups');
 
         $structure = [
-            'data' => [0,1],
+            'data' => [0, 1],
             'meta' => [
                 'pagination' => [
                     'total',
@@ -48,14 +48,14 @@ class AttributeGroupControllerTest extends FeatureCase
                 'handle',
                 'position',
             ],
-            'meta'
+            'meta',
         ];
 
         $response->assertJsonStructure($structure);
 
         $response->assertJson([
             'data' => [
-                'id' => $group->encodedId()
+                'id' => $group->encodedId(),
             ],
         ]);
     }
@@ -67,9 +67,9 @@ class AttributeGroupControllerTest extends FeatureCase
         // Get an attribute group
         $group = AttributeGroup::first();
 
-        $response = $this->actingAs($user)->json('POST', "attribute-groups", [
+        $response = $this->actingAs($user)->json('POST', 'attribute-groups', [
             'name' => [
-                'en' => 'Test Group'
+                'en' => 'Test Group',
             ],
             'handle' => 'test-group',
             'position' => 3,
@@ -82,7 +82,7 @@ class AttributeGroupControllerTest extends FeatureCase
                 'handle',
                 'position',
             ],
-            'meta'
+            'meta',
         ];
 
         $response->assertJsonStructure($structure);
@@ -93,7 +93,7 @@ class AttributeGroupControllerTest extends FeatureCase
                     'en' => 'Test Group',
                 ],
                 'handle' => 'test-group',
-            ]
+            ],
         ]);
     }
 
@@ -141,7 +141,7 @@ class AttributeGroupControllerTest extends FeatureCase
                 'handle',
                 'position',
             ],
-            'meta'
+            'meta',
         ];
 
         $response->assertJsonStructure($structure);
@@ -166,7 +166,6 @@ class AttributeGroupControllerTest extends FeatureCase
         $marketing = AttributeGroup::whereHandle('marketing')->first();
         $seo = AttributeGroup::whereHandle('seo')->first();
 
-
         $response->assertJson([
             'data' => [
                 [
@@ -176,7 +175,7 @@ class AttributeGroupControllerTest extends FeatureCase
                 [
                     'handle' => 'seo',
                     'position' => 2,
-                ]
+                ],
             ],
         ]);
 
@@ -184,7 +183,7 @@ class AttributeGroupControllerTest extends FeatureCase
             'groups' => [
                 $marketing->encodedId() => 2,
                 $seo->encodedId() => 1,
-            ]
+            ],
         ])->assertStatus(204);
 
         $response = $this->actingAs($user)->json('GET', 'attribute-groups');
@@ -201,7 +200,6 @@ class AttributeGroupControllerTest extends FeatureCase
                 ],
             ],
         ]);
-
     }
 
     public function test_can_delete_attribute_group()
