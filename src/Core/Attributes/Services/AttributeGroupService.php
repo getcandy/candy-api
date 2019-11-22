@@ -37,6 +37,17 @@ class AttributeGroupService extends BaseService
     }
 
     /**
+     * Gets paginated data for the record.
+     * @param  int $length How many results per page
+     * @param  int  $page   The page to start
+     * @return Illuminate\Pagination\LengthAwarePaginator
+     */
+    public function getPaginatedData($length = 50, $page = null)
+    {
+        return $this->model->orderBy('position', 'asc')->paginate($length, ['*'], 'page', $page);
+    }
+
+    /**
      * Updates a resource from the given data.
      *
      * @param  string $id
