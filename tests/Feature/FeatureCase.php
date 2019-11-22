@@ -14,6 +14,8 @@ abstract class FeatureCase extends TestCase
 
     protected $clientToken;
 
+    protected $headers = [];
+
     public function setUp() : void
     {
         parent::setUp();
@@ -35,9 +37,25 @@ abstract class FeatureCase extends TestCase
 
         // dd($token);
         $this->headers['Accept'] = 'application/json';
-        $this->headers['Authorization'] = 'Bearer '.$token;
+        $this->headers['Authorization'] = 'Bearer ' . $token;
 
         return $this;
+    }
+
+    /**
+     * Define environment setup.
+     *
+     * @param  \Illuminate\Foundation\Application  $app
+     * @return void
+     */
+    protected function getEnvironmentSetUp($app)
+    {
+        parent::getEnvironmentSetUp($app);
+
+        $app['config']->set('auth.guards.api', [
+            'driver' => 'passport',
+            'provider' => 'users',
+        ]);
     }
 
     public function json($method, $uri, array $data = [], array $headers = [])
