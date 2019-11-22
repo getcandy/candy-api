@@ -2,8 +2,10 @@
 
 namespace Tests\Feature;
 
-use Laravel\Passport\Client;
+use GetCandy;
+use Tests\Stubs\User;
 use Tests\TestCase;
+use Illuminate\Contracts\Auth\Authenticatable;
 
 abstract class FeatureCase extends TestCase
 {
@@ -11,23 +13,56 @@ abstract class FeatureCase extends TestCase
 
     protected $clientToken;
 
-    protected function getToken($user = false)
-    {
-        if ($user) {
-            return $this->getUserToken();
-        }
+    protected $headers = [];
 
-        return $this->getClientToken();
+    public function setUp() : void
+    {
+        parent::setUp();
+        GetCandy::routes();
+        $this->artisan('key:generate');
+        $this->artisan('passport:install');
     }
 
-    protected function getClientToken()
+    protected function getResponseContents($response)
     {
-        if ($this->clientToken) {
-            return $this->clientToken;
-        }
+        return json_decode($response->content());
+    }
 
-        $client = Client::first();
+    public function admin()
+    {
+        $user = User::first();
+        $user->assignRole('admin');
+        return $user;
+    }
 
-        dd($client);
+    public function actingAs(Authenticatable $user, $driver = null)
+    {
+        $token = $user->createToken('TestToken', [])->accessToken;
+
+        $this->headers['Accept'] = 'application/json';
+        $this->headers['Authorization'] = 'Bearer ' . $token;
+
+        return $this;
+    }
+
+    /**
+     * Define environment setup.
+     *
+     * @param  \Illuminate\Foundation\Application  $app
+     * @return void
+     */
+    protected function getEnvironmentSetUp($app)
+    {
+        parent::getEnvironmentSetUp($app);
+
+        $app['config']->set('auth.guards.api', [
+            'driver' => 'passport',
+            'provider' => 'users',
+        ]);
+    }
+
+    public function json($method, $uri, array $data = [], array $headers = [])
+    {
+        return parent::json($method, $uri, $data, array_merge($this->headers, $headers));
     }
 }
