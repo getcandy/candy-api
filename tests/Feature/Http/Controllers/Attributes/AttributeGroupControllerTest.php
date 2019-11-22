@@ -157,9 +157,6 @@ class AttributeGroupControllerTest extends FeatureCase
         ]);
     }
 
-    /**
-     * @group test
-     */
     public function test_can_reorder_attribute_groups()
     {
         $user = $this->admin();
