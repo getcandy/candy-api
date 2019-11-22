@@ -56,7 +56,6 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
 
         $this->withFactories(dirname(__DIR__).'/database/factories');
 
-
         // Make sure our channel is set.
         $channel = app()->getInstance()->make(ChannelFactoryInterface::class);
         $channel->set(Channel::first());
