@@ -1,8 +1,8 @@
 <?php
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
-use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
 use Faker\Generator as Faker;
+use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
 use Illuminate\Support\Str;
 
 /*

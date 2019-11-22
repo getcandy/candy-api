@@ -52,6 +52,6 @@ class AttributeGroupResourceTest extends TestCase
 
         $resource = (new AttributeGroupResource($group))->jsonSerialize();
 
-        $this->assertInstanceOf(AttributeCollection::class, $resource["attributes"]);
+        $this->assertInstanceOf(AttributeCollection::class, $resource['attributes']);
     }
 }
