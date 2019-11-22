@@ -3,9 +3,9 @@
 namespace Tests\Feature;
 
 use GetCandy;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Tests\Stubs\User;
 use Tests\TestCase;
-use Illuminate\Contracts\Auth\Authenticatable;
 
 abstract class FeatureCase extends TestCase
 {
@@ -32,6 +32,7 @@ abstract class FeatureCase extends TestCase
     {
         $user = User::first();
         $user->assignRole('admin');
+
         return $user;
     }
 
@@ -39,9 +40,8 @@ abstract class FeatureCase extends TestCase
     {
         $token = $user->createToken('TestToken', [])->accessToken;
 
-        // dd($token);
         $this->headers['Accept'] = 'application/json';
-        $this->headers['Authorization'] = 'Bearer ' . $token;
+        $this->headers['Authorization'] = 'Bearer '.$token;
 
         return $this;
     }

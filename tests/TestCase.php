@@ -6,7 +6,6 @@ use GetCandy\Api\Core\Baskets\Factories\BasketFactory;
 use GetCandy\Api\Core\Channels\Interfaces\ChannelFactoryInterface;
 use GetCandy\Api\Core\Channels\Models\Channel;
 use GetCandy\Api\Providers\ApiServiceProvider;
-use Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables;
 use Tests\Stubs\User;
 
 abstract class TestCase extends \Orchestra\Testbench\TestCase
@@ -66,6 +65,12 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         ]);
 
         $app['config']->set('auth.providers.users.model', User::class);
+
+        $app['config']->set('services', [
+            'sagepay' => [
+                'vendor' => 'SagePay',
+            ],
+        ]);
 
         // GetCandy specific
         $app['config']->set('getcandy', require realpath(__DIR__.'/../config/getcandy.php'));
