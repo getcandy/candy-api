@@ -6,6 +6,7 @@ use GetCandy\Api\Core\Baskets\Factories\BasketFactory;
 use GetCandy\Api\Core\Channels\Interfaces\ChannelFactoryInterface;
 use GetCandy\Api\Core\Channels\Models\Channel;
 use GetCandy\Api\Providers\ApiServiceProvider;
+use Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables;
 use Tests\Stubs\User;
 
 abstract class TestCase extends \Orchestra\Testbench\TestCase
@@ -53,6 +54,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         parent::getEnvironmentSetUp($app);
 
         $app->useEnvironmentPath(__DIR__.'/..');
+        $app->bootstrapWith([LoadEnvironmentVariables::class]);
 
         //Blergh but we need the config
         $app['config']['permission'] = require realpath(__DIR__.'/../vendor/spatie/laravel-permission/config/permission.php');
