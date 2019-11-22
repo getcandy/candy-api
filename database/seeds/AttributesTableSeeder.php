@@ -64,7 +64,7 @@ class AttributesTableSeeder extends Seeder
         $group = AttributeGroup::create([
             'name' => ['en' => 'SEO', 'sv' => 'SEO'],
             'handle' => 'seo',
-            'position' => 3,
+            'position' => 2,
         ]);
 
         $attribute = new Attribute();
