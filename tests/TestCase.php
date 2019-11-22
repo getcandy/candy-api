@@ -66,6 +66,12 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
 
         $app['config']->set('auth.providers.users.model', User::class);
 
+        $app['config']->set('services', [
+            'sagepay' => [
+                'vendor' => 'SagePay',
+            ],
+        ]);
+
         // GetCandy specific
         $app['config']->set('getcandy', require realpath(__DIR__.'/../config/getcandy.php'));
     }
