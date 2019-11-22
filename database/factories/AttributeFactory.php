@@ -21,6 +21,7 @@ $factory->define(Attribute::class, function (Faker $faker) {
     $type = $faker->randomElement(
         ['text', 'textarea', 'select', 'richtext']
     );
+
     return [
         'name' => [
             'en' => $name,
@@ -37,6 +38,6 @@ $factory->define(Attribute::class, function (Faker $faker) {
         'type' => $faker->randomElement(
             ['text', 'textarea', 'select', 'richtext']
         ),
-        'lookups' => $type == 'select' ? [1,2,3,4,5] : [],
+        'lookups' => $type == 'select' ? [1, 2, 3, 4, 5] : [],
     ];
 });

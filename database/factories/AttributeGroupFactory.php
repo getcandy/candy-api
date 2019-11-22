@@ -18,6 +18,7 @@ use Illuminate\Support\Str;
 
 $factory->define(AttributeGroup::class, function (Faker $faker) {
     $name = $faker->domainWord;
+
     return [
         'name' => [
             'en' => $name,
