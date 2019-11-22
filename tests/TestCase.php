@@ -54,7 +54,6 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         parent::getEnvironmentSetUp($app);
 
         $app->useEnvironmentPath(__DIR__.'/..');
-        $app->bootstrapWith([LoadEnvironmentVariables::class]);
 
         //Blergh but we need the config
         $app['config']['permission'] = require realpath(__DIR__.'/../vendor/spatie/laravel-permission/config/permission.php');
@@ -70,22 +69,6 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
 
         // GetCandy specific
         $app['config']->set('getcandy', require realpath(__DIR__.'/../config/getcandy.php'));
-
-        $app['config']->set('services', [
-            'braintree' => [
-                'key' => env('BRAINTREE_PUBLIC_KEY'),
-                'secret' => env('BRAINTREE_PRIVATE_KEY'),
-                '3D_secure' => env('3D_SECURE', false),
-                'merchant_id' => env('BRAINTREE_MERCHANT'),
-                'merchants' => [
-                    'default' => env('BRAINTREE_GBP_MERCHANT'),
-                    'eur' => env('BRAINTREE_EUR_MERCHANT'),
-                ],
-            ],
-            'sagepay' => [
-                'vendor' => 'SagePay',
-            ],
-        ]);
     }
 
     protected function getPackageProviders($app)
