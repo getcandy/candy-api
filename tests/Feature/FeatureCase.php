@@ -2,8 +2,10 @@
 
 namespace Tests\Feature;
 
+use DB;
 use GetCandy;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Laravel\Passport\ClientRepository;
 use Tests\Stubs\User;
 use Tests\TestCase;
 
@@ -19,8 +21,19 @@ abstract class FeatureCase extends TestCase
     {
         parent::setUp();
         GetCandy::routes();
-        $this->artisan('key:generate');
-        $this->artisan('passport:install');
+
+        $clientRepository = new ClientRepository();
+        $client = $clientRepository->createPersonalAccessClient(
+            null,
+            'Test Personal Access Client',
+            '/'
+        );
+
+        DB::table('oauth_personal_access_clients')->insert([
+            'client_id' => $client->id,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     }
 
     protected function getResponseContents($response)
