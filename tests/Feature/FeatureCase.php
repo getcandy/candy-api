@@ -21,19 +21,7 @@ abstract class FeatureCase extends TestCase
     {
         parent::setUp();
         GetCandy::routes();
-
-        $clientRepository = new ClientRepository();
-        $client = $clientRepository->createPersonalAccessClient(
-            null,
-            'Test Personal Access Client',
-            '/'
-        );
-
-        DB::table('oauth_personal_access_clients')->insert([
-            'client_id' => $client->id,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        $this->artisan('passport:install');
     }
 
     protected function getResponseContents($response)
