@@ -77,7 +77,6 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         foreach ($config as $key => $value) {
             $app['config']->set($key, $value);
         }
-
     }
 
     protected function getPackageProviders($app)
@@ -122,5 +121,4 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
 
         return $this->app->make(BasketFactory::class)->init($basket)->get();
     }
-
 }
