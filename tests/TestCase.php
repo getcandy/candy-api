@@ -13,6 +13,7 @@ use GetCandy\Api\Core\Currencies\Facades\CurrencyConverter;
 use GetCandy\Api\Core\Facades\GetCandyFacade;
 use GetCandy\Api\Core\Products\Models\ProductVariant;
 use GetCandy\Api\Providers\ApiServiceProvider;
+use Illuminate\Encryption\Encrypter;
 use Laravel\Passport\PassportServiceProvider;
 use Spatie\Activitylog\ActivitylogServiceProvider;
 use Spatie\Permission\PermissionServiceProvider;
@@ -70,6 +71,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             'auth.providers.users.model' => User::class,
             'services.sagepay.vendor' => 'SagePay',
             'getcandy' => require __DIR__.'/../config/getcandy.php',
+            'app.key' => Encrypter::generateKey(null),
         ];
 
         foreach ($config as $key => $value) {
