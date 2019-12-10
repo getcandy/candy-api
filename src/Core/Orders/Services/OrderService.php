@@ -23,6 +23,7 @@ use GetCandy\Api\Core\Orders\Exceptions\IncompleteOrderException;
 use GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException;
 use GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface;
 use GetCandy\Api\Core\ActivityLog\Interfaces\ActivityLogFactoryInterface;
+use GetCandy\Api\Core\Orders\Interfaces\OrderFactoryInterface;
 
 class OrderService extends BaseService implements OrderServiceInterface
 {
@@ -582,25 +583,16 @@ class OrderService extends BaseService implements OrderServiceInterface
      *
      * @param Order $order
      * @param Basket $basket
+     * @deprecated 0.3.35
      *
      * @return Order
      */
     public function syncWithBasket(Order $order, Basket $basket)
     {
-        $order->lines()->delete();
-        $order->discounts()->delete();
-
-        $this->processDiscountLines($basket, $order);
-
-        $order->lines()->createMany(
-            $this->mapOrderLines($basket)
-        );
-
-        $order->save();
-
-        event(new OrderSavedEvent($order));
-
-        return $order;
+        app(OrderFactoryInterface::class)
+            ->basket($basket)
+            ->order($order)
+            ->resolve();
     }
 
     /**
