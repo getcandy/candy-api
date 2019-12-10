@@ -228,8 +228,8 @@ class OrderFactory implements OrderFactoryInterface
             $order->load($this->includes);
         }
         $order->save();
-        $this->resolveDiscounts($order);
         $this->resolveLines($order);
+        $this->resolveDiscounts($order);
 
         if ($this->shipping) {
             $this->addShippingLine($order);
@@ -246,7 +246,7 @@ class OrderFactory implements OrderFactoryInterface
      * @param Order $order
      * @return Order
      */
-    protected function resolveLines($order)
+    protected function resolveLines(&$order)
     {
         $lines = [];
 
@@ -282,7 +282,7 @@ class OrderFactory implements OrderFactoryInterface
 
             $line->save();
         }
-        return $order->refresh();
+        return $order;
     }
 
     /**
@@ -439,7 +439,7 @@ class OrderFactory implements OrderFactoryInterface
      * @param Order $order
      * @return Order
      */
-    protected function addShippingLine($order)
+    protected function addShippingLine(&$order)
     {
         $updateFields = [
             'shipping_method' => $this->shipping->method->name,
@@ -492,7 +492,7 @@ class OrderFactory implements OrderFactoryInterface
      * @param Order $order
      * @return Order
      */
-    protected function resolveDiscounts($order)
+    protected function resolveDiscounts(&$order)
     {
         $order->discounts()->delete();
         $basket = $this->basket;
