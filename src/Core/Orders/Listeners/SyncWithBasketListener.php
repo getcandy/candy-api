@@ -4,6 +4,7 @@ namespace GetCandy\Api\Core\Orders\Listeners;
 
 use GetCandy\Api\Core\Discounts\Factory;
 use GetCandy\Api\Core\Baskets\Events\BasketStoredEvent;
+use GetCandy\Api\Core\Orders\Interfaces\OrderFactoryInterface;
 
 class SyncWithBasketListener
 {
@@ -25,6 +26,9 @@ class SyncWithBasketListener
         if (!$event->basket->activeOrder) {
             return true;
         }
-        app('api')->orders()->syncWithBasket($event->basket->activeOrder, $event->basket);
+        app(OrderFactoryInterface::class)
+            ->basket($event->basket)
+            ->order($event->basket->activeOrder)
+            ->resolve();
     }
 }
