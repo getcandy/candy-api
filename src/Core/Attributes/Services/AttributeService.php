@@ -44,7 +44,7 @@ class AttributeService extends BaseService
             'filterable' => ! empty($data['filterable']) ? $data['filterable'] : false,
         ]);
 
-        event(new AttributeSavedEvent);
+        // event(new AttributeSavedEvent);
 
         return $result;
     }
