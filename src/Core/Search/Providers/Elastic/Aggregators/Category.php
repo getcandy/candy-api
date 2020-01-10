@@ -65,8 +65,10 @@ class Category extends AbstractAggregator
             'departments'
         );
 
+        $size = (int) config('getcandy.search.aggregation.categories.size', 10);
         $childAgg = new Terms('categories');
         $childAgg->setField('departments.id');
+        $childAgg->setSize($size);
         // $nestedAgg->addAggregation($childAgg);
 
         // $postBool = new BoolQuery();

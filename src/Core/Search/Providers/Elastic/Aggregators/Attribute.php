@@ -59,9 +59,10 @@ class Attribute
     {
         $filterAgg = new Filter($this->field);
 
+        $size = (int) config('getcandy.search.aggregation.attribute.size', 10);
         $agg = new Terms($this->field);
         $agg->setField($this->field.'.filter');
-        $agg->setSize(50);
+        $agg->setSize($size);
 
         $postBool = new BoolQuery();
 
