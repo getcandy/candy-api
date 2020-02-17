@@ -550,6 +550,15 @@ class OrderFactory implements OrderFactoryInterface
 
                                 $tax = $this->tax->amount($taxable);
 
+                                // If this order line already exists, remove it.
+                                $orderLine = $order->lines->first(function ($line) use ($variant) {
+                                    return $line->sku === $variant->sku;
+                                });
+
+                                if ($orderLine) {
+                                    $orderLine->delete();
+                                }
+
                                 $order->lines()->create([
                                     'product_variant_id' => $variant->id,
                                     'sku' => $variant->sku,
