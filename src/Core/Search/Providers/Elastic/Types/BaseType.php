@@ -222,7 +222,7 @@ abstract class BaseType
 
     protected function getCustomerGroups(Model $model, $lang = 'en')
     {
-        return $model->customerGroups()->withoutGlobalScopes([
+        $groups = $model->customerGroups()->withoutGlobalScopes([
             CustomerGroupScope::class,
             ChannelScope::class,
         ])->get()->filter(function ($group) {
@@ -234,11 +234,13 @@ abstract class BaseType
                 'name' => $item->name,
             ];
         })->toArray();
+
+        return array_values($groups);
     }
 
     protected function getChannels(Model $model, $lang = 'en')
     {
-        return $model->channels->filter(function ($channel) {
+        $channels = $model->channels->filter(function ($channel) {
             return $channel->published_at <= Carbon::now();
         })->map(function ($item) use ($lang) {
             return [
@@ -247,6 +249,8 @@ abstract class BaseType
                 'name' => $item->name,
             ];
         })->toArray();
+
+        return array_values($channels);
     }
 
     public function getMapping()
