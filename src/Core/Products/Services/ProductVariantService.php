@@ -153,11 +153,9 @@ class ProductVariantService extends BaseService
 
         $options = $variant->product->option_data;
 
-        if (! empty($data['options'])) {
-            $variant->product->update([
-                'option_data' => $this->mapOptions($options, $data['options']),
-            ]);
-        }
+        // Get the product variants
+        $variants = $variant->product->variants;
+
         $variant->fill($data);
 
         $thumbnailId = null;
@@ -205,6 +203,9 @@ class ProductVariantService extends BaseService
 
         $variant->save();
 
+        $variant->product->update([
+            'option_data' => $this->remapProductOptions($variant, $data['options'] ?? []),
+        ]);
         event(new IndexableSavedEvent($variant->product));
 
         return $variant;
@@ -243,6 +244,40 @@ class ProductVariantService extends BaseService
             $tier['customer_group_id'] = app('api')->customerGroups()->getDecodedId($tier['customer_group_id']);
             $variant->tiers()->create($tier);
         }
+    }
+
+    public function remapProductOptions($variant, $incoming)
+    {
+        $optionsAvailable = [];
+        $optionData = $variant->product->option_data;
+        $variants = $variant->product()->first()->variants;
+
+        $optionData = $this->mapOptions($optionData, $incoming);
+
+        foreach ($variants as $variant) {
+            $originialData = json_decode($variant->getOriginal('options'), true);
+            $parsedData = $variant->options;
+            foreach ($originialData as $handle => $value) {
+                $optionsAvailable[$handle][] = $value;
+            }
+        }
+
+        // Remove any that don't exist
+        foreach ($optionData as $handle => $option) {
+            $available = $optionsAvailable[$handle] ?? null;
+            if (!$available) {
+                unset($optionData[$handle]);
+                continue;
+            }
+            foreach ($option['options'] as $field => $value) {
+                if (!in_array($field, $available)) {
+                    unset($optionData[$handle]['options'][$field]);
+                    continue;
+                }
+            }
+        }
+
+        return $optionData;
     }
 
     /**
