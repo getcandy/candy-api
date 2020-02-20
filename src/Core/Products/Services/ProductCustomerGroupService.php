@@ -5,6 +5,7 @@ namespace GetCandy\Api\Core\Products\Services;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Customers\Services\CustomerGroupService;
+use GetCandy\Api\Core\Search\Events\IndexableSavedEvent;
 
 class ProductCustomerGroupService extends BaseService
 {
@@ -35,6 +36,8 @@ class ProductCustomerGroupService extends BaseService
         }
         $product->customerGroups()->sync($groupData);
         $product->load('customerGroups');
+
+        event(new IndexableSavedEvent($product));
 
         return $product;
     }
