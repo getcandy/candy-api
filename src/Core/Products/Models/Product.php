@@ -61,7 +61,7 @@ class Product extends BaseModel
     protected $dates = ['deleted_at'];
 
     /**
-     * The resource to use for API responses
+     * The resource to use for API responses.
      *
      * @var string
      */

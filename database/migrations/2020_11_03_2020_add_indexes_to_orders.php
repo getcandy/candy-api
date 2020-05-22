@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use GetCandy\Api\Core\Products\Models\ProductFamily;
 use Illuminate\Support\Facades\Schema;
 
 class AddIndexesToOrders extends Migration

@@ -134,7 +134,7 @@ class AttributeService extends BaseService
 
         $attribute->fill($data);
 
-        if (!empty($data['group_id'])) {
+        if (! empty($data['group_id'])) {
             $attribute->group_id = app('api')->attributeGroups()->getDecodedId($data['group_id']);
         }
 
@@ -174,6 +174,7 @@ class AttributeService extends BaseService
         if ($includes) {
             $query = $query->with($includes);
         }
+
         return $query->findOrFail($id);
     }
 

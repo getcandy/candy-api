@@ -187,7 +187,7 @@ class ProductVariantService extends BaseService
 
         if (! empty($data['pricing'])) {
             $this->setGroupPricing($variant, $data['pricing']);
-        } else if (isset($data['pricing']) && !count($data['pricing'])) {
+        } elseif (isset($data['pricing']) && ! count($data['pricing'])) {
             $variant->customerPricing()->delete();
         }
 
@@ -196,7 +196,6 @@ class ProductVariantService extends BaseService
         } else {
             $variant->tiers()->delete();
         }
-
 
         $options = [];
 
@@ -211,7 +210,6 @@ class ProductVariantService extends BaseService
 
         // $this->attributes['options'] = json_encode($options);
         $variant->save();
-
 
         $variant->product->update([
             'option_data' => $this->remapProductOptions($variant, $data['options'] ?? []),

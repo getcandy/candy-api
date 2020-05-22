@@ -13,7 +13,7 @@ class AddressServiceTest extends TestCase
 {
     protected $service;
 
-    public function setUp() : void
+    public function setUp(): void
     {
         parent::setUp();
         $this->service = $this->app->make(AddressService::class);

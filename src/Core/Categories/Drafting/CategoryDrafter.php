@@ -12,7 +12,6 @@ class CategoryDrafter extends BaseDrafter implements DrafterInterface
 {
     public function create(Model $model)
     {
-
     }
 
     public function publish(Model $category)
@@ -24,7 +23,7 @@ class CategoryDrafter extends BaseDrafter implements DrafterInterface
 
         foreach ($parent->versions as $version) {
             $version->update([
-                'versionable_id' => $category->id
+                'versionable_id' => $category->id,
             ]);
         }
 
@@ -37,7 +36,6 @@ class CategoryDrafter extends BaseDrafter implements DrafterInterface
                 $a->update(['subject_id' => $category->id]);
             });
         }
-        
 
         // Activate any routes
         $routeIds = $category->routes()->onlyDrafted()->get()->pluck('id')->toArray();
@@ -45,7 +43,7 @@ class CategoryDrafter extends BaseDrafter implements DrafterInterface
         DB::table('routes')
             ->whereIn('id', $routeIds)
             ->update([
-                'drafted_at' => null
+                'drafted_at' => null,
             ]);
 
         // Delete routes
@@ -74,7 +72,7 @@ class CategoryDrafter extends BaseDrafter implements DrafterInterface
                 'routes',
                 'assets',
                 'customerGroups',
-                'attributes'
+                'attributes',
             ]);
 
             $newCategory = $category->replicate();
@@ -112,7 +110,7 @@ class CategoryDrafter extends BaseDrafter implements DrafterInterface
                 'routes',
                 'assets',
                 'customerGroups',
-                'attributes'
+                'attributes',
             ]);
         });
     }

@@ -22,8 +22,6 @@ $router->get('/', function () {
     ]);
 });
 
-
-
 // $router->get('channels', 'Channels\ChannelController@index');
 $router->get('channels/{id}', 'Channels\ChannelController@show');
 $router->get('collections', 'Collections\CollectionController@index');

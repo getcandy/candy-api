@@ -79,7 +79,7 @@ abstract class AbstractProvider
 
         return [
             'format' => $format,
-            'display' => $displayFormat
+            'display' => $displayFormat,
         ];
     }
 

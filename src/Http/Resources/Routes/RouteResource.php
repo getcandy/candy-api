@@ -42,7 +42,7 @@ class RouteResource extends AbstractResource
 
                 array_push($classSegments, 'Http');
                 array_push($classSegments, 'Resources');
-                array_push($classSegments, $class . 'Resource');
+                array_push($classSegments, $class.'Resource');
 
                 $resourceClass = implode('\\', $classSegments);
 

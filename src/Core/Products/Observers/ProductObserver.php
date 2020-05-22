@@ -2,13 +2,13 @@
 
 namespace GetCandy\Api\Core\Products\Observers;
 
-use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Assets\Services\AssetService;
+use GetCandy\Api\Core\Products\Models\Product;
 
 class ProductObserver
 {
     /**
-     * The asset server
+     * The asset server.
      *
      * @var AssetService
      */

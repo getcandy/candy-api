@@ -94,7 +94,9 @@ class Category extends BaseModel
      */
     public function setParentIdAttribute($value)
     {
-        if ($this->getParentId() == $value) return;
+        if ($this->getParentId() == $value) {
+            return;
+        }
 
         if ($value) {
             $this->appendToNode($this->newScopedQuery()->withDrafted()->findOrFail($value));
@@ -119,8 +121,7 @@ class Category extends BaseModel
         return $this->applyNestedSetScope($builder, $table);
     }
 
-
-        /**
+    /**
      * Call pending action.
      */
     protected function callPendingAction()
@@ -131,18 +132,20 @@ class Category extends BaseModel
         }
         $this->moved = false;
 
-        if ( ! $this->pending && ! $this->exists) {
+        if (! $this->pending && ! $this->exists) {
             $this->makeRoot();
         }
 
-        if ( ! $this->pending) return;
+        if (! $this->pending) {
+            return;
+        }
 
         $method = 'action'.ucfirst(array_shift($this->pending));
         $parameters = $this->pending;
 
         $this->pending = null;
 
-        $this->moved = call_user_func_array([ $this, $method ], $parameters);
+        $this->moved = call_user_func_array([$this, $method], $parameters);
     }
 
     protected function deleteDescendants()
@@ -170,6 +173,7 @@ class Category extends BaseModel
             static::$actionsPerformed++;
         }
     }
+
     /**
      * We use our own QueryBuilder here as withDepth was causing
      * a serious query issue when looking through category channels.

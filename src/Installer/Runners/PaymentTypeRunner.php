@@ -20,7 +20,7 @@ class PaymentTypeRunner extends AbstractRunner implements InstallRunnerContract
             'success_status' => 'offline-payment',
             'driver' => 'offline',
             'created_at' => now(),
-            'updated_at' => now()
+            'updated_at' => now(),
         ]);
     }
 }

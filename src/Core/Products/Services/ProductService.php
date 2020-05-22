@@ -65,7 +65,7 @@ class ProductService extends BaseService
     public function findBySku($sku, array $includes = [], $draft = false)
     {
         $query = Product::with(array_merge($includes, ['draft']))
-            ->whereHas('variants', function ($q) use($sku) {
+            ->whereHas('variants', function ($q) use ($sku) {
                 $q->whereSku($sku);
             });
 
@@ -95,7 +95,7 @@ class ProductService extends BaseService
             abort(404);
         }
 
-        if (!empty($data['attribute_data'])) {
+        if (! empty($data['attribute_data'])) {
             $product->attribute_data = $data['attribute_data'];
         }
 
@@ -108,7 +108,6 @@ class ProductService extends BaseService
             $layout = app('api')->layouts()->getByHashedId($data['layout_id']);
             $product->layout_id = $layout->id;
         }
-
 
         $product->save();
 

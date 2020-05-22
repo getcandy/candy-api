@@ -5,9 +5,9 @@ namespace GetCandy\Api\Http\Controllers\Shipping;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Shipping\CreateRequest;
 use GetCandy\Api\Http\Requests\Shipping\UpdateRequest;
-use GetCandy\Api\Http\Transformers\Fractal\Shipping\ShippingMethodTransformer;
 use GetCandy\Api\Http\Resources\Shipping\ShippingMethodCollection;
 use GetCandy\Api\Http\Resources\Shipping\ShippingMethodResource;
+use GetCandy\Api\Http\Transformers\Fractal\Shipping\ShippingMethodTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -21,6 +21,7 @@ class ShippingMethodController extends BaseController
     public function index(Request $request)
     {
         $methods = app('api')->shippingMethods()->getPaginatedData($request->per_page, $request->current_page);
+
         return new ShippingMethodCollection($methods);
     }
 

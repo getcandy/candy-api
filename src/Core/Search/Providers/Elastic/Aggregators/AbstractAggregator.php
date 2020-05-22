@@ -2,8 +2,6 @@
 
 namespace GetCandy\Api\Core\Search\Providers\Elastic\Aggregators;
 
-use Elastica\Search;
-
 abstract class AbstractAggregator
 {
     /**

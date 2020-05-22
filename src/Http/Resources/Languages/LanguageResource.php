@@ -15,7 +15,7 @@ class LanguageResource extends AbstractResource
             'iso' => $this->iso,
             'default' => (bool) $this->default,
             'enabled' => (bool) $this->enabled,
-            'current' => (bool) $this->current
+            'current' => (bool) $this->current,
         ];
     }
 

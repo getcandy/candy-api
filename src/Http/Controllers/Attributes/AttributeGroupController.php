@@ -2,19 +2,19 @@
 
 namespace GetCandy\Api\Http\Controllers\Attributes;
 
-use Illuminate\Http\Request;
-use GetCandy\Exceptions\DuplicateValueException;
 use GetCandy\Api\Http\Controllers\BaseController;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use GetCandy\Api\Http\Requests\AttributeGroups\CreateRequest;
 use GetCandy\Api\Http\Requests\AttributeGroups\DeleteRequest;
-use GetCandy\Api\Http\Requests\AttributeGroups\UpdateRequest;
 use GetCandy\Api\Http\Requests\AttributeGroups\ReorderRequest;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use GetCandy\Api\Http\Resources\Attributes\AttributeGroupResource;
+use GetCandy\Api\Http\Requests\AttributeGroups\UpdateRequest;
 use GetCandy\Api\Http\Resources\Attributes\AttributeGroupCollection;
+use GetCandy\Api\Http\Resources\Attributes\AttributeGroupResource;
 use GetCandy\Api\Http\Transformers\Fractal\Attributes\AttributeGroupTransformer;
+use GetCandy\Exceptions\DuplicateValueException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class AttributeGroupController extends BaseController
 {
@@ -30,6 +30,7 @@ class AttributeGroupController extends BaseController
         } else {
             $results = app('api')->attributeGroups()->getPaginatedData($request->per_page, $request->page ?: 1, $includes);
         }
+
         return new AttributeGroupCollection($results);
     }
 
@@ -80,6 +81,7 @@ class AttributeGroupController extends BaseController
         }
 
         return new AttributeGroupResource($result);
+
         return $this->respondWithItem($result, new AttributeGroupTransformer);
     }
 

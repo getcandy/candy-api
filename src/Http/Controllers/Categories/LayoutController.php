@@ -17,6 +17,7 @@ class LayoutController extends BaseController
     public function store($category, AttachRequest $request)
     {
         $result = app('api')->categories()->updateLayout($category, $request->layout_id);
+
         return new CategoryResource($result);
     }
 }

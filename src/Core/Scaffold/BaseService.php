@@ -135,6 +135,7 @@ abstract class BaseService
         if ($relations) {
             $query->with($relations);
         }
+
         return $query->paginate($length, ['*'], 'page', $page);
     }
 

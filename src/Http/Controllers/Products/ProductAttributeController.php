@@ -3,8 +3,8 @@
 namespace GetCandy\Api\Http\Controllers\Products;
 
 use GetCandy\Api\Http\Controllers\BaseController;
-use GetCandy\Api\Http\Resources\Products\ProductResource;
 use GetCandy\Api\Http\Requests\Products\UpdateAttributesRequest;
+use GetCandy\Api\Http\Resources\Products\ProductResource;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ProductAttributeController extends BaseController
@@ -24,6 +24,7 @@ class ProductAttributeController extends BaseController
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
+
         return new ProductResource($result);
     }
 }

@@ -8,15 +8,15 @@ use Firebase\JWT\JWT;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Contracts\Encryption\Encrypter;
+use Laminas\Diactoros\ResponseFactory;
+use Laminas\Diactoros\ServerRequestFactory;
+use Laminas\Diactoros\StreamFactory;
+use Laminas\Diactoros\UploadedFileFactory;
 use Laravel\Passport\Http\Middleware\CheckClientCredentials as BaseMiddleware;
 use Laravel\Passport\Passport;
 use Laravel\Passport\TokenRepository;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\ResourceServer;
-use Laminas\Diactoros\ResponseFactory;
-use Laminas\Diactoros\ServerRequestFactory;
-use Laminas\Diactoros\StreamFactory;
-use Laminas\Diactoros\UploadedFileFactory;
 use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
 
 class CheckClientCredentials extends BaseMiddleware
@@ -65,7 +65,6 @@ class CheckClientCredentials extends BaseMiddleware
             new UploadedFileFactory,
             new ResponseFactory
         ))->createRequest($request);
-
 
         $cookies = $psr->getCookieParams();
 

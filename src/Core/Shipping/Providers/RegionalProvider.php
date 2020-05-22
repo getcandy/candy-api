@@ -37,7 +37,6 @@ class RegionalProvider extends AbstractProvider
                 });
             });
 
-
             if (! $prices->count()) {
                 return false;
             }

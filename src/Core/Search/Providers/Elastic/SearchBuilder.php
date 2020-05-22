@@ -109,7 +109,7 @@ class SearchBuilder
     protected $topFilters = [
         'channel-filter',
         'customer-group-filter',
-        'category-filter'
+        'category-filter',
     ];
 
     public function __construct(AttributeService $attributes)
@@ -507,7 +507,7 @@ class SearchBuilder
         });
 
         $postFilters = $this->filters->filter(function ($filter) {
-            return !in_array($filter['handle'], $this->topFilters);
+            return ! in_array($filter['handle'], $this->topFilters);
         });
 
         $postFilters->each(function ($filter) use ($postFilter) {

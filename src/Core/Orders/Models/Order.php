@@ -3,13 +3,13 @@
 namespace GetCandy\Api\Core\Orders\Models;
 
 use Carbon\Carbon;
-use GetCandy\Api\Core\Traits\HasMeta;
-use GetCandy\Api\Core\Scopes\OrderScope;
-use GetCandy\Api\Core\Scaffold\BaseModel;
-use Illuminate\Database\Eloquent\Builder;
-use Spatie\Activitylog\Traits\LogsActivity;
 use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Core\Payments\Models\Transaction;
+use GetCandy\Api\Core\Scaffold\BaseModel;
+use GetCandy\Api\Core\Scopes\OrderScope;
+use GetCandy\Api\Core\Traits\HasMeta;
+use Illuminate\Database\Eloquent\Builder;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Order extends BaseModel
 {
@@ -50,7 +50,6 @@ class Order extends BaseModel
         static::addGlobalScope(new CustomerGroupScope);
     }
 
-
     /**
      * The "booting" method of the model.
      *
@@ -74,7 +73,7 @@ class Order extends BaseModel
     }
 
     /**
-     * Define the placed scope
+     * Define the placed scope.
      *
      * @param Builder $qb
      * @return Builder

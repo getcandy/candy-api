@@ -43,7 +43,7 @@ class ProductFamilyService extends BaseService
         $family = $this->getByHashedId($hashedId);
         $family->name = $data['name'] ?? $family->name;
 
-        if (!empty($data['attributes'])) {
+        if (! empty($data['attributes'])) {
             $attributeIds = [];
             foreach ($data['attributes'] as $attribute) {
                 $attributeIds[] = \Hashids::connection('attribute')->decode($attribute)[0];

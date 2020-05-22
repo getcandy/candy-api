@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\Products\Factories;
 
-use Tests\TestCase;
 use GetCandy\Api\Core\Products\Models\Product;
+use Tests\TestCase;
 use Versioning;
 
 /**

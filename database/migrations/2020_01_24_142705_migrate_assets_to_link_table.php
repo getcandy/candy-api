@@ -23,8 +23,7 @@ class MigrateAssetsToLinkTable extends Migration
             $table->timestamps();
         });
 
-        DB::table('assets')->orderBy('assetable_id')->chunk(100, function($assets)
-        {
+        DB::table('assets')->orderBy('assetable_id')->chunk(100, function ($assets) {
             DB::table('assetables')->insert(
                 $assets->map(function ($asset) {
                     return [

@@ -3,8 +3,8 @@
 namespace GetCandy\Api\Http\Controllers\Categories;
 
 use GetCandy\Api\Http\Controllers\BaseController;
-use GetCandy\Api\Http\Resources\Routes\RouteResource;
 use GetCandy\Api\Http\Requests\Categories\Routes\CreateRequest;
+use GetCandy\Api\Http\Resources\Routes\RouteResource;
 
 class CategoryRouteController extends BaseController
 {

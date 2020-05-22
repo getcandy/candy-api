@@ -3,10 +3,10 @@
 namespace GetCandy\Api\Core\Products\Drafting;
 
 use DB;
-use Versioning;
+use GetCandy\Api\Core\Products\Events\ProductCreatedEvent;
 use Illuminate\Database\Eloquent\Model;
 use NeonDigital\Drafting\Interfaces\DrafterInterface;
-use GetCandy\Api\Core\Products\Events\ProductCreatedEvent;
+use Versioning;
 
 class ProductDrafter implements DrafterInterface
 {
@@ -23,7 +23,7 @@ class ProductDrafter implements DrafterInterface
 
         foreach ($parent->versions as $version) {
             $version->update([
-                'versionable_id' => $product->id
+                'versionable_id' => $product->id,
             ]);
         }
 
@@ -41,7 +41,7 @@ class ProductDrafter implements DrafterInterface
         DB::table('product_variants')
             ->whereIn('id', $variantIds)
             ->update([
-                'drafted_at' => null
+                'drafted_at' => null,
             ]);
 
         // Activate any routes
@@ -50,7 +50,7 @@ class ProductDrafter implements DrafterInterface
         DB::table('routes')
             ->whereIn('id', $routeIds)
             ->update([
-                'drafted_at' => null
+                'drafted_at' => null,
             ]);
 
         // Delete routes
@@ -66,7 +66,7 @@ class ProductDrafter implements DrafterInterface
         return $product;
     }
 
-        /**
+    /**
      * Duplicate a product.
      *
      * @param Collection $data

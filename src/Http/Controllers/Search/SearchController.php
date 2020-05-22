@@ -2,15 +2,15 @@
 
 namespace GetCandy\Api\Http\Controllers\Search;
 
-use Illuminate\Http\Request;
-use GetCandy\Api\Core\Search\SearchContract;
+use GetCandy\Api\Core\Categories\Services\CategoryService;
+use GetCandy\Api\Core\Channels\Services\ChannelService;
 use GetCandy\Api\Core\Products\Models\Product;
+use GetCandy\Api\Core\Search\SearchContract;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Search\SearchRequest;
-use GetCandy\Api\Core\Channels\Services\ChannelService;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use GetCandy\Api\Core\Categories\Services\CategoryService;
 use GetCandy\Api\Http\Transformers\Fractal\Search\SearchSuggestionTransformer;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
 
 class SearchController extends BaseController
 {

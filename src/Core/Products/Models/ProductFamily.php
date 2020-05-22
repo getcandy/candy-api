@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Products\Models;
 
-use GetCandy\Api\Core\Scaffold\BaseModel;
 use GetCandy\Api\Core\Attributes\Models\Attribute;
+use GetCandy\Api\Core\Scaffold\BaseModel;
 
 class ProductFamily extends BaseModel
 {

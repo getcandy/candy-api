@@ -81,10 +81,10 @@ class ShippingMethodService extends BaseService
     public function all()
     {
         return $this->model->with([
-          'zones',
-          'users',
-          'prices',
-          'channels',
+            'zones',
+            'users',
+            'prices',
+            'channels',
         ])->channel()->get();
     }
 
@@ -101,6 +101,7 @@ class ShippingMethodService extends BaseService
         if ($relations) {
             $query->with(['zones']);
         }
+
         return $query->paginate($length, ['*'], 'page', $page);
     }
 

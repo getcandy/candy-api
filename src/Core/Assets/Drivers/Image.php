@@ -48,9 +48,9 @@ class Image extends BaseUploadDriver implements AssetDriverContract
 
         if ($model) {
             $model->assets()->attach($asset, [
-                'primary' => !$model->assets()->images()->exists(),
+                'primary' => ! $model->assets()->images()->exists(),
                 'assetable_type' => get_class($model),
-                'position' => $model->assets()->count() + 1
+                'position' => $model->assets()->count() + 1,
             ]);
         }
 

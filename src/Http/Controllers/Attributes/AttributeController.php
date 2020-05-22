@@ -2,18 +2,18 @@
 
 namespace GetCandy\Api\Http\Controllers\Attributes;
 
-use Illuminate\Http\Request;
-use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Core\Attributes\Models\Attribute;
+use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Attributes\CreateRequest;
 use GetCandy\Api\Http\Requests\Attributes\DeleteRequest;
-use GetCandy\Api\Http\Requests\Attributes\UpdateRequest;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use GetCandy\Api\Http\Requests\Attributes\ReorderRequest;
-use GetCandy\Api\Http\Resources\Attributes\AttributeResource;
+use GetCandy\Api\Http\Requests\Attributes\UpdateRequest;
 use GetCandy\Api\Http\Resources\Attributes\AttributeCollection;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use GetCandy\Api\Http\Resources\Attributes\AttributeResource;
 use GetCandy\Api\Http\Transformers\Fractal\Attributes\AttributeTransformer;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class AttributeController extends BaseController
 {
@@ -34,7 +34,7 @@ class AttributeController extends BaseController
 
         $attributes = $attributes->with(['group']);
 
-        if ($request->exists('paginated') && !$request->paginated) {
+        if ($request->exists('paginated') && ! $request->paginated) {
             $paginate = false;
         }
 
@@ -66,6 +66,7 @@ class AttributeController extends BaseController
     public function store(CreateRequest $request)
     {
         $result = app('api')->attributes()->create($request->all());
+
         return new AttributeResource($result);
     }
 
@@ -92,7 +93,6 @@ class AttributeController extends BaseController
     {
         try {
             $result = app('api')->attributes()->update($id, $request->all());
-
         } catch (MinimumRecordRequiredException $e) {
             return $this->errorUnprocessable($e->getMessage());
         } catch (NotFoundHttpException $e) {

@@ -2,13 +2,13 @@
 
 namespace GetCandy\Api\Http\Controllers\Shipping;
 
-use Illuminate\Http\Request;
 use GetCandy\Api\Http\Controllers\BaseController;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use GetCandy\Api\Http\Requests\Shipping\Zones\CreateRequest;
 use GetCandy\Api\Http\Requests\Shipping\Zones\UpdateRequest;
-use GetCandy\Api\Http\Resources\Shipping\ShippingZoneResource;
 use GetCandy\Api\Http\Resources\Shipping\ShippingZoneCollection;
+use GetCandy\Api\Http\Resources\Shipping\ShippingZoneResource;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ShippingZoneController extends BaseController
@@ -24,6 +24,7 @@ class ShippingZoneController extends BaseController
             $request->current_page,
             $this->parseIncludes($request->include)
         );
+
         return new ShippingZoneCollection($zones);
     }
 
@@ -51,6 +52,7 @@ class ShippingZoneController extends BaseController
     public function store(CreateRequest $request)
     {
         $result = app('api')->shippingZones()->create($request->all());
+
         return new ShippingZoneResource($result);
     }
 
@@ -61,6 +63,7 @@ class ShippingZoneController extends BaseController
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
+
         return new ShippingZoneResource($result);
     }
 }

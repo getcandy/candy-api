@@ -2,11 +2,11 @@
 
 namespace GetCandy\Api\Http\Controllers\Layouts;
 
-use Illuminate\Http\Request;
 use GetCandy\Api\Http\Controllers\BaseController;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use GetCandy\Plugins\PageBuilder\Http\Resources\LayoutCollection;
 use GetCandy\Api\Http\Transformers\Fractal\Layouts\LayoutTransformer;
+use GetCandy\Plugins\PageBuilder\Http\Resources\LayoutCollection;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
 
 class LayoutController extends BaseController
 {

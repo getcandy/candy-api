@@ -8,7 +8,7 @@ class ProductValidator
     {
         $variant = app('api')->productVariants()->getByHashedId($value);
 
-        if (!$variant) {
+        if (! $variant) {
             return false;
         }
 
@@ -17,6 +17,7 @@ class ProductValidator
                 'sku' => $variant->sku,
             ]);
         });
+
         return $variant->availableProduct()->exists();
     }
 }

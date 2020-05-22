@@ -2,25 +2,23 @@
 
 namespace GetCandy\Api\Http\Controllers\Baskets;
 
-use Illuminate\Http\Request;
-use GetCandy\Api\Http\Controllers\BaseController;
-use GetCandy\Api\Http\Requests\Baskets\SaveRequest;
-use GetCandy\Api\Http\Requests\Baskets\CreateRequest;
-use GetCandy\Api\Http\Requests\Baskets\DeleteRequest;
 use GetCandy\Api\Core\Baskets\Factories\BasketFactory;
-use GetCandy\Api\Http\Requests\Baskets\AddMetaRequest;
-use GetCandy\Api\Http\Requests\Baskets\PutUserRequest;
-use GetCandy\Api\Http\Resources\Baskets\BasketResource;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use GetCandy\Api\Core\Discounts\Services\DiscountService;
-use GetCandy\Api\Http\Resources\Baskets\BasketCollection;
-use GetCandy\Api\Http\Requests\Baskets\AddDiscountRequest;
-use GetCandy\Api\Http\Requests\Baskets\ClaimBasketRequest;
-use GetCandy\Api\Http\Requests\Baskets\DeleteDiscountRequest;
-use GetCandy\Api\Http\Resources\Baskets\SavedBasketCollection;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketCriteriaInterface;
-use GetCandy\Api\Http\Transformers\Fractal\Baskets\BasketTransformer;
-use GetCandy\Api\Http\Transformers\Fractal\Baskets\SavedBasketTransformer;
+use GetCandy\Api\Core\Discounts\Services\DiscountService;
+use GetCandy\Api\Http\Controllers\BaseController;
+use GetCandy\Api\Http\Requests\Baskets\AddDiscountRequest;
+use GetCandy\Api\Http\Requests\Baskets\AddMetaRequest;
+use GetCandy\Api\Http\Requests\Baskets\ClaimBasketRequest;
+use GetCandy\Api\Http\Requests\Baskets\CreateRequest;
+use GetCandy\Api\Http\Requests\Baskets\DeleteDiscountRequest;
+use GetCandy\Api\Http\Requests\Baskets\DeleteRequest;
+use GetCandy\Api\Http\Requests\Baskets\PutUserRequest;
+use GetCandy\Api\Http\Requests\Baskets\SaveRequest;
+use GetCandy\Api\Http\Resources\Baskets\BasketCollection;
+use GetCandy\Api\Http\Resources\Baskets\BasketResource;
+use GetCandy\Api\Http\Resources\Baskets\SavedBasketCollection;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
 
 class BasketController extends BaseController
 {
@@ -161,6 +159,7 @@ class BasketController extends BaseController
     public function saved(Request $request)
     {
         $baskets = app('api')->baskets()->getSaved($request->user());
+
         return new SavedBasketCollection($baskets);
     }
 

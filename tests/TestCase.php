@@ -3,29 +3,29 @@
 namespace Tests;
 
 use Closure;
-use Tests\Stubs\User;
-use Illuminate\Support\Fluent;
-use Illuminate\Encryption\Encrypter;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\SQLiteConnection;
-use Vinkla\Hashids\HashidsServiceProvider;
-use GetCandy\Api\Core\Baskets\Models\Basket;
-use GetCandy\Api\Core\Facades\GetCandyFacade;
-use Illuminate\Database\Schema\SQLiteBuilder;
-use Laravel\Passport\PassportServiceProvider;
-use GetCandy\Api\Core\Channels\Models\Channel;
-use GetCandy\Api\Providers\ApiServiceProvider;
-use GetCandy\Api\Core\Baskets\Models\BasketLine;
-use Spatie\Permission\PermissionServiceProvider;
-use NeonDigital\Drafting\DraftingServiceProvider;
-use Facades\GetCandy\Api\Core\Taxes\TaxCalculator;
-use Spatie\Activitylog\ActivitylogServiceProvider;
-use GetCandy\Api\Core\Products\Models\ProductVariant;
-use NeonDigital\Versioning\VersioningServiceProvider;
 use Facades\GetCandy\Api\Core\Pricing\PriceCalculator;
+use Facades\GetCandy\Api\Core\Taxes\TaxCalculator;
 use GetCandy\Api\Core\Baskets\Factories\BasketFactory;
-use GetCandy\Api\Core\Currencies\Facades\CurrencyConverter;
+use GetCandy\Api\Core\Baskets\Models\Basket;
+use GetCandy\Api\Core\Baskets\Models\BasketLine;
 use GetCandy\Api\Core\Channels\Interfaces\ChannelFactoryInterface;
+use GetCandy\Api\Core\Channels\Models\Channel;
+use GetCandy\Api\Core\Currencies\Facades\CurrencyConverter;
+use GetCandy\Api\Core\Facades\GetCandyFacade;
+use GetCandy\Api\Core\Products\Models\ProductVariant;
+use GetCandy\Api\Providers\ApiServiceProvider;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Schema\SQLiteBuilder;
+use Illuminate\Database\SQLiteConnection;
+use Illuminate\Encryption\Encrypter;
+use Illuminate\Support\Fluent;
+use Laravel\Passport\PassportServiceProvider;
+use NeonDigital\Drafting\DraftingServiceProvider;
+use NeonDigital\Versioning\VersioningServiceProvider;
+use Spatie\Activitylog\ActivitylogServiceProvider;
+use Spatie\Permission\PermissionServiceProvider;
+use Tests\Stubs\User;
+use Vinkla\Hashids\HashidsServiceProvider;
 
 abstract class TestCase extends \Orchestra\Testbench\TestCase
 {
@@ -34,9 +34,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         parent::__construct($name, $data, $dataName);
         $this->hotfixSqlite();
     }
-    /**
-     *
-     */
+
     public function hotfixSqlite()
     {
         \Illuminate\Database\Connection::resolverFor('sqlite', function ($connection, $database, $prefix, $config) {
@@ -46,6 +44,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
                     if ($this->schemaGrammar === null) {
                         $this->useDefaultSchemaGrammar();
                     }
+
                     return new class($this) extends SQLiteBuilder {
                         protected function createBlueprint($table, Closure $callback = null)
                         {
@@ -61,6 +60,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             };
         });
     }
+
     protected $withSeedData = true;
 
     protected $adminRoutes = [
@@ -82,7 +82,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
         'payments/types',
     ];
 
-    protected function setUp() : void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -133,7 +133,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             ActivitylogServiceProvider::class,
             HashidsServiceProvider::class,
             VersioningServiceProvider::class,
-            DraftingServiceProvider::class
+            DraftingServiceProvider::class,
         ];
     }
 

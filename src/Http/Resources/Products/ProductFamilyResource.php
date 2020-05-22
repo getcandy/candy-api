@@ -18,7 +18,7 @@ class ProductFamilyResource extends AbstractResource
     public function includes()
     {
         return [
-            'attributes' => new AttributeCollection($this->whenLoaded('attributes'))
+            'attributes' => new AttributeCollection($this->whenLoaded('attributes')),
         ];
     }
 }

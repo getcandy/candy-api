@@ -19,8 +19,8 @@ $factory->define(GetCandy\Api\Core\Products\Models\Product::class, function (Fak
             'name' => [
                 'webstore' => [
                     'en' => $faker->name,
-                ]
-            ]
+                ],
+            ],
         ],
     ];
 });

@@ -24,7 +24,7 @@ class Shipping extends AbstractProvider
             'description',
             DB::RAW("DATE_FORMAT(placed_at, '{$displayFormat}') as date"),
             DB::RAW("DATE_FORMAT(placed_at, '{$format}') as raw_format"),
-            DB::RAW('COUNT(*) as count')
+            DB::RAW('COUNT(*) as count'),
         ])->where(
             'is_shipping', '=', true
         )->join('orders', 'orders.id', '=', 'order_lines.order_id')
@@ -35,7 +35,6 @@ class Shipping extends AbstractProvider
         ])->groupBy(
             DB::RAW("description, DATE_FORMAT(placed_at, '{$format}')")
         )->orderBy('raw_format')->get();
-
 
         $labels = [];
         foreach ($rows->groupBy('date') as $month => $shippingMethods) {

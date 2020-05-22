@@ -25,18 +25,17 @@ class ProductAssetController extends BaseController
 
     public function attach($productId, Request $request)
     {
-
         $product = app('api')->products()->getByHashedId($productId, true);
         $asset = app('api')->assets()->getByHashedId($request->asset_id);
 
-        if (!$asset || !$product) {
+        if (! $asset || ! $product) {
             return $this->errorNotFound();
         }
 
         $product->assets()->attach($asset, [
-            'primary' => !$product->assets()->images()->exists(),
+            'primary' => ! $product->assets()->images()->exists(),
             'assetable_type' => get_class($product),
-            'position' => $request->position ?: $product->assets()->count() + 1
+            'position' => $request->position ?: $product->assets()->count() + 1,
         ]);
 
         return $this->respondWithNoContent();

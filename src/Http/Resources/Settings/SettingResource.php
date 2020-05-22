@@ -8,7 +8,6 @@ class SettingResource extends AbstractResource
 {
     public function payload()
     {
-
         return array_merge([
             'id' => $this->encodedId(),
             'name' => $this->name,

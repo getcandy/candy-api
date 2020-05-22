@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Http\Controllers\Attributes;
 
-use Tests\Feature\FeatureCase;
 use GetCandy\Api\Core\Categories\Models\Category;
+use Tests\Feature\FeatureCase;
 
 /**
  * @group categories
@@ -19,10 +19,10 @@ class CategoryControllerTest extends FeatureCase
     {
         Category::create([
             'attribute_data' => [
-               'webstore' => [
-                    'en' => 'Test category'
-               ]
-            ]
+                'webstore' => [
+                    'en' => 'Test category',
+                ],
+            ],
         ]);
 
         $user = $this->admin();
@@ -37,10 +37,10 @@ class CategoryControllerTest extends FeatureCase
         $user = $this->admin();
         Category::create([
             'attribute_data' => [
-               'webstore' => [
-                    'en' => 'Test category'
-               ]
-            ]
+                'webstore' => [
+                    'en' => 'Test category',
+                ],
+            ],
         ]);
         $categoryId = Category::withoutGlobalScopes()->first()->encodedId();
         $response = $this->actingAs($user)->json('GET', "categories/{$categoryId}");
@@ -52,7 +52,7 @@ class CategoryControllerTest extends FeatureCase
     public function test_missing_shows_appropriate_response()
     {
         $user = $this->admin();
-        $response = $this->actingAs($user)->json('GET', "channels/9999");
+        $response = $this->actingAs($user)->json('GET', 'channels/9999');
 
         $response->assertStatus(404);
 
@@ -64,10 +64,10 @@ class CategoryControllerTest extends FeatureCase
         $user = $this->admin();
         Category::create([
             'attribute_data' => [
-               'webstore' => [
-                    'en' => 'Test category'
-               ]
-            ]
+                'webstore' => [
+                    'en' => 'Test category',
+                ],
+            ],
         ]);
         $category = Category::withoutGlobalScopes()->first();
         $categoryId = $category->encodedId();
@@ -75,10 +75,10 @@ class CategoryControllerTest extends FeatureCase
             'attribute_data' => [
                 'name' => [
                     'webstore' => [
-                        'en' => 'Updated test category'
-                    ]
-                ]
-            ]
+                        'en' => 'Updated test category',
+                    ],
+                ],
+            ],
         ]);
         $response->assertStatus(200);
 
@@ -93,10 +93,10 @@ class CategoryControllerTest extends FeatureCase
         $user = $this->admin();
         Category::create([
             'attribute_data' => [
-               'webstore' => [
-                    'en' => 'Test category'
-               ]
-            ]
+                'webstore' => [
+                    'en' => 'Test category',
+                ],
+            ],
         ]);
         $category = Category::withoutGlobalScopes()->first();
         $categoryId = $category->encodedId();
@@ -104,5 +104,4 @@ class CategoryControllerTest extends FeatureCase
         $response->assertStatus(422);
         $this->assertResponseValid($response, '/categories/{categoryId}', 'put');
     }
-
 }
