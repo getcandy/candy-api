@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Core\Payments\Providers;
 
-use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Payments\Models\Transaction;
 use GetCandy\Api\Core\Payments\PaymentResponse;
 use PayPal\Api\Payment;

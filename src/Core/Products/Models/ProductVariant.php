@@ -107,7 +107,7 @@ class ProductVariant extends BaseModel
     {
         $options = [];
 
-        if (!$this->id) {
+        if (! $this->id) {
             foreach ($val as $option => $value) {
                 if (is_array($value)) {
                     $value = reset($value);

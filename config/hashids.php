@@ -123,6 +123,6 @@ return [
             'alphabet' => $alphabet,
             'salt' => env('HASHIDS_RECYCLE_BIN_SALT', 'recycle_bin'),
             'length' => 8,
-        ]
+        ],
     ],
 ];

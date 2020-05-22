@@ -4,10 +4,9 @@ namespace Tests\Feature;
 
 use GetCandy;
 use Illuminate\Contracts\Auth\Authenticatable;
+use NeonDigital\OpenApiValidator\ValidatesWithOpenApi;
 use Tests\Stubs\User;
 use Tests\TestCase;
-
-use NeonDigital\OpenApiValidator\ValidatesWithOpenApi;
 
 abstract class FeatureCase extends TestCase
 {
@@ -21,14 +20,14 @@ abstract class FeatureCase extends TestCase
 
     protected $validator;
 
-    public function setUp() : void
+    public function setUp(): void
     {
         parent::setUp();
         GetCandy::routes();
         $this->artisan('passport:install');
 
         $this->buildOpenApiValidator(
-            realpath(__DIR__ . '/../../open-api.yaml')
+            realpath(__DIR__.'/../../open-api.yaml')
         );
     }
 

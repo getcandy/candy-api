@@ -2,26 +2,25 @@
 
 namespace GetCandy\Api\Core\Products\Versioning;
 
-use DB;
 use Auth;
-use Versioning;
-use Illuminate\Database\Eloquent\Model;
-use GetCandy\Api\Core\Products\Models\Product;
-use NeonDigital\Versioning\Interfaces\VersionerInterface;
-use NeonDigital\Versioning\Versioners\AbstractVersioner;
-use GetCandy\Api\Core\Products\Models\ProductVariant;
-use GetCandy\Api\Core\Channels\Models\Channel;
-use GetCandy\Api\Core\Categories\Models\Category;
-use GetCandy\Api\Core\Customers\Models\CustomerGroup;
-use GetCandy\Api\Core\Routes\Models\Route;
 use GetCandy\Api\Core\Assets\Models\Asset;
+use GetCandy\Api\Core\Categories\Models\Category;
+use GetCandy\Api\Core\Channels\Models\Channel;
+use GetCandy\Api\Core\Customers\Models\CustomerGroup;
+use GetCandy\Api\Core\Products\Models\Product;
+use GetCandy\Api\Core\Products\Models\ProductVariant;
+use GetCandy\Api\Core\Routes\Models\Route;
+use Illuminate\Database\Eloquent\Model;
+use NeonDigital\Versioning\Interfaces\VersionerInterface;
 use NeonDigital\Versioning\Version;
+use NeonDigital\Versioning\Versioners\AbstractVersioner;
+use Versioning;
 
 class ProductVersioner extends AbstractVersioner implements VersionerInterface
 {
     public function create(Model $product, $relationId = null, $originatorId = null)
     {
-        $userId =  Auth::user() ? Auth::user()->id : null;
+        $userId = Auth::user() ? Auth::user()->id : null;
 
         $attributes = $product->getAttributes();
 
@@ -39,7 +38,7 @@ class ProductVersioner extends AbstractVersioner implements VersionerInterface
         // Channels
         foreach ($product->channels as $channel) {
             $data = array_merge($channel->getAttributes(), [
-                'pivot' => $channel->pivot->getAttributes()
+                'pivot' => $channel->pivot->getAttributes(),
             ]);
             $this->createFromObject($channel, $version->id, $data);
         }
@@ -52,14 +51,14 @@ class ProductVersioner extends AbstractVersioner implements VersionerInterface
         // Categories
         foreach ($product->categories as $category) {
             $data = array_merge($category->getAttributes(), [
-                'pivot' => $category->pivot->getAttributes()
+                'pivot' => $category->pivot->getAttributes(),
             ]);
             $this->createFromObject($category, $version->id, $data);
         }
 
         foreach ($product->customerGroups as $group) {
             $data = array_merge($group->getAttributes(), [
-                'pivot' => $group->pivot->getAttributes()
+                'pivot' => $group->pivot->getAttributes(),
             ]);
             $this->createFromObject($group, $version->id, $data);
         }
@@ -112,7 +111,7 @@ class ProductVersioner extends AbstractVersioner implements VersionerInterface
                     $product->channels()->sync([
                         $data['id'] => [
                             'published_at' => $data['pivot']['published_at'] ?? now(),
-                        ]
+                        ],
                     ]);
                     break;
                 case CustomerGroup::class:
@@ -120,7 +119,7 @@ class ProductVersioner extends AbstractVersioner implements VersionerInterface
                         $data['id'] => [
                             'purchasable' => $data['pivot']['purchasable'] ?? 1,
                             'visible' => $data['pivot']['visible'] ?? 1,
-                        ]
+                        ],
                     ]);
                     break;
                 case Category::class:
@@ -139,7 +138,7 @@ class ProductVersioner extends AbstractVersioner implements VersionerInterface
                 case Asset::class:
                     $data = $relation->model_data;
 
-                    if (!Asset::find($data['asset_id'])) {
+                    if (! Asset::find($data['asset_id'])) {
                         break;
                     }
 
@@ -153,6 +152,7 @@ class ProductVersioner extends AbstractVersioner implements VersionerInterface
                     break;
             }
         }
+
         return $product;
     }
 }

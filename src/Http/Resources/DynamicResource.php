@@ -11,6 +11,7 @@ class DynamicResource extends JsonResource
         if ($resource = $this->resource->resource) {
             return new $resource($this->resource);
         }
+
         return $this->resource->toArray();
     }
 }

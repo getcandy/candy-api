@@ -34,13 +34,13 @@ class UserControllerTest extends TestCase
     public function testStore()
     {
         $response = $this->post($this->url('users'), [
-                'email' => 'dom@neondigital.co.uk',
-                'password' => 'password',
-                'name' => 'Dom',
-                'password_confirmation' => 'password',
-            ], [
-                'Authorization' => 'Bearer '.$this->accessToken(),
-            ]);
+            'email' => 'dom@neondigital.co.uk',
+            'password' => 'password',
+            'name' => 'Dom',
+            'password_confirmation' => 'password',
+        ], [
+            'Authorization' => 'Bearer '.$this->accessToken(),
+        ]);
 
         $this->assertEquals(200, $response->status());
 
@@ -52,13 +52,13 @@ class UserControllerTest extends TestCase
     public function testPasswordConfirmationFails()
     {
         $response = $this->post($this->url('users'), [
-                'email' => 'dom@neondigital.co.uk',
-                'password' => 'passwosrd',
-                'name' => 'Dom',
-                'password_confirmation' => 'password',
-            ], [
-                'Authorization' => 'Bearer '.$this->accessToken(),
-            ]);
+            'email' => 'dom@neondigital.co.uk',
+            'password' => 'passwosrd',
+            'name' => 'Dom',
+            'password_confirmation' => 'password',
+        ], [
+            'Authorization' => 'Bearer '.$this->accessToken(),
+        ]);
 
         $this->assertEquals(422, $response->status());
 
@@ -70,8 +70,8 @@ class UserControllerTest extends TestCase
     public function testValidationFailedStore()
     {
         $response = $this->post($this->url('users'), [], [
-                'Authorization' => 'Bearer '.$this->accessToken(),
-            ]);
+            'Authorization' => 'Bearer '.$this->accessToken(),
+        ]);
 
         $this->assertEquals(422, $response->status());
 
@@ -89,13 +89,13 @@ class UserControllerTest extends TestCase
         ]);
 
         $response = $this->post($this->url('users'), [
-                'email' => 'person@neondigital.co.uk',
-                'password' => 'password',
-                'name' => 'Person',
-                'password_confirmation' => 'password',
-            ], [
-                'Authorization' => 'Bearer '.$this->accessToken(),
-            ]);
+            'email' => 'person@neondigital.co.uk',
+            'password' => 'password',
+            'name' => 'Person',
+            'password_confirmation' => 'password',
+        ], [
+            'Authorization' => 'Bearer '.$this->accessToken(),
+        ]);
 
         $this->assertEquals(422, $response->status());
 

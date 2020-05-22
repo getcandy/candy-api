@@ -27,6 +27,5 @@ trait Assetable
         ->whereAssetableType(self::class)
         ->withPivot('assetables', ['primary', 'assetable_type'])
         ->wherePrimary(true);
-
     }
 }

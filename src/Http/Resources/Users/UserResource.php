@@ -4,11 +4,10 @@ namespace GetCandy\Api\Http\Resources\Users;
 
 use GetCandy\Api\Http\Resources\AbstractResource;
 use GetCandy\Api\Http\Resources\Acl\RoleCollection;
-use GetCandy\Api\Http\Resources\Orders\OrderResource;
-use GetCandy\Api\Http\Resources\Orders\OrderCollection;
-use GetCandy\Api\Http\Resources\Users\UserDetailsResource;
 use GetCandy\Api\Http\Resources\Addresses\AddressCollection;
 use GetCandy\Api\Http\Resources\Customers\CustomerGroupCollection;
+use GetCandy\Api\Http\Resources\Orders\OrderCollection;
+use GetCandy\Api\Http\Resources\Orders\OrderResource;
 
 class UserResource extends AbstractResource
 {
@@ -17,7 +16,7 @@ class UserResource extends AbstractResource
         return [
             'id' => $this->encoded_id,
             'email' => $this->email,
-            'name' => $this->name
+            'name' => $this->name,
         ];
     }
 

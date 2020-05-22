@@ -3,8 +3,6 @@
 namespace GetCandy\Api\Core\Reports\Providers;
 
 use DB;
-use Carbon\Carbon;
-use GetCandy\Api\Core\Products\Models\Product;
 
 class Products extends AbstractProvider
 {
@@ -14,8 +12,8 @@ class Products extends AbstractProvider
         ->select(
             'products.id',
             'sku',
-            DB::RAW($this->getJsonColumn($attribute) . 'as value'),
-            DB::RAW($this->getJsonColumn('name') . 'as name')
+            DB::RAW($this->getJsonColumn($attribute).'as value'),
+            DB::RAW($this->getJsonColumn('name').'as name')
         )->where(
             DB::RAW($this->getJsonColumn($attribute)),
             $this->getExpression($expression),

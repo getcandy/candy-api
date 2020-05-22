@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Reports\Providers;
 
-use DB;
 use Carbon\Carbon;
+use DB;
 
 class Orders extends AbstractProvider
 {
@@ -32,7 +32,7 @@ class Orders extends AbstractProvider
                 'delivery_total' => $order->delivery_total,
                 'tax_total' => $order->tax_total,
                 'order_total' => $order->order_total,
-                'discount_total' => $order->discount_total
+                'discount_total' => $order->discount_total,
             ];
         });
     }
@@ -45,15 +45,14 @@ class Orders extends AbstractProvider
             $this->to,
         ])->select(
             DB::RAW("DATE_FORMAT(placed_at, '%Y%m') as month"),
-            DB::RAW("case when billing_email is null then users.email else billing_email end as orderemail"),
-            DB::RAW("(select count(*) from orders join users on users.id = orders.user_id where users.email = orderemail) as account_orders"),
-            DB::RAW("(select count(*) from orders where billing_email = orderemail) as guest_orders")
+            DB::RAW('case when billing_email is null then users.email else billing_email end as orderemail'),
+            DB::RAW('(select count(*) from orders join users on users.id = orders.user_id where users.email = orderemail) as account_orders'),
+            DB::RAW('(select count(*) from orders where billing_email = orderemail) as guest_orders')
         )->leftJoin('users', 'users.id', '=', 'orders.user_id');
 
         $orders = $orders->get()->groupBy('month');
 
         return $orders->mapWithKeys(function ($orders, $month) {
-
             $new = 0;
             $returning = 0;
 
@@ -68,11 +67,12 @@ class Orders extends AbstractProvider
             }
 
             $date = \Carbon\Carbon::createFromFormat('Ym', $month);
+
             return [$month => [
                 'label' => $date->format('F Y'),
                 'new' => $new,
                 'returning' => $returning,
-                'total' => $returning + $new
+                'total' => $returning + $new,
             ]];
         })->sortKeysDesc();
     }
@@ -101,7 +101,7 @@ class Orders extends AbstractProvider
                 'delivery_total' => $order->delivery_total,
                 'tax_total' => $order->tax_total,
                 'order_total' => $order->order_total,
-                'discount_total' => $order->discount_total
+                'discount_total' => $order->discount_total,
             ];
         });
     }
@@ -129,20 +129,18 @@ class Orders extends AbstractProvider
                 DB::RAW("DATE_FORMAT(placed_at, '%Y-%m')")
             );
 
-
         $result = $stats->get()
             ->groupBy('month')
             ->sortKeysDesc()
             ->mapWithKeys(function ($rows, $month) {
                 return [
                     Carbon::createFromFormat('Y-m-d', $month)->toIsoString() => [
-                        'products' => $rows->slice(0, 10)
-                    ]
+                        'products' => $rows->slice(0, 10),
+                    ],
                 ];
             });
 
         // $products = collect();
-
 
         // /**
         //  *  [
@@ -169,8 +167,6 @@ class Orders extends AbstractProvider
         // }
 
         return $result;
-
-
     }
 
     public function metrics()

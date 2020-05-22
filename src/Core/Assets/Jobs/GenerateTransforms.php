@@ -41,7 +41,6 @@ class GenerateTransforms implements ShouldQueue
     public function handle()
     {
         foreach ($this->assets as $asset) {
-
             app('api')->transforms()->transform(array_merge(
                 ['thumbnail'],
                 $this->settings['transforms'] ?? []

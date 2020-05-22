@@ -67,6 +67,7 @@ class CategoryController extends BaseController
         $category = $this->service->findById($id[0], [], false);
 
         $draft = \Drafting::with('categories')->firstOrCreate($category);
+
         return new CategoryResource($draft->load($request->includes));
     }
 
@@ -80,13 +81,13 @@ class CategoryController extends BaseController
             $includes = $this->parseIncludes($includes);
         }
 
-        if (!$id) {
+        if (! $id) {
             return $this->errorNotFound();
         }
 
         $category = $this->service->findById($id, $includes, $request->draft);
 
-        if (!$category) {
+        if (! $category) {
             return $this->errorNotFound();
         }
 
@@ -103,7 +104,7 @@ class CategoryController extends BaseController
         return $this->respondWithCollection($categories, new CategoryTransformer);
     }
 
-    public function getByParent($parentID = null, Request $request)
+    public function getByParent($parentID, Request $request)
     {
         $categories = app('api')->categories()->getByParentID(
             $parentID,
@@ -198,7 +199,6 @@ class CategoryController extends BaseController
         \DB::transaction(function () use ($category) {
             Drafting::with('categories')->publish($category);
         });
-
 
         $includes = $request->includes ? explode(',', $request->include) : [];
 

@@ -5,17 +5,16 @@ namespace GetCandy\Api\Core\Collections\Versioning;
 use Auth;
 use Drafting;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use NeonDigital\Versioning\Interfaces\VersionerInterface;
 use NeonDigital\Versioning\Version;
 use NeonDigital\Versioning\Versioners\AbstractVersioner;
-use Versioning;
-use Illuminate\Support\Arr;
 
 class CollectionVersioner extends AbstractVersioner implements VersionerInterface
 {
     public function create(Model $category, $relationId = null, $originatorId = null)
     {
-        $userId =  Auth::user() ? Auth::user()->id : null;
+        $userId = Auth::user() ? Auth::user()->id : null;
 
         $attributes = $category->getAttributes();
 

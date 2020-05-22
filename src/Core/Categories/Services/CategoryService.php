@@ -126,7 +126,7 @@ class CategoryService extends BaseService
             $model->customerGroups()->sync($groupData);
         }
 
-        if (!empty($data['layout_id'])) {
+        if (! empty($data['layout_id'])) {
             $realLayoutId = app('api')->layouts()->getDecodedId($data['layout_id']);
             $model->layout_id = $realLayoutId;
         }
@@ -152,6 +152,7 @@ class CategoryService extends BaseService
         $category->channels()->sync(
             $this->getChannelMapping($data['channels'])
         );
+
         return $category;
     }
 

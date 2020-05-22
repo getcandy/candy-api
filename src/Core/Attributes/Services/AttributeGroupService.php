@@ -47,6 +47,7 @@ class AttributeGroupService extends BaseService
         if ($includes) {
             $query = $query->with($includes);
         }
+
         return $query->get();
     }
 

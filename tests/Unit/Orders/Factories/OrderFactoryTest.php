@@ -3,23 +3,23 @@
 namespace Tests\Unit\Orders\Services;
 
 use Carbon\Carbon;
-use Tests\TestCase;
-use Tests\Stubs\User;
-use Illuminate\Support\Facades\Event;
-use GetCandy\Api\Core\Orders\Models\Order;
+use GetCandy\Api\Core\Baskets\Factories\BasketFactory;
+use GetCandy\Api\Core\Baskets\Services\BasketService;
 use GetCandy\Api\Core\Channels\Models\Channel;
 use GetCandy\Api\Core\Discounts\Models\Discount;
-use GetCandy\Api\Core\Orders\Events\OrderSavedEvent;
-use GetCandy\Api\Core\Orders\Factories\OrderFactory;
-use GetCandy\Api\Core\Baskets\Services\BasketService;
-use GetCandy\Api\Core\Products\Models\ProductVariant;
-use GetCandy\Api\Core\Baskets\Factories\BasketFactory;
-use GetCandy\Api\Core\Discounts\Models\DiscountReward;
-use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaSet;
 use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaItem;
-use GetCandy\Api\Core\Orders\Interfaces\OrderFactoryInterface;
-use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
+use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaSet;
+use GetCandy\Api\Core\Discounts\Models\DiscountReward;
+use GetCandy\Api\Core\Orders\Events\OrderSavedEvent;
 use GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException;
+use GetCandy\Api\Core\Orders\Factories\OrderFactory;
+use GetCandy\Api\Core\Orders\Interfaces\OrderFactoryInterface;
+use GetCandy\Api\Core\Orders\Models\Order;
+use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
+use GetCandy\Api\Core\Products\Models\ProductVariant;
+use Illuminate\Support\Facades\Event;
+use Tests\Stubs\User;
+use Tests\TestCase;
 
 /**
  * @group orders
@@ -205,16 +205,16 @@ class OrderFactoryTest extends TestCase
 
         $basket->discounts()->sync([
             $discount->id => [
-                'coupon' => 'TESTCOUPON'
-            ]
+                'coupon' => 'TESTCOUPON',
+            ],
         ]);
 
         $channelId = Channel::pluck('id')->first();
 
         $discount->channels()->sync([
             $channelId => [
-                'published_at' => now()
-            ]
+                'published_at' => now(),
+            ],
         ]);
 
         $basket = $basket->refresh();

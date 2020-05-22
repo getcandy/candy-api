@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Http\Controllers\Products;
 
-use DB;
 use Drafting;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketCriteriaInterface;
 use GetCandy\Api\Core\Products\Factories\ProductDuplicateFactory;
@@ -29,7 +28,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class ProductController extends BaseController
 {
     /**
-     * The product service
+     * The product service.
      *
      * @var ProductService
      */
@@ -49,7 +48,7 @@ class ProductController extends BaseController
     {
         $paginate = true;
 
-        if ($request->exists('paginated') && !$request->paginated) {
+        if ($request->exists('paginated') && ! $request->paginated) {
             $paginate = false;
         }
 
@@ -72,13 +71,11 @@ class ProductController extends BaseController
     {
         $id = Hashids::connection('product')->decode($idOrSku);
 
-
         $includes = $request->include ?: [];
 
         if ($includes && is_string($includes)) {
             $includes = explode(',', $includes);
         }
-
 
         if (empty($id[0])) {
             $product = $this->service->findBySku($idOrSku, $includes, $request->draft);
@@ -87,7 +84,6 @@ class ProductController extends BaseController
         }
 
         if (! $product) {
-
             return $this->errorNotFound();
         }
         $resource = new ProductResource($product);

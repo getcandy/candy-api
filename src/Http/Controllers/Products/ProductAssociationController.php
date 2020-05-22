@@ -6,7 +6,6 @@ use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Products\Associations\CreateRequest;
 use GetCandy\Api\Http\Requests\Products\Associations\DeleteRequest;
 use GetCandy\Api\Http\Resources\Products\ProductAssociationCollection;
-use GetCandy\Api\Http\Transformers\Fractal\Products\ProductAssociationTransformer;
 
 class ProductAssociationController extends BaseController
 {

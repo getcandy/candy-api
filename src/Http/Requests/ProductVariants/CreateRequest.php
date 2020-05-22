@@ -29,7 +29,7 @@ class CreateRequest extends FormRequest
             'options.*.options' => 'array|min:1',
             'options' => 'array|min:1',
             'variants.*.price' => 'numeric|required',
-            'variants.*.inventory' => 'numeric|required'
+            'variants.*.inventory' => 'numeric|required',
         ];
 
         foreach (collect($this->variants) as $index => $variant) {

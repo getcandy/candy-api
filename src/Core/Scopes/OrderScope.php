@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Core\Scopes;
 
-use GetCandy\Api\Core\Scopes\AbstractScope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 

@@ -23,6 +23,7 @@ class ProductVariantVersioner extends AbstractVersioner implements VersionerInte
             $this->createFromObject($price, $version->id);
         }
     }
+
     public function restore($version, $parent = null)
     {
         $data = $version->model_data;

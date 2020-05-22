@@ -7,7 +7,6 @@ use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Assets\UpdateAllRequest;
 use GetCandy\Api\Http\Requests\Assets\UploadRequest;
 use GetCandy\Api\Http\Transformers\Fractal\Assets\AssetTransformer;
-use GetCandy\Exceptions\InvalidServiceException;
 use Illuminate\Http\Request;
 use Image;
 use Storage;

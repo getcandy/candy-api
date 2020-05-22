@@ -2,8 +2,6 @@
 
 namespace GetCandy\Api\Core\Assets\Models;
 
-use GetCandy\Api\Core\Categories\Models\Category;
-use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Scaffold\BaseModel;
 use GetCandy\Api\Core\Tags\Models\Tag;
 use Storage;
@@ -44,7 +42,6 @@ class Asset extends BaseModel
     {
         return $query->where('kind', '!=', 'application');
     }
-
 
     /**
      * Get the url attribute.
@@ -87,7 +84,6 @@ class Asset extends BaseModel
     {
         return $this->belongsTo(Assetable::class);
     }
-
 
     public function uploader()
     {

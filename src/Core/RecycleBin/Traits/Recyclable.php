@@ -11,8 +11,8 @@ trait Recyclable
 
     public static function bootRecyclable()
     {
-        static::deleting(function($model) {
-            if (!$model->isForceDeleting()) {
+        static::deleting(function ($model) {
+            if (! $model->isForceDeleting()) {
                 $model->recycleBin()->firstOrCreate([
                     'recyclable_type' => get_class($model),
                     'recyclable_id' => $model->id,
@@ -36,7 +36,7 @@ trait Recyclable
         return $this->morphOne(RecycleBin::class, 'recyclable');
     }
 
-    abstract function getRecycleName();
+    abstract public function getRecycleName();
 
-    abstract function getRecycleThumbnail();
+    abstract public function getRecycleThumbnail();
 }

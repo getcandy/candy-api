@@ -295,30 +295,30 @@
     ]);
 
     /**
-     * Recycle bin
+     * Recycle bin.
      */
     $router->get('recycle-bin', [
         'as' => 'recycle-bin.index',
-        'uses' => 'RecycleBin\RecycleBinController@index'
+        'uses' => 'RecycleBin\RecycleBinController@index',
     ]);
 
     $router->get('recycle-bin/{id}', [
         'as' => 'recycle-bin.show',
-        'uses' => 'RecycleBin\RecycleBinController@show'
+        'uses' => 'RecycleBin\RecycleBinController@show',
     ]);
 
     $router->delete('recycle-bin/{id}', [
         'as' => 'recycle-bin.delete',
-        'uses' => 'RecycleBin\RecycleBinController@destroy'
+        'uses' => 'RecycleBin\RecycleBinController@destroy',
     ]);
 
     $router->post('recycle-bin/{id}/restore', [
         'as' => 'recycle-bin.restore',
-        'uses' => 'RecycleBin\RecycleBinController@restore'
+        'uses' => 'RecycleBin\RecycleBinController@restore',
     ]);
 
     /**
-     * Versioning
+     * Versioning.
      */
     $router->post('versions/{id}/restore', [
         'as' => 'versions.restore',

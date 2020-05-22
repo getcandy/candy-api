@@ -21,6 +21,7 @@ class TaxController extends BaseController
     public function index(Request $request)
     {
         $paginator = app('api')->taxes()->getPaginatedData($request->per_page);
+
         return $this->respondWithCollection($paginator, new TaxTransformer);
     }
 

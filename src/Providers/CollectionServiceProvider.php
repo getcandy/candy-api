@@ -3,10 +3,10 @@
 namespace GetCandy\Api\Providers;
 
 use Drafting;
-use Versioning;
-use Illuminate\Support\ServiceProvider;
 use GetCandy\Api\Core\Collections\Drafting\CollectionDrafter;
 use GetCandy\Api\Core\Collections\Versioning\CollectionVersioner;
+use Illuminate\Support\ServiceProvider;
+use Versioning;
 
 class CollectionServiceProvider extends ServiceProvider
 {

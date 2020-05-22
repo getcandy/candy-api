@@ -2,17 +2,17 @@
 
 namespace GetCandy\Api\Http\Controllers\Channels;
 
-use Illuminate\Http\Request;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Channels\CreateRequest;
 use GetCandy\Api\Http\Requests\Channels\DeleteRequest;
 use GetCandy\Api\Http\Requests\Channels\UpdateRequest;
+use GetCandy\Api\Http\Resources\Channels\ChannelCollection;
+use GetCandy\Api\Http\Resources\Channels\ChannelResource;
+use GetCandy\Api\Http\Transformers\Fractal\Channels\ChannelTransformer;
 use GetCandy\Exceptions\MinimumRecordRequiredException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use GetCandy\Api\Http\Resources\Channels\ChannelResource;
-use GetCandy\Api\Http\Resources\Channels\ChannelCollection;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use GetCandy\Api\Http\Transformers\Fractal\Channels\ChannelTransformer;
 
 class ChannelController extends BaseController
 {
@@ -23,6 +23,7 @@ class ChannelController extends BaseController
     public function index(Request $request)
     {
         $paginator = app('api')->channels()->getPaginatedData($request->per_page);
+
         return new ChannelCollection($paginator);
     }
 
@@ -38,6 +39,7 @@ class ChannelController extends BaseController
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
+
         return new ChannelResource($channel);
     }
 

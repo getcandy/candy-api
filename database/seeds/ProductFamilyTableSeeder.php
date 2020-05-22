@@ -26,7 +26,7 @@ class ProductFamilyTableSeeder extends Seeder
         }
 
         $fam = ProductFamily::create([
-            'name' => 'Bags'
+            'name' => 'Bags',
         ]);
 
         foreach ($atts as $att) {
@@ -34,7 +34,7 @@ class ProductFamilyTableSeeder extends Seeder
         }
 
         $fam = ProductFamily::create([
-            'name' => 'Jewellery'
+            'name' => 'Jewellery',
         ]);
 
         foreach ($atts as $att) {
@@ -42,7 +42,7 @@ class ProductFamilyTableSeeder extends Seeder
         }
 
         $fam = ProductFamily::create([
-            'name' => 'House items'
+            'name' => 'House items',
         ]);
 
         foreach ($atts as $att) {

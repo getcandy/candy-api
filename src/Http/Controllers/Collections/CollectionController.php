@@ -3,20 +3,18 @@
 namespace GetCandy\Api\Http\Controllers\Collections;
 
 use DB;
-use Hashids;
 use Drafting;
-use Versioning;
-use Illuminate\Http\Request;
-use GetCandy\Api\Http\Controllers\BaseController;
+use GetCandy\Api\Core\Collections\Criteria\CollectionCriteria;
 use GetCandy\Api\Core\Collections\Models\Collection;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use GetCandy\Api\Core\Collections\Services\CollectionService;
+use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Collections\CreateRequest;
 use GetCandy\Api\Http\Requests\Collections\DeleteRequest;
 use GetCandy\Api\Http\Requests\Collections\UpdateRequest;
-use GetCandy\Api\Core\Collections\Services\CollectionService;
-use GetCandy\Api\Core\Collections\Criteria\CollectionCriteria;
-use GetCandy\Api\Http\Resources\Collections\CollectionResource;
 use GetCandy\Api\Http\Resources\Collections\CollectionCollection;
+use GetCandy\Api\Http\Resources\Collections\CollectionResource;
+use Hashids;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CollectionController extends BaseController
@@ -56,13 +54,13 @@ class CollectionController extends BaseController
             $includes = $this->parseIncludes($includes);
         }
 
-        if (!$id) {
+        if (! $id) {
             return $this->errorNotFound();
         }
 
         $collection = $this->service->findById($id, $includes, $request->draft);
 
-        if (!$collection) {
+        if (! $collection) {
             return $this->errorNotFound();
         }
 
@@ -119,11 +117,12 @@ class CollectionController extends BaseController
     {
         $collection = $this->service->getByHashedId($id, true);
 
-        if (!$collection) {
+        if (! $collection) {
             return $this->errorNotFound();
         }
 
         $draft = Drafting::with('collections')->firstOrCreate($collection);
+
         return new CollectionResource($draft);
     }
 

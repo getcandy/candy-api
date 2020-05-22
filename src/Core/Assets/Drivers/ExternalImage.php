@@ -127,12 +127,12 @@ class ExternalImage extends BaseUrlDriver
         }
         // if (!$this->info) {
         return $this->info = [
-                'thumbnail_url' => $url,
-                'width' => $image->width(),
-                'height' => $image->height(),
-                'kind' => $image->mime(),
-                'title' => basename($url),
-            ];
+            'thumbnail_url' => $url,
+            'width' => $image->width(),
+            'height' => $image->height(),
+            'kind' => $image->mime(),
+            'title' => basename($url),
+        ];
         // }/
         // return $this->info;
     }

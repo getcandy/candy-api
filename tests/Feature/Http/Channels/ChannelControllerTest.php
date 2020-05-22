@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Http\Controllers\Attributes;
 
-use Tests\Feature\FeatureCase;
 use GetCandy\Api\Core\Channels\Models\Channel;
+use Tests\Feature\FeatureCase;
 
 /**
  * @group feature
@@ -33,7 +33,7 @@ class ChannelControllerTest extends FeatureCase
     {
         $user = $this->admin();
         $channelId = Channel::first()->encodedId();
-        $response = $this->actingAs($user)->json('GET', "channels/123123123");
+        $response = $this->actingAs($user)->json('GET', 'channels/123123123');
 
         $response->assertStatus(404);
 
@@ -56,7 +56,7 @@ class ChannelControllerTest extends FeatureCase
         $existing = Channel::first();
         $new = Channel::forceCreate([
             'name' => 'Test',
-            'handle' => 'test'
+            'handle' => 'test',
         ]);
 
         $user = $this->admin();

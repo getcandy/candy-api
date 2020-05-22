@@ -12,7 +12,6 @@ class CollectionDrafter extends BaseDrafter implements DrafterInterface
 {
     public function create(Model $model)
     {
-
     }
 
     public function publish(Model $collection)
@@ -24,7 +23,7 @@ class CollectionDrafter extends BaseDrafter implements DrafterInterface
 
         foreach ($parent->versions as $version) {
             $version->update([
-                'versionable_id' => $collection->id
+                'versionable_id' => $collection->id,
             ]);
         }
 
@@ -37,7 +36,6 @@ class CollectionDrafter extends BaseDrafter implements DrafterInterface
                 $a->update(['subject_id' => $collection->id]);
             });
         }
-        
 
         // Activate any routes
         $routeIds = $collection->routes()->onlyDrafted()->get()->pluck('id')->toArray();
@@ -45,7 +43,7 @@ class CollectionDrafter extends BaseDrafter implements DrafterInterface
         DB::table('routes')
             ->whereIn('id', $routeIds)
             ->update([
-                'drafted_at' => null
+                'drafted_at' => null,
             ]);
 
         // Delete routes
@@ -73,7 +71,7 @@ class CollectionDrafter extends BaseDrafter implements DrafterInterface
                 'routes',
                 'assets',
                 'customerGroups',
-                'attributes'
+                'attributes',
             ]);
 
             $newCollection = $collection->replicate();
@@ -107,7 +105,7 @@ class CollectionDrafter extends BaseDrafter implements DrafterInterface
                 'routes',
                 'assets',
                 'customerGroups',
-                'attributes'
+                'attributes',
             ]);
         });
     }

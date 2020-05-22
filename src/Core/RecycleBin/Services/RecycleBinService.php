@@ -2,24 +2,24 @@
 
 namespace GetCandy\Api\Core\RecycleBin\Services;
 
+use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\RecycleBin\Interfaces\RecycleBinServiceInterface;
 use GetCandy\Api\Core\RecycleBin\Models\RecycleBin;
-use GetCandy\Api\Core\Products\Models\Product;
 
 class RecycleBinService implements RecycleBinServiceInterface
 {
     /**
-     * Gets items that are currently soft deleted
+     * Gets items that are currently soft deleted.
      *
      * @return void
      */
     public function getItems($paginated = true, $perPage = 25, $terms = null, $includes = [])
     {
         $query = RecycleBin::whereDoesntHaveMorph('recyclable', [
-            Product::class
+            Product::class,
         ]);
 
-        if (!$paginated) {
+        if (! $paginated) {
             return $query->get();
         }
 
@@ -39,11 +39,11 @@ class RecycleBinService implements RecycleBinServiceInterface
             $item->delete();
         }
     }
-    
+
     public function forceDelete($id)
     {
         $item = $this->findById($id);
-        if (!$item->recyclable) {
+        if (! $item->recyclable) {
             $item->delete();
         } else {
             $item->recyclable->forceDelete();

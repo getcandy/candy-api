@@ -11,7 +11,7 @@ use GetCandy\Api\Core\Scopes\ChannelScope;
 trait HasChannels
 {
     /**
-     * Boot up the trait
+     * Boot up the trait.
      */
     public static function bootHasChannels()
     {

@@ -11,7 +11,7 @@ class ShippingRegionResource extends AbstractResource
         return [
             'id' => $this->encoded_id,
             'region' => $this->region,
-            'address_field' => $this->address_field
+            'address_field' => $this->address_field,
         ];
     }
 

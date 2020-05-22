@@ -3,8 +3,8 @@
 namespace Tests\Unit\RecycleBin\Traits;
 
 use DB;
-use Tests\TestCase;
 use GetCandy\Api\Core\Products\Models\Product;
+use Tests\TestCase;
 
 /**
  * @group recycling

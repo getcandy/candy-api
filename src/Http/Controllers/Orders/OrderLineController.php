@@ -6,9 +6,8 @@ use GetCandy\Api\Core\Orders\Services\OrderLineService;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Orders\Lines\CreateRequest;
 use GetCandy\Api\Http\Requests\Orders\Lines\DeleteRequest;
-use GetCandy\Api\Http\Transformers\Fractal\Orders\OrderTransformer;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use GetCandy\Api\Http\Resources\Orders\OrderResource;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class OrderLineController extends BaseController
 {

@@ -2,18 +2,18 @@
 
 namespace Tests\Unit\Orders\Services;
 
-use Tests\TestCase;
-use GetCandy\Api\Core\Baskets\Models\Basket;
-use GetCandy\Api\Core\Channels\Models\Channel;
-use GetCandy\Api\Core\Baskets\Models\BasketLine;
-use GetCandy\Api\Core\Discounts\Models\Discount;
-use GetCandy\Api\Core\Products\Models\ProductVariant;
 use GetCandy\Api\Core\Baskets\Factories\BasketFactory;
-use GetCandy\Api\Core\Discounts\Models\DiscountReward;
-use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaSet;
-use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaItem;
-use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketFactoryInterface;
+use GetCandy\Api\Core\Baskets\Models\Basket;
+use GetCandy\Api\Core\Baskets\Models\BasketLine;
+use GetCandy\Api\Core\Channels\Models\Channel;
+use GetCandy\Api\Core\Discounts\Models\Discount;
+use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaItem;
+use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaSet;
+use GetCandy\Api\Core\Discounts\Models\DiscountReward;
+use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
+use GetCandy\Api\Core\Products\Models\ProductVariant;
+use Tests\TestCase;
 
 /**
  * @group baskets
@@ -114,16 +114,16 @@ class BasketFactoryTest extends TestCase
 
         $basket->discounts()->sync([
             $discount->id => [
-                'coupon' => 'TESTCOUPON'
-            ]
+                'coupon' => 'TESTCOUPON',
+            ],
         ]);
 
         $channelId = Channel::pluck('id')->first();
 
         $discount->channels()->sync([
             $channelId => [
-                'published_at' => now()
-            ]
+                'published_at' => now(),
+            ],
         ]);
 
         $basket = $this->app->make(BasketFactory::class)->init($basket)->get();

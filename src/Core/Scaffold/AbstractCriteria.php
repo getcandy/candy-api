@@ -144,7 +144,7 @@ abstract class AbstractCriteria
     {
         $query = $this->getBuilder();
 
-        if (!$this->paginated) {
+        if (! $this->paginated) {
             return $query->get();
         }
 

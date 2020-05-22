@@ -72,9 +72,10 @@ class UserController extends BaseController
 
         return new UserResource(
             $request->user()->load([
-                'addresses', 'roles.permissions', 'details'
+                'addresses', 'roles.permissions', 'details',
             ])
         );
+
         return $this->respondWithItem($user, new UserTransformer);
     }
 

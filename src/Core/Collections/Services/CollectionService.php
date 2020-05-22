@@ -36,7 +36,6 @@ class CollectionService extends BaseService
         return $collection->findOrFail($id);
     }
 
-
     public function findById($id, array $includes = [], $draft = false)
     {
         $query = Collection::with(array_merge($includes, ['draft']));
@@ -47,6 +46,7 @@ class CollectionService extends BaseService
 
         return $query->find($id);
     }
+
     /**
      * Creates a resource from the given data.
      *
@@ -80,7 +80,6 @@ class CollectionService extends BaseService
      */
     public function delete($id)
     {
-
         $collection = $this->getByHashedId($id, true);
 
         $collection->customerGroups()->detach();
