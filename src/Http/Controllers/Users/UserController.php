@@ -2,13 +2,14 @@
 
 namespace GetCandy\Api\Http\Controllers\Users;
 
-use Illuminate\Http\Request;
-use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Core\Users\Contracts\UserContract;
+use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Users\CreateRequest;
 use GetCandy\Api\Http\Requests\Users\UpdateRequest;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use GetCandy\Api\Http\Resources\Users\UserResource;
 use GetCandy\Api\Http\Transformers\Fractal\Users\UserTransformer;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
 
 class UserController extends BaseController
 {
@@ -69,6 +70,11 @@ class UserController extends BaseController
             $request->user()->encodedId()
         );
 
+        return new UserResource(
+            $request->user()->load([
+                'addresses', 'roles.permissions', 'details'
+            ])
+        );
         return $this->respondWithItem($user, new UserTransformer);
     }
 
@@ -96,7 +102,7 @@ class UserController extends BaseController
     }
 
     /**
-     * Get the configured fields for a user
+     * Get the configured fields for a user.
      *
      * @param Request $request
      * @return json

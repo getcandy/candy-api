@@ -3,11 +3,11 @@
 namespace GetCandy\Api\Core\Shipping\Models;
 
 use GetCandy\Api\Core\Auth\Models\User;
+use GetCandy\Api\Core\Channels\Models\Channel;
 use GetCandy\Api\Core\Scaffold\BaseModel;
-use GetCandy\Api\Core\Traits\HasChannels;
 use GetCandy\Api\Core\Scopes\ChannelScope;
 use GetCandy\Api\Core\Traits\HasAttributes;
-use GetCandy\Api\Core\Channels\Models\Channel;
+use GetCandy\Api\Core\Traits\HasChannels;
 
 class ShippingMethod extends BaseModel
 {

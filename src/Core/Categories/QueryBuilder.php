@@ -27,11 +27,12 @@ class QueryBuilder extends KalnoyQueryBuilder
         $wrappedAlias = $this->query->getGrammar()->wrapTable($alias);
 
         $query = $this->model
-            ->newUnscopedQuery($alias)
-            ->toBase()
             ->selectRaw('count(1) - 1')
             ->from($this->model->getTable().' as '.$alias)
-            ->whereRaw("{$table}.{$lft} between {$wrappedAlias}.{$lft} and {$wrappedAlias}.{$rgt}");
+            ->where(function ($query) use ($table, $lft, $rgt, $wrappedAlias) {
+                $query->whereNull('drafted_at')
+                    ->whereRaw("{$table}.{$lft} between {$wrappedAlias}.{$lft} and {$wrappedAlias}.{$rgt}");
+            });
 
         $this->query->selectSub($query, $as);
 

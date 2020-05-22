@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Discounts\Models;
 
-use GetCandy\Api\Core\Scaffold\BaseModel;
 use GetCandy\Api\Core\Products\Models\Product;
+use GetCandy\Api\Core\Scaffold\BaseModel;
 
 class DiscountRewardProduct extends BaseModel
 {

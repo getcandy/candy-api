@@ -2,23 +2,21 @@
 
 namespace GetCandy\Api\Http\Requests\Attributes;
 
-use GetCandy\Http\Requests\FormRequest;
-use GetCandy\Api\Attributes\AttributeManager;
 use GetCandy\Api\Attributes\Models\AttributeGroup;
+use GetCandy\Api\Http\Requests\FormRequest;
 
 class ReorderRequest extends FormRequest
 {
     public function authorize()
     {
-        return $this->user()->can('create', AttributeGroup::class);
+        // return $this->user()->can('create', AttributeGroup::class);
+        return $this->user()->hasRole('admin');
     }
 
-    public function rules(AttributeManager $manager)
+    public function rules()
     {
-        $count = $repo->count();
-
         return [
-            'groups' => 'required|size:'.$count,
+            'attributes' => 'required|array',
         ];
     }
 

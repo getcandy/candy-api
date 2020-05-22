@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Discounts\UpdateRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use GetCandy\Api\Http\Resources\Discounts\DiscountResource;
+use GetCandy\Api\Http\Resources\Discounts\DiscountCollection;
 use GetCandy\Api\Http\Transformers\Fractal\Discounts\DiscountTransformer;
 
 class DiscountController extends BaseController
@@ -14,15 +16,17 @@ class DiscountController extends BaseController
     {
         $paginator = app('api')->discounts()->getPaginatedData(
             $request->per_page,
-            $request->current_page
+            $request->current_page,
+            $request->includes ? explode(',', $request->includes) : null
         );
-
-        return $this->respondWithCollection($paginator, new DiscountTransformer);
+        return new DiscountCollection($paginator);
     }
 
     public function store(Request $request)
     {
-        app('api')->discounts()->create($request->all());
+        // TODO: Add validation
+        $discount = app('api')->discounts()->create($request->all());
+        return new DiscountResource($discount);
     }
 
     public function update($id, UpdateRequest $request)
@@ -39,13 +43,17 @@ class DiscountController extends BaseController
      *
      * @return void
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
         try {
-            $discount = app('api')->discounts()->getByHashedId($id);
+            $discount = app('api')->discounts()->getByHashedId(
+                $id,
+                $request->includes ? explode(',', $request->includes) : null
+            );
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
+        return new DiscountResource($discount);
 
         return $this->respondWithItem($discount, new DiscountTransformer);
     }

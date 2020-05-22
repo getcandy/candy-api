@@ -4,15 +4,24 @@ namespace GetCandy\Api\Core\Traits;
 
 use Auth;
 use Carbon\Carbon;
-use GetCandy\Api\Core\CandyApi;
 use GetCandy\Api\Core\Channels\Models\Channel;
+use GetCandy\Api\Core\GetCandy;
+use GetCandy\Api\Core\Scopes\ChannelScope;
 
 trait HasChannels
 {
+    /**
+     * Boot up the trait
+     */
+    public static function bootHasChannels()
+    {
+        static::addGlobalScope(new ChannelScope);
+    }
+
     public function scopeChannel($query, $channel = null)
     {
         $roles = app('api')->roles()->getHubAccessRoles();
-        $api = app()->getInstance()->make(CandyApi::class);
+        $api = app()->getInstance()->make(GetCandy::class);
         $user = Auth::user();
         $channels = app('api')->channels();
 

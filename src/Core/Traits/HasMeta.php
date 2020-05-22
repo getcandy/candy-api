@@ -23,6 +23,6 @@ trait HasMeta
      */
     public function getMetaAttribute($val)
     {
-        return json_decode($val, true);
+        return json_decode($val ?? '[]', true);
     }
 }

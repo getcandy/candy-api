@@ -3,10 +3,10 @@
 namespace GetCandy\Api\Core\Search\Providers\Elastic\Types;
 
 use Carbon\Carbon;
-use GetCandy\Api\Core\Search\Indexable;
-use Illuminate\Database\Eloquent\Model;
 use GetCandy\Api\Core\Scopes\ChannelScope;
 use GetCandy\Api\Core\Scopes\CustomerGroupScope;
+use GetCandy\Api\Core\Search\Indexable;
+use Illuminate\Database\Eloquent\Model;
 
 abstract class BaseType
 {

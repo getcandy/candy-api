@@ -10,6 +10,7 @@ use GetCandy\Api\Http\Requests\Payments\RefundRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use GetCandy\Api\Http\Requests\Payments\ValidateThreeDRequest;
 use GetCandy\Api\Payments\Exceptions\AlreadyRefundedException;
+use GetCandy\Api\Http\Resources\Transactions\TransactionResource;
 use GetCandy\Api\Core\Payments\Exceptions\TransactionAmountException;
 use GetCandy\Api\Http\Transformers\Fractal\Payments\ProviderTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Payments\TransactionTransformer;
@@ -56,7 +57,7 @@ class PaymentController extends BaseController
             return $this->errorWrongArgs($transaction->status);
         }
 
-        return $this->respondWithItem($transaction, new TransactionTransformer);
+        return new TransactionResource($transaction);
     }
 
     /**
@@ -78,7 +79,7 @@ class PaymentController extends BaseController
             return $this->errorWrongArgs($transaction->notes);
         }
 
-        return $this->respondWithItem($transaction, new TransactionTransformer);
+        return new TransactionResource($transaction);
     }
 
     /**

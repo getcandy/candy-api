@@ -10,6 +10,8 @@ class DiscountSetResource extends AbstractResource
     {
         return [
             'id' => $this->encoded_id,
+            'scope' => $this->scope,
+            'outcome' => $this->outcome,
         ];
     }
 
@@ -17,6 +19,7 @@ class DiscountSetResource extends AbstractResource
     {
         return [
             'discount' => ['data' => new DiscountResource($this->whenLoaded('discount'))],
+            'items' => new DiscountItemCollection($this->whenLoaded('items')),
         ];
     }
 }

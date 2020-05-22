@@ -4,13 +4,13 @@ namespace GetCandy\Api\Core\Search\Providers\Elastic;
 
 use Carbon\Carbon;
 use Elastica\Client;
-use Elastica\Reindex;
 use Elastica\Document;
+use Elastica\Reindex;
 use Elastica\Type\Mapping;
-use Illuminate\Database\Eloquent\Model;
+use GetCandy\Api\Core\Languages\Services\LanguageService;
 use GetCandy\Api\Core\Scopes\ChannelScope;
 use GetCandy\Api\Core\Scopes\CustomerGroupScope;
-use GetCandy\Api\Core\Languages\Services\LanguageService;
+use Illuminate\Database\Eloquent\Model;
 
 class Indexer
 {
@@ -93,7 +93,6 @@ class Indexer
                     );
                     $indexes[$indexable->getIndex()][] = $document;
                 }
-
             }
 
             foreach ($indexes as $key => $documents) {
@@ -386,28 +385,30 @@ class Indexer
     {
         $index = $this->client->getIndex($name);
         $index->create([
-            'analysis' => [
-                'analyzer' => [
-                    'trigram' => [
-                        'type' => 'custom',
-                        'tokenizer' => 'standard',
-                        'filter' => ['standard', 'shingle'],
+            'settings' => [
+                'analysis' => [
+                    'analyzer' => [
+                        'trigram' => [
+                            'type' => 'custom',
+                            'tokenizer' => 'standard',
+                            'filter' => ['shingle'],
+                        ],
+                        'standard_lowercase' => [
+                            'type' => 'custom',
+                            'tokenizer' => 'standard',
+                            'filter' => ['lowercase'],
+                        ],
+                        'candy' => [
+                            'tokenizer' => 'standard',
+                            'filter' => ['lowercase', 'stop', 'porter_stem'],
+                        ],
                     ],
-                    'standard_lowercase' => [
-                        'type' => 'custom',
-                        'tokenizer' => 'standard',
-                        'filter' => ['lowercase'],
-                    ],
-                    'candy' => [
-                        'tokenizer' => 'standard',
-                        'filter' => ['standard', 'lowercase', 'stop', 'porter_stem'],
-                    ],
-                ],
-                'filter' => [
-                    'shingle' => [
-                        'type' => 'shingle',
-                        'min_shingle_size' => 2,
-                        'max_shingle_size' => 3,
+                    'filter' => [
+                        'shingle' => [
+                            'type' => 'shingle',
+                            'min_shingle_size' => 2,
+                            'max_shingle_size' => 3,
+                        ],
                     ],
                 ],
             ],

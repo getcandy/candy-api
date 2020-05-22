@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Customers\Services;
 
-use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
+use GetCandy\Api\Core\Scaffold\BaseService;
 
 class CustomerGroupService extends BaseService
 {

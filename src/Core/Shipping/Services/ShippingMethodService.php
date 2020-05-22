@@ -2,18 +2,15 @@
 
 namespace GetCandy\Api\Core\Shipping\Services;
 
-use Illuminate\Pipeline\Pipeline;
-use GetCandy\Api\Core\Shipping\Events;
-use GetCandy\Api\Core\Scaffold\BaseService;
-use GetCandy\Api\Core\Shipping\ShippingCalculator;
-use GetCandy\Api\Core\Baskets\Services\BasketService;
-use GetCandy\Api\Core\Shipping\Models\ShippingMethod;
 use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
-use GetCandy\Api\Core\Shipping\Events\ShippingMethodsFetchedEvent;
+use GetCandy\Api\Core\Baskets\Services\BasketService;
+use GetCandy\Api\Core\Scaffold\BaseService;
+use GetCandy\Api\Core\Shipping\Models\ShippingMethod;
+use GetCandy\Api\Core\Shipping\ShippingCalculator;
+use Illuminate\Pipeline\Pipeline;
 
 class ShippingMethodService extends BaseService
 {
-
     protected $pipes = [];
 
     /**
@@ -92,6 +89,35 @@ class ShippingMethodService extends BaseService
     }
 
     /**
+     * Gets paginated data for the record.
+     * @param  int $length How many results per page
+     * @param  int  $page   The page to start
+     * @return Illuminate\Pagination\LengthAwarePaginator
+     */
+    public function getPaginatedData($length = 50, $page = null, $relations = null)
+    {
+        $query = $this->model->orderBy('created_at', 'desc');
+
+        if ($relations) {
+            $query->with(['zones']);
+        }
+        return $query->paginate($length, ['*'], 'page', $page);
+    }
+
+    /**
+     * Returns model by a given hashed id.
+     * @param  string $id
+     * @throws  Illuminate\Database\Eloquent\ModelNotFoundException
+     * @return Illuminate\Database\Eloquent\Model
+     */
+    public function getByHashedId($id, $includes = [])
+    {
+        $id = $this->model->decodeId($id);
+
+        return $this->model->with($includes)->findOrFail($id);
+    }
+
+    /**
      * Gets shipping methods for an order.
      *
      * @param string $orderId
@@ -102,10 +128,7 @@ class ShippingMethodService extends BaseService
     {
         // Get the zones for this order...
         $order = app('api')->orders()->getByHashedId($orderId);
-        $basket = $this->baskets->getForOrder($order);
-
         $zones = app('api')->shippingZones()->getByCountryName($order->shipping_details['country']);
-
         $basket = $order->basket;
         $calculator = new ShippingCalculator(app());
 
@@ -129,8 +152,27 @@ class ShippingMethodService extends BaseService
             }
         }
 
+        $options = collect($options);
+
+        if ($basket && $basket->hasExclusions) {
+            $exclusions = collect();
+            $basket->lines->each(function ($l) use ($exclusions) {
+                if (! $l->variant) {
+                    return;
+                }
+                $exclusions->push(
+                    $l->variant->product->exclusions
+                );
+            });
+
+            $options = $options->reject(function ($option) use ($exclusions) {
+                return $exclusions->flatten()->contains('shipping_zone_id', $option->shipping_zone_id);
+            });
+        }
+        // dd($options);
+
         return app(Pipeline::class)->send([collect($options), $order])->through($this->pipes)->then(function ($options) {
-            return collect($options[0] ?? [])->unique('shipping_method_id');
+            return collect($options[0])->unique('shipping_method_id');
         });
     }
 

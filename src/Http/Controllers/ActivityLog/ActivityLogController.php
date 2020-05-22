@@ -2,17 +2,19 @@
 
 namespace GetCandy\Api\Http\Controllers\ActivityLog;
 
-use Illuminate\Http\Request;
-use GetCandy\Api\Http\Controllers\BaseController;
-use GetCandy\Api\Core\Orders\Services\OrderService;
-use GetCandy\Api\Http\Resources\ActivityLog\ActivityCollection;
-use GetCandy\Api\Core\ActivityLog\Interfaces\ActivityLogFactoryInterface;
 use GetCandy\Api\Core\ActivityLog\Interfaces\ActivityLogCriteriaInterface;
+use GetCandy\Api\Core\ActivityLog\Interfaces\ActivityLogFactoryInterface;
+use GetCandy\Api\Core\Orders\Services\OrderService;
+use GetCandy\Api\Core\Products\Services\ProductService;
+use GetCandy\Api\Http\Controllers\BaseController;
+use GetCandy\Api\Http\Resources\ActivityLog\ActivityCollection;
+use Illuminate\Http\Request;
 
 class ActivityLogController extends BaseController
 {
     protected $types = [
         'order' => OrderService::class,
+        'product' => ProductService::class,
     ];
 
     /**
@@ -23,8 +25,11 @@ class ActivityLogController extends BaseController
      */
     public function index(Request $request, ActivityLogCriteriaInterface $criteria)
     {
+        if (empty($this->types[$request->type])) {
+            return $this->errorWrongArgs();
+        }
         $service = app()->getInstance()->make($this->types[$request->type]);
-        $model = $service->getByHashedId($request->id);
+        $model = $service->getByHashedId($request->id, true);
 
         $logs = $criteria->include(['user.details'])->model($model)->get();
 

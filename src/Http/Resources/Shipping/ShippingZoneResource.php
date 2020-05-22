@@ -10,11 +10,14 @@ class ShippingZoneResource extends AbstractResource
     {
         return [
             'id' => $this->encoded_id,
+            'name' => $this->name,
         ];
     }
 
     public function includes()
     {
-        return [];
+        return [
+            'regions' => new ShippingRegionCollection($this->whenLoaded('regions')),
+        ];
     }
 }

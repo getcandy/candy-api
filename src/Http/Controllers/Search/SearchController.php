@@ -4,6 +4,7 @@ namespace GetCandy\Api\Http\Controllers\Search;
 
 use Illuminate\Http\Request;
 use GetCandy\Api\Core\Search\SearchContract;
+use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Search\SearchRequest;
 use GetCandy\Api\Core\Channels\Services\ChannelService;
@@ -48,6 +49,7 @@ class SearchController extends BaseController
             $categories = null;
         }
 
+        // TODO: Deprecate current page
         if ($request->current_page) {
             $page = $request->current_page;
         } else {
@@ -63,15 +65,13 @@ class SearchController extends BaseController
                 ->client()
                 ->language(app()->getLocale())
                 ->on($channel)
-                ->against($request->type)
+                ->against($request->get('search_type', 'product'))
                 ->user($request->user())
                 ->categories($categories)
                 ->filters($request->only($filterable))
                 ->sorting($request->sort)
-                ->pagination(
-                    is_numeric($page) ? $page : 1,
-                    is_numeric($request->per_page) ? $request->per_page : 30
-                )->keywords($request->keywords)
+                ->pagination($page ?: 1, $request->per_page ?: 30)
+                ->keywords($request->keywords)
                 ->search((bool) $request->get('rank', true));
         } catch (\Elastica\Exception\Connection\HttpException $e) {
             return $this->errorInternalError($e->getMessage());
@@ -79,11 +79,10 @@ class SearchController extends BaseController
             return $this->errorInternalError($e->getMessage());
         }
 
-
         $results = app('api')->search()->getResults(
             $results,
-            $request->type,
-            $request->includes,
+            $request->get('search_type', 'product'),
+            $request->include,
             $page ?: 1,
             $request->category,
             $request->user(),
@@ -106,8 +105,8 @@ class SearchController extends BaseController
             $results = $client
                 ->client()
                 ->language(app()->getLocale())
-                ->on($request->channel)
-                ->against($this->types[$request->type])
+                ->on('webstore')
+                ->against(Product::class)
                 ->user($request->user())
                 ->suggest($request->keywords);
         } catch (\Elastica\Exception\Connection\HttpException $e) {

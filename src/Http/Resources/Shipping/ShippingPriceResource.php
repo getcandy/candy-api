@@ -4,6 +4,8 @@ namespace GetCandy\Api\Http\Resources\Shipping;
 
 use GetCandy\Api\Core\Pricing\PriceCalculator;
 use GetCandy\Api\Http\Resources\AbstractResource;
+use GetCandy\Api\Http\Resources\Currencies\CurrencyResource;
+use GetCandy\Api\Http\Resources\Customers\CustomerGroupCollection;
 
 class ShippingPriceResource extends AbstractResource
 {
@@ -37,6 +39,9 @@ class ShippingPriceResource extends AbstractResource
     {
         return [
             'method' => $this->include('method', ShippingMethodResource::class),
+            'zone' => $this->include('zone', ShippingZoneResource::class),
+            'currency' => $this->include('currency', CurrencyResource::class),
+            'customer_groups' => new CustomerGroupCollection($this->whenLoaded('customerGroups')),
         ];
     }
 }

@@ -2,15 +2,15 @@
 
 namespace GetCandy\Api\Core\Categories\Services;
 
-use GetCandy\Api\Core\Routes\Models\Route;
-use GetCandy\Api\Core\Scaffold\BaseService;
-use GetCandy\Api\Core\Search\SearchContract;
-use GetCandy\Api\Core\Channels\Models\Channel;
-use GetCandy\Api\Core\Categories\Models\Category;
-use GetCandy\Api\Core\Customers\Models\CustomerGroup;
-use GetCandy\Api\Core\Search\Events\IndexableSavedEvent;
 use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
 use GetCandy\Api\Core\Categories\Events\CategoryStoredEvent;
+use GetCandy\Api\Core\Categories\Models\Category;
+use GetCandy\Api\Core\Channels\Models\Channel;
+use GetCandy\Api\Core\Customers\Models\CustomerGroup;
+use GetCandy\Api\Core\Routes\Models\Route;
+use GetCandy\Api\Core\Scaffold\BaseService;
+use GetCandy\Api\Core\Search\Events\IndexableSavedEvent;
+use GetCandy\Api\Core\Search\SearchContract;
 
 class CategoryService extends BaseService
 {
@@ -39,6 +39,17 @@ class CategoryService extends BaseService
         return $this->model->with($this->with)->withDepth()->withoutGlobalScopes()->findOrFail($id);
     }
 
+    public function findById($id, array $includes = [], $draft = false)
+    {
+        $query = Category::with(array_merge($includes, ['draft']));
+
+        if ($draft) {
+            $query->withDrafted()->withoutGlobalScopes();
+        }
+
+        return $query->find($id);
+    }
+
     public function getNestedList()
     {
         $categories = $this->model->withDepth()->defaultOrder()->get()->toTree();
@@ -46,13 +57,17 @@ class CategoryService extends BaseService
         return $categories;
     }
 
-    public function getByParentID($encodedParentID)
+    public function getByParentID($encodedParentID, $includes = null)
     {
         $parentID = $this->model->decodeId($encodedParentID);
 
-        $categories = $this->model->where('parent_id', $parentID)->defaultOrder()->get();
+        $query = $this->model->where('parent_id', $parentID)->defaultOrder();
 
-        return $categories;
+        if ($includes) {
+            $query->with($includes);
+        }
+
+        return $query->get();
     }
 
     public function create(array $data)
@@ -103,12 +118,17 @@ class CategoryService extends BaseService
 
     public function update($hashedId, array $data)
     {
-        $model = $this->getByHashedId($hashedId);
-        $model->attribute_data = $data['attributes'];
+        $model = $this->getByHashedId($hashedId, true);
+        $model->attribute_data = $data['attribute_data'];
 
         if (! empty($data['customer_groups'])) {
             $groupData = $this->mapCustomerGroupData($data['customer_groups']['data']);
             $model->customerGroups()->sync($groupData);
+        }
+
+        if (!empty($data['layout_id'])) {
+            $realLayoutId = app('api')->layouts()->getDecodedId($data['layout_id']);
+            $model->layout_id = $realLayoutId;
         }
 
         if (! empty($data['channels']['data'])) {
@@ -124,6 +144,32 @@ class CategoryService extends BaseService
         event(new CategoryStoredEvent($model));
 
         return $model;
+    }
+
+    public function updateChannels($id, array $data)
+    {
+        $category = $this->getByHashedId($id, true);
+        $category->channels()->sync(
+            $this->getChannelMapping($data['channels'])
+        );
+        return $category;
+    }
+
+    public function updateCustomerGroups($id, array $groups)
+    {
+        $category = $this->getByHashedId($id, true);
+        $groupData = [];
+        foreach ($groups as $group) {
+            $groupModel = app('api')->customerGroups->getByHashedId($group['id']);
+            $groupData[$groupModel->id] = [
+                'visible' => $group['visible'],
+                'purchasable' => $group['purchasable'],
+            ];
+        }
+        $category->customerGroups()->sync($groupData);
+        $category->load('customerGroups');
+
+        return $category;
     }
 
     public function updateProducts($id, array $data)
@@ -182,8 +228,8 @@ class CategoryService extends BaseService
     {
         $response = false;
 
-        $node = $this->getByHashedId($data['node']);
-        $movedNode = $this->getByHashedId($data['moved-node']);
+        $node = $this->getByHashedId($data['node'], true);
+        $movedNode = $this->getByHashedId($data['moved-node'], true);
         $action = $data['action'];
 
         switch ($action) {
@@ -276,7 +322,6 @@ class CategoryService extends BaseService
         $query = $this->model->with([
             'routes',
             'products',
-            'assets',
             'assets',
             'primaryAsset.transforms',
             'primaryAsset.source',

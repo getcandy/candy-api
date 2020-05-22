@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Categories;
 
-use League\Fractal\Resource\Item;
-use Illuminate\Support\Collection;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
+use Illuminate\Support\Collection;
 use League\Fractal\Resource\Collection as FractalCollection;
+use League\Fractal\Resource\Item;
 
 class CategoryTreeTransformer extends BaseTransformer
 {

@@ -8,13 +8,16 @@ use GetCandy\Api\Http\Requests\Baskets\SaveRequest;
 use GetCandy\Api\Http\Requests\Baskets\CreateRequest;
 use GetCandy\Api\Http\Requests\Baskets\DeleteRequest;
 use GetCandy\Api\Core\Baskets\Factories\BasketFactory;
+use GetCandy\Api\Http\Requests\Baskets\AddMetaRequest;
 use GetCandy\Api\Http\Requests\Baskets\PutUserRequest;
 use GetCandy\Api\Http\Resources\Baskets\BasketResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use GetCandy\Api\Core\Discounts\Services\DiscountService;
+use GetCandy\Api\Http\Resources\Baskets\BasketCollection;
 use GetCandy\Api\Http\Requests\Baskets\AddDiscountRequest;
 use GetCandy\Api\Http\Requests\Baskets\ClaimBasketRequest;
 use GetCandy\Api\Http\Requests\Baskets\DeleteDiscountRequest;
+use GetCandy\Api\Http\Resources\Baskets\SavedBasketCollection;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketCriteriaInterface;
 use GetCandy\Api\Http\Transformers\Fractal\Baskets\BasketTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Baskets\SavedBasketTransformer;
@@ -43,9 +46,9 @@ class BasketController extends BaseController
      */
     public function index(Request $request)
     {
-        $attributes = app('api')->baskets()->getPaginatedData($request->per_page);
+        $paginator = app('api')->baskets()->getPaginatedData($request->per_page);
 
-        return $this->respondWithCollection($attributes, new BasketTransformer);
+        return new BasketCollection($paginator);
     }
 
     /**
@@ -57,6 +60,25 @@ class BasketController extends BaseController
     {
         try {
             $basket = app('api')->baskets()->getByHashedId($id);
+        } catch (ModelNotFoundException $e) {
+            return $this->errorNotFound();
+        }
+
+        return new BasketResource($basket);
+    }
+
+    /**
+     * Handles the request to add meta data to a basket.
+     * @param  string $id
+     * @param  AddMetaRequest $request
+     * @return Json
+     */
+    public function addMeta($id, AddMetaRequest $request)
+    {
+        try {
+            $basket = app('api')->baskets()->getByHashedId($id);
+            $basket->meta = array_merge($basket->meta, [$request->key => $request->value]);
+            $basket->save();
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
@@ -108,11 +130,11 @@ class BasketController extends BaseController
      */
     public function store(CreateRequest $request)
     {
-        try {
-            $basket = app('api')->baskets()->store($request->all(), $request->user());
-        } catch (\Illuminate\Database\QueryException $e) {
-            return $this->errorUnprocessable(trans('getcandy::validation.max_qty'));
-        }
+        // try {
+        $basket = app('api')->baskets()->store($request->all(), $request->user());
+        // } catch (\Illuminate\Database\QueryException $e) {
+        //     return $this->errorUnprocessable(trans('getcandy::validation.max_qty'));
+        // }
 
         return new BasketResource($basket);
     }
@@ -139,8 +161,7 @@ class BasketController extends BaseController
     public function saved(Request $request)
     {
         $baskets = app('api')->baskets()->getSaved($request->user());
-
-        return $this->respondWithCollection($baskets, new SavedBasketTransformer);
+        return new SavedBasketCollection($baskets);
     }
 
     /**

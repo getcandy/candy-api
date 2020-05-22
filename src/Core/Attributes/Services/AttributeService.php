@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Core\Attributes\Services;
 
+use GetCandy\Api\Core\Attributes\Events\AttributeSavedEvent;
+use GetCandy\Api\Core\Attributes\Models\Attribute;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Exceptions\DuplicateValueException;
-use GetCandy\Api\Core\Attributes\Models\Attribute;
-use GetCandy\Api\Core\Attributes\Events\AttributeSavedEvent;
 
 class AttributeService extends BaseService
 {
@@ -44,7 +44,7 @@ class AttributeService extends BaseService
             'filterable' => ! empty($data['filterable']) ? $data['filterable'] : false,
         ]);
 
-        event(new AttributeSavedEvent);
+        // event(new AttributeSavedEvent);
 
         return $result;
     }
@@ -133,9 +133,14 @@ class AttributeService extends BaseService
         }
 
         $attribute->fill($data);
+
+        if (!empty($data['group_id'])) {
+            $attribute->group_id = app('api')->attributeGroups()->getDecodedId($data['group_id']);
+        }
+
         $attribute->save();
 
-        event(new AttributeSavedEvent);
+        // event(new AttributeSavedEvent);
 
         return $attribute;
     }
@@ -160,6 +165,18 @@ class AttributeService extends BaseService
         return $attribute->delete();
     }
 
+    public function getByHashedId($id, $includes = null)
+    {
+        $id = $this->model->decodeId($id);
+
+        $query = $this->model;
+
+        if ($includes) {
+            $query = $query->with($includes);
+        }
+        return $query->findOrFail($id);
+    }
+
     /**
      * Returns attributes for a group.
      * @param  string $groupId
@@ -168,6 +185,25 @@ class AttributeService extends BaseService
     public function getAttributesForGroup($groupId)
     {
         return $this->model->where('group_id', '=', $groupId)->get();
+    }
+
+    public function reorder(array $data)
+    {
+        $parsed = [];
+
+        foreach ($data['attributes'] as $attributeId => $position) {
+            $decodedId = $this->getDecodedId($attributeId);
+            $parsed[$decodedId] = $position;
+        }
+
+        $attributes = $this->getByHashedIds(array_keys($data['attributes']));
+
+        foreach ($attributes as $attribute) {
+            $attribute->position = $parsed[$attribute->id];
+            $attribute->save();
+        }
+
+        return true;
     }
 
     /**

@@ -4,6 +4,7 @@ namespace GetCandy\Api\Http\Controllers\Orders;
 
 use Illuminate\Http\Request;
 use GetCandy\Api\Core\Orders\OrderExport;
+use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Resources\Files\PdfResource;
 use GetCandy\Api\Http\Requests\Orders\CreateRequest;
@@ -71,18 +72,10 @@ class OrderController extends BaseController
                 'not_expired',
             ]);
 
-        if (!$request->status) {
+        if (! $request->status) {
             $criteria->set('scopes', [
                 'placed',
             ]);
-        }
-
-        if ($request->sortBy) {
-            $criteria->set('sortBy', $request->sortBy);
-        }
-
-        if ($request->sortDir) {
-            $criteria->set('sortDir', $request->sortDir);
         }
 
         if ($request->user()->hasRole('admin') && ! $request->only_own) {
@@ -135,7 +128,6 @@ class OrderController extends BaseController
     {
         try {
             $order = $this->orders
-                ->set('without_scopes', ['open'])
                 ->include($request->includes)
                 ->id($id)
                 ->firstOrFail();
@@ -210,6 +202,7 @@ class OrderController extends BaseController
                 ->customerReference($request->customer_reference)
                 ->meta($request->meta ?? [])
                 ->notes($request->notes)
+                ->companyName($request->company_name)
                 ->payload($request->data ?: [])
                 ->resolve();
 
@@ -402,7 +395,13 @@ class OrderController extends BaseController
      */
     public function invoice($id, Request $request)
     {
-        $order = app('api')->orders()->getByHashedId($id);
+        $realId = (new Order)->decodeId($id);
+
+        $order = Order::withoutGlobalScope('open')->find($realId);
+
+        if (!$order) {
+            return $this->errorUnauthorized();
+        }
         $pdf = app('api')->orders()->getPdf($order);
 
         return new PdfResource($pdf);

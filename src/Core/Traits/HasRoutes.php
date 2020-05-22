@@ -8,11 +8,11 @@ trait HasRoutes
 {
     public function route()
     {
-        return $this->morphOne(Route::class, 'element');
+        return $this->morphOne(Route::class, 'element')->withDrafted();
     }
 
     public function routes()
     {
-        return $this->morphMany(Route::class, 'element');
+        return $this->morphMany(Route::class, 'element')->withDrafted();
     }
 }

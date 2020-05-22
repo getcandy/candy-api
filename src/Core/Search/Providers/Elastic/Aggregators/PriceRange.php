@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Search\Providers\Elastic\Aggregators;
 
-use Elastica\Search;
 use Elastica\Aggregation\Range;
+use Elastica\Search;
 
 class PriceRange extends AbstractAggregator
 {

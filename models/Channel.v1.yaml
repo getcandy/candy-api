@@ -1,0 +1,37 @@
+title: Channel
+type: object
+x-tags:
+  - channel
+properties:
+  id:
+    type: string
+    example: y3g6v91o
+  name:
+    type: string
+    example: Webstore
+  handle:
+    type: string
+    example: webstore
+  url:
+    type: string
+    format: uri
+    example: "https:\\/\\/storefront.test"
+  default:
+    type: boolean
+    default: false
+    example: 'true'
+x-examples:
+  webstore:
+    id: y3g6v91o
+    name: Webstore
+    handle: webstore
+    url: 'https://storefront.test'
+    default: true
+description: |-
+  ## Available includes
+
+  - products
+  - categories
+  - collections
+  - discounts
+  - shippingMethods

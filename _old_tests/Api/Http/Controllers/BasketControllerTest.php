@@ -2,7 +2,7 @@
 
 namespace Tests;
 
-use GetCandy\Api\Channels\Models\Channel;
+use  GetCandy\Api\Core\Channels\Models\Channel;
 use GetCandy\Api\Products\Models\ProductVariant;
 
 /**

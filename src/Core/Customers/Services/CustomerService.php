@@ -27,6 +27,19 @@ class CustomerService extends BaseService
         return $user;
     }
 
+    /**
+     * Returns model by a given hashed id.
+     * @param  string $id
+     * @throws  Illuminate\Database\Eloquent\ModelNotFoundException
+     * @return Illuminate\Database\Eloquent\Model
+     */
+    public function getByHashedId($id, $includes = [])
+    {
+        $id = $this->model->decodeId($id);
+
+        return $this->model->with($includes)->findOrFail($id);
+    }
+
     public function update($hashedId, array $data)
     {
         $user = app('api')->users()->getByHashedId($id);
@@ -39,7 +52,7 @@ class CustomerService extends BaseService
         dd($user);
     }
 
-    public function getPaginatedData($length = 50, $page = null, $keywords = null)
+    public function getPaginatedData($length = 50, $page = null, $keywords = null, $includes = [])
     {
         $query = $this->model;
 
@@ -60,6 +73,6 @@ class CustomerService extends BaseService
                 })->orWhere('email', 'LIKE', '%'.$keywords.'%');
         }
 
-        return $query->paginate($length, ['*'], 'page', $page);
+        return $query->with($includes)->paginate($length, ['*'], 'page', $page);
     }
 }

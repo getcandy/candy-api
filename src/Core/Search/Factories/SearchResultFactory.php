@@ -3,16 +3,16 @@
 namespace GetCandy\Api\Core\Search\Factories;
 
 use CurrencyConverter;
-use Elastica\ResultSet;
-use League\Fractal\Manager;
-use Illuminate\Database\Eloquent\Model;
-use League\Fractal\Resource\Collection;
 use Elastica\Exception\InvalidException;
+use Elastica\ResultSet;
 use GetCandy\Api\Core\Categories\Models\Category;
-use GetCandy\Api\Core\Search\Interfaces\SearchResultInterface;
 use GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface;
-use GetCandy\Api\Http\Transformers\Fractal\Products\ProductTransformer;
+use GetCandy\Api\Core\Search\Interfaces\SearchResultInterface;
 use GetCandy\Api\Http\Transformers\Fractal\Categories\CategoryTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\Products\ProductTransformer;
+use Illuminate\Database\Eloquent\Model;
+use League\Fractal\Manager;
+use League\Fractal\Resource\Collection;
 
 class SearchResultFactory implements SearchResultInterface
 {
@@ -249,7 +249,6 @@ class SearchResultFactory implements SearchResultInterface
         $resource->setMeta(
             $this->getMeta()
         );
-
         return $this->fractal->createData($resource)->toArray();
     }
 
@@ -281,10 +280,18 @@ class SearchResultFactory implements SearchResultInterface
     protected function getPagination()
     {
         $query = $this->results->getQuery();
-        $totalPages = ceil($this->results->getTotalHits() / $query->getParam('size'));
+        $data = $this->results->getResponse()->getData();
+
+        if (isset($data['hits']['total']['value'])) {
+            $hits = (int) $data['hits']['total']['value'] ?? 0;
+        } else {
+            $hits = (int) $data['hits']['total'] ?? 0;
+        }
+
+        $totalPages = ceil($hits / $query->getParam('size'));
 
         $pagination = [
-            'total' => $this->results->getTotalHits(),
+            'total' => $hits,
             'count' => $this->results->count(),
             'per_page' => (int) $query->getParam('size'),
             'current_page' => (int) $this->page,

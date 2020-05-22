@@ -3,8 +3,8 @@
 namespace GetCandy\Api\Core\Scaffold;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
+use Illuminate\Database\Eloquent\Model;
 
 abstract class BaseService
 {
@@ -128,9 +128,14 @@ abstract class BaseService
      * @param  int  $page   The page to start
      * @return Illuminate\Pagination\LengthAwarePaginator
      */
-    public function getPaginatedData($length = 50, $page = null)
+    public function getPaginatedData($length = 50, $page = null, $relations = null)
     {
-        return $this->model->orderBy('created_at', 'desc')->paginate($length, ['*'], 'page', $page);
+        $query = $this->model->orderBy('created_at', 'desc');
+
+        if ($relations) {
+            $query->with($relations);
+        }
+        return $query->paginate($length, ['*'], 'page', $page);
     }
 
     /**
@@ -373,8 +378,8 @@ abstract class BaseService
      */
     public function update($hashedId, array $data)
     {
-        $model = $this->getByHashedId($hashedId);
-        $model->attribute_data = $data['attributes'];
+        $model = $this->getByHashedId($hashedId, true);
+        $model->attribute_data = $data['attribute_data'];
 
         if (! empty($data['customer_groups'])) {
             $groupData = $this->mapCustomerGroupData($data['customer_groups']['data']);
@@ -402,7 +407,7 @@ abstract class BaseService
      */
     public function createUrl($hashedId, array $data)
     {
-        $model = $this->getByHashedId($hashedId);
+        $model = $this->getByHashedId($hashedId, true);
 
         try {
             $existing = app('api')->routes()->getBySlug($data['slug']);
@@ -411,7 +416,7 @@ abstract class BaseService
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
         }
 
-        $model->routes()->create([
+        $route = $model->routes()->create([
             'locale' => $data['locale'],
             'slug' => $data['slug'],
             'description' => ! empty($data['description']) ? $data['description'] : null,
@@ -419,7 +424,7 @@ abstract class BaseService
             'default' => false,
         ]);
 
-        return $model;
+        return $route;
     }
 
     /**

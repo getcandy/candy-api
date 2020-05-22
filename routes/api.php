@@ -1,25 +1,5 @@
 <?php
 
-
-// Route::middleware()
-//     ->namespace('')
-//     ->prefix($apiPrefix)
-//     ->group(__DIR__ . '../../routes/api.php');
-
-Route::group([
-    'middleware' => [
-        'auth:api',
-        'api.currency',
-        'api.customer_groups',
-        'api.locale',
-        'api.tax',
-        'api.channels',
-        'api.detect_hub',
-    ],
-    'prefix' => 'api/'.config('app.api_version', 'v1'),
-    'namespace' => 'GetCandy\Api\Http\Controllers',
-], function ($router) {
-
     /*
     * Imports
     */
@@ -52,8 +32,9 @@ Route::group([
 
     $router->put('assets', 'Assets\AssetController@updateAll');
     $router->post('assets/simple', 'Assets\AssetController@storeSimple');
+    $router->post('assets/{assetId}/detach/{ownerId}', 'Assets\AssetController@detach');
     $router->resource('assets', 'Assets\AssetController', [
-        'except' => ['edit', 'create'],
+        'except' => ['index', 'edit', 'create', 'show'],
     ]);
 
     /*
@@ -102,10 +83,14 @@ Route::group([
     $router->get('categories/parent/{parentID?}', 'Categories\CategoryController@getByParent');
     $router->post('categories/reorder', 'Categories\CategoryController@reorder');
     $router->post('categories/{category}/products/attach', 'Products\ProductCategoryController@attach');
+    $router->post('categories/{category}/drafts', 'Categories\CategoryController@createDraft');
     $router->put('categories/{category}/products', 'Categories\CategoryController@putProducts');
+    $router->post('categories/{category}/channels', 'Categories\CategoryController@putChannels');
+    $router->post('categories/{category}/customer-groups', 'Categories\CategoryController@putCustomerGroups');
     $router->put('categories/{category}/layouts', 'Categories\LayoutController@store');
 
     $router->post('categories/{category}/routes', 'Categories\CategoryRouteController@store');
+    $router->post('categories/{id}/publish', 'Categories\CategoryController@publishDraft');
     $router->resource('categories', 'Categories\CategoryController', [
         'except' => ['index', 'edit', 'create', 'show'],
     ]);
@@ -118,9 +103,11 @@ Route::group([
     ]);
 
     /*
-     * Channels
+     * Collections
      */
     $router->post('collections/{collection}/routes', 'Collections\CollectionRouteController@store');
+    $router->post('collections/{collection}/drafts', 'Collections\CollectionController@createDraft');
+    $router->post('collections/{collection}/publish', 'Collections\CollectionController@publishDraft');
     $router->put('collections/{collection}/products', 'Collections\CollectionProductController@store');
     $router->resource('collections', 'Collections\CollectionController', [
         'except' => ['index', 'edit', 'create', 'show'],
@@ -155,18 +142,18 @@ Route::group([
      * Layouts
      */
     $router->resource('layouts', 'Layouts\LayoutController', [
-        'except' => ['edit', 'create'],
+        'except' => ['edit', 'create', 'store'],
     ]);
 
     /*
      * Orders
      */
     $router->post('orders/bulk', 'Orders\OrderController@bulkUpdate');
-    $router->get('orders/types', 'Orders\OrderController@getTypes');
     $router->get('orders/export', 'Orders\OrderController@getExport');
     $router->post('orders/email-preview/{status}', 'Orders\OrderController@emailPreview');
+    $router->get('orders/{id}/invoice', 'Orders\OrderController@invoice');
     $router->resource('orders', 'Orders\OrderController', [
-        'only' => ['index', 'update'],
+        'only' => ['index', 'update', 'destroy'],
     ]);
 
     // /*
@@ -190,7 +177,25 @@ Route::group([
     /*
      * Products
      */
-    $router->prefix('products')->namespace('Products')->group(__DIR__.'/../routes/catalogue-manager/products.php');
+    $router->prefix('products')->namespace('Products')->group(function ($router) {
+        $router->post('/{product}/urls', 'ProductRouteController@store');
+        $router->put('/{product}/assets', 'ProductAssetController@attach');
+        $router->post('/{product}/redirects', 'ProductRedirectController@store');
+        $router->post('/{product}/attributes', 'ProductAttributeController@update');
+        $router->post('/{product}/collections', 'ProductCollectionController@update');
+        $router->post('/{product}/routes', 'ProductRouteController@store');
+        $router->post('/{product}/categories', 'ProductCategoryController@update');
+        $router->post('/{product}/channels', 'ProductChannelController@store');
+        $router->delete('/{product}/categories/{category}', 'ProductCategoryController@destroy');
+        $router->delete('/{product}/collections/{collection}', 'ProductCollectionController@destroy');
+        $router->post('/{product}/associations', 'ProductAssociationController@store');
+        $router->delete('/{product}/associations', 'ProductAssociationController@destroy');
+
+        /*
+        * Updates
+        */
+        $router->post('/{product}/customer-groups', 'ProductCustomerGroupController@store');
+    });
 
     /*
      * Reporting
@@ -199,19 +204,17 @@ Route::group([
     $router->prefix('reports')->namespace('Reports')->group(function ($router) {
         $router->get('/sales', 'ReportController@sales');
         $router->get('/orders', 'ReportController@orders');
+        $router->get('/orders/customers', 'ReportController@orderCustomers');
+        $router->get('/orders/averages', 'ReportController@orderAverages');
+        $router->get('/products/best-sellers', 'ReportController@bestSellers');
         $router->get('/metrics/{subject}', 'ReportController@metrics');
-        $router->get('/shipping', 'ReportController@shipping');
-        $router->group(['prefix' => 'products'], function ($router) {
-            $router->get('attributes', 'ReportController@productAttributes');
-        });
-        $router->group(['prefix' => 'attributes'], function ($router) {
-            $router->get('/', 'ReportController@attributes');
-        });
     });
 
     /*
      * Resource routes
      */
+    $router->post('products/{id}/drafts', 'Products\ProductController@createDraft');
+    $router->post('products/{id}/publish', 'Products\ProductController@publishDraft');
     $router->resource('products', 'Products\ProductController', [
         'except' => ['edit', 'create', 'show'],
     ]);
@@ -240,6 +243,7 @@ Route::group([
     /*
      * Settings
      */
+    $router->get('settings', 'Settings\SettingController@index');
     $router->get('settings/{handle}', 'Settings\SettingController@show');
 
     /*
@@ -289,4 +293,34 @@ Route::group([
         'as' => 'account.password.reset',
         'uses' => 'Auth\AccountController@resetPassword',
     ]);
-});
+
+    /**
+     * Recycle bin
+     */
+    $router->get('recycle-bin', [
+        'as' => 'recycle-bin.index',
+        'uses' => 'RecycleBin\RecycleBinController@index'
+    ]);
+
+    $router->get('recycle-bin/{id}', [
+        'as' => 'recycle-bin.show',
+        'uses' => 'RecycleBin\RecycleBinController@show'
+    ]);
+
+    $router->delete('recycle-bin/{id}', [
+        'as' => 'recycle-bin.delete',
+        'uses' => 'RecycleBin\RecycleBinController@destroy'
+    ]);
+
+    $router->post('recycle-bin/{id}/restore', [
+        'as' => 'recycle-bin.restore',
+        'uses' => 'RecycleBin\RecycleBinController@restore'
+    ]);
+
+    /**
+     * Versioning
+     */
+    $router->post('versions/{id}/restore', [
+        'as' => 'versions.restore',
+        'uses' => 'Versioning\VersionController@restore',
+    ]);

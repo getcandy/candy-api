@@ -2,18 +2,18 @@
 
 namespace GetCandy\Api\Core\Payments\Providers;
 
-use Log;
 use Carbon\Carbon;
+use GetCandy\Api\Core\Payments\Events\PaymentAttemptedEvent;
+use GetCandy\Api\Core\Payments\Events\PaymentFailedEvent;
+use GetCandy\Api\Core\Payments\Events\ThreeDSecureAttemptEvent;
+use GetCandy\Api\Core\Payments\Events\TransactionFetchedEvent;
+use GetCandy\Api\Core\Payments\Models\ReusablePayment;
+use GetCandy\Api\Core\Payments\Models\Transaction;
+use GetCandy\Api\Core\Payments\PaymentResponse;
+use GetCandy\Api\Core\Payments\ThreeDSecureResponse;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
-use GetCandy\Api\Core\Payments\PaymentResponse;
-use GetCandy\Api\Core\Payments\Models\Transaction;
-use GetCandy\Api\Core\Payments\ThreeDSecureResponse;
-use GetCandy\Api\Core\Payments\Models\ReusablePayment;
-use GetCandy\Api\Core\Payments\Events\PaymentFailedEvent;
-use GetCandy\Api\Core\Payments\Events\PaymentAttemptedEvent;
-use GetCandy\Api\Core\Payments\Events\TransactionFetchedEvent;
-use GetCandy\Api\Core\Payments\Events\ThreeDSecureAttemptEvent;
+use Log;
 
 class SagePay extends AbstractProvider
 {
@@ -131,13 +131,13 @@ class SagePay extends AbstractProvider
             $content = json_decode($response->getBody()->getContents(), true);
 
             event(new PaymentAttemptedEvent($content));
-
         } catch (ClientException $e) {
             $errors = json_decode($e->getResponse()->getBody()->getContents(), true);
             $response = new PaymentResponse(false, 'Payment Failed', $errors);
             $response->transaction(
                 $this->createFailedTransaction($errors)
             );
+
             return $response;
         }
 
@@ -150,6 +150,7 @@ class SagePay extends AbstractProvider
                 ->setRedirect($content['acsUrl']);
         } elseif ($content['status'] != 'Ok') {
             $response = new PaymentResponse(false, $content['statusDetail'] ?? 'Rejected', $content);
+
             return $response->transaction(
                 $this->createFailedTransaction($content)
             );
@@ -200,7 +201,6 @@ class SagePay extends AbstractProvider
 
             $content = json_decode($response->getBody()->getContents(), true);
             event(new ThreeDSecureAttemptEvent($content));
-
         } catch (ClientException $e) {
             $errors = json_decode($e->getResponse()->getBody()->getContents(), true);
 
@@ -210,8 +210,6 @@ class SagePay extends AbstractProvider
                 'transactionId' => $transaction,
             ]);
         }
-
-
 
         // We are authenticated, so lets get the transaction from the API
         $transaction = $this->getTransactionFromApi($transaction);
@@ -252,8 +250,10 @@ class SagePay extends AbstractProvider
             }
             $attempt++;
             sleep(1);
+
             return $this->getTransactionFromApi($id, $attempt);
         }
+
         return $content;
     }
 
@@ -320,7 +320,7 @@ class SagePay extends AbstractProvider
      */
     protected function createFailedTransaction($errors, $amount = null, $notes = null)
     {
-        /**
+        /*
          * Trigger an event so apps can do stuff
          */
         event(new PaymentFailedEvent($errors));

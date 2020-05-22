@@ -2,12 +2,12 @@
 
 namespace GetCandy\Api\Core\Search\Providers\Elastic\Aggregators;
 
-use Elastica\Search;
-use Elastica\Query\Term;
-use Elastica\Query\BoolQuery;
-use Elastica\Aggregation\Terms;
 use Elastica\Aggregation\Filter;
 use Elastica\Aggregation\Nested;
+use Elastica\Aggregation\Terms;
+use Elastica\Query\BoolQuery;
+use Elastica\Query\Term;
+use Elastica\Search;
 
 class Category extends AbstractAggregator
 {

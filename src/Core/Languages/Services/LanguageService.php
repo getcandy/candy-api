@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Languages\Services;
 
-use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Languages\Models\Language;
+use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Exceptions\MinimumRecordRequiredException;
 
 class LanguageService extends BaseService

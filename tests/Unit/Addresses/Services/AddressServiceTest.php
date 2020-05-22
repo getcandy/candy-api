@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Addresses\Services;
 
-use Tests\TestCase;
 use GetCandy\Api\Core\Addresses\Models\Address;
 use GetCandy\Api\Core\Addresses\Services\AddressService;
+use Tests\TestCase;
 
 /**
  * @group addresses
@@ -13,7 +13,7 @@ class AddressServiceTest extends TestCase
 {
     protected $service;
 
-    public function setUp()
+    public function setUp() : void
     {
         parent::setUp();
         $this->service = $this->app->make(AddressService::class);

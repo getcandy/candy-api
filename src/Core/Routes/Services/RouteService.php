@@ -54,21 +54,21 @@ class RouteService extends BaseService
      */
     public function delete($hashedId)
     {
-        $route = $this->getByHashedId($hashedId);
+        $route = $this->getByHashedId($hashedId, true);
         if (! $route) {
             abort(404);
         }
-        if ($route->element->routes->count() == 1) {
-            throw new MinimumRecordRequiredException(
-                trans('getcandy::exceptions.minimum_record_required')
-            );
-        }
+        // if ($route->element->routes->count() == 1) {
+        //     throw new MinimumRecordRequiredException(
+        //         trans('getcandy::exceptions.minimum_record_required')
+        //     );
+        // }
 
-        if ($route->default) {
-            $newDefault = $route->element->routes->where('default', '=', false)->first();
-            $newDefault->default = true;
-            $newDefault->save();
-        }
+        // if ($route->default) {
+        //     $newDefault = $route->element->routes->where('default', '=', false)->first();
+        //     $newDefault->default = true;
+        //     $newDefault->save();
+        // }
 
         return $route->delete();
     }

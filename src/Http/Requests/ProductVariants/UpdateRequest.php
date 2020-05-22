@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Http\Requests\ProductVariants;
 
-use Illuminate\Foundation\Http\FormRequest;
 use GetCandy\Api\Core\Products\Models\ProductVariant;
+use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateRequest extends FormRequest
 {
@@ -25,7 +25,7 @@ class UpdateRequest extends FormRequest
     public function rules(ProductVariant $variant)
     {
         return [
-            'sku' => 'required|unique:product_variants,sku,'.$variant->decodeId($this->variant),
+            'sku' => 'required',
             'pricing' => 'array',
             'pricing.*.customer_group_id' => 'required|hashid_is_valid:customer_groups',
         ];

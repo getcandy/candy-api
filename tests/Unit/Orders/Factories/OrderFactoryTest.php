@@ -7,6 +7,7 @@ use Tests\TestCase;
 use Tests\Stubs\User;
 use Illuminate\Support\Facades\Event;
 use GetCandy\Api\Core\Orders\Models\Order;
+use GetCandy\Api\Core\Channels\Models\Channel;
 use GetCandy\Api\Core\Discounts\Models\Discount;
 use GetCandy\Api\Core\Orders\Events\OrderSavedEvent;
 use GetCandy\Api\Core\Orders\Factories\OrderFactory;
@@ -151,7 +152,7 @@ class OrderFactoryTest extends TestCase
         $this->assertEquals($basket->id, $order->id);
         $this->assertNotNull($order->placed_at);
 
-        $basket->refresh();
+        $basket = $basket->load('order')->load('placedOrder');
 
         $this->expectException(BasketHasPlacedOrderException::class);
         $factory->basket($basket)->resolve();
@@ -202,10 +203,18 @@ class OrderFactoryTest extends TestCase
             'value' => 'TESTCOUPON',
         ]);
 
-        \DB::table('basket_discount')->insert([
-            'basket_id' => $basket->id,
-            'discount_id' => $discount->id,
-            'coupon' => 'TESTCOUPON',
+        $basket->discounts()->sync([
+            $discount->id => [
+                'coupon' => 'TESTCOUPON'
+            ]
+        ]);
+
+        $channelId = Channel::pluck('id')->first();
+
+        $discount->channels()->sync([
+            $channelId => [
+                'published_at' => now()
+            ]
         ]);
 
         $basket = $basket->refresh();

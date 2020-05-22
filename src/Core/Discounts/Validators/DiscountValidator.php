@@ -3,8 +3,8 @@
 namespace GetCandy\Api\Core\Discounts\Validators;
 
 use Carbon\Carbon;
-use GetCandy\Api\Core\Discounts\Factory;
 use GetCandy\Api\Core\Baskets\BasketCriteria;
+use GetCandy\Api\Core\Discounts\Factory;
 
 class DiscountValidator
 {

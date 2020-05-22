@@ -25,7 +25,7 @@ class ChannelTransformer extends BaseTransformer
             'handle' => $channel->handle,
             'url' => $channel->url,
             'default' => (bool) $channel->default,
-            'published_at' => $channel->published_at ? Carbon::parse($channel->published_at)->toIso8601String() : null,
+            // 'published_at' => $channel->published_at ? Carbon::parse($channel->published_at)->toIso8601String() : null,
         ];
 
         return $data;

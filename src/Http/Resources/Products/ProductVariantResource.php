@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Http\Resources\Products;
 
-use GetCandy\Api\Http\Resources\AbstractResource;
-use GetCandy\Api\Http\Resources\Taxes\TaxResource;
-use GetCandy\Api\Http\Resources\Assets\AssetResource;
 use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
+use GetCandy\Api\Http\Resources\AbstractResource;
+use GetCandy\Api\Http\Resources\Assets\AssetResource;
+use GetCandy\Api\Http\Resources\Taxes\TaxResource;
 
 class ProductVariantResource extends AbstractResource
 {
@@ -13,7 +13,12 @@ class ProductVariantResource extends AbstractResource
     {
         $factory = app()->getInstance()->make(ProductVariantFactory::class);
 
-        $this->resource = $factory->init($this->resource)->get(1, app()->request->user());
+        // TODO: Wut? Yuck
+        if ($this->resource->resource) {
+            $this->resource->resource = $factory->init($this->resource->resource)->get(1, app()->request->user());
+        } else {
+            $this->resource = $factory->init($this->resource)->get(1, app()->request->user());
+        }
 
         return [
             'id' => $this->encodedId(),

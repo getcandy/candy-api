@@ -3,12 +3,12 @@
 namespace GetCandy\Api\Core\Discounts\Services;
 
 use Carbon\Carbon;
+use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
+use GetCandy\Api\Core\Discounts\Discount as DiscountFactory;
+use GetCandy\Api\Core\Discounts\Models\Discount;
+use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaItem;
 use GetCandy\Api\Core\Discounts\RewardSet;
 use GetCandy\Api\Core\Scaffold\BaseService;
-use GetCandy\Api\Core\Discounts\Models\Discount;
-use GetCandy\Api\Core\Discounts\Discount as DiscountFactory;
-use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaItem;
-use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
 
 class DiscountService extends BaseService
 {
@@ -157,6 +157,26 @@ class DiscountService extends BaseService
     public function get()
     {
         return $this->model->orderBy('priority', 'desc')->with(['sets', 'sets.items'])->get();
+    }
+
+    /**
+     * Returns model by a given hashed id.
+     * @param  string $id
+     * @throws  Illuminate\Database\Eloquent\ModelNotFoundException
+     * @return Illuminate\Database\Eloquent\Model
+     */
+    public function getByHashedId($id, $relations = null)
+    {
+        $id = $this->model->decodeId($id);
+
+        // TODO: Probably need a better way to do this.
+        $query = $this->model->withoutGlobalScopes();
+
+        if ($relations) {
+            $query->with($relations);
+        }
+
+        return $query->findOrFail($id);
     }
 
     public function getByCoupon($coupon)

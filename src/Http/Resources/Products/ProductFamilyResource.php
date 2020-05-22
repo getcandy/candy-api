@@ -11,13 +11,14 @@ class ProductFamilyResource extends AbstractResource
     {
         return [
             'id' => $this->encoded_id,
+            'name' => $this->name,
         ];
     }
 
     public function includes()
     {
         return [
-            'attributes' => new AttributeCollection($this->whenLoaded('attributes')),
+            'attributes' => new AttributeCollection($this->whenLoaded('attributes'))
         ];
     }
 }

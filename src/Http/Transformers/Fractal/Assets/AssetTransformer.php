@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Assets;
 
-use Storage;
 use GetCandy\Api\Core\Assets\Models\Asset;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Tags\TagTransformer;
+use Storage;
 
 class AssetTransformer extends BaseTransformer
 {
@@ -21,8 +21,9 @@ class AssetTransformer extends BaseTransformer
      * @param  Attribute $product
      * @return array
      */
-    public function transform(Asset $asset)
+    public function transform($asset)
     {
+        \Log::debug($asset->pivot);
         $data = [
             'id' => $asset->encodedId(),
             'title' => $asset->title,
@@ -30,15 +31,15 @@ class AssetTransformer extends BaseTransformer
             'kind' => $asset->kind,
             'external' => (bool) $asset->external,
             'thumbnail' => $this->getThumbnail($asset),
-            'position' => (int) $asset->position,
-            'primary' => (bool) $asset->primary,
+            'position' => $asset->pivot ? $asset->pivot->position : 1,
+            'primary' => (bool) $asset->pivot ? $asset->pivot->primary : false,
         ];
 
         if (! $asset->external) {
             $data = array_merge($data, [
                 'sub_kind' => $asset->sub_kind,
                 'extension' => $asset->extension,
-                'original_filename' => $asset->original_filename,
+                'original_filename' =>$asset->original_filename,
                 'size' => $asset->size,
                 'width' => $asset->width,
                 'height' => $asset->height,
@@ -47,7 +48,6 @@ class AssetTransformer extends BaseTransformer
         } else {
             $data['url'] = $asset->location;
         }
-
         return $data;
     }
 

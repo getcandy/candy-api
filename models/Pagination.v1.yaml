@@ -1,0 +1,23 @@
+title: Pagination
+type: object
+x-tags:
+  - meta
+properties:
+  total:
+    type: integer
+    default: 1
+    format: int32
+    example: '1'
+  count:
+    type: integer
+    example: '24'
+  per_page:
+    type: integer
+    default: 15
+    example: '15'
+  current_page:
+    type: integer
+    example: '1'
+  total_pages:
+    type: integer
+    example: '1'

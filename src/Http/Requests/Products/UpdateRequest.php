@@ -15,7 +15,8 @@ class UpdateRequest extends FormRequest
     {
         $ruleset = [
             'family_id' => 'hashid_is_valid:product_families',
-            'attribute_data' => 'required|array',
+            'layout_id' => 'hashid_is_valid:layouts',
+            'attribute_data' => 'array',
         ];
 
         $attributes = app('api')->products()->getAttributes($this->product);
@@ -25,7 +26,7 @@ class UpdateRequest extends FormRequest
         foreach ($attributes as $attribute) {
             if ($attribute->required) {
                 $rulestring = 'attribute_data.'.$attribute->handle.'.'.$defaultChannel->handle.'.'.$defaultLanguage->lang;
-                $ruleset[$rulestring] = 'required';
+                // $ruleset[$rulestring] = 'required';
             }
         }
 
@@ -35,7 +36,7 @@ class UpdateRequest extends FormRequest
     public function messages()
     {
         return [
-            'attributes.*.*.*.required' => 'This Field is required',
+            'attribute_data.*.*.*.required' => 'This field is required',
         ];
     }
 }

@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Core\Payments\Models;
 
+use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 use GetCandy\Api\Core\Scaffold\BaseModel;
 use GetCandy\Api\Core\Traits\HasCustomerGroups;
-use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 
 class PaymentType extends BaseModel
 {

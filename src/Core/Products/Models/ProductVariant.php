@@ -2,12 +2,12 @@
 
 namespace GetCandy\Api\Core\Products\Models;
 
-use GetCandy\Api\Core\Traits\Lockable;
-use GetCandy\Api\Core\Taxes\Models\Tax;
-use GetCandy\Api\Core\Scaffold\BaseModel;
 use GetCandy\Api\Core\Assets\Models\Asset;
-use GetCandy\Api\Core\Traits\HasAttributes;
 use GetCandy\Api\Core\Baskets\Models\BasketLine;
+use GetCandy\Api\Core\Scaffold\BaseModel;
+use GetCandy\Api\Core\Taxes\Models\Tax;
+use GetCandy\Api\Core\Traits\HasAttributes;
+use GetCandy\Api\Core\Traits\Lockable;
 
 class ProductVariant extends BaseModel
 {
@@ -90,7 +90,7 @@ class ProductVariant extends BaseModel
     public function getOptionsAttribute($val)
     {
         $values = [];
-        $option_data = $this->product->option_data;
+        $option_data = $this->product ? $this->product->option_data : [];
 
         foreach (json_decode($val, true) as $option => $value) {
             if (! empty($data = $option_data[$option])) {
@@ -106,13 +106,18 @@ class ProductVariant extends BaseModel
     public function setOptionsAttribute($val)
     {
         $options = [];
-        foreach ($val as $option => $value) {
-            if (is_array($value)) {
-                $value = reset($value);
+
+        if (!$this->id) {
+            foreach ($val as $option => $value) {
+                if (is_array($value)) {
+                    $value = reset($value);
+                }
+                $options[str_slug($option)] = str_slug($value);
             }
-            $options[str_slug($option)] = str_slug($value);
+            $this->attributes['options'] = json_encode($options);
+        } else {
+            $this->attributes['options'] = $val;
         }
-        $this->attributes['options'] = json_encode($options);
     }
 
     public function image()

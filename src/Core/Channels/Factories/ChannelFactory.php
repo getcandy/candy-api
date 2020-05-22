@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Core\Channels\Factories;
 
-use GetCandy\Api\Core\Channels\Services\ChannelService;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use GetCandy\Api\Core\Channels\Interfaces\ChannelFactoryInterface;
+use GetCandy\Api\Core\Channels\Services\ChannelService;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ChannelFactory implements ChannelFactoryInterface
 {
@@ -52,7 +52,7 @@ class ChannelFactory implements ChannelFactoryInterface
         if (is_string($channel)) {
             try {
                 $channel = $this->service->getByHandle($channel);
-            } catch (NotFoundHttpException $e) {
+            } catch (ModelNotFoundException $e) {
                 $channel = $this->set();
             }
         }

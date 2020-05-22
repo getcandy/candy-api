@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Http\Controllers\Products;
 
-use GetCandy\Api\Http\Controllers\BaseController;
-use GetCandy\Api\Http\Resources\Products\ProductResource;
 use GetCandy\Api\Core\Products\Services\ProductCustomerGroupService;
+use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Products\UpdateCustomerGroupsRequest;
+use GetCandy\Api\Http\Resources\Products\ProductResource;
 
 class ProductCustomerGroupController extends BaseController
 {
@@ -31,5 +31,7 @@ class ProductCustomerGroupController extends BaseController
     public function destroy($product, DeleteRequest $request)
     {
         $result = app('api')->productAssociations()->destroy($product, $request->associations);
+
+        return $this->respondWithNoContent();
     }
 }

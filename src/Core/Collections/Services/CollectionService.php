@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Core\Collections\Services;
 
-use GetCandy\Api\Core\Scaffold\BaseService;
-use GetCandy\Api\Core\Collections\Models\Collection;
 use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
+use GetCandy\Api\Core\Collections\Models\Collection;
+use GetCandy\Api\Core\Scaffold\BaseService;
 
 class CollectionService extends BaseService
 {
@@ -18,6 +18,35 @@ class CollectionService extends BaseService
         $this->model = new Collection();
     }
 
+    /**
+     * Returns model by a given hashed id.
+     * @param  string $id
+     * @throws  Illuminate\Database\Eloquent\ModelNotFoundException
+     * @return Collection
+     */
+    public function getByHashedId($id, $withDrafted = false)
+    {
+        $id = $this->model->decodeId($id);
+        $collection = $this->model;
+
+        if ($withDrafted) {
+            $collection = $collection->withDrafted();
+        }
+
+        return $collection->findOrFail($id);
+    }
+
+
+    public function findById($id, array $includes = [], $draft = false)
+    {
+        $query = Collection::with(array_merge($includes, ['draft']));
+
+        if ($draft) {
+            $query->withDrafted();
+        }
+
+        return $query->find($id);
+    }
     /**
      * Creates a resource from the given data.
      *
@@ -35,7 +64,7 @@ class CollectionService extends BaseService
 
         $collection->routes()->createMany($urls);
 
-        event(new AttributableSavedEvent($collection));
+        // event(new AttributableSavedEvent($collection));
 
         return $collection;
     }
@@ -51,7 +80,8 @@ class CollectionService extends BaseService
      */
     public function delete($id)
     {
-        $collection = $this->getByHashedId($id);
+
+        $collection = $this->getByHashedId($id, true);
 
         $collection->customerGroups()->detach();
         $collection->channels()->detach();

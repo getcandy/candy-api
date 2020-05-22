@@ -2,12 +2,10 @@
 
 namespace GetCandy\Api\Http\Controllers\Products;
 
-use Illuminate\Http\Request;
 use GetCandy\Api\Http\Controllers\BaseController;
-use Symfony\Component\HttpKernel\Exception\HttpException;
+use GetCandy\Api\Http\Resources\Products\ProductResource;
 use GetCandy\Api\Http\Requests\Products\UpdateAttributesRequest;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use GetCandy\Api\Http\Transformers\Fractal\Products\ProductTransformer;
 
 class ProductAttributeController extends BaseController
 {
@@ -26,7 +24,6 @@ class ProductAttributeController extends BaseController
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
-
-        return $this->respondWithItem($result, new ProductTransformer);
+        return new ProductResource($result);
     }
 }

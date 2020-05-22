@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Core\Attributes\Services;
 
+use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Exceptions\DuplicateValueException;
-use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
 
 class AttributeGroupService extends BaseService
 {
@@ -25,7 +25,7 @@ class AttributeGroupService extends BaseService
      *
      * @return AttributeGroup
      */
-    public function create(array $data)
+    public function create(array $data, $includes = null)
     {
         $group = $this->model;
         $group->name = $data['name'];
@@ -33,7 +33,40 @@ class AttributeGroupService extends BaseService
         $group->position = $this->model->count() + 1;
         $group->save();
 
+        if ($includes) {
+            $group = $group->load($includes);
+        }
+
         return $group;
+    }
+
+    public function all($includes = null)
+    {
+        $query = $this->model;
+
+        if ($includes) {
+            $query = $query->with($includes);
+        }
+        return $query->get();
+    }
+
+    /**
+     * Returns model by a given hashed id.
+     * @param  string $id
+     * @throws  Illuminate\Database\Eloquent\ModelNotFoundException
+     * @return Illuminate\Database\Eloquent\Model
+     */
+    public function getByHashedId($id, $includes = null)
+    {
+        $id = $this->model->decodeId($id);
+
+        $query = $this->model;
+
+        if ($includes) {
+            $query = $query->with($includes);
+        }
+
+        return $query->findOrFail($id);
     }
 
     /**

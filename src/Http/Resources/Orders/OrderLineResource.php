@@ -14,6 +14,7 @@ class OrderLineResource extends AbstractResource
             'quantity' => $this->quantity,
             'line_total' => $this->line_total,
             'discount_total' => $this->discount_total,
+            'delivery_total' => $this->delivery_total,
             'unit_price' => $this->unit_price,
             'unit_qty' => $this->unit_qty,
             'tax_total' => $this->tax_total,

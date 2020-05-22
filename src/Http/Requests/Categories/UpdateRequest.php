@@ -14,7 +14,7 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'attributes' => 'required|array',
+            'attribute_data' => 'required|array',
         ];
     }
 }

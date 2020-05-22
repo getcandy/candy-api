@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class AddOrdersTable extends Migration
 {
@@ -17,7 +17,7 @@ class AddOrdersTable extends Migration
             $table->increments('id');
             $table->integer('basket_id')->unsigned()->nullable();
             $table->foreign('basket_id')->references('id')->on('baskets');
-            $table->integer('user_id')->unsigned()->nullable();
+            $table->bigInteger('user_id')->unsigned()->nullable();
             $table->decimal('total', 10, 2);
             $table->decimal('vat', 10, 2);
             $table->decimal('shipping_total', 10, 2);

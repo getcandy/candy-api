@@ -2,35 +2,18 @@
 
 namespace GetCandy\Api\Core\Reports\Providers;
 
-use DB;
 use DateTime;
 use GetCandy\Api\Core\Orders\Models\Order;
-use GetCandy\Api\Core\Channels\Interfaces\ChannelFactoryInterface;
+use GetCandy\Api\Core\Orders\Models\OrderLine;
 
 abstract class AbstractProvider
 {
-    protected $colours = [
-        '#E7028C',
-        '#0099e5',
-        '#00E5C5',
-        '#0033E5',
-        '#E6463F',
-        '#633FE6',
-        '#3FC9E6',
-        '#3FE64F',
-    ];
-
     /**
      * The report mode.
      *
      * @var string
      */
     protected $mode;
-
-    const EXPRESSIONS = [
-        'EQUALS' => "=",
-        'LIKE' => "LIKE"
-    ];
 
     /**
      * The from date for the query.
@@ -45,22 +28,6 @@ abstract class AbstractProvider
      * @var DateTime
      */
     protected $to;
-
-    protected $channels;
-
-    protected $locale;
-
-    public function __construct(ChannelFactoryInterface $channels)
-    {
-        $this->channels = $channels;
-        $this->locale = app()->getLocale();
-        $this->setUp();
-    }
-
-    protected function setUp()
-    {
-        return;
-    }
 
     /**
      * Sets the date range for the provider.
@@ -97,15 +64,23 @@ abstract class AbstractProvider
         return $this;
     }
 
-    protected function getExpression($expression)
+    protected function getDateFormat()
     {
-        return $this::EXPRESSIONS[$expression] ?? $this::EXPRESSIONS['EQUALS'];
-    }
+        $format = '%Y-%m';
+        $displayFormat = '%M %Y';
 
-    protected function getJsonColumn($attribute)
-    {
-        $channel = $this->channels->getChannel()->handle;
-        return 'attribute_data->>"$.' . $attribute . '.' . $channel . '.' . $this->locale . '"';
+        if ($this->mode == 'weekly') {
+            $format = '%Y-%v';
+            $displayFormat = 'Week Comm. %d/%m/%Y';
+        } elseif ($this->mode == 'daily') {
+            $format = '%Y-%m-%d';
+            $displayFormat = '%D %M %Y';
+        }
+
+        return [
+            'format' => $format,
+            'display' => $displayFormat
+        ];
     }
 
     /**
@@ -114,12 +89,26 @@ abstract class AbstractProvider
      */
     protected function getOrderQuery(DateTime $from = null, DateTime $to = null)
     {
-        return Order::withoutGlobalScope('open')
-            ->withoutGlobalScope('not_expired')
+        return Order::whereNotNull('placed_at')
+            ->whereBetween('placed_at', [
+                $from ?: $this->from,
+                $to ?: $this->to,
+            ]);
+    }
+
+    /**
+     * Gets order within the date range.
+     * @return \Illuminate\Support\Collection
+     */
+    protected function getOrderLineQuery(DateTime $from = null, DateTime $to = null)
+    {
+        return OrderLine::whereHas('order', function ($query) use ($from, $to) {
+            $query->withoutGlobalScope('not_expired')
             ->whereNotNull('placed_at')
             ->whereBetween('placed_at', [
                 $from ?: $this->from,
                 $to ?: $this->to,
             ]);
+        });
     }
 }

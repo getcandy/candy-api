@@ -5,8 +5,10 @@ namespace GetCandy\Api\Http\Resources\Products;
 use GetCandy\Api\Http\Resources\AbstractResource;
 use GetCandy\Api\Http\Resources\Assets\AssetResource;
 use GetCandy\Api\Http\Resources\Assets\AssetCollection;
+use GetCandy\Api\Http\Resources\Layouts\LayoutResource;
 use GetCandy\Api\Http\Resources\Routes\RouteCollection;
 use GetCandy\Api\Http\Resources\Channels\ChannelCollection;
+use GetCandy\Api\Http\Resources\Versioning\VersionCollection;
 use GetCandy\Api\Http\Resources\Categories\CategoryCollection;
 use GetCandy\Api\Http\Resources\Attributes\AttributeCollection;
 use GetCandy\Api\Http\Resources\Collections\CollectionCollection;
@@ -19,7 +21,10 @@ class ProductResource extends AbstractResource
     {
         return [
             'id' => $this->encoded_id,
+            'drafted_at' => $this->drafted_at,
             'option_data' => $this->parseOptionData($this->option_data),
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 
@@ -34,6 +39,9 @@ class ProductResource extends AbstractResource
     {
         return [
             'attributes' => new AttributeCollection($this->whenLoaded('attributes')),
+            'draft' => ['data' => new self($this->whenLoaded('draft'))],
+            'layout' => ['data' => new LayoutResource($this->whenLoaded('layout'))],
+            'published_parent' => ['data' => new self($this->whenLoaded('publishedParent'))],
             'assets' => new AssetCollection($this->whenLoaded('assets')),
             'family' => $this->include('family', ProductFamilyResource::class),
             'routes' => new RouteCollection($this->whenLoaded('routes')),
@@ -45,6 +53,7 @@ class ProductResource extends AbstractResource
             'discounts' => new DiscountModelCollection($this->whenLoaded('discounts'), $this->only),
             'collections' => new CollectionCollection($this->whenLoaded('collections'), $this->only),
             'associations' => new ProductAssociationCollection($this->whenLoaded('associations'), $this->only),
+            'versions' => new VersionCollection($this->whenLoaded('versions'), $this->only),
             'customer_groups' => new CustomerGroupCollection($this->whenLoaded('customerGroups')),
         ];
     }

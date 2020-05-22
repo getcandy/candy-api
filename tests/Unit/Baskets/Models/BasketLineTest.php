@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\Orders\Models;
 
-use Tests\TestCase;
 use GetCandy\Api\Core\Products\Models\ProductVariant;
+use Tests\TestCase;
 
 /**
  * @group models

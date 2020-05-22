@@ -4,6 +4,8 @@ namespace GetCandy\Api\Http\Controllers\Customers;
 
 use Illuminate\Http\Request;
 use GetCandy\Api\Http\Controllers\BaseController;
+use GetCandy\Api\Http\Resources\Users\UserResource;
+use GetCandy\Api\Http\Resources\Users\UserCollection;
 use GetCandy\Api\Http\Requests\Customers\CreateRequest;
 use GetCandy\Api\Http\Transformers\Fractal\Users\UserTransformer;
 
@@ -19,17 +21,18 @@ class CustomerController extends BaseController
         $customers = app('api')->customers()->getPaginatedData(
             $request->length,
             $request->page,
-            $request->keywords
+            $request->keywords,
+            explode(',', $request->includes)
         );
 
-        return $this->respondWithCollection($customers, new UserTransformer);
+        return new UserCollection($customers);
     }
 
     public function show($id, Request $request)
     {
-        $customer = app('api')->customers()->getByHashedId($id);
+        $customer = app('api')->customers()->getByHashedId($id, explode(',', $request->includes));
 
-        return $this->respondWithItem($customer, new UserTransformer);
+        return new UserResource($customer);
     }
 
     /**

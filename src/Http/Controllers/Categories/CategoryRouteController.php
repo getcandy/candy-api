@@ -3,6 +3,7 @@
 namespace GetCandy\Api\Http\Controllers\Categories;
 
 use GetCandy\Api\Http\Controllers\BaseController;
+use GetCandy\Api\Http\Resources\Routes\RouteResource;
 use GetCandy\Api\Http\Requests\Categories\Routes\CreateRequest;
 
 class CategoryRouteController extends BaseController
@@ -17,6 +18,6 @@ class CategoryRouteController extends BaseController
     {
         $result = app('api')->categories()->createUrl($category, $request->all());
 
-        return $this->respondWithNoContent();
+        return new RouteResource($result);
     }
 }

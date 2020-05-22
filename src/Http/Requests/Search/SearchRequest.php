@@ -25,8 +25,6 @@ class SearchRequest extends FormRequest
     public function rules()
     {
         return [
-            'type' => 'required',
-            // 'category' => 'hashid_is_valid:categories',
         ];
     }
 }

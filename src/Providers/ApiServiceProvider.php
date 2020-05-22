@@ -7,14 +7,15 @@ use Carbon\Carbon;
 use League\Fractal\Manager;
 use GetCandy\Api\Core\Factory;
 use Laravel\Passport\Passport;
-use GetCandy\Api\Core\CandyApi;
 use Illuminate\Support\ServiceProvider;
+use GetCandy\Api\Core\GetCandy;
+use GetCandy\Api\Core\Users\Contracts\UserContract;
 use GetCandy\Api\Core\Users\Services\UserService;
 use GetCandy\Api\Http\Middleware\SetTaxMiddleware;
 use GetCandy\Api\Core\Currencies\CurrencyConverter;
-use GetCandy\Api\Core\Users\Contracts\UserContract;
 use GetCandy\Api\Http\Middleware\SetCustomerGroups;
 use GetCandy\Api\Http\Middleware\SetLocaleMiddleware;
+use GetCandy\Api\Providers\CollectionServiceProvider;
 use GetCandy\Api\Http\Middleware\SetChannelMiddleware;
 use GetCandy\Api\Console\Commands\ScoreProductsCommand;
 use GetCandy\Api\Http\Middleware\SetCurrencyMiddleware;
@@ -40,7 +41,6 @@ class ApiServiceProvider extends ServiceProvider
         $this->mapBindings();
         $this->initPassport();
         $this->registerMiddleware();
-        $this->mapRoutes();
         $this->mapCommands();
         $this->loadMigrations();
     }
@@ -54,7 +54,10 @@ class ApiServiceProvider extends ServiceProvider
     {
         $providers = [
             ActivityLogServiceProvider::class,
+            AssetServiceProvider::class,
+            CategoryServiceProvider::class,
             ChannelServiceProvider::class,
+            CollectionServiceProvider::class,
             BasketServiceProvider::class,
             CurrencyServiceProvider::class,
             DiscountServiceProvider::class,
@@ -67,6 +70,7 @@ class ApiServiceProvider extends ServiceProvider
             TaxServiceProvider::class,
             UtilServiceProvider::class,
             ReportsServiceProvider::class,
+            RecycleBinServiceProvider::class,
         ];
         foreach ($providers as $provider) {
             $this->app->register($provider, true);
@@ -92,17 +96,6 @@ class ApiServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(
             __DIR__.'/../../config/services.php', 'services'
         );
-    }
-
-    /**
-     * Get some routes mapped.
-     *
-     * @return void
-     */
-    protected function mapRoutes()
-    {
-        $this->loadRoutesFrom(__DIR__.'/../../routes/api.php');
-        $this->loadRoutesFrom(__DIR__.'/../../routes/api.client.php');
     }
 
     /**
@@ -158,9 +151,9 @@ class ApiServiceProvider extends ServiceProvider
      */
     protected function mapBindings()
     {
-        $this->app->register(
-            \Alaouy\Youtube\YoutubeServiceProvider::class
-        );
+        // $this->app->register(
+        //     \Alaouy\Youtube\YoutubeServiceProvider::class
+        // );
 
         $this->app->singleton(UserContract::class, function ($app) {
             return $app->make(UserService::class);
@@ -180,8 +173,8 @@ class ApiServiceProvider extends ServiceProvider
 
         $mediaDrivers = config('assets.upload_drivers', []);
 
-        $this->app->singleton(CandyApi::class, function ($app) {
-            return new CandyApi;
+        $this->app->singleton(GetCandy::class, function ($app) {
+            return new GetCandy;
         });
 
         foreach ($mediaDrivers as $name => $driver) {

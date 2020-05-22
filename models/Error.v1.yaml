@@ -1,0 +1,12 @@
+title: Error
+type: object
+properties:
+  error:
+    type: object
+    properties:
+      http_code:
+        type: number
+        example: '404'
+      message:
+        type: string
+        example: Resource not found

@@ -2,14 +2,13 @@
 
 namespace GetCandy\Api\Core\Traits;
 
-use GetCandy\Api\Core\Scopes\CustomerGroupScope;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
+use GetCandy\Api\Core\Scopes\CustomerGroupScope;
 
 trait HasCustomerGroups
 {
-    public static function boot()
+    public static function bootHasCustomerGroups()
     {
-        parent::boot();
         static::addGlobalScope(new CustomerGroupScope);
     }
 

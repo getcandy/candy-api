@@ -3,9 +3,9 @@
 namespace GetCandy\Api\Core\Users\Services;
 
 use GetCandy\Api\Core\Auth\Models\User;
+use GetCandy\Api\Core\Payments\Models\ReusablePayment;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Users\Contracts\UserContract;
-use GetCandy\Api\Core\Payments\Models\ReusablePayment;
 
 class UserService extends BaseService implements UserContract
 {

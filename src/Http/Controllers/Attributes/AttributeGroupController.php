@@ -11,7 +11,10 @@ use GetCandy\Api\Http\Requests\AttributeGroups\DeleteRequest;
 use GetCandy\Api\Http\Requests\AttributeGroups\UpdateRequest;
 use GetCandy\Api\Http\Requests\AttributeGroups\ReorderRequest;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use GetCandy\Api\Http\Resources\Attributes\AttributeGroupResource;
+use GetCandy\Api\Http\Resources\Attributes\AttributeGroupCollection;
 use GetCandy\Api\Http\Transformers\Fractal\Attributes\AttributeGroupTransformer;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class AttributeGroupController extends BaseController
 {
@@ -21,9 +24,13 @@ class AttributeGroupController extends BaseController
      */
     public function index(Request $request)
     {
-        $paginator = app('api')->attributeGroups()->getPaginatedData($request->per_page);
-
-        return $this->respondWithCollection($paginator, new AttributeGroupTransformer);
+        $includes = $request->include ? explode(',', $request->include) : null;
+        if ($request->all_records) {
+            $results = app('api')->attributeGroups()->all($includes);
+        } else {
+            $results = app('api')->attributeGroups()->getPaginatedData($request->per_page, $request->page ?: 1, $includes);
+        }
+        return new AttributeGroupCollection($results);
     }
 
     /**
@@ -31,15 +38,16 @@ class AttributeGroupController extends BaseController
      * @param  string $id
      * @return Json
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
+        $includes = $request->include ? explode(',', $request->include) : null;
         try {
-            $attribute = app('api')->attributeGroups()->getByHashedId($id);
+            $attributeGroup = app('api')->attributeGroups()->getByHashedId($id, $includes);
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
 
-        return $this->respondWithItem($attribute, new AttributeGroupTransformer);
+        return new AttributeGroupResource($attributeGroup);
     }
 
     /**
@@ -49,9 +57,10 @@ class AttributeGroupController extends BaseController
      */
     public function store(CreateRequest $request)
     {
-        $result = app('api')->attributeGroups()->create($request->all());
+        $includes = $request->include ? explode(',', $request->include) : null;
+        $result = app('api')->attributeGroups()->create($request->all(), $includes);
 
-        return $this->respondWithItem($result, new AttributeGroupTransformer);
+        return new AttributeGroupResource($result);
     }
 
     /**
@@ -70,6 +79,7 @@ class AttributeGroupController extends BaseController
             return $this->errorNotFound();
         }
 
+        return new AttributeGroupResource($result);
         return $this->respondWithItem($result, new AttributeGroupTransformer);
     }
 

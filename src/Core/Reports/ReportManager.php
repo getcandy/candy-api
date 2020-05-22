@@ -2,13 +2,10 @@
 
 namespace GetCandy\Api\Core\Reports;
 
-use Illuminate\Support\Manager;
-use GetCandy\Api\Core\Reports\Providers\Sales;
-use GetCandy\Api\Core\Reports\Providers\Orders;
-use GetCandy\Api\Core\Reports\Providers\Products;
-use GetCandy\Api\Core\Reports\Providers\Shipping;
-use GetCandy\Api\Core\Reports\Providers\Attributes;
 use GetCandy\Api\Core\Reports\Contracts\ReportManagerContract;
+use GetCandy\Api\Core\Reports\Providers\Orders;
+use GetCandy\Api\Core\Reports\Providers\Sales;
+use Illuminate\Support\Manager;
 
 class ReportManager extends Manager implements ReportManagerContract
 {
@@ -46,43 +43,6 @@ class ReportManager extends Manager implements ReportManagerContract
             Orders::class
         );
     }
-
-    /**
-     * Create the Sales driver.
-     *
-     * @return Shipping
-     */
-    public function createShippingDriver()
-    {
-        return $this->buildProvider(
-            Shipping::class
-        );
-    }
-
-    /**
-     * Create the Products driver.
-     *
-     * @return Products
-     */
-    public function createProductsDriver()
-    {
-        return $this->buildProvider(
-            Products::class
-        );
-    }
-
-    /**
-     * Create the Products driver.
-     *
-     * @return Products
-     */
-    public function createAttributesDriver()
-    {
-        return $this->buildProvider(
-            Attributes::class
-        );
-    }
-
 
     /**
      * Build a layout provider instance.

@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Tags\Services;
 
-use GetCandy\Api\Core\Tags\Models\Tag;
 use GetCandy\Api\Core\Scaffold\BaseService;
+use GetCandy\Api\Core\Tags\Models\Tag;
 
 class TagService extends BaseService
 {
@@ -118,9 +118,7 @@ class TagService extends BaseService
     {
         $ids = [];
         foreach ($tags as $tag) {
-            if (! $tag['id']) {
-                $tag = $this->getOrCreateTag($tag['name']);
-            }
+            $tag = $this->getOrCreateTag($tag);
             $ids[] = $this->model->decodeId($tag['id']) ?: $tag['id'];
         }
 

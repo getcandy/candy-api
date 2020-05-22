@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Http\Resources;
 
+use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Http\Resources\MissingValue;
 use Illuminate\Pagination\AbstractPaginator;
-use Illuminate\Http\Resources\Json\ResourceCollection;
 
 abstract class AbstractCollection extends ResourceCollection
 {

@@ -7,8 +7,9 @@ use GetCandy\Api\Http\Controllers\BaseController;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use GetCandy\Api\Http\Requests\Shipping\Zones\CreateRequest;
 use GetCandy\Api\Http\Requests\Shipping\Zones\UpdateRequest;
+use GetCandy\Api\Http\Resources\Shipping\ShippingZoneResource;
+use GetCandy\Api\Http\Resources\Shipping\ShippingZoneCollection;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use GetCandy\Api\Http\Transformers\Fractal\Shipping\ShippingZoneTransformer;
 
 class ShippingZoneController extends BaseController
 {
@@ -18,9 +19,12 @@ class ShippingZoneController extends BaseController
      */
     public function index(Request $request)
     {
-        $orders = app('api')->shippingZones()->getPaginatedData($request->per_page, $request->current_page);
-
-        return $this->respondWithCollection($orders, new ShippingZoneTransformer);
+        $zones = app('api')->shippingZones()->getPaginatedData(
+            $request->per_page,
+            $request->current_page,
+            $this->parseIncludes($request->include)
+        );
+        return new ShippingZoneCollection($zones);
     }
 
     /**
@@ -28,15 +32,15 @@ class ShippingZoneController extends BaseController
      * @param  string $id
      * @return Json
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
         try {
-            $channel = app('api')->shippingZones()->getByHashedId($id);
+            $zone = app('api')->shippingZones()->getByHashedId($id, $this->parseIncludes($request->include));
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
 
-        return $this->respondWithItem($channel, new ShippingZoneTransformer);
+        return new ShippingZoneResource($zone);
     }
 
     /**
@@ -47,8 +51,7 @@ class ShippingZoneController extends BaseController
     public function store(CreateRequest $request)
     {
         $result = app('api')->shippingZones()->create($request->all());
-
-        return $this->respondWithItem($result, new ShippingZoneTransformer);
+        return new ShippingZoneResource($result);
     }
 
     public function update($id, UpdateRequest $request)
@@ -58,7 +61,6 @@ class ShippingZoneController extends BaseController
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
-
-        return $this->respondWithItem($result, new ShippingZoneTransformer);
+        return new ShippingZoneResource($result);
     }
 }

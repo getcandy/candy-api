@@ -9,15 +9,22 @@ class AssetResource extends AbstractResource
 {
     public function payload()
     {
+        $pivot = $this->resource->pivot;
+        $assetable = $this->resource->assetables;
+
+        if ($assetable) {
+            $pivot = $assetable;
+        }
         $data = [
             'id' => $this->encodedId(),
             'title' => $this->title,
+            'type' => $pivot ? $pivot->assetable_type : null,
             'caption' => $this->caption,
             'kind' => $this->kind,
             'external' => (bool) $this->external,
             // 'thumbnail' => $this->getThumbnail($asset),
-            'position' => (int) $this->position,
-            'primary' => (bool) $this->primary,
+            'position' => (int) ($pivot ? $pivot->position : 1),
+            'primary' => (bool) ($pivot ? $pivot->primary : false),
             'url' => $this->url,
         ];
 

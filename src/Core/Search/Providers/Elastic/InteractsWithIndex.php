@@ -4,10 +4,10 @@ namespace GetCandy\Api\Core\Search\Providers\Elastic;
 
 use Elastica\Status;
 use Elastica\Type\Mapping;
-use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Categories\Models\Category;
-use GetCandy\Api\Core\Search\Providers\Elastic\Types\ProductType;
+use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Search\Providers\Elastic\Types\CategoryType;
+use GetCandy\Api\Core\Search\Providers\Elastic\Types\ProductType;
 
 trait InteractsWithIndex
 {
@@ -39,6 +39,7 @@ trait InteractsWithIndex
 
     public function against($types)
     {
+        dd(1);
         $this->type = $this->getType($types);
 
         return $this;

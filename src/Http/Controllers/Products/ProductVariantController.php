@@ -6,10 +6,13 @@ use Illuminate\Http\Request;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Exceptions\InvalidLanguageException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use GetCandy\Api\Http\Resources\Products\ProductResource;
 use GetCandy\Api\Http\Requests\ProductVariants\CreateRequest;
 use GetCandy\Api\Http\Requests\ProductVariants\DeleteRequest;
 use GetCandy\Api\Http\Requests\ProductVariants\UpdateRequest;
+use GetCandy\Api\Http\Resources\Products\ProductVariantResource;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use GetCandy\Api\Http\Resources\Products\ProductVariantCollection;
 use GetCandy\Api\Http\Transformers\Fractal\Products\ProductTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Products\ProductVariantTransformer;
 
@@ -23,8 +26,7 @@ class ProductVariantController extends BaseController
     public function index(Request $request)
     {
         $paginator = app('api')->productVariants()->getPaginatedData($request->per_page);
-
-        return $this->respondWithCollection($paginator, new ProductVariantTransformer);
+        return new ProductVariantCollection($paginator);
     }
 
     /**
@@ -35,12 +37,12 @@ class ProductVariantController extends BaseController
     public function show($id)
     {
         try {
-            $product = app('api')->productFamilies()->getByHashedId($id);
+            $variant = app('api')->productVariants()->getByHashedId($id);
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
 
-        return $this->respondWithItem($product, new ProductVariantTransformer);
+        return new ProductVariantResource($variant);
     }
 
     /**
@@ -57,8 +59,7 @@ class ProductVariantController extends BaseController
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
-
-        return $this->respondWithItem($result, new ProductTransformer);
+        return new ProductResource($result);
     }
 
     /**
@@ -79,7 +80,7 @@ class ProductVariantController extends BaseController
             return $this->errorNotFound();
         }
 
-        return $this->respondWithItem($result, new ProductVariantTransformer);
+        return new ProductVariantResource($result);
     }
 
     /**
@@ -110,7 +111,6 @@ class ProductVariantController extends BaseController
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
-
-        return $this->respondWithItem($result, new ProductVariantTransformer);
+        return new ProductVariantResource($result);
     }
 }

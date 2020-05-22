@@ -2,8 +2,8 @@
 
 namespace Seeds;
 
-use Illuminate\Database\Seeder;
 use GetCandy\Api\Core\Channels\Models\Channel;
+use Illuminate\Database\Seeder;
 
 class ChannelTableSeeder extends Seeder
 {
@@ -17,17 +17,20 @@ class ChannelTableSeeder extends Seeder
         Channel::create([
             'name' => 'Webstore',
             'handle' => 'webstore',
+            'url' => 'http://localhost',
             'default' => true,
         ]);
         if (getenv('APP_ENV') != 'testing') {
             Channel::create([
                 'name' => 'Mobile',
                 'handle' => 'mobile',
+                'url' => 'http://localhost',
                 'default' => false,
             ]);
             Channel::create([
                 'name' => 'Print',
                 'handle' => 'print',
+                'url' => 'http://localhost',
                 'default' => false,
             ]);
         }

@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Products\Factories;
 
-use Tests\TestCase;
-use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Products\Factories\ProductDuplicateFactory;
+use GetCandy\Api\Core\Products\Models\Product;
+use Tests\TestCase;
 
 /**
  * @group current
@@ -20,7 +20,7 @@ class ProductDuplicateFactoryTest extends TestCase
             'routes',
             'assets',
             'customerGroups',
-            'channels'
+            'channels',
         ])->first();
 
         $skus = [];
@@ -36,7 +36,7 @@ class ProductDuplicateFactoryTest extends TestCase
         foreach ($productToCopy->routes as $route) {
             $routes[] = [
                 'current' => $route->slug,
-                'new' => $route->slug . str_random(),
+                'new' => $route->slug.str_random(),
             ];
         }
 
@@ -44,7 +44,6 @@ class ProductDuplicateFactoryTest extends TestCase
             'skus' => $skus,
             'routes' => $routes,
         ]));
-
 
         $this->assertSame($productToCopy->channels->count(), $newProduct->channels->count());
         $this->assertSame($productToCopy->customerGroups->count(), $newProduct->customerGroups->count());

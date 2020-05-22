@@ -2,10 +2,11 @@
 
 namespace GetCandy\Api\Core\Traits;
 
-use Illuminate\Database\Eloquent\Model;
 use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
 use GetCandy\Api\Http\Transformers\Fractal\Attributes\AttributeTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\Attributes\AttributeGroupTransformer;
+use GetCandy\Api\Http\Transformers\Fractal\Attributes\AttributeTransformer;
+use Illuminate\Database\Eloquent\Model;
 
 trait IncludesAttributes
 {

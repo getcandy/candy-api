@@ -39,9 +39,7 @@ trait HasAttributes
 
         if (! empty($this->attribute_data[$handle][$channel]) &&
             is_array($this->attribute_data[$handle][$channel]) &&
-            array_key_exists($locale, $this->attribute_data[$handle][$channel]) &&
-            !empty($this->attribute_data[$handle][$channel][$locale])
-        ) {
+            array_key_exists($locale, $this->attribute_data[$handle][$channel])) {
             return $this->attribute_data[$handle][$channel][$locale];
         }
 
@@ -54,13 +52,11 @@ trait HasAttributes
         if (! empty($this->attribute_data[$handle][$channel][$userLocale])) {
             return $this->attribute_data[$handle][$channel][$userLocale];
         } elseif (empty($this->attribute_data[$handle][$channel][$userLocale])) {
-            return $this->attribute_data[$handle][$channel]['en'] ?? null;
+            return;
         } elseif (is_null($this->attribute_data[$handle][$channel][$userLocale])) {
             $channel = 'webstore';
             $locale = $locale->lang;
         }
-
-        return $this->attribute_data[$handle][$channel][$locale];
     }
 
     public function getNameAttribute()
@@ -154,4 +150,11 @@ trait HasAttributes
 
         return $attributeData;
     }
+
+    // public function getAttributes()
+    // {
+    //     $attributes = $this->attributes;
+    //     $attributes['attribute_data'] = $this->getAttributeDataAttribute($attributes['attribute_data']);
+    //     return $attributes;
+    // }
 }

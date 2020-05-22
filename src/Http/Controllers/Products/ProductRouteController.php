@@ -5,6 +5,7 @@ namespace GetCandy\Api\Http\Controllers\Products;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Products\CreateUrlRequest;
 use GetCandy\Api\Http\Requests\Products\UpdateUrlsRequest;
+use GetCandy\Api\Http\Resources\Routes\RouteResource;
 
 class ProductRouteController extends BaseController
 {
@@ -18,7 +19,7 @@ class ProductRouteController extends BaseController
     {
         $result = app('api')->products()->createUrl($product, $request->all());
 
-        return $this->respondWithNoContent();
+        return new RouteResource($result);
     }
 
     public function update($product, UpdateUrlsRequest $request)

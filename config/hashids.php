@@ -119,5 +119,10 @@ return [
             'salt' => env('HASHIDS_USER_SALT', 'user'),
             'length' => 8,
         ],
+        'recycle_bin' => [
+            'alphabet' => $alphabet,
+            'salt' => env('HASHIDS_RECYCLE_BIN_SALT', 'recycle_bin'),
+            'length' => 8,
+        ]
     ],
 ];

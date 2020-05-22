@@ -2,19 +2,19 @@
 
 namespace GetCandy\Api\Core\Orders\Factories;
 
-use DB;
 use Carbon\Carbon;
-use GetCandy\Api\Core\Orders\Models\Order;
-use GetCandy\Api\Core\Payments\PaymentManager;
-use GetCandy\Api\Core\Payments\PaymentContract;
-use GetCandy\Api\Core\Payments\PaymentResponse;
-use GetCandy\Api\Core\Payments\Models\PaymentType;
-use GetCandy\Api\Core\Orders\Jobs\OrderNotification;
-use GetCandy\Api\Core\Payments\ThreeDSecureResponse;
+use DB;
 use GetCandy\Api\Core\Orders\Events\OrderProcessedEvent;
-use GetCandy\Api\Core\Payments\Exceptions\InvalidPaymentTokenException;
 use GetCandy\Api\Core\Orders\Interfaces\OrderProcessingFactoryInterface;
+use GetCandy\Api\Core\Orders\Jobs\OrderNotification;
+use GetCandy\Api\Core\Orders\Models\Order;
+use GetCandy\Api\Core\Payments\Exceptions\InvalidPaymentTokenException;
 use GetCandy\Api\Core\Payments\Exceptions\ThreeDSecureRequiredException;
+use GetCandy\Api\Core\Payments\Models\PaymentType;
+use GetCandy\Api\Core\Payments\PaymentContract;
+use GetCandy\Api\Core\Payments\PaymentManager;
+use GetCandy\Api\Core\Payments\PaymentResponse;
+use GetCandy\Api\Core\Payments\ThreeDSecureResponse;
 
 class OrderProcessingFactory implements OrderProcessingFactoryInterface
 {
@@ -73,6 +73,13 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
      * @var array
      */
     protected $meta;
+
+    /**
+     * The company name for the order.
+     *
+     * @var string
+     */
+    protected $companyName;
 
     /**
      * The customer reference.
@@ -178,6 +185,13 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
         return $this;
     }
 
+    public function companyName($name = null)
+    {
+        $this->companyName = $name;
+
+        return $this;
+    }
+
     /**
      * Set the value of order.
      *
@@ -210,6 +224,7 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
         $this->order->type = $this->type ?: $driver->getName();
 
         $this->order->meta = array_merge($this->order->meta ?? [], $this->meta ?? []);
+        $this->order->company_name = $this->companyName;
 
         $this->order->save();
 

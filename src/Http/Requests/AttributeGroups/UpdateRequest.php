@@ -17,7 +17,7 @@ class UpdateRequest extends FormRequest
         $service = app('api')->attributeGroups();
 
         return [
-            'name' => 'required|unique:attribute_groups,name,'.$service->getDecodedId($this->attribute_group),
+            'handle' => 'required|unique:attribute_groups,handle,'.$service->getDecodedId($this->attribute_group),
         ];
     }
 }

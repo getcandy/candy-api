@@ -1,0 +1,2436 @@
+openapi: 3.0.0
+info:
+  title: GetCandy
+  version: '1.0'
+  license:
+    name: MIT
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /channels:
+    get:
+      summary: Get all channels
+      tags:
+        - channel
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      title: Channel
+                      description: |-
+                        ## Available includes
+
+                        - products
+                        - categories
+                        - collections
+                        - discounts
+                        - shippingMethods
+                      x-examples:
+                        webstore:
+                          id: y3g6v91o
+                          name: Webstore
+                          handle: webstore
+                          url: 'https://storefront.test'
+                          default: true
+                      properties:
+                        id:
+                          type: string
+                          example: y3g6v91o
+                        name:
+                          type: string
+                          example: Webstore
+                        handle:
+                          type: string
+                          example: webstore
+                        url:
+                          type: string
+                          format: uri
+                          example: "https:\\/\\/storefront.test"
+                        default:
+                          type: boolean
+                          default: false
+                          example: true
+                      x-tags:
+                        - channel
+                      type: object
+                  meta:
+                    type: object
+                    properties:
+                      pagination:
+                        title: Pagination
+                        x-tags:
+                          - meta
+                        type: object
+                        properties:
+                          current_page:
+                            type: integer
+                            default: 1
+                            format: int32
+                            example: 1
+                          from:
+                            type: integer
+                            example: 24
+                          last_page:
+                            type: integer
+                            default: 15
+                            example: 15
+                          path:
+                            type: string
+                          per_page:
+                            type: integer
+                            example: 1
+                          to:
+                            type: integer
+                          total:
+                            type: integer
+                      lang:
+                        type: string
+                      links:
+                        title: Links
+                        type: object
+                        properties:
+                          first:
+                            type: string
+                          last:
+                            type: string
+                          prev:
+                            type: string
+                          next:
+                            type:
+                              - string
+                              - 'null'
+                          '':
+                            type:
+                              - string
+                              - 'null'
+      operationId: get-channels
+      requestBody: {}
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: includes
+          description: Comma separated includes for the resource
+        - schema:
+            type: number
+          in: query
+          name: per_page
+          description: How many results per page
+      description: ''
+      security:
+        - 'Authorization: Bearer {token}': []
+    post:
+      summary: Create a new channel
+      tags:
+        - channel
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                title: Channel
+                description: |-
+                  ## Available includes
+
+                  - products
+                  - categories
+                  - collections
+                  - discounts
+                  - shippingMethods
+                x-examples:
+                  webstore:
+                    id: y3g6v91o
+                    name: Webstore
+                    handle: webstore
+                    url: 'https://storefront.test'
+                    default: true
+                properties:
+                  id:
+                    type: string
+                    example: y3g6v91o
+                  name:
+                    type: string
+                    example: Webstore
+                  handle:
+                    type: string
+                    example: webstore
+                  url:
+                    type: string
+                    format: uri
+                    example: "https:\\/\\/storefront.test"
+                  default:
+                    type: boolean
+                    default: false
+                    example: true
+                x-tags:
+                  - channel
+                type: object
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: array
+                    items:
+                      type: string
+                  handle:
+                    type: array
+                    items:
+                      type: string
+      operationId: post-channels
+      security:
+        - 'Authorization: Bearer {token}': []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  pattern: 'required|unique:channels,name'
+                handle:
+                  type: string
+              required:
+                - name
+            examples: {}
+        description: ''
+  '/channels/{channelId}':
+    parameters:
+      - schema:
+          type: string
+        name: channelId
+        in: path
+        required: true
+    get:
+      summary: Get the channel resource
+      tags:
+        - channel
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                title: Channel
+                description: |-
+                  ## Available includes
+
+                  - products
+                  - categories
+                  - collections
+                  - discounts
+                  - shippingMethods
+                x-examples:
+                  webstore:
+                    id: y3g6v91o
+                    name: Webstore
+                    handle: webstore
+                    url: 'https://storefront.test'
+                    default: true
+                properties:
+                  id:
+                    type: string
+                    example: y3g6v91o
+                  name:
+                    type: string
+                    example: Webstore
+                  handle:
+                    type: string
+                    example: webstore
+                  url:
+                    type: string
+                    format: uri
+                    example: "https:\\/\\/storefront.test"
+                  default:
+                    type: boolean
+                    default: false
+                    example: true
+                x-tags:
+                  - channel
+                type: object
+              examples:
+                example-1:
+                  value:
+                    data:
+                      id: y3g6v91o
+                      name: Webstore
+                      handle: webstore
+                      url: 'https://orbitalfasteners.co.uk'
+                      default: true
+                      published_at: null
+                    meta:
+                      lang: en
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                title: Error
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      http_code:
+                        example: 404
+                        type: integer
+                      message:
+                        type: string
+                        example: Resource not found
+      operationId: get-channels-channelId
+      description: ''
+      security:
+        - 'Authorization: Bearer {token}': []
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: includes
+    put:
+      summary: Update the channel resource
+      tags:
+        - channel
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                title: Channel
+                description: |-
+                  ## Available includes
+
+                  - products
+                  - categories
+                  - collections
+                  - discounts
+                  - shippingMethods
+                x-examples:
+                  webstore:
+                    id: y3g6v91o
+                    name: Webstore
+                    handle: webstore
+                    url: 'https://storefront.test'
+                    default: true
+                properties:
+                  id:
+                    type: string
+                    example: y3g6v91o
+                  name:
+                    type: string
+                    example: Webstore
+                  handle:
+                    type: string
+                    example: webstore
+                  url:
+                    type: string
+                    format: uri
+                    example: "https:\\/\\/storefront.test"
+                  default:
+                    type: boolean
+                    default: false
+                    example: true
+                x-tags:
+                  - channel
+                type: object
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  handle:
+                    type: array
+                    items:
+                      type: string
+                  name:
+                    type: array
+                    items:
+                      type: string
+      operationId: put-channels-channelId
+      security:
+        - 'Authorization: Bearer {token}': []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                handle:
+                  type: string
+        description: ''
+    delete:
+      summary: Delete the channel resource
+      tags:
+        - channel
+      responses:
+        '204':
+          description: No Content
+      operationId: delete-channels-channelId
+  /orders:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      title: Order
+                      type: object
+                      x-examples:
+                        full-response:
+                          id: 34fSEsef23ewds
+                          display_id: '#ORD-1234567'
+                          sub_total: 24150
+                          type: SagePay
+                          delivery_total: 0
+                          discount_total: 0
+                          tax_total: 4830
+                          shipping_preference: null
+                          shipping_method: Standard Delivery
+                          order_total: 28980
+                          reference: CANDY-123456789
+                          customer_reference: null
+                          invoice_reference: '#INV-CANDY-123456789'
+                          vat_no: null
+                          tracking_no: null
+                          dispatched_at: null
+                          currency: GBP
+                          customer_name: Sweet Tooth
+                          contact_details:
+                            phone: ''
+                            email: sweets@sweettooth.com
+                          billing_details:
+                            phone: ''
+                            email: null
+                            firstname: Sweet
+                            lastname: Tooth
+                            address: Sweet Shop Inc.
+                            address_two: Pastry Lane
+                            address_three: null
+                            city: Chelmsford
+                            county: Essex
+                            state: null
+                            country: United Kingdom
+                            zip: CM2 5TH
+                          shipping_details:
+                            method: Standard Delivery
+                            preference: null
+                            phone: 12345-678910
+                            email: null
+                            firstname: Sweet
+                            lastname: Tooth
+                            address: Sweet Shop Inc.
+                            address_two: Pastry Lane
+                            address_three: null
+                            city: Chelmsford
+                            county: Essex
+                            state: null
+                            country: United Kingdom
+                            zip: CM2 5TH
+                          status: dispatched
+                          created_at: '2018-02-28T15:33:26.000000Z'
+                          updated_at: '2019-06-04T08:22:29.000000Z'
+                          placed_at: '2018-02-28T15:34:57.000000Z'
+                          notes: "Please don't ring the doorbell and run away"
+                          meta: []
+                      properties:
+                        id:
+                          type: string
+                          example: 123RFesfes356P
+                        display_id:
+                          type: string
+                          example: '#ORD-123456'
+                        sub_total:
+                          type: integer
+                          format: int32
+                          example: 12345
+                        type:
+                          type: string
+                          example: SagePay
+                        delivery_total:
+                          type: integer
+                          format: int32
+                          example: 1307
+                        discount_total:
+                          type: integer
+                        tax_total:
+                          type: integer
+                          format: int32
+                          example: 1307
+                        shipping_preference:
+                          type:
+                            - string
+                            - 'null'
+                        shipping_method:
+                          type:
+                            - string
+                            - 'null'
+                          example: Standard Delivery
+                        order_total:
+                          type: integer
+                          format: int32
+                          example: 7845
+                        reference:
+                          type: string
+                          example: CUSTOM-REFERENCE
+                        customer_reference:
+                          type:
+                            - string
+                            - 'null'
+                        invoice_reference:
+                          type: string
+                          example: '#INV-1234567'
+                        vat_no:
+                          type:
+                            - string
+                            - 'null'
+                        tracking_no:
+                          type:
+                            - string
+                            - 'null'
+                        dispatched_at:
+                          type:
+                            - string
+                            - 'null'
+                        currency:
+                          type: string
+                          example: GBP
+                        customer_name:
+                          type: string
+                          example: Thanos
+                        contact_details:
+                          type: object
+                          properties:
+                            phone:
+                              type: string
+                              example: '12345678910'
+                            email:
+                              type: string
+                              example: example@example.com
+                        billing_details:
+                          title: Address
+                          type: object
+                          properties:
+                            phone:
+                              type: string
+                            email:
+                              type: string
+                            firstname:
+                              type: string
+                            lastname:
+                              type: string
+                            address:
+                              type: string
+                            address_two:
+                              type: string
+                            address_three:
+                              type:
+                                - string
+                                - 'null'
+                            city:
+                              type: string
+                            county:
+                              type: string
+                            state:
+                              type:
+                                - string
+                                - 'null'
+                            country:
+                              type: string
+                            zip:
+                              type: string
+                        shipping_details:
+                          title: Address
+                          type: object
+                          properties:
+                            phone:
+                              type: string
+                            email:
+                              type: string
+                            firstname:
+                              type: string
+                            lastname:
+                              type: string
+                            address:
+                              type: string
+                            address_two:
+                              type: string
+                            address_three:
+                              type:
+                                - string
+                                - 'null'
+                            city:
+                              type: string
+                            county:
+                              type: string
+                            state:
+                              type:
+                                - string
+                                - 'null'
+                            country:
+                              type: string
+                            zip:
+                              type: string
+                        status:
+                          type: string
+                          example: payment-received
+                        created_at:
+                          type: string
+                        updated_at:
+                          type: string
+                        notes:
+                          type: string
+                        meta:
+                          type: array
+                          items: {}
+                  links:
+                    title: Links
+                    type: object
+                    properties:
+                      first:
+                        type: string
+                      last:
+                        type: string
+                      prev:
+                        type: string
+                      next:
+                        type:
+                          - string
+                          - 'null'
+                      '':
+                        type:
+                          - string
+                          - 'null'
+                  pagination:
+                    title: Pagination
+                    x-tags:
+                      - meta
+                    type: object
+                    properties:
+                      current_page:
+                        type: integer
+                        default: 1
+                        format: int32
+                        example: 1
+                      from:
+                        type: integer
+                        example: 24
+                      last_page:
+                        type: integer
+                        default: 15
+                        example: 15
+                      path:
+                        type: string
+                      per_page:
+                        type: integer
+                        example: 1
+                      to:
+                        type: integer
+                      total:
+                        type: integer
+      operationId: get-orders
+  '/orders/{orderId}':
+    parameters:
+      - schema:
+          type: string
+        name: orderId
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    title: Order
+                    type: object
+                    x-examples:
+                      full-response:
+                        id: 34fSEsef23ewds
+                        display_id: '#ORD-1234567'
+                        sub_total: 24150
+                        type: SagePay
+                        delivery_total: 0
+                        discount_total: 0
+                        tax_total: 4830
+                        shipping_preference: null
+                        shipping_method: Standard Delivery
+                        order_total: 28980
+                        reference: CANDY-123456789
+                        customer_reference: null
+                        invoice_reference: '#INV-CANDY-123456789'
+                        vat_no: null
+                        tracking_no: null
+                        dispatched_at: null
+                        currency: GBP
+                        customer_name: Sweet Tooth
+                        contact_details:
+                          phone: ''
+                          email: sweets@sweettooth.com
+                        billing_details:
+                          phone: ''
+                          email: null
+                          firstname: Sweet
+                          lastname: Tooth
+                          address: Sweet Shop Inc.
+                          address_two: Pastry Lane
+                          address_three: null
+                          city: Chelmsford
+                          county: Essex
+                          state: null
+                          country: United Kingdom
+                          zip: CM2 5TH
+                        shipping_details:
+                          method: Standard Delivery
+                          preference: null
+                          phone: 12345-678910
+                          email: null
+                          firstname: Sweet
+                          lastname: Tooth
+                          address: Sweet Shop Inc.
+                          address_two: Pastry Lane
+                          address_three: null
+                          city: Chelmsford
+                          county: Essex
+                          state: null
+                          country: United Kingdom
+                          zip: CM2 5TH
+                        status: dispatched
+                        created_at: '2018-02-28T15:33:26.000000Z'
+                        updated_at: '2019-06-04T08:22:29.000000Z'
+                        placed_at: '2018-02-28T15:34:57.000000Z'
+                        notes: "Please don't ring the doorbell and run away"
+                        meta: []
+                    properties:
+                      id:
+                        type: string
+                        example: 123RFesfes356P
+                      display_id:
+                        type: string
+                        example: '#ORD-123456'
+                      sub_total:
+                        type: integer
+                        format: int32
+                        example: 12345
+                      type:
+                        type: string
+                        example: SagePay
+                      delivery_total:
+                        type: integer
+                        format: int32
+                        example: 1307
+                      discount_total:
+                        type: integer
+                      tax_total:
+                        type: integer
+                        format: int32
+                        example: 1307
+                      shipping_preference:
+                        type:
+                          - string
+                          - 'null'
+                      shipping_method:
+                        type:
+                          - string
+                          - 'null'
+                        example: Standard Delivery
+                      order_total:
+                        type: integer
+                        format: int32
+                        example: 7845
+                      reference:
+                        type: string
+                        example: CUSTOM-REFERENCE
+                      customer_reference:
+                        type:
+                          - string
+                          - 'null'
+                      invoice_reference:
+                        type: string
+                        example: '#INV-1234567'
+                      vat_no:
+                        type:
+                          - string
+                          - 'null'
+                      tracking_no:
+                        type:
+                          - string
+                          - 'null'
+                      dispatched_at:
+                        type:
+                          - string
+                          - 'null'
+                      currency:
+                        type: string
+                        example: GBP
+                      customer_name:
+                        type: string
+                        example: Thanos
+                      contact_details:
+                        type: object
+                        properties:
+                          phone:
+                            type: string
+                            example: '12345678910'
+                          email:
+                            type: string
+                            example: example@example.com
+                      billing_details:
+                        title: Address
+                        type: object
+                        properties:
+                          phone:
+                            type: string
+                          email:
+                            type: string
+                          firstname:
+                            type: string
+                          lastname:
+                            type: string
+                          address:
+                            type: string
+                          address_two:
+                            type: string
+                          address_three:
+                            type:
+                              - string
+                              - 'null'
+                          city:
+                            type: string
+                          county:
+                            type: string
+                          state:
+                            type:
+                              - string
+                              - 'null'
+                          country:
+                            type: string
+                          zip:
+                            type: string
+                      shipping_details:
+                        title: Address
+                        type: object
+                        properties:
+                          phone:
+                            type: string
+                          email:
+                            type: string
+                          firstname:
+                            type: string
+                          lastname:
+                            type: string
+                          address:
+                            type: string
+                          address_two:
+                            type: string
+                          address_three:
+                            type:
+                              - string
+                              - 'null'
+                          city:
+                            type: string
+                          county:
+                            type: string
+                          state:
+                            type:
+                              - string
+                              - 'null'
+                          country:
+                            type: string
+                          zip:
+                            type: string
+                      status:
+                        type: string
+                        example: payment-received
+                      created_at:
+                        type: string
+                      updated_at:
+                        type: string
+                      notes:
+                        type: string
+                      meta:
+                        type: array
+                        items: {}
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                title: Error
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      http_code:
+                        example: 404
+                        type: integer
+                      message:
+                        type: string
+                        example: Resource not found
+      operationId: get-orders-orderId
+  /orders/types:
+    get:
+      summary: Get order types
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    label:
+                      type: string
+                      example: SagePay
+      operationId: get-orders-types
+  /orders/process:
+    post:
+      summary: Processes an order on the API
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                title: Order
+                type: object
+                x-examples:
+                  full-response:
+                    id: 34fSEsef23ewds
+                    display_id: '#ORD-1234567'
+                    sub_total: 24150
+                    type: SagePay
+                    delivery_total: 0
+                    discount_total: 0
+                    tax_total: 4830
+                    shipping_preference: null
+                    shipping_method: Standard Delivery
+                    order_total: 28980
+                    reference: CANDY-123456789
+                    customer_reference: null
+                    invoice_reference: '#INV-CANDY-123456789'
+                    vat_no: null
+                    tracking_no: null
+                    dispatched_at: null
+                    currency: GBP
+                    customer_name: Sweet Tooth
+                    contact_details:
+                      phone: ''
+                      email: sweets@sweettooth.com
+                    billing_details:
+                      phone: ''
+                      email: null
+                      firstname: Sweet
+                      lastname: Tooth
+                      address: Sweet Shop Inc.
+                      address_two: Pastry Lane
+                      address_three: null
+                      city: Chelmsford
+                      county: Essex
+                      state: null
+                      country: United Kingdom
+                      zip: CM2 5TH
+                    shipping_details:
+                      method: Standard Delivery
+                      preference: null
+                      phone: 12345-678910
+                      email: null
+                      firstname: Sweet
+                      lastname: Tooth
+                      address: Sweet Shop Inc.
+                      address_two: Pastry Lane
+                      address_three: null
+                      city: Chelmsford
+                      county: Essex
+                      state: null
+                      country: United Kingdom
+                      zip: CM2 5TH
+                    status: dispatched
+                    created_at: '2018-02-28T15:33:26.000000Z'
+                    updated_at: '2019-06-04T08:22:29.000000Z'
+                    placed_at: '2018-02-28T15:34:57.000000Z'
+                    notes: "Please don't ring the doorbell and run away"
+                    meta: []
+                properties:
+                  id:
+                    type: string
+                    example: 123RFesfes356P
+                  display_id:
+                    type: string
+                    example: '#ORD-123456'
+                  sub_total:
+                    type: integer
+                    format: int32
+                    example: 12345
+                  type:
+                    type: string
+                    example: SagePay
+                  delivery_total:
+                    type: integer
+                    format: int32
+                    example: 1307
+                  discount_total:
+                    type: integer
+                  tax_total:
+                    type: integer
+                    format: int32
+                    example: 1307
+                  shipping_preference:
+                    type:
+                      - string
+                      - 'null'
+                  shipping_method:
+                    type:
+                      - string
+                      - 'null'
+                    example: Standard Delivery
+                  order_total:
+                    type: integer
+                    format: int32
+                    example: 7845
+                  reference:
+                    type: string
+                    example: CUSTOM-REFERENCE
+                  customer_reference:
+                    type:
+                      - string
+                      - 'null'
+                  invoice_reference:
+                    type: string
+                    example: '#INV-1234567'
+                  vat_no:
+                    type:
+                      - string
+                      - 'null'
+                  tracking_no:
+                    type:
+                      - string
+                      - 'null'
+                  dispatched_at:
+                    type:
+                      - string
+                      - 'null'
+                  currency:
+                    type: string
+                    example: GBP
+                  customer_name:
+                    type: string
+                    example: Thanos
+                  contact_details:
+                    type: object
+                    properties:
+                      phone:
+                        type: string
+                        example: '12345678910'
+                      email:
+                        type: string
+                        example: example@example.com
+                  billing_details:
+                    title: Address
+                    type: object
+                    properties:
+                      phone:
+                        type: string
+                      email:
+                        type: string
+                      firstname:
+                        type: string
+                      lastname:
+                        type: string
+                      address:
+                        type: string
+                      address_two:
+                        type: string
+                      address_three:
+                        type:
+                          - string
+                          - 'null'
+                      city:
+                        type: string
+                      county:
+                        type: string
+                      state:
+                        type:
+                          - string
+                          - 'null'
+                      country:
+                        type: string
+                      zip:
+                        type: string
+                  shipping_details:
+                    title: Address
+                    type: object
+                    properties:
+                      phone:
+                        type: string
+                      email:
+                        type: string
+                      firstname:
+                        type: string
+                      lastname:
+                        type: string
+                      address:
+                        type: string
+                      address_two:
+                        type: string
+                      address_three:
+                        type:
+                          - string
+                          - 'null'
+                      city:
+                        type: string
+                      county:
+                        type: string
+                      state:
+                        type:
+                          - string
+                          - 'null'
+                      country:
+                        type: string
+                      zip:
+                        type: string
+                  status:
+                    type: string
+                    example: payment-received
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
+                  notes:
+                    type: string
+                  meta:
+                    type: array
+                    items: {}
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                title: Error
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      http_code:
+                        example: 404
+                        type: integer
+                      message:
+                        type: string
+                        example: Resource not found
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                title: Error
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      http_code:
+                        example: 404
+                        type: integer
+                      message:
+                        type: string
+                        example: Resource not found
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                title: Error
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      http_code:
+                        example: 404
+                        type: integer
+                      message:
+                        type: string
+                        example: Resource not found
+      operationId: post-orders-process
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                payment_type_id:
+                  type: string
+                payment_type:
+                  type: string
+                order_id:
+                  type: string
+                payment_token:
+                  type: string
+                customer_reference:
+                  type: string
+                meta:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      '':
+                        type: string
+                notes:
+                  type: string
+                company_name:
+                  type: string
+                data:
+                  type: array
+                  items: {}
+              required:
+                - order_id
+                - payment_token
+  /attributes:
+    get:
+      summary: Return a paged array of attributes
+      tags: []
+      responses: {}
+      operationId: get-attributes
+    post:
+      summary: Create a new attribute
+      tags: []
+      responses: {}
+      operationId: post-attributes
+  /categories:
+    get:
+      summary: Return a paged array of categories
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      title: Category
+                      type: object
+                      x-examples:
+                        Standard with mapped attributes:
+                          id: v8l4pl01
+                          sort: 'min_price:asc'
+                          products_count: 0
+                          children_count: 1
+                          left_pos: 1
+                          right_pos: 938
+                          description: Category description
+                          meta_keywords: null
+                          name: Fasteners
+                          page_title: Seo page title
+                          short_description: Short Description
+                          meta_description: Page meta description
+                          layout: []
+                          primary_asset: []
+                        Full response:
+                          id: v8l4pl01
+                          sort: 'min_price:asc'
+                          products_count: 0
+                          children_count: 1
+                          left_pos: 1
+                          right_pos: 938
+                          attribute_data:
+                            description:
+                              webstore:
+                                en: Category description
+                            meta_keywords:
+                              webstore:
+                                en: null
+                            name:
+                              webstore:
+                                en: Category name
+                            page_title:
+                              webstore:
+                                en: Page title
+                            short_description:
+                              webstore:
+                                en: Short description
+                            meta_description:
+                              webstore:
+                                en: Meta description
+                          layout: []
+                          primary_asset: []
+                        Full response with child:
+                          id: v8l4pl01
+                          sort: 'min_price:asc'
+                          products_count: 0
+                          children_count: 1
+                          left_pos: 1
+                          right_pos: 938
+                          attribute_data:
+                            description:
+                              webstore:
+                                en: Category description
+                            meta_keywords:
+                              webstore:
+                                en: null
+                            name:
+                              webstore:
+                                en: Category name
+                            page_title:
+                              webstore:
+                                en: Page title
+                            short_description:
+                              webstore:
+                                en: Short description
+                            meta_description:
+                              webstore:
+                                en: Meta description
+                          children:
+                            data:
+                              - id: p09prlrn
+                                sort: 'min_price:asc'
+                                left_pos: 2
+                                right_pos: 937
+                                attribute_data:
+                                  description:
+                                    webstore:
+                                      en: ''
+                                  meta_keywords:
+                                    webstore:
+                                      en: ''
+                                  name:
+                                    webstore:
+                                      en: Child Category
+                                  page_title:
+                                    webstore:
+                                      en: Child category SEO title
+                                  short_description:
+                                    webstore:
+                                      en: ''
+                                  meta_description:
+                                    webstore:
+                                      en: Child Category meta description
+                                layout: []
+                                primary_asset: []
+                          layout: []
+                          primary_asset: []
+                      properties:
+                        id:
+                          type: string
+                        sort:
+                          type: string
+                        products_count:
+                          type:
+                            - 'null'
+                            - integer
+                        children_count:
+                          type:
+                            - 'null'
+                            - integer
+                        left_pos:
+                          type: string
+                        right_pos:
+                          type: string
+                        name:
+                          type:
+                            - string
+                            - 'null'
+                        attribute_data:
+                          type:
+                            - 'null'
+                            - object
+                      description: |-
+                        ### Available includes
+                        - children
+                  links:
+                    title: Links
+                    type: object
+                    properties:
+                      first:
+                        type: string
+                      last:
+                        type: string
+                      prev:
+                        type: string
+                      next:
+                        type:
+                          - string
+                          - 'null'
+                      '':
+                        type:
+                          - string
+                          - 'null'
+                  pagination:
+                    title: Pagination
+                    x-tags:
+                      - meta
+                    type: object
+                    properties:
+                      current_page:
+                        type: integer
+                        default: 1
+                        format: int32
+                        example: 1
+                      from:
+                        type: integer
+                        example: 24
+                      last_page:
+                        type: integer
+                        default: 15
+                        example: 15
+                      path:
+                        type: string
+                      per_page:
+                        type: integer
+                        example: 1
+                      to:
+                        type: integer
+                      total:
+                        type: integer
+      operationId: get-categories
+      parameters:
+        - schema:
+            type: boolean
+          in: query
+          name: full_response
+          description: ''
+    post:
+      summary: Create a new category
+      tags: []
+      operationId: post-categories
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type:
+                    - string
+                    - object
+                  required:
+                    - en
+                  properties:
+                    en:
+                      type: string
+                path:
+                  type: string
+                url:
+                  type: string
+              required:
+                - name
+                - path
+                - url
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                title: Category
+                type: object
+                x-examples:
+                  Standard with mapped attributes:
+                    id: v8l4pl01
+                    sort: 'min_price:asc'
+                    products_count: 0
+                    children_count: 1
+                    left_pos: 1
+                    right_pos: 938
+                    description: Category description
+                    meta_keywords: null
+                    name: Fasteners
+                    page_title: Seo page title
+                    short_description: Short Description
+                    meta_description: Page meta description
+                    layout: []
+                    primary_asset: []
+                  Full response:
+                    id: v8l4pl01
+                    sort: 'min_price:asc'
+                    products_count: 0
+                    children_count: 1
+                    left_pos: 1
+                    right_pos: 938
+                    attribute_data:
+                      description:
+                        webstore:
+                          en: Category description
+                      meta_keywords:
+                        webstore:
+                          en: null
+                      name:
+                        webstore:
+                          en: Category name
+                      page_title:
+                        webstore:
+                          en: Page title
+                      short_description:
+                        webstore:
+                          en: Short description
+                      meta_description:
+                        webstore:
+                          en: Meta description
+                    layout: []
+                    primary_asset: []
+                  Full response with child:
+                    id: v8l4pl01
+                    sort: 'min_price:asc'
+                    products_count: 0
+                    children_count: 1
+                    left_pos: 1
+                    right_pos: 938
+                    attribute_data:
+                      description:
+                        webstore:
+                          en: Category description
+                      meta_keywords:
+                        webstore:
+                          en: null
+                      name:
+                        webstore:
+                          en: Category name
+                      page_title:
+                        webstore:
+                          en: Page title
+                      short_description:
+                        webstore:
+                          en: Short description
+                      meta_description:
+                        webstore:
+                          en: Meta description
+                    children:
+                      data:
+                        - id: p09prlrn
+                          sort: 'min_price:asc'
+                          left_pos: 2
+                          right_pos: 937
+                          attribute_data:
+                            description:
+                              webstore:
+                                en: ''
+                            meta_keywords:
+                              webstore:
+                                en: ''
+                            name:
+                              webstore:
+                                en: Child Category
+                            page_title:
+                              webstore:
+                                en: Child category SEO title
+                            short_description:
+                              webstore:
+                                en: ''
+                            meta_description:
+                              webstore:
+                                en: Child Category meta description
+                          layout: []
+                          primary_asset: []
+                    layout: []
+                    primary_asset: []
+                properties:
+                  id:
+                    type: string
+                  sort:
+                    type: string
+                  products_count:
+                    type:
+                      - 'null'
+                      - integer
+                  children_count:
+                    type:
+                      - 'null'
+                      - integer
+                  left_pos:
+                    type: string
+                  right_pos:
+                    type: string
+                  name:
+                    type:
+                      - string
+                      - 'null'
+                  attribute_data:
+                    type:
+                      - 'null'
+                      - object
+                description: |-
+                  ### Available includes
+                  - children
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: array
+                    items: {}
+              examples:
+                Unprocessable:
+                  value:
+                    url:
+                      - The url field is required.
+  '/categories/{categoryId}':
+    parameters:
+      - schema:
+          type: string
+        name: categoryId
+        in: path
+        required: true
+        description: ''
+    get:
+      summary: Return a single category
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    title: Category
+                    type: object
+                    x-examples:
+                      Standard with mapped attributes:
+                        id: v8l4pl01
+                        sort: 'min_price:asc'
+                        products_count: 0
+                        children_count: 1
+                        left_pos: 1
+                        right_pos: 938
+                        description: Category description
+                        meta_keywords: null
+                        name: Fasteners
+                        page_title: Seo page title
+                        short_description: Short Description
+                        meta_description: Page meta description
+                        layout: []
+                        primary_asset: []
+                      Full response:
+                        id: v8l4pl01
+                        sort: 'min_price:asc'
+                        products_count: 0
+                        children_count: 1
+                        left_pos: 1
+                        right_pos: 938
+                        attribute_data:
+                          description:
+                            webstore:
+                              en: Category description
+                          meta_keywords:
+                            webstore:
+                              en: null
+                          name:
+                            webstore:
+                              en: Category name
+                          page_title:
+                            webstore:
+                              en: Page title
+                          short_description:
+                            webstore:
+                              en: Short description
+                          meta_description:
+                            webstore:
+                              en: Meta description
+                        layout: []
+                        primary_asset: []
+                      Full response with child:
+                        id: v8l4pl01
+                        sort: 'min_price:asc'
+                        products_count: 0
+                        children_count: 1
+                        left_pos: 1
+                        right_pos: 938
+                        attribute_data:
+                          description:
+                            webstore:
+                              en: Category description
+                          meta_keywords:
+                            webstore:
+                              en: null
+                          name:
+                            webstore:
+                              en: Category name
+                          page_title:
+                            webstore:
+                              en: Page title
+                          short_description:
+                            webstore:
+                              en: Short description
+                          meta_description:
+                            webstore:
+                              en: Meta description
+                        children:
+                          data:
+                            - id: p09prlrn
+                              sort: 'min_price:asc'
+                              left_pos: 2
+                              right_pos: 937
+                              attribute_data:
+                                description:
+                                  webstore:
+                                    en: ''
+                                meta_keywords:
+                                  webstore:
+                                    en: ''
+                                name:
+                                  webstore:
+                                    en: Child Category
+                                page_title:
+                                  webstore:
+                                    en: Child category SEO title
+                                short_description:
+                                  webstore:
+                                    en: ''
+                                meta_description:
+                                  webstore:
+                                    en: Child Category meta description
+                              layout: []
+                              primary_asset: []
+                        layout: []
+                        primary_asset: []
+                    properties:
+                      id:
+                        type: string
+                      sort:
+                        type: string
+                      products_count:
+                        type:
+                          - 'null'
+                          - integer
+                      children_count:
+                        type:
+                          - 'null'
+                          - integer
+                      left_pos:
+                        type: string
+                      right_pos:
+                        type: string
+                      name:
+                        type:
+                          - string
+                          - 'null'
+                      attribute_data:
+                        type:
+                          - 'null'
+                          - object
+                    description: |-
+                      ### Available includes
+                      - children
+              examples: {}
+      operationId: get-categories-categoryId
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: includes
+components:
+  schemas:
+    Channel:
+      title: Channel
+      description: |-
+        ## Available includes
+
+        - products
+        - categories
+        - collections
+        - discounts
+        - shippingMethods
+      x-examples:
+        webstore:
+          id: y3g6v91o
+          name: Webstore
+          handle: webstore
+          url: 'https://storefront.test'
+          default: true
+      properties:
+        id:
+          type: string
+          example: y3g6v91o
+        name:
+          type: string
+          example: Webstore
+        handle:
+          type: string
+          example: webstore
+        url:
+          type: string
+          format: uri
+          example: "https:\\/\\/storefront.test"
+        default:
+          type: boolean
+          default: false
+          example: true
+      x-tags:
+        - channel
+      type: object
+    Pagination:
+      title: Pagination
+      x-tags:
+        - meta
+      type: object
+      properties:
+        current_page:
+          type: integer
+          default: 1
+          format: int32
+          example: 1
+        from:
+          type: integer
+          example: 24
+        last_page:
+          type: integer
+          default: 15
+          example: 15
+        path:
+          type: string
+        per_page:
+          type: integer
+          example: 1
+        to:
+          type: integer
+        total:
+          type: integer
+    Error:
+      title: Error
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            http_code:
+              example: 404
+              type: integer
+            message:
+              type: string
+              example: Resource not found
+    Links:
+      title: Links
+      type: object
+      properties:
+        first:
+          type: string
+        last:
+          type: string
+        prev:
+          type: string
+        next:
+          type:
+            - string
+            - 'null'
+        '':
+          type:
+            - string
+            - 'null'
+    Order:
+      title: Order
+      type: object
+      x-examples:
+        full-response:
+          id: 34fSEsef23ewds
+          display_id: '#ORD-1234567'
+          sub_total: 24150
+          type: SagePay
+          delivery_total: 0
+          discount_total: 0
+          tax_total: 4830
+          shipping_preference: null
+          shipping_method: Standard Delivery
+          order_total: 28980
+          reference: CANDY-123456789
+          customer_reference: null
+          invoice_reference: '#INV-CANDY-123456789'
+          vat_no: null
+          tracking_no: null
+          dispatched_at: null
+          currency: GBP
+          customer_name: Sweet Tooth
+          contact_details:
+            phone: ''
+            email: sweets@sweettooth.com
+          billing_details:
+            phone: ''
+            email: null
+            firstname: Sweet
+            lastname: Tooth
+            address: Sweet Shop Inc.
+            address_two: Pastry Lane
+            address_three: null
+            city: Chelmsford
+            county: Essex
+            state: null
+            country: United Kingdom
+            zip: CM2 5TH
+          shipping_details:
+            method: Standard Delivery
+            preference: null
+            phone: 12345-678910
+            email: null
+            firstname: Sweet
+            lastname: Tooth
+            address: Sweet Shop Inc.
+            address_two: Pastry Lane
+            address_three: null
+            city: Chelmsford
+            county: Essex
+            state: null
+            country: United Kingdom
+            zip: CM2 5TH
+          status: dispatched
+          created_at: '2018-02-28T15:33:26.000000Z'
+          updated_at: '2019-06-04T08:22:29.000000Z'
+          placed_at: '2018-02-28T15:34:57.000000Z'
+          notes: "Please don't ring the doorbell and run away"
+          meta: []
+      properties:
+        id:
+          type: string
+          example: 123RFesfes356P
+        display_id:
+          type: string
+          example: '#ORD-123456'
+        sub_total:
+          type: integer
+          format: int32
+          example: 12345
+        type:
+          type: string
+          example: SagePay
+        delivery_total:
+          type: integer
+          format: int32
+          example: 1307
+        discount_total:
+          type: integer
+        tax_total:
+          type: integer
+          format: int32
+          example: 1307
+        shipping_preference:
+          type:
+            - string
+            - 'null'
+        shipping_method:
+          type:
+            - string
+            - 'null'
+          example: Standard Delivery
+        order_total:
+          type: integer
+          format: int32
+          example: 7845
+        reference:
+          type: string
+          example: CUSTOM-REFERENCE
+        customer_reference:
+          type:
+            - string
+            - 'null'
+        invoice_reference:
+          type: string
+          example: '#INV-1234567'
+        vat_no:
+          type:
+            - string
+            - 'null'
+        tracking_no:
+          type:
+            - string
+            - 'null'
+        dispatched_at:
+          type:
+            - string
+            - 'null'
+        currency:
+          type: string
+          example: GBP
+        customer_name:
+          type: string
+          example: Thanos
+        contact_details:
+          type: object
+          properties:
+            phone:
+              type: string
+              example: '12345678910'
+            email:
+              type: string
+              example: example@example.com
+        billing_details:
+          title: Address
+          type: object
+          properties:
+            phone:
+              type: string
+            email:
+              type: string
+            firstname:
+              type: string
+            lastname:
+              type: string
+            address:
+              type: string
+            address_two:
+              type: string
+            address_three:
+              type:
+                - string
+                - 'null'
+            city:
+              type: string
+            county:
+              type: string
+            state:
+              type:
+                - string
+                - 'null'
+            country:
+              type: string
+            zip:
+              type: string
+        shipping_details:
+          title: Address
+          type: object
+          properties:
+            phone:
+              type: string
+            email:
+              type: string
+            firstname:
+              type: string
+            lastname:
+              type: string
+            address:
+              type: string
+            address_two:
+              type: string
+            address_three:
+              type:
+                - string
+                - 'null'
+            city:
+              type: string
+            county:
+              type: string
+            state:
+              type:
+                - string
+                - 'null'
+            country:
+              type: string
+            zip:
+              type: string
+        status:
+          type: string
+          example: payment-received
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        notes:
+          type: string
+        meta:
+          type: array
+          items: {}
+    Address:
+      title: Address
+      type: object
+      properties:
+        phone:
+          type: string
+        email:
+          type: string
+        firstname:
+          type: string
+        lastname:
+          type: string
+        address:
+          type: string
+        address_two:
+          type: string
+        address_three:
+          type:
+            - string
+            - 'null'
+        city:
+          type: string
+        county:
+          type: string
+        state:
+          type:
+            - string
+            - 'null'
+        country:
+          type: string
+        zip:
+          type: string
+    Attribute:
+      title: Attribute
+      type: object
+      properties:
+        id:
+          type: string
+          example: dnj4zky5
+        name:
+          type: object
+          properties:
+            en:
+              type: string
+              example: Name
+        handle:
+          type: string
+        position:
+          type: integer
+        filterable:
+          type: boolean
+        scopeable:
+          type: boolean
+        translatable:
+          type: boolean
+        variant:
+          type: boolean
+        searchable:
+          type: boolean
+        localised:
+          type: boolean
+        type:
+          type: string
+        required:
+          type: boolean
+        lookups:
+          type:
+            - 'null'
+            - array
+          items:
+            type: object
+            properties:
+              label:
+                type: string
+              value:
+                type: string
+        system:
+          type: boolean
+    Permission:
+      title: Permission
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        guard_name:
+          type: string
+    Role:
+      title: Role
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        guard_name:
+          type: string
+    Asset:
+      title: Asset
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        type:
+          type:
+            - string
+            - 'null'
+        caption:
+          type:
+            - string
+            - 'null'
+        kind:
+          type: string
+        external:
+          type: boolean
+        position:
+          type: integer
+        primary:
+          type: boolean
+        url:
+          type: string
+        sub_kind:
+          type:
+            - string
+            - 'null'
+        extension:
+          type:
+            - string
+            - 'null'
+        original_filename:
+          type:
+            - string
+            - 'null'
+        size:
+          type:
+            - string
+            - 'null'
+        width:
+          type:
+            - string
+            - 'null'
+        height:
+          type:
+            - string
+            - 'null'
+    AssetTransform:
+      title: AssetTransform
+      type: object
+      properties:
+        id:
+          type: string
+        handle:
+          type: string
+        url:
+          type: string
+    AssociationGroup:
+      title: AssociationGroup
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        handle:
+          type: string
+    BasketLine:
+      title: BasketLine
+      type: object
+      properties:
+        id:
+          type: string
+        quantity:
+          type: integer
+        line_total:
+          type: number
+        unit_price:
+          type: number
+        unit_tax:
+          type: number
+        line_discount:
+          type: number
+        tax:
+          type: number
+        meta:
+          type: object
+    Basket:
+      title: Basket
+      type: object
+      properties:
+        id:
+          type: string
+        total:
+          type: number
+        sub_total:
+          type: number
+        tax_total:
+          type: number
+        discount_total:
+          type: number
+          format: float
+        changed:
+          type: boolean
+        has_exclusions:
+          type: boolean
+        meta:
+          type: object
+    SavedBasket:
+      title: SavedBasket
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+    Category:
+      title: Category
+      type: object
+      x-examples:
+        Standard with mapped attributes:
+          id: v8l4pl01
+          sort: 'min_price:asc'
+          products_count: 0
+          children_count: 1
+          left_pos: 1
+          right_pos: 938
+          description: Category description
+          meta_keywords: null
+          name: Fasteners
+          page_title: Seo page title
+          short_description: Short Description
+          meta_description: Page meta description
+          layout: []
+          primary_asset: []
+        Full response:
+          id: v8l4pl01
+          sort: 'min_price:asc'
+          products_count: 0
+          children_count: 1
+          left_pos: 1
+          right_pos: 938
+          attribute_data:
+            description:
+              webstore:
+                en: Category description
+            meta_keywords:
+              webstore:
+                en: null
+            name:
+              webstore:
+                en: Category name
+            page_title:
+              webstore:
+                en: Page title
+            short_description:
+              webstore:
+                en: Short description
+            meta_description:
+              webstore:
+                en: Meta description
+          layout: []
+          primary_asset: []
+        Full response with child:
+          id: v8l4pl01
+          sort: 'min_price:asc'
+          products_count: 0
+          children_count: 1
+          left_pos: 1
+          right_pos: 938
+          attribute_data:
+            description:
+              webstore:
+                en: Category description
+            meta_keywords:
+              webstore:
+                en: null
+            name:
+              webstore:
+                en: Category name
+            page_title:
+              webstore:
+                en: Page title
+            short_description:
+              webstore:
+                en: Short description
+            meta_description:
+              webstore:
+                en: Meta description
+          children:
+            data:
+              - id: p09prlrn
+                sort: 'min_price:asc'
+                left_pos: 2
+                right_pos: 937
+                attribute_data:
+                  description:
+                    webstore:
+                      en: ''
+                  meta_keywords:
+                    webstore:
+                      en: ''
+                  name:
+                    webstore:
+                      en: Child Category
+                  page_title:
+                    webstore:
+                      en: Child category SEO title
+                  short_description:
+                    webstore:
+                      en: ''
+                  meta_description:
+                    webstore:
+                      en: Child Category meta description
+                layout: []
+                primary_asset: []
+          layout: []
+          primary_asset: []
+      properties:
+        id:
+          type: string
+        sort:
+          type: string
+        products_count:
+          type:
+            - 'null'
+            - integer
+        children_count:
+          type:
+            - 'null'
+            - integer
+        left_pos:
+          type: string
+        right_pos:
+          type: string
+        name:
+          type:
+            - string
+            - 'null'
+        attribute_data:
+          type:
+            - 'null'
+            - object
+      description: |-
+        ### Available includes
+        - children
+  securitySchemes:
+    'Authorization: Bearer {token}':
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: oauth/token
+          scopes: {}
+        password:
+          tokenUrl: oauth/token
+          refreshUrl: ''
+          scopes: {}
+      description: ''

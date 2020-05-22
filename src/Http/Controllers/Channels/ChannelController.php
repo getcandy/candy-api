@@ -9,6 +9,8 @@ use GetCandy\Api\Http\Requests\Channels\DeleteRequest;
 use GetCandy\Api\Http\Requests\Channels\UpdateRequest;
 use GetCandy\Exceptions\MinimumRecordRequiredException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use GetCandy\Api\Http\Resources\Channels\ChannelResource;
+use GetCandy\Api\Http\Resources\Channels\ChannelCollection;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use GetCandy\Api\Http\Transformers\Fractal\Channels\ChannelTransformer;
 
@@ -21,8 +23,7 @@ class ChannelController extends BaseController
     public function index(Request $request)
     {
         $paginator = app('api')->channels()->getPaginatedData($request->per_page);
-
-        return $this->respondWithCollection($paginator, new ChannelTransformer);
+        return new ChannelCollection($paginator);
     }
 
     /**
@@ -37,8 +38,7 @@ class ChannelController extends BaseController
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
-
-        return $this->respondWithItem($channel, new ChannelTransformer);
+        return new ChannelResource($channel);
     }
 
     /**

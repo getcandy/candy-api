@@ -3,13 +3,13 @@
 namespace Tests\Unit\Orders\Services;
 
 use Carbon\Carbon;
-use Tests\TestCase;
-use Tests\Stubs\User;
 use GetCandy\Api\Core\Baskets\Models\Basket;
-use GetCandy\Api\Core\Orders\Services\OrderService;
 use GetCandy\Api\Core\Baskets\Services\BasketService;
-use GetCandy\Api\Core\Products\Models\ProductVariant;
+use GetCandy\Api\Core\Orders\Services\OrderService;
 use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
+use GetCandy\Api\Core\Products\Models\ProductVariant;
+use Tests\Stubs\User;
+use Tests\TestCase;
 
 /**
  * @group baskets

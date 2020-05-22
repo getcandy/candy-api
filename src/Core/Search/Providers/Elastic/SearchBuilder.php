@@ -2,22 +2,22 @@
 
 namespace GetCandy\Api\Core\Search\Providers\Elastic;
 
-use Elastica\Query;
 use Elastica\Client;
+use Elastica\Query;
+use Elastica\Query\BoolQuery;
 use Elastica\Search;
 use Elastica\Suggest;
-use Elastica\Suggest\Phrase;
-use Elastica\Query\BoolQuery;
-use GetCandy\Api\Core\Products\Models\Product;
-use GetCandy\Api\Core\Categories\Models\Category;
 use Elastica\Suggest\CandidateGenerator\DirectGenerator;
-use GetCandy\Api\Core\Search\Providers\Elastic\Query\Term;
+use Elastica\Suggest\Phrase;
 use GetCandy\Api\Core\Attributes\Services\AttributeService;
-use GetCandy\Api\Core\Search\Providers\Elastic\Sorts\TextSort;
+use GetCandy\Api\Core\Categories\Models\Category;
+use GetCandy\Api\Core\Products\Models\Product;
+use GetCandy\Api\Core\Search\Providers\Elastic\Aggregators\Attribute as AttributeAggregator;
+use GetCandy\Api\Core\Search\Providers\Elastic\Filters\CustomerGroupFilter;
+use GetCandy\Api\Core\Search\Providers\Elastic\Query\Term;
 use GetCandy\Api\Core\Search\Providers\Elastic\Sorts\BasicSort;
 use GetCandy\Api\Core\Search\Providers\Elastic\Sorts\NestedSort;
-use GetCandy\Api\Core\Search\Providers\Elastic\Filters\CustomerGroupFilter;
-use GetCandy\Api\Core\Search\Providers\Elastic\Aggregators\Attribute as AttributeAggregator;
+use GetCandy\Api\Core\Search\Providers\Elastic\Sorts\TextSort;
 
 class SearchBuilder
 {

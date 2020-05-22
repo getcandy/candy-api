@@ -3,10 +3,10 @@
 namespace GetCandy\Api\Http\Controllers\Utils;
 
 use Carbon\Carbon;
-use GetCandy\Api\Jobs\Utils\ImportJob;
 use GetCandy\Api\Core\Utils\Import\Models\Import;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Utils\ProcessImportRequest;
+use GetCandy\Api\Jobs\Utils\ImportJob;
 
 class ImportController extends BaseController
 {

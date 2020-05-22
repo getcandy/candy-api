@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Products\Listeners;
 
-use GetCandy\Api\Core\Search\SearchContract;
 use GetCandy\Api\Core\Products\Events\ProductCreatedEvent;
+use GetCandy\Api\Core\Search\SearchContract;
 
 class AddToIndexListener
 {
@@ -25,6 +25,8 @@ class AddToIndexListener
     public function handle(ProductCreatedEvent $event)
     {
         $product = $event->product();
-        app(SearchContract::class)->indexer()->indexObject($product);
+        if (!$product->isDraft()) {
+            app(SearchContract::class)->indexer()->indexObject($product);
+        }
     }
 }

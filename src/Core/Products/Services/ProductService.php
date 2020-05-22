@@ -2,17 +2,17 @@
 
 namespace GetCandy\Api\Core\Products\Services;
 
-use Illuminate\Database\Eloquent\Model;
-use GetCandy\Api\Core\Scaffold\BaseService;
-use GetCandy\Api\Core\Products\Models\Product;
+use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
 use GetCandy\Api\Core\Channels\Models\Channel;
-use GetCandy\Api\Core\Scopes\CustomerGroupScope;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
-use GetCandy\Api\Core\Search\Events\IndexableSavedEvent;
 use GetCandy\Api\Core\Products\Events\ProductCreatedEvent;
 use GetCandy\Api\Core\Products\Interfaces\ProductInterface;
+use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Products\Models\ProductRecommendation;
-use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
+use GetCandy\Api\Core\Scaffold\BaseService;
+use GetCandy\Api\Core\Scopes\CustomerGroupScope;
+use GetCandy\Api\Core\Search\Events\IndexableSavedEvent;
+use Illuminate\Database\Eloquent\Model;
 
 class ProductService extends BaseService
 {
@@ -37,12 +37,43 @@ class ProductService extends BaseService
      * @throws  Illuminate\Database\Eloquent\ModelNotFoundException
      * @return Product
      */
-    public function getByHashedId($id)
+    public function getByHashedId($id, $withDrafted = false)
     {
         $id = $this->model->decodeId($id);
-        $product = $this->model->findOrFail($id);
+        $product = $this->model;
 
-        return $this->factory->init($product)->get();
+        if ($withDrafted) {
+            $product = $product->withDrafted();
+        }
+
+        return $this->factory->init($product->findOrFail($id))->get();
+    }
+
+    public function findById($id, array $includes = [], $draft = false)
+    {
+        $query = Product::with(array_merge($includes, ['draft']));
+
+        if ($draft) {
+            $query->withDrafted()->withoutGlobalScopes();
+        }
+
+        $product = $query->find($id);
+
+        return $product;
+    }
+
+    public function findBySku($sku, array $includes = [], $draft = false)
+    {
+        $query = Product::with(array_merge($includes, ['draft']))
+            ->whereHas('variants', function ($q) use($sku) {
+                $q->whereSku($sku);
+            });
+
+        if ($draft) {
+            $query->withDrafted()->withoutGlobalScopes();
+        }
+
+        return $query->first();
     }
 
     /**
@@ -58,24 +89,32 @@ class ProductService extends BaseService
      */
     public function update($hashedId, array $data)
     {
-        $product = $this->getByHashedId($hashedId);
+        $product = $this->getByHashedId($hashedId, true);
 
         if (! $product) {
             abort(404);
         }
 
-        $product->attribute_data = $data['attribute_data'];
+        if (!empty($data['attribute_data'])) {
+            $product->attribute_data = $data['attribute_data'];
+        }
 
         if (! empty($data['family_id'])) {
             $family = app('api')->productFamilies()->getByHashedId($data['family_id']);
             $family->products()->save($product);
-        } else {
-            $product->save();
         }
 
-        event(new AttributableSavedEvent($product));
+        if (! empty($data['layout_id'])) {
+            $layout = app('api')->layouts()->getByHashedId($data['layout_id']);
+            $product->layout_id = $layout->id;
+        }
 
-        event(new IndexableSavedEvent($product));
+
+        $product->save();
+
+        // event(new AttributableSavedEvent($product));
+
+        // event(new IndexableSavedEvent($product));
 
         return $product;
     }
@@ -228,12 +267,18 @@ class ProductService extends BaseService
     }
 
     /**
-     * @param $hashedId
+     * @param $id
      * @return mixed
      */
-    public function delete($hashedId)
+    public function delete($id)
     {
-        return $this->getByHashedId($hashedId)->delete();
+        $product = Product::withDrafted()->find($id);
+
+        if ($product->isDraft()) {
+            return $product->forceDelete();
+        }
+
+        return $product->delete();
     }
 
     /**
@@ -272,7 +317,7 @@ class ProductService extends BaseService
             'attributes',
             'family',
             'family.attributes',
-        ])->find($id);
+        ])->withDrafted()->find($id);
 
         foreach ($product->family->attributes as $attribute) {
             $attributes[$attribute->handle] = $attribute;

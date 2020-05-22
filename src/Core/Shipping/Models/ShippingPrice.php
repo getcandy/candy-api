@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Core\Shipping\Models;
 
-use GetCandy\Api\Core\Scaffold\BaseModel;
-use GetCandy\Api\Core\Traits\HasCustomerGroups;
 use GetCandy\Api\Core\Currencies\Models\Currency;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
+use GetCandy\Api\Core\Scaffold\BaseModel;
+use GetCandy\Api\Core\Traits\HasCustomerGroups;
 
 class ShippingPrice extends BaseModel
 {

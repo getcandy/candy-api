@@ -27,6 +27,6 @@ class AttributeGroup extends BaseModel
      */
     public function attributes()
     {
-        return $this->hasMany(Attribute::class, 'group_id');
+        return $this->hasMany(Attribute::class, 'group_id')->orderBy('position');
     }
 }

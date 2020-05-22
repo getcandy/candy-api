@@ -4,6 +4,7 @@ namespace GetCandy\Api\Core\Reports\Providers;
 
 use DB;
 use Carbon\Carbon;
+use DB;
 
 class Sales extends AbstractProvider
 {

@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Products\Criteria;
 
-use GetCandy\Api\Core\Scaffold\AbstractCriteria;
 use GetCandy\Api\Core\Products\Models\ProductFamily;
+use GetCandy\Api\Core\Scaffold\AbstractCriteria;
 
 class ProductFamilyCriteria extends AbstractCriteria
 {

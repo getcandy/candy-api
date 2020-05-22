@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Customers;
 
-use League\Fractal\TransformerAbstract;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
+use League\Fractal\TransformerAbstract;
 
 class CustomerGroupTransformer extends TransformerAbstract
 {

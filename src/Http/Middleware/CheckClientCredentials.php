@@ -5,15 +5,19 @@ namespace GetCandy\Api\Http\Middleware;
 use Auth;
 use Closure;
 use Firebase\JWT\JWT;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Contracts\Encryption\Encrypter;
+use Laravel\Passport\Http\Middleware\CheckClientCredentials as BaseMiddleware;
 use Laravel\Passport\Passport;
 use Laravel\Passport\TokenRepository;
-use League\OAuth2\Server\ResourceServer;
-use Illuminate\Auth\AuthenticationException;
-use Illuminate\Contracts\Encryption\Encrypter;
-use Illuminate\Contracts\Encryption\DecryptException;
 use League\OAuth2\Server\Exception\OAuthServerException;
-use Symfony\Bridge\PsrHttpMessage\Factory\DiactorosFactory;
-use Laravel\Passport\Http\Middleware\CheckClientCredentials as BaseMiddleware;
+use League\OAuth2\Server\ResourceServer;
+use Laminas\Diactoros\ResponseFactory;
+use Laminas\Diactoros\ServerRequestFactory;
+use Laminas\Diactoros\StreamFactory;
+use Laminas\Diactoros\UploadedFileFactory;
+use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
 
 class CheckClientCredentials extends BaseMiddleware
 {
@@ -55,7 +59,13 @@ class CheckClientCredentials extends BaseMiddleware
      */
     public function handle($request, Closure $next, ...$scopes)
     {
-        $psr = (new DiactorosFactory)->createRequest($request);
+        $psr = (new PsrHttpFactory(
+            new ServerRequestFactory,
+            new StreamFactory,
+            new UploadedFileFactory,
+            new ResponseFactory
+        ))->createRequest($request);
+
 
         $cookies = $psr->getCookieParams();
 
@@ -86,8 +96,6 @@ class CheckClientCredentials extends BaseMiddleware
 
             return $next($request);
         }
-
-        $this->validateScopes($psr, $scopes);
 
         return $next($request);
     }

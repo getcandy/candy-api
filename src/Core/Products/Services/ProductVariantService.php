@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Core\Products\Services;
 
-use GetCandy\Api\Core\Scaffold\BaseService;
-use GetCandy\Api\Core\Products\Models\ProductVariant;
-use GetCandy\Api\Core\Search\Events\IndexableSavedEvent;
 use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
+use GetCandy\Api\Core\Products\Models\ProductVariant;
+use GetCandy\Api\Core\Scaffold\BaseService;
+use GetCandy\Api\Core\Search\Events\IndexableSavedEvent;
 
 class ProductVariantService extends BaseService
 {
@@ -25,7 +25,7 @@ class ProductVariantService extends BaseService
      */
     public function create($id, array $data)
     {
-        $product = app('api')->products()->getByHashedId($id);
+        $product = app('api')->products()->getByHashedId($id, true);
 
         // If we are adding a new set of variants, get rid.
 
@@ -92,7 +92,7 @@ class ProductVariantService extends BaseService
             ]);
         }
 
-        return $product;
+        return $product->load('variants');
     }
 
     public function canAddToBasket($variantId, $quantity)
@@ -110,12 +110,6 @@ class ProductVariantService extends BaseService
         }
 
         return $quantity <= $variant->stock;
-    }
-
-    public function variantIsAvailable($variantId)
-    {
-        $variant = $this->getByHashedId($variantId);
-        return $variant->availableProduct()->exists();
     }
 
     /**
@@ -193,6 +187,8 @@ class ProductVariantService extends BaseService
 
         if (! empty($data['pricing'])) {
             $this->setGroupPricing($variant, $data['pricing']);
+        } else if (isset($data['pricing']) && !count($data['pricing'])) {
+            $variant->customerPricing()->delete();
         }
 
         if (! empty($data['tiers'])) {
@@ -201,7 +197,21 @@ class ProductVariantService extends BaseService
             $variant->tiers()->delete();
         }
 
+
+        $options = [];
+
+        foreach ($data['options'] ?? [] as $option => $value) {
+            if (is_array($value)) {
+                $value = reset($value);
+            }
+            $options[str_slug($option)] = str_slug($value);
+        }
+
+        $variant->options = json_encode($options);
+
+        // $this->attributes['options'] = json_encode($options);
         $variant->save();
+
 
         $variant->product->update([
             'option_data' => $this->remapProductOptions($variant, $data['options'] ?? []),
@@ -249,33 +259,8 @@ class ProductVariantService extends BaseService
     public function remapProductOptions($variant, $incoming)
     {
         $optionsAvailable = [];
-        $optionData = $variant->product->option_data;
         $variants = $variant->product()->first()->variants;
-
-        $optionData = $this->mapOptions($optionData, $incoming);
-
-        foreach ($variants as $variant) {
-            $originialData = json_decode($variant->getOriginal('options'), true);
-            $parsedData = $variant->options;
-            foreach ($originialData as $handle => $value) {
-                $optionsAvailable[$handle][] = $value;
-            }
-        }
-
-        // Remove any that don't exist
-        foreach ($optionData as $handle => $option) {
-            $available = $optionsAvailable[$handle] ?? null;
-            if (!$available) {
-                unset($optionData[$handle]);
-                continue;
-            }
-            foreach ($option['options'] as $field => $value) {
-                if (!in_array($field, $available)) {
-                    unset($optionData[$handle]['options'][$field]);
-                    continue;
-                }
-            }
-        }
+        $optionData = $this->mapOptions($variant->product->option_data, $incoming);
 
         return $optionData;
     }

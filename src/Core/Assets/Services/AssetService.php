@@ -2,12 +2,11 @@
 
 namespace GetCandy\Api\Core\Assets\Services;
 
-use Image;
-use Illuminate\Database\Eloquent\Model;
-use Symfony\Component\Finder\SplFileInfo;
+use GetCandy\Api\Core\Assets\Jobs\CleanUpAssetFiles;
 use GetCandy\Api\Core\Assets\Models\Asset;
 use GetCandy\Api\Core\Scaffold\BaseService;
-use GetCandy\Api\Core\Assets\Jobs\CleanUpAssetFiles;
+use Illuminate\Database\Eloquent\Model;
+use Symfony\Component\Finder\SplFileInfo;
 
 class AssetService extends BaseService
 {
@@ -36,7 +35,7 @@ class AssetService extends BaseService
      * @param  int $position
      * @return Asset
      */
-    public function upload($data, Model $model, $position = 0)
+    public function upload($data, Model $model = null, $position = 0)
     {
         if (! empty($data['file'])) {
             if ($data['file'] instanceof SplFileInfo) {
@@ -58,10 +57,6 @@ class AssetService extends BaseService
         if (! $asset) {
             return false;
         }
-
-        $asset->update([
-            'position' => $position,
-        ]);
 
         return $asset;
     }
@@ -124,6 +119,25 @@ class AssetService extends BaseService
         }
 
         return $assets->get();
+    }
+
+    /**
+     * Detach an asset.
+     *
+     * @param string $assetId
+     *
+     * @return bool
+     */
+    public function detach($assetId, $ownerId, $ownerType)
+    {
+        $ownerId = (new $ownerType)->decodeId($ownerId);
+
+        $ownerModel = (new $ownerType)->withoutGlobalScopes()->find($ownerId);
+
+        $assetId = (new Asset)->decodeId($assetId);
+        $ownerModel->assets()->detach($assetId);
+
+        return true;
     }
 
     /**

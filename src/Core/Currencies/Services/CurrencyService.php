@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Core\Currencies\Services;
 
-use GetCandy\Api\Core\Scaffold\BaseService;
-use GetCandy\Api\Core\Currencies\Models\Currency;
-use GetCandy\Exceptions\MinimumRecordRequiredException;
 use GetCandy\Api\Core\Currencies\Interfaces\CurrencyServiceInterface;
+use GetCandy\Api\Core\Currencies\Models\Currency;
+use GetCandy\Api\Core\Scaffold\BaseService;
+use GetCandy\Exceptions\MinimumRecordRequiredException;
 
 class CurrencyService extends BaseService implements CurrencyServiceInterface
 {

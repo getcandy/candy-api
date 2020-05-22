@@ -4,6 +4,7 @@ namespace GetCandy\Api\Core\Orders\Models;
 
 use Carbon\Carbon;
 use GetCandy\Api\Core\Traits\HasMeta;
+use GetCandy\Api\Core\Scopes\OrderScope;
 use GetCandy\Api\Core\Scaffold\BaseModel;
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -44,6 +45,12 @@ class Order extends BaseModel
         return '#ORD-'.str_pad($this->id, 4, 0, STR_PAD_LEFT);
     }
 
+    public static function bootHasCustomerGroups()
+    {
+        static::addGlobalScope(new CustomerGroupScope);
+    }
+
+
     /**
      * The "booting" method of the model.
      *
@@ -52,14 +59,18 @@ class Order extends BaseModel
     protected static function boot()
     {
         parent::boot();
+        static::addGlobalScope(new OrderScope);
+    }
 
-        static::addGlobalScope('open', function (Builder $builder) {
-            $builder->whereNull('placed_at');
-        });
-
-        static::addGlobalScope('not_expired', function (Builder $builder) {
-            $builder->where('status', '!=', 'expired');
-        });
+    /**
+     * Define the placed scope.
+     *
+     * @param Builder $qb
+     * @return Builder
+     */
+    public function scopePlaced($qb)
+    {
+        return $qb->whereNotNull('placed_at');
     }
 
     /**

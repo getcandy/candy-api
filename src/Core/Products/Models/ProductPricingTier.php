@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Core\Products\Models;
 
-use GetCandy\Api\Core\Scaffold\BaseModel;
-use GetCandy\Api\Core\Scopes\ProductPricingScope;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 use GetCandy\Api\Core\Pricing\PriceCalculatorInterface;
+use GetCandy\Api\Core\Scaffold\BaseModel;
+use GetCandy\Api\Core\Scopes\ProductPricingScope;
 
 class ProductPricingTier extends BaseModel
 {

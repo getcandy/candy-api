@@ -3,8 +3,8 @@
 namespace GetCandy\Api\Core\Search\Providers\Elastic;
 
 use Elastica\Query;
-use Elastica\Suggest;
 use Elastica\Query\Wildcard;
+use Elastica\Suggest;
 use GetCandy\Api\Core\Search\ClientContract;
 use GetCandy\Api\Core\Search\Providers\Elastic\Sorts\CategorySort;
 
@@ -223,15 +223,13 @@ class Search implements ClientContract
         $results->each(function ($result) use ($products) {
             $skus = collect($result->getHighlights()['sku.lowercase']);
             $skus->each(function ($sku) use ($products, $result) {
-                $name = $result->name;
                 $products->push([
-                    'name' => is_array($name) ? reset($name) : $name,
+                    'name' => $result->name,
                     'breadcrumbs' => $result->breadcrumbs,
                     'sku' => $sku,
                 ]);
             });
         });
-
 
         return $products;
     }

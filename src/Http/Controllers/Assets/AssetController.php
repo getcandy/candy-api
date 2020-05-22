@@ -2,16 +2,16 @@
 
 namespace GetCandy\Api\Http\Controllers\Assets;
 
+use Carbon\Carbon;
+use GetCandy\Api\Http\Controllers\BaseController;
+use GetCandy\Api\Http\Requests\Assets\UpdateAllRequest;
+use GetCandy\Api\Http\Requests\Assets\UploadRequest;
+use GetCandy\Api\Http\Transformers\Fractal\Assets\AssetTransformer;
+use GetCandy\Exceptions\InvalidServiceException;
+use Illuminate\Http\Request;
 use Image;
 use Storage;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
-use GetCandy\Exceptions\InvalidServiceException;
-use GetCandy\Api\Http\Controllers\BaseController;
-use GetCandy\Api\Http\Requests\Assets\UploadRequest;
-use GetCandy\Api\Http\Requests\Assets\UpdateAllRequest;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use GetCandy\Api\Http\Transformers\Fractal\Assets\AssetTransformer;
 
 class AssetController extends BaseController
 {
@@ -19,21 +19,21 @@ class AssetController extends BaseController
     {
         $file = $request->file('file');
 
-        $directory = 'public/uploads/'.Carbon::now()->format('d/m');
+        $directory = 'uploads/'.Carbon::now()->format('d/m');
 
-        $path = $file->store($directory);
+        $path = $file->store($directory, 'public');
+        $thumbnail = null;
 
         // You can't transform a PDF so...
         try {
-            $image = Image::make(Storage::get($path));
+            $image = Image::make(Storage::disk('public')->get($path));
             $type = pathinfo($path, PATHINFO_EXTENSION);
             $filename = basename($path, ".{$type}");
-            $image->resize(500, null, function ($constraint) {
+            $image->resize(null, 300, function ($constraint) {
                 $constraint->aspectRatio();
             });
-            $image->crop(500, 300, 0, 0);
             $thumbnail = "{$directory}/thumbnails/{$filename}.{$type}";
-            Storage::put(
+            Storage::disk('public')->put(
                 $thumbnail,
                 $image->stream($type, 100)->getContents()
             );
@@ -42,18 +42,24 @@ class AssetController extends BaseController
 
         return response()->json([
             'path' => $path,
-            'url'=> \Storage::url($path),
+            'filename' => $file->getClientOriginalName(),
+            'url'=> Storage::disk('cdn')->url($path),
             'thumbnail' => $thumbnail ?? null,
-            'thumbnail_url' => ! empty($thumbnail) ? \Storage::url($thumbnail) : null,
+            'thumbnail_url' => ! empty($thumbnail) ? \Storage::disk('cdn')->url($thumbnail) : null,
         ]);
     }
 
     public function store(UploadRequest $request)
     {
-        try {
-            $parent = app('api')->{$request->parent}()->getByHashedId($request->parent_id);
-        } catch (InvalidServiceException $e) {
-            return $this->errorWrongArgs($e->getMessage());
+        $parent = null;
+        if ($request->parent_id) {
+            $parent = app('api')->{$request->parent}()->getByHashedId($request->parent_id, true);
+        }
+
+        $data = $request->all();
+
+        if (empty($data['caption'])) {
+            $data['caption'] = $parent ? $parent->attribute('name') : $request->caption;
         }
 
         $data = $request->all();
@@ -65,7 +71,7 @@ class AssetController extends BaseController
         $asset = app('api')->assets()->upload(
             $data,
             $parent,
-            $parent->assets()->count() + 1
+            $parent ? $parent->assets()->count() + 1 : 1
         );
 
         if (! $asset) {
@@ -73,6 +79,17 @@ class AssetController extends BaseController
         }
 
         return $this->respondWithItem($asset, new AssetTransformer);
+    }
+
+    public function detach($assetId, $ownerId, Request $request)
+    {
+        try {
+            $result = app('api')->assets()->detach($assetId, $ownerId, $request->type);
+        } catch (NotFoundHttpException $e) {
+            return $this->errorNotFound();
+        }
+
+        return $this->respondWithNoContent();
     }
 
     public function destroy($id)

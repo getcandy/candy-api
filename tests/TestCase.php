@@ -2,30 +2,98 @@
 
 namespace Tests;
 
-use TaxCalculator;
+use Closure;
 use Tests\Stubs\User;
+use Illuminate\Support\Fluent;
+use Illuminate\Encryption\Encrypter;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\SQLiteConnection;
+use Vinkla\Hashids\HashidsServiceProvider;
+use GetCandy\Api\Core\Baskets\Models\Basket;
+use GetCandy\Api\Core\Facades\GetCandyFacade;
+use Illuminate\Database\Schema\SQLiteBuilder;
+use Laravel\Passport\PassportServiceProvider;
 use GetCandy\Api\Core\Channels\Models\Channel;
 use GetCandy\Api\Providers\ApiServiceProvider;
+use GetCandy\Api\Core\Baskets\Models\BasketLine;
+use Spatie\Permission\PermissionServiceProvider;
+use NeonDigital\Drafting\DraftingServiceProvider;
+use Facades\GetCandy\Api\Core\Taxes\TaxCalculator;
+use Spatie\Activitylog\ActivitylogServiceProvider;
+use GetCandy\Api\Core\Products\Models\ProductVariant;
+use NeonDigital\Versioning\VersioningServiceProvider;
+use Facades\GetCandy\Api\Core\Pricing\PriceCalculator;
 use GetCandy\Api\Core\Baskets\Factories\BasketFactory;
-use Illuminate\Foundation\Bootstrap\LoadEnvironmentVariables;
+use GetCandy\Api\Core\Currencies\Facades\CurrencyConverter;
 use GetCandy\Api\Core\Channels\Interfaces\ChannelFactoryInterface;
 
 abstract class TestCase extends \Orchestra\Testbench\TestCase
 {
-    protected function setUp()
+    public function __construct(?string $name = null, array $data = [], string $dataName = '')
+    {
+        parent::__construct($name, $data, $dataName);
+        $this->hotfixSqlite();
+    }
+    /**
+     *
+     */
+    public function hotfixSqlite()
+    {
+        \Illuminate\Database\Connection::resolverFor('sqlite', function ($connection, $database, $prefix, $config) {
+            return new class($connection, $database, $prefix, $config) extends SQLiteConnection {
+                public function getSchemaBuilder()
+                {
+                    if ($this->schemaGrammar === null) {
+                        $this->useDefaultSchemaGrammar();
+                    }
+                    return new class($this) extends SQLiteBuilder {
+                        protected function createBlueprint($table, Closure $callback = null)
+                        {
+                            return new class($table, $callback) extends Blueprint {
+                                public function dropForeign($index)
+                                {
+                                    return new Fluent();
+                                }
+                            };
+                        }
+                    };
+                }
+            };
+        });
+    }
+    protected $withSeedData = true;
+
+    protected $adminRoutes = [
+        'import',
+        'activity-log',
+        'associations/groups',
+        'categories/parent/{parentID?}',
+        'collections/{collection}/routes',
+        'products/variants',
+        'products/{product}/urls',
+    ];
+
+    protected $clientRoutes = [
+        'orders/process',
+        'basket-lines',
+        'payments/3d-secure',
+        'payments/provider',
+        'payments/providers',
+        'payments/types',
+    ];
+
+    protected function setUp() : void
     {
         parent::setUp();
 
         $this->artisan('cache:forget', ['key' => 'spatie.permission.cache']);
-        $this->artisan('vendor:publish', ['--provider' => 'Spatie\Activitylog\ActivitylogServiceProvider', '--tag' => 'migrations']);
         $this->artisan('migrate', ['--database' => 'testing']);
-        $this->artisan('db:seed', ['--class' => '\Seeds\TestingDatabaseSeeder']);
-        // $this->artisan('passport:install');
 
-        // // By Default, set up everything as taxable
-        // TaxCalculator::setTax(
-        //     app('api')->taxes()->getDefaultRecord()
-        // );
+        if ($this->withSeedData) {
+            $this->artisan('db:seed', ['--class' => '\Seeds\TestingDatabaseSeeder']);
+        }
+
+        $this->withFactories(dirname(__DIR__).'/database/factories');
 
         // Make sure our channel is set.
         $channel = app()->getInstance()->make(ChannelFactoryInterface::class);
@@ -42,65 +110,49 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     {
         parent::getEnvironmentSetUp($app);
 
-        $app->useEnvironmentPath(__DIR__.'/..');
-        $app->bootstrapWith([LoadEnvironmentVariables::class]);
+        $config = [
+            'permission' => require __DIR__.'/../vendor/spatie/laravel-permission/config/permission.php',
+            'hashids' => require __DIR__.'/../config/hashids.php',
+            'auth.providers.users.model' => User::class,
+            'services.sagepay.vendor' => 'SagePay',
+            'getcandy' => require __DIR__.'/../config/getcandy.php',
+            'app.key' => Encrypter::generateKey(null),
+        ];
 
-        //Blergh but we need the config
-        $app['config']['permission'] = require realpath(__DIR__.'/../vendor/spatie/laravel-permission/config/permission.php');
-        $app['config']['hashids'] = require realpath(__DIR__.'/../config/hashids.php');
-        $app['config']->set('database.default', 'testing');
-        $app['config']->set('database.connections.testing', [
-            'driver' => 'sqlite',
-            'database' => ':memory:',
-            'prefix' => '',
-        ]);
-
-        $app['config']->set('auth.providers.users.model', User::class);
-
-        // GetCandy specific
-        $app['config']->set('getcandy', require realpath(__DIR__.'/../config/getcandy.php'));
-
-        $app['config']->set('services', [
-            'braintree' => [
-                'key' => env('BRAINTREE_PUBLIC_KEY'),
-                'secret' => env('BRAINTREE_PRIVATE_KEY'),
-                '3D_secure' => env('3D_SECURE', false),
-                'merchant_id' => env('BRAINTREE_MERCHANT'),
-                'merchants' => [
-                    'default' => env('BRAINTREE_GBP_MERCHANT'),
-                    'eur' => env('BRAINTREE_EUR_MERCHANT'),
-                ],
-            ],
-            'sagepay' => [
-                'vendor' => 'SagePay',
-            ],
-        ]);
+        foreach ($config as $key => $value) {
+            $app['config']->set($key, $value);
+        }
     }
 
     protected function getPackageProviders($app)
     {
         return [
+            PassportServiceProvider::class,
             ApiServiceProvider::class,
-            \Spatie\Permission\PermissionServiceProvider::class,
-            \Spatie\Activitylog\ActivitylogServiceProvider::class,
-            \Vinkla\Hashids\HashidsServiceProvider::class,
+            PermissionServiceProvider::class,
+            ActivitylogServiceProvider::class,
+            HashidsServiceProvider::class,
+            VersioningServiceProvider::class,
+            DraftingServiceProvider::class
         ];
     }
 
     protected function getPackageAliases($app)
     {
         return [
-            'CurrencyConverter' => \GetCandy\Api\Core\Currencies\Facades\CurrencyConverter::class,
-            'TaxCalculator' => \Facades\GetCandy\Api\Core\Taxes\TaxCalculator::class,
-            'PriceCalculator' => \Facades\GetCandy\Api\Core\Pricing\PriceCalculator::class,
-            'GetCandy' => \Facades\GetCandy\Api\Core\Helpers\GetCandy::class,
+            'CurrencyConverter' => CurrencyConverter::class,
+            'TaxCalculator' => TaxCalculator::class,
+            'PriceCalculator' => PriceCalculator::class,
+            'GetCandy' => GetCandyFacade::class,
+            'Versioning' => \NeonDigital\Versioning\Facade::class,
+            'Drafting' => \NeonDigital\Drafting\Facade::class,
         ];
     }
 
     protected function getinitalbasket($user = null)
     {
-        $variant = \GetCandy\Api\Core\Products\Models\ProductVariant::first();
-        $basket = \GetCandy\Api\Core\Baskets\Models\Basket::forceCreate([
+        $variant = ProductVariant::first();
+        $basket = Basket::forceCreate([
             'currency' => 'GBP',
         ]);
 
@@ -109,7 +161,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             $basket->save();
         }
 
-        \GetCandy\Api\Core\Baskets\Models\BasketLine::forceCreate([
+        BasketLine::forceCreate([
             'product_variant_id' => $variant->id,
             'basket_id' => $basket->id,
             'quantity' => 1,

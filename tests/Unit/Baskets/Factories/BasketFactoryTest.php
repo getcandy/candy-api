@@ -4,6 +4,7 @@ namespace Tests\Unit\Orders\Services;
 
 use Tests\TestCase;
 use GetCandy\Api\Core\Baskets\Models\Basket;
+use GetCandy\Api\Core\Channels\Models\Channel;
 use GetCandy\Api\Core\Baskets\Models\BasketLine;
 use GetCandy\Api\Core\Discounts\Models\Discount;
 use GetCandy\Api\Core\Products\Models\ProductVariant;
@@ -68,9 +69,6 @@ class BasketFactoryTest extends TestCase
         $this->assertEquals($basket->total_cost, $total);
     }
 
-    /**
-     * @group new
-     */
     public function test_discount_can_be_added_to_basket()
     {
         $variant = ProductVariant::first();
@@ -114,10 +112,18 @@ class BasketFactoryTest extends TestCase
             'value' => 'TESTCOUPON',
         ]);
 
-        \DB::table('basket_discount')->insert([
-            'basket_id' => $basket->id,
-            'discount_id' => $discount->id,
-            'coupon' => 'TESTCOUPON',
+        $basket->discounts()->sync([
+            $discount->id => [
+                'coupon' => 'TESTCOUPON'
+            ]
+        ]);
+
+        $channelId = Channel::pluck('id')->first();
+
+        $discount->channels()->sync([
+            $channelId => [
+                'published_at' => now()
+            ]
         ]);
 
         $basket = $this->app->make(BasketFactory::class)->init($basket)->get();

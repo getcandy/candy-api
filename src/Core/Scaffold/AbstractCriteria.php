@@ -34,6 +34,8 @@ abstract class AbstractCriteria
      */
     protected $offset;
 
+    protected $paginated = true;
+
     /**
      * Set a limit to the number of resources returned.
      */
@@ -141,6 +143,10 @@ abstract class AbstractCriteria
     public function get()
     {
         $query = $this->getBuilder();
+
+        if (!$this->paginated) {
+            return $query->get();
+        }
 
         return $query->paginate($this->limit);
     }

@@ -2,13 +2,13 @@
 
 namespace GetCandy\Api\Http\Controllers\Shipping;
 
-use Illuminate\Http\Request;
 use GetCandy\Api\Http\Controllers\BaseController;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use GetCandy\Api\Http\Requests\Shipping\Pricing\StoreRequest;
 use GetCandy\Api\Http\Requests\Shipping\Pricing\EstimateRequest;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use GetCandy\Api\Http\Requests\Shipping\Pricing\StoreRequest;
 use GetCandy\Api\Http\Transformers\Fractal\Shipping\ShippingPriceTransformer;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ShippingPriceController extends BaseController
 {
