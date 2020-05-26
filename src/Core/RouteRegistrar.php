@@ -31,8 +31,8 @@ class RouteRegistrar
      */
     public function all()
     {
-        $this->forAdmins();
-        $this->forClients();
+        $this->guest();
+        $this->auth();
     }
 
     /**
@@ -40,12 +40,12 @@ class RouteRegistrar
      *
      * @return void
      */
-    public function forClients()
+    public function guest()
     {
         $this->router->group([], __DIR__.'/../../routes/api.client.php');
     }
 
-    public function forAdmins()
+    public function auth()
     {
         $this->router->group([], __DIR__.'/../../routes/api.php');
     }
