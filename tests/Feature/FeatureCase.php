@@ -43,7 +43,7 @@ abstract class FeatureCase extends TestCase
     public function json($method, $uri, array $data = [], array $headers = [])
     {
         return parent::json($method, $uri, $data, array_merge([
-            'X-CANDY-HUB' => 1
+            'X-CANDY-HUB' => 1,
         ], $headers));
     }
 }

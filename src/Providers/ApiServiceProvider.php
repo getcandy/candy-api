@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Providers;
 
-use Carbon\Carbon;
 use GetCandy\Api\Console\Commands\CandySearchIndexCommand;
 use GetCandy\Api\Console\Commands\InstallGetCandyCommand;
 use GetCandy\Api\Console\Commands\ScoreProductsCommand;
@@ -11,7 +10,6 @@ use GetCandy\Api\Core\Factory;
 use GetCandy\Api\Core\GetCandy;
 use GetCandy\Api\Core\Users\Contracts\UserContract;
 use GetCandy\Api\Core\Users\Services\UserService;
-use GetCandy\Api\Http\Middleware\CheckClientCredentials;
 use GetCandy\Api\Http\Middleware\DetectHubRequestMiddleware;
 use GetCandy\Api\Http\Middleware\SetChannelMiddleware;
 use GetCandy\Api\Http\Middleware\SetCurrencyMiddleware;
