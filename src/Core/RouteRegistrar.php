@@ -42,15 +42,11 @@ class RouteRegistrar
      */
     public function forClients()
     {
-        $this->router->group([
-            'middleware' => 'api.client',
-        ], __DIR__.'/../../routes/api.client.php');
+        $this->router->group([], __DIR__.'/../../routes/api.client.php');
     }
 
     public function forAdmins()
     {
-        $this->router->group([
-            'middleware' => 'auth:api',
-        ], __DIR__.'/../../routes/api.php');
+        $this->router->group([], __DIR__.'/../../routes/api.php');
     }
 }

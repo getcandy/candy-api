@@ -19,7 +19,6 @@ use GetCandy\Api\Http\Middleware\SetCustomerGroups;
 use GetCandy\Api\Http\Middleware\SetLocaleMiddleware;
 use GetCandy\Api\Http\Middleware\SetTaxMiddleware;
 use Illuminate\Support\ServiceProvider;
-use Laravel\Passport\Passport;
 use League\Fractal\Manager;
 use Validator;
 
@@ -38,7 +37,6 @@ class ApiServiceProvider extends ServiceProvider
         $this->publishConfig();
         $this->mapValidators();
         $this->mapBindings();
-        $this->initPassport();
         $this->registerMiddleware();
         $this->mapCommands();
         $this->loadMigrations();
@@ -150,10 +148,6 @@ class ApiServiceProvider extends ServiceProvider
      */
     protected function mapBindings()
     {
-        // $this->app->register(
-        //     \Alaouy\Youtube\YoutubeServiceProvider::class
-        // );
-
         $this->app->singleton(UserContract::class, function ($app) {
             return $app->make(UserService::class);
         });
@@ -184,33 +178,12 @@ class ApiServiceProvider extends ServiceProvider
     }
 
     /**
-     * Fires up Passport.
-     *
-     * @return void
-     */
-    protected function initPassport()
-    {
-        Passport::tokensCan([
-            'read' => 'Read API',
-        ]);
-        Passport::routes();
-
-        Passport::tokensExpireIn(
-            Carbon::now()->addMinutes(config('getcandy.token_lifetime', 60))
-        );
-        Passport::refreshTokensExpireIn(
-            Carbon::now()->addMinutes(config('getcandy.refresh_token_lifetime', 60))
-        );
-    }
-
-    /**
      * Register our middleware.
      *
      * @return void
      */
     protected function registerMiddleware()
     {
-        $this->app['router']->aliasMiddleware('api.client', CheckClientCredentials::class);
         $this->app['router']->aliasMiddleware('api.currency', SetCurrencyMiddleware::class);
         $this->app['router']->aliasMiddleware('api.customer_groups', SetCustomerGroups::class);
         $this->app['router']->aliasMiddleware('api.locale', SetLocaleMiddleware::class);
