@@ -37,6 +37,7 @@ abstract class FeatureCase extends TestCase
     {
         $user = User::first();
         $user->assignRole('admin');
+
         return $user;
     }
 
