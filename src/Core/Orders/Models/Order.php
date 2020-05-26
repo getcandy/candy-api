@@ -71,7 +71,6 @@ class Order extends BaseModel
     {
         return $qb->whereNotNull('placed_at');
     }
-    
     /**
      * Define the Zone scope.
      *

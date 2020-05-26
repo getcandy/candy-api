@@ -32,7 +32,7 @@ class ProductFamilyRunnerTest extends TestCase
         $runner->run();
 
         $this->assertDatabaseHas('product_families', [
-            'name' => 'Default'
+            'name' => 'Default',
         ]);
 
         $this->assertDatabaseHas('attributables', [
