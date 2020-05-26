@@ -71,18 +71,7 @@ class Order extends BaseModel
     {
         return $qb->whereNotNull('placed_at');
     }
-
-    /**
-     * Define the placed scope.
-     *
-     * @param Builder $qb
-     * @return Builder
-     */
-    public function scopePlaced($qb)
-    {
-        return $qb->whereNotNull('placed_at');
-    }
-
+    
     /**
      * Define the Zone scope.
      *

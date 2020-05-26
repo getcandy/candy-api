@@ -145,7 +145,7 @@ class ProductService extends BaseService
      */
     public function create(array $data)
     {
-        $product = $this->model;
+        $product = new Product;
 
         $data['description'] = ! empty($data['description']) ? $data['description'] : '';
         $product->attribute_data = $data;

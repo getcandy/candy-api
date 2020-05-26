@@ -32,13 +32,7 @@ class ProductFamilyRunnerTest extends TestCase
         $runner->run();
 
         $this->assertDatabaseHas('product_families', [
-            'attribute_data' => json_encode([
-                'name' => [
-                    'webstore' => [
-                        'en' => 'Default',
-                    ],
-                ],
-            ]),
+            'name' => 'Default'
         ]);
 
         $this->assertDatabaseHas('attributables', [
