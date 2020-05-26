@@ -5,7 +5,6 @@ namespace GetCandy\Api\Http\Resources\Categories;
 use GetCandy\Api\Http\Resources\AbstractResource;
 use GetCandy\Api\Http\Resources\Assets\AssetCollection;
 use GetCandy\Api\Http\Resources\Assets\AssetResource;
-use GetCandy\Api\Http\Resources\Assets\AssetResource;
 use GetCandy\Api\Http\Resources\Attributes\AttributeCollection;
 use GetCandy\Api\Http\Resources\Channels\ChannelCollection;
 use GetCandy\Api\Http\Resources\Customers\CustomerGroupCollection;
