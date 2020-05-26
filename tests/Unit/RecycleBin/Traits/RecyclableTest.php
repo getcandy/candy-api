@@ -44,7 +44,6 @@ class RecyclableTest extends TestCase
         $product = factory(Product::class)->create();
 
         $product->delete();
-        $product->delete();
 
         $rows = DB::table('recycle_bin')->where([
             'recyclable_id' => $product->id,
