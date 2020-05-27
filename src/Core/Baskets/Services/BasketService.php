@@ -3,7 +3,6 @@
 namespace GetCandy\Api\Core\Baskets\Services;
 
 use Carbon\Carbon;
-use GetCandy\Api\Core\Auth\Models\User;
 use GetCandy\Api\Core\Baskets\Events\BasketStoredEvent;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketFactoryInterface;
 use GetCandy\Api\Core\Baskets\Models\Basket;

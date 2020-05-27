@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Core\Customers\Models;
 
-use GetCandy\Api\Core\Auth\Models\User;
 use GetCandy\Api\Core\Categories\Models\Category;
 use GetCandy\Api\Core\Collections\Models\Collection;
 use GetCandy\Api\Core\Products\Models\Product;
@@ -21,7 +20,7 @@ class CustomerGroup extends BaseModel
      */
     public function users()
     {
-        return $this->hasMany(User::class);
+        return $this->hasMany(config('auth.providers.users.model'));
     }
 
     /**

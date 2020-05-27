@@ -2,14 +2,14 @@
 
 namespace GetCandy\Api\Core\Auth\Services;
 
-use GetCandy\Api\Core\Auth\Models\User;
 use GetCandy\Api\Core\Scaffold\BaseService;
 
 class UserService extends BaseService
 {
     public function __construct()
     {
-        $this->model = new User();
+        $userclass = config('auth.providers.users.model');
+        $this->model = new $userclass;
     }
 
     public function getCustomerGroups($user = null)
