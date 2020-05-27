@@ -31,7 +31,7 @@ class RouteRegistrarTest extends TestCase
     public function test_can_register_only_client_routes_with_correct_middleware()
     {
         $registrar = app()->make(RouteRegistrar::class);
-        $registrar->forClients();
+        $registrar->guest();
 
         $routeIterator = Route::getRoutes()->getIterator();
 
@@ -46,20 +46,12 @@ class RouteRegistrarTest extends TestCase
         foreach ($this->adminRoutes as $route) {
             $this->assertFalse($routes->contains($route));
         }
-
-        foreach ($routeIterator as $routeObject) {
-            if (in_array($routeObject->uri, $this->clientRoutes)) {
-                $this->assertTrue(
-                    in_array('api.client', $routeObject->middleware())
-                );
-            }
-        }
     }
 
     public function test_can_register_only_admin_routes_with_correct_middleware()
     {
         $registrar = app()->make(RouteRegistrar::class);
-        $registrar->forAdmins();
+        $registrar->auth();
 
         $routeIterator = Route::getRoutes()->getIterator();
 
@@ -73,14 +65,6 @@ class RouteRegistrarTest extends TestCase
 
         foreach ($this->clientRoutes as $clientRoute) {
             $this->assertFalse($routes->contains($clientRoute));
-        }
-
-        foreach ($routeIterator as $routeObject) {
-            if (in_array($routeObject->uri, $this->adminRoutes)) {
-                $this->assertTrue(
-                    in_array('auth:api', $routeObject->middleware())
-                );
-            }
         }
     }
 }

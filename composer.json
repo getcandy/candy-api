@@ -14,7 +14,6 @@
         "intervention/image": "^2.4.2",
         "kalnoy/nestedset": "^5.0",
         "laravel/framework": "^7.0",
-        "laravel/passport": "^9.2.1",
         "league/fractal": "^0.17.0",
         "doctrine/dbal": "2.9.2",
         "ruflin/elastica": "^6.1",
