@@ -33,7 +33,7 @@ class CategoryController extends BaseController
         $criteria
             ->tree($request->tree)
             ->depth($request->depth)
-            ->include($request->includes)
+            ->include($request->include)
             ->limit($request->limit);
 
         if (! $request->tree) {

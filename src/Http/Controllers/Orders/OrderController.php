@@ -156,7 +156,7 @@ class OrderController extends BaseController
             return $this->errorForbidden(trans('getcandy::exceptions.basket_already_has_placed_order'));
         }
 
-        return new OrderResource($order->load($request->includes ?: []));
+        return new OrderResource($order->load($request->include ?: []));
     }
 
     /**
@@ -375,10 +375,9 @@ class OrderController extends BaseController
         $order = $this->orders->id($id)->first();
         $price = $prices->getByHashedId($request->price_id);
         $basket = $basketFactory->init($order->basket)->get();
-
         $order = $factory->order($order)
             ->basket($basket)
-            ->include($request->includes ?? [])
+            ->include($this->parseIncludes($request->include ?? []))
             ->shipping($price, $request->preference)
             ->resolve();
 

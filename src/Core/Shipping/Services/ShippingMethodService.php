@@ -152,7 +152,6 @@ class ShippingMethodService extends BaseService
                 }
             }
         }
-
         $options = collect($options);
 
         if ($basket && $basket->hasExclusions) {
