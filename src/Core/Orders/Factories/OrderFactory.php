@@ -250,24 +250,24 @@ class OrderFactory implements OrderFactoryInterface
      */
     protected function resolveLines($order)
     {
-        $lines = [];
-        foreach ($this->basket->lines as $line) {
-            array_push($lines, [
-                'product_variant_id' => $line->variant->id,
-                'sku' => $line->variant->sku,
-                'tax_total' => $line->total_tax * 100,
-                'tax_rate' => $line->variant->tax->percentage,
-                'discount_total' => $line->discount_total * 100 ?? 0,
-                'line_total' => $line->total_cost * 100,
-                'unit_price' => $line->base_cost * 100,
-                'unit_qty' => $line->variant->unit_qty,
-                'quantity' => $line->quantity,
-                'description' => $line->variant->product->attribute('name'),
-                'option' => $line->variant->name,
-                'meta' => $line->meta,
-            ]);
-        }
-        $order->lines()->createMany($lines);
+        $order->lines()->createMany(
+            $this->basket->lines->map(function ($line) {
+                return [
+                    'product_variant_id' => $line->variant->id,
+                    'sku' => $line->variant->sku,
+                    'tax_total' => $line->total_tax * 100,
+                    'tax_rate' => $line->variant->tax->percentage,
+                    'discount_total' => $line->discount_total * 100 ?? 0,
+                    'line_total' => $line->total_cost * 100,
+                    'unit_price' => $line->base_cost * 100,
+                    'unit_qty' => $line->variant->unit_qty,
+                    'quantity' => $line->quantity,
+                    'description' => $line->variant->product->attribute('name'),
+                    'option' => $line->variant->name,
+                    'meta' => $line->meta,
+                ];
+            })->unique('sku')->toArray()
+        );
 
         return $order;
     }
