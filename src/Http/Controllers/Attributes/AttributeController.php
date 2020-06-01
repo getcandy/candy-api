@@ -10,7 +10,6 @@ use GetCandy\Api\Http\Requests\Attributes\ReorderRequest;
 use GetCandy\Api\Http\Requests\Attributes\UpdateRequest;
 use GetCandy\Api\Http\Resources\Attributes\AttributeCollection;
 use GetCandy\Api\Http\Resources\Attributes\AttributeResource;
-use GetCandy\Api\Http\Transformers\Fractal\Attributes\AttributeTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -66,7 +65,6 @@ class AttributeController extends BaseController
     public function store(CreateRequest $request)
     {
         $result = app('api')->attributes()->create($request->all());
-
         return new AttributeResource($result);
     }
 
@@ -99,7 +97,7 @@ class AttributeController extends BaseController
             return $this->errorNotFound();
         }
 
-        return $this->respondWithItem($result, new AttributeTransformer);
+        return new AttributeResource($result);
     }
 
     /**
