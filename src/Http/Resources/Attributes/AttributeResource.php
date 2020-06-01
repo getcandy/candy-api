@@ -21,7 +21,7 @@ class AttributeResource extends AbstractResource
             'localised' => (bool) $this->translatable,
             'type' => $this->type,
             'required' => (bool) $this->required,
-            'lookups' => $this->lookups,
+            'lookups' => $this->lookups ?? [],
             'system' => (bool) $this->system,
         ];
     }
