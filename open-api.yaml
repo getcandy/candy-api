@@ -35,8 +35,6 @@ paths:
           name: per_page
           description: How many results per page
       description: Gets a paginated list of all channel
-      security:
-        - auth: []
       tags:
         - Channels
     post:
@@ -50,8 +48,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Channel'
       operationId: post-channels
-      security:
-        - auth: []
       requestBody:
         content:
           multipart/form-data:
@@ -97,8 +93,6 @@ paths:
                 $ref: '#/components/schemas/Error'
       operationId: get-channels-channelId
       description: ''
-      security:
-        - auth: []
       parameters:
         - schema:
             type: string
@@ -131,8 +125,6 @@ paths:
                     items:
                       type: string
       operationId: put-channels-channelId
-      security:
-        - auth: []
       requestBody:
         content:
           multipart/form-data:
@@ -149,8 +141,6 @@ paths:
       operationId: delete-channels-channelId
       tags:
         - Channels
-      security:
-        - auth: []
       description: ''
   /orders:
     get:
@@ -171,8 +161,6 @@ paths:
             type: string
           in: query
           name: include
-      security:
-        - auth: []
     post:
       summary: Create Order
       operationId: post-orders
@@ -206,21 +194,13 @@ paths:
                     basket_id:
                       - The basket id field is required.
       description: Create an Order from a Basket instance
-      security:
-        - auth: []
+      tags:
+        - Orders
       requestBody:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                basket_id:
-                  type: string
-              required:
-                - basket_id
-        description: ''
-      tags:
-        - Orders
+              $ref: '#/components/schemas/CreateOrderBody'
   '/orders/{orderId}':
     parameters:
       - schema:
@@ -250,8 +230,6 @@ paths:
         Get an Order by it's ID.
 
         You must be an admin or owner to retrieve the order, otherwise you'll get a 404.
-      security:
-        - auth: []
     put:
       summary: Update Order
       operationId: put-orders-orderId
@@ -273,8 +251,6 @@ paths:
                     $ref: '#/components/schemas/Order'
       tags:
         - Orders
-      security:
-        - auth: []
       description: Update an Order
       requestBody:
         content:
@@ -318,8 +294,6 @@ paths:
                       - label: SagePay
       operationId: get-orders-types
       description: Returns all order types currently in the system
-      security:
-        - auth: []
   /orders/process:
     post:
       summary: Processes an order on the API
@@ -378,8 +352,6 @@ paths:
               required:
                 - order_id
                 - payment_token
-      security:
-        - auth: []
   /attributes:
     get:
       summary: Get Attributes
@@ -435,15 +407,13 @@ paths:
       operationId: get-attributes
       parameters: []
       description: Return a paged array of attributes
-      security:
-        - auth: []
     post:
       summary: Create Attribute
       tags:
         - Attributes
       responses:
-        '200':
-          description: OK
+        '201':
+          description: Created
           content:
             application/json:
               schema:
@@ -499,8 +469,6 @@ paths:
                       - The handle field is required.
       operationId: post-attributes
       description: Create a new attribute
-      security:
-        - auth: []
       requestBody:
         content:
           application/json:
@@ -605,8 +573,6 @@ paths:
           in: query
           name: tree
           description: Whether response should be a node tree
-      security:
-        - auth: []
       description: Returns a paginated resource of categories
     post:
       summary: Create a new category
@@ -636,8 +602,6 @@ paths:
                   value:
                     url:
                       - The url field is required.
-      security:
-        - auth: []
       description: "Creates a new category and returns it's resource."
   '/categories/{categoryId}':
     parameters:
@@ -665,8 +629,6 @@ paths:
             type: string
           in: query
           name: includes
-      security:
-        - auth: []
       description: Returns a single category from a given ID
     put:
       summary: Update a category
@@ -694,8 +656,6 @@ paths:
         description: ''
       tags:
         - Categories
-      security:
-        - auth: []
       description: Update a category using a given ID.
   /assets:
     put:
@@ -717,8 +677,6 @@ paths:
       tags:
         - Assets
       description: Update all assets in the given array of ids.
-      security:
-        - auth: []
     post:
       summary: Create Asset
       tags:
@@ -731,8 +689,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/AssetResponse'
       operationId: post-assets
-      security:
-        - auth: []
       requestBody:
         content:
           multipart/form-data:
@@ -768,8 +724,6 @@ paths:
             schema:
               $ref: '#/components/schemas/AssetSimpleUploadBody'
         description: ''
-      security:
-        - auth: []
   '/assets/{assetId}/detach/{ownerId}':
     parameters:
       - schema:
@@ -798,8 +752,6 @@ paths:
             schema:
               $ref: '#/components/schemas/AssetDetachBody'
       description: Detaches any assets from a given model. Useful if you want to remove certain assets from a product (or another model) without deleting the asset itself.
-      security:
-        - auth: []
   /associations/groups:
     get:
       summary: Paginated array of association groups
@@ -836,8 +788,6 @@ paths:
                         links: []
       operationId: get-associations-groups
       description: Returns a paginated response of association groups available in the system
-      security:
-        - auth: []
   /attributes/order:
     put:
       summary: Update request to reorder attributes
@@ -847,8 +797,6 @@ paths:
         '204':
           description: No Content
       operationId: put-attributes-order
-      security:
-        - auth: []
       description: Allows you to reorder a target category in relation to another.
       requestBody:
         content:
@@ -920,6 +868,12 @@ paths:
                             en: General
                           handle: general
                           position: '1'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
       operationId: get-attributes-attributeId
       parameters:
         - schema:
@@ -927,8 +881,6 @@ paths:
           in: query
           name: include
           description: ''
-      security:
-        - auth: []
       description: Returns an attribute from a given ID.
     put:
       summary: Update an attribute
@@ -952,6 +904,22 @@ paths:
                     error:
                       http_code: 404
                       message: Resource not found
+        '422':
+          description: Unprocessable Entity (WebDAV)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: array
+                    items:
+                      type: string
+              examples:
+                validation-example:
+                  value:
+                    name:
+                      - The name field is required.
       description: Updates an attribute from a given ID.
       parameters: []
       requestBody:
@@ -961,8 +929,6 @@ paths:
               $ref: '#/components/schemas/Attribute'
       tags:
         - Attributes
-      security:
-        - auth: []
     delete:
       summary: Delete an attribute
       operationId: delete-attributes-attributeId
@@ -984,8 +950,6 @@ paths:
       tags:
         - Attributes
       description: Delete an attribute.
-      security:
-        - auth: []
       parameters: []
   /attribute-groups:
     get:
@@ -1031,8 +995,6 @@ paths:
             type: string
           in: query
           name: include
-      security:
-        - auth: []
       description: Returns a paginated list of available attribute groups
     post:
       summary: Create an Attribute Group
@@ -1055,8 +1017,6 @@ paths:
                       handle: new-group
                       position: '13'
       operationId: post-attribute-groups
-      security:
-        - auth: []
       requestBody:
         content:
           multipart/form-data:
@@ -1100,8 +1060,6 @@ paths:
                     vokq5kmj: 1
                     mqkj8wyj: 2
       description: Sends a request to reorder the attribute groups in the system
-      security:
-        - auth: []
   '/attribute-groups/{attributeGroupId}':
     parameters:
       - schema:
@@ -1122,8 +1080,6 @@ paths:
                 $ref: '#/components/schemas/AttributeGroupResponse'
       operationId: put-attribute-groups-attributeGroupId
       description: Updates an attribute group.
-      security:
-        - auth: []
       requestBody:
         content:
           application/json:
@@ -1167,8 +1123,6 @@ paths:
             type: integer
           in: query
           name: include
-      security:
-        - auth: []
       description: Gets a single attribute group
     delete:
       summary: Delete an attribute group
@@ -1185,8 +1139,6 @@ paths:
                 $ref: '#/components/schemas/Error'
       operationId: delete-attribute-groups-attributeGroupId
       description: Deletes an attribute group
-      security:
-        - auth: []
   /baskets/resolve:
     post:
       summary: Resolve a basket
@@ -1209,8 +1161,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/ResolveBasketBody'
-      security:
-        - auth: []
   /baskets/current:
     get:
       summary: Get the current basket for a user
@@ -1231,8 +1181,6 @@ paths:
                 $ref: '#/components/schemas/Error'
       operationId: get-baskets-current
       description: This request will get the current active basket for a user
-      security:
-        - auth: []
   /baskets/saved:
     get:
       summary: Get a users saved baskets
@@ -1256,8 +1204,6 @@ paths:
                   value:
                     error: Unauthenticated.
       operationId: get-baskets-saved
-      security:
-        - auth: []
       description: Returns an authenticatd users saved baskets.
   '/baskets/{basketId}/save':
     parameters:
@@ -1290,8 +1236,6 @@ paths:
             schema:
               $ref: '#/components/schemas/SaveBasketBody'
       description: Saves a basket to a users account.
-      security:
-        - auth: []
   '/baskets/{basketId}/claim':
     parameters:
       - schema:
@@ -1318,8 +1262,6 @@ paths:
                 $ref: '#/components/schemas/Error'
       operationId: post-baskets-basketId-claim
       description: 'A user is able to "claim" a guest basket. '
-      security:
-        - auth: []
   '/baskets/{basketId}':
     parameters:
       - schema:
@@ -1336,8 +1278,6 @@ paths:
           description: No Content
       operationId: delete-baskets-basketId
       description: Deletes a basket
-      security:
-        - auth: []
     get:
       summary: Get basket
       tags:
@@ -1357,8 +1297,6 @@ paths:
                 $ref: '#/components/schemas/Error'
       operationId: get-baskets-basketId
       description: "Get a basket by it's ID"
-      security:
-        - auth: []
     put:
       summary: Update a basket by ID
       tags:
@@ -1378,8 +1316,6 @@ paths:
                 $ref: '#/components/schemas/Error'
       operationId: put-baskets-basketId
       description: Updates a basket
-      security:
-        - auth: []
   '/baskets/saved/{basketId}':
     parameters:
       - schema:
@@ -1405,8 +1341,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       operationId: put-baskets-saved-basketId
-      security:
-        - auth: []
       requestBody:
         content:
           application/json:
@@ -1467,8 +1401,6 @@ paths:
                   type: string
         description: ''
       description: Refund a transaction
-      security:
-        - auth: []
   '/payments/{transactionId}/void':
     parameters:
       - schema:
@@ -1500,8 +1432,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       operationId: post-payments-transactionId-void
-      security:
-        - auth: []
       description: Voids a payment in the system.
   '/categories/parent/{parentId}':
     parameters:
@@ -1523,8 +1453,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/CategoryCollection'
       operationId: get-categories-parent-parentId?
-      security:
-        - auth: []
       description: Returns categories by a given parent ID.
       parameters:
         - schema:
@@ -1559,8 +1487,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/ReorderCategoryBody'
-      security:
-        - auth: []
   '/categories/{categoryId}/products':
     parameters:
       - schema:
@@ -1588,8 +1514,6 @@ paths:
             examples:
               example-1: {}
         description: 'When using "custom" sort type, sorting will be based on the position.'
-      security:
-        - auth: []
       description: Attaches products to a category resource.
   '/categories/{categoryId}/channels':
     parameters:
@@ -1622,8 +1546,6 @@ paths:
             schema:
               $ref: '#/components/schemas/AttachCategoryChannelsBody'
         description: ''
-      security:
-        - auth: []
       description: Attaches channels to a catagory
   '/categories/{categoryId}/customer-groups':
     parameters:
@@ -1653,8 +1575,6 @@ paths:
                   '':
                     $ref: '#/components/schemas/Error'
       operationId: post-categories-categoryId-customer-groups
-      security:
-        - auth: []
       requestBody:
         content:
           application/json:
@@ -1680,8 +1600,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/CategoryResponse'
       operationId: post-categories-category-layouts
-      security:
-        - auth: []
       requestBody:
         content:
           application/json:
@@ -1719,8 +1637,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AttachCategoryRoutesBody'
-      security:
-        - auth: []
   '/collections/{collectionId}/routes':
     parameters:
       - schema:
@@ -1761,8 +1677,6 @@ paths:
                   type: string
                 locale:
                   type: string
-      security:
-        - auth: []
   '/collections/{collectionId}/products':
     parameters:
       - schema:
@@ -1801,8 +1715,6 @@ paths:
                     - 534fw3r3s
                     - 58823sese
       description: Syncs products with a collection.
-      security:
-        - auth: []
   /collections:
     get:
       summary: Get Collections
@@ -1816,8 +1728,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/CollectionCollection'
       operationId: get-collections
-      security:
-        - auth: []
       parameters:
         - schema:
             type: string
@@ -1884,8 +1794,6 @@ paths:
                     en: New Collection
                   url: new-collection
         description: Creates a new collection.
-      security:
-        - auth: []
   '/collections/{collectionId}':
     parameters:
       - schema:
@@ -1917,8 +1825,6 @@ paths:
             type: string
           in: query
           name: include
-      security:
-        - auth: []
     put:
       summary: Update Collection
       tags:
@@ -1945,8 +1851,6 @@ paths:
                   properties:
                     en:
                       type: string
-      security:
-        - auth: []
     delete:
       summary: Delete Collection
       tags:
@@ -1956,8 +1860,6 @@ paths:
           description: No Content
       operationId: delete-collections-collectionId
       description: Delete a Collection by its ID
-      security:
-        - auth: []
   /customers/groups:
     get:
       summary: Get Customer Groups
@@ -1977,8 +1879,6 @@ paths:
             type: string
           in: query
           name: include
-      security:
-        - auth: []
   '/orders/email-preview/{status}':
     parameters:
       - schema:
@@ -2023,8 +1923,6 @@ paths:
           name: id
           description: An order id to use for the template
           required: true
-      security:
-        - auth: []
   /discounts:
     get:
       summary: Get Discounts
@@ -2039,8 +1937,6 @@ paths:
       description: Returns a paginated list of Discounts
       tags:
         - Discounts
-      security:
-        - auth: []
     post:
       summary: Create Discount
       tags:
@@ -2054,8 +1950,6 @@ paths:
                 $ref: '#/components/schemas/DiscountResponse'
       operationId: post-discounts
       description: Create a new Discount.
-      security:
-        - auth: []
       requestBody:
         content:
           application/json:
@@ -2126,8 +2020,6 @@ paths:
                 $ref: '#/components/schemas/DiscountResponse'
       operationId: get-discounts-discountId
       description: "Returns a Discount by it's ID."
-      security:
-        - auth: []
       parameters:
         - schema:
             type: string
@@ -2146,8 +2038,6 @@ paths:
                 $ref: '#/components/schemas/DiscountResponse'
       operationId: put-discounts-discountId
       description: Updates a Discount
-      security:
-        - auth: []
       requestBody:
         content:
           application/json:
@@ -2233,8 +2123,6 @@ paths:
                 $ref: '#/components/schemas/Error'
       operationId: delete-discounts-discountId
       description: Deletes a Discount
-      security:
-        - auth: []
   /languages:
     get:
       summary: Get Languages
@@ -2273,8 +2161,6 @@ paths:
                       total: 1
       operationId: get-languages
       description: Returns a paginated list of Languages
-      security:
-        - auth: []
     post:
       summary: Create Language
       tags:
@@ -2328,8 +2214,6 @@ paths:
                       - The iso has already been taken.
       operationId: post-languages
       description: Create a new language
-      security:
-        - auth: []
       requestBody:
         content:
           application/json:
@@ -2384,8 +2268,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       operationId: get-languages-languageId
-      security:
-        - auth: []
       description: Get a Language by ID
     put:
       summary: Update Language
@@ -2411,8 +2293,6 @@ paths:
                       current: false
       operationId: put-languages-languageId
       description: "Update a Language using it's ID"
-      security:
-        - auth: []
       requestBody:
         content:
           application/json:
@@ -2432,8 +2312,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       operationId: delete-languages-languageId
-      security:
-        - auth: []
       description: Delete a Language by its ID
   /layouts:
     get:
@@ -2449,8 +2327,6 @@ paths:
                 $ref: '#/components/schemas/LayoutCollection'
       operationId: get-layouts
       description: Get a paginated list of Layouts
-      security:
-        - auth: []
   /orders/bulk:
     post:
       summary: Bulk update orders
@@ -2494,8 +2370,6 @@ paths:
         Allows you to bulk update a field across multiple Orders.
 
         You must have the correct priviledges to perform this action.
-      security:
-        - auth: []
       requestBody:
         content:
           application/json:
@@ -2545,8 +2419,6 @@ paths:
                       content: ZW1haWwsZG...
       operationId: get-orders-bulk
       description: Export orders into a base64 encoded string
-      security:
-        - auth: []
       parameters:
         - schema:
             type: string
@@ -2573,8 +2445,6 @@ paths:
       summary: Expire an Order
       operationId: post-orders-orderId-expire
       description: 'Sets an order to be expired. You must have the correct priviledges to perform this action. Once an order is expired, it will no longer appear in results unless performed by an admin or in the hub.'
-      security:
-        - auth: []
       responses:
         '204':
           description: No Content
@@ -2618,8 +2488,6 @@ paths:
             schema:
               $ref: '#/components/schemas/Address'
         description: All fields are required when an `address_id` is not present.
-      security:
-        - auth: []
   '/orders/{orderId}/shipping/methods':
     parameters:
       - schema:
@@ -2637,7 +2505,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ShippingMethodCollection'
+                $ref: '#/components/schemas/ShippingPriceCollection'
               examples:
                 full-example:
                   value:
@@ -2725,8 +2593,12 @@ paths:
                             name: Region One
       operationId: get-orders-id-shipping-methods
       description: "This will return a list of all ShippingMethod's that are available for this order."
-      security:
-        - auth: []
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: include
+          description: The available resources to include
   '/orders/{orderId}/shipping/cost':
     parameters:
       - schema:
@@ -2763,8 +2635,6 @@ paths:
                       - Please choose a shipping option
       operationId: put-orders-id-shipping-cost
       description: Adds a shipping cost to an Order
-      security:
-        - auth: []
       requestBody:
         content:
           application/json:
@@ -2773,8 +2643,13 @@ paths:
               properties:
                 price_id:
                   type: string
-                  description: The ShippingPrice id to associate
         description: ''
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: include
+          description: Related resources to include in response
   '/orders/{orderId}/contact':
     parameters:
       - schema:
@@ -2795,8 +2670,6 @@ paths:
                 $ref: '#/components/schemas/OrderResponse'
       operationId: put-orders-id-contact
       description: Add contact details to an order
-      security:
-        - auth: []
       requestBody:
         content:
           application/json:
@@ -2840,8 +2713,6 @@ paths:
               $ref: '#/components/schemas/Address'
         description: All fields are required when an `address_id` is not present.
       description: Update an orders billing address
-      security:
-        - auth: []
   '/orders/{orderId}/lines':
     parameters:
       - schema:
@@ -2935,8 +2806,6 @@ paths:
                 - tax_rate
                 - description
                 - sku
-      security:
-        - auth: []
   '/orders/lines/{orderLineId}':
     parameters:
       - schema:
@@ -2953,8 +2822,6 @@ paths:
           description: No Content
       operationId: delete-orders-lines-orderId
       description: Deletes an order line from an order
-      security:
-        - auth: []
   '/orders/{orderId}/invoice':
     parameters:
       - schema:
@@ -2977,8 +2844,6 @@ paths:
           description: Unauthorized
       operationId: get-orders-id-invoice
       description: Get an orders invoice
-      security:
-        - auth: []
   /payments/3d-secure:
     post:
       summary: Threed Secure Payment
@@ -3021,8 +2886,6 @@ paths:
                 - paRes
                 - transaction
                 - order_id
-      security:
-        - auth: []
   /payments/provider:
     get:
       summary: Get Payment Provider
@@ -3030,8 +2893,6 @@ paths:
         - Payments
       operationId: get-payments-provider
       description: 'Gets the default, configured payment provider.'
-      security:
-        - auth: []
       responses:
         '200':
           description: OK
@@ -3052,8 +2913,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProductRecommendationCollection'
       operationId: get-products-recommended
-      security:
-        - auth: []
       parameters:
         - schema:
             type: string
@@ -3084,8 +2943,6 @@ paths:
                 $ref: '#/components/schemas/ProductResponse'
               examples: {}
       operationId: get-products-productId
-      security:
-        - auth: []
       parameters:
         - schema:
             type: string
@@ -3142,8 +2999,6 @@ paths:
             schema:
               $ref: '#/components/schemas/ProductUpdateBody'
         description: ''
-      security:
-        - auth: []
       description: "Updates a product by it's ID"
     delete:
       summary: Delete Product
@@ -3159,8 +3014,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       operationId: delete-products-productId
-      security:
-        - auth: []
       description: |-
         Deletes a product by it's ID
 
@@ -3178,8 +3031,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProductVariantCollection'
       operationId: get-products-variants
-      security:
-        - auth: []
       parameters:
         - schema:
             type: string
@@ -3213,8 +3064,6 @@ paths:
                 $ref: '#/components/schemas/Error'
       operationId: get-products-variants-productVariantId
       description: "Get a product variant by it's ID"
-      security:
-        - auth: []
   '/products/variants/{productVariantId}/inventory':
     parameters:
       - schema:
@@ -3240,8 +3089,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       operationId: put-products-variants-productVariantId-inventory
-      security:
-        - auth: []
       description: Request to update a product variants inventory.
       requestBody:
         content:
@@ -3280,8 +3127,6 @@ paths:
         Duplicates a product, requires you to specify new slugs and SKU's.
 
         > Duplicated product will not immediately be active.
-      security:
-        - auth: []
       requestBody:
         content:
           application/json:
@@ -3330,8 +3175,6 @@ paths:
                 $ref: '#/components/schemas/ProductResponse'
       operationId: post-product-urls
       description: Creates and syncs a new product route.
-      security:
-        - auth: []
       requestBody:
         content:
           application/json:
@@ -3360,8 +3203,6 @@ paths:
                 $ref: '#/components/schemas/ProductResponse'
       operationId: post-product-redirects
       description: Creates and syncs a new product route.
-      security:
-        - auth: []
       requestBody:
         content:
           application/json:
@@ -3401,8 +3242,6 @@ paths:
                       type: string
       operationId: post-products-product-attributes
       description: Allows you to sync up the attributes which are directly associated to this product.
-      security:
-        - auth: []
       requestBody:
         content:
           application/json:
@@ -3447,8 +3286,6 @@ paths:
                       type: string
       operationId: post-products-productId-collections
       description: Update a products collections.
-      security:
-        - auth: []
       requestBody:
         content:
           application/json:
@@ -3489,8 +3326,6 @@ paths:
                 $ref: '#/components/schemas/Error'
       operationId: post-products-product-categories
       description: Sync product categories
-      security:
-        - auth: []
       requestBody:
         content:
           application/json:
@@ -3530,8 +3365,6 @@ paths:
                 $ref: '#/components/schemas/Error'
       operationId: post-products-product-channels
       description: Sync product Channels
-      security:
-        - auth: []
       requestBody:
         content:
           application/json:
@@ -3572,8 +3405,6 @@ paths:
                 $ref: '#/components/schemas/Error'
       operationId: delete-products-product-categories-category
       description: Detaches a category from a product. Does not delete the category.
-      security:
-        - auth: []
   '/products/{productId}/collections/{collectionId}':
     parameters:
       - schema:
@@ -3601,8 +3432,6 @@ paths:
                 $ref: '#/components/schemas/Error'
       operationId: delete-products-product-collections-detach
       description: Detaches a collection from a product. Does not delete the collection.
-      security:
-        - auth: []
   '/products/{productId}/associations':
     parameters:
       - schema:
@@ -3623,8 +3452,6 @@ paths:
                 $ref: '#/components/schemas/ProductResponse'
       operationId: post-products-product-associations
       description: Updates product associations
-      security:
-        - auth: []
       requestBody:
         content:
           application/json:
@@ -3646,8 +3473,6 @@ paths:
         '204':
           description: No Content
       description: Removes product associations
-      security:
-        - auth: []
       tags:
         - Products
   '/products/{productId}/customer-groups':
@@ -3670,8 +3495,6 @@ paths:
                 $ref: '#/components/schemas/ProductResponse'
       operationId: post-products-product-customer-groups
       description: Update a products customer groups
-      security:
-        - auth: []
       requestBody:
         content:
           application/json:
@@ -3727,8 +3550,6 @@ paths:
                 $ref: '#/components/schemas/Error'
       operationId: post-products-id-drafts
       description: Create a draft product from an existing product.
-      security:
-        - auth: []
     get:
       summary: Create draft
       tags:
@@ -3751,8 +3572,6 @@ paths:
         Create a draft for a product.
 
         If a draft already exists, that current draft will be returned.
-      security:
-        - auth: []
   '/products/{productId}/publish':
     parameters:
       - schema:
@@ -3779,8 +3598,6 @@ paths:
                 $ref: '#/components/schemas/Error'
       operationId: post-products-id-publish
       description: Publish a draft from a Product
-      security:
-        - auth: []
   /reports/sales:
     get:
       summary: Get sales report
@@ -3972,8 +3789,6 @@ paths:
                         - The to field is required.
                         - The to is not a valid date.
       operationId: get-reports-sales
-      security:
-        - auth: []
       parameters:
         - schema:
             type: string
@@ -4070,8 +3885,6 @@ paths:
                         - The to is not a valid date.
       operationId: get-reports-orders
       description: Returns a report for orders between a given date range
-      security:
-        - auth: []
       parameters:
         - schema:
             type: string
@@ -4117,8 +3930,6 @@ paths:
                       total: 2184
       operationId: get-reports-orders-customers
       description: Returns a monthly grouped list of new/returning and total customers.
-      security:
-        - auth: []
       parameters:
         - schema:
             type: string
@@ -4175,8 +3986,6 @@ paths:
                       order_total: '10125'
                       discount_total: '0'
       operationId: get-reports-orders-averages
-      security:
-        - auth: []
       parameters:
         - schema:
             type: string
@@ -4270,8 +4079,6 @@ paths:
       description: Gets best selling products grouped by month.
       tags:
         - Reports
-      security:
-        - auth: []
       parameters:
         - schema:
             type: string
@@ -4337,8 +4144,6 @@ paths:
                     previous_week: 0
       operationId: get-reports-metrics-subject
       description: Returns metric (KPI) data for either sales or orders.
-      security:
-        - auth: []
   /products:
     get:
       summary: Get Products
@@ -4352,9 +4157,28 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProductCollection'
       operationId: get-products
-      security:
-        - auth: []
       description: Gets a paginated list of products.
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: include
+        - schema:
+            type: boolean
+            default: 'true'
+          in: query
+          name: paginated
+          description: ''
+          allowEmptyValue: true
+        - schema:
+            type: string
+          in: query
+          name: ids
+          description: Return only the selected IDs
+        - schema:
+            type: integer
+          in: query
+          name: limit
     post:
       summary: Create Product
       tags:
@@ -4414,8 +4238,6 @@ paths:
                       - The sku field is required.
                       - The sku field must be unique
       operationId: post-products
-      security:
-        - auth: []
       requestBody:
         content:
           application/json:
@@ -4476,8 +4298,6 @@ paths:
                 $ref: '#/components/schemas/ProductFamilyCollection'
       operationId: get-product-families
       description: Returns a paginated list of all product families.
-      security:
-        - auth: []
       parameters:
         - schema:
             type: string
@@ -4513,8 +4333,6 @@ paths:
                       - The name field is required.
                       - The name field must be unique
       operationId: post-product-families
-      security:
-        - auth: []
       description: Create a new product family.
   '/product-families/{productFamilyId}':
     parameters:
@@ -4542,8 +4360,6 @@ paths:
                 $ref: '#/components/schemas/Error'
       operationId: get-product-families-productFamilyId
       description: Returns a single product family based on ID.
-      security:
-        - auth: []
       parameters:
         - schema:
             type: string
@@ -4568,8 +4384,6 @@ paths:
                 $ref: '#/components/schemas/Error'
       operationId: put-product-families-productFamilyId
       description: Update a product family
-      security:
-        - auth: []
       requestBody:
         content:
           application/json:
@@ -4593,8 +4407,6 @@ paths:
                 $ref: '#/components/schemas/Error'
       operationId: delete-product-families-productFamilyId
       description: Sends a request to delete a product family
-      security:
-        - auth: []
   /saved-searches/product:
     get:
       summary: Get saved searches
@@ -4609,8 +4421,6 @@ paths:
                 $ref: '#/components/schemas/SavedSearchCollection'
       operationId: get-saved-searches
       description: Returns a list of current saved searches for products
-      security:
-        - auth: []
     parameters: []
   '/saved-searches/{savedSearchId}':
     parameters:
@@ -4648,8 +4458,6 @@ paths:
                 $ref: '#/components/schemas/SettingCollection'
       operationId: get-settings
       description: Retrieves settings that have been defined in the database.
-      security:
-        - auth: []
   '/settings/{handle}':
     parameters:
       - schema:
@@ -4676,8 +4484,6 @@ paths:
                 $ref: '#/components/schemas/Error'
       operationId: get-settings-handle
       description: Get specific settings.
-      security:
-        - auth: []
   /routes:
     get:
       summary: Get routes
@@ -4691,8 +4497,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/RouteCollection'
       operationId: get-routes
-      security:
-        - auth: []
       description: Returns paginated list of routes.
   '/routes/{slug}':
     parameters:
@@ -4720,8 +4524,6 @@ paths:
                 $ref: '#/components/schemas/Links'
       operationId: get-routes-slug
       description: "Retrieve a route by it's slug."
-      security:
-        - auth: []
       parameters:
         - schema:
             type: string
@@ -4741,8 +4543,6 @@ paths:
                 $ref: '#/components/schemas/ShippingZoneCollection'
       operationId: get-shipping-zones
       description: Returns a paginated list of shipping zones.
-      security:
-        - auth: []
       parameters:
         - schema:
             type: string
@@ -4763,8 +4563,6 @@ paths:
           description: Not Found
       operationId: post-shipping-zones
       description: Create a new shipping zone
-      security:
-        - auth: []
       requestBody:
         content:
           application/json:
@@ -4801,8 +4599,6 @@ paths:
                 $ref: '#/components/schemas/Error'
       operationId: get-shipping-zones-shippingZoneId
       description: "Get a shipping zone by it's ID."
-      security:
-        - auth: []
   '/shipping/{shippingMethodId}/prices':
     parameters:
       - schema:
@@ -4851,8 +4647,6 @@ paths:
                       - The currency id field is required.
       operationId: post-shipping-id-prices
       description: Add a price to a shipping method.
-      security:
-        - auth: []
       requestBody:
         content:
           application/json:
@@ -4914,8 +4708,6 @@ paths:
                     items:
                       type: string
       operationId: put-shipping-prices-shippingPriceId
-      security:
-        - auth: []
       description: Update a shipping price
       requestBody:
         content:
@@ -4953,8 +4745,6 @@ paths:
                 $ref: '#/components/schemas/ShippingMethodResponse'
       operationId: put-shipping-shippingMethodId-zones
       description: "Update a shipping method's zones."
-      security:
-        - auth: []
       requestBody:
         content:
           application/json:
@@ -5010,8 +4800,6 @@ paths:
                       type: string
       operationId: put-shipping-id-users
       description: Update shipping method users
-      security:
-        - auth: []
       requestBody:
         content:
           application/json:
@@ -5036,8 +4824,6 @@ paths:
                 $ref: '#/components/schemas/ShippingMethodCollection'
       operationId: get-shipping
       description: Returns a paginated list of shipping methods
-      security:
-        - auth: []
       parameters:
         - schema:
             type: integer
@@ -5096,8 +4882,6 @@ paths:
                       type: string
               required:
                 - type
-      security:
-        - auth: []
       description: Create a new shipping method.
       parameters: []
   '/shipping/{shippingMethodId}':
@@ -5125,8 +4909,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
       operationId: get-shipping-shippingMethodId
-      security:
-        - auth: []
       description: "Returns a shipping method by it's ID."
       parameters:
         - schema:
@@ -5167,8 +4949,6 @@ paths:
                       type: string
       operationId: put-shipping-shippingMethodId
       description: "Update shipping method by it's ID"
-      security:
-        - auth: []
       requestBody:
         content:
           application/json:
@@ -5196,8 +4976,6 @@ paths:
           description: No Content
       operationId: delete-shipping-shippingMethodId
       description: Deletes a shipping method.
-      security:
-        - auth: []
   /tags:
     get:
       summary: Get all tags
@@ -5212,8 +4990,6 @@ paths:
                 $ref: '#/components/schemas/TagCollection'
       operationId: get-tags
       description: Get paginated list of tags
-      security:
-        - auth: []
     post:
       summary: ''
       operationId: post-tags
@@ -5251,8 +5027,6 @@ paths:
                 $ref: '#/components/schemas/Search'
       operationId: get-search
       description: Search across products or categories
-      security:
-        - auth: []
       parameters:
         - schema:
             type: string
@@ -5323,8 +5097,6 @@ paths:
                 $ref: '#/components/schemas/Error'
       operationId: get-tags-tagId
       description: "Gets a tag by it's ID"
-      security:
-        - auth: []
     put:
       summary: Update a tag
       tags:
@@ -5355,8 +5127,6 @@ paths:
                       type: string
       operationId: put-tags-tagId
       description: "Updates a tag by it's ID"
-      security:
-        - auth: []
       requestBody:
         content:
           application/json:
@@ -5383,8 +5153,6 @@ paths:
                 $ref: '#/components/schemas/Error'
       operationId: delete-tags-tagId
       description: "Deletes a tag by it's ID"
-      security:
-        - auth: []
   /taxes:
     get:
       summary: Get taxes
@@ -5403,8 +5171,6 @@ paths:
                 $ref: '#/components/schemas/Unauthenticated'
       operationId: get-taxes
       description: Get a paginated list of taxes
-      security:
-        - auth: []
       tags:
         - Taxes
     post:
@@ -5435,8 +5201,6 @@ paths:
                       type: string
       operationId: post-taxes
       description: Create a new tax resource.
-      security:
-        - auth: []
       requestBody:
         content:
           application/json:
@@ -5477,8 +5241,6 @@ paths:
                 $ref: '#/components/schemas/Error'
       operationId: get-taxes-taxId
       description: "Get a tax record by it's ID"
-      security:
-        - auth: []
     put:
       summary: Update tax record
       tags:
@@ -5526,8 +5288,6 @@ paths:
               required:
                 - name
                 - percentage
-      security:
-        - auth: []
       description: "Update a tax record by it's ID"
     delete:
       summary: Delete tax record
@@ -5550,8 +5310,6 @@ paths:
                 $ref: '#/components/schemas/Error'
       operationId: delete-taxes-taxId
       description: "Delete a tax record by it's ID."
-      security:
-        - auth: []
   '/users/payments/{id}':
     parameters:
       - schema:
@@ -5574,8 +5332,6 @@ paths:
                 $ref: '#/components/schemas/Unauthenticated'
       operationId: delete-users-payments-id
       description: Removes a users reusable payment method. This can be invoked by any admin user and also the user who the record belongs to.
-      security:
-        - auth: []
   /users/fields:
     get:
       summary: Get custom user fields
@@ -5612,8 +5368,6 @@ paths:
                 $ref: '#/components/schemas/UserResponse'
       operationId: get-users-current
       description: Returns the user associated to the access token.
-      security:
-        - auth: []
   /users:
     get:
       summary: Get users
@@ -5628,8 +5382,6 @@ paths:
                 $ref: '#/components/schemas/UserCollection'
       operationId: get-users
       description: Get a paginated list of users.
-      security:
-        - auth: []
     post:
       summary: Create user
       tags:
@@ -5649,8 +5401,6 @@ paths:
                 $ref: '#/components/schemas/Unauthenticated'
       operationId: post-users
       description: Create a new user in the system
-      security:
-        - auth: []
       requestBody:
         content:
           application/json:
@@ -5699,8 +5449,6 @@ paths:
                 $ref: '#/components/schemas/Error'
       operationId: get-users-userId
       description: Get a user by their given ID.
-      security:
-        - auth: []
     put:
       summary: ''
       operationId: put-users-userId
@@ -5779,8 +5527,6 @@ paths:
                     message: Pasword changed
       operationId: post-account-password
       description: Allows the current user to update their password.
-      security:
-        - auth: []
       requestBody:
         content:
           application/json:
@@ -5800,8 +5546,6 @@ paths:
                 $ref: '#/components/schemas/RecycleBinCollection'
       operationId: get-recycle-bin
       description: Returns a paginated list of all recycle bin items.
-      security:
-        - auth: []
   '/recycle-bin/{itemId}':
     parameters:
       - schema:
@@ -5828,8 +5572,6 @@ paths:
                 $ref: '#/components/schemas/Error'
       operationId: get-recycle-bin-itemId
       description: Retrieves a recycle bin item.
-      security:
-        - auth: []
     delete:
       summary: Delete item
       tags:
@@ -5854,8 +5596,6 @@ paths:
         Remove a recycle bin item
 
         > This will also hard delete the model associated with the recycle bin item, this action is not reversable and will cause loss of data.
-      security:
-        - auth: []
   '/versions/{modelId}/restore':
     parameters:
       - schema:
@@ -5882,8 +5622,6 @@ paths:
                 $ref: '#/components/schemas/Error'
       operationId: post-versions-modelId-restore
       description: Restores a model version
-      security:
-        - auth: []
   /:
     get:
       summary: Get root
@@ -5917,8 +5655,6 @@ paths:
                       default: true
       operationId: get
       description: Returns information about the API
-      security:
-        - auth: []
   '/baskets/{basketId}/meta':
     parameters:
       - schema:
@@ -5945,8 +5681,6 @@ paths:
                 $ref: '#/components/schemas/Error'
       operationId: post-baskets-basketId-meta
       description: Allows you to add custom meta information to a basket.
-      security:
-        - auth: []
       requestBody:
         content:
           application/json:
@@ -5968,8 +5702,6 @@ paths:
           description: No Content
       operationId: delete-baskets-basketId-discounts
       description: 'Allows a user/guest to remove a basket from their basket. Useful if you can only have one discount at a time and they wish to use a different one. '
-      security:
-        - auth: []
   '/baskets/{basketId}/user':
     parameters:
       - schema:
@@ -5993,8 +5725,6 @@ paths:
         Attach a user to a basket.
 
         > This endpoint will be deprecated in version 0.3.0
-      security:
-        - auth: []
     delete:
       summary: Remove user
       tags:
@@ -6014,8 +5744,6 @@ paths:
         Removes a user from a basket and turns it into a guest basket
 
         > This endpoint will be deprecated in 0.3.0
-      security:
-        - auth: []
   /baskets:
     get:
       summary: Get baskets
@@ -6030,8 +5758,6 @@ paths:
                 $ref: '#/components/schemas/BasketCollection'
       operationId: get-baskets
       description: Get a paginated list of baskets
-      security:
-        - auth: []
     post:
       summary: Create Basket
       operationId: post-baskets
@@ -6042,8 +5768,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BasketResponse'
-      security:
-        - auth: []
       requestBody:
         content:
           application/json:
@@ -6066,8 +5790,6 @@ paths:
                 $ref: '#/components/schemas/BasketResponse'
       operationId: post-basket-lines
       description: Add lines to a basket
-      security:
-        - auth: []
       requestBody:
         content:
           application/json:
@@ -6098,8 +5820,6 @@ paths:
                     $ref: '#/components/schemas/Basket'
       operationId: delete-basket-lines
       description: Removes basket lines from a basket
-      security:
-        - auth: []
   '/basket-lines/{basketLineId}':
     parameters:
       - schema:
@@ -6126,8 +5846,6 @@ paths:
                 $ref: '#/components/schemas/Basket'
       operationId: put-basket-lines-basketLineId
       description: "Update a basket line based on it's ID."
-      security:
-        - auth: []
       requestBody:
         content:
           application/json:
@@ -6153,8 +5871,6 @@ paths:
                 $ref: '#/components/schemas/BasketResponse'
       operationId: put-basket-lines-basketLineId-add
       description: Update basket line quantity
-      security:
-        - auth: []
       requestBody:
         content:
           application/json:
@@ -6180,13 +5896,25 @@ paths:
                 $ref: '#/components/schemas/BasketResponse'
       operationId: put-basket-lines-basketLineId-remove
       description: Removes quantity from a basket line
-      security:
-        - auth: []
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/BasketLineUpdateBody'
+  /payments/types:
+    get:
+      summary: Payment types
+      tags:
+        - Payments
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentTypeCollection'
+      operationId: get-payments-types
+      description: Returns a list of available Payment Types in the system
 components:
   schemas:
     Channel:
@@ -7056,6 +6784,36 @@ components:
     ShippingPrice:
       title: ShippingPrice
       type: object
+      description: "###\_Available Includes\n\n- method\n- zone\n- currency\n- customer_groups"
+      x-examples:
+        example-with-zone-method:
+          id: ujafe83dd
+          rate: 795
+          tax: 159
+          fixed: true
+          min_basket: 0
+          min_basket_tax: 0
+          min_weight: '0.00000'
+          weight_unit: kg
+          min_height: '0.00000'
+          height_unit: cm
+          min_width: '0.00000'
+          width_unit: cm
+          min_depth: '0.00000'
+          depth_unit: cm
+          min_volume: '0.00000'
+          volume_unit: l
+          method:
+            data:
+              id: v5ters33
+              type: regional
+              name: Standard Delivery
+              description: Standard delivery
+              code: ND
+          zone:
+            data:
+              id: awd012es
+              name: Region 1
       properties:
         id:
           type: string
@@ -7092,36 +6850,10 @@ components:
           type: string
         volume_unit:
           type: string
-      description: "###\_Available Includes\n\n- method\n- zone\n- currency\n- customer_groups"
-      x-examples:
-        example-with-zone-method:
-          id: ujafe83dd
-          rate: 795
-          tax: 159
-          fixed: true
-          min_basket: 0
-          min_basket_tax: 0
-          min_weight: '0.00000'
-          weight_unit: kg
-          min_height: '0.00000'
-          height_unit: cm
-          min_width: '0.00000'
-          width_unit: cm
-          min_depth: '0.00000'
-          depth_unit: cm
-          min_volume: '0.00000'
-          volume_unit: l
-          method:
-            data:
-              id: v5ters33
-              type: regional
-              name: Standard Delivery
-              description: Standard delivery
-              code: ND
-          zone:
-            data:
-              id: awd012es
-              name: Region 1
+        method:
+          $ref: '#/components/schemas/ShippingMethodResponse'
+        zone:
+          $ref: '#/components/schemas/ShippingZoneResponse'
     PaymentProvider:
       title: PaymentProvider
       type: object
@@ -7409,6 +7141,7 @@ components:
             type:
               type: string
         - $ref: '#/components/schemas/AttributeData'
+        - $ref: '#/components/schemas/LocalisedAttributeData'
       x-examples:
         translated-example:
           id: v8l4pl01
@@ -7927,14 +7660,12 @@ components:
         - $ref: '#/components/schemas/PaginatedResponse'
     ShippingPriceCollection:
       title: ShippingPriceCollection
-      allOf:
-        - type: object
-          properties:
-            data:
-              type: array
-              items:
-                $ref: '#/components/schemas/ShippingPrice'
-        - $ref: '#/components/schemas/PaginatedResponse'
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ShippingPrice'
     ShippingPriceResponse:
       title: ShippingPriceResponse
       type: object
@@ -8675,6 +8406,46 @@ components:
               - quantity
         basket_id:
           type: string
+    CreateOrderBody:
+      title: CreateOrderBody
+      type: object
+      properties:
+        basket_id:
+          type: string
+        include:
+          type: string
+      required:
+        - basket_id
+    PaymentType:
+      title: PaymentType
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        handle:
+          type: string
+        driver:
+          type: string
+        success_status:
+          type: string
+    PaymentTypeResponse:
+      title: PaymentTypeResponse
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/PaymentType'
+    PaymentTypeCollection:
+      title: PaymentTypeCollection
+      allOf:
+        - type: object
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/PaymentType'
+        - $ref: '#/components/schemas/PaginatedResponse'
   securitySchemes:
     auth:
       type: oauth2

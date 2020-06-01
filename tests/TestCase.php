@@ -19,7 +19,6 @@ use Illuminate\Database\Schema\SQLiteBuilder;
 use Illuminate\Database\SQLiteConnection;
 use Illuminate\Encryption\Encrypter;
 use Illuminate\Support\Fluent;
-use Laravel\Passport\PassportServiceProvider;
 use NeonDigital\Drafting\DraftingServiceProvider;
 use NeonDigital\Versioning\VersioningServiceProvider;
 use Spatie\Activitylog\ActivitylogServiceProvider;
@@ -127,7 +126,6 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     protected function getPackageProviders($app)
     {
         return [
-            PassportServiceProvider::class,
             ApiServiceProvider::class,
             PermissionServiceProvider::class,
             ActivitylogServiceProvider::class,
