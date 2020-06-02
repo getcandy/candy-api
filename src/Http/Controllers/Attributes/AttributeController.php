@@ -65,6 +65,7 @@ class AttributeController extends BaseController
     public function store(CreateRequest $request)
     {
         $result = app('api')->attributes()->create($request->all());
+
         return new AttributeResource($result);
     }
 

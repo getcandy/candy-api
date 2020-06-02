@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Shipping\Factories;
 
-use Tests\TestCase;
 use GetCandy\Api\Core\Users\Services\UserService;
 use Tests\Stubs\User;
+use Tests\TestCase;
 
 /**
  * @group users
