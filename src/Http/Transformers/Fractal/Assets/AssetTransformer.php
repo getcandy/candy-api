@@ -22,7 +22,6 @@ class AssetTransformer extends BaseTransformer
      */
     public function transform($asset)
     {
-        \Log::debug($asset->pivot);
         $data = [
             'id' => $asset->encodedId(),
             'title' => $asset->title,
