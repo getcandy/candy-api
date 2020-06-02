@@ -63,7 +63,7 @@ class AssetController extends BaseController
 
         $data = $request->all();
 
-        if (empty($data['alt'])) {
+        if (empty($data['alt']) && $parent) {
             $data['alt'] = $parent->attribute('name');
         }
 

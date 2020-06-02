@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Http\Controllers\Attributes;
 
-use Tests\Feature\FeatureCase;
 use GetCandy\Api\Core\Attributes\Models\Attribute;
 use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
+use Tests\Feature\FeatureCase;
 
 /**
  * @group attributes
@@ -20,6 +20,7 @@ class AttributeControllerTest extends FeatureCase
             'handle' => 'test-attribute-group',
             'position' => 1,
         ]);
+
         return Attribute::forceCreate([
             'name' => [
                 'en' => 'Test attribute',
@@ -71,8 +72,8 @@ class AttributeControllerTest extends FeatureCase
         $attributeId = $attribute->encodedId();
         $response = $this->actingAs($user)->json('PUT', "attributes/{$attributeId}", [
             'name' => [
-                'en' => 'Updated test attribute'
-            ]
+                'en' => 'Updated test attribute',
+            ],
         ]);
         $response->assertStatus(200);
 
@@ -97,7 +98,7 @@ class AttributeControllerTest extends FeatureCase
     public function test_validation_works_on_create()
     {
         $user = $this->admin();
-        $response = $this->actingAs($user)->json('POST', "attributes");
+        $response = $this->actingAs($user)->json('POST', 'attributes');
         $response->assertStatus(422);
         $this->assertResponseValid($response, '/attributes', 'post');
     }
@@ -107,16 +108,16 @@ class AttributeControllerTest extends FeatureCase
         $user = $this->admin();
         $this->createAttribute();
         $groupId = AttributeGroup::first()->encodedId();
-        $response = $this->actingAs($user)->json('POST', "attributes", [
+        $response = $this->actingAs($user)->json('POST', 'attributes', [
             'name' => [
                 'en' => 'Another attribute',
             ],
             'handle' => 'test-attribute',
-            'group_id' => $groupId
+            'group_id' => $groupId,
         ]);
         $response->assertStatus(422)->assertJson([
             'handle' => [
-                'The handle has already been taken.'
+                'The handle has already been taken.',
             ],
         ]);
     }
@@ -133,12 +134,12 @@ class AttributeControllerTest extends FeatureCase
         ]);
 
         $groupId = AttributeGroup::first()->encodedId();
-        $response = $this->actingAs($user)->json('POST', "attributes", [
+        $response = $this->actingAs($user)->json('POST', 'attributes', [
             'name' => [
                 'en' => 'Another attribute',
             ],
             'handle' => 'another-attribute',
-            'group_id' => $groupId
+            'group_id' => $groupId,
         ]);
 
         $response->assertStatus(201);
