@@ -3,10 +3,12 @@
 namespace GetCandy\Api\Core\Categories\Drafting;
 
 use DB;
-use GetCandy\Api\Core\Drafting\BaseDrafter;
-use Illuminate\Database\Eloquent\Model;
-use NeonDigital\Drafting\Interfaces\DrafterInterface;
 use Versioning;
+use Illuminate\Database\Eloquent\Model;
+use GetCandy\Api\Core\Drafting\BaseDrafter;
+use GetCandy\Api\Core\Search\SearchContract;
+use GetCandy\Api\Core\Events\ModelPublishedEvent;
+use NeonDigital\Drafting\Interfaces\DrafterInterface;
 
 class CategoryDrafter extends BaseDrafter implements DrafterInterface
 {
@@ -52,6 +54,12 @@ class CategoryDrafter extends BaseDrafter implements DrafterInterface
 
         $category->drafted_at = null;
         $category->save();
+
+        // Update all products...
+        $search = app(SearchContract::class);
+        $search->indexer()->indexObjects($category->products);
+
+        event(new ModelPublishedEvent($category));
 
         return $category;
     }
