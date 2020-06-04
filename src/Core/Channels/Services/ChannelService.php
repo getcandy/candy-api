@@ -4,7 +4,7 @@ namespace GetCandy\Api\Core\Channels\Services;
 
 use GetCandy\Api\Core\Channels\Models\Channel;
 use GetCandy\Api\Core\Scaffold\BaseService;
-use GetCandy\Exceptions\MinimumRecordRequiredException;
+use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
 
 class ChannelService extends BaseService
 {
@@ -59,7 +59,7 @@ class ChannelService extends BaseService
      * @param  array  $data
      *
      * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     * @throws GetCandy\Api\Core\Exceptions\MinimumRecordRequiredException
+     * @throws \GetCandy\Api\Exceptions\MinimumRecordRequiredException
      *
      * @return GetCandy\Api\Core\Models\Channel
      */
@@ -85,7 +85,7 @@ class ChannelService extends BaseService
     /**
      * @param $id
      * @return mixed
-     * @throws MinimumRecordRequiredException
+     * @throws \GetCandy\Api\Exceptions\MinimumRecordRequiredException
      */
     public function delete($id)
     {

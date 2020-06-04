@@ -5,7 +5,7 @@ namespace GetCandy\Api\Core\Currencies\Services;
 use GetCandy\Api\Core\Currencies\Interfaces\CurrencyServiceInterface;
 use GetCandy\Api\Core\Currencies\Models\Currency;
 use GetCandy\Api\Core\Scaffold\BaseService;
-use GetCandy\Exceptions\MinimumRecordRequiredException;
+use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
 
 class CurrencyService extends BaseService implements CurrencyServiceInterface
 {
@@ -58,7 +58,7 @@ class CurrencyService extends BaseService implements CurrencyServiceInterface
      * @param  array  $data
      *
      * @throws Symfony\Component\HttpKernel\Exception
-     * @throws GetCandy\Api\Core\Exceptions\MinimumRecordRequiredException
+     * @throws \GetCandy\Api\Exceptions\MinimumRecordRequiredException
      *
      * @return GetCandy\Api\Core\Models\Currency
      */
@@ -104,7 +104,7 @@ class CurrencyService extends BaseService implements CurrencyServiceInterface
      * @param  string $id
      *
      * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     * @throws GetCandy\Api\Core\Exceptions\MinimumRecordRequiredException
+     * @throws \GetCandy\Api\Exceptions\MinimumRecordRequiredException
      *
      * @return bool
      */

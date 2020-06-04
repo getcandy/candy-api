@@ -11,7 +11,7 @@ use GetCandy\Api\Http\Resources\Products\ProductFamilyCollection;
 use GetCandy\Api\Http\Resources\Products\ProductFamilyResource;
 use GetCandy\Api\Http\Transformers\Fractal\Products\ProductFamilyTransformer;
 use GetCandy\Exceptions\InvalidLanguageException;
-use GetCandy\Exceptions\MinimumRecordRequiredException;
+use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;

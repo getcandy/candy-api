@@ -9,7 +9,7 @@ use GetCandy\Api\Http\Requests\Channels\UpdateRequest;
 use GetCandy\Api\Http\Resources\Channels\ChannelCollection;
 use GetCandy\Api\Http\Resources\Channels\ChannelResource;
 use GetCandy\Api\Http\Transformers\Fractal\Channels\ChannelTransformer;
-use GetCandy\Exceptions\MinimumRecordRequiredException;
+use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;

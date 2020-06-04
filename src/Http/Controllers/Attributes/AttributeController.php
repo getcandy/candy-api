@@ -10,6 +10,7 @@ use GetCandy\Api\Http\Requests\Attributes\ReorderRequest;
 use GetCandy\Api\Http\Requests\Attributes\UpdateRequest;
 use GetCandy\Api\Http\Resources\Attributes\AttributeCollection;
 use GetCandy\Api\Http\Resources\Attributes\AttributeResource;
+use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
