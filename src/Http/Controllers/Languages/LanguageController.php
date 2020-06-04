@@ -9,7 +9,7 @@ use GetCandy\Api\Http\Requests\Languages\UpdateRequest;
 use GetCandy\Api\Http\Resources\Languages\LanguageCollection;
 use GetCandy\Api\Http\Resources\Languages\LanguageResource;
 use GetCandy\Api\Http\Transformers\Fractal\Languages\LanguageTransformer;
-use GetCandy\Exceptions\MinimumRecordRequiredException;
+use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;

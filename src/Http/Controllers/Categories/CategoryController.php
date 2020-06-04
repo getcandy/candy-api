@@ -14,6 +14,7 @@ use GetCandy\Api\Http\Requests\Categories\UpdateRequest;
 use GetCandy\Api\Http\Resources\Categories\CategoryCollection;
 use GetCandy\Api\Http\Resources\Categories\CategoryResource;
 use GetCandy\Api\Http\Transformers\Fractal\Categories\CategoryTransformer;
+use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
 use Hashids;
 use Illuminate\Http\Request;
 use Intervention\Image\Exception\NotFoundException;

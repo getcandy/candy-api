@@ -7,7 +7,7 @@ use GetCandy\Api\Http\Requests\Currencies\CreateRequest;
 use GetCandy\Api\Http\Requests\Currencies\DeleteRequest;
 use GetCandy\Api\Http\Requests\Currencies\UpdateRequest;
 use GetCandy\Api\Http\Transformers\Fractal\Currencies\CurrencyTransformer;
-use GetCandy\Exceptions\MinimumRecordRequiredException;
+use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;

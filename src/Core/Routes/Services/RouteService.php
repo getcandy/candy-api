@@ -50,7 +50,7 @@ class RouteService extends BaseService
     /**
      * @param $hashedId
      * @return mixed
-     * @throws MinimumRecordRequiredException
+     * @throws \GetCandy\Api\Exceptions\MinimumRecordRequiredException
      */
     public function delete($hashedId)
     {
