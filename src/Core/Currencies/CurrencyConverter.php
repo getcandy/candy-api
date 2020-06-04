@@ -14,8 +14,6 @@ class CurrencyConverter implements CurrencyConverterInterface
     protected $currency;
 
     /**
-     * The currency service.
-     *
      * @var \GetCandy\Api\Core\Currencies\Interfaces\CurrencyServiceInterface
      */
     protected $currencies;
