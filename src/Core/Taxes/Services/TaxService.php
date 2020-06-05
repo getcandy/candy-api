@@ -79,7 +79,7 @@ class TaxService extends BaseService
      * @param  string $id
      *
      * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     * @throws GetCandy\Api\Core\Exceptions\MinimumRecordRequiredException
+     * @throws \GetCandy\Api\Exceptions\MinimumRecordRequiredException
      *
      * @return bool
      */

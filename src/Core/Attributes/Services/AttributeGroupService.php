@@ -77,7 +77,7 @@ class AttributeGroupService extends BaseService
      * @param  array  $data
      *
      * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     * @throws GetCandy\Api\Core\Exceptions\MinimumRecordRequiredException
+     * @throws \GetCandy\Api\Exceptions\MinimumRecordRequiredException
      *
      * @return GetCandy\Api\Core\Models\AttributeGroup
      */

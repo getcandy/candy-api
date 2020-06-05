@@ -4,7 +4,7 @@ namespace GetCandy\Api\Core\Languages\Services;
 
 use GetCandy\Api\Core\Languages\Models\Language;
 use GetCandy\Api\Core\Scaffold\BaseService;
-use GetCandy\Exceptions\MinimumRecordRequiredException;
+use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
 
 class LanguageService extends BaseService
 {
@@ -52,7 +52,7 @@ class LanguageService extends BaseService
      * @param  array  $data
      *
      * @throws Symfony\Component\HttpKernel\Exception
-     * @throws GetCandy\Api\Core\Exceptions\MinimumRecordRequiredException
+     * @throws \GetCandy\Api\Exceptions\MinimumRecordRequiredException
      *
      * @return GetCandy\Api\Core\Models\Language
      */
@@ -102,7 +102,7 @@ class LanguageService extends BaseService
      * @param  string $id
      *
      * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     * @throws GetCandy\Api\Core\Exceptions\MinimumRecordRequiredException
+     * @throws \GetCandy\Api\Exceptions\MinimumRecordRequiredException
      *
      * @return bool
      */
