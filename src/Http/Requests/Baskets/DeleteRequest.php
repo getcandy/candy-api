@@ -19,6 +19,11 @@ class DeleteRequest extends FormRequest
         return $basket->user->id == $this->user()->id;
     }
 
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
     public function rules()
     {
         return [];
