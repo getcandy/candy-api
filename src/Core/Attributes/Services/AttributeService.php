@@ -5,7 +5,7 @@ namespace GetCandy\Api\Core\Attributes\Services;
 use GetCandy\Api\Core\Attributes\Events\AttributeSavedEvent;
 use GetCandy\Api\Core\Attributes\Models\Attribute;
 use GetCandy\Api\Core\Scaffold\BaseService;
-use GetCandy\Exceptions\DuplicateValueException;
+use GetCandy\Api\Exceptions\DuplicateValueException;
 
 class AttributeService extends BaseService
 {
