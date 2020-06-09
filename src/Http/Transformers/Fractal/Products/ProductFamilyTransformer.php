@@ -12,6 +12,11 @@ class ProductFamilyTransformer extends BaseTransformer
 {
     use IncludesAttributes;
 
+    /**
+     * Resources that can be included if requested.
+     *
+     * @var array
+     */
     protected $availableIncludes = [
         'products', 'attributes', 'attribute_groups',
     ];

@@ -8,6 +8,11 @@ use GetCandy\Api\Http\Transformers\Fractal\Products\ProductVariantTransformer;
 
 class BasketLineTransformer extends BaseTransformer
 {
+    /**
+     * Resources that can be included if requested.
+     *
+     * @var array
+     */
     protected $availableIncludes = [
         'variant',
     ];

@@ -8,13 +8,19 @@ use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 
 class ChannelTransformer extends BaseTransformer
 {
+    /**
+     * Resources that can be included if requested.
+     *
+     * @var array
+     */
     protected $availableIncludes = [
         'routes',
     ];
 
     /**
-     * Decorates the attribute object for viewing.
-     * @param  Attribute $product
+     * Decorates the channel object for viewing.
+     * 
+     * @param  \GetCandy\Api\Core\Channels\Models\Channel  $channel
      * @return array
      */
     public function transform(Channel $channel)

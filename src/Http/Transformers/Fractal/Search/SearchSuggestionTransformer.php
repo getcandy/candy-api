@@ -8,6 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class SearchSuggestionTransformer extends BaseTransformer
 {
+    /**
+     * Include resources without needing it to be requested.
+     *
+     * @var array
+     */
     protected $defaultIncludes = ['routes', 'thumbnail'];
 
     public function transform(Model $model)

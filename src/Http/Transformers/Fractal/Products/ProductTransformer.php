@@ -19,6 +19,8 @@ class ProductTransformer extends BaseTransformer
     use IncludesAttributes;
 
     /**
+     * Resources that can be included if requested.
+     *
      * @var array
      */
     protected $availableIncludes = [
@@ -40,8 +42,7 @@ class ProductTransformer extends BaseTransformer
     ];
 
     /**
-     * @param \GetCandy\Api\Products\Models\Product $product
-     *
+     * @param  \GetCandy\Api\Core\Products\Models\Product  $product
      * @return array
      */
     public function transform(Product $product)
@@ -88,8 +89,7 @@ class ProductTransformer extends BaseTransformer
     }
 
     /**
-     * @param \GetCandy\Api\Products\Models\Product $product
-     *
+     * @param  \GetCandy\Api\Core\Products\Models\Product  $product
      * @return \League\Fractal\Resource\Item
      */
     public function includeLayout(Product $product)
@@ -102,8 +102,7 @@ class ProductTransformer extends BaseTransformer
     }
 
     /**
-     * @param \GetCandy\Api\Products\Models\Product $product
-     *
+     * @param  \GetCandy\Api\Core\Products\Models\Product  $product
      * @return \League\Fractal\Resource\Item
      */
     public function includeFamily(Product $product)
@@ -116,8 +115,7 @@ class ProductTransformer extends BaseTransformer
     }
 
     /**
-     * @param \GetCandy\Api\Products\Models\Product $product
-     *
+     * @param  \GetCandy\Api\Core\Products\Models\Product  $product
      * @return \League\Fractal\Resource\Collection
      */
     public function includeCollections(Product $product)
@@ -126,8 +124,7 @@ class ProductTransformer extends BaseTransformer
     }
 
     /**
-     * @param \GetCandy\Api\Products\Models\Product $product
-     *
+     * @param  \GetCandy\Api\Core\Products\Models\Product  $product
      * @return \League\Fractal\Resource\Collection
      */
     public function includeAssociations(Product $product)
@@ -147,8 +144,8 @@ class ProductTransformer extends BaseTransformer
     /**
      * Get the resources discounts.
      *
-     * @param Product $product
-     * @return void
+     * @param  \GetCandy\Api\Core\Products\Models\Product  $product
+     * @return \League\Fractal\Resource\Collection
      */
     public function includeDiscounts(Product $product)
     {
@@ -162,8 +159,7 @@ class ProductTransformer extends BaseTransformer
     }
 
     /**
-     * @param \GetCandy\Api\Products\Models\Product $product
-     *
+     * @param  \GetCandy\Api\Core\Products\Models\Product  $product
      * @return \League\Fractal\Resource\Collection
      */
     public function includeAssets(Product $product)
@@ -174,8 +170,7 @@ class ProductTransformer extends BaseTransformer
     /**
      * Includes any product variants.
      *
-     * @param  Product $product
-     *
+     * @param  \GetCandy\Api\Core\Products\Models\Product  $product
      * @return \League\Fractal\Resource\Collection
      */
     public function includeVariants(Product $product)
@@ -184,8 +179,7 @@ class ProductTransformer extends BaseTransformer
     }
 
     /**
-     * @param Product $product
-     *
+     * @param  \GetCandy\Api\Core\Products\Models\Product  $product
      * @return \League\Fractal\Resource\Collection
      */
     public function includeRoutes(Product $product)
@@ -194,8 +188,7 @@ class ProductTransformer extends BaseTransformer
     }
 
     /**
-     * @param Product $product
-     *
+     * @param  \GetCandy\Api\Core\Products\Models\Product  $product
      * @return \League\Fractal\Resource\Collection
      */
     public function includeChannels(Product $product)
@@ -206,8 +199,7 @@ class ProductTransformer extends BaseTransformer
     }
 
     /**
-     * @param Product $product
-     *
+     * @param  \GetCandy\Api\Core\Products\Models\Product  $product
      * @return \League\Fractal\Resource\Collection
      */
     public function includeCustomerGroups(Product $product)
@@ -218,9 +210,8 @@ class ProductTransformer extends BaseTransformer
     }
 
     /**
-     * @param Product $product
-     *
-     * @return \League\Fractal\Resource\Categories
+     * @param  \GetCandy\Api\Core\Products\Models\Product  $product
+     * @return \League\Fractal\Resource\Collection
      */
     public function includeCategories(Product $product)
     {
@@ -228,8 +219,7 @@ class ProductTransformer extends BaseTransformer
     }
 
     /**
-     * @param Product $product
-     *
+     * @param  \GetCandy\Api\Core\Products\Models\Product  $product
      * @return \League\Fractal\Resource\Collection
      */
     public function includeFirstVariant(Product $product)

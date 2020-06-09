@@ -8,6 +8,11 @@ use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 
 class ProductAssociationTransformer extends BaseTransformer
 {
+    /**
+     * Include resources without needing it to be requested.
+     *
+     * @var array
+     */
     protected $defaultIncludes = [
         'association', 'type',
     ];

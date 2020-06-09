@@ -10,6 +10,11 @@ use GetCandy\Api\Http\Transformers\Fractal\Taxes\TaxTransformer;
 
 class ProductVariantTransformer extends BaseTransformer
 {
+    /**
+     * Resources that can be included if requested.
+     *
+     * @var array
+     */
     protected $availableIncludes = [
         'product', 'tax', 'pricing', 'tiers',
     ];
