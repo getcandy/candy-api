@@ -10,7 +10,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => GetCandy\Api\Auth\Models\User::class,
+            'model' => GetCandy\Api\Core\Auth\Models\User::class,
         ],
     ],
 ];

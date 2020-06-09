@@ -3,7 +3,7 @@
 namespace GetCandy\Api\Http\Requests\Tags;
 
 use GetCandy\Api\Http\Requests\FormRequest;
-use GetCandy\Api\Tags\Models\Tag;
+use GetCandy\Api\Core\Tags\Models\Tag;
 
 class CreateRequest extends FormRequest
 {
