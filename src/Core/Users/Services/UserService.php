@@ -128,8 +128,8 @@ class UserService extends BaseService implements UserContract
     /**
      * Get a reusable payment by it's id.
      *
-     * @param string $id
-     * @return ReusablePayment
+     * @param  string  $id
+     * @return \GetCandy\Api\Core\Payments\Models\ReusablePayment
      */
     public function getReusablePayment($id)
     {
@@ -141,7 +141,7 @@ class UserService extends BaseService implements UserContract
     /**
      * Delete a reusable payment.
      *
-     * @param ReusablePayment $payment
+     * @param  ReusablePayment  $payment
      * @return bool
      */
     public function deleteReusablePayment($payment)
@@ -197,8 +197,7 @@ class UserService extends BaseService implements UserContract
     /**
      * Creates a user token.
      *
-     * @param string $userId
-     *
+     * @param  string  $userId
      * @return PersonalAccessTokenResult
      */
     public function getImpersonationToken($userId)
