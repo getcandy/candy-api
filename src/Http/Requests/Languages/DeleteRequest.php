@@ -3,7 +3,7 @@
 namespace GetCandy\Api\Http\Requests\Languages;
 
 use GetCandy\Api\Http\Requests\FormRequest;
-use GetCandy\Api\Languages\Models\Language;
+use GetCandy\Api\Core\Languages\Models\Language;
 
 class DeleteRequest extends FormRequest
 {

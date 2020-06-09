@@ -2,7 +2,7 @@
 
 namespace GetCandy\Api\Http\Requests\Attributes;
 
-use GetCandy\Api\Attributes\Models\Attribute;
+use GetCandy\Api\Core\Attributes\Models\Attribute;
 use GetCandy\Api\Http\Requests\FormRequest;
 
 class DeleteRequest extends FormRequest
