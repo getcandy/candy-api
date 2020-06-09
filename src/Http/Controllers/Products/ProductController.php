@@ -17,7 +17,7 @@ use GetCandy\Api\Http\Resources\Products\ProductCollection;
 use GetCandy\Api\Http\Resources\Products\ProductRecommendationCollection;
 use GetCandy\Api\Http\Resources\Products\ProductResource;
 use GetCandy\Api\Http\Transformers\Fractal\Products\ProductTransformer;
-use GetCandy\Exceptions\InvalidLanguageException;
+use GetCandy\Api\Exceptions\InvalidLanguageException;
 use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
 use Hashids;
 use Illuminate\Database\Eloquent\ModelNotFoundException;

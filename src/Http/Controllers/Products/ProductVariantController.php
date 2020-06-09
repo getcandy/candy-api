@@ -9,7 +9,7 @@ use GetCandy\Api\Http\Requests\ProductVariants\UpdateRequest;
 use GetCandy\Api\Http\Resources\Products\ProductResource;
 use GetCandy\Api\Http\Resources\Products\ProductVariantCollection;
 use GetCandy\Api\Http\Resources\Products\ProductVariantResource;
-use GetCandy\Exceptions\InvalidLanguageException;
+use GetCandy\Api\Exceptions\InvalidLanguageException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;

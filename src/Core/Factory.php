@@ -325,7 +325,7 @@ class Factory
     public function __call($name, $arguments)
     {
         if (! property_exists($this, $name)) {
-            throw new \GetCandy\Exceptions\InvalidServiceException(trans('exceptions.invalid_service', [
+            throw new \GetCandy\Api\Exceptions\InvalidServiceException(trans('exceptions.invalid_service', [
                 'service' => $name,
             ]), 1);
         }

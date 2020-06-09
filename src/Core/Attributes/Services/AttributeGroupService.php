@@ -4,7 +4,7 @@ namespace GetCandy\Api\Core\Attributes\Services;
 
 use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
 use GetCandy\Api\Core\Scaffold\BaseService;
-use GetCandy\Exceptions\DuplicateValueException;
+use GetCandy\Api\Exceptions\DuplicateValueException;
 
 class AttributeGroupService extends BaseService
 {

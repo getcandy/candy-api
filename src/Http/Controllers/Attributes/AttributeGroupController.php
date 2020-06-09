@@ -11,7 +11,7 @@ use GetCandy\Api\Http\Resources\Attributes\AttributeGroupCollection;
 use GetCandy\Api\Http\Resources\Attributes\AttributeGroupResource;
 use GetCandy\Api\Http\Transformers\Fractal\Attributes\AttributeGroupTransformer;
 use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
-use GetCandy\Exceptions\DuplicateValueException;
+use GetCandy\Api\Exceptions\DuplicateValueException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
