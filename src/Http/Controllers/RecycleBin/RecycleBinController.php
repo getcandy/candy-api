@@ -19,8 +19,9 @@ class RecycleBinController extends BaseController
 
     /**
      * Handles request to get all recycle bin items.
-     * @param  Request $request
-     * @return array|\Illuminate\Http\Response
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \GetCandy\Api\Http\Resources\RecycleBin\RecycleBinCollection
      */
     public function index(Request $request)
     {
@@ -35,8 +36,10 @@ class RecycleBinController extends BaseController
 
     /**
      * Handles request to get all recycle bin items.
-     * @param  Request $request
-     * @return array|\Illuminate\Http\Response
+     * 
+     * @param  string  $id
+     * @param  \Illuminate\Http\Request  $request
+     * @return array|\GetCandy\Api\Http\Resources\RecycleBin\RecycleBinResource
      */
     public function show($id, Request $request)
     {

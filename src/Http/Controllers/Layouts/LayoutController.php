@@ -19,8 +19,9 @@ class LayoutController extends BaseController
 
     /**
      * Handles the request to show a layout based on it's hashed ID.
-     * @param  string $id
-     * @return Json
+     * 
+     * @param  string  $id
+     * @return array
      */
     public function show($id)
     {

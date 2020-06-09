@@ -15,8 +15,8 @@ class BaseController extends Controller
     /**
      * Parses included fields into an array.
      *
-     * @param string $request
-     * @return void
+     * @param  mixed  $request
+     * @return string[]
      */
     protected function parseIncludedFields($request)
     {

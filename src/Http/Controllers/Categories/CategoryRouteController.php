@@ -9,10 +9,9 @@ use GetCandy\Api\Http\Resources\Routes\RouteResource;
 class CategoryRouteController extends BaseController
 {
     /**
-     * @param                                                       $product
-     * @param \GetCandy\Api\Http\Requests\Products\CreateUrlRequest $request
-     *
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     * @param  string  $category
+     * @param  \GetCandy\Api\Http\Requests\Categories\Routes\CreateRequest  $request
+     * @return \GetCandy\Api\Http\Resources\Routes\RouteResource
      */
     public function store($category, CreateRequest $request)
     {

@@ -8,10 +8,9 @@ use GetCandy\Api\Http\Requests\Products\CreateUrlRequest;
 class ProductRedirectController extends BaseController
 {
     /**
-     * @param                                                       $product
-     * @param \GetCandy\Api\Http\Requests\Products\CreateUrlRequest $request
-     *
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     * @param  string  $product
+     * @param  \GetCandy\Api\Http\Requests\Products\CreateUrlRequest  $request
+     * @return \Illuminate\Http\Response
      */
     public function store($product, CreateUrlRequest $request)
     {

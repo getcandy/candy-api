@@ -25,8 +25,8 @@ class ResetPasswordController extends BaseController
     /**
      * Reset the given user's password.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
+     * @param  \GetCandy\Api\Http\Requests\Auth\ResetPasswordRequest  $request
+     * @return array
      */
     public function reset(ResetPasswordRequest $request)
     {
@@ -52,7 +52,7 @@ class ResetPasswordController extends BaseController
      * Get the response for a successful password reset.
      *
      * @param  string  $response
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
+     * @return array
      */
     protected function sendResetResponse($response)
     {
@@ -62,9 +62,9 @@ class ResetPasswordController extends BaseController
     /**
      * Get the response for a failed password reset.
      *
-     * @param  \Illuminate\Http\Request
+     * @param  \GetCandy\Api\Http\Requests\Auth\ResetPasswordRequest  $request
      * @param  string  $response
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
+     * @return array
      */
     protected function sendResetFailedResponse(ResetPasswordRequest $request, $response)
     {

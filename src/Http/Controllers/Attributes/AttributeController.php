@@ -18,8 +18,10 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class AttributeController extends BaseController
 {
     /**
-     * Returns a listing of channels.
-     * @return Json
+     * Returns a listing of attributes.
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \GetCandy\Api\Http\Resources\Attributes\AttributeCollection
      */
     public function index(Request $request)
     {
@@ -42,9 +44,11 @@ class AttributeController extends BaseController
     }
 
     /**
-     * Handles the request to show a channel based on it's hashed ID.
-     * @param  string $id
-     * @return Json
+     * Handles the request to show an attribute based on it's hashed ID.
+     * 
+     * @param  string  $id
+     * @param  \Illuminate\Http\Request  $request
+     * @return \GetCandy\Api\Http\Resources\Attributes\AttributeResource
      */
     public function show($id, Request $request)
     {
@@ -59,9 +63,10 @@ class AttributeController extends BaseController
     }
 
     /**
-     * Handles the request to create a new channel.
-     * @param  CreateRequest $request
-     * @return Json
+     * Handles the request to create a new attribute.
+     * 
+     * @param  \GetCandy\Api\Http\Requests\Attributes\CreateRequest  $request
+     * @return \GetCandy\Api\Http\Resources\Attributes\AttributeResource
      */
     public function store(CreateRequest $request)
     {
@@ -84,10 +89,11 @@ class AttributeController extends BaseController
     }
 
     /**
-     * Handles the request to update  a channel.
-     * @param  string        $id
-     * @param  UpdateRequest $request
-     * @return Json
+     * Handles the request to update an attribute.
+     * 
+     * @param  string  $id
+     * @param  \GetCandy\Api\Http\Requests\Attributes\UpdateRequest  $request
+     * @return array|\GetCandy\Api\Http\Resources\Attributes\AttributeResource
      */
     public function update($id, UpdateRequest $request)
     {
@@ -103,10 +109,11 @@ class AttributeController extends BaseController
     }
 
     /**
-     * Handles the request to delete a channel.
-     * @param  string        $id
-     * @param  DeleteRequest $request
-     * @return Json
+     * Handles the request to delete an attribute.
+     * 
+     * @param  string  $id
+     * @param  \GetCandy\Api\Http\Requests\Attributes\DeleteRequest  $request
+     * @return \Illuminate\Http\Response
      */
     public function destroy($id, DeleteRequest $request)
     {

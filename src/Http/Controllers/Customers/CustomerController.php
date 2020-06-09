@@ -14,7 +14,8 @@ class CustomerController extends BaseController
     /**
      * Shows all the customers.
      *
-     * @return array
+     * @param  \Illuminate\Http\Request  $request
+     * @return \GetCandy\Api\Http\Resources\Users\UserCollection
      */
     public function index(Request $request)
     {
@@ -38,8 +39,7 @@ class CustomerController extends BaseController
     /**
      * Handles request to store a customer.
      *
-     * @param CreateRequest $request
-     *
+     * @param  \GetCandy\Api\Http\Requests\Customers\CreateRequest  $request
      * @return array
      */
     public function store(CreateRequest $request)

@@ -10,10 +10,12 @@ use GetCandy\Api\Http\Resources\Products\ProductResource;
 class ProductChannelController extends BaseController
 {
     /**
-     * Handles the request to update a products customer groups.
-     * @param  string        $product
-     * @param  UpdateChannelRequest $request
-     * @return mixed
+     * Handles the request to update a product's channels.
+     * 
+     * @param  string  $product
+     * @param  \GetCandy\Api\Http\Requests\Products\UpdateChannelRequest  $request
+     * @param  \GetCandy\Api\Core\Products\Services\ProductChannelService  $service
+     * @return \GetCandy\Api\Http\Resources\Products\ProductResource
      */
     public function store($product, UpdateChannelRequest $request, ProductChannelService $service)
     {
@@ -23,10 +25,11 @@ class ProductChannelController extends BaseController
     }
 
     /**
-     * Handles the request to remove a product association.
-     * @param  string        $product
-     * @param  DeleteRequest $request
-     * @return mixed
+     * Handles the request to remove a product's channel.
+     * 
+     * @param  string  $product
+     * @param  mixed  $request (?)
+     * @return void
      */
     public function destroy($product, DeleteRequest $request)
     {

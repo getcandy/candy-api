@@ -12,8 +12,8 @@ class ProductAssetController extends BaseController
     /**
      * Gets all assets for a product.
      * @param  int  $id
-     * @param  Request $request
-     * @return array|\Illuminate\Http\Response
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
      */
     public function index($id, Request $request)
     {
@@ -43,9 +43,10 @@ class ProductAssetController extends BaseController
 
     /**
      * Uploads an asset for a product.
-     * @param  int        $id
-     * @param  UploadRequest $request
-     * @return array|\Illuminate\Http\Response
+     * 
+     * @param  int  $id
+     * @param  \GetCandy\Api\Http\Requests\Assets\UploadRequest  $request
+     * @return void
      */
     public function upload($id, UploadRequest $request)
     {
