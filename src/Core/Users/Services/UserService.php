@@ -23,7 +23,7 @@ class UserService extends BaseService implements UserContract
      * Returns model by a given hashed id.
      * 
      * @param  string  $id
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Foundation\Auth\User
      * 
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
@@ -38,7 +38,7 @@ class UserService extends BaseService implements UserContract
      * Returns model by a given email.
      *
      * @param  string  $email
-     * @return \Illuminate\Database\Eloquent\Model|null
+     * @return \Illuminate\Foundation\Auth\User|null
      */
     public function getByEmail($email)
     {
@@ -81,7 +81,7 @@ class UserService extends BaseService implements UserContract
      * Creates a resource from the given data.
      *
      * @param  array  $data
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return \Illuminate\Foundation\Auth\User
      */
     public function create($data)
     {
@@ -141,7 +141,7 @@ class UserService extends BaseService implements UserContract
     /**
      * Delete a reusable payment.
      *
-     * @param  ReusablePayment  $payment
+     * @param  \GetCandy\Api\Core\Payments\Models\ReusablePayment  $payment
      * @return bool
      */
     public function deleteReusablePayment($payment)

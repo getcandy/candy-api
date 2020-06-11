@@ -10,7 +10,7 @@ class ActivityLogFactory implements ActivityLogFactoryInterface
     /**
      * The related model.
      *
-     * @var Model
+     * @var \Illuminate\Database\Eloquent\Model
      */
     protected $model;
 
@@ -38,8 +38,8 @@ class ActivityLogFactory implements ActivityLogFactoryInterface
     /**
      * Set the model.
      *
-     * @param Model $model
-     * @return self
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @return $this
      */
     public function against(Model $model)
     {
@@ -51,8 +51,8 @@ class ActivityLogFactory implements ActivityLogFactoryInterface
     /**
      * Set the value for action.
      *
-     * @param string $action
-     * @return self
+     * @param  string  $action
+     * @return $this
      */
     public function action($action)
     {
@@ -64,8 +64,8 @@ class ActivityLogFactory implements ActivityLogFactoryInterface
     /**
      * Set any additional properties.
      *
-     * @param array $properties
-     * @return self
+     * @param  array  $properties
+     * @return $this
      */
     public function with($properties = [])
     {
@@ -77,8 +77,8 @@ class ActivityLogFactory implements ActivityLogFactoryInterface
     /**
      * Set the value for user.
      *
-     * @param Model $user
-     * @return self
+     * @param  null|\Illuminate\Database\Eloquent\Model $user
+     * @return $this
      */
     public function as(Model $user = null)
     {
@@ -90,7 +90,7 @@ class ActivityLogFactory implements ActivityLogFactoryInterface
     /**
      * Log the action.
      *
-     * @param string $type
+     * @param  string  $type
      * @return void
      */
     public function log($type = 'default')

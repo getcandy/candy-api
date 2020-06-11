@@ -27,8 +27,8 @@ class OrderExport
     /**
      * Set the value for format.
      *
-     * @param string $format
-     * @return self
+     * @param  string  $format
+     * @return $this
      */
     public function setFormat($format)
     {
@@ -50,8 +50,8 @@ class OrderExport
     /**
      * Set the value for content.
      *
-     * @param string $content
-     * @return self
+     * @param  string  $content
+     * @return $this
      */
     public function setContent($content)
     {

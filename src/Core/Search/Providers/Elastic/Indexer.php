@@ -16,19 +16,22 @@ class Indexer
 {
     // use InteractsWithIndex;
 
+    /**
+     * @var int
+     */
     protected $batch = 0;
 
     /**
      * The language service instance.
      *
-     * @var LanguageService
+     * @var \GetCandy\Api\Core\Languages\Services\LanguageService
      */
     protected $lang;
 
     /**
      * The indice resolver.
      *
-     * @var IndiceResolver
+     * @var \GetCandy\Api\Core\Search\Providers\Elastic\IndiceResolver
      */
     protected $resolver;
 
@@ -42,7 +45,7 @@ class Indexer
     /**
      * Reindex a model.
      *
-     * @param Model $model
+     * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return void
      */
     public function reindex($model)
@@ -147,7 +150,9 @@ class Indexer
 
     /**
      * Updates the mappings for the model.
-     * @param  Elastica\Index $index
+     *
+     * @param  \Elastica\Index  $index
+     * @param  mixed  $type
      * @return void
      */
     public function updateMappings($index, $type)
@@ -164,8 +169,8 @@ class Indexer
     /**
      * Gets a timestamped index.
      *
-     * @param [type] $type
-     * @return void
+     * @param  mixed  $type
+     * @return string
      */
     protected function getIndexName($type)
     {
@@ -177,8 +182,8 @@ class Indexer
     /**
      * Index a single object.
      *
-     * @param Model $model
-     * @return void
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @return bool
      */
     public function indexObject(Model $model)
     {
@@ -321,8 +326,8 @@ class Indexer
     /**
      * Cleans up the indexes for next time.
      *
-     * @param string $suffix
-     * @param array $aliases
+     * @param  string  $suffix
+     * @param  array  $aliases
      * @return void
      */
     private function cleanup($suffix, $aliases)
@@ -342,8 +347,8 @@ class Indexer
     /**
      * Add a single model to the elastic index.
      *
-     * @param Model $model
-     * @param string $suffix
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @param  string|null  $suffix
      * @return bool
      */
     protected function addToIndex(Model $model, $suffix = null)
@@ -379,7 +384,8 @@ class Indexer
 
     /**
      * Create an index based on the model.
-     * @return void
+     *
+     * @return mixed
      */
     public function createIndex($name, $type)
     {

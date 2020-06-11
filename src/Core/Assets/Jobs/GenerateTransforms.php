@@ -13,15 +13,20 @@ class GenerateTransforms implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
-     * @var \GetCandy\Api\Core\Assets\Models\Asset
+     * @var \Illuminate\Support\Collection
      */
     protected $assets;
 
+    /**
+     * @var null|array
+     */
     protected $settings;
 
     /**
      * Create a new job instance.
      *
+     * @param  \GetCandy\Api\Core\Assets\Models\Asset[]  $assets
+     * @param  null|array  $settings
      * @return void
      */
     public function __construct($assets, $settings = null)

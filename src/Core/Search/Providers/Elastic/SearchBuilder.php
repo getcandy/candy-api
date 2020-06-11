@@ -95,6 +95,7 @@ class SearchBuilder
 
     /**
      * The scoring function.
+     *
      * @var
      */
     protected $scoring = null;
@@ -106,6 +107,9 @@ class SearchBuilder
      */
     protected $user;
 
+    /**
+     * @var array
+     */
     protected $topFilters = [
         'channel-filter',
         'customer-group-filter',
@@ -124,8 +128,8 @@ class SearchBuilder
     /**
      * Sets the search index.
      *
-     * @param string $index
-     * @return SearchBuilder
+     * @param  string  $index
+     * @return $this
      */
     public function setIndex($index)
     {
@@ -137,8 +141,8 @@ class SearchBuilder
     /**
      * Set the search term.
      *
-     * @param string $term
-     * @return SearchBuilder
+     * @param  string  $term
+     * @return $this
      */
     public function setTerm($term)
     {
@@ -150,9 +154,9 @@ class SearchBuilder
     /**
      * Add a filter to the search.
      *
-     * @param mixed $filter
-     * @param bool $post Whether this is a post filter
-     * @return SearchBuilder
+     * @param  mixed  $filter
+     * @param  bool  $post - Whether this is a post filter
+     * @return $this
      */
     public function addFilter($filter, $post = true)
     {
@@ -168,8 +172,8 @@ class SearchBuilder
     /**
      * Set the channel to search on.
      *
-     * @param string $channel
-     * @return SearchBuilder
+     * @param  string  $channel
+     * @return $this
      */
     public function setChannel($channel)
     {
@@ -181,8 +185,8 @@ class SearchBuilder
     /**
      * Set the function score.
      *
-     * @param mixed $score
-     * @return void
+     * @param  mixed  $score
+     * @return $this
      */
     public function scoring($score)
     {
@@ -194,8 +198,8 @@ class SearchBuilder
     /**
      * Set the search limit.
      *
-     * @param int $limit
-     * @return SeachBuilder
+     * @param  int  $limit
+     * @return $this
      */
     public function setLimit($limit)
     {
@@ -207,8 +211,8 @@ class SearchBuilder
     /**
      * Set the search offset.
      *
-     * @param integar $offset
-     * @return SearchBuilder
+     * @param  int  $offset
+     * @return $this
      */
     public function setOffset($offset)
     {
@@ -230,8 +234,8 @@ class SearchBuilder
     /**
      * Set the user.
      *
-     * @param mixed $user
-     * @return SearchBuilder
+     * @param  mixed  $user
+     * @return $this
      */
     public function setUser($user)
     {
@@ -243,7 +247,7 @@ class SearchBuilder
     /**
      * Init customer group filters.
      *
-     * @return SearchBuilder
+     * @return $this
      */
     public function useCustomerFilters()
     {
@@ -257,8 +261,8 @@ class SearchBuilder
     /**
      * Set the type.
      *
-     * @param string $type
-     * @return SearchBuilder
+     * @param  string  $type
+     * @return $this
      */
     public function setType($type)
     {
@@ -282,9 +286,9 @@ class SearchBuilder
     /**
      * Add a sort to the builder.
      *
-     * @param mixed $type
-     * @param mixed $payload
-     * @return SearchBuilder
+     * @param  mixed  $type
+     * @param  mixed  $payload
+     * @return $this
      */
     public function addSort($type, $payload)
     {
@@ -298,7 +302,7 @@ class SearchBuilder
     /**
      * Get the user.
      *
-     * @return User
+     * @return mixed
      */
     public function getUser()
     {
@@ -323,7 +327,7 @@ class SearchBuilder
     /**
      * Set up aggregations based on our attributes.
      *
-     * @return SearchBuilder
+     * @return $this
      */
     public function withAggregations()
     {
@@ -349,7 +353,7 @@ class SearchBuilder
     /**
      * Get the attributes.
      *
-     * @return Collection
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getAttributes()
     {
@@ -359,8 +363,8 @@ class SearchBuilder
     /**
      * Set the sorting on the search.
      *
-     * @param array $sorts
-     * @return SearchBuilder
+     * @param  array|null  $sortables
+     * @return $this
      */
     public function setSorting($sortables = null)
     {
@@ -418,8 +422,8 @@ class SearchBuilder
     /**
      * Add an aggregation to the builder.
      *
-     * @param GetCandy\Api\Core\Search\Providers\Elastic\Aggregators\AbstractAggregator $aggregation
-     * @return SearchBuilder
+     * @param  \GetCandy\Api\Core\Search\Providers\Elastic\Aggregators\AbstractAggregator  $aggregation
+     * @return $this
      */
     public function addAggregation($aggregation)
     {
@@ -450,7 +454,7 @@ class SearchBuilder
     /**
      * Get the search object.
      *
-     * @return Search
+     * @return \Elastica\Search
      */
     public function getSearch()
     {
@@ -470,7 +474,8 @@ class SearchBuilder
     /**
      * Get the search query.
      *
-     * @return void
+     * @param  mixed  $rank
+     * @return \Elastica\Query
      */
     public function getQuery($rank)
     {
@@ -569,7 +574,7 @@ class SearchBuilder
     /**
      * Get the suggester.
      *
-     * @return Suggest
+     * @return \Elastica\Suggest
      */
     protected function getSuggest()
     {

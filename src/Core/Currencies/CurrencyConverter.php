@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 class CurrencyConverter implements CurrencyConverterInterface
 {
     /**
-     * @var \GetCandy\Api\Core\Currencies\Models\Currency|null
+     * @var null|\GetCandy\Api\Core\Currencies\Models\Currency
      */
     protected $currency;
 

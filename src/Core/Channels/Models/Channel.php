@@ -11,6 +11,11 @@ use GetCandy\Api\Core\Shipping\Models\ShippingMethod;
 
 class Channel extends BaseModel
 {
+    /**
+     * The Hashid connection name for enconding the id.
+     * 
+     * @var string
+     */
     protected $hashids = 'channel';
 
     /**

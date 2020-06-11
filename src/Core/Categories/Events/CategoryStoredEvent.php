@@ -13,11 +13,15 @@ class CategoryStoredEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    /**
+     * @var \GetCandy\Api\Core\Categories\Models\Category
+     */
     protected $category;
 
     /**
      * Create a new event instance.
      *
+     * @param  \GetCandy\Api\Core\Categories\Models\Category  $category
      * @return void
      */
     public function __construct(Category $category)
@@ -33,7 +37,7 @@ class CategoryStoredEvent
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return Channel|array
+     * @return \Illuminate\Broadcasting\PrivateChannel
      */
     public function broadcastOn()
     {

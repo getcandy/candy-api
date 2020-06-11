@@ -6,8 +6,18 @@ use GetCandy\Api\Core\Scaffold\BaseModel;
 
 class DiscountCriteriaSet extends BaseModel
 {
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = ['scope', 'outcome'];
 
+    /**
+     * The Hashid connection name for enconding the id.
+     * 
+     * @var string
+     */
     protected $hashids = 'main';
 
     public function discount()
@@ -23,8 +33,8 @@ class DiscountCriteriaSet extends BaseModel
     /**
      * Process a criteria set.
      *
-     * @param \Illuminate\Eloquent\Database\Model $user
-     * @param \GetCandy\Core\Baskets\Models\Basket $basket
+     * @param  \Illuminate\Database\Eloquent\Model  $user
+     * @param  \GetCandy\Api\Core\Baskets\Models\Basket  $basket
      * @return bool
      */
     public function process($user, $basket)

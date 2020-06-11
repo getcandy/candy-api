@@ -6,7 +6,9 @@ trait HasTranslations
 {
     /**
      * Sets the name attribute to a json string.
-     * @param array $value
+     *
+     * @param  array  $value
+     * @return void
      */
     public function setNameAttribute($value)
     {

@@ -14,21 +14,21 @@ class PayPal extends AbstractProvider
     /**
      * The Guzzle client.
      *
-     * @var Client
+     * @var \GuzzleHttp\Client
      */
     protected $client;
 
     /**
      * The environment context.
      *
-     * @var ApiContext
+     * @var \PayPal\Rest\ApiContext
      */
     protected $context;
 
     /**
      * PayPal payment details.
      *
-     * @var Payment
+     * @var \PayPal\Api\Payment
      */
     protected $details;
 
@@ -57,7 +57,7 @@ class PayPal extends AbstractProvider
     /**
      * Checks whether the token is valid.
      *
-     * @param string $token
+     * @param  string  $token
      * @return bool
      */
     public function validate($token)
@@ -99,9 +99,7 @@ class PayPal extends AbstractProvider
     /**
      * Create a successful transaction.
      *
-     * @param [type] $content
-     * @param [type] $order
-     * @return void
+     * @return \Illuminate\Support\Collection
      */
     protected function getTransactions()
     {

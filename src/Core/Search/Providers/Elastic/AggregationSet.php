@@ -4,6 +4,9 @@ namespace GetCandy\Api\Core\Search\Providers\Elastic;
 
 class AggregationSet
 {
+    /**
+     * @var array|\Illuminate\Support\Collection
+     */
     protected $aggregations = [];
 
     public function __construct()
@@ -14,9 +17,8 @@ class AggregationSet
     /**
      * Add a filter to the chain.
      *
-     * @param string $type
-     * @param mixed $payload
-     * @return self
+     * @param  string  $type
+     * @return $this
      */
     public function add($type)
     {
@@ -37,7 +39,7 @@ class AggregationSet
     /**
      * Find the filter class.
      *
-     * @param string $type
+     * @param  string  $type
      * @return mixed
      */
     private function findAggregation($type)

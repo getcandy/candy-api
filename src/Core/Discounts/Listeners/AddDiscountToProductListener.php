@@ -7,6 +7,9 @@ use GetCandy\Api\Core\Products\Events\ProductViewedEvent;
 
 class AddDiscountToProductListener
 {
+    /**
+     * @var \GetCandy\Api\Core\Discounts\Factory
+     */
     protected $factory;
 
     public function __construct(Factory $factory)
@@ -17,7 +20,7 @@ class AddDiscountToProductListener
     /**
      * Handle the event.
      *
-     * @param  OrderShipped  $event
+     * @param  \GetCandy\Api\Core\Products\Events\ProductViewedEvent  $event
      * @return void
      */
     public function handle(ProductViewedEvent $event)

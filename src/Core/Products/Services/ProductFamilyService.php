@@ -15,9 +15,8 @@ class ProductFamilyService extends BaseService
     /**
      * Creates a resource from the given data.
      *
-     * @param array $data
-     *
-     * @return GetCandy\Api\Core\Models\ProductFamily
+     * @param  array  $data
+     * @return \GetCandy\Api\Core\Products\Models\ProductFamily
      */
     public function create(array $data)
     {
@@ -31,12 +30,11 @@ class ProductFamilyService extends BaseService
     /**
      * Updates a resource from the given data.
      *
-     * @param  string $hashedId
+     * @param  string  $hashedId
      * @param  array  $data
+     * @return \GetCandy\Api\Core\Products\Models\ProductFamily
      *
-     * @throws Symfony\Component\HttpKernel\Exception
-     *
-     * @return GetCandy\Api\Core\Models\ProductFamily
+     * @throws \Exception
      */
     public function update($hashedId, array $data)
     {
@@ -58,9 +56,12 @@ class ProductFamilyService extends BaseService
 
     /**
      * Gets paginated data for the record.
-     * @param  int $length How many results per page
-     * @param  int  $page   The page to start
-     * @return Illuminate\Pagination\LengthAwarePaginator
+     * 
+     * @param  int  $length
+     * @param  int|null  $page
+     * @param  string|array|null  $relations
+     * @param  string  $keywords
+     * @return \Illuminate\Pagination\LengthAwarePaginator
      */
     public function getPaginatedData($length = 50, $page = null, $relations = null, $keywords = null)
     {
@@ -80,11 +81,11 @@ class ProductFamilyService extends BaseService
     /**
      * Deletes a resource by its given hashed ID.
      *
-     * @param  string $id
-     *
-     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     *
+     * @param  string  $id
+     * @param  string|null  $target
      * @return bool
+     * 
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
     public function delete($hashedId, $target = null)
     {

@@ -9,7 +9,7 @@ use GetCandy\Api\Exceptions\DuplicateValueException;
 class AttributeGroupService extends BaseService
 {
     /**
-     * @var AttributeGroup
+     * @var \GetCandy\Api\Core\Attributes\Models\AttributeGroup
      */
     protected $model;
 
@@ -22,8 +22,8 @@ class AttributeGroupService extends BaseService
      * Creates a resource from the given data.
      *
      * @param  array  $data
-     *
-     * @return AttributeGroup
+     * @param  null|array|string  $includes
+     * @return \GetCandy\Api\Core\Attributes\Models\AttributeGroup
      */
     public function create(array $data, $includes = null)
     {
@@ -53,9 +53,12 @@ class AttributeGroupService extends BaseService
 
     /**
      * Returns model by a given hashed id.
-     * @param  string $id
-     * @throws  Illuminate\Database\Eloquent\ModelNotFoundException
-     * @return Illuminate\Database\Eloquent\Model
+     * 
+     * @param  string  $id
+     * @param  null|array|string  $includes
+     * @return \GetCandy\Api\Core\Attributes\Models\AttributeGroup
+     *
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public function getByHashedId($id, $includes = null)
     {
@@ -73,13 +76,12 @@ class AttributeGroupService extends BaseService
     /**
      * Updates a resource from the given data.
      *
-     * @param  string $id
+     * @param  string  $id
      * @param  array  $data
+     * @return \GetCandy\Api\Core\Attributes\Models\AttributeGroup
      *
-     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @throws \GetCandy\Api\Exceptions\MinimumRecordRequiredException
-     *
-     * @return GetCandy\Api\Core\Models\AttributeGroup
      */
     public function update($hashedId, array $data)
     {
@@ -100,12 +102,12 @@ class AttributeGroupService extends BaseService
 
     /**
      * Updates the positions of attribute groups.
+     * 
      * @param  array  $data
-     *
-     * @throws Symfony\Component\HttpKernel\Exception\HttpException
-     * @throws GetCandy\Api\Core\Exceptions\DuplicateValueException
-     *
      * @return bool
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\HttpException
+     * @throws \GetCandy\Api\Exceptions\DuplicateValueException
      */
     public function updateGroupPositions(array $data)
     {
@@ -137,12 +139,13 @@ class AttributeGroupService extends BaseService
     /**
      * Deletes a resource by its given hashed ID.
      *
-     * @param  string $id
-     *
-     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     * @throws Symfony\Component\HttpKernel\Exception\HttpException
-     *
+     * @param  string  $id
+     * @param  string  $adopterId
+     * @param  bool  $deleteAttributes
      * @return bool
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @throws \Symfony\Component\HttpKernel\Exception\HttpException
      */
     public function delete($id, $adopterId = null, $deleteAttributes = false)
     {

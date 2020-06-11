@@ -47,7 +47,7 @@ class TextFilter extends AbstractFilter
     /**
      * Get an aggregation based on this filter.
      *
-     * @return void
+     * @return \GetCandy\Api\Core\Search\Providers\Elastic\Aggregators\Attribute
      */
     public function aggregate()
     {

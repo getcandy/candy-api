@@ -12,9 +12,8 @@ use Symfony\Component\Finder\SplFileInfo;
 class Image extends BaseUploadDriver implements AssetDriverContract
 {
     /**
-     * @param array $data
-     * @param       $model
-     *
+     * @param  array  $data
+     * @param  null|\Illuminate\Database\Eloquent\Model  $model
      * @return \GetCandy\Api\Core\Assets\Models\Asset
      */
     public function process(array $data, $model = null)

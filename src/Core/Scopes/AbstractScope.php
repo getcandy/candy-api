@@ -25,7 +25,7 @@ abstract class AbstractScope implements Scope
     /**
      * The current user.
      *
-     * @var Model
+     * @var \Illuminate\Foundation\Auth\User
      */
     protected $user;
 
@@ -44,7 +44,7 @@ abstract class AbstractScope implements Scope
     /**
      * Resolves the scope if criteria is met.
      *
-     * @param \Closure $callback
+     * @param  \Closure  $callback
      * @return void
      */
     protected function resolve(\Closure $callback)
@@ -61,7 +61,7 @@ abstract class AbstractScope implements Scope
     /**
      * Gets the authenticated user.
      *
-     * @return Model
+     * @return \Illuminate\Foundation\Auth\User
      */
     protected function getUser()
     {

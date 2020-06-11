@@ -8,6 +8,9 @@ use GetCandy\Api\Core\Scaffold\BaseService;
 
 class SavedBasketService extends BaseService
 {
+    /**
+     * @var \GetCandy\Api\Core\Baskets\Models\SavedBasket
+     */
     protected $model;
 
     public function __construct()
@@ -18,9 +21,9 @@ class SavedBasketService extends BaseService
     /**
      * Update a saved basket.
      *
-     * @param string $id
-     * @param array $payload
-     * @return void
+     * @param  string  $hashedId
+     * @param  array  $data
+     * @return \GetCandy\Api\Core\Baskets\Models\SavedBasket
      */
     public function update($hashedId, array $data)
     {

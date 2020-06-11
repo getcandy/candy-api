@@ -29,33 +29,33 @@ class OrderService extends BaseService implements OrderServiceInterface
     /**
      * The basket service.
      *
-     * @var BasketService
+     * @var \GetCandy\Api\Core\Baskets\Services\BasketService
      */
     protected $baskets;
 
     /**
-     * @var Basket
+     * @var \GetCandy\Api\Core\Orders\Models\Order
      */
     protected $model;
 
     /**
      * The payments service.
      *
-     * @var PaymentService
+     * @var \GetCandy\Api\Core\Payments\Services\PaymentService
      */
     protected $payments;
 
     /**
      * The price calculator instance.
      *
-     * @var CurrencyConverterInterface
+     * @var \GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface
      */
     protected $currencies;
 
     /**
      * The price calculator instance.
      *
-     * @var PriceCalculatorInterface
+     * @var \GetCandy\Api\Core\Pricing\PriceCalculatorInterface
      */
     protected $calculator;
 
@@ -79,9 +79,11 @@ class OrderService extends BaseService implements OrderServiceInterface
     /**
      * Stores an order.
      *
-     * @param string $basketId
-     *
-     * @return Order
+     * @param  string  $basketId
+     * @param  null|\Illuminate\Foundation\Auth\User  $user
+     * @return \GetCandy\Api\Core\Orders\Models\Order
+     * 
+     * @throws \GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException
      */
     public function store($basketId, $user = null)
     {
@@ -143,11 +145,10 @@ class OrderService extends BaseService implements OrderServiceInterface
     /**
      * Adds a shipping line to an order.
      *
-     * @param string $orderId
-     * @param string $shippingPriceId
-     * @param string $preference
-     *
-     * @return Order
+     * @param  string  $orderId
+     * @param  string  $shippingPriceId
+     * @param  null|string  $preference
+     * @return \GetCandy\Api\Core\Orders\Models\Order
      */
     public function addShippingLine($orderId, $shippingPriceId, $preference = null)
     {
@@ -205,11 +206,15 @@ class OrderService extends BaseService implements OrderServiceInterface
     /**
      * Bulk update an order.
      *
-     * @param array $orderIds
-     * @param string $field
-     * @param string $value
-     * @throws \Illuminate\Database\QueryException
+     * @param  array  $orderIds
+     * @param  string  $field
+     * @param  string  $value
+     * @param  bool  $sendEmails
+     * @param  array  $data
      * @return void
+     * 
+     * @throws \Illuminate\Database\QueryException
+     * @throws \InvalidArgumentException
      */
     public function bulkUpdate($orderIds, $field, $value, $sendEmails = true, $data = [])
     {
@@ -264,10 +269,11 @@ class OrderService extends BaseService implements OrderServiceInterface
     /**
      * Update an order.
      *
-     * @param string $orderId
-     * @param array $data
-     *
-     * @return Order
+     * @param  string  $orderId
+     * @param  array  $data
+     * @param  bool  $sendEmails
+     * @param  array  $emailContent
+     * @return \GetCandy\Api\Core\Orders\Models\Order
      */
     public function update($orderId, array $data, $sendEmails = true, $emailContent = [])
     {
@@ -313,10 +319,10 @@ class OrderService extends BaseService implements OrderServiceInterface
     /**
      * Set the delivery details.
      *
-     * @param string $id
-     * @param array $data
-     *
-     * @return Order
+     * @param  string  $id
+     * @param  array  $data
+     * @param  null|\Illuminate\Foundation\Auth\User  $user
+     * @return \GetCandy\Api\Core\Orders\Models\Order
      */
     public function setShipping($id, array $data, $user = null)
     {
@@ -344,8 +350,8 @@ class OrderService extends BaseService implements OrderServiceInterface
     /**
      * Recalculates an orders totals.
      *
-     * @param Order $order
-     * @return void
+     * @param  \GetCandy\Api\Core\Orders\Models\Order  $order
+     * @return \GetCandy\Api\Core\Orders\Models\Order
      */
     public function recalculate($order)
     {
@@ -401,10 +407,10 @@ class OrderService extends BaseService implements OrderServiceInterface
     /**
      * Set the delivery details.
      *
-     * @param string $id
-     * @param array $data
-     *
-     * @return Order
+     * @param  string  $id
+     * @param  array  $data
+     * @param  null|\Illuminate\Foundation\Auth\User  $user
+     * @return \GetCandy\Api\Core\Orders\Models\Order
      */
     public function setBilling($id, array $data, $user = null)
     {
@@ -419,11 +425,11 @@ class OrderService extends BaseService implements OrderServiceInterface
     /**
      * Adds an address for an order.
      *
-     * @param string $id
-     * @param array $data
-     * @param string $type
-     *
-     * @return Order
+     * @param  string  $id
+     * @param  array  $data
+     * @param  string  $type
+     * @param  null|\Illuminate\Foundation\Auth\User  $user
+     * @return \GetCandy\Api\Core\Orders\Models\Order
      */
     protected function addAddress($id, $data, $type, $user = null)
     {
@@ -472,10 +478,9 @@ class OrderService extends BaseService implements OrderServiceInterface
     /**
      * Sets the delivery price on an.
      *
-     * @param string $orderId
-     * @param string $priceId
-     *
-     * @return Order
+     * @param  string  $orderId
+     * @param  string  $priceId
+     * @return \GetCandy\Api\Core\Orders\Models\Order
      */
     public function setDeliveryPrice($orderId, $priceId)
     {
@@ -485,10 +490,9 @@ class OrderService extends BaseService implements OrderServiceInterface
     /**
      * Sets the fields for contact info on the order.
      *
-     * @param string $order
-     * @param array $fields
-     * @param string $prefix
-     *
+     * @param  string  $order
+     * @param  array  $fields
+     * @param  string  $prefix
      * @return void
      */
     protected function setFields($order, $fields, $prefix)
@@ -512,9 +516,8 @@ class OrderService extends BaseService implements OrderServiceInterface
     /**
      * Expires an order.
      *
-     * @param string $orderId
-     *
-     * @return void
+     * @param  string  $orderId
+     * @return bool
      */
     public function expire($orderId)
     {
@@ -539,6 +542,8 @@ class OrderService extends BaseService implements OrderServiceInterface
     /**
      * Get the next invoice reference.
      *
+     * @param  null|string  $year
+     * @param  null|string  $year
      * @return string
      */
     protected function getNextInvoiceReference($year = null, $month = null)
@@ -576,11 +581,11 @@ class OrderService extends BaseService implements OrderServiceInterface
     /**
      * Syncs a given basket with its order.
      *
-     * @param Order $order
-     * @param Basket $basket
-     * @deprecated 0.3.35
+     * @param  \GetCandy\Api\Core\Orders\Models\Order  $order
+     * @param  \GetCandy\Api\Core\Baskets\Models\Basket  $basket
+     * @return \GetCandy\Api\Core\Orders\Models\Order
      *
-     * @return Order
+     * @deprecated 0.3.35
      */
     public function syncWithBasket(Order $order, Basket $basket)
     {
@@ -593,9 +598,8 @@ class OrderService extends BaseService implements OrderServiceInterface
     /**
      * Maps the order lines from a basket.
      *
-     * @param Basket $basket
-     *
-     * @return void
+     * @param  \GetCandy\Api\Core\Baskets\Models\Basket  $basket
+     * @return array
      */
     protected function mapOrderLines($basket)
     {
@@ -622,8 +626,7 @@ class OrderService extends BaseService implements OrderServiceInterface
     /**
      * Determines whether an active order exists with this id.
      *
-     * @param string $orderId
-     *
+     * @param  string  $orderId
      * @return bool
      */
     public function isActive($orderId)
@@ -636,8 +639,7 @@ class OrderService extends BaseService implements OrderServiceInterface
     /**
      * Checks whether an order is processable.
      *
-     * @param Order $order
-     *
+     * @param  \GetCandy\Api\Core\Orders\Models\Order  $order
      * @return bool
      */
     protected function isProcessable(Order $order)
@@ -652,7 +654,7 @@ class OrderService extends BaseService implements OrderServiceInterface
     /**
      * Process an order for payment.
      *
-     * @param array $data
+     * @param  array  $data
      * @return mixed
      */
     public function process(array $data)
@@ -690,9 +692,10 @@ class OrderService extends BaseService implements OrderServiceInterface
     /**
      * Handles the response from an order being processed.
      *
-     * @param Transaction $transaction
-     * @param Order $order
-     * @return void
+     * @param  \GetCandy\Api\Core\Payments\Models\Transaction  $transaction
+     * @param  \GetCandy\Api\Core\Orders\Models\Order  $order
+     * @param  mixed $type
+     * @return \GetCandy\Api\Core\Orders\Models\Order
      */
     protected function handleProcessResponse($transaction, $order, $type = null)
     {
@@ -731,11 +734,11 @@ class OrderService extends BaseService implements OrderServiceInterface
     /**
      * Process a 3DSecured transaction.
      *
-     * @param Order $order
-     * @param string $transactionId
-     * @param string $paRes
-     * @param string $type
-     * @return Order
+     * @param  \GetCandy\Api\Core\Orders\Models\Order  $order
+     * @param  string  $transactionId
+     * @param  string  $paRes
+     * @param  string  $type
+     * @return \GetCandy\Api\Core\Orders\Models\Order
      */
     public function processThreeDSecure($order, $transactionId, $paRes, $type = null)
     {
@@ -757,10 +760,9 @@ class OrderService extends BaseService implements OrderServiceInterface
     /**
      * Set the contact details on an order.
      *
-     * @param string $orderId
-     * @param array $data
-     *
-     * @return Order
+     * @param  string  $orderId
+     * @param  array  $data
+     * @return \GetCandy\Api\Core\Orders\Models\Order
      */
     public function setContact($orderId, array $data)
     {
@@ -822,8 +824,8 @@ class OrderService extends BaseService implements OrderServiceInterface
     /**
      * Process discount lines for an order.
      *
-     * @param Basket $basket
-     * @param Order $order
+     * @param  \GetCandy\Api\Core\Baskets\Models\Basket  $basket
+     * @param  \GetCandy\Api\Core\Orders\Models\Order  $order
      * @return void
      */
     protected function processDiscountLines(Basket $basket, Order $order)

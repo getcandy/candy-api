@@ -10,10 +10,19 @@ use GetCandy\Api\Core\Scaffold\BaseService;
 
 class OrderLineService extends BaseService
 {
+    /**
+     * @var \GetCandy\Api\Core\Orders\Services\OrderService
+     */
     protected $orders;
 
+    /**
+     * @var \GetCandy\Api\Core\Products\Services\ProductVariantService
+     */
     protected $variants;
 
+    /**
+     * @var \GetCandy\Api\Core\Pricing\PriceCalculatorInterface
+     */
     protected $calculator;
 
     public function __construct(
@@ -30,9 +39,10 @@ class OrderLineService extends BaseService
     /**
      * Add a manual order line.
      *
-     * @param string $orderId
-     * @param array $data
-     * @return Order
+     * @param  string  $orderId
+     * @param  array  $data
+     * @param  bool  $manual
+     * @return \GetCandy\Api\Core\Orders\Models\Order
      */
     public function store($orderId, $data = [], $manual = true)
     {
@@ -81,8 +91,8 @@ class OrderLineService extends BaseService
     /**
      * Delete an order line.
      *
-     * @param string $lineId
-     * @return Order
+     * @param  string  $lineId
+     * @return \GetCandy\Api\Core\Orders\Models\Order
      */
     public function delete($lineId)
     {

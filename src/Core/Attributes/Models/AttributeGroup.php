@@ -9,6 +9,11 @@ class AttributeGroup extends BaseModel
 {
     use HasTranslations;
 
+    /**
+     * The Hashid connection name for enconding the id.
+     * 
+     * @var string
+     */
     protected $hashids = 'attribute_group';
 
     /**
@@ -23,7 +28,8 @@ class AttributeGroup extends BaseModel
 
     /**
      * Get the attributes associated to the group.
-     * @return Illuminate\Database\Eloquent\Relations\HasMany
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function attributes()
     {

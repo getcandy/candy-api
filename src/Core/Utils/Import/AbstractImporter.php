@@ -10,7 +10,7 @@ abstract class AbstractImporter
     /**
      * The import to process.
      *
-     * @var Import
+     * @var \GetCandy\Api\Core\Utils\Import\Models\Import
      */
     protected $import;
 

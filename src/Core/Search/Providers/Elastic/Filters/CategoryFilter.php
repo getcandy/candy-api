@@ -38,8 +38,8 @@ class CategoryFilter extends AbstractFilter
     /**
      * Add a category into the mix.
      *
-     * @param string $category
-     * @return self
+     * @param  string  $category
+     * @return $this
      */
     protected function add($category)
     {
@@ -51,7 +51,7 @@ class CategoryFilter extends AbstractFilter
     /**
      * Get the query for the filter.
      *
-     * @return mixed
+     * @return \Elastica\Query\BoolQuery
      */
     public function getQuery()
     {
@@ -84,7 +84,7 @@ class CategoryFilter extends AbstractFilter
     /**
      * Get an aggregation based on this filter.
      *
-     * @return void
+     * @return \GetCandy\Api\Core\Search\Providers\Elastic\Aggregators\Category
      */
     public function aggregate()
     {

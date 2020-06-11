@@ -8,9 +8,7 @@ use GetCandy\Api\Core\Products\Models\Product;
 class ProductObserver
 {
     /**
-     * The asset server.
-     *
-     * @var AssetService
+     * @var \GetCandy\Api\Core\Assets\Services\AssetService
      */
     protected $assets;
 
@@ -22,7 +20,7 @@ class ProductObserver
     /**
      * Handle the User "deleted" event.
      *
-     * @param  \App\User  $user
+     * @param  \GetCandy\Api\Core\Products\Models\Product  $product
      * @return void
      */
     public function deleted(Product $product)

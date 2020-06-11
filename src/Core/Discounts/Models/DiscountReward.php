@@ -6,8 +6,18 @@ use GetCandy\Api\Core\Scaffold\BaseModel;
 
 class DiscountReward extends BaseModel
 {
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = ['value', 'type', 'product_id'];
 
+    /**
+     * The Hashid connection name for enconding the id.
+     * 
+     * @var string
+     */
     protected $hashids = 'main';
 
     public function discount()

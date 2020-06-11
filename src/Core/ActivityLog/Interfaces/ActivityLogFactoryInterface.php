@@ -7,7 +7,7 @@ interface ActivityLogFactoryInterface
     /**
      * Log the action.
      *
-     * @param string $type
+     * @param  string  $type
      * @return void
      */
     public function log($type = 'default');

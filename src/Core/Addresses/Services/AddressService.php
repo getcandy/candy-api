@@ -7,6 +7,9 @@ use GetCandy\Api\Core\Scaffold\BaseService;
 
 class AddressService extends BaseService
 {
+    /**
+     * @var \GetCandy\Api\Core\Addresses\Models\Address
+     */
     protected $model;
 
     public function __construct()
@@ -17,10 +20,9 @@ class AddressService extends BaseService
     /**
      * Checks whether an address already exists.
      *
-     * @param string $user
-     * @param array $details
-     * @param string $type
-     *
+     * @param  \Illuminate\Database\Eloquent\Model  $user
+     * @param  array  $details
+     * @param  string  $type
      * @return bool
      */
     public function exists($user, array $details, $type = 'billing')
@@ -45,10 +47,9 @@ class AddressService extends BaseService
     /**
      * Create a new address.
      *
-     * @param User $user
-     * @param array $data
-     *
-     * @return Address
+     * @param  \Illuminate\Database\Eloquent\Model  $user
+     * @param  array $data
+     * @return \GetCandy\Api\Core\Addresses\Models\Address
      */
     public function create($user, array $data)
     {
@@ -77,8 +78,8 @@ class AddressService extends BaseService
     }
 
     /**
-     * @param string $hashedAddressId
-     * @return Address
+     * @param  string  $hashedAddressId
+     * @return \GetCandy\Api\Core\Addresses\Models\Address
      */
     public function makeDefault(string $hashedAddressId): Address
     {
@@ -93,8 +94,8 @@ class AddressService extends BaseService
     }
 
     /**
-     * @param string $hashedAddressId
-     * @return Address
+     * @param  string  $hashedAddressId
+     * @return \GetCandy\Api\Core\Addresses\Models\Address
      */
     public function removeDefault(string $hashedAddressId): Address
     {
@@ -107,8 +108,9 @@ class AddressService extends BaseService
     }
 
     /**
-     * @param int $userId
-     * @param string $type - 'billing' or 'shipping'
+     * @param  int  $userId
+     * @param  string  $type - 'billing' or 'shipping'
+     * @return void
      */
     private function removeAllDefaultForType(int $userId, string $type)
     {

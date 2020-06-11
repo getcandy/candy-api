@@ -19,14 +19,14 @@ class SearchResultFactory implements SearchResultInterface
     /**
      * The result set.
      *
-     * @var ResultSet
+     * @var \Elastica\ResultSet
      */
     protected $results;
 
     /**
      * The fractal instance.
      *
-     * @var Manager
+     * @var \League\Fractal\Manager
      */
     protected $fractal;
 
@@ -47,7 +47,7 @@ class SearchResultFactory implements SearchResultInterface
     /**
      * The result category.
      *
-     * @var Category
+     * @var null|\GetCandy\Api\Core\Categories\Models\Category
      */
     protected $category = null;
 
@@ -64,7 +64,7 @@ class SearchResultFactory implements SearchResultInterface
     /**
      * The transformer to use.
      *
-     * @var AbstractTranformer
+     * @var mixed
      */
     protected $transformer;
 
@@ -92,7 +92,7 @@ class SearchResultFactory implements SearchResultInterface
     /**
      * The current user.
      *
-     * @var Model
+     * @var null|\Illuminate\Foundation\Auth\User
      */
     protected $user = null;
 
@@ -106,8 +106,8 @@ class SearchResultFactory implements SearchResultInterface
     /**
      * Initialise the factory.
      *
-     * @param ResultSet $results
-     * @return void
+     * @param  \Elastica\ResultSet  $results
+     * @return $this
      */
     public function init(ResultSet $results)
     {
@@ -133,8 +133,8 @@ class SearchResultFactory implements SearchResultInterface
     /**
      * Set the model service.
      *
-     * @param mixed $service
-     * @return void
+     * @param  mixed  $service
+     * @return $this
      */
     public function service($service)
     {
@@ -146,8 +146,8 @@ class SearchResultFactory implements SearchResultInterface
     /**
      * Set the page.
      *
-     * @param int $page
-     * @return void
+     * @param  int  $page
+     * @return $this
      */
     public function page($page)
     {
@@ -159,8 +159,8 @@ class SearchResultFactory implements SearchResultInterface
     /**
      * Set the category.
      *
-     * @param Category $category
-     * @return void
+     * @param  \GetCandy\Api\Core\Categories\Models\Category  $category
+     * @return $this
      */
     public function category($category)
     {
@@ -172,8 +172,8 @@ class SearchResultFactory implements SearchResultInterface
     /**
      * Set the current user.
      *
-     * @param Model $user
-     * @return void
+     * @param  \Illuminate\Foundation\Auth\User  $user
+     * @return $this
      */
     public function user($user)
     {
@@ -185,8 +185,8 @@ class SearchResultFactory implements SearchResultInterface
     /**
      * Set the transformer to use.
      *
-     * @param mixed $transformer
-     * @return void
+     * @param  mixed  $transformer
+     * @return $this
      */
     public function setTransformer($transformer = null)
     {
@@ -203,8 +203,8 @@ class SearchResultFactory implements SearchResultInterface
     /**
      * Parse the fractal includes.
      *
-     * @param string $includes
-     * @return void
+     * @param  array  $includes
+     * @return $this
      */
     public function include($includes = [])
     {
@@ -216,8 +216,8 @@ class SearchResultFactory implements SearchResultInterface
     /**
      * Set the search type.
      *
-     * @param string $type
-     * @return void
+     * @param  string  $type
+     * @return $this
      */
     public function type($type)
     {
@@ -256,8 +256,6 @@ class SearchResultFactory implements SearchResultInterface
     /**
      * Maps the search sorting used to something we can use.
      *
-     * @param ResultSet $results
-     *
      * @return array
      */
     protected function getSort()
@@ -273,8 +271,6 @@ class SearchResultFactory implements SearchResultInterface
 
     /**
      * Get the pagination for the results.
-     *
-     * @param array $results
      *
      * @return array
      */
@@ -304,8 +300,6 @@ class SearchResultFactory implements SearchResultInterface
 
     /**
      * Get the search suggestions.
-     *
-     * @param ResultSet $results
      *
      * @return array
      */
@@ -344,9 +338,7 @@ class SearchResultFactory implements SearchResultInterface
     /**
      * Gets the aggregation fields for the results.
      *
-     * @param array $results
-     *
-     * @return void
+     * @return array
      */
     protected function getSearchAggregator()
     {

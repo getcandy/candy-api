@@ -19,7 +19,7 @@ class AddToIndexListener
     /**
      * Handle the event.
      *
-     * @param  ProductCreatedEvent  $event
+     * @param  \GetCandy\Api\Core\Products\Events\ProductCreatedEvent  $event
      * @return void
      */
     public function handle(ProductCreatedEvent $event)

@@ -12,8 +12,18 @@ class Transaction extends BaseModel
 
     protected static $logAttributes = ['transaction_id'];
 
+    /**
+     * The Hashid connection name for enconding the id.
+     * 
+     * @var string
+     */
     protected $hashids = 'order';
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = [
         'merchant', 'success', 'status',
     ];

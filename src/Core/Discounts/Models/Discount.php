@@ -11,6 +11,11 @@ class Discount extends BaseModel
     use HasAttributes,
         HasChannels;
 
+    /**
+     * The Hashid connection name for enconding the id.
+     * 
+     * @var string
+     */
     protected $hashids = 'main';
 
     public function sets()

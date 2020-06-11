@@ -17,10 +17,10 @@ class AssetService extends BaseService
 
     /**
      * Gets the driver for the upload.
-     * @param  string $mimeType
+     * 
+     * @param  string  $mimeType
      * @return mixed
-     *
-     **/
+     */
     public function getDriver($mimeType)
     {
         $kind = explode('/', $mimeType);
@@ -30,10 +30,11 @@ class AssetService extends BaseService
 
     /**
      * Uploads an asset.
+     * 
      * @param  array  $data
-     * @param  Model   $model
-     * @param  int $position
-     * @return Asset
+     * @param  null|\Illuminate\Database\Eloquent\Model  $model
+     * @param  int  $position
+     * @return \GetCandy\Api\Core\Assets\Models\Asset
      */
     public function upload($data, Model $model = null, $position = 0)
     {
@@ -64,9 +65,8 @@ class AssetService extends BaseService
     /**
      * Update all the assets.
      *
-     * @param array $assets
-     *
-     * @return void
+     * @param  array  $assets
+     * @return bool
      */
     public function updateAll($assets)
     {
@@ -85,10 +85,9 @@ class AssetService extends BaseService
     /**
      * Update an asset.
      *
-     * @param string $id
-     * @param array $data
-     *
-     * @return Asset
+     * @param  string  $id
+     * @param  array  $data
+     * @return \GetCandy\Api\Core\Assets\Models\Asset
      */
     public function update($id, array $data)
     {
@@ -102,10 +101,9 @@ class AssetService extends BaseService
     /**
      * Get some assets.
      *
-     * @param Model $assetable
-     * @param array $params
-     *
-     * @return Collection
+     * @param  \Illuminate\Database\Eloquent\Model  $assetable
+     * @param  array  $params
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getAssets(Model $assetable, $params = [])
     {
@@ -124,8 +122,9 @@ class AssetService extends BaseService
     /**
      * Detach an asset.
      *
-     * @param string $assetId
-     *
+     * @param  string  $assetId
+     * @param  mixed  $ownerId
+     * @param  mixed  $ownerType
      * @return bool
      */
     public function detach($assetId, $ownerId, $ownerType)
@@ -143,8 +142,7 @@ class AssetService extends BaseService
     /**
      * Delete an asset.
      *
-     * @param string $id
-     *
+     * @param  string  $id
      * @return bool
      */
     public function delete($id)

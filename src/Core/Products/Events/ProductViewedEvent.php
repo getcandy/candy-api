@@ -13,11 +13,15 @@ class ProductViewedEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    /**
+     * @var \GetCandy\Api\Core\Products\Models\Product
+     */
     protected $product;
 
     /**
      * Create a new event instance.
      *
+     * @param  \GetCandy\Api\Core\Products\Models\Product  $product
      * @return void
      */
     public function __construct(Product $product)
@@ -33,7 +37,7 @@ class ProductViewedEvent
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return Channel|array
+     * @return \Illuminate\Broadcasting\PrivateChannel
      */
     public function broadcastOn()
     {

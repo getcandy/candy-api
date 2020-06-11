@@ -6,12 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class AttributableSavedEvent
 {
+    /**
+     * @var \Illuminate\Database\Eloquent\Model
+     */
     public $model;
 
     /**
      * Create a new event instance.
      *
-     * @param  Order  $order
+     * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return void
      */
     public function __construct(Model $model)

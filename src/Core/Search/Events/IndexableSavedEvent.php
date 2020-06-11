@@ -13,6 +13,9 @@ class IndexableSavedEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    /**
+     * @var \Illuminate\Database\Eloquent\Model
+     */
     protected $indexable;
 
     /**
@@ -33,7 +36,7 @@ class IndexableSavedEvent
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return Channel|array
+     * @return \Illuminate\Broadcasting\PrivateChannel
      */
     public function broadcastOn()
     {

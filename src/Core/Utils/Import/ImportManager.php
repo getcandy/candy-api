@@ -21,7 +21,7 @@ class ImportManager extends Manager implements ImportManagerContract
     /**
      * Create the PayPal driver.
      *
-     * @return Product
+     * @return \GetCandy\Api\Core\Utils\Import\Providers\Product
      */
     public function createProductDriver()
     {
@@ -34,8 +34,7 @@ class ImportManager extends Manager implements ImportManagerContract
      * Build a layout provider instance.
      *
      * @param  string  $provider
-     * @param  array  $config
-     * @return \Laravel\Socialite\Two\AbstractProvider
+     * @return mixed
      */
     public function buildProvider($provider)
     {
@@ -44,8 +43,6 @@ class ImportManager extends Manager implements ImportManagerContract
 
     /**
      * Get the default driver name.
-     *
-     * @throws \InvalidArgumentException
      *
      * @return string
      */

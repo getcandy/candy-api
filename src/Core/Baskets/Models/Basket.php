@@ -13,6 +13,11 @@ class Basket extends BaseModel
 {
     use HasCompletion, HasMeta;
 
+    /**
+     * The Hashid connection name for enconding the id.
+     * 
+     * @var string
+     */
     protected $hashids = 'basket';
 
     /**
@@ -58,7 +63,7 @@ class Basket extends BaseModel
     public $hasExclusions = false;
 
     /**
-     * The fillable attributes.
+     * The attributes that are mass assignable.
      *
      * @var array
      */
@@ -69,7 +74,7 @@ class Basket extends BaseModel
     /**
      * Get the basket lines.
      *
-     * @return void
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function lines()
     {
@@ -94,7 +99,7 @@ class Basket extends BaseModel
     /**
      * Get the basket user.
      *
-     * @return User
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
     {
@@ -119,7 +124,7 @@ class Basket extends BaseModel
     /**
      * Get the saved basket relation.
      *
-     * @return HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function savedBasket()
     {

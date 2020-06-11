@@ -18,7 +18,7 @@ abstract class BaseUrlDriver
     protected $upload = true;
 
     /**
-     * @var string
+     * @var null|string
      */
     protected $hashedName = null;
 
@@ -28,12 +28,12 @@ abstract class BaseUrlDriver
     protected $info;
 
     /**
-     * @var GetCandy\Api\Core\Assets\Models\AssetSource
+     * @var \GetCandy\Api\Core\Assets\Models\AssetSource
      */
     protected $source;
 
     /**
-     * @var Illuminate\Database\Eloquent\Model
+     * @var \Illuminate\Database\Eloquent\Model
      */
     protected $model;
 
@@ -43,9 +43,8 @@ abstract class BaseUrlDriver
     protected $data;
 
     /**
-     * @param array $data
-     * @param       $model
-     *
+     * @param  array  $data
+     * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return \GetCandy\Api\Core\Assets\Models\Asset
      */
     public function process(array $data, Model $model = null)
@@ -85,9 +84,10 @@ abstract class BaseUrlDriver
 
     /**
      * Prepares the asset.
-     * @param  array $data
-     * @param  Model $model
-     * @return Asset
+     * 
+     * @param  array  $data
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @return \GetCandy\Api\Core\Assets\Models\Asset
      */
     protected function prepare()
     {
@@ -104,6 +104,8 @@ abstract class BaseUrlDriver
 
     /**
      * Generates a hashed name.
+     * 
+     * @return string
      */
     public function hashName()
     {
@@ -112,8 +114,8 @@ abstract class BaseUrlDriver
 
     /**
      * Get the thumbnail for the video.
-     * @param  string $url
-     * @return Intervention\Image
+     * 
+     * @return null|\Intervention\Image\Image
      */
     public function getThumbnail()
     {
@@ -124,8 +126,9 @@ abstract class BaseUrlDriver
 
     /**
      * Gets an image from a given url.
-     * @param  string $url
-     * @return Intervention\Image
+     * 
+     * @param  string  $url
+     * @return null|Intervention\Image\Image
      */
     public function getImageFromUrl($url)
     {
@@ -141,8 +144,7 @@ abstract class BaseUrlDriver
     /**
      * Get the OEM data.
      *
-     * @param array $params
-     *
+     * @param  array  $params
      * @return mixed
      */
     protected function getOemData($params = [])

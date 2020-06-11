@@ -14,13 +14,14 @@ class CleanUpAssetFiles implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
-     * @var \GetCandy\Api\Core\Assets\Models\Asset
+     * @var \Illuminate\Support\Collection
      */
     protected $assets;
 
     /**
      * Create a new job instance.
      *
+     * @param  \GetCandy\Api\Core\Assets\Models\Asset[]  $assets
      * @return void
      */
     public function __construct($assets)

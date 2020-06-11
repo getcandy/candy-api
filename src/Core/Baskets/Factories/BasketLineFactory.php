@@ -13,28 +13,28 @@ class BasketLineFactory implements BasketLineInterface
     /**
      * The basket lines.
      *
-     * @var Collection
+     * @var \Illuminate\Support\Collection
      */
     public $lines;
 
     /**
      * The variant factory.
      *
-     * @var ProductVariantInterface
+     * @var \GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface
      */
     protected $variantFactory;
 
     /**
      * The discount factory.
      *
-     * @var DiscountFactoryInterface
+     * @var \GetCandy\Api\Core\Baskets\Interfaces\BasketDiscountFactoryInterface
      */
     protected $discounts;
 
     /**
      * The tax calculator instance.
      *
-     * @var TaxCalculatorInterface
+     * @var \GetCandy\Api\Core\Taxes\Interfaces\TaxCalculatorInterface
      */
     protected $tax;
 
@@ -52,8 +52,8 @@ class BasketLineFactory implements BasketLineInterface
     /**
      * Add lines to the instance.
      *
-     * @param Collection $lines
-     * @return void
+     * @param  \Illuminate\Support\Collection  $lines
+     * @return $this
      */
     public function add($lines)
     {
@@ -65,8 +65,8 @@ class BasketLineFactory implements BasketLineInterface
     /**
      * Initialise the factory.
      *
-     * @param BasketLine $line
-     * @return BasketLineFactory
+     * @param  \GetCandy\Api\Core\Baskets\Models\BasketLine  $line
+     * @return $this
      */
     public function init(BasketLine $line)
     {
@@ -78,8 +78,8 @@ class BasketLineFactory implements BasketLineInterface
     /**
      * Add a discount to the instance.
      *
-     * @param string $coupon
-     * @return self
+     * @param  string  $coupon
+     * @return $this
      */
     public function discount($coupon)
     {
@@ -91,7 +91,7 @@ class BasketLineFactory implements BasketLineInterface
     /**
      * Get the basket line.
      *
-     * @return BasketLine
+     * @return \GetCandy\Api\Core\Baskets\Models\BasketLine
      */
     public function get()
     {
