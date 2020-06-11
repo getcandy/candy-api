@@ -24,6 +24,11 @@ class CandySearchIndexCommand extends Command
      */
     protected $description = 'Reindexes the search';
 
+    /**
+     * The models that should be indexed.
+     *
+     * @var array
+     */
     protected $indexables = [
         Product::class,
         Category::class,

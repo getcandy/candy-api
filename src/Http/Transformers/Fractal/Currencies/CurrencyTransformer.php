@@ -7,6 +7,11 @@ use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 
 class CurrencyTransformer extends BaseTransformer
 {
+    /**
+     * Resources that can be included if requested.
+     *
+     * @var array
+     */
     protected $availableIncludes = [];
 
     public function transform(Currency $currency)

@@ -8,8 +8,14 @@ use Illuminate\Support\Facades\Route;
 
 class GetCandy
 {
+    /**
+     * @var bool
+     */
     protected $isHubRequest = false;
 
+    /**
+     * @var array
+     */
     protected $groups = [];
 
     public function setGroups($groups)
@@ -43,10 +49,10 @@ class GetCandy
     }
 
     /**
-     * Sets whether it's a hub request or not.
+     * Sets whether it's a Hub request or not.
      *
-     * @param bool $bool
-     * @return self
+     * @param  bool  $bool
+     * @return $this
      */
     public function setIsHubRequest($bool)
     {

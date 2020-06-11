@@ -8,16 +8,28 @@ use Storage;
 
 class AssetTransformer extends BaseTransformer
 {
+    /**
+     * Include resources without needing it to be requested.
+     *
+     * @var array
+     */
     protected $defaultIncludes = [
         'tags',
     ];
+    
+    /**
+     * Resources that can be included if requested.
+     *
+     * @var array
+     */
     protected $availableIncludes = [
         'transforms',
     ];
 
     /**
-     * Decorates the attribute object for viewing.
-     * @param  Attribute $product
+     * Decorates the asset object for viewing.
+     * 
+     * @param  \GetCandy\Api\Core\Assets\Models\Asset  $asset
      * @return array
      */
     public function transform($asset)

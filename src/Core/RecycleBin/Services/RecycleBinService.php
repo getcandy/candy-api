@@ -11,7 +11,11 @@ class RecycleBinService implements RecycleBinServiceInterface
     /**
      * Gets items that are currently soft deleted.
      *
-     * @return void
+     * @param  bool  $paginated
+     * @param  int  $perPage
+     * @param  mixed  $terms
+     * @param  array  $includes
+     * @return \Illuminate\Pagination\LengthAwarePaginator
      */
     public function getItems($paginated = true, $perPage = 25, $terms = null, $includes = [])
     {

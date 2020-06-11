@@ -7,6 +7,11 @@ use Storage;
 
 class AssetTransform extends BaseModel
 {
+    /**
+     * The Hashid connection name for enconding the id.
+     * 
+     * @var string
+     */
     protected $hashids = 'main';
 
     protected $table = 'asset_transforms';

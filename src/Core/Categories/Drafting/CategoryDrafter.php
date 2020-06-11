@@ -65,10 +65,8 @@ class CategoryDrafter extends BaseDrafter implements DrafterInterface
     }
 
     /**
-     * Duplicate a product.
-     *
-     * @param Collection $data
-     * @return Product
+     * @param  \Illuminate\Database\Eloquent\Model  $category
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function firstOrCreate(Model $category)
     {

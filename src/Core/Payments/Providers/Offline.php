@@ -6,6 +6,9 @@ use GetCandy\Api\Core\Payments\PaymentResponse;
 
 class Offline extends AbstractProvider
 {
+    /**
+     * @var string
+     */
     protected $name = 'Offline';
 
     public function getName()

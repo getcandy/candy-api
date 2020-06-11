@@ -61,8 +61,10 @@ class Indexable
 
     /**
      * Adds an items to an array.
-     * @param [type] $key   [description]
-     * @param [type] $value [description]
+     * 
+     * @param  string  $key
+     * @param  string  $value
+     * @return $this
      */
     public function add($key, $value)
     {

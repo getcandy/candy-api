@@ -20,8 +20,18 @@ use Illuminate\Console\Command;
 
 class GetCandyInstaller
 {
+    /**
+     * The console command instance.
+     * 
+     * @var \Illuminate\Console\Command
+     */
     protected $command;
 
+    /**
+     * The runner classes that should be executed.
+     *
+     * @var array
+     */
     protected $runners = [
         'preflight' => PreflightRunner::class,
         'settings' => SettingsRunner::class,
@@ -42,8 +52,8 @@ class GetCandyInstaller
     /**
      * Sets the command instance for running the installer.
      *
-     * @param Command $command
-     * @return self
+     * @param  \Illuminate\Console\Command  $command
+     * @return $this
      */
     public function onCommand(Command $command)
     {

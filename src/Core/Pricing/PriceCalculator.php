@@ -10,14 +10,14 @@ class PriceCalculator implements PriceCalculatorInterface
     /**
      * The currency converter instance.
      *
-     * @var CurrencyConverterInterface
+     * @var \GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface
      */
     protected $converter;
 
     /**
      * The tax calculator instance.
      *
-     * @var TaxCalculatorInterface
+     * @var \GetCandy\Api\Core\Taxes\Interfaces\TaxCalculatorInterface
      */
     protected $taxes;
 

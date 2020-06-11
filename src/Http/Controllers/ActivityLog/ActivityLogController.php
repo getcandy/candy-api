@@ -12,6 +12,11 @@ use Illuminate\Http\Request;
 
 class ActivityLogController extends BaseController
 {
+    /**
+     * The service mappings that can be instantiated.
+     *
+     * @var array
+     */
     protected $types = [
         'order' => OrderService::class,
         'product' => ProductService::class,
@@ -20,8 +25,9 @@ class ActivityLogController extends BaseController
     /**
      * Handle the log request.
      *
-     * @param Request $request
-     * @return void
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \GetCandy\Api\Core\ActivityLog\Interfaces\ActivityLogCriteriaInterface  $criteria
+     * @return \GetCandy\Api\Http\Resources\ActivityLog\ActivityCollection
      */
     public function index(Request $request, ActivityLogCriteriaInterface $criteria)
     {
@@ -39,7 +45,8 @@ class ActivityLogController extends BaseController
     /**
      * Store the activity log entry.
      *
-     * @param Request $request
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \GetCandy\Api\Core\ActivityLog\Interfaces\ActivityLogFactoryInterface  $factory
      * @return void
      */
     public function store(Request $request, ActivityLogFactoryInterface $factory)

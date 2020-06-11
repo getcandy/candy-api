@@ -9,6 +9,9 @@ use GetCandy\Api\Core\Search\Events\IndexableSavedEvent;
 
 class ProductVariantService extends BaseService
 {
+    /**
+     * @var \GetCandy\Api\Core\Products\Factories\ProductVariantFactory
+     */
     protected $factory;
 
     public function __construct(ProductVariantFactory $factory)
@@ -19,9 +22,10 @@ class ProductVariantService extends BaseService
 
     /**
      * Creates variants for a product.
-     * @param  string $id
-     * @param  array  $variant
-     * @return bool
+     * 
+     * @param  string  $id
+     * @param  array  $data
+     * @return \GetCandy\Api\Core\Products\Models\Product
      */
     public function create($id, array $data)
     {
@@ -115,9 +119,8 @@ class ProductVariantService extends BaseService
     /**
      * Checks whether a variant exists by its SKU.
      *
-     * @param string $sku
-     *
-     * @return void
+     * @param  string  $sku
+     * @return bool
      */
     public function existsBySku($sku)
     {
@@ -134,12 +137,11 @@ class ProductVariantService extends BaseService
     /**
      * Updates a resource from the given data.
      *
-     * @param  string $hashedId
+     * @param  string  $hashedId
      * @param  array  $data
+     * @return \GetCandy\Api\Core\Products\Models\ProductVariant
      *
-     * @throws Symfony\Component\HttpKernel\Exception
-     *
-     * @return GetCandy\Api\Core\Models\ProductVariant
+     * @throws \Exception
      */
     public function update($hashedId, array $data)
     {
@@ -222,9 +224,8 @@ class ProductVariantService extends BaseService
     /**
      * Sets and creates the customer group pricing.
      *
-     * @param array $variant
-     * @param array $prices
-     *
+     * @param  \GetCandy\Api\Core\Products\Models\ProductVariant  $variant
+     * @param  array  $prices
      * @return void
      */
     protected function setGroupPricing($variant, $prices = [])
@@ -266,9 +267,8 @@ class ProductVariantService extends BaseService
     /**
      * Map and merge variant options.
      *
-     * @param array $options
-     * @param array $newOptions
-     *
+     * @param  array  $options
+     * @param  array  $newOptions
      * @return array
      */
     protected function mapOptions($options, $newOptions)
@@ -290,11 +290,10 @@ class ProductVariantService extends BaseService
     /**
      * Deletes a resource by its given hashed ID.
      *
-     * @param  string $id
-     *
-     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     *
+     * @param  string  $hashedId
      * @return bool
+     * 
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
     public function delete($hashedId)
     {
@@ -313,13 +312,15 @@ class ProductVariantService extends BaseService
 
     /**
      * Maps and sets the measurements for a variant.
-     * @param ProductVariant $variant
      * [
      *     'weight' => [
      *         'cm' => 100
      *     ]
      * ]
-     * @param array $data
+     * 
+     * @param  \GetCandy\Api\Core\Products\Models\ProductVariant  $variant
+     * @param  array  $data
+     * @return void
      */
     protected function setMeasurements($variant, $data)
     {
@@ -337,9 +338,9 @@ class ProductVariantService extends BaseService
     /**
      * Update a variants inventory.
      *
-     * @param string $variantId
-     * @param int $inventory
-     * @return void
+     * @param  string  $variantId
+     * @param  int  $inventory
+     * @return \GetCandy\Api\Core\Products\Models\ProductVariant
      */
     public function updateInventory($variantId, $inventory)
     {

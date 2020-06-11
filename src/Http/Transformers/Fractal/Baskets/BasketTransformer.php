@@ -11,6 +11,11 @@ use GetCandy\Api\Http\Transformers\Fractal\Users\UserTransformer;
 
 class BasketTransformer extends BaseTransformer
 {
+    /**
+     * Resources that can be included if requested.
+     *
+     * @var array
+     */
     protected $availableIncludes = [
         'lines', 'user', 'discounts', 'routes', 'order',
     ];

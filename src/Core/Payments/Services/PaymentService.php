@@ -22,7 +22,7 @@ class PaymentService extends BaseService
     /**
      * Payment Manager.
      *
-     * @var PaymentContract
+     * @var \GetCandy\Api\Core\Payments\PaymentContract
      */
     protected $manager;
 
@@ -35,7 +35,7 @@ class PaymentService extends BaseService
     /**
      * Gets the payment provider class.
      *
-     * @return void
+     * @return mixed
      */
     public function getProvider()
     {
@@ -60,7 +60,7 @@ class PaymentService extends BaseService
     /**
      * Set the provider.
      *
-     * @param string $provider
+     * @param  string  $provider
      * @return mixed
      */
     public function setProvider($provider)
@@ -73,11 +73,13 @@ class PaymentService extends BaseService
     /**
      * Charge the order.
      *
-     * @param Order $order
-     * @param string $token
-     * @param string $type
-     *
-     * @return bool
+     * @param  \GetCandy\Api\Core\Orders\Models\Order  $order
+     * @param  string|null  $token
+     * @param  string|null  $type
+     * @param  array  $data
+     * @return mixed
+     * 
+     * @throws \GetCandy\Api\Core\Orders\Exceptions\OrderAlreadyProcessedException
      */
     public function charge(Order $order, $token = null, $type = null, $data = [])
     {
@@ -95,11 +97,15 @@ class PaymentService extends BaseService
     /**
      * Process an order for payment.
      *
-     * @param Order $order
-     * @param string $token
-     * @param mixed $type
-     * @param array $fields
-     * @return void
+     * @param  \GetCandy\Api\Core\Orders\Models\Order  $order
+     * @param  string  $token
+     * @param  mixed  $type
+     * @param  array  $fields
+     * @return mixed
+     * 
+     * @throws \GetCandy\Api\Core\Orders\Exceptions\OrderAlreadyProcessedException
+     * @throws \GetCandy\Api\Core\Payments\Exceptions\InvalidPaymentTokenException
+     * @throws \GetCandy\Api\Core\Payments\Exceptions\ThreeDSecureRequiredException
      */
     public function process($order, $token, $type = null, $fields = [])
     {
@@ -131,9 +137,10 @@ class PaymentService extends BaseService
     /**
      * Refund a sale.
      *
-     * @param string $token
-     *
-     * @return void
+     * @param  string  $id
+     * @param  int  $amount
+     * @param  string|null $notes
+     * @return mixed
      */
     public function refund($id, int $amount, $notes = null)
     {
@@ -170,9 +177,11 @@ class PaymentService extends BaseService
     /**
      * Validate a 3DSecure transaction.
      *
-     * @param string $transactionId The transaction ID from the provider
-     * @param string $paRes The encoded response from the 3DSecure form
-     * @return Transaction
+     * @param  \GetCandy\Api\Core\Orders\Models\Order  $order
+     * @param  string  $transactionId - The transaction ID from the provider
+     * @param  string  $paRes - The encoded response from the 3DSecure form
+     * @param  mixed  $type
+     * @return \GetCandy\Api\Core\Payments\Models\Transaction
      */
     public function validateThreeD($order, $transactionId, $paRes, $type = null)
     {
@@ -189,9 +198,8 @@ class PaymentService extends BaseService
     /**
      * Creates a transaction.
      *
-     * @param array $data
-     *
-     * @return Transaction
+     * @param  array  $data
+     * @return \GetCandy\Api\Core\Payments\Models\Transaction
      */
     protected function createTransaction(array $data)
     {
@@ -211,9 +219,8 @@ class PaymentService extends BaseService
     /**
      * Voids a transaction.
      *
-     * @param string $transactionId
-     *
-     * @return Transaction
+     * @param  string  $transactionId
+     * @return \GetCandy\Api\Core\Payments\Models\Transaction
      */
     public function void($transactionId)
     {

@@ -23,7 +23,7 @@ class OrderSearchCriteria
     /**
      * The user to get the orders for.
      *
-     * @var \Illuminate\Eloquent\Database\Model
+     * @var \Illuminate\Foundation\Auth\User
      */
     protected $user;
 
@@ -86,16 +86,16 @@ class OrderSearchCriteria
     /**
      * What user to restrict the query to.
      *
-     * @var string
+     * @var bool
      */
     protected $restrict = true;
 
     /**
      * Set a value on the criteria.
      *
-     * @param string $key
-     * @param mixed $value
-     * @return self
+     * @param  string  $key
+     * @param  mixed  $value
+     * @return $this
      */
     public function set($key, $value)
     {
@@ -109,8 +109,8 @@ class OrderSearchCriteria
     /**
      * Fill the criteria.
      *
-     * @param array $values
-     * @return self
+     * @param  array  $values
+     * @return $this
      */
     public function fill($values = [])
     {
@@ -124,7 +124,7 @@ class OrderSearchCriteria
     /**
      * Get all the criteria params.
      *
-     * @return void
+     * @return array
      */
     public function toParams()
     {
@@ -134,7 +134,7 @@ class OrderSearchCriteria
     /**
      * Get the result from our defined criteria.
      *
-     * @return string
+     * @return \Illuminate\Pagination\LengthAwarePaginator
      */
     public function get()
     {

@@ -69,8 +69,8 @@ class ProductDrafter implements DrafterInterface
     /**
      * Duplicate a product.
      *
-     * @param Collection $data
-     * @return Product
+     * @param  \Illuminate\Database\Eloquent\Model  $product
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function firstOrCreate(Model $product)
     {
@@ -133,7 +133,8 @@ class ProductDrafter implements DrafterInterface
     /**
      * Process the assets for a duplicated product.
      *
-     * @param Product $newProduct
+     * @param  \GetCandy\Api\Core\Products\Models\Product  $oldProduct
+     * @param  \GetCandy\Api\Core\Products\Models\Product  $newProduct
      * @return void
      */
     protected function processAssets($oldProduct, &$newProduct)
@@ -152,7 +153,8 @@ class ProductDrafter implements DrafterInterface
     /**
      * Process the duplicated product categories.
      *
-     * @param Product $newProduct
+     * @param  \GetCandy\Api\Core\Products\Models\Product  $oldProduct
+     * @param  \GetCandy\Api\Core\Products\Models\Product  $newProduct
      * @return void
      */
     protected function processCategories($oldProduct, &$newProduct)
@@ -166,7 +168,8 @@ class ProductDrafter implements DrafterInterface
     /**
      * Process the customer groups for the duplicated product.
      *
-     * @param Product $newProduct
+     * @param  \GetCandy\Api\Core\Products\Models\Product  $oldProduct
+     * @param  \GetCandy\Api\Core\Products\Models\Product  $newProduct
      * @return void
      */
     protected function processCustomerGroups($oldProduct, &$newProduct)
@@ -191,7 +194,8 @@ class ProductDrafter implements DrafterInterface
     /**
      * Process channels for a duplicated product.
      *
-     * @param Product $newProduct
+     * @param  \GetCandy\Api\Core\Products\Models\Product  $oldProduct
+     * @param  \GetCandy\Api\Core\Products\Models\Product  $newProduct
      * @return void
      */
     protected function processChannels($oldProduct, &$newProduct)

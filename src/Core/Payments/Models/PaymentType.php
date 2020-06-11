@@ -10,6 +10,11 @@ class PaymentType extends BaseModel
 {
     use HasCustomerGroups;
 
+    /**
+     * The Hashid connection name for enconding the id.
+     * 
+     * @var string
+     */
     protected $hashids = 'main';
 
     public function customerGroups()

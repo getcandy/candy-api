@@ -8,6 +8,11 @@ use GetCandy\Api\Http\Transformers\Fractal\Orders\OrderTransformer;
 
 class TransactionTransformer extends BaseTransformer
 {
+    /**
+     * Resources that can be included if requested.
+     *
+     * @var array
+     */
     protected $availableIncludes = [
         'order',
     ];

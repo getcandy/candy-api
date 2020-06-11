@@ -8,6 +8,11 @@ use GetCandy\Api\Http\Transformers\Fractal\Countries\CountryTransformer;
 
 class ShippingZoneTransformer extends BaseTransformer
 {
+    /**
+     * Resources that can be included if requested.
+     *
+     * @var array
+     */
     protected $availableIncludes = [
         'countries',
     ];

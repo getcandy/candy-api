@@ -59,8 +59,8 @@ class CollectionDrafter extends BaseDrafter implements DrafterInterface
     /**
      * Duplicate a product.
      *
-     * @param Collection $data
-     * @return Product
+     * @param  \Illuminate\Database\Eloquent\Model  $collection
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function firstOrCreate(Model $collection)
     {

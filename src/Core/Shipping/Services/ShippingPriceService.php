@@ -16,9 +16,9 @@ class ShippingPriceService extends BaseService
     /**
      * Create a shipping price.
      *
-     * @param array $data
-     *
-     * @return ShippingPrice
+     * @param  string  $shippingMethodId
+     * @param  array  $data
+     * @return \GetCandy\Api\Core\Shipping\Models\ShippingPrice
      */
     public function create($shippingMethodId, array $data)
     {
@@ -43,10 +43,9 @@ class ShippingPriceService extends BaseService
     /**
      * Updates a shipping price.
      *
-     * @param string $id
-     * @param array $data
-     *
-     * @return ShippingPrice
+     * @param  string  $id
+     * @param  array  $data
+     * @return \GetCandy\Api\Core\Shipping\Models\ShippingPrice
      */
     public function update($id, array $data)
     {
@@ -69,7 +68,8 @@ class ShippingPriceService extends BaseService
 
     /**
      * Maps customer group data for a model.
-     * @param  array $groups
+     *
+     * @param  array  $groups
      * @return array
      */
     protected function mapCustomerGroupData($groups)
@@ -88,8 +88,7 @@ class ShippingPriceService extends BaseService
     /**
      * Delete a price.
      *
-     * @param string $id
-     *
+     * @param  string  $id
      * @return bool
      */
     public function delete($id)
@@ -104,9 +103,10 @@ class ShippingPriceService extends BaseService
     /**
      * Estimates shipping prices for a zip and amount.
      *
-     * @param int $amount
-     * @param string $zip
-     * @return void
+     * @param  int  $amount
+     * @param  string  $zip
+     * @param  int  $limit
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function estimate($amount, $zip, $limit = 1)
     {
@@ -128,8 +128,8 @@ class ShippingPriceService extends BaseService
     /**
      * Get a region from a zip code.
      *
-     * @param string $zip
-     * @return ShippingRegion|null
+     * @param  string  $zip
+     * @return \GetCandy\Api\Core\Shipping\Models\ShippingRegion
      */
     public function getRegionFromZip($zip)
     {

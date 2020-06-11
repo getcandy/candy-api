@@ -12,21 +12,21 @@ class SearchService
     /**
      * The products service.
      *
-     * @var ProductService
+     * @var \GetCandy\Api\Core\Products\Services\ProductService
      */
     protected $products;
 
     /**
      * The category service.
      *
-     * @var CategoryService
+     * @var \GetCandy\Api\Core\Categories\Services\CategoryService
      */
     protected $categories;
 
     /**
      * The search result factory.
      *
-     * @var SearchResultInterface
+     * @var \GetCandy\Api\Core\Search\Interfaces\SearchResultInterface
      */
     protected $factory;
 
@@ -43,12 +43,11 @@ class SearchService
     /**
      * Gets the search results from the result set.
      *
-     * @param ResultSet $results
-     * @param string $type
-     * @param int $page
-     * @param int $perpage
-     * @param mixed $includes
-     *
+     * @param  \Elastica\ResultSet  $results
+     * @param  string  $type
+     * @param  int|null  $includes
+     * @param  int  $page
+     * @param  bool  $category
      * @return array
      */
     public function getResults(ResultSet $results, $type, $includes = null, $page = 1, $category = false)

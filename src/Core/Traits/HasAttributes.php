@@ -81,6 +81,7 @@ trait HasAttributes
 
     /**
      * Prepares the attribute data for saving to the database.
+     *
      * @param  array  $data
      * @return array
      */
@@ -109,6 +110,7 @@ trait HasAttributes
 
     /**
      * Gets the current attribute data mapping.
+     *
      * @return array
      */
     public function getDataMapping()

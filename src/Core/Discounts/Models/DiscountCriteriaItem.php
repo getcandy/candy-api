@@ -8,8 +8,18 @@ use GetCandy\Api\Core\Scaffold\BaseModel;
 
 class DiscountCriteriaItem extends BaseModel
 {
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = ['type', 'value'];
 
+    /**
+     * The Hashid connection name for enconding the id.
+     * 
+     * @var string
+     */
     protected $hashids = 'main';
 
     public function set()
@@ -39,7 +49,7 @@ class DiscountCriteriaItem extends BaseModel
     /**
      * Checks whether a product is eligible.
      *
-     * @param Basket $basket
+     * @param  \GetCandy\Api\Core\Baskets\Models\Basket  $basket
      * @return bool
      */
     protected function checkWithProduct($basket)
@@ -63,6 +73,8 @@ class DiscountCriteriaItem extends BaseModel
 
     /**
      * Get all of the owning commentable models.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
     public function eligibles()
     {

@@ -20,9 +20,8 @@ class DiscountService extends BaseService
     /**
      * Create a discount.
      *
-     * @param array $data
-     *
-     * @return Discount
+     * @param  array  $data
+     * @return \GetCandy\Api\Core\Discounts\Models\Discount
      */
     public function create(array $data)
     {
@@ -57,10 +56,9 @@ class DiscountService extends BaseService
     /**
      * Update an existing discount.
      *
-     * @param string $id
-     * @param array $data
-     *
-     * @return Discount
+     * @param  string  $id
+     * @param  array  $data
+     * @return \GetCandy\Api\Core\Discounts\Models\Discount
      */
     public function update($id, array $data)
     {
@@ -96,10 +94,9 @@ class DiscountService extends BaseService
     /**
      * Set up sets and rewards with a discount.
      *
-     * @param Discount $discount
-     * @param array $sets
-     *
-     * @return Discount
+     * @param  \GetCandy\Api\Core\Discounts\Models\Discount  $discount
+     * @param  array  $sets
+     * @return \GetCandy\Api\Core\Discounts\Models\Discount
      */
     public function syncSets($discount, array $sets)
     {
@@ -130,10 +127,9 @@ class DiscountService extends BaseService
     /**
      * Sync up rewards for a discount.
      *
-     * @param Discount $discount
-     * @param array $rewards
-     *
-     * @return void
+     * @param  \GetCandy\Api\Core\Discounts\Models\Discount  $discount
+     * @param  array  $rewards
+     * @return \GetCandy\Api\Core\Discounts\Models\Discount
      */
     public function syncRewards($discount, array $rewards)
     {
@@ -152,7 +148,7 @@ class DiscountService extends BaseService
     /**
      * Get All the discounts.
      *
-     * @return array
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function get()
     {
@@ -161,9 +157,12 @@ class DiscountService extends BaseService
 
     /**
      * Returns model by a given hashed id.
-     * @param  string $id
-     * @throws  Illuminate\Database\Eloquent\ModelNotFoundException
-     * @return Illuminate\Database\Eloquent\Model
+     * 
+     * @param  string  $id
+     * @param  array  $relations
+     * @return \GetCandy\Api\Core\Discounts\Models\Discount
+     *
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public function getByHashedId($id, $relations = null)
     {

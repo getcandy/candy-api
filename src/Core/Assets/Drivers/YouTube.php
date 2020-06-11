@@ -5,7 +5,7 @@ namespace GetCandy\Api\Core\Assets\Drivers;
 class YouTube extends BaseUrlDriver
 {
     /**
-     * @var Alaouy\Youtube\Youtube
+     * @var \Alaouy\Youtube\Youtube
      */
     protected $manager;
 
@@ -27,8 +27,7 @@ class YouTube extends BaseUrlDriver
     /**
      * Get the video unique id.
      *
-     * @param string $url
-     *
+     * @param  string  $url
      * @return string
      */
     public function getUniqueId($url)
@@ -39,8 +38,7 @@ class YouTube extends BaseUrlDriver
     /**
      * Get the video info.
      *
-     * @param string $url
-     *
+     * @param  string  $url
      * @return array
      */
     public function getInfo($url)

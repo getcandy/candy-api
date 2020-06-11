@@ -11,7 +11,7 @@ abstract class AbstractProvider
     /**
      * The order to process.
      *
-     * @var Order
+     * @var \GetCandy\Api\Core\Orders\Models\Order
      */
     protected $order;
 
@@ -25,15 +25,15 @@ abstract class AbstractProvider
     /**
      * The payment token.
      *
-     * @var string
+     * @var null|string
      */
     protected $token = null;
 
     /**
      * Set the order.
      *
-     * @param Order $order
-     * @return AbstractProvider
+     * @param  \GetCandy\Api\Core\Orders\Models\Order  $order
+     * @return $this
      */
     public function order(Order $order)
     {
@@ -45,8 +45,8 @@ abstract class AbstractProvider
     /**
      * Set additional fields.
      *
-     * @param array $fields
-     * @return AbstractProvider
+     * @param  array  $fields
+     * @return $this
      */
     public function fields(array $fields)
     {
@@ -58,8 +58,8 @@ abstract class AbstractProvider
     /**
      * Set the payment token.
      *
-     * @param string $token
-     * @return AbstractToken
+     * @param  string  $token
+     * @return $this
      */
     public function token($token)
     {
@@ -71,21 +71,20 @@ abstract class AbstractProvider
     /**
      * Validate the payment token.
      *
-     * @param string $token
+     * @param  string  $token
      * @return void
      */
     abstract public function validate($token);
 
     /**
      * Gets the name of the provider.
+     * 
      * @return string
      */
     abstract public function getName();
 
     /**
      * Create a charge for a payment token.
-     *
-     * @param string $token
      *
      * @return void
      */
@@ -94,9 +93,9 @@ abstract class AbstractProvider
     /**
      * Refund a transaction.
      *
-     * @param string $token
-     * @param mixed $amount
-     *
+     * @param  string  $token
+     * @param  mixed  $amount
+     * @param  mixed  $description
      * @return void
      */
     abstract public function refund($token, $amount, $description);

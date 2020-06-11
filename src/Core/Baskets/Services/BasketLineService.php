@@ -10,19 +10,19 @@ use GetCandy\Api\Core\Scaffold\BaseService;
 class BasketLineService extends BaseService
 {
     /**
-     * @var Basket
+     * @var \GetCandy\Api\Core\Baskets\Models\BasketLine
      */
     protected $model;
 
     /**
      * The basket factory.
      *
-     * @var BasketFactoryInterface
+     * @var \GetCandy\Api\Core\Baskets\Interfaces\BasketFactoryInterface
      */
     protected $factory;
 
     /**
-     * @var string
+     * @var array
      */
     protected $includes = [];
 
@@ -33,7 +33,8 @@ class BasketLineService extends BaseService
     }
 
     /**
-     * @param null|string $includes
+     * @param  null|string  $includes
+     * @return void
      */
     public function setIncludes(?string $includes)
     {
@@ -41,9 +42,9 @@ class BasketLineService extends BaseService
     }
 
     /**
-     * @param $id
-     * @param $variant
-     * @return mixed
+     * @param  string  $id
+     * @param  string  $variant
+     * @return bool
      */
     public function variantExists($id, $variant)
     {
@@ -57,9 +58,9 @@ class BasketLineService extends BaseService
     }
 
     /**
-     * @param string $id
-     * @param int $quantity
-     * @return Basket
+     * @param  string  $id
+     * @param  int  $quantity
+     * @return \GetCandy\Api\Core\Baskets\Models\Basket
      */
     public function setQuantity(string $id, int $quantity)
     {
@@ -76,10 +77,9 @@ class BasketLineService extends BaseService
     }
 
     /**
-     * @param string $id
-     * @param int $quantity
-     * @param array $includes
-     * @return Basket
+     * @param  string  $id
+     * @param  int  $quantity
+     * @return \GetCandy\Api\Core\Baskets\Models\Basket
      */
     public function changeQuantity(string $id, int $quantity)
     {
@@ -96,8 +96,8 @@ class BasketLineService extends BaseService
     }
 
     /**
-     * @param array $lines
-     * @return Basket
+     * @param  array  $lines
+     * @return \GetCandy\Api\Core\Baskets\Models\Basket
      */
     public function destroy(array $lines)
     {
@@ -121,8 +121,8 @@ class BasketLineService extends BaseService
     }
 
     /**
-     * @param BasketLine $basketLine
-     * @param int $quantity
+     * @param  \GetCandy\Api\Core\Baskets\Models\BasketLine  $basketLine
+     * @param  int  $quantity
      * @return bool
      */
     protected function saveQuantity(BasketLine $basketLine, int $quantity)

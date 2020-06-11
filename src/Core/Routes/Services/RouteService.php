@@ -15,8 +15,11 @@ class RouteService extends BaseService
 
     /**
      * Gets a route by a given slug.
-     * @param  string $slug
-     * @return Route
+     * 
+     * @param  string  $slug
+     * @return \GetCandy\Api\Core\Routes\Models\Route
+     * 
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public function getBySlug($slug)
     {
@@ -48,8 +51,9 @@ class RouteService extends BaseService
     }
 
     /**
-     * @param $hashedId
-     * @return mixed
+     * @param  string  $hashedId
+     * @return bool
+     *
      * @throws \GetCandy\Api\Exceptions\MinimumRecordRequiredException
      */
     public function delete($hashedId)
@@ -75,7 +79,8 @@ class RouteService extends BaseService
 
     /**
      * Gets a new suggested default model.
-     * @return mixed
+     * 
+     * @return \GetCandy\Api\Core\Routes\Models\Route
      */
     public function getNewSuggestedDefault()
     {

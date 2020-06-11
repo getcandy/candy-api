@@ -15,12 +15,12 @@ use Illuminate\Support\Facades\Request;
 class BasketLineController extends BaseController
 {
     /**
-     * @var BasketLineFactory
+     * @var \GetCandy\Api\Core\Baskets\Factories\BasketLineFactory
      */
     protected $factory;
 
     /**
-     * @var BasketLineService
+     * @var \GetCandy\Api\Core\Baskets\Services\BasketLineService
      */
     protected $basketLines;
 
@@ -34,9 +34,8 @@ class BasketLineController extends BaseController
     /**
      * Store one or more new basket lines, and associate them with a basket ID.
      *
-     * @param CreateLinesRequest $request
-     *
-     * @return array|BasketResource
+     * @param  \GetCandy\Api\Http\Requests\Baskets\CreateLinesRequest  $request
+     * @return array|\GetCandy\Api\Http\Resources\Baskets\BasketResource
      */
     public function store(CreateLinesRequest $request)
     {
@@ -52,10 +51,9 @@ class BasketLineController extends BaseController
     /**
      * Update a basket line's quantity.
      *
-     * @param string $id
-     * @param UpdateLineRequest $request
-     *
-     * @return BasketResource
+     * @param  string  $id
+     * @param  \GetCandy\Api\Http\Requests\Baskets\UpdateLineRequest  $request
+     * @return \GetCandy\Api\Http\Resources\Baskets\BasketResource
      */
     public function update(string $id, UpdateLineRequest $request)
     {
@@ -67,10 +65,9 @@ class BasketLineController extends BaseController
     /**
      * Increase a basketLine's quantity.
      *
-     * @param string $id
-     * @param ChangeQuantityRequest $request
-     *
-     * @return BasketResource
+     * @param  string  $id
+     * @param  \GetCandy\Api\Http\Requests\Baskets\ChangeQuantityRequest  $request
+     * @return \GetCandy\Api\Http\Resources\Baskets\BasketResource
      */
     public function addQuantity(string $id, ChangeQuantityRequest $request)
     {
@@ -84,10 +81,9 @@ class BasketLineController extends BaseController
     /**
      * Decrease a basketLine's quantity.
      *
-     * @param string $id
-     * @param ChangeQuantityRequest $request
-     *
-     * @return BasketResource
+     * @param  string  $id
+     * @param  \GetCandy\Api\Http\Requests\Baskets\ChangeQuantityRequest  $request
+     * @return \GetCandy\Api\Http\Resources\Baskets\BasketResource
      */
     public function removeQuantity(string $id, ChangeQuantityRequest $request)
     {
@@ -101,9 +97,8 @@ class BasketLineController extends BaseController
     /**
      * Handle the request to delete a basket.
      *
-     * @param DeleteLinesRequest $request
-     *
-     * @return BasketResource
+     * @param  \GetCandy\Api\Http\Requests\Baskets\DeleteLinesRequest  $request
+     * @return \GetCandy\Api\Http\Resources\Baskets\BasketResource
      */
     public function destroy(DeleteLinesRequest $request)
     {

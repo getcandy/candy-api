@@ -13,6 +13,9 @@ use Illuminate\Http\Request;
 
 class UserController extends BaseController
 {
+    /**
+     * @var \GetCandy\Api\Core\Users\Contracts\UserContract
+     */
     protected $users;
 
     public function __construct(UserContract $users)
@@ -22,7 +25,9 @@ class UserController extends BaseController
 
     /**
      * Handles the request to show a listing of all users.
-     * @return Json
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
      */
     public function index(Request $request)
     {
@@ -38,8 +43,9 @@ class UserController extends BaseController
 
     /**
      * Handles the request to show a user based on their hashed ID.
-     * @param  string $id
-     * @return Json
+     * 
+     * @param  string  $id
+     * @return array
      */
     public function show($id)
     {
@@ -54,8 +60,9 @@ class UserController extends BaseController
 
     /**
      * Handles the request to create a new user.
-     * @param  CreateUserRequest $request
-     * @return Json
+     * 
+     * @param  \GetCandy\Api\Http\Requests\Users\CreateRequest  $request
+     * @return array
      */
     public function store(CreateRequest $request)
     {
@@ -105,8 +112,8 @@ class UserController extends BaseController
     /**
      * Get the configured fields for a user.
      *
-     * @param Request $request
-     * @return json
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function fields(Request $request)
     {

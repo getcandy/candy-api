@@ -23,8 +23,10 @@ class RouteController extends BaseController
 
     /**
      * Handles the request to show a route based on it's hashed ID.
-     * @param  string $slug
-     * @return Json
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \GetCandy\Api\Core\Routes\RouteCriteria  $routes
+     * @return array|\GetCandy\Api\Http\Resources\Routes\RouteResource
      */
     public function show(Request $request, RouteCriteria $routes)
     {
@@ -40,10 +42,9 @@ class RouteController extends BaseController
     /**
      * Update a route.
      *
-     * @param string $id
-     * @param UpdateRequest $request
-     *
-     * @return Json
+     * @param  string  $id
+     * @param  \GetCandy\Api\Http\Requests\Routes\UpdateRequest  $request
+     * @return array
      */
     public function update($id, UpdateRequest $request)
     {

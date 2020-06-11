@@ -22,8 +22,16 @@ class Collection extends BaseModel
         Draftable,
         Versionable;
 
+    /**
+     * The Hashid connection name for enconding the id.
+     * 
+     * @var string
+     */
     protected $hashids = 'main';
 
+    /**
+     * @var string
+     */
     protected $settings = 'collections';
 
     /**

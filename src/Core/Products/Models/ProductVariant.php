@@ -12,12 +12,19 @@ use GetCandy\Api\Core\Traits\Lockable;
 class ProductVariant extends BaseModel
 {
     use HasAttributes, Lockable;
+
     /**
-     * The Hashid Channel for encoding the id.
+     * The Hashid connection name for enconding the id.
+     * 
      * @var string
      */
     protected $hashids = 'product';
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = [
         'options',
         'price',
@@ -37,7 +44,7 @@ class ProductVariant extends BaseModel
     /**
      * Return the product relation.
      *
-     * @return BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function product()
     {
@@ -47,7 +54,7 @@ class ProductVariant extends BaseModel
     /**
      * Return the product relation.
      *
-     * @return BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function availableProduct()
     {
@@ -57,7 +64,7 @@ class ProductVariant extends BaseModel
     /**
      * Return the basket lines.
      *
-     * @return HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function basketLines()
     {

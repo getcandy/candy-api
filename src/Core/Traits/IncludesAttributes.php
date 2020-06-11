@@ -10,12 +10,12 @@ use Illuminate\Database\Eloquent\Model;
 trait IncludesAttributes
 {
     /**
-     * @var
+     * @var \Illuminate\Database\Eloquent\Collection
      */
     protected $attributeGroups;
 
     /**
-     * @return mixed
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getAttributeGroups()
     {
@@ -33,8 +33,7 @@ trait IncludesAttributes
     }
 
     /**
-     * @param \GetCandy\Api\Core\Products\Models\Product $product
-     *
+     * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return \League\Fractal\Resource\Collection
      */
     public function includeAttributeGroups(Model $model)

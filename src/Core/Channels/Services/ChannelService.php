@@ -9,7 +9,7 @@ use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
 class ChannelService extends BaseService
 {
     /**
-     * @var AttributeGroup
+     * @var \GetCandy\Api\Core\Channels\Models\Channel
      */
     protected $model;
 
@@ -27,8 +27,7 @@ class ChannelService extends BaseService
      * Creates a resource from the given data.
      *
      * @param  array  $data
-     *
-     * @return GetCandy\Api\Core\Models\Channel
+     * @return \GetCandy\Api\Core\Channels\Models\Channel
      */
     public function create(array $data)
     {
@@ -55,13 +54,12 @@ class ChannelService extends BaseService
     /**
      * Updates a resource from the given data.
      *
-     * @param  string $id
+     * @param  string  $hashedId
      * @param  array  $data
+     * @return null|\GetCandy\Api\Core\Channels\Models\Channel
      *
-     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @throws \GetCandy\Api\Exceptions\MinimumRecordRequiredException
-     *
-     * @return GetCandy\Api\Core\Models\Channel
      */
     public function update($hashedId, array $data)
     {
@@ -83,8 +81,9 @@ class ChannelService extends BaseService
     }
 
     /**
-     * @param $id
-     * @return mixed
+     * @param  string  $id
+     * @return bool|null
+     *
      * @throws \GetCandy\Api\Exceptions\MinimumRecordRequiredException
      */
     public function delete($id)

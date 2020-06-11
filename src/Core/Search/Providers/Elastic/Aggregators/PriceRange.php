@@ -10,9 +10,10 @@ class PriceRange extends AbstractAggregator
     /**
      * Get the pre aggregation.
      *
-     * @param Search $search
-     * @param Query $query
-     * @return Query
+     * @param  null|\Elastica\Search  $search
+     * @param  null|\Elastica\Query  $query
+     * @param  mixed  $postFilter
+     * @return \Elastica\Query
      */
     public function getPre(Search $search = null, $query = null, $postFilter = null)
     {

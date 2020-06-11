@@ -15,8 +15,10 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class ShippingMethodController extends BaseController
 {
     /**
-     * Returns a listing of channels.
-     * @return Json
+     * Returns a listing of shipping methods.
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \GetCandy\Api\Http\Resources\Shipping\ShippingMethodCollection
      */
     public function index(Request $request)
     {
@@ -27,8 +29,10 @@ class ShippingMethodController extends BaseController
 
     /**
      * Handles the request to show a shipping method based on it's hashed ID.
-     * @param  string $id
-     * @return Json
+     * 
+     * @param  string  $id
+     * @param  \Illuminate\Http\Request  $request
+     * @return array|\GetCandy\Api\Http\Resources\Shipping\ShippingMethodResource
      */
     public function show($id, Request $request)
     {
@@ -42,9 +46,10 @@ class ShippingMethodController extends BaseController
     }
 
     /**
-     * Handles the request to create a new channel.
-     * @param  CreateRequest $request
-     * @return Json
+     * Handles the request to create a new shipping method.
+     * 
+     * @param  \GetCandy\Api\Http\Requests\Shipping\CreateRequest  $request
+     * @return array
      */
     public function store(CreateRequest $request)
     {

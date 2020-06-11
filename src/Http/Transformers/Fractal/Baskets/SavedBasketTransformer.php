@@ -8,6 +8,11 @@ use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 
 class SavedBasketTransformer extends BaseTransformer
 {
+    /**
+     * Resources that can be included if requested.
+     *
+     * @var array
+     */
     public $availableIncludes = [
         'basket',
     ];

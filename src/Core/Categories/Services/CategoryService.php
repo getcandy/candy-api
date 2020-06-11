@@ -15,9 +15,13 @@ use GetCandy\Api\Core\Search\SearchContract;
 class CategoryService extends BaseService
 {
     /**
-     * @var AttributeGroup
+     * @var \GetCandy\Api\Core\Categories\Models\Category
      */
     protected $model;
+
+    /**
+     * @var \GetCandy\Api\Core\Routes\Models\Route
+     */
     protected $route;
 
     public function __construct()
@@ -28,9 +32,11 @@ class CategoryService extends BaseService
 
     /**
      * Returns model by a given hashed id.
-     * @param  string $id
-     * @throws  Illuminate\Database\Eloquent\ModelNotFoundException
-     * @return Illuminate\Database\Eloquent\Model
+     * 
+     * @param  string  $id
+     * @return \GetCandy\Api\Core\Categories\Models\Category
+     * 
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public function getByHashedId($id)
     {
@@ -209,9 +215,9 @@ class CategoryService extends BaseService
     /**
      * Update a category layout.
      *
-     * @param string $categoryId
-     * @param string $layoutId
-     * @return Product
+     * @param  string  $categoryId
+     * @param  string  $layoutId
+     * @return \GetCandy\Api\Core\Categories\Models\Category
      */
     public function updateLayout($categoryId, $layoutId)
     {
@@ -282,11 +288,10 @@ class CategoryService extends BaseService
     /**
      * Deletes a resource by its given hashed ID.
      *
-     * @param  string $id
-     *
-     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     *
+     * @param  string  $id
      * @return bool
+     * 
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
     public function delete($id)
     {

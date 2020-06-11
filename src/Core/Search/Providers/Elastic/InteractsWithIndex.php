@@ -60,9 +60,10 @@ trait InteractsWithIndex
     /**
      * Get the type for a model.
      *
-     * @param Model|string $model
-     * @throws Symfony\Component\HttpKernel\Exception\HttpException;
-     * @return mixed
+     * @param  string|\Illuminate\Database\Eloquent\Model  $model
+     * @return \GetCandy\Api\Core\Search\Providers\Elastic\Types
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\HttpException
      */
     public function getType($model)
     {
@@ -78,7 +79,8 @@ trait InteractsWithIndex
 
     /**
      * Checks whether an indexer exists.
-     * @param  mixed  $model
+     *
+     * @param  string|\Illuminate\Database\Eloquent\Model  $model
      * @return bool
      */
     public function hasType($model)
@@ -93,7 +95,7 @@ trait InteractsWithIndex
     /**
      * Determines if the index exists in elastic.
      *
-     * @param string $name
+     * @param  string  $name
      * @return bool
      */
     public function hasIndex($name)
@@ -106,7 +108,7 @@ trait InteractsWithIndex
     /**
      * Get the suffix of the current index.
      *
-     * @param string $name
+     * @param  string  $name
      * @return string
      */
     protected function getCurrentIndexSuffix($name)
@@ -116,7 +118,7 @@ trait InteractsWithIndex
 
     /**
      * Updates the mappings for the model.
-     * @param  Elastica\Index $index
+     * @param  \Elastica\Index  $index
      * @return void
      */
     public function updateMappings($index)
@@ -133,7 +135,7 @@ trait InteractsWithIndex
     /**
      * Get the next suffix.
      *
-     * @param string $name
+     * @param  string  $name
      * @return string
      */
     protected function getNextIndexSuffix($name)

@@ -35,6 +35,7 @@ class ReindexSearchJob implements ShouldQueue
     /**
      * Execute the job.
      *
+     * @param  \GetCandy\Api\Core\Search\SearchContract  $search
      * @return void
      */
     public function handle(SearchContract $search)

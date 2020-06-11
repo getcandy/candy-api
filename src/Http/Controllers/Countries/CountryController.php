@@ -9,8 +9,10 @@ use Illuminate\Http\Request;
 class CountryController extends BaseController
 {
     /**
-     * Returns a listing of channels.
-     * @return Json
+     * Returns a listing of countries.
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
      */
     public function index(Request $request)
     {

@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 class CategoryType extends BaseType
 {
     /**
-     * @var Product
+     * @var string
      */
     protected $model = Category::class;
 
@@ -95,8 +95,9 @@ class CategoryType extends BaseType
 
     /**
      * Returns the Index document ready to be added.
-     * @param  Product $product
-     * @return Document
+     *
+     * @param  \GetCandy\Api\Core\Categories\Models\Category  $category
+     * @return mixed
      */
     public function getIndexDocument(Category $category)
     {

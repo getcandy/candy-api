@@ -17,21 +17,21 @@ use GetCandy\Api\Core\Scaffold\BaseService;
 class BasketService extends BaseService
 {
     /**
-     * @var Basket
+     * @var \GetCandy\Api\Core\Baskets\Models\Basket
      */
     protected $model;
 
     /**
      * The basket factory.
      *
-     * @var BasketFactoryInterface
+     * @var \GetCandy\Api\Core\Baskets\Interfaces\BasketFactoryInterface
      */
     protected $factory;
 
     /**
      * The variant factory.
      *
-     * @var ProductVariantInterface
+     * @var \GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface
      */
     protected $variantFactory;
 
@@ -47,10 +47,9 @@ class BasketService extends BaseService
     /**
      * Gets either a new or existing basket for a user.
      *
-     * @param mixed $id
-     * @param mixed $user
-     *
-     * @return Basket
+     * @param  null|string  $id
+     * @param  null|\Illuminate\Database\Eloquent\Model  $user
+     * @return \GetCandy\Api\Core\Baskets\Models\Basket
      */
     public function getBasket($id = null, $user = null)
     {
@@ -77,8 +76,8 @@ class BasketService extends BaseService
     /**
      * Get a basket by it's hashed ID.
      *
-     * @param string $id
-     * @return BasketFactory
+     * @param  string  $id
+     * @return \GetCandy\Api\Core\Baskets\Models\Basket
      */
     public function getByHashedId($id)
     {
@@ -105,8 +104,8 @@ class BasketService extends BaseService
     /**
      * Get basket for an order.
      *
-     * @param Order $order
-     * @return Basket
+     * @param  \GetCandy\Api\Core\Orders\Models\Order  $order
+     * @return \GetCandy\Api\Core\Baskets\Models\Basket
      */
     public function getForOrder(Order $order)
     {
@@ -120,9 +119,8 @@ class BasketService extends BaseService
     /**
      * Detach a user from a basket.
      *
-     * @param string $basketId
-     *
-     * @return Basket
+     * @param  string  $basketId
+     * @return \GetCandy\Api\Core\Baskets\Models\Basket
      */
     public function removeUser($basketId)
     {
@@ -152,10 +150,9 @@ class BasketService extends BaseService
     /**
      * Add a user to a basket.
      *
-     * @param string $basketId
-     * @param string $userId
-     *
-     * @return Basket
+     * @param  string  $basketId
+     * @param  string  $userId
+     * @return \GetCandy\Api\Core\Baskets\Models\Basket
      */
     public function addUser($basketId, $userId)
     {
@@ -170,10 +167,9 @@ class BasketService extends BaseService
     /**
      * Store a basket.
      *
-     * @param array $data
-     * @param ?User $user
-     *
-     * @return Basket
+     * @param  array  $data
+     * @param  null|\Illuminate\Database\Eloquent\Model  $user
+     * @return \GetCandy\Api\Core\Baskets\Models\Basket
      */
     public function store(array $data, $user = null)
     {
@@ -192,10 +188,9 @@ class BasketService extends BaseService
     /**
      * Add new lines to a basket, without remapping the existing lines.
      *
-     * @param array $data
-     * @param ?User $user
-     *
-     * @return Basket
+     * @param  array  $data
+     * @param  null|\Illuminate\Database\Eloquent\Model  $user
+     * @return \GetCandy\Api\Core\Baskets\Models\Basket
      */
     public function addLines(array $data, $user = null)
     {
@@ -210,9 +205,9 @@ class BasketService extends BaseService
     }
 
     /**
-     * @param Basket $basket
-     * @param array $data
-     * @return Basket
+     * @param  \GetCandy\Api\Core\Baskets\Models\Basket  $basket
+     * @param  array  $data
+     * @return \GetCandy\Api\Core\Baskets\Models\Basket
      */
     protected function setupBasket(Basket $basket, array $data)
     {
@@ -231,9 +226,9 @@ class BasketService extends BaseService
     }
 
     /**
-     * @param Basket $basket
-     * @param array  $data
-     * @return Basket
+     * @param  \GetCandy\Api\Core\Baskets\Models\Basket  $basket
+     * @param  array  $data
+     * @return \GetCandy\Api\Core\Baskets\Models\Basket
      */
     protected function storeAndUpdateBasket(Basket $basket, array $data)
     {
@@ -272,10 +267,9 @@ class BasketService extends BaseService
     /**
      * Saves a basket with a name.
      *
-     * @param string $basketId
-     * @param string $name
-     *
-     * @return Basket
+     * @param  string  $basketId
+     * @param  string  $name
+     * @return \GetCandy\Api\Core\Baskets\Models\Basket
      */
     public function save($basketId, $name)
     {
@@ -298,8 +292,8 @@ class BasketService extends BaseService
     /**
      * Get a users saved baskets.
      *
-     * @param mixed $user
-     * @return void
+     * @param  \Illuminate\Database\Eloquent\Model  $user
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getSaved($user)
     {
@@ -350,10 +344,9 @@ class BasketService extends BaseService
     /**
      * Adds a discount to a basket.
      *
-     * @param string $basketId
-     * @param string $coupon
-     *
-     * @return Basket
+     * @param  string  $basketId
+     * @param  string  $coupon
+     * @return \GetCandy\Api\Core\Baskets\Models\Basket
      */
     public function addDiscount($basketId, $coupon)
     {
@@ -370,9 +363,9 @@ class BasketService extends BaseService
     /**
      * Delete a discount.
      *
-     * @param string $basketId
-     * @param string $discountId
-     * @return void
+     * @param  string  $basketId
+     * @param  string  $discountId
+     * @return \GetCandy\Api\Core\Baskets\Models\Basket
      */
     public function deleteDiscount($basketId, $discountId)
     {
@@ -404,9 +397,9 @@ class BasketService extends BaseService
     /**
      * Get a basket for a user.
      *
-     * @param mixed $user
-     *
-     * @return mixed
+     * @param  string|\Illuminate\Database\Eloquent\Model  $user
+     * @param  array  $includes
+     * @return \GetCandy\Api\Core\Baskets\Models\Basket
      */
     public function getCurrentForUser($user, $includes = [])
     {
@@ -434,11 +427,10 @@ class BasketService extends BaseService
     /**
      * Resolves a guest basket with an existing basket.
      *
-     * @param User $user
-     * @param string $basketId
-     * @param bool $merge
-     *
-     * @return Basket
+     * @param  \Illuminate\Database\Eloquent\Model $user
+     * @param  string  $basketId
+     * @param  bool  $merge
+     * @return \GetCandy\Api\Core\Baskets\Models\Basket
      */
     public function resolve($user, $basketId, $merge = true)
     {
@@ -463,9 +455,9 @@ class BasketService extends BaseService
     /**
      * Merges two baskets.
      *
-     * @param Basket $guestBasket
-     * @param Basket $userBasket
-     * @return Basket
+     * @param  \GetCandy\Api\Core\Baskets\Models\Basket  $guestBasket
+     * @param  \GetCandy\Api\Core\Baskets\Models\Basket  $userBasket
+     * @return \GetCandy\Api\Core\Baskets\Models\Basket
      */
     public function merge($guestBasket, $userBasket)
     {
@@ -503,7 +495,7 @@ class BasketService extends BaseService
     /**
      * Delete a basket.
      *
-     * @param mixed $basket
+     * @param  string|\GetCandy\Api\Core\Baskets\Models\Basket  $basket
      * @return bool
      */
     public function destroy($basket)

@@ -18,6 +18,11 @@ class CategoryTransformer extends BaseTransformer
 {
     protected $attributeGroups;
 
+    /**
+     * Resources that can be included if requested.
+     *
+     * @var array
+     */
     protected $availableIncludes = [
         'attribute_groups',
         'assets',
@@ -100,8 +105,7 @@ class CategoryTransformer extends BaseTransformer
     }
 
     /**
-     * @param Category $category
-     *
+     * @param  \GetCandy\Api\Core\Categories\Models\Category  $category
      * @return \League\Fractal\Resource\Collection
      */
     public function includeChannels(Category $category)
@@ -125,8 +129,7 @@ class CategoryTransformer extends BaseTransformer
     }
 
     /**
-     * @param \GetCandy\Api\Products\Models\Product $product
-     *
+     * @param  \GetCandy\Api\Core\Categories\Models\Category  $category
      * @return \League\Fractal\Resource\Collection
      */
     public function includeAttributeGroups(Category $category)
@@ -155,8 +158,7 @@ class CategoryTransformer extends BaseTransformer
     }
 
     /**
-     * @param Product $product
-     *
+     * @param  \GetCandy\Api\Core\Categories\Models\Category  $category
      * @return \League\Fractal\Resource\Collection
      */
     public function includeCustomerGroups(Category $category)

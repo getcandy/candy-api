@@ -16,7 +16,7 @@ class PaymentResponse
     /**
      * The response message.
      *
-     * @var string
+     * @var string|null
      */
     public $message = null;
 
@@ -30,7 +30,7 @@ class PaymentResponse
     /**
      * The transaction object.
      *
-     * @var Transaction
+     * @var null|\GetCandy\Api\Core\Payments\Models\Transaction
      */
     protected $transaction = null;
 
@@ -44,8 +44,8 @@ class PaymentResponse
     /**
      * Set the transaction.
      *
-     * @param Transaction $transaction
-     * @return PaymentResponse
+     * @param  \GetCandy\Api\Core\Payments\Models\Transaction  $transaction
+     * @return $this
      */
     public function transaction($transaction)
     {
@@ -57,7 +57,7 @@ class PaymentResponse
     /**
      * Get the transaction object.
      *
-     * @return Transaction
+     * @return \GetCandy\Api\Core\Payments\Models\Transaction
      */
     public function getTransaction()
     {

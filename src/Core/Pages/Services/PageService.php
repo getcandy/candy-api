@@ -16,15 +16,17 @@ class PageService extends BaseService
 
     /**
      * Creates a page.
-     * @param  array                $data
-     * @param  string|Language      $languageCode
-     * @param  string|Layout        $layout
-     * @param  string|Channel       $channel
-     * @param  string               $type
-     * @param  Model|null           $relation
-     * @throws InvalidLanguageException
-     * @throws Symfony\Component\HttpKernel\Exception\HttpException
-     * @return Page
+     * 
+     * @param  array  $data
+     * @param  string|\GetCandy\Api\Core\Languages\Models\Language  $languageCode
+     * @param  string|\GetCandy\Api\Core\Layouts\Models\Layout  $layout
+     * @param  string|\GetCandy\Api\Core\Channels\Models\Channel  $channel
+     * @param  string  $type
+     * @param  null|\Illuminate\Database\Eloquent\Model  $relation
+     * @return \GetCandy\Api\Core\Pages\Models\Page
+     * 
+     * @throws \GetCandy\Exceptions\InvalidLanguageException
+     * @throws \Symfony\Component\HttpKernel\Exception\HttpException
      */
     public function create(array $data, $languageCode, $layout, $channel, $type = null, Model $relation = null)
     {
@@ -90,11 +92,13 @@ class PageService extends BaseService
 
     /**
      * Finds a page based on it's channel, language and slug.
-     * @param  string $channel
-     * @param  string $lang
-     * @param  string $slug
-     * @throws Illuminate\Database\Eloquent\ModelNotFoundException
-     * @return mixed
+     *
+     * @param  string  $channel
+     * @param  string  $lang
+     * @param  null|string  $slug
+     * @return \GetCandy\Api\Core\Pages\Models\Page
+     * 
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public function findPage($channel, $lang, $slug = null)
     {
@@ -129,7 +133,8 @@ class PageService extends BaseService
 
     /**
      * Gets a unique slug for a page.
-     * @param  string $slug
+     *
+     * @param  string  $slug
      * @return string
      */
     protected function getUniqueSlug($slug)

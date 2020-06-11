@@ -7,6 +7,11 @@ use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 
 class CategoryFancytreeTransformer extends BaseTransformer
 {
+    /**
+     * Include resources without needing it to be requested.
+     *
+     * @var array
+     */
     protected $defaultIncludes = [];
 
     public function transform(Category $category)
