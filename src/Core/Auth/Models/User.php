@@ -10,7 +10,6 @@ use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Traits\Hashids;
 use GetCandy\Api\Core\Users\Models\UserDetail;
 use GetCandy\Plugins\LegacyPassword\Models\LegacyPassword;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
@@ -23,7 +22,7 @@ class User extends Authenticatable
 
     /**
      * The Hashid connection name for enconding the id.
-     * 
+     *
      * @var string
      */
     protected $hashids = 'user';

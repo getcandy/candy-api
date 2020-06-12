@@ -20,11 +20,11 @@ class CollectionService extends BaseService
 
     /**
      * Returns model by a given hashed id.
-     * 
+     *
      * @param  string  $id
      * @param  bool  $withDrafted
      * @return \GetCandy\Api\Core\Collections\Models\Collection
-     * 
+     *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public function getByHashedId($id, $withDrafted = false)
@@ -92,7 +92,7 @@ class CollectionService extends BaseService
 
     /**
      * Gets paginated data for the record.
-     * 
+     *
      * @param  string  $searchTerm
      * @param  int  $length
      * @param  null|int  $page
@@ -112,7 +112,7 @@ class CollectionService extends BaseService
 
     /**
      * Sync products to a collection.
-     * 
+     *
      * @param  string  $collectionId
      * @param  array  $products
      * @return \GetCandy\Api\Core\Collections\Models\Collection

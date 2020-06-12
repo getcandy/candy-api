@@ -78,7 +78,7 @@ class PaymentService extends BaseService
      * @param  string|null  $type
      * @param  array  $data
      * @return mixed
-     * 
+     *
      * @throws \GetCandy\Api\Core\Orders\Exceptions\OrderAlreadyProcessedException
      */
     public function charge(Order $order, $token = null, $type = null, $data = [])
@@ -102,7 +102,7 @@ class PaymentService extends BaseService
      * @param  mixed  $type
      * @param  array  $fields
      * @return mixed
-     * 
+     *
      * @throws \GetCandy\Api\Core\Orders\Exceptions\OrderAlreadyProcessedException
      * @throws \GetCandy\Api\Core\Payments\Exceptions\InvalidPaymentTokenException
      * @throws \GetCandy\Api\Core\Payments\Exceptions\ThreeDSecureRequiredException

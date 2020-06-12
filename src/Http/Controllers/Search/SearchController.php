@@ -123,7 +123,7 @@ class SearchController extends BaseController
      * @param  \Illuminate\Http\Request  $request
      * @param  \GetCandy\Api\Core\Search\SearchContract  $client
      * @return \Illuminate\Http\JsonResponse
-     * 
+     *
      * @throws \Illuminate\Validation\ValidationException
      */
     public function sku(Request $request, SearchContract $client)

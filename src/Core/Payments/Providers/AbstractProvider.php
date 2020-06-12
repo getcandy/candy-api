@@ -78,7 +78,7 @@ abstract class AbstractProvider
 
     /**
      * Gets the name of the provider.
-     * 
+     *
      * @return string
      */
     abstract public function getName();

@@ -10,7 +10,7 @@ class AssociationGroupController extends BaseController
 {
     /**
      * Returns a listing of association groups.
-     * 
+     *
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */

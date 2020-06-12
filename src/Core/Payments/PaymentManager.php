@@ -84,7 +84,7 @@ class PaymentManager extends Manager implements PaymentContract
      * Get the default driver name.
      *
      * @return string
-     * 
+     *
      * @throws \InvalidArgumentException
      */
     public function getDefaultDriver()

@@ -4,7 +4,6 @@ namespace GetCandy\Api\Exceptions;
 
 use Exception;
 use GetCandy\Api\Core\Traits\Fractal;
-use GetCandy\Api\Exceptions\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\HttpException;

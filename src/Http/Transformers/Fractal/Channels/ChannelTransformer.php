@@ -19,7 +19,7 @@ class ChannelTransformer extends BaseTransformer
 
     /**
      * Decorates the channel object for viewing.
-     * 
+     *
      * @param  \GetCandy\Api\Core\Channels\Models\Channel  $channel
      * @return array
      */

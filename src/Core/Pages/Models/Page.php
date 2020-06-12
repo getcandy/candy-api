@@ -11,11 +11,11 @@ class Page extends BaseModel
 {
     /**
      * The Hashid connection name for enconding the id.
-     * 
+     *
      * @var string
      */
     protected $hashids = 'main';
-    
+
     /**
      * The attributes that are mass assignable.
      *

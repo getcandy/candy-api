@@ -17,7 +17,7 @@ class DiscountCriteriaItem extends BaseModel
 
     /**
      * The Hashid connection name for enconding the id.
-     * 
+     *
      * @var string
      */
     protected $hashids = 'main';
@@ -73,7 +73,7 @@ class DiscountCriteriaItem extends BaseModel
 
     /**
      * Get all of the owning commentable models.
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
     public function eligibles()

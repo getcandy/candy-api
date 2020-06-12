@@ -8,7 +8,7 @@ class Layout extends BaseModel
 {
     /**
      * The Hashid connection name for enconding the id.
-     * 
+     *
      * @var string
      */
     protected $hashids = 'main';
