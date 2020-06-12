@@ -7,6 +7,9 @@ use GetCandy\Api\Core\Discounts\Criteria\ProductIn;
 
 class Factory
 {
+    /**
+     * @var array
+     */
     protected $rewards = [];
 
     public function getApplied($discounts, $user, $product = null, $basket = null, $area = 'catalog')
@@ -26,10 +29,11 @@ class Factory
     /**
      * Checks the criteria.
      *
-     * @param Discount $discount
-     * @param mixed $uesr
-     * @param Basket $basket
-     * @return void
+     * @param  \GetCandy\Api\Core\Discounts\Discount  $discount
+     * @param  null|\Illuminate\Database\Eloquent\Model  $user
+     * @param  null|\GetCandy\Api\Core\Baskets\Models\Basket  $basket
+     * @param  null|\GetCandy\Api\Core\Products\Models\Product  $product
+     * @return bool
      */
     public function checkCriteria($discount, $user = null, $basket = null, $product = null)
     {

@@ -9,7 +9,7 @@ use GetCandy\Api\Http\Requests\Channels\UpdateRequest;
 use GetCandy\Api\Http\Resources\Channels\ChannelCollection;
 use GetCandy\Api\Http\Resources\Channels\ChannelResource;
 use GetCandy\Api\Http\Transformers\Fractal\Channels\ChannelTransformer;
-use GetCandy\Exceptions\MinimumRecordRequiredException;
+use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -18,7 +18,9 @@ class ChannelController extends BaseController
 {
     /**
      * Returns a listing of channels.
-     * @return Json
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \GetCandy\Api\Http\Resources\Channels\ChannelCollection
      */
     public function index(Request $request)
     {
@@ -29,8 +31,9 @@ class ChannelController extends BaseController
 
     /**
      * Handles the request to show a channel based on it's hashed ID.
-     * @param  string $id
-     * @return Json
+     * 
+     * @param  string  $id
+     * @return array|\GetCandy\Api\Http\Resources\Channels\ChannelResource
      */
     public function show($id)
     {
@@ -45,8 +48,9 @@ class ChannelController extends BaseController
 
     /**
      * Handles the request to create a new channel.
-     * @param  CreateRequest $request
-     * @return Json
+     * 
+     * @param  \GetCandy\Api\Http\Requests\Channels\CreateRequest  $request
+     * @return array
      */
     public function store(CreateRequest $request)
     {
@@ -57,9 +61,10 @@ class ChannelController extends BaseController
 
     /**
      * Handles the request to update  a channel.
-     * @param  string        $id
-     * @param  UpdateRequest $request
-     * @return Json
+     * 
+     * @param  string  $id
+     * @param  \GetCandy\Api\Http\Requests\Channels\UpdateRequest  $request
+     * @return array
      */
     public function update($id, UpdateRequest $request)
     {
@@ -76,9 +81,10 @@ class ChannelController extends BaseController
 
     /**
      * Handles the request to delete a channel.
-     * @param  string        $id
-     * @param  DeleteRequest $request
-     * @return Json
+     * 
+     * @param  string  $id
+     * @param  \GetCandy\Api\Http\Requests\Channels\DeleteRequest  $request
+     * @return array|\Illuminate\Http\Response
      */
     public function destroy($id, DeleteRequest $request)
     {

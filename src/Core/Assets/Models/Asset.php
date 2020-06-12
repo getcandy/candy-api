@@ -8,6 +8,11 @@ use Storage;
 
 class Asset extends BaseModel
 {
+    /**
+     * The Hashid connection name for enconding the id.
+     * 
+     * @var string
+     */
     protected $hashids = 'main';
 
     /**
@@ -66,7 +71,7 @@ class Asset extends BaseModel
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function transforms()
     {

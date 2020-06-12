@@ -17,6 +17,11 @@ class Order extends BaseModel
 
     protected static $recordEvents = ['created'];
 
+    /**
+     * The Hashid connection name for enconding the id.
+     * 
+     * @var string
+     */
     protected $hashids = 'order';
 
     protected $guarded = [];
@@ -64,8 +69,8 @@ class Order extends BaseModel
     /**
      * Define the placed scope.
      *
-     * @param Builder $qb
-     * @return Builder
+     * @param  \Illuminate\Database\Eloquent\Builder  $qb
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopePlaced($qb)
     {
@@ -75,9 +80,9 @@ class Order extends BaseModel
     /**
      * Define the Zone scope.
      *
-     * @param Builder $qb
-     * @param string $zone
-     * @return Builder
+     * @param  \Illuminate\Database\Eloquent\Builder  $qb
+     * @param  string  $zone
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeZone($qb, $zone)
     {
@@ -93,10 +98,10 @@ class Order extends BaseModel
     /**
      * Define the date range scope.
      *
-     * @param Builder $qb
-     * @param string $from
-     * @param string $to
-     * @return void
+     * @param  \Illuminate\Database\Eloquent\Builder  $qb
+     * @param  string  $from
+     * @param  null|string  $to
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeRange($qb, $from, $to = null)
     {
@@ -113,9 +118,9 @@ class Order extends BaseModel
     /**
      * Define the type scope.
      *
-     * @param Builder $qb
-     * @param string $type
-     * @return void
+     * @param  \Illuminate\Database\Eloquent\Builder  $qb
+     * @param  string  $type
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeType($qb, $type)
     {
@@ -134,9 +139,9 @@ class Order extends BaseModel
     /**
      * Define the status scope.
      *
-     * @param Builder $qb
-     * @param string $status
-     * @return void
+     * @param  \Illuminate\Database\Eloquent\Builder  $qb
+     * @param  string  $status
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeStatus($qb, $status)
     {
@@ -150,9 +155,9 @@ class Order extends BaseModel
     /**
      * Define the search scope.
      *
-     * @param Builder $qb
-     * @param string $keywords
-     * @return Builder
+     * @param  \Illuminate\Database\Eloquent\Builder  $qb
+     * @param  string  $keywords
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeSearch($qb, $keywords)
     {
@@ -223,8 +228,7 @@ class Order extends BaseModel
     /**
      * Gets the details, mainly for contact info.
      *
-     * @param string $type
-     *
+     * @param  string  $type
      * @return array
      */
     public function getDetails($type)
@@ -271,7 +275,7 @@ class Order extends BaseModel
     /**
      * Get the basket lines.
      *
-     * @return void
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function lines()
     {
@@ -281,7 +285,7 @@ class Order extends BaseModel
     /**
      * Gets all order lines that are from the basket.
      *
-     * @return void
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function basketLines()
     {
@@ -301,7 +305,7 @@ class Order extends BaseModel
     /**
      * Get the basket user.
      *
-     * @return User
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
     {

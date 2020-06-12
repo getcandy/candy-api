@@ -36,8 +36,8 @@ class ForgotPasswordController extends BaseController
     /**
      * Send a reset link to the given user.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
+     * @param  \GetCandy\Api\Http\Requests\Auth\ForgotPasswordRequest  $request
+     * @return array
      */
     public function sendResetLinkEmail(ForgotPasswordRequest $request)
     {
@@ -51,8 +51,8 @@ class ForgotPasswordController extends BaseController
     /**
      * Get a users reset token.
      *
-     * @param string $email
-     * @return void
+     * @param  string  $email
+     * @return string
      */
     protected function getPasswordResetToken($email)
     {
@@ -69,7 +69,7 @@ class ForgotPasswordController extends BaseController
      * Get the response for a successful password reset link.
      *
      * @param  string  $response
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
+     * @return array
      */
     protected function sendResetLinkResponse($token)
     {
@@ -79,9 +79,9 @@ class ForgotPasswordController extends BaseController
     /**
      * Get the response for a failed password reset link.
      *
-     * @param  \Illuminate\Http\Request
-     * @param  string  $response
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
+     * @param  \GetCandy\Api\Http\Requests\Auth\ForgotPasswordRequest  $request
+     * @param  mixed  $response
+     * @return array
      */
     protected function sendResetLinkFailedResponse(ForgotPasswordRequest $request, $response)
     {

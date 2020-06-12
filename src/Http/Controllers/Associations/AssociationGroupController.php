@@ -9,8 +9,10 @@ use Illuminate\Http\Request;
 class AssociationGroupController extends BaseController
 {
     /**
-     * Returns a listing of channels.
-     * @return Json
+     * Returns a listing of association groups.
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
      */
     public function index(Request $request)
     {

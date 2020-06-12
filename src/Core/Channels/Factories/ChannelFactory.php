@@ -9,16 +9,12 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 class ChannelFactory implements ChannelFactoryInterface
 {
     /**
-     * The current channel.
-     *
-     * @var Channel
+     * @var \GetCandy\Api\Core\Channels\Models\Channel
      */
     protected $channel;
 
     /**
-     * The channel service.
-     *
-     * @var ChannelService
+     * @var \GetCandy\Api\Core\Channels\Services\ChannelService
      */
     protected $service;
 
@@ -30,7 +26,7 @@ class ChannelFactory implements ChannelFactoryInterface
     /**
      * Set the value for channel.
      *
-     * @param string|channel $channel
+     * @param  null|string|\GetCandy\Api\Core\Channels\Models\Channel  $channel
      * @return void
      */
     public function set($channel = null)
@@ -44,8 +40,8 @@ class ChannelFactory implements ChannelFactoryInterface
     /**
      * Set the value for channel.
      *
-     * @param string $channel
-     * @return void
+     * @param  string|\GetCandy\Api\Core\Channels\Models\Channel  $channel
+     * @return $this
      */
     public function setChannel($channel)
     {
@@ -64,7 +60,7 @@ class ChannelFactory implements ChannelFactoryInterface
     /**
      * Get the current channel.
      *
-     * @return void
+     * @return \GetCandy\Api\Core\Channels\Models\Channel
      */
     public function getChannel()
     {

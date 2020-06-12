@@ -8,9 +8,7 @@ use GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface;
 class SetCurrencyMiddleware
 {
     /**
-     * The Currency converter instance.
-     *
-     * @var CurrencyConverterInterface
+     * @var \GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface
      */
     protected $converter;
 

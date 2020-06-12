@@ -10,14 +10,14 @@ abstract class AbstractFactory
     /**
      * The price calculator instance.
      *
-     * @var PriceCalculatorInterface
+     * @var \GetCandy\Api\Core\Pricing\PriceCalculatorInterface
      */
     protected $calculator;
 
     /**
      * The GetCandy manager.
      *
-     * @var GetCandy
+     * @var \GetCandy\Api\Core\GetCandy
      */
     protected $api;
 

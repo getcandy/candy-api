@@ -9,6 +9,11 @@ use GetCandy\Api\Core\Scopes\ProductPricingScope;
 
 class ProductPricingTier extends BaseModel
 {
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = [
         'customer_group_id',
         'product_variant_id',
@@ -45,7 +50,7 @@ class ProductPricingTier extends BaseModel
     }
 
     /**
-     * Get the total cost attribute.
+     * Get the total tax attribute.
      *
      * @return int
      */
@@ -55,7 +60,7 @@ class ProductPricingTier extends BaseModel
     }
 
     /**
-     * Get the total cost attribute.
+     * Get the limit tax attribute.
      *
      * @return int
      */
@@ -65,7 +70,8 @@ class ProductPricingTier extends BaseModel
     }
 
     /**
-     * The Hashid Channel for encoding the id.
+     * The Hashid connection name for enconding the id.
+     * 
      * @var string
      */
     protected $hashids = 'product_family';

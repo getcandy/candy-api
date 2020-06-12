@@ -17,6 +17,11 @@ trait HasCandy
     use Hashids,
         HasRoles;
 
+    /**
+     * The Hashid connection name for enconding the id.
+     * 
+     * @var string
+     */
     protected $hashids = 'user';
 
     public function groups()

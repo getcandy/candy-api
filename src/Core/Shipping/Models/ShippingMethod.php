@@ -14,6 +14,8 @@ class ShippingMethod extends BaseModel
         HasChannels;
 
     /**
+     * The Hashid connection name for enconding the id.
+     * 
      * @var string
      */
     protected $hashids = 'main';
@@ -29,6 +31,11 @@ class ShippingMethod extends BaseModel
         static::addGlobalScope(new ChannelScope);
     }
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = [
         'attribute_data',
         'type',
@@ -51,7 +58,8 @@ class ShippingMethod extends BaseModel
 
     /**
      * Get the attributes associated to the product.
-     * @return Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function channels()
     {

@@ -8,9 +8,7 @@ use GetCandy\Api\Core\Taxes\Interfaces\TaxCalculatorInterface;
 class SetTaxMiddleware
 {
     /**
-     * The tax calculator instance.
-     *
-     * @var TaxCalculatorInterface
+     * @var \GetCandy\Api\Core\Taxes\Interfaces\TaxCalculatorInterface
      */
     protected $tax;
 

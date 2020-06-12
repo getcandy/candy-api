@@ -20,8 +20,8 @@ class IndiceResolver
     /**
      * Get the document type.
      *
-     * @param Model $model
-     * @return BaseType
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @return \GetCandy\Api\Core\Search\Providers\Elastic\Types
      */
     public function getType($model)
     {
@@ -37,7 +37,7 @@ class IndiceResolver
 
     /**
      * Checks whether an indexer exists.
-     * @param  mixed  $model
+     * @param  string|\Illuminate\Database\Eloquent\Model  $model
      * @return bool
      */
     public function hasType($model)

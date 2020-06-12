@@ -5,7 +5,7 @@ namespace GetCandy\Api\Core\Currencies\Services;
 use GetCandy\Api\Core\Currencies\Interfaces\CurrencyServiceInterface;
 use GetCandy\Api\Core\Currencies\Models\Currency;
 use GetCandy\Api\Core\Scaffold\BaseService;
-use GetCandy\Exceptions\MinimumRecordRequiredException;
+use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
 
 class CurrencyService extends BaseService implements CurrencyServiceInterface
 {
@@ -18,8 +18,7 @@ class CurrencyService extends BaseService implements CurrencyServiceInterface
      * Creates a resource from the given data.
      *
      * @param  array  $data
-     *
-     * @return GetCandy\Api\Core\Models\Currency
+     * @return \GetCandy\Api\Core\Currencies\Models\Currency
      */
     public function create($data)
     {
@@ -54,13 +53,12 @@ class CurrencyService extends BaseService implements CurrencyServiceInterface
     /**
      * Updates a resource from the given data.
      *
-     * @param  string $id
+     * @param  string  $id
      * @param  array  $data
+     * @return \GetCandy\Api\Core\Currencies\Models\Currency
      *
-     * @throws Symfony\Component\HttpKernel\Exception
-     * @throws GetCandy\Api\Core\Exceptions\MinimumRecordRequiredException
-     *
-     * @return GetCandy\Api\Core\Models\Currency
+     * @throws \Exception
+     * @throws \GetCandy\Api\Exceptions\MinimumRecordRequiredException
      */
     public function update($id, array $data)
     {
@@ -101,12 +99,11 @@ class CurrencyService extends BaseService implements CurrencyServiceInterface
     /**
      * Deletes a resource by its given hashed ID.
      *
-     * @param  string $id
-     *
-     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     * @throws GetCandy\Api\Core\Exceptions\MinimumRecordRequiredException
-     *
+     * @param  string  $id
      * @return bool
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @throws \GetCandy\Api\Exceptions\MinimumRecordRequiredException
      */
     public function delete($id)
     {

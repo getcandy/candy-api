@@ -10,6 +10,11 @@ class OrderLine extends BaseModel
 {
     use HasMeta;
 
+    /**
+     * The Hashid connection name for enconding the id.
+     * 
+     * @var string
+     */
     protected $hashids = 'order';
 
     protected $guarded = [];

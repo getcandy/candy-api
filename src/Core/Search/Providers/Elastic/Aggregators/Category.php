@@ -18,6 +18,9 @@ class Category extends AbstractAggregator
      */
     protected $categories = [];
 
+    /**
+     * @var string
+     */
     protected $field = 'departments';
 
     /**
@@ -30,8 +33,8 @@ class Category extends AbstractAggregator
     /**
      * Set the filter on the aggregation.
      *
-     * @param mixed $filter
-     * @return Attribute
+     * @param  mixed  $filter
+     * @return $this
      */
     public function addFilter($filter = null)
     {
@@ -104,6 +107,7 @@ class Category extends AbstractAggregator
     /**
      * Get the post filter.
      *
+     * @param  array  $value 
      * @return void
      */
     public function getPost($value)

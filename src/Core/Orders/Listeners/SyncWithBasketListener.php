@@ -7,6 +7,9 @@ use GetCandy\Api\Core\Discounts\Factory;
 
 class SyncWithBasketListener
 {
+    /**
+     * @var \GetCandy\Api\Core\Discounts\Factory
+     */
     protected $factory;
 
     public function __construct(Factory $factory)
@@ -17,7 +20,7 @@ class SyncWithBasketListener
     /**
      * Handle the event.
      *
-     * @param  OrderShipped  $event
+     * @param  \GetCandy\Api\Core\Baskets\Events\BasketStoredEvent  $event
      * @return void
      */
     public function handle(BasketStoredEvent $event)

@@ -8,12 +8,13 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CurrencyConverter implements CurrencyConverterInterface
 {
+    /**
+     * @var null|\GetCandy\Api\Core\Currencies\Models\Currency
+     */
     protected $currency;
 
     /**
-     * The currency service.
-     *
-     * @var CurrencyServiceInterface
+     * @var \GetCandy\Api\Core\Currencies\Interfaces\CurrencyServiceInterface
      */
     protected $currencies;
 

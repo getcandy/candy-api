@@ -13,11 +13,15 @@ class BasketFetchedEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
+    /**
+     * @var \GetCandy\Api\Core\Baskets\Models\Basket
+     */
     public $basket;
 
     /**
      * Create a new event instance.
      *
+     * @param  \GetCandy\Api\Core\Baskets\Models\Basket  $basket
      * @return void
      */
     public function __construct(Basket $basket)
@@ -28,7 +32,7 @@ class BasketFetchedEvent
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return Channel|array
+     * @return \Illuminate\Broadcasting\PrivateChannel
      */
     public function broadcastOn()
     {

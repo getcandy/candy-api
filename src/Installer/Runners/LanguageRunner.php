@@ -7,6 +7,9 @@ use GetCandy\Api\Installer\Contracts\InstallRunnerContract;
 
 class LanguageRunner extends AbstractRunner implements InstallRunnerContract
 {
+    /**
+     * @var \Illuminate\Support\Collection
+     */
     protected $availableLanguages;
 
     public function __construct()

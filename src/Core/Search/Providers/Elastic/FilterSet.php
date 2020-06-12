@@ -18,9 +18,9 @@ class FilterSet
     /**
      * Add a filter to the chain.
      *
-     * @param mixed $type
-     * @param mixed $payload
-     * @return self
+     * @param  mixed  $type
+     * @param  mixed  $payload
+     * @return $this
      */
     public function add($type, $payload = null)
     {
@@ -36,8 +36,8 @@ class FilterSet
     /**
      * Add many filters to the search.
      *
-     * @param array $filters
-     * @return object
+     * @param  array  $filters
+     * @return $this
      */
     public function addMany(array $filters)
     {
@@ -49,9 +49,7 @@ class FilterSet
     }
 
     /**
-     * Undocumented function.
-     *
-     * @return void
+     * @return \Illuminate\Support\Collection
      */
     public function getFilters()
     {
@@ -61,7 +59,7 @@ class FilterSet
     /**
      * Get the filterable fields.
      *
-     * @return void
+     * @return mixed
      */
     public function getFilterable()
     {
@@ -71,7 +69,7 @@ class FilterSet
     /**
      * Get a filter from the chain.
      *
-     * @param string $handle
+     * @param  string  $handle
      * @return mixed
      */
     public function getFilter($handle)
@@ -82,7 +80,7 @@ class FilterSet
     /**
      * Find a matching attribute based on filter type.
      *
-     * @param string $type
+     * @param  string  $type
      * @return mixed
      */
     protected function getAttribute($type)
@@ -93,7 +91,7 @@ class FilterSet
     /**
      * Find the filter class.
      *
-     * @param string $type
+     * @param  string  $type
      * @return mixed
      */
     private function findFilter($type)

@@ -8,7 +8,7 @@ use GetCandy\Api\Core\Products\Models\Product;
 class ProductType extends BaseType
 {
     /**
-     * @var Product
+     * @var string
      */
     protected $model = Product::class;
 
@@ -166,8 +166,9 @@ class ProductType extends BaseType
 
     /**
      * Returns the Index document ready to be added.
-     * @param  Product $product
-     * @return Document
+     *
+     * @param  \GetCandy\Api\Core\Products\Models\Product  $product
+     * @return mixed
      */
     public function getIndexDocument(Product $product)
     {

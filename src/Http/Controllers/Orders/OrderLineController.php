@@ -11,6 +11,9 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class OrderLineController extends BaseController
 {
+    /**
+     * @var \GetCandy\Api\Core\Orders\Services\OrderLineService
+     */
     protected $orderLines;
 
     public function __construct(OrderLineService $lines)
@@ -21,10 +24,9 @@ class OrderLineController extends BaseController
     /**
      * Handles the request to store a new order line.
      *
-     * @param string $orderId
-     * @param CreateRequest $request
-     * @param OrderLineService $lines
-     * @return void
+     * @param  string  $orderId
+     * @param  \GetCandy\Api\Http\Requests\Orders\Lines\CreateRequest  $request
+     * @return \GetCandy\Api\Http\Resources\Orders\OrderResource
      */
     public function store($orderId, CreateRequest $request)
     {
@@ -40,9 +42,9 @@ class OrderLineController extends BaseController
     /**
      * Handles the request to remove an order line.
      *
-     * @param string $lineId
-     * @param DeleteRequest $request
-     * @return void
+     * @param  string  $lineId
+     * @param  \GetCandy\Api\Http\Requests\Orders\Lines\DeleteRequest  $request
+     * @return array
      */
     public function destroy($lineId, DeleteRequest $request)
     {

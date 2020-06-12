@@ -16,12 +16,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProductService extends BaseService
 {
+    /**
+     * @var \GetCandy\Api\Core\Products\Models\Product
+     */
     protected $model;
 
     /**
      * The product factory instance.
      *
-     * @var ProductInterface
+     * @var \GetCandy\Api\Core\Products\Interfaces\ProductInterface
      */
     protected $factory;
 
@@ -33,9 +36,12 @@ class ProductService extends BaseService
 
     /**
      * Returns model by a given hashed id.
-     * @param  string $id
-     * @throws  Illuminate\Database\Eloquent\ModelNotFoundException
-     * @return Product
+     * 
+     * @param  string  $id
+     * @param  bool  $withDrafted
+     * @return \GetCandy\Api\Core\Products\Models\Product
+     * 
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public function getByHashedId($id, $withDrafted = false)
     {
@@ -79,13 +85,12 @@ class ProductService extends BaseService
     /**
      * Updates a resource from the given data.
      *
-     * @param  string $hashedId
+     * @param  string  $hashedId
      * @param  array  $data
+     * @return \GetCandy\Api\Core\Products\Models\Product
      *
-     * @throws \Symfony\Component\HttpKernel\Exception
+     * @throws \Exception
      * @throws \GetCandy\Exceptions\InvalidLanguageException
-     *
-     * @return Product
      */
     public function update($hashedId, array $data)
     {
@@ -121,9 +126,9 @@ class ProductService extends BaseService
     /**
      * Update a products layout.
      *
-     * @param string $productId
-     * @param string $layoutId
-     * @return Product
+     * @param  string  $productId
+     * @param  string  $layoutId
+     * @return \GetCandy\Api\Core\Products\Models\Product
      */
     public function updateLayout($productId, $layoutId)
     {
@@ -139,9 +144,10 @@ class ProductService extends BaseService
     /**
      * Creates a resource from the given data.
      *
+     * @param  array  $data
+     * @return \GetCandy\Api\Core\Products\Models\Product
+     * 
      * @throws \GetCandy\Exceptions\InvalidLanguageException
-     *
-     * @return Product
      */
     public function create(array $data)
     {
@@ -254,9 +260,10 @@ class ProductService extends BaseService
 
     /**
      * Creates a product variant.
-     * @param  Product $product
-     * @param  array   $data
-     * @return Model
+     * 
+     * @param  \GetCandy\Api\Core\Products\Models\Product  $product
+     * @param  array  $data
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function createVariant(Product $product, array $data = [])
     {
@@ -266,8 +273,8 @@ class ProductService extends BaseService
     }
 
     /**
-     * @param $id
-     * @return mixed
+     * @param  string  $id
+     * @return bool
      */
     public function delete($id)
     {
@@ -282,8 +289,11 @@ class ProductService extends BaseService
 
     /**
      * Gets paginated data for the record.
-     * @param  int $length How many results per page
-     * @param  int  $page   The page to start
+     * 
+     * @param  string|null  $channel
+     * @param  int  $length
+     * @param  int|null  $page
+     * @param  array  $ids
      * @return \Illuminate\Pagination\LengthAwarePaginator
      */
     public function getPaginatedData($channel = null, $length = 50, $page = null, $ids = [])
@@ -300,7 +310,8 @@ class ProductService extends BaseService
 
     /**
      * Gets the attributes from a given products id.
-     * @param  string $id
+     * 
+     * @param  string  $id
      * @return array
      */
     public function getAttributes($id)
@@ -370,8 +381,8 @@ class ProductService extends BaseService
     /**
      * Gets recommended products based on an array of products.
      *
-     * @param array|\Illuminate\Database\Eloquent\Collection $products
-     * @param int $limit
+     * @param  array|\Illuminate\Database\Eloquent\Collection  $products
+     * @param  int  $limit
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getRecommendations($products = [], $limit = 6)
@@ -397,8 +408,9 @@ class ProductService extends BaseService
 
     /**
      * Gets the attributes from a given products id.
-     * @param  string $id
-     * @return array
+     * 
+     * @param  \GetCandy\Api\Core\Products\Models\Product  $product
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getCategories(Product $product)
     {
@@ -411,10 +423,12 @@ class ProductService extends BaseService
 
     /**
      * Updates the collections for a product.
+     * 
      * @param  string  $id
      * @param  array  $data
+     * @return \GetCandy\Api\Core\Products\Models\Product
+     * 
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
-     * @return Model
      */
     public function updateCollections($id, array $data)
     {
@@ -434,9 +448,8 @@ class ProductService extends BaseService
     /**
      * Get products by a stock threshold.
      *
-     * @param int $limit
-     *
-     * @return Collection
+     * @param  int  $limit
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getByStockThreshold($limit = 15)
     {

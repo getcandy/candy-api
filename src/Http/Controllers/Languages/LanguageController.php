@@ -9,7 +9,7 @@ use GetCandy\Api\Http\Requests\Languages\UpdateRequest;
 use GetCandy\Api\Http\Resources\Languages\LanguageCollection;
 use GetCandy\Api\Http\Resources\Languages\LanguageResource;
 use GetCandy\Api\Http\Transformers\Fractal\Languages\LanguageTransformer;
-use GetCandy\Exceptions\MinimumRecordRequiredException;
+use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -17,8 +17,10 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class LanguageController extends BaseController
 {
     /**
-     * Returns a listing of channels.
-     * @return Json
+     * Returns a listing of languages.
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \GetCandy\Api\Http\Resources\Languages\LanguageCollection
      */
     public function index(Request $request)
     {
@@ -29,7 +31,9 @@ class LanguageController extends BaseController
 
     /**
      * Returns a single Language.
-     * @return Json
+     * 
+     * @param  string  $id
+     * @return array
      */
     public function show($id)
     {
@@ -44,8 +48,9 @@ class LanguageController extends BaseController
 
     /**
      * Handles the request to create a new language.
-     * @param  CreateRequest $request
-     * @return Json
+     * 
+     * @param  \GetCandy\Api\Http\Requests\Languages\CreateRequest  $request
+     * @return \GetCandy\Api\Http\Resources\Languages\LanguageResource
      */
     public function store(CreateRequest $request)
     {
@@ -55,10 +60,11 @@ class LanguageController extends BaseController
     }
 
     /**
-     * Handles the request to update  a language.
-     * @param  string        $id
-     * @param  UpdateRequest $request
-     * @return Json
+     * Handles the request to update a language.
+     * 
+     * @param  string  $id
+     * @param  \GetCandy\Api\Http\Requests\Languages\UpdateRequest  $request
+     * @return array
      */
     public function update($id, UpdateRequest $request)
     {
@@ -75,9 +81,10 @@ class LanguageController extends BaseController
 
     /**
      * Handles the request to delete a language.
-     * @param  string        $id
-     * @param  DeleteRequest $request
-     * @return Json
+     * 
+     * @param  string  $id
+     * @param  \GetCandy\Api\Http\Requests\Languages\DeleteRequest  $request
+     * @return array|\Illuminate\Http\Response
      */
     public function destroy($id, DeleteRequest $request)
     {

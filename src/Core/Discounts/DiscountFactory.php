@@ -10,7 +10,7 @@ class DiscountFactory implements DiscountInterface
     /**
      * The discount models.
      *
-     * @var \Illuminate\Support\Collection
+     * @var \Illuminate\Database\Eloquent\Collection
      */
     protected $discounts;
 
@@ -31,8 +31,7 @@ class DiscountFactory implements DiscountInterface
     /**
      * Initialise the factory.
      *
-     * @param mixed $discounts
-     * @return DiscountFactory
+     * @return $this
      */
     public function init()
     {
@@ -45,8 +44,8 @@ class DiscountFactory implements DiscountInterface
     /**
      * Set the basket.
      *
-     * @param Basket $basket
-     * @return DiscountFactory
+     * @param  \GetCandy\Api\Core\Baskets\Models\Basket  $basket
+     * @return $this
      */
     public function setBasket(Basket $basket)
     {
@@ -58,8 +57,8 @@ class DiscountFactory implements DiscountInterface
     /**
      * Set the user.
      *
-     * @param Model $user
-     * @return DiscountFactory
+     * @param  null|\Illuminate\Database\Eloquent\Model  $user
+     * @return $this
      */
     public function setUser(Model $user = null)
     {
@@ -71,7 +70,7 @@ class DiscountFactory implements DiscountInterface
     /**
      * Get all applied discounts.
      *
-     * @return Illuminate\Support\Collection
+     * @return \Illuminate\Support\Collection
      */
     public function getApplied()
     {
@@ -91,9 +90,9 @@ class DiscountFactory implements DiscountInterface
     /**
      * Checks the criteria.
      *
-     * @param Discount $discount
-     * @param mixed $uesr
-     * @param Basket $basket
+     * @param  \GetCandy\Api\Core\Discounts\Discount  $discount
+     * @param  null|\Illuminate\Database\Eloquent\Model  $user
+     * @param  null|\GetCandy\Api\Core\Baskets\Models\Basket  $basket
      * @return bool
      */
     public function checkCriteria($discount, $user = null, $basket = null)

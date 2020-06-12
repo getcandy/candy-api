@@ -24,9 +24,11 @@ abstract class BaseService
 
     /**
      * Returns model by a given hashed id.
-     * @param  string $id
-     * @throws  Illuminate\Database\Eloquent\ModelNotFoundException
-     * @return Illuminate\Database\Eloquent\Model
+     * 
+     * @param  string  $id
+     * @return \Illuminate\Database\Eloquent\Model
+     * 
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public function getByHashedId($id)
     {
@@ -37,8 +39,9 @@ abstract class BaseService
 
     /**
      * Get a collection of models from given Hashed IDs.
+     * 
      * @param  array  $ids
-     * @return Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getByHashedIds(array $ids)
     {
@@ -52,6 +55,7 @@ abstract class BaseService
 
     /**
      * Returns the record count for the model.
+     *
      * @return int
      */
     public function count()
@@ -66,7 +70,8 @@ abstract class BaseService
 
     /**
      * Gets the decoded id for the model.
-     * @param  string $hash
+     *
+     * @param  string  $hash
      * @return int
      */
     public function getDecodedId($hash)
@@ -106,7 +111,8 @@ abstract class BaseService
 
     /**
      * Returns the record considered the default.
-     * @return mixed
+     *
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function getDefaultRecord()
     {
@@ -115,7 +121,9 @@ abstract class BaseService
 
     /**
      * Get a record by it's handle.
-     * @return mixed
+     *
+     * @param  string  $handle
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function getByHandle($handle)
     {
@@ -124,9 +132,11 @@ abstract class BaseService
 
     /**
      * Gets paginated data for the record.
-     * @param  int $length How many results per page
-     * @param  int  $page   The page to start
-     * @return Illuminate\Pagination\LengthAwarePaginator
+     * 
+     * @param  int  $length
+     * @param  int|null  $page
+     * @param  array|string|null  $relations
+     * @return \Illuminate\Pagination\LengthAwarePaginator
      */
     public function getPaginatedData($length = 50, $page = null, $relations = null)
     {
@@ -141,7 +151,8 @@ abstract class BaseService
 
     /**
      * Gets a new suggested default model.
-     * @return mixed
+     * 
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function getNewSuggestedDefault()
     {
@@ -150,7 +161,9 @@ abstract class BaseService
 
     /**
      * Sets the passed model as the new default.
-     * @param Illuminate\Database\Eloquent\Model &$model
+     *
+     * @param  \Illuminate\Database\Eloquent\Model  &$model
+     * @return void
      */
     protected function setNewDefault(&$model)
     {
@@ -163,7 +176,8 @@ abstract class BaseService
 
     /**
      * Determines whether a record exists by a given code.
-     * @param  string $code
+     *
+     * @param  string  $code
      * @return bool
      */
     public function existsByCode($code)
@@ -173,7 +187,8 @@ abstract class BaseService
 
     /**
      * Checks whether a record exists with the given hashed id.
-     * @param  string $hashedId
+     *
+     * @param  string  $hashedId
      * @return bool
      */
     public function existsByHashedId($hashedId)
@@ -195,7 +210,8 @@ abstract class BaseService
 
     /**
      * Gets the attributes related to the model.
-     * @return Collection
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getAttributes($id)
     {
@@ -204,10 +220,12 @@ abstract class BaseService
 
     /**
      * Updates the attributes for a model.
+     *
      * @param  string  $model
      * @param  array  $data
+     * @return \Illuminate\Database\Eloquent\Model
+     *
      * @throws Illuminate\Database\Eloquent\ModelNotFoundException
-     * @return Model
      */
     public function updateAttributes($id, array $data)
     {
@@ -224,6 +242,7 @@ abstract class BaseService
 
     /**
      * Validates the integrity of the attribute data.
+     *
      * @param  array  $data
      * @return bool
      */
@@ -240,8 +259,9 @@ abstract class BaseService
 
     /**
      * Checks the structure of an array against another.
-     * @param  array|null $structure
-     * @param  array|null     $data
+     *
+     * @param  array|null  $structure
+     * @param  array|null  $data
      * @return bool
      */
     protected function validateStructure(array $structure = null, $data = null)
@@ -333,9 +353,8 @@ abstract class BaseService
     /**
      * Gets the mapping for the channel data.
      *
-     * @param array $data
-     *
-     * @return void
+     * @param  array  $data
+     * @return array
      */
     protected function getChannelMapping($data)
     {
@@ -352,7 +371,8 @@ abstract class BaseService
 
     /**
      * Maps customer group data for a model.
-     * @param  array $groups
+     *
+     * @param  array  $groups
      * @return array
      */
     protected function mapCustomerGroupData($groups)
@@ -372,10 +392,9 @@ abstract class BaseService
     /**
      * Update a given resource from data.
      *
-     * @param string $hashedId
-     * @param array $data
-     *
-     * @return Model
+     * @param  string  $hashedId
+     * @param  array  $data
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function update($hashedId, array $data)
     {
@@ -402,9 +421,10 @@ abstract class BaseService
 
     /**
      * Creates a URL for a product.
-     * @param  string $hashedId
+     *
+     * @param  string  $hashedId
      * @param  array  $data
-     * @return Model
+     * @return \GetCandy\Api\Core\Routes\Models\Route
      */
     public function createUrl($hashedId, array $data)
     {
@@ -431,8 +451,7 @@ abstract class BaseService
     /**
      * Sets the channel mapping.
      *
-     * @param array $channels
-     *
+     * @param  array  $channels
      * @return array
      */
     protected function setChannelMapping($channels = [])

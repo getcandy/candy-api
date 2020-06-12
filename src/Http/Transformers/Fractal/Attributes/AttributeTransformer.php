@@ -7,13 +7,19 @@ use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 
 class AttributeTransformer extends BaseTransformer
 {
+    /**
+     * Resources that can be included if requested.
+     *
+     * @var array
+     */
     protected $availableIncludes = [
         'group',
     ];
 
     /**
      * Decorates the attribute object for viewing.
-     * @param  Attribute $product
+     * 
+     * @param  \GetCandy\Api\Core\Attributes\Models\Attribute  $product
      * @return array
      */
     public function transform(Attribute $attribute)

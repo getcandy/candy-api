@@ -35,12 +35,13 @@ use Illuminate\Http\Request;
 
 class OrderController extends BaseController
 {
+    /**
+     * @var \GetCandy\Api\Core\Orders\Interfaces\OrderCriteriaInterface
+     */
     protected $orders;
 
     /**
-     * The baskets criteria instance.
-     *
-     * @var BasketCriteriaInterface
+     * @var \GetCandy\Api\Core\Baskets\Interfaces\BasketCriteriaInterface
      */
     protected $baskets;
 
@@ -53,8 +54,10 @@ class OrderController extends BaseController
     }
 
     /**
-     * Returns a listing of channels.
-     * @return Json
+     * Returns a listing of orders.
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \GetCandy\Api\Http\Resources\Orders\OrderCollection
      */
     public function index(Request $request)
     {
@@ -120,9 +123,11 @@ class OrderController extends BaseController
     }
 
     /**
-     * Handles the request to show a channel based on it's hashed ID.
-     * @param  string $id
-     * @return Json
+     * Handles the request to show an order based on it's hashed ID.
+     * 
+     * @param  string  $id
+     * @param  \Illuminate\Http\Request  $request
+     * @return array|\GetCandy\Api\Http\Resources\Orders\OrderResource
      */
     public function show($id, Request $request)
     {
@@ -141,9 +146,10 @@ class OrderController extends BaseController
     /**
      * Store either a new or existing basket.
      *
-     * @param CreateRequest $request
-     *
-     * @return void
+     * @param  \GetCandy\Api\Http\Requests\Orders\CreateRequest  $request
+     * @param  \GetCandy\Api\Core\Orders\Interfaces\OrderFactoryInterface  $factory
+     * @param  \GetCandy\Api\Core\Baskets\Interfaces\BasketFactoryInterface  $basketFactory
+     * @return \GetCandy\Api\Http\Resources\Orders\OrderResource
      */
     public function store(CreateRequest $request, OrderFactoryInterface $factory, BasketFactoryInterface $basketFactory)
     {
@@ -162,9 +168,13 @@ class OrderController extends BaseController
     /**
      * Process an order.
      *
-     * @param ProcessRequest $request
-     *
-     * @return json
+     * @param  \GetCandy\Api\Http\Requests\Orders\ProcessRequest  $request
+     * @param  \GetCandy\Api\Core\Orders\Interfaces\OrderProcessingFactoryInterface  $factory
+     * @param  \GetCandy\Api\Core\Orders\Interfaces\OrderCriteriaInterface  $criteria
+     * @param  \GetCandy\Api\Core\Payments\Services\PaymentTypeService  $paymentTypes
+     * @return array|\GetCandy\Api\Http\Resources\Orders\OrderResource|\GetCandy\Api\Http\Resources\Payments\ThreeDSecureResource
+     * 
+     * @throws \GetCandy\Api\Core\Orders\Exceptions\OrderAlreadyProcessedException
      */
     public function process(
         ProcessRequest $request,
@@ -242,9 +252,8 @@ class OrderController extends BaseController
     /**
      * Expire an order.
      *
-     * @param ExpireRequest $request
-     *
-     * @return json
+     * @param  string  $id
+     * @return array|\Illuminate\Http\Response
      */
     public function expire($id)
     {
@@ -260,10 +269,9 @@ class OrderController extends BaseController
     /**
      * Set the shipping address of an order.
      *
-     * @param string $id
-     * @param StoreAddressRequest $request
-     *
-     * @return array
+     * @param  string  $id
+     * @param  \GetCandy\Api\Http\Requests\Orders\StoreAddressRequest  $request
+     * @return array|\GetCandy\Api\Http\Resources\Orders\OrderResource
      */
     public function shippingAddress($id, StoreAddressRequest $request)
     {
@@ -279,10 +287,9 @@ class OrderController extends BaseController
     /**
      * Update an order.
      *
-     * @param string $id
-     * @param Request $request
-     *
-     * @return array
+     * @param  string  $id
+     * @param  \GetCandy\Api\Http\Requests\Orders\UpdateRequest  $request
+     * @return array|\GetCandy\Api\Http\Resources\Orders\OrderResource
      */
     public function update($id, UpdateRequest $request)
     {
@@ -298,10 +305,10 @@ class OrderController extends BaseController
     /**
      * Get shipping methods for an order.
      *
-     * @param string $orderId
-     * @param Request $request
-     *
-     * @return array
+     * @param  string  $orderId
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \GetCandy\Api\Core\Shipping\Services\ShippingMethodService $methods
+     * @return array|\GetCandy\Api\Http\Resources\Shipping\ShippingPriceCollection
      */
     public function shippingMethods($orderId, Request $request, ShippingMethodService $methods)
     {
@@ -317,10 +324,9 @@ class OrderController extends BaseController
     /**
      * Add a contact to an order.
      *
-     * @param string $orderId
-     * @param Request $request
-     *
-     * @return array
+     * @param  string  $orderId
+     * @param  \Illuminate\Http\Request  $request
+     * @return array|\GetCandy\Api\Http\Resources\Orders\OrderResource
      */
     public function addContact($orderId, Request $request)
     {
@@ -341,10 +347,9 @@ class OrderController extends BaseController
     /**
      * Set an orders billing address.
      *
-     * @param string $id
-     * @param StoreAddressRequest $request
-     *
-     * @return array
+     * @param  string  $id
+     * @param  \GetCandy\Api\Http\Requests\Orders\StoreAddressRequest  $request
+     * @return array|\GetCandy\Api\Http\Resources\Orders\OrderResource
      */
     public function billingAddress($id, StoreAddressRequest $request)
     {
@@ -360,10 +365,12 @@ class OrderController extends BaseController
     /**
      * Set shipping cost of an order.
      *
-     * @param string $id
-     * @param Request $request
-     *
-     * @return array
+     * @param  string  $id
+     * @param  \GetCandy\Api\Http\Requests\Orders\Shipping\AddShippingRequest  $request
+     * @param  \GetCandy\Api\Core\Orders\Interfaces\OrderFactoryInterface  $factory
+     * @param  \GetCandy\Api\Core\Shipping\Services\ShippingPriceService  $prices
+     * @param  \GetCandy\Api\Core\Baskets\Interfaces\BasketFactoryInterface  $basketFactory
+     * @return \GetCandy\Api\Http\Resources\Orders\OrderResource
      */
     public function shippingCost(
         $id,
@@ -387,10 +394,9 @@ class OrderController extends BaseController
     /**
      * Get the invoice PDF.
      *
-     * @param string $id
-     * @param Request $request
-     *
-     * @return mixed
+     * @param  string  $id
+     * @param  \Illuminate\Http\Request  $request
+     * @return array|\GetCandy\Api\Http\Resources\Files\PdfResource
      */
     public function invoice($id, Request $request)
     {
@@ -409,9 +415,9 @@ class OrderController extends BaseController
     /**
      * Handle the request to return an email preview.
      *
-     * @param string $status
-     * @param Request $request
-     * @return void
+     * @param  string  $status
+     * @param  \Illuminate\Http\Request  $request
+     * @return array|\Illuminate\Http\JsonResponse
      */
     public function emailPreview($status, Request $request)
     {

@@ -11,7 +11,7 @@ use GetCandy\Api\Http\Requests\Payments\VoidRequest;
 use GetCandy\Api\Http\Resources\Orders\OrderResource;
 use GetCandy\Api\Http\Resources\Transactions\TransactionResource;
 use GetCandy\Api\Http\Transformers\Fractal\Payments\ProviderTransformer;
-use GetCandy\Api\Payments\Exceptions\AlreadyRefundedException;
+use GetCandy\Api\Core\Payments\Exceptions\AlreadyRefundedException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class PaymentController extends BaseController
@@ -31,10 +31,9 @@ class PaymentController extends BaseController
     /**
      * Handle the request to refund a transaction.
      *
-     * @param string $id
-     * @param RefundRequest $request
-     *
-     * @return mixed
+     * @param  string  $id
+     * @param  \GetCandy\Api\Http\Requests\Payments\RefundRequest  $request
+     * @return array|\GetCandy\Api\Http\Resources\Transactions\TransactionResource
      */
     public function refund($id, RefundRequest $request)
     {
@@ -62,9 +61,9 @@ class PaymentController extends BaseController
     /**
      * Handle the request to void a payment.
      *
-     * @param string $id
-     * @param VoidRequest $request
-     * @return Json
+     * @param  string  $id
+     * @param  \GetCandy\Api\Http\Requests\Payments\VoidRequest  $request
+     * @return array|\GetCandy\Api\Http\Resources\Transactions\TransactionResource
      */
     public function void($id, VoidRequest $request)
     {
@@ -84,8 +83,8 @@ class PaymentController extends BaseController
     /**
      * Handles the request to validate a 3DSecure Transaction.
      *
-     * @param ValidateThreeDRequest $request
-     * @return void
+     * @param  \GetCandy\Api\Http\Requests\Payments\ValidateThreeDRequest  $request
+     * @return array|\GetCandy\Api\Http\Resources\Orders\OrderResource
      */
     public function validateThreeD(ValidateThreeDRequest $request)
     {

@@ -7,8 +7,8 @@ interface ImportManagerContract
     /**
      * Get an OAuth provider implementation.
      *
-     * @param  string  $driver
-     * @return \Laravel\Socialite\Contracts\Provider
+     * @param  string|null  $driver
+     * @return mixed
      */
     public function driver($driver = null);
 }

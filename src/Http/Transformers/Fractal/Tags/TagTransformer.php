@@ -7,11 +7,17 @@ use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 
 class TagTransformer extends BaseTransformer
 {
+    /**
+     * Resources that can be included if requested.
+     *
+     * @var array
+     */
     protected $availableIncludes = [];
 
     /**
      * Decorates the tag object for viewing.
-     * @param  Tag $product
+     * 
+     * @param  \GetCandy\Api\Core\Tags\Models\Tag  $tag
      * @return array
      */
     public function transform(Tag $tag)

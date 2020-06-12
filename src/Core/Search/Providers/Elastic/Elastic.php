@@ -7,8 +7,14 @@ use GetCandy\Api\Core\Search\SearchContract;
 
 class Elastic implements SearchContract
 {
+    /**
+     * @var \GetCandy\Api\Core\Search\Providers\Elastic\Search
+     */
     protected $client;
 
+    /**
+     * @var \GetCandy\Api\Core\Search\Providers\Elastic\Indexer
+     */
     protected $indexer;
 
     public function __construct(Search $client, Indexer $indexer)

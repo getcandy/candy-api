@@ -15,8 +15,10 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class TaxController extends BaseController
 {
     /**
-     * Returns a listing of currencies.
-     * @return Json
+     * Returns a listing of taxes.
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
      */
     public function index(Request $request)
     {
@@ -26,9 +28,10 @@ class TaxController extends BaseController
     }
 
     /**
-     * Handles the request to show a currency based on it's hashed ID.
-     * @param  string $id
-     * @return Json
+     * Handles the request to show a tax based on it's hashed ID.
+     * 
+     * @param  string  $id
+     * @return array
      */
     public function show($id)
     {
@@ -42,9 +45,10 @@ class TaxController extends BaseController
     }
 
     /**
-     * Handles the request to create a new channel.
-     * @param  CreateRequest $request
-     * @return Json
+     * Handles the request to create a new tax.
+     * 
+     * @param  \GetCandy\Api\Http\Requests\Taxes\CreateRequest  $request
+     * @return array
      */
     public function store(CreateRequest $request)
     {
@@ -55,9 +59,10 @@ class TaxController extends BaseController
 
     /**
      * Handles the request to update taxes.
-     * @param  string        $id
-     * @param  UpdateRequest $request
-     * @return Json
+     * 
+     * @param  string  $id
+     * @param  \GetCandy\Api\Http\Requests\Taxes\UpdateRequest  $request
+     * @return array
      */
     public function update($id, UpdateRequest $request)
     {
@@ -74,9 +79,10 @@ class TaxController extends BaseController
 
     /**
      * Handles the request to delete a tax.
-     * @param  string        $id
-     * @param  DeleteRequest $request
-     * @return Json
+     * 
+     * @param  string  $id
+     * @param  \GetCandy\Api\Http\Requests\Taxes\DeleteRequest  $request
+     * @return array|\Illuminate\Http\Response
      */
     public function destroy($id, DeleteRequest $request)
     {

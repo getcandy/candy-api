@@ -9,7 +9,7 @@ class CategorySort extends AbstractSort
     /**
      * The category model.
      *
-     * @var Category
+     * @var \GetCandy\Api\Core\Categories\Models\Category
      */
     protected $category;
 

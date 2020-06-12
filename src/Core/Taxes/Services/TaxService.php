@@ -16,8 +16,7 @@ class TaxService extends BaseService
      * Creates a resource from the given data.
      *
      * @param  array  $data
-     *
-     * @return GetCandy\Api\Core\Models\Tax
+     * @return \GetCandy\Api\Core\Taxes\Models\Tax
      */
     public function create($data)
     {
@@ -48,12 +47,11 @@ class TaxService extends BaseService
     /**
      * Updates a resource from the given data.
      *
-     * @param  string $id
+     * @param  string  $id
      * @param  array  $data
-     *
-     * @throws Symfony\Component\HttpKernel\Exception
-     *
-     * @return GetCandy\Api\Core\Models\Tax
+     * @return \GetCandy\Api\Core\Taxes\Models\Tax
+     * 
+     * @throws \Exception
      */
     public function update($id, array $data)
     {
@@ -76,12 +74,11 @@ class TaxService extends BaseService
     /**
      * Deletes a resource by its given hashed ID.
      *
-     * @param  string $id
-     *
-     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     * @throws GetCandy\Api\Core\Exceptions\MinimumRecordRequiredException
-     *
+     * @param  string  $id
      * @return bool
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @throws \GetCandy\Api\Exceptions\MinimumRecordRequiredException
      */
     public function delete($id)
     {

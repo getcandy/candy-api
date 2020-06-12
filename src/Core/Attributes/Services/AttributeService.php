@@ -5,12 +5,12 @@ namespace GetCandy\Api\Core\Attributes\Services;
 use GetCandy\Api\Core\Attributes\Events\AttributeSavedEvent;
 use GetCandy\Api\Core\Attributes\Models\Attribute;
 use GetCandy\Api\Core\Scaffold\BaseService;
-use GetCandy\Exceptions\DuplicateValueException;
+use GetCandy\Api\Exceptions\DuplicateValueException;
 
 class AttributeService extends BaseService
 {
     /**
-     * @var AttributeGroup
+     * @var \GetCandy\Api\Core\Attributes\Models\Attribute
      */
     protected $model;
 
@@ -23,8 +23,7 @@ class AttributeService extends BaseService
      * Creates a resource from the given data.
      *
      * @param  array  $data
-     *
-     * @return GetCandy\Api\Core\Models\Attribute
+     * @return \GetCandy\Api\Core\Attributes\Models\Attribute
      */
     public function create(array $data)
     {
@@ -79,12 +78,12 @@ class AttributeService extends BaseService
 
     /**
      * Updates the positions of attributes.
+     * 
      * @param  array  $data
-     *
-     * @throws Symfony\Component\HttpKernel\Exception\HttpException
-     * @throws GetCandy\Api\Core\Exceptions\DuplicateValueException
-     *
      * @return bool
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\HttpException
+     * @throws \GetCandy\Api\Exceptions\DuplicateValueException
      */
     public function updateAttributePositions(array $data)
     {
@@ -117,12 +116,11 @@ class AttributeService extends BaseService
     /**
      * Updates a resource from the given data.
      *
-     * @param  string $id
+     * @param  string  $hashedId
      * @param  array  $data
+     * @return \GetCandy\Api\Core\Attributes\Models\Attribute
      *
-     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     *
-     * @return GetCandy\Api\Core\Models\Attribute
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
     public function update($hashedId, array $data)
     {
@@ -148,11 +146,10 @@ class AttributeService extends BaseService
     /**
      * Deletes a resource by its given hashed ID.
      *
-     * @param  string $id
-     *
-     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     *
+     * @param  string  $id
      * @return bool
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
     public function delete($id)
     {
@@ -180,8 +177,9 @@ class AttributeService extends BaseService
 
     /**
      * Returns attributes for a group.
-     * @param  string $groupId
-     * @return Collection
+     * 
+     * @param  string  $groupId
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getAttributesForGroup($groupId)
     {
@@ -208,9 +206,10 @@ class AttributeService extends BaseService
     }
 
     /**
-     * Gets the last attribute for a groupo.
-     * @param  string $groupId
-     * @return null|Attribute
+     * Gets the last attribute for a group.
+     * 
+     * @param  string  $groupId
+     * @return null|\GetCandy\Api\Core\Attributes\Models\Attribute
      */
     public function getLastItem($groupId)
     {
@@ -219,9 +218,10 @@ class AttributeService extends BaseService
 
     /**
      * Checks whether a attribute name exists in a group.
-     * @param  string $value
-     * @param  string $groupId
-     * @param  string $attributeId
+     * 
+     * @param  string  $value
+     * @param  string  $groupId
+     * @param  null|string  $attributeId
      * @return bool
      */
     public function nameExistsInGroup($value, $groupId, $attributeId = null)

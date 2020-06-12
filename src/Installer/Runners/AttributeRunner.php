@@ -65,7 +65,7 @@ class AttributeRunner extends AbstractRunner implements InstallRunnerContract
     /**
      * Add the SEO attributes.
      *
-     * @param int $groupId
+     * @param  int  $groupId
      * @return void
      */
     protected function addSeoAttributes($groupId)
@@ -78,7 +78,7 @@ class AttributeRunner extends AbstractRunner implements InstallRunnerContract
     /**
      * Add the marketing attributes.
      *
-     * @param int $groupId
+     * @param  int  $groupId
      * @return void
      */
     protected function addMarketingAttributes($groupId)
@@ -91,7 +91,7 @@ class AttributeRunner extends AbstractRunner implements InstallRunnerContract
     /**
      * Get the marketing attributes.
      *
-     * @param int $groupId
+     * @param  int  $groupId
      * @return array
      */
     public function getMarketingAttributes($groupId)
@@ -139,7 +139,7 @@ class AttributeRunner extends AbstractRunner implements InstallRunnerContract
     /**
      * Get the SEO attributes to be installed.
      *
-     * @param int $groupId
+     * @param  int  $groupId
      * @return array
      */
     public function getSeoAttributes($groupId)

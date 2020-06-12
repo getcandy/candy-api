@@ -315,8 +315,8 @@ class SagePay extends AbstractProvider
     /**
      * Create a failed transaction.
      *
-     * @param array $errors
-     * @return Transaction
+     * @param  array  $errors
+     * @return \GetCandy\Api\Core\Payments\Models\Transaction
      */
     protected function createFailedTransaction($errors, $amount = null, $notes = null)
     {
@@ -345,7 +345,7 @@ class SagePay extends AbstractProvider
     /**
      * Get the client token for authentication.
      *
-     * @return void
+     * @return string|null
      */
     public function getClientToken()
     {
@@ -376,7 +376,7 @@ class SagePay extends AbstractProvider
     /**
      * Get the token expiry.
      *
-     * @return Carbon\Carbon
+     * @return \Carbon\Carbon
      */
     public function getTokenExpiry()
     {

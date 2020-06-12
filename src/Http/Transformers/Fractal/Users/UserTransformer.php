@@ -13,6 +13,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserTransformer extends BaseTransformer
 {
+    /**
+     * Resources that can be included if requested.
+     *
+     * @var array
+     */
     protected $availableIncludes = [
         'store', 'addresses', 'groups', 'roles', 'orders', 'language', 'details', 'baskets', 'reusable_payments',
     ];

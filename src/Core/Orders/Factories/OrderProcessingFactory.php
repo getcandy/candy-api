@@ -21,21 +21,21 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
     /**
      * The order instance.
      *
-     * @var Order
+     * @var \GetCandy\Api\Core\Orders\Models\Order
      */
     protected $order;
 
     /**
      * Additional payload fields.
      *
-     * @var string
+     * @var array
      */
     protected $payload = [];
 
     /**
      * The payment provider.
      *
-     * @var PaymentType
+     * @var \GetCandy\Api\Core\Payments\Models\PaymentType
      */
     protected $provider;
 
@@ -49,7 +49,7 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
     /**
      * The payment manager instance.
      *
-     * @var PaymentManager
+     * @var \GetCandy\Api\Core\Payments\PaymentContract
      */
     protected $manager;
 
@@ -96,8 +96,8 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
     /**
      * Set the value for nonce.
      *
-     * @param string $nonce
-     * @return self
+     * @param  string  $nonce
+     * @return $this
      */
     public function nonce($nonce)
     {
@@ -129,8 +129,8 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
     /**
      * Set the value for provider.
      *
-     * @param PaymentType $provider
-     * @return self
+     * @param  null|\GetCandy\Api\Core\Payments\Models\PaymentType  $provider
+     * @return $this
      */
     public function provider(PaymentType $provider = null)
     {
@@ -142,8 +142,8 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
     /**
      * Set a value to the payload.
      *
-     * @param string $reference
-     * @return self
+     * @param  string  $reference
+     * @return $this
      */
     public function set($key, $value)
     {
@@ -155,8 +155,8 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
     /**
      * Set the value for type.
      *
-     * @param null|string $type
-     * @return self
+     * @param  null|string  $type
+     * @return $this
      */
     public function type($type = null)
     {
@@ -168,8 +168,8 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
     /**
      * Set the value for notes.
      *
-     * @param string $notes
-     * @return void
+     * @param  null|string $notes
+     * @return $this
      */
     public function notes($notes = null)
     {
@@ -195,8 +195,8 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
     /**
      * Set the value of order.
      *
-     * @param Order $order
-     * @return void
+     * @param  \GetCandy\Api\Core\Orders\Models\Order  $order
+     * @return $this
      */
     public function order($order)
     {
@@ -244,8 +244,8 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
     /**
      * Handle the response from the payment driver.
      *
-     * @param PaymentResponse $response
-     * @return void
+     * @param  \GetCandy\Api\Core\Payments\PaymentResponse  $response
+     * @return \GetCandy\Api\Core\Orders\Models\Order
      */
     protected function processResponse(PaymentResponse $response)
     {
@@ -286,7 +286,7 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
     /**
      * Get the order instance.
      *
-     * @return Order
+     * @return \GetCandy\Api\Core\Orders\Models\Order
      */
     public function getOrder()
     {

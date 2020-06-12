@@ -4,7 +4,7 @@ namespace GetCandy\Api\Core\Languages\Services;
 
 use GetCandy\Api\Core\Languages\Models\Language;
 use GetCandy\Api\Core\Scaffold\BaseService;
-use GetCandy\Exceptions\MinimumRecordRequiredException;
+use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
 
 class LanguageService extends BaseService
 {
@@ -17,8 +17,7 @@ class LanguageService extends BaseService
      * Creates a resource from the given data.
      *
      * @param  array  $data
-     *
-     * @return GetCandy\Api\Core\Models\Language
+     * @return \GetCandy\Api\Core\Languages\Models\Language
      */
     public function create($data)
     {
@@ -48,13 +47,14 @@ class LanguageService extends BaseService
     /**
      * Updates a resource from the given data.
      *
-     * @param  string $id
+     * @param  string  $hashedId
      * @param  array  $data
+     * @return \GetCandy\Api\Core\Languages\Models\Language
      *
-     * @throws Symfony\Component\HttpKernel\Exception
-     * @throws GetCandy\Api\Core\Exceptions\MinimumRecordRequiredException
+     * @throws \Exception
+     * @throws \GetCandy\Api\Exceptions\MinimumRecordRequiredException
      *
-     * @return GetCandy\Api\Core\Models\Language
+     * 
      */
     public function update($hashedId, array $data)
     {
@@ -99,12 +99,11 @@ class LanguageService extends BaseService
     /**
      * Deletes a resource by its given hashed ID.
      *
-     * @param  string $id
-     *
-     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     * @throws GetCandy\Api\Core\Exceptions\MinimumRecordRequiredException
-     *
+     * @param  string  $id
      * @return bool
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @throws \GetCandy\Api\Exceptions\MinimumRecordRequiredException
      */
     public function delete($id)
     {
@@ -130,6 +129,7 @@ class LanguageService extends BaseService
 
     /**
      * Checks all locales in the array exist.
+     * 
      * @param  array  $locales
      * @return bool
      */

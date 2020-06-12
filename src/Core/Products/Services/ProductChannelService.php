@@ -8,6 +8,9 @@ use GetCandy\Api\Core\Scaffold\BaseService;
 
 class ProductChannelService extends BaseService
 {
+    /**
+     * @var \GetCandy\Api\Core\Channels\Services\ChannelService
+     */
     protected $channelService;
 
     public function __construct(ChannelService $channels)
@@ -18,9 +21,10 @@ class ProductChannelService extends BaseService
 
     /**
      * Stores a product association.
-     * @param  string $product
-     * @param  array $data
-     * @return mixed
+     * 
+     * @param  string  $product
+     * @param  array  $data
+     * @return \GetCandy\Api\Core\Products\Models\Product
      */
     public function store($product, $channels)
     {
@@ -35,8 +39,9 @@ class ProductChannelService extends BaseService
 
     /**
      * Destroys product customer groups.
-     * @param  string $product
-     * @return bool
+     *
+     * @param  string  $product
+     * @return \GetCandy\Api\Core\Products\Models\Product
      */
     public function destroy($product)
     {

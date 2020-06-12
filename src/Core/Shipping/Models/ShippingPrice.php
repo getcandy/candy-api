@@ -12,10 +12,17 @@ class ShippingPrice extends BaseModel
     use HasCustomerGroups;
 
     /**
+     * The Hashid connection name for enconding the id.
+     * 
      * @var string
      */
     protected $hashids = 'main';
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = [
         'rate',
         'fixed',

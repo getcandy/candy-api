@@ -7,7 +7,7 @@ use Vimeo\Laravel\VimeoManager;
 class Vimeo extends BaseUrlDriver
 {
     /**
-     * @var Vinkla\Vimeo\VimeoManager
+     * @var \Vinkla\Vimeo\VimeoManager
      */
     protected $manager;
 
@@ -29,8 +29,7 @@ class Vimeo extends BaseUrlDriver
     /**
      * Get the vimeo video info.
      *
-     * @param string $url
-     *
+     * @param  string  $url
      * @return array
      */
     public function getInfo($url)

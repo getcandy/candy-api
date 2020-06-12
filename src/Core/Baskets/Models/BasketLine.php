@@ -10,6 +10,11 @@ class BasketLine extends BaseModel
 {
     use HasMeta;
 
+    /**
+     * The Hashid connection name for enconding the id.
+     * 
+     * @var string
+     */
     protected $hashids = 'basket';
 
     public $total_cost;
@@ -20,6 +25,11 @@ class BasketLine extends BaseModel
     public $base_cost;
     public $discount_total;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = ['quantity', 'product_variant_id', 'total', 'meta'];
 
     public function variant()

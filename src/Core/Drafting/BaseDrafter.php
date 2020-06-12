@@ -7,7 +7,8 @@ abstract class BaseDrafter
     /**
      * Process the assets for a duplicated product.
      *
-     * @param Product $newProduct
+     * @param  \Illuminate\Database\Eloquent\Model  $old
+     * @param  \Illuminate\Database\Eloquent\Model  $new
      * @return void
      */
     protected function processAssets($old, &$new)
@@ -26,7 +27,8 @@ abstract class BaseDrafter
     /**
      * Process the customer groups for the duplicated product.
      *
-     * @param Product $newProduct
+     * @param  \Illuminate\Database\Eloquent\Model  $old
+     * @param  \Illuminate\Database\Eloquent\Model  $new
      * @return void
      */
     protected function processCustomerGroups($old, &$new)
@@ -51,7 +53,8 @@ abstract class BaseDrafter
     /**
      * Process channels for a duplicated product.
      *
-     * @param Product $newProduct
+     * @param  \Illuminate\Database\Eloquent\Model  $old
+     * @param  \Illuminate\Database\Eloquent\Model  $new
      * @return void
      */
     protected function processChannels($old, &$new)

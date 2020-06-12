@@ -17,11 +17,18 @@ class CollectionTransformer extends BaseTransformer
 {
     use IncludesAttributes;
 
+    /**
+     * Include resources without needing it to be requested.
+     *
+     * @var array
+     */
     protected $defaultIncludes = [
         'routes',
     ];
 
     /**
+     * Resources that can be included if requested.
+     *
      * @var array
      */
     protected $availableIncludes = [
@@ -33,8 +40,9 @@ class CollectionTransformer extends BaseTransformer
     ];
 
     /**
-     * Decorates the product object for viewing.
-     * @param  Collection $collection
+     * Decorates the collection object for viewing.
+     * 
+     * @param  \GetCandy\Api\Core\Collections\Models\Collection  $collection
      * @return array
      */
     public function transform(Collection $collection)
@@ -48,8 +56,10 @@ class CollectionTransformer extends BaseTransformer
 
     /**
      * Includes the products for the collection.
-     * @param  Collection $collection
-     * @return League\Fractal\Resource\Collection
+     * 
+     * @param  \GetCandy\Api\Core\Collections\Models\Collection  $collection
+     * @param  null|\League\Fractal\ParamBag  $params
+     * @return \League\Fractal\Resource\Collection
      */
     public function includeProducts(Collection $collection, ParamBag $params = null)
     {
@@ -62,8 +72,7 @@ class CollectionTransformer extends BaseTransformer
     }
 
     /**
-     * @param Product $product
-     *
+     * @param  \GetCandy\Api\Core\Collections\Models\Collection  $collection
      * @return \League\Fractal\Resource\Collection
      */
     public function includeChannels(Collection $collection)
@@ -74,8 +83,7 @@ class CollectionTransformer extends BaseTransformer
     }
 
     /**
-     * @param Product $product
-     *
+     * @param  \GetCandy\Api\Core\Collections\Models\Collection  $collection
      * @return \League\Fractal\Resource\Collection
      */
     public function includeCustomerGroups(Collection $collection)
@@ -86,8 +94,7 @@ class CollectionTransformer extends BaseTransformer
     }
 
     /**
-     * @param Product $product
-     *
+     * @param  \GetCandy\Api\Core\Collections\Models\Collection  $collection
      * @return \League\Fractal\Resource\Collection
      */
     public function includeRoutes(Collection $collection)

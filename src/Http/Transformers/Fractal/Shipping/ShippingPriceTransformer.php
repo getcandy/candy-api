@@ -10,12 +10,22 @@ use GetCandy\Api\Http\Transformers\Fractal\Customers\CustomerGroupTransformer;
 
 class ShippingPriceTransformer extends BaseTransformer
 {
+    /**
+     * Resources that can be included if requested.
+     *
+     * @var array
+     */
     protected $availableIncludes = [
         'method',
         'customer_groups',
         'zone',
     ];
 
+    /**
+     * Include resources without needing it to be requested.
+     *
+     * @var array
+     */
     protected $defaultIncludes = [
         'currency',
     ];
@@ -56,8 +66,7 @@ class ShippingPriceTransformer extends BaseTransformer
     }
 
     /**
-     * @param Product $product
-     *
+     * @param  \GetCandy\Api\Core\Shipping\Models\ShippingPrice  $price
      * @return \League\Fractal\Resource\Collection
      */
     public function includeCustomerGroups(ShippingPrice $price)

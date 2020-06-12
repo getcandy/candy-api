@@ -7,8 +7,8 @@ trait HasMeta
     /**
      * Mutator for setting meta column.
      *
-     * @param array $val
-     * @return void
+     * @param  array|null  $val
+     * @return string|null
      */
     public function setMetaAttribute(array $val = null)
     {
@@ -18,7 +18,7 @@ trait HasMeta
     /**
      * Mutator for setting meta attribute.
      *
-     * @param string $val
+     * @param  string  $val
      * @return array
      */
     public function getMetaAttribute($val)

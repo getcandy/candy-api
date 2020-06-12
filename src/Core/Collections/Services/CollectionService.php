@@ -9,7 +9,7 @@ use GetCandy\Api\Core\Scaffold\BaseService;
 class CollectionService extends BaseService
 {
     /**
-     * @var AttributeGroup
+     * @var \GetCandy\Api\Core\Collections\Models\Collection
      */
     protected $model;
 
@@ -20,9 +20,12 @@ class CollectionService extends BaseService
 
     /**
      * Returns model by a given hashed id.
-     * @param  string $id
-     * @throws  Illuminate\Database\Eloquent\ModelNotFoundException
-     * @return Collection
+     * 
+     * @param  string  $id
+     * @param  bool  $withDrafted
+     * @return \GetCandy\Api\Core\Collections\Models\Collection
+     * 
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public function getByHashedId($id, $withDrafted = false)
     {
@@ -51,8 +54,7 @@ class CollectionService extends BaseService
      * Creates a resource from the given data.
      *
      * @param  array  $data
-     *
-     * @return Collection
+     * @return \GetCandy\Api\Core\Collections\Models\Collection
      */
     public function create(array $data)
     {
@@ -72,11 +74,10 @@ class CollectionService extends BaseService
     /**
      * Deletes a resource by its given hashed ID.
      *
-     * @param  string $id
+     * @param  string  $id
+     * @return bool|null
      *
-     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     *
-     * @return bool
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
     public function delete($id)
     {
@@ -91,8 +92,10 @@ class CollectionService extends BaseService
 
     /**
      * Gets paginated data for the record.
-     * @param  int $length How many results per page
-     * @param  int  $page   The page to start
+     * 
+     * @param  string  $searchTerm
+     * @param  int  $length
+     * @param  null|int  $page
      * @return \Illuminate\Pagination\LengthAwarePaginator
      */
     public function getPaginatedData($searchTerm = null, $length = 50, $page = null)
@@ -109,9 +112,10 @@ class CollectionService extends BaseService
 
     /**
      * Sync products to a collection.
-     * @param  string $collectionId
+     * 
+     * @param  string  $collectionId
      * @param  array  $products
-     * @return Collection
+     * @return \GetCandy\Api\Core\Collections\Models\Collection
      */
     public function syncProducts($collectionId, $products = [])
     {

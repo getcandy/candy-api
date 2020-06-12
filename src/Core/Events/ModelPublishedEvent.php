@@ -1,14 +1,14 @@
 <?php
 
-namespace GetCandy\Api\Core\Attributes\Events;
+namespace GetCandy\Api\Core\Events;
 
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Database\Eloquent\Model;
 
-class AttributableSavedEvent
+class ModelPublishedEvent
 {
-    /**
-     * @var \Illuminate\Database\Eloquent\Model
-     */
+    use SerializesModels;
+
     public $model;
 
     /**

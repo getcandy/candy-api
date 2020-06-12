@@ -8,9 +8,7 @@ use GetCandy\Api\Core\Channels\Interfaces\ChannelFactoryInterface;
 class SetChannelMiddleware
 {
     /**
-     * The channel factory interface.
-     *
-     * @var ChannelFactoryInterface
+     * @var \GetCandy\Api\Core\Channels\Interfaces\ChannelFactoryInterface
      */
     protected $channel;
 

@@ -47,12 +47,12 @@ use GetCandy\Api\Core\Users\Services\UserService;
 class Factory
 {
     /**
-     * @var AddressService
+     * @var \GetCandy\Api\Core\Addresses\Services\AddressService
      */
     protected $addresses;
 
     /**
-     * @var AssetService
+     * @var \GetCandy\Api\Core\Assets\Services\AssetService
      */
     protected $assets;
 
@@ -67,162 +67,162 @@ class Factory
     protected $associationGroups;
 
     /**
-     * @var AttributeService
+     * @var \GetCandy\Api\Core\Attributes\Services\AttributeService
      */
     protected $attributes;
 
     /**
-     * @var AttributeGroupService
+     * @var \GetCandy\Api\Core\Attributes\Services\AttributeGroupService
      */
     protected $attributeGroups;
 
     /**
-     * @var BasketService
+     * @var \GetCandy\Api\Core\Baskets\Services\BasketService
      */
     protected $baskets;
 
     /**
-     * @var SavedBasketService
+     * @var \GetCandy\Api\Core\Baskets\Services\SavedBasketService
      */
     protected $savedBaskets;
 
     /**
-     * @var BasketLineService
+     * @var \GetCandy\Api\Core\Baskets\Services\BasketLineService
      */
     protected $basketLines;
 
     /**
-     * @var CategoryService
+     * @var \GetCandy\Api\Core\Categories\Services\CategoryService
      */
     protected $categories;
 
     /**
-     * @var ChannelService
+     * @var \GetCandy\Api\Core\Channels\Services\ChannelService
      */
     protected $channels;
 
     /**
-     * @var CountryService
+     * @var \GetCandy\Api\Core\Countries\Services\CountryService
      */
     protected $countries;
 
     /**
-     * @var CurrencyService
+     * @var \GetCandy\Api\Core\Currencies\Services\CurrencyService
      */
     protected $currencies;
 
     /**
-     * @var CustomerService
+     * @var \GetCandy\Api\Core\Customers\Services\CustomerService
      */
     protected $customers;
 
     /**
-     * @var DiscountService
+     * @var \GetCandy\Api\Core\Discounts\Services\DiscountService
      */
     protected $discounts;
 
     /**
-     * @var LayoutService
+     * @var \GetCandy\Api\Core\Layouts\Services\LayoutService
      */
     protected $layouts;
 
     /**
-     * @var LanguageService
+     * @var \GetCandy\Api\Core\Languages\Services\LanguageService
      */
     protected $languages;
 
     /**
-     * @var OrderService
+     * @var \GetCandy\Api\Core\Orders\Services\OrderService
      */
     protected $orders;
 
     /**
-     * @var PaymentService
+     * @var \GetCandy\Api\Core\Payments\Services\PaymentService
      */
     protected $payments;
 
     /**
-     * @var PaymentTypeService
+     * @var \GetCandy\Api\Core\Payments\Services\PaymentTypeService
      */
     protected $paymentTypes;
 
     /**
-     * @var PageService
+     * @var \GetCandy\Api\Core\Pages\Services\PageService
      */
     protected $pages;
 
     /**
-     * @var ProductService
+     * @var \GetCandy\Api\Core\Products\Services\ProductService
      */
     protected $products;
 
     /**
-     * @var ProductAssociationService
+     * @var \GetCandy\Api\Core\Products\Services\ProductAssociationService
      */
     protected $productAssociations;
 
     /**
-     * @var ProductFamilyService
+     * @var \GetCandy\Api\Core\Products\Services\ProductCollectionService
      */
     protected $productCollections;
 
     /**
-     * @var ProductFamilyService
+     * @var \GetCandy\Api\Core\Products\Services\ProductFamilyService
      */
     protected $productFamilies;
 
     /**
-     * @var ProductVariantService
+     * @var \GetCandy\Api\Core\Products\Services\ProductVariantService
      */
     protected $productVariants;
 
     /**
-     * @var RouteService
+     * @var \GetCandy\Api\Core\Routes\Services\RouteService
      */
     protected $routes;
 
     /**
-     * @var RoleService
+     * @var \GetCandy\Api\Core\Auth\Services\RoleService
      */
     protected $roles;
 
     /**
-     * @var SavedSearchService
+     * @var \GetCandy\Api\Core\Search\Services\SavedSearchService
      */
     protected $savedSearch;
 
     /**
-     * @var \GetCandy\Api\Core\Services\SearchService;
+     * @var \GetCandy\Api\Core\Search\Services\SearchService
      */
     protected $search;
 
     /**
-     * @var \GetCandy\Api\Core\SettingService
+     * @var \GetCandy\Api\Core\Settings\Services\SettingService
      */
     protected $settings;
 
     /**
-     * @var ShippingMethodService
+     * @var \GetCandy\Api\Core\Shipping\Services\ShippingMethodService
      */
     protected $shippingMethods;
 
     /**
-     * @var ShippingPriceService
+     * @var \GetCandy\Api\Core\Shipping\Services\ShippingPriceService
      */
     protected $shippingPrices;
 
     /**
-     * @var ShippingZoneService
+     * @var \GetCandy\Api\Core\Shipping\Services\ShippingZoneService
      */
     protected $shippingZones;
 
     /**
-     * @var TagService
+     * @var \GetCandy\Api\Core\Tags\Services\TagService
      */
     protected $tags;
 
     /**
-     * @var TaxService
+     * @var \GetCandy\Api\Core\Taxes\Services\TaxService
      */
     protected $taxes;
 
@@ -232,7 +232,7 @@ class Factory
     protected $transforms;
 
     /**
-     * @var UserService
+     * @var \GetCandy\Api\Core\Users\Services\UserService
      */
     protected $users;
 
@@ -325,7 +325,7 @@ class Factory
     public function __call($name, $arguments)
     {
         if (! property_exists($this, $name)) {
-            throw new \GetCandy\Exceptions\InvalidServiceException(trans('exceptions.invalid_service', [
+            throw new \GetCandy\Api\Exceptions\InvalidServiceException(trans('exceptions.invalid_service', [
                 'service' => $name,
             ]), 1);
         }
@@ -333,6 +333,5 @@ class Factory
         return app()->make(
             get_class($this->{$name})
         );
-        // return ;
     }
 }

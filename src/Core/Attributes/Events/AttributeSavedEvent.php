@@ -27,7 +27,7 @@ class AttributeSavedEvent implements ShouldBroadcast
     /**
      * Get the channels the event should broadcast on.
      *
-     * @return array
+     * @return \Illuminate\Broadcasting\Channel
      */
     public function broadcastOn()
     {

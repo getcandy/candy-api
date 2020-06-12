@@ -14,24 +14,27 @@ class BasketFactory implements BasketFactoryInterface
     /**
      * The current basket.
      *
-     * @var Basket
+     * @var \GetCandy\Api\Core\Baskets\Models\Basket
      */
     protected $basket;
 
     /**
      * The order attached to the basket.
      *
-     * @var Order
+     * @var \GetCandy\Api\Core\Orders\Models\Order
      */
     protected $order;
 
     /**
      * The basket lines.
      *
-     * @var BasketLineInterface
+     * @var \GetCandy\Api\Core\Baskets\Interfaces\BasketLineInterface
      */
     public $lines;
 
+    /**
+     * @var \GetCandy\Api\Core\Taxes\Interfaces\TaxCalculatorInterface
+     */
     protected $tax;
 
     /**
@@ -52,8 +55,8 @@ class BasketFactory implements BasketFactoryInterface
     /**
      * Initialise with the basket.
      *
-     * @param Basket $basket
-     * @return BasketFactory
+     * @param  \GetCandy\Api\Core\Baskets\Models\Basket  $basket
+     * @return $this
      */
     public function init(Basket $basket)
     {
@@ -79,8 +82,8 @@ class BasketFactory implements BasketFactoryInterface
     /**
      * Whether the basket has been changed.
      *
-     * @param bool $bool
-     * @return self
+     * @param  bool  $bool
+     * @return $this
      */
     public function changed($bool)
     {
@@ -92,7 +95,7 @@ class BasketFactory implements BasketFactoryInterface
     /**
      * Set the basket totals.
      *
-     * @return BasketFactory
+     * @return \GetCandy\Api\Core\Baskets\Models\Basket
      */
     public function get()
     {
@@ -128,7 +131,7 @@ class BasketFactory implements BasketFactoryInterface
     /**
      * Clone the basket.
      *
-     * @return Basket
+     * @return \GetCandy\Api\Core\Baskets\Models\Basket
      */
     public function clone()
     {

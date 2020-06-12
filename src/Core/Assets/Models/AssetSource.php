@@ -6,6 +6,11 @@ use GetCandy\Api\Core\Scaffold\BaseModel;
 
 class AssetSource extends BaseModel
 {
+    /**
+     * The Hashid connection name for enconding the id.
+     * 
+     * @var string
+     */
     protected $hashids = 'assets';
 
     /**

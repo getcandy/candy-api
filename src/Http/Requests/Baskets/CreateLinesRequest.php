@@ -45,6 +45,11 @@ class CreateLinesRequest extends FormRequest
         return $rules;
     }
 
+    /**
+     * Get custom messages for validator errors.
+     *
+     * @return array
+     */
     public function messages()
     {
         return [

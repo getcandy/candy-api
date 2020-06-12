@@ -11,6 +11,8 @@ use GetCandy\Api\Core\Shipping\Models\ShippingPrice;
 class CustomerGroup extends BaseModel
 {
     /**
+     * The Hashid connection name for enconding the id.
+     * 
      * @var string
      */
     protected $hashids = 'main';
@@ -24,7 +26,7 @@ class CustomerGroup extends BaseModel
     }
 
     /**
-     * @return mixed
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function products()
     {
@@ -32,7 +34,7 @@ class CustomerGroup extends BaseModel
     }
 
     /**
-     * @return mixed
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function collections()
     {
@@ -40,7 +42,7 @@ class CustomerGroup extends BaseModel
     }
 
     /**
-     * @return mixed
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function categories()
     {

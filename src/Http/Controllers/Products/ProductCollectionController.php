@@ -9,9 +9,9 @@ use GetCandy\Api\Http\Transformers\Fractal\Collections\CollectionTransformer;
 class ProductCollectionController extends BaseController
 {
     /**
-     * @param $product
-     * @param UpdateCollectionsRequest $request
-     * @return array|\Illuminate\Http\Response
+     * @param  string  $product
+     * @param  \GetCandy\Api\Http\Requests\Products\UpdateCollectionsRequest  $request
+     * @return array
      */
     public function update($product, UpdateCollectionsRequest $request)
     {
@@ -28,9 +28,10 @@ class ProductCollectionController extends BaseController
 
     /**
      * Deletes a products collection.
-     * @param  int        $productId
-     * @param  int        $collectionId
-     * @return array|\Illuminate\Http\Response
+     * 
+     * @param  string  $productId
+     * @param  string  $collectionId
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($productId, $collectionId)
     {

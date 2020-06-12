@@ -10,16 +10,12 @@ use Illuminate\Support\Collection;
 class ProductFactory implements ProductInterface
 {
     /**
-     * The product.
-     *
-     * @var Product
+     * @var \GetCandy\Api\Core\Products\Models\Product
      */
     protected $product;
 
     /**
-     * The variant factory.
-     *
-     * @var ProductVariantInterface
+     * @var \GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface
      */
     protected $variantFactory;
 
@@ -38,7 +34,7 @@ class ProductFactory implements ProductInterface
     /**
      * Get the processed product.
      *
-     * @return void
+     * @return \GetCandy\Api\Core\Products\Models\Product
      */
     public function get()
     {
@@ -61,8 +57,8 @@ class ProductFactory implements ProductInterface
     /**
      * Process a collection of products.
      *
-     * @param Collection $products
-     * @return Collection
+     * @param  \Illuminate\Support\Collection  $products
+     * @return \Illuminate\Support\Collection
      */
     public function collection(Collection $products)
     {

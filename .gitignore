@@ -9,6 +9,7 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 .env
+.DS_Store
 /storage/testing/database.sqlite
 /output
 /public/js/app.js
@@ -18,3 +19,4 @@ public/images/vendor/jquery.fancytree/dist/skin-win8/icons.gif
 public/images/vendor/jquery.fancytree/dist/skin-win8/vline-rtl.gif
 /.vscode
 composer.lock
+PHPCompatibility/

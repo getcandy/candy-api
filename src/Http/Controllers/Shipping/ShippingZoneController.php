@@ -14,8 +14,10 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class ShippingZoneController extends BaseController
 {
     /**
-     * Returns a listing of channels.
-     * @return Json
+     * Returns a listing of shipping zones.
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \GetCandy\Api\Http\Resources\Shipping\ShippingZoneCollection
      */
     public function index(Request $request)
     {
@@ -29,9 +31,11 @@ class ShippingZoneController extends BaseController
     }
 
     /**
-     * Handles the request to show a channel based on it's hashed ID.
-     * @param  string $id
-     * @return Json
+     * Handles the request to show a shipping zone based on it's hashed ID.
+     * 
+     * @param  string  $id
+     * @param  \Illuminate\Http\Request  $request
+     * @return array|\GetCandy\Api\Http\Resources\Shipping\ShippingZoneResource
      */
     public function show($id, Request $request)
     {
@@ -45,9 +49,10 @@ class ShippingZoneController extends BaseController
     }
 
     /**
-     * Handles the request to create a new channel.
-     * @param  CreateRequest $request
-     * @return Json
+     * Handles the request to create a new shipping zone.
+     * 
+     * @param  \GetCandy\Api\Http\Requests\Shipping\Zones\CreateRequest  $request
+     * @return \GetCandy\Api\Http\Resources\Shipping\ShippingZoneResource
      */
     public function store(CreateRequest $request)
     {

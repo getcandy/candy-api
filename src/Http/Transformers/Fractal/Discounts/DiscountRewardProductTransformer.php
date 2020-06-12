@@ -8,6 +8,11 @@ use GetCandy\Api\Http\Transformers\Fractal\Products\ProductTransformer;
 
 class DiscountRewardProductTransformer extends BaseTransformer
 {
+    /**
+     * Resources that can be included if requested.
+     *
+     * @var array
+     */
     protected $availableIncludes = ['product'];
 
     public function transform(DiscountRewardProduct $reward)

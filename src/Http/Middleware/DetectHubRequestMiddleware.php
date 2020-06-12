@@ -7,6 +7,9 @@ use GetCandy;
 
 class DetectHubRequestMiddleware
 {
+    /**
+     * @var \GetCandy\Api\Core\GetCandy
+     */
     protected $api;
 
     public function __construct(GetCandy $api)

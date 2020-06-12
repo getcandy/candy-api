@@ -11,14 +11,14 @@ class LogRefundListener
     /**
      * The current requst.
      *
-     * @var Request
+     * @var \Illuminate\Http\Request
      */
     protected $request;
 
     /**
      * The log factory.
      *
-     * @var ActivityLogFactoryInterface
+     * @var \GetCandy\Api\Core\ActivityLog\Interfaces\ActivityLogFactoryInterface
      */
     protected $factory;
 
@@ -31,7 +31,7 @@ class LogRefundListener
     /**
      * Handle the event.
      *
-     * @param  OrderRefundEvent  $event
+     * @param  \GetCandy\Api\Core\Orders\Events\OrderRefundEvent  $event
      * @return void
      */
     public function handle(OrderRefundEvent $event)

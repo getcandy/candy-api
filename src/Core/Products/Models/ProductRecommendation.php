@@ -6,6 +6,11 @@ use GetCandy\Api\Core\Scaffold\BaseModel;
 
 class ProductRecommendation extends BaseModel
 {
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = ['product_id'];
 
     public $timestamps = false;

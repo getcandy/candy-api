@@ -12,7 +12,7 @@ class ReportManager extends Manager implements ReportManagerContract
     /**
      * Get a driver instance.
      *
-     * @param  string  $driver
+     * @param  string|null  $driver
      * @return mixed
      */
     public function with($driver = null)
@@ -23,7 +23,7 @@ class ReportManager extends Manager implements ReportManagerContract
     /**
      * Create the Sales driver.
      *
-     * @return Sales
+     * @return \GetCandy\Api\Core\Reports\Providers\Sales
      */
     public function createSalesDriver()
     {
@@ -35,7 +35,7 @@ class ReportManager extends Manager implements ReportManagerContract
     /**
      * Create the Sales driver.
      *
-     * @return Orders
+     * @return \GetCandy\Api\Core\Reports\Providers\Orders
      */
     public function createOrdersDriver()
     {
@@ -48,7 +48,7 @@ class ReportManager extends Manager implements ReportManagerContract
      * Build a layout provider instance.
      *
      * @param  string  $provider
-     * @param  array  $config
+     * @return \GetCandy\Api\Core\Reports\Providers\AbstractProvider
      */
     public function buildProvider($provider)
     {
@@ -58,9 +58,9 @@ class ReportManager extends Manager implements ReportManagerContract
     /**
      * Get the default driver name.
      *
-     * @throws \InvalidArgumentException
-     *
      * @return string
+     *
+     * @throws \InvalidArgumentException
      */
     public function getDefaultDriver()
     {

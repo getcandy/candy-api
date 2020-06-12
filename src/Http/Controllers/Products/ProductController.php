@@ -17,8 +17,8 @@ use GetCandy\Api\Http\Resources\Products\ProductCollection;
 use GetCandy\Api\Http\Resources\Products\ProductRecommendationCollection;
 use GetCandy\Api\Http\Resources\Products\ProductResource;
 use GetCandy\Api\Http\Transformers\Fractal\Products\ProductTransformer;
-use GetCandy\Exceptions\InvalidLanguageException;
-use GetCandy\Exceptions\MinimumRecordRequiredException;
+use GetCandy\Api\Exceptions\InvalidLanguageException;
+use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
 use Hashids;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
@@ -28,9 +28,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class ProductController extends BaseController
 {
     /**
-     * The product service.
-     *
-     * @var ProductService
+     * @var \GetCandy\Api\Core\Products\Services\ProductService
      */
     protected $service;
 
@@ -41,8 +39,10 @@ class ProductController extends BaseController
 
     /**
      * Handles the request to show all products.
-     * @param  Request $request
-     * @return array
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \GetCandy\Api\Core\Products\ProductCriteria  $criteria
+     * @return \GetCandy\Api\Http\Resources\Products\ProductCollection
      */
     public function index(Request $request, ProductCriteria $criteria)
     {
@@ -64,8 +64,10 @@ class ProductController extends BaseController
 
     /**
      * Handles the request to show a product based on hashed ID.
-     * @param  string $id
-     * @return array|\Illuminate\Http\Response
+     * 
+     * @param  string  $idOrSku
+     * @param  \Illuminate\Http\Request  $request
+     * @return array|\GetCandy\Api\Http\Resources\Products\ProductResource
      */
     public function show($idOrSku, Request $request)
     {
@@ -137,7 +139,8 @@ class ProductController extends BaseController
 
     /**
      * Handles the request to create a new product.
-     * @param  CreateRequest $request
+     * 
+     * @param  \GetCandy\Api\Http\Requests\Products\CreateRequest  $request
      * @return array
      */
     public function store(CreateRequest $request)
@@ -153,8 +156,9 @@ class ProductController extends BaseController
 
     /**
      * Handles the request to update a product.
-     * @param  string        $id
-     * @param  UpdateRequest $request
+     * 
+     * @param  string  $id
+     * @param  \GetCandy\Api\Http\Requests\Products\UpdateRequest  $request
      * @return array|\Illuminate\Http\Response
      */
     public function update($id, UpdateRequest $request)
@@ -194,9 +198,10 @@ class ProductController extends BaseController
 
     /**
      * Handles the request to delete a product.
-     * @param  string        $id
-     * @param  DeleteRequest $request
-     * @return Json
+     * 
+     * @param  string  $id
+     * @param  \GetCandy\Api\Http\Requests\Products\DeleteRequest  $request
+     * @return array|\Illuminate\Http\Response
      */
     public function destroy($id, DeleteRequest $request)
     {

@@ -10,21 +10,22 @@ class OrderRefundEvent
     /**
      * The related order.
      *
-     * @var Order
+     * @var \GetCandy\Api\Core\Orders\Models\Order
      */
     public $order;
 
     /**
      * The refunded transaction.
      *
-     * @var Transaction
+     * @var \GetCandy\Api\Core\Payments\Models\Transaction
      */
     public $transaction;
 
     /**
      * Create a new event instance.
      *
-     * @param  Order  $order
+     * @param  \GetCandy\Api\Core\Orders\Models\Order  $order
+     * @param  \GetCandy\Api\Core\Payments\Models\Transaction  $transaction
      * @return void
      */
     public function __construct(Order $order, Transaction $transaction)
