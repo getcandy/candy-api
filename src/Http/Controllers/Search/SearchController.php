@@ -36,7 +36,7 @@ class SearchController extends BaseController
     {
         // Get channel
         $defaultChannel = $this->channels->getDefaultRecord();
-        $channel = $request->channel ?: $defaultChannel ? $defaultChannel->handle : null;
+        $channel = $request->channel ?: ($defaultChannel ? $defaultChannel->handle : null);
 
         try {
             $categories = $this->categories->getByHashedIds(
