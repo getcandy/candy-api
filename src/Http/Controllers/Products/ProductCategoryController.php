@@ -11,9 +11,10 @@ class ProductCategoryController extends BaseController
 {
     /**
      * Handles the request to update a products categories.
-     * @param  string        $id
-     * @param  DeleteRequest $request
-     * @return Json
+     * 
+     * @param  string  $id
+     * @param  \GetCandy\Api\Http\Requests\Products\UpdateCategoriesRequest  $request
+     * @return array
      */
     public function update($product, UpdateCategoriesRequest $request)
     {
@@ -23,10 +24,11 @@ class ProductCategoryController extends BaseController
     }
 
     /**
-     * Deletes a products category.
-     * @param  int        $productId
-     * @param  int        $categoryId
-     * @return array|\Illuminate\Http\Response
+     * Deletes a product's category.
+     * 
+     * @param  string  $productId
+     * @param  string  $categoryId
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($productId, $categoryId)
     {

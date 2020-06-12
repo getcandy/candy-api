@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Core\Users\Services;
 
-use GetCandy\Api\Core\Auth\Models\User;
 use GetCandy\Api\Core\Payments\Models\ReusablePayment;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Users\Contracts\UserContract;
@@ -22,9 +21,11 @@ class UserService extends BaseService implements UserContract
 
     /**
      * Returns model by a given hashed id.
-     * @param  string $id
-     * @throws  Illuminate\Database\Eloquent\ModelNotFoundException
-     * @return Illuminate\Database\Eloquent\Model
+     * 
+     * @param  string  $id
+     * @return \Illuminate\Foundation\Auth\User
+     * 
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public function getByHashedId($id)
     {
@@ -33,6 +34,12 @@ class UserService extends BaseService implements UserContract
         return $this->model->with('details')->findOrFail($id);
     }
 
+    /**
+     * Returns model by a given email.
+     *
+     * @param  string  $email
+     * @return \Illuminate\Foundation\Auth\User|null
+     */
     public function getByEmail($email)
     {
         return $this->model->where('email', '=', $email)->first();
@@ -40,9 +47,12 @@ class UserService extends BaseService implements UserContract
 
     /**
      * Gets paginated data for the record.
-     * @param  int $length How many results per page
-     * @param  int  $page   The page to start
-     * @return Illuminate\Pagination\LengthAwarePaginator
+     *
+     * @param  int  $length
+     * @param  int|null  $page
+     * @param  string|null  $keywords
+     * @param  array  $ids
+     * @return \Illuminate\Pagination\LengthAwarePaginator
      */
     public function getPaginatedData($length = 50, $page = null, $keywords = null, $ids = [])
     {
@@ -71,8 +81,7 @@ class UserService extends BaseService implements UserContract
      * Creates a resource from the given data.
      *
      * @param  array  $data
-     *
-     * @return GetCandy\Api\Core\Auth\Models\User
+     * @return \Illuminate\Foundation\Auth\User
      */
     public function create($data)
     {
@@ -119,8 +128,8 @@ class UserService extends BaseService implements UserContract
     /**
      * Get a reusable payment by it's id.
      *
-     * @param string $id
-     * @return ReusablePayment
+     * @param  string  $id
+     * @return \GetCandy\Api\Core\Payments\Models\ReusablePayment
      */
     public function getReusablePayment($id)
     {
@@ -132,7 +141,7 @@ class UserService extends BaseService implements UserContract
     /**
      * Delete a reusable payment.
      *
-     * @param ReusablePayment $payment
+     * @param  \GetCandy\Api\Core\Payments\Models\ReusablePayment  $payment
      * @return bool
      */
     public function deleteReusablePayment($payment)
@@ -188,8 +197,7 @@ class UserService extends BaseService implements UserContract
     /**
      * Creates a user token.
      *
-     * @param string $userId
-     *
+     * @param  string  $userId
      * @return PersonalAccessTokenResult
      */
     public function getImpersonationToken($userId)

@@ -28,8 +28,8 @@ class UserRunner extends AbstractRunner implements InstallRunnerContract
     /**
      * Set up the user based on a model reference.
      *
-     * @param string $model
-     * @return Illuminate\Database\Eloquent\Model
+     * @param  string  $model
+     * @return \Illuminate\Database\Eloquent\Model
      */
     protected function setUpUser($model)
     {

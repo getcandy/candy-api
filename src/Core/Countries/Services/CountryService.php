@@ -15,7 +15,7 @@ class CountryService extends BaseService
     /**
      * Get countries grouped by region.
      *
-     * @return Collection
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getGroupedByRegion()
     {
@@ -31,9 +31,8 @@ class CountryService extends BaseService
     /**
      * Get a country by its name.
      *
-     * @param string $name
-     * @param string $locale
-     * @return Country
+     * @param  string  $name
+     * @return \GetCandy\Api\Core\Countries\Models\Country
      */
     public function getByName($name)
     {

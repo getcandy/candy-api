@@ -22,6 +22,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CategoryController extends BaseController
 {
+    /**
+     * @var \GetCandy\Api\Core\Categories\Services\CategoryService
+     */
     protected $service;
 
     public function __construct(CategoryService $service)
@@ -121,11 +124,9 @@ class CategoryController extends BaseController
 
     /**
      * Create new category from basic information.
-     * @param $request
-     * @request String name
-     * @request String slug
-     * @request String parent_id (Optional)
-     * @return array|\Illuminate\Http\Response
+     * 
+     * @param  \GetCandy\Api\Http\Requests\Categories\CreateRequest  $request
+     * @return array|\Illuminate\Http\JsonResponse
      */
     public function store(CreateRequest $request)
     {
@@ -150,11 +151,9 @@ class CategoryController extends BaseController
 
     /**
      * Handles the request to reorder the categories.
-     * @param $request
-     * @request String id
-     * @request String siblings
-     * @request String parent_id (Optional)
-     * @return array \Illuminate\Http\Response
+     * 
+     * @param  \GetCandy\Api\Http\Requests\Categories\ReorderRequest  $request
+     * @return array|\Illuminate\Http\JsonResponse
      */
     public function reorder(ReorderRequest $request)
     {
@@ -177,10 +176,11 @@ class CategoryController extends BaseController
     }
 
     /**
-     * Handles the request to update  a channel.
-     * @param  string        $id
-     * @param  UpdateRequest $request
-     * @return Json
+     * Handles the request to update a category.
+     * 
+     * @param  string  $id
+     * @param  \GetCandy\Api\Http\Requests\Categories\UpdateRequest  $request
+     * @return array
      */
     public function update($id, UpdateRequest $request)
     {
@@ -245,9 +245,10 @@ class CategoryController extends BaseController
 
     /**
      * Handles the request to delete a category.
-     * @param  string        $id
-     * @param  DeleteRequest $request
-     * @return Json
+     * 
+     * @param  string  $id
+     * @param  \Illuminate\Http\Request  $request
+     * @return array|\Illuminate\Http\Response
      */
     public function destroy($id, Request $request)
     {

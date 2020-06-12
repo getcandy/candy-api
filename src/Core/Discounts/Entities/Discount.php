@@ -10,8 +10,14 @@ class Discount
 
     protected $model;
 
+    /**
+     * @var \Illuminate\Support\Collection
+     */
     protected $criteria;
 
+    /**
+     * @var \GetCandy\Api\Core\Discounts\RewardSet
+     */
     protected $reward;
 
     public function __construct()
@@ -19,6 +25,10 @@ class Discount
         $this->criteria = collect();
     }
 
+    /**
+     * @param  \GetCandy\Api\Core\Discounts\RewardSet  $reward
+     * @return $this
+     */
     public function setReward(RewardSet $reward)
     {
         $this->reward = $reward;
@@ -26,6 +36,10 @@ class Discount
         return $this;
     }
 
+    /**
+     * @param  \GetCandy\Api\Core\Discounts\CriteriaSet  $criteria
+     * @return $this
+     */
     public function addCriteria(CriteriaSet $criteria)
     {
         $this->criteria->push($criteria);

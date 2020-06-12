@@ -10,10 +10,11 @@ use GetCandy\Api\Http\Resources\Products\ProductAssociationCollection;
 class ProductAssociationController extends BaseController
 {
     /**
-     * Handles the request to update a products attributes.
-     * @param  string        $product
-     * @param  UpdateAttributesRequest $request
-     * @return mixed
+     * Handles the request to update a products associations.
+     * 
+     * @param  string  $product
+     * @param  \GetCandy\Api\Http\Requests\Products\Associations\CreateRequest  $request
+     * @return \GetCandy\Api\Http\Resources\Products\ProductAssociationCollection
      */
     public function store($product, CreateRequest $request)
     {
@@ -24,9 +25,10 @@ class ProductAssociationController extends BaseController
 
     /**
      * Handles the request to remove a product association.
-     * @param  string        $product
-     * @param  DeleteRequest $request
-     * @return mixed
+     * 
+     * @param  string  $product
+     * @param  \GetCandy\Api\Http\Requests\Products\Associations\DeleteRequest  $request
+     * @return \Illuminate\Http\Response
      */
     public function destroy($product, DeleteRequest $request)
     {

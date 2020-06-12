@@ -15,9 +15,8 @@ class ShippingZoneService extends BaseService
     /**
      * Create a shipping method.
      *
-     * @param array $data
-     *
-     * @return ShippingZone
+     * @param  array  $data
+     * @return \GetCandy\Api\Core\Shipping\Models\ShippingZone
      */
     public function create(array $data)
     {
@@ -36,9 +35,12 @@ class ShippingZoneService extends BaseService
 
     /**
      * Returns model by a given hashed id.
-     * @param  string $id
-     * @throws  Illuminate\Database\Eloquent\ModelNotFoundException
-     * @return Illuminate\Database\Eloquent\Model
+     *
+     * @param  string  $id
+     * @param  array|null  $includes
+     * @return \GetCandy\Api\Core\Shipping\Models\ShippingZone
+     *
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public function getByHashedId($id, $includes = null)
     {
@@ -56,10 +58,9 @@ class ShippingZoneService extends BaseService
     /**
      * Updates a shipping zone.
      *
-     * @param string $id
-     * @param array $data
-     *
-     * @return ShippingZone
+     * @param  string  $id
+     * @param  array  $data
+     * @return \GetCandy\Api\Core\Shipping\Models\ShippingZone
      */
     public function update($id, array $data)
     {

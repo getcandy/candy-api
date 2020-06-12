@@ -13,27 +13,36 @@ class Search implements ClientContract
     /**
      * The Search Builder.
      *
-     * @var SearchBuilder
+     * @var \GetCandy\Api\Core\Search\Providers\Elastic\SearchBuilder
      */
     protected $builder;
 
+    /**
+     * @var array
+     */
     protected $aggregators = [
         'priceRange',
     ];
 
     /**
-     * @var FilterSet
+     * @var \GetCandy\Api\Core\Search\Providers\Elastic\FilterSet
      */
     protected $filterSet;
 
+    /**
+     * @var array
+     */
     protected $categories = [];
 
+    /**
+     * @var array
+     */
     protected $sorts = [];
 
     /**
      * The filters to apply to the search.
      *
-     * @var null|array|Collection
+     * @var null|array|\Illuminate\Support\Collection
      */
     protected $filters = null;
 
@@ -45,8 +54,8 @@ class Search implements ClientContract
     /**
      * Set the user on the search.
      *
-     * @param \Illuminate\Database\Eloquent\Model $user
-     * @return self
+     * @param  null|\Illuminate\Foundation\Auth\User  $user
+     * @return $this
      */
     public function user($user = null)
     {
@@ -58,8 +67,8 @@ class Search implements ClientContract
     /**
      * Set the keywords on the builder.
      *
-     * @param string $keywords
-     * @return Search
+     * @param  string  $keywords
+     * @return $this
      */
     public function keywords($keywords = null)
     {
@@ -73,8 +82,8 @@ class Search implements ClientContract
     /**
      * Set the sorting on the builder.
      *
-     * @param array $sorts
-     * @return Search
+     * @param  array  $sorts
+     * @return $this
      */
     public function sorting($sorts)
     {
@@ -87,8 +96,9 @@ class Search implements ClientContract
     /**
      * Set up the pagination.
      *
-     * @param int $page
-     * @return Search
+     * @param  int  $page
+     * @param  int  $perPage
+     * @return $this
      */
     public function pagination($page = 1, $perPage = 30)
     {
@@ -101,7 +111,8 @@ class Search implements ClientContract
     /**
      * Set the channel to filter on.
      *
-     * @return Search
+     * @param  string|null  $channel
+     * @return $this
      */
     public function on($channel = null)
     {
@@ -113,8 +124,8 @@ class Search implements ClientContract
     /**
      * Set the index.
      *
-     * @param string $index
-     * @return Search
+     * @param  string  $type
+     * @return $this
      */
     public function against($type)
     {
@@ -126,8 +137,8 @@ class Search implements ClientContract
     /**
      * Set the categories.
      *
-     * @param array $categories
-     * @return Search
+     * @param  array  $categories
+     * @return $this
      */
     public function categories($categories = [])
     {
@@ -144,8 +155,8 @@ class Search implements ClientContract
     /**
      * Set the filters on the search.
      *
-     * @param array $filters
-     * @return void
+     * @param  array  $filters
+     * @return $this
      */
     public function filters($filters = [])
     {
@@ -162,8 +173,8 @@ class Search implements ClientContract
     /**
      * Set the search language.
      *
-     * @param string $lang
-     * @return self
+     * @param  string  $lang
+     * @return $this
      */
     public function language($lang = 'en')
     {
@@ -175,8 +186,8 @@ class Search implements ClientContract
     /**
      * Set the suggestions.
      *
-     * @param string $keywords
-     * @return void
+     * @param  string  $keywords
+     * @return \Elastica\ResultSet
      */
     public function suggest($keywords)
     {
@@ -193,8 +204,8 @@ class Search implements ClientContract
     /**
      * Perform a wildcard search on an SKU.
      *
-     * @param string $sku
-     * @param int $limit
+     * @param  string  $sku
+     * @param  int  $limit
      * @return \Illuminate\Support\Collection
      */
     public function searchSkus($sku, $limit = 10)
@@ -237,9 +248,8 @@ class Search implements ClientContract
     /**
      * Searches the index.
      *
-     * @param  string $keywords
-     *
-     * @return array
+     * @param  bool  $rank
+     * @return \Elastica\ResultSet
      */
     public function search($rank = true)
     {
@@ -275,7 +285,7 @@ class Search implements ClientContract
     /**
      * Find the filter class.
      *
-     * @param string $type
+     * @param  string  $type
      * @return mixed
      */
     private function findFilter($type)
@@ -298,7 +308,7 @@ class Search implements ClientContract
     /**
      * Find a matching attribute based on filter type.
      *
-     * @param string $type
+     * @param  string  $type
      * @return mixed
      */
     protected function getAttribute($type)

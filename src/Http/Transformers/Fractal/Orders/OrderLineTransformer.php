@@ -8,6 +8,11 @@ use GetCandy\Api\Http\Transformers\Fractal\Products\ProductVariantTransformer;
 
 class OrderLineTransformer extends BaseTransformer
 {
+    /**
+     * Resources that can be included if requested.
+     *
+     * @var array
+     */
     protected $availableIncludes = ['variant'];
 
     public function transform(OrderLine $line)

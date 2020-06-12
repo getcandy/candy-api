@@ -14,8 +14,9 @@ class CustomerService extends BaseService
 
     /**
      * Registers a new customer.
+     * 
      * @param  array  $data
-     * @return [type]       [description]
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function register(array $data)
     {
@@ -29,9 +30,12 @@ class CustomerService extends BaseService
 
     /**
      * Returns model by a given hashed id.
-     * @param  string $id
-     * @throws  Illuminate\Database\Eloquent\ModelNotFoundException
-     * @return Illuminate\Database\Eloquent\Model
+     * 
+     * @param  string  $id
+     * @param  array  $includes
+     * @return \Illuminate\Database\Eloquent\Model
+     *
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public function getByHashedId($id, $includes = [])
     {

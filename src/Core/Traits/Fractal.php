@@ -23,6 +23,7 @@ trait Fractal
 
     /**
      * Gets the current status code.
+     *
      * @return int
      */
     public function getStatusCode()
@@ -32,7 +33,9 @@ trait Fractal
 
     /**
      * Sets the status code for the getcandy::response.
-     * @param int $statusCode
+     *
+     * @param  int  $statusCode
+     * @return $this
      */
     public function setStatusCode($statusCode)
     {
@@ -43,7 +46,9 @@ trait Fractal
 
     /**
      * Generates a Response with a 403 HTTP header and a given message.
-     * @return  Response
+     *
+     * @param  string|null  $message
+     * @return array
      */
     public function errorForbidden($message = null)
     {
@@ -53,8 +58,8 @@ trait Fractal
     /**
      * Generates a response with a 410 HTTP header and a given message.
      *
-     * @param mixed $message
-     * @return void
+     * @param  string|null  $message
+     * @return array
      */
     public function errorExpired($message = null)
     {
@@ -63,7 +68,9 @@ trait Fractal
 
     /**
      * Generates a Response with a 500 HTTP header and a given message.
-     * @return  Response
+     *
+     * @param  string|null  $message
+     * @return array
      */
     public function errorInternalError($message = null)
     {
@@ -73,7 +80,8 @@ trait Fractal
     /**
      * Generates a Response with a 401 HTTP header and a given message.
      *
-     * @return  Response
+     * @param  string|null  $message
+     * @return array
      */
     public function errorUnauthorized($message = null)
     {
@@ -85,7 +93,8 @@ trait Fractal
     /**
      * Generates a Response with a 400 HTTP header and a given message.
      *
-     * @return  Response
+     * @param  string|null  $message
+     * @return array
      */
     public function errorWrongArgs($message = null)
     {
@@ -97,7 +106,8 @@ trait Fractal
     /**
      * Generates a Response with a 404 HTTP header and a given message.
      *
-     * @return  Response
+     * @param  string|null  $message
+     * @return array
      */
     public function errorNotFound($message = null)
     {
@@ -133,8 +143,8 @@ trait Fractal
 
     /**
      * Returns an error getcandy::response.
-     * @param  string $message
-     * @param  string $errorCode
+     *
+     * @param  string|null  $message
      * @return array
      */
     protected function respondWithError($message = null)
@@ -153,8 +163,10 @@ trait Fractal
 
     /**
      * Respond with an item.
-     * @param  array $item
-     * @param  object $callback The transformer to use
+     *
+     * @param  array  $item
+     * @param  object  $callback - The transformer to use
+     * @param  array  $meta
      * @return array
      */
     protected function respondWithItem($item, $callback, $meta = [])
@@ -178,8 +190,10 @@ trait Fractal
 
     /**
      * Respond with a collection.
-     * @param  array $paginator
-     * @param  object $callback The transformer to use
+     *
+     * @param  array  $paginator
+     * @param  object  $callback - The transformer to use
+     * @param  array  $meta
      * @return array
      */
     protected function respondWithCollection($paginator, $callback, $meta = [])
@@ -213,8 +227,9 @@ trait Fractal
 
     /**
      * Builds a response array.
-     * @param  array  $array   The array of data
-     * @param  array  $headers Any headers to attach to the response
+     *
+     * @param  array  $array - The array of data
+     * @param  array  $headers - Any headers to attach to the response
      * @return array
      */
     protected function respondWithArray(array $array, array $headers = [])

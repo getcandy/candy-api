@@ -11,9 +11,9 @@ class SavedBasketController extends BaseController
     /**
      * Handle the request to update a saved basket.
      *
-     * @param string $id
-     * @param Request $request
-     * @return void
+     * @param  string  $id
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
      */
     public function update($id, Request $request)
     {

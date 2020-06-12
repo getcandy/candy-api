@@ -8,6 +8,9 @@ use GetCandy\Api\Core\Discounts\Factory;
 
 class DiscountValidator
 {
+    /**
+     * @var \GetCandy\Api\Core\Baskets\BasketCriteria
+     */
     protected $baskets;
 
     public function __construct(BasketCriteria $baskets)

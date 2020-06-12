@@ -30,7 +30,7 @@ class PriceFilter extends AbstractFilter
     /**
      * Get the query for the filter.
      *
-     * @return mixed
+     * @return \Elastica\Query\BoolQuery
      */
     public function getQuery()
     {

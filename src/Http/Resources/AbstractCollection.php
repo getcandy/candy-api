@@ -14,6 +14,7 @@ abstract class AbstractCollection extends ResourceCollection
      * Create a new resource instance.
      *
      * @param  mixed  $resource
+     * @param  array  $only
      * @return void
      */
     public function __construct($resource, $only = [])

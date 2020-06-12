@@ -6,6 +6,11 @@ use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
 
 class CountryGroupTransformer extends BaseTransformer
 {
+    /**
+     * Include resources without needing it to be requested.
+     *
+     * @var array
+     */
     protected $defaultIncludes = [
         'countries',
     ];

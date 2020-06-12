@@ -19,6 +19,9 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CollectionController extends BaseController
 {
+    /**
+     * @var \GetCandy\Api\Core\Collections\Services\CollectionService
+     */
     protected $service;
 
     public function __construct(CollectionService $service)
@@ -27,8 +30,11 @@ class CollectionController extends BaseController
     }
 
     /**
-     * Returns a listing of channels.
-     * @return Json
+     * Returns a listing of collections.
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \GetCandy\Api\Core\Collections\Criteria\CollectionCriteria  $criteria
+     * @return \GetCandy\Api\Http\Resources\Collections\CollectionCollection
      */
     public function index(Request $request, CollectionCriteria $criteria)
     {
@@ -40,9 +46,12 @@ class CollectionController extends BaseController
     }
 
     /**
-     * Handles the request to show a channel based on it's hashed ID.
-     * @param  string $id
-     * @return Json
+     * Handles the request to show a collection based on it's hashed ID.
+     * 
+     * @param  string  $id
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \GetCandy\Api\Core\Collections\Criteria\CollectionCriteria  $criteria
+     * @return array|\GetCandy\Api\Http\Resources\Collections\CollectionResource
      */
     public function show($id, Request $request, CollectionCriteria $criteria)
     {
@@ -85,9 +94,10 @@ class CollectionController extends BaseController
     }
 
     /**
-     * Handles the request to create a new channel.
-     * @param  CreateRequest $request
-     * @return Json
+     * Handles the request to create a new collection.
+     * 
+     * @param  \GetCandy\Api\Http\Requests\Collections\CreateRequest  $request
+     * @return \GetCandy\Api\Http\Resources\Collections\CollectionResource
      */
     public function store(CreateRequest $request)
     {
@@ -97,10 +107,11 @@ class CollectionController extends BaseController
     }
 
     /**
-     * Handles the request to update  a channel.
-     * @param  string        $id
-     * @param  UpdateRequest $request
-     * @return Json
+     * Handles the request to update a collection.
+     * 
+     * @param  string  $id
+     * @param  \GetCandy\Api\Http\Requests\Collections\UpdateRequest  $request
+     * @return array|\GetCandy\Api\Http\Resources\Collections\CollectionResource
      */
     public function update($id, UpdateRequest $request)
     {
@@ -127,10 +138,11 @@ class CollectionController extends BaseController
     }
 
     /**
-     * Handles the request to delete a channel.
-     * @param  string        $id
-     * @param  DeleteRequest $request
-     * @return Json
+     * Handles the request to delete a collection.
+     * 
+     * @param  string  $id
+     * @param  \GetCandy\Api\Http\Requests\Collections\DeleteRequest  $request
+     * @return array|\Illuminate\Http\Response
      */
     public function destroy($id, DeleteRequest $request)
     {

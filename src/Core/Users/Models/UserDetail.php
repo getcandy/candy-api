@@ -6,6 +6,11 @@ use GetCandy\Api\Core\Scaffold\BaseModel;
 
 class UserDetail extends BaseModel
 {
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
     protected $guarded = ['id'];
 
     public function getFieldsAttribute($val)

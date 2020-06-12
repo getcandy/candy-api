@@ -12,16 +12,23 @@ class SyncAttributeDataJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    /**
+     * An array of attributes hashed ids.
+     *
+     * @var array
+     */
     protected $ids;
 
+    /**
+     * @var string|null
+     */
     protected $type;
 
     /**
      * Create a new job instance.
      *
-     * @param array $ids
-     * @param string $type
-     *
+     * @param  array  $ids
+     * @param  string|null  $type
      * @return void
      */
     public function __construct(array $ids, $type = null)

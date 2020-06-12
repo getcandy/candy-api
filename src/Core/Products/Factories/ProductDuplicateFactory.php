@@ -13,9 +13,7 @@ use Storage;
 class ProductDuplicateFactory implements ProductInterface
 {
     /**
-     * The product.
-     *
-     * @var Product
+     * @var \GetCandy\Api\Core\Products\Models\Product
      */
     protected $product;
 
@@ -29,8 +27,8 @@ class ProductDuplicateFactory implements ProductInterface
     /**
      * Duplicate a product.
      *
-     * @param Collection $data
-     * @return Product
+     * @param  \Illuminate\Support\Collection  $data
+     * @return \GetCandy\Api\Core\Products\Models\Product
      */
     public function duplicate(Collection $data)
     {
@@ -70,7 +68,7 @@ class ProductDuplicateFactory implements ProductInterface
     /**
      * Process the assets for a duplicated product.
      *
-     * @param Product $newProduct
+     * @param  \GetCandy\Api\Core\Products\Models\Product  $newProduct
      * @return void
      */
     protected function processAssets($newProduct)
@@ -123,7 +121,7 @@ class ProductDuplicateFactory implements ProductInterface
     /**
      * Process the duplicated product categories.
      *
-     * @param Product $newProduct
+     * @param  \GetCandy\Api\Core\Products\Models\Product  $newProduct
      * @return void
      */
     protected function processCategories($newProduct)
@@ -137,7 +135,7 @@ class ProductDuplicateFactory implements ProductInterface
     /**
      * Process the customer groups for the duplicated product.
      *
-     * @param Product $newProduct
+     * @param  \GetCandy\Api\Core\Products\Models\Product  $newProduct
      * @return void
      */
     protected function processCustomerGroups($newProduct)
@@ -160,7 +158,7 @@ class ProductDuplicateFactory implements ProductInterface
     /**
      * Process channels for a duplicated product.
      *
-     * @param Product $newProduct
+     * @param  \GetCandy\Api\Core\Products\Models\Product  $newProduct
      * @return void
      */
     protected function processChannels($newProduct)
@@ -183,9 +181,9 @@ class ProductDuplicateFactory implements ProductInterface
     /**
      * Process the variants for duplication.
      *
-     * @param Product $newProduct
-     * @param Collection $currentVariants
-     * @param Collection $data
+     * @param  \GetCandy\Api\Core\Products\Models\Product  $newProduct
+     * @param  \Illuminate\Support\Collection  $currentVariants
+     * @param  \Illuminate\Support\Collection  $data
      * @return void
      */
     protected function processVariants($newProduct, $currentVariants, $data)
@@ -205,9 +203,9 @@ class ProductDuplicateFactory implements ProductInterface
     /**
      * Process the routes for duplication.
      *
-     * @param Product $newProduct
-     * @param Collection $currentRoutes
-     * @param Collection $data
+     * @param  \GetCandy\Api\Core\Products\Models\Product  $newProduct
+     * @param  \Illuminate\Support\Collection  $currentRoutes
+     * @param  \Illuminate\Support\Collection  $data
      * @return void
      */
     protected function processRoutes($newProduct, $currentRoutes, $data)
@@ -230,9 +228,9 @@ class ProductDuplicateFactory implements ProductInterface
     /**
      * Get the variant to copy.
      *
-     * @param array $variants
-     * @param string $sku
-     * @return ProductVariant
+     * @param  \Illuminate\Support\Collection  $variants
+     * @param  string  $sku
+     * @return \GetCandy\Api\Core\Products\Models\ProductVariant
      */
     protected function getVariantToCopy($variants, $sku)
     {

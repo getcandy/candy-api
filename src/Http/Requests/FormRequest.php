@@ -29,7 +29,7 @@ abstract class FormRequest extends IlluminateFormRequest
      * Get the proper failed validation response for the request.
      *
      * @param  array  $errors
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function response(array $errors)
     {

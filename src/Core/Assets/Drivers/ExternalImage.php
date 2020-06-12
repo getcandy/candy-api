@@ -11,7 +11,7 @@ use Storage;
 class ExternalImage extends BaseUrlDriver
 {
     /**
-     * @var InterventionImage
+     * @var \Intervention\Image\ImageManager
      */
     protected $manager;
 
@@ -28,10 +28,9 @@ class ExternalImage extends BaseUrlDriver
     /**
      * Process the external image.
      *
-     * @param array $data
-     * @param Model $model
-     *
-     * @return Asset
+     * @param  array $data
+     * @param  \Illuminate\Database\Eloquent\Model $model
+     * @return \GetCandy\Api\Core\Assets\Models\Asset
      */
     public function process(array $data, Model $model)
     {
@@ -81,9 +80,6 @@ class ExternalImage extends BaseUrlDriver
     }
 
     /**
-     * @param array $data
-     * @param       $source
-     *
      * @return \GetCandy\Api\Core\Assets\Models\Asset
      */
     public function prepare()
@@ -114,8 +110,7 @@ class ExternalImage extends BaseUrlDriver
     /**
      * Get the asset info.
      *
-     * @param string $url
-     *
+     * @param  string  $url
      * @return array
      */
     public function getInfo($url)

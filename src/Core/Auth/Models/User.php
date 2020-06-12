@@ -21,6 +21,11 @@ class User extends Authenticatable
         Hashids,
         HasRoles;
 
+    /**
+     * The Hashid connection name for enconding the id.
+     * 
+     * @var string
+     */
     protected $hashids = 'user';
 
     protected $guard_name = 'api';
@@ -63,8 +68,8 @@ class User extends Authenticatable
     ];
 
     /**
-     * @param Builder $qb
-     * @return Builder
+     * @param  \Illuminate\Database\Eloquent\Builder  $qb
+     * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeDefault($qb)
     {

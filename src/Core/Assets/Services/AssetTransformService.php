@@ -20,9 +20,8 @@ class AssetTransformService extends BaseService
     }
 
     /**
-     * @param $handle
-     *
-     * @return mixed
+     * @param  string  $handle
+     * @return null|\Illuminate\Database\Eloquent\Model
      */
     public function getByHandle($handle)
     {
@@ -30,8 +29,7 @@ class AssetTransformService extends BaseService
     }
 
     /**
-     * @param array $handles
-     *
+     * @param  array  $handles
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
     public function getByHandles(array $handles)
@@ -40,9 +38,8 @@ class AssetTransformService extends BaseService
     }
 
     /**
-     * @param $transformer
-     * @param $asset
-     *
+     * @param  \GetCandy\Api\Core\Assets\Models\Transform  $transformer
+     * @param  \GetCandy\Api\Core\Assets\Models\Asset  $asset
      * @return bool
      */
     protected function process($transformer, $asset)
@@ -108,8 +105,9 @@ class AssetTransformService extends BaseService
     }
 
     /**
-     * @param                                   $ref
-     * @param \GetCandy\Api\Core\Assets\Models\Asset $asset
+     * @param  mixed  $ref
+     * @param  \GetCandy\Api\Core\Assets\Models\Asset  $asset
+     * @return void
      */
     public function transform($ref, Asset $asset)
     {
@@ -131,8 +129,8 @@ class AssetTransformService extends BaseService
     /**
      * Get the image.
      *
-     * @param [type] $asset
-     * @return void
+     * @param  \GetCandy\Api\Core\Assets\Models\Asset  $asset
+     * @return bool|\Intervention\Image\Image
      */
     protected function getImage($asset)
     {

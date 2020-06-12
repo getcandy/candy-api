@@ -25,7 +25,7 @@ class OrderCriteria extends AbstractCriteria implements OrderCriteriaInterface
     /**
      * The user to get the orders for.
      *
-     * @var \Illuminate\Eloquent\Database\Model
+     * @var \Illuminate\Foundation\Auth\User
      */
     protected $user;
 
@@ -85,6 +85,9 @@ class OrderCriteria extends AbstractCriteria implements OrderCriteriaInterface
      */
     protected $scopes = [];
 
+    /**
+     * @var array
+     */
     protected $includes = [];
 
     /**
@@ -97,14 +100,14 @@ class OrderCriteria extends AbstractCriteria implements OrderCriteriaInterface
     /**
      * What user to restrict the query to.
      *
-     * @var string
+     * @var bool
      */
     protected $restrict = true;
 
     /**
      * Set the sort by field.
      *
-     * @var string
+     * @var null|string
      */
     protected $sortBy = null;
 
@@ -118,9 +121,9 @@ class OrderCriteria extends AbstractCriteria implements OrderCriteriaInterface
     /**
      * Set a value on the criteria.
      *
-     * @param string $key
-     * @param mixed $value
-     * @return self
+     * @param  string  $key
+     * @param  mixed  $value
+     * @return $this
      */
     public function set($key, $value)
     {
@@ -134,8 +137,8 @@ class OrderCriteria extends AbstractCriteria implements OrderCriteriaInterface
     /**
      * Fill the criteria.
      *
-     * @param array $values
-     * @return self
+     * @param  array  $values
+     * @return $this
      */
     public function fill($values = [])
     {
@@ -156,7 +159,7 @@ class OrderCriteria extends AbstractCriteria implements OrderCriteriaInterface
     /**
      * Get all the criteria params.
      *
-     * @return void
+     * @return array
      */
     public function toParams()
     {
@@ -188,7 +191,7 @@ class OrderCriteria extends AbstractCriteria implements OrderCriteriaInterface
     /**
      * Get the result from our defined criteria.
      *
-     * @return string
+     * @return \Illuminate\Pagination\LengthAwarePaginator
      */
     public function get()
     {

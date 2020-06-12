@@ -9,7 +9,7 @@ use GetCandy\Api\Http\Requests\ProductVariants\UpdateRequest;
 use GetCandy\Api\Http\Resources\Products\ProductResource;
 use GetCandy\Api\Http\Resources\Products\ProductVariantCollection;
 use GetCandy\Api\Http\Resources\Products\ProductVariantResource;
-use GetCandy\Exceptions\InvalidLanguageException;
+use GetCandy\Api\Exceptions\InvalidLanguageException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -17,9 +17,10 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class ProductVariantController extends BaseController
 {
     /**
-     * Handles the request to show all product families.
-     * @param  Request $request
-     * @return Json
+     * Handles the request to show all product variants.
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \GetCandy\Api\Http\Resources\Products\ProductVariantCollection
      */
     public function index(Request $request)
     {
@@ -29,9 +30,10 @@ class ProductVariantController extends BaseController
     }
 
     /**
-     * Handles the request to show a product family based on hashed ID.
-     * @param  string $id
-     * @return Json
+     * Handles the request to show a product variant based on hashed ID.
+     * 
+     * @param  string  $id
+     * @return array|\GetCandy\Api\Http\Resources\Products\ProductVariantResource
      */
     public function show($id)
     {
@@ -46,8 +48,10 @@ class ProductVariantController extends BaseController
 
     /**
      * Handles the request to create the variants.
-     * @param  CreateRequest $request
-     * @return Json
+     * 
+     * @param  string  $product
+     * @param  \GetCandy\Api\Http\Requests\ProductVariants\CreateRequest  $request
+     * @return array|\GetCandy\Api\Http\Resources\Products\ProductResource
      */
     public function store($product, CreateRequest $request)
     {
@@ -63,10 +67,11 @@ class ProductVariantController extends BaseController
     }
 
     /**
-     * Handles the request to update a product family.
-     * @param  string        $id
-     * @param  UpdateRequest $request
-     * @return Json
+     * Handles the request to update a product variant.
+     * 
+     * @param  string  $id
+     * @param  \GetCandy\Api\Http\Requests\ProductVariants\UpdateRequest  $request
+     * @return array|\GetCandy\Api\Http\Resources\Products\ProductVariantResource
      */
     public function update($id, UpdateRequest $request)
     {
@@ -84,10 +89,11 @@ class ProductVariantController extends BaseController
     }
 
     /**
-     * Handles the request to delete a product family.
-     * @param  string        $id
-     * @param  DeleteRequest $request
-     * @return Json
+     * Handles the request to delete a product variant.
+     * 
+     * @param  string  $id
+     * @param  \GetCandy\Api\Http\Requests\ProductVariants\DeleteRequest  $request
+     * @return array|\Illuminate\Http\Response
      */
     public function destroy($id, DeleteRequest $request)
     {

@@ -34,6 +34,9 @@ abstract class AbstractCriteria
      */
     protected $offset;
 
+    /**
+     * @var bool
+     */
     protected $paginated = true;
 
     /**
@@ -82,8 +85,8 @@ abstract class AbstractCriteria
     /**
      * Set the includes to eager load.
      *
-     * @param array|string $arrayOrString
-     * @return void
+     * @param  array|string  $arrayOrString
+     * @return $this
      */
     public function include($arrayOrString = [])
     {
@@ -124,6 +127,8 @@ abstract class AbstractCriteria
      * Get the first result from the query.
      *
      * @return \Illuminate\Database\Eloquent\Model
+     * 
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public function firstOrFail()
     {
@@ -138,7 +143,7 @@ abstract class AbstractCriteria
     /**
      * Get the result.
      *
-     * @return LengthAwarePaginator
+     * @return \Illuminate\Pagination\LengthAwarePaginator
      */
     public function get()
     {

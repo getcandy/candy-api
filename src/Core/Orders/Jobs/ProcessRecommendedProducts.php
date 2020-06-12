@@ -20,7 +20,7 @@ class ProcessRecommendedProducts implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param  Podcast  $podcast
+     * @param  \GetCandy\Api\Core\Orders\Models\Order  $podcast
      * @return void
      */
     public function __construct(Order $order)
@@ -31,19 +31,7 @@ class ProcessRecommendedProducts implements ShouldQueue
     /**
      * Execute the job.
      *
-     * @param  AudioProcessor  $processor
      * @return void
-     *
-     * select ol2.sku, count(ol2.sku)
-     * from orders as o
-     * inner join order_lines as ol1 on ol1.`order_id` = o.id
-     * inner join order_lines as ol2 on (ol2.`order_id` = o.id and ol2.id != ol1.id)
-     * where ol1.`sku` = '4999610'
-     *
-     * group by ol2.sku
-     * order by count(ol2.sku) desc
-     *
-     * limit 10
      */
     public function handle()
     {

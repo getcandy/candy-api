@@ -54,7 +54,8 @@ trait HasChannels
 
     /**
      * Get the attributes associated to the product.
-     * @return Illuminate\Database\Eloquent\Relations\BelongsToMany
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function channels()
     {

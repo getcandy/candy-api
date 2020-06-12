@@ -9,8 +9,7 @@ class QueryBuilder extends KalnoyQueryBuilder
     /**
      * Include depth level into the result.
      *
-     * @param string $as
-     *
+     * @param  string  $as
      * @return $this
      */
     public function withDepth($as = 'depth')

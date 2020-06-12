@@ -24,14 +24,14 @@ class OrderFactory implements OrderFactoryInterface
     /**
      * The basket model.
      *
-     * @var Basket
+     * @var \GetCandy\Api\Core\Baskets\Models\Basket
      */
     protected $basket;
 
     /**
      * The order model instance.
      *
-     * @var Order
+     * @var \GetCandy\Api\Core\Orders\Models\Order
      */
     protected $order;
 
@@ -45,14 +45,14 @@ class OrderFactory implements OrderFactoryInterface
     /**
      * The site settings provider.
      *
-     * @var SettingService
+     * @var \GetCandy\Api\Core\Settings\Services\SettingService
      */
     protected $settings;
 
     /**
      * The shipping model instance.
      *
-     * @var ShippingPrice
+     * @var \GetCandy\Api\Core\Shipping\Models\ShippingPrice
      */
     protected $shipping;
 
@@ -66,26 +66,32 @@ class OrderFactory implements OrderFactoryInterface
     /**
      * The currencies instance.
      *
-     * @var CurrencyConverterInterface
+     * @var \GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface
      */
     protected $currencies;
 
     /**
      * The price calculator instance.
      *
-     * @var PriceCalculatorInterface
+     * @var \GetCandy\Api\Core\Pricing\PriceCalculatorInterface
      */
     protected $calculator;
 
     /**
      * The product variants factory.
      *
-     * @var ProductVariantFactory
+     * @var \GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface
      */
     protected $variants;
 
+    /**
+     * @var array
+     */
     protected $includes = [];
 
+    /**
+     * @var \GetCandy\Api\Core\Taxes\Interfaces\TaxCalculatorInterface
+     */
     protected $tax;
 
     /**
@@ -112,8 +118,8 @@ class OrderFactory implements OrderFactoryInterface
     /**
      * Set the value for user.
      *
-     * @param User $user
-     * @return self
+     * @param  \Illuminate\Foundation\Auth\User  $user
+     * @return $this
      */
     public function user(User $user = null)
     {
@@ -125,8 +131,8 @@ class OrderFactory implements OrderFactoryInterface
     /**
      * Set the value for type.
      *
-     * @param string $type
-     * @return self
+     * @param  string  $type
+     * @return $this
      */
     public function type($type)
     {
@@ -145,8 +151,8 @@ class OrderFactory implements OrderFactoryInterface
     /**
      * Set the value for basket.
      *
-     * @param Basket $basket
-     * @return self
+     * @param  \GetCandy\Api\Core\Baskets\Models\Basket  $basket
+     * @return $this
      */
     public function basket(Basket $basket)
     {
@@ -162,8 +168,8 @@ class OrderFactory implements OrderFactoryInterface
     /**
      * Set the value of order.
      *
-     * @param Order $order
-     * @return self
+     * @param  \GetCandy\Api\Core\Orders\Models\Order  $order
+     * @return $this
      */
     public function order(Order $order)
     {
@@ -175,7 +181,7 @@ class OrderFactory implements OrderFactoryInterface
     /**
      * Get the value for basket.
      *
-     * @return Basket
+     * @return \GetCandy\Api\Core\Baskets\Models\Basket
      */
     public function getBasket()
     {
@@ -185,7 +191,7 @@ class OrderFactory implements OrderFactoryInterface
     /**
      * Get the value for user.
      *
-     * @return User
+     * @return \Illuminate\Foundation\Auth\User
      */
     public function getUser()
     {
@@ -195,7 +201,7 @@ class OrderFactory implements OrderFactoryInterface
     /**
      * Resolve the basket to an order.
      *
-     * @return Order
+     * @return \GetCandy\Api\Core\Orders\Models\Order
      */
     public function resolve()
     {
@@ -243,8 +249,8 @@ class OrderFactory implements OrderFactoryInterface
     /**
      * Resolve the lines for our order.
      *
-     * @param Order $order
-     * @return Order
+     * @param  \GetCandy\Api\Core\Orders\Models\Order  $order
+     * @return \GetCandy\Api\Core\Orders\Models\Order
      */
     protected function resolveLines(&$order)
     {
@@ -289,8 +295,9 @@ class OrderFactory implements OrderFactoryInterface
     /**
      * Get the active order.
      *
-     * @throws BasketHasPlacedOrderException
-     * @return Order
+     * @return \GetCandy\Api\Core\Orders\Models\Order
+     * 
+     * @throws \GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException
      */
     protected function getActiveOrder()
     {
@@ -306,7 +313,7 @@ class OrderFactory implements OrderFactoryInterface
     /**
      * Create a new order.
      *
-     * @return Order
+     * @return \GetCandy\Api\Core\Orders\Models\Order
      */
     protected function createNewOrder()
     {
@@ -325,10 +332,9 @@ class OrderFactory implements OrderFactoryInterface
     /**
      * Sets the fields for contact info on the order.
      *
-     * @param string $order
-     * @param array $fields
-     * @param string $prefix
-     *
+     * @param  \GetCandy\Api\Core\Orders\Models\Order  $order
+     * @param  array  $fields
+     * @param  string  $prefix
      * @return void
      */
     protected function setFields($order, $fields, $prefix)
@@ -346,8 +352,8 @@ class OrderFactory implements OrderFactoryInterface
     /**
      * Sets the user fields.
      *
-     * @param Order $order
-     * @return Order
+     * @param  \GetCandy\Api\Core\Orders\Models\Order  $order
+     * @return \GetCandy\Api\Core\Orders\Models\Order
      */
     protected function setUserFields(&$order)
     {
@@ -365,8 +371,8 @@ class OrderFactory implements OrderFactoryInterface
     /**
      * Recalculates an orders totals.
      *
-     * @param Order $order
-     * @return Order
+     * @param  \GetCandy\Api\Core\Orders\Models\Order  $order
+     * @return \GetCandy\Api\Core\Orders\Models\Order
      */
     public function recalculate($order)
     {
@@ -422,9 +428,9 @@ class OrderFactory implements OrderFactoryInterface
     /**
      * Set the value for shipping price with preference.
      *
-     * @param ShippingPrice $price
-     * @param string $preference
-     * @return self
+     * @param  \GetCandy\Api\Core\Shipping\Models\ShippingPrice  $price
+     * @param  null|string  $preference
+     * @return $this
      */
     public function shipping(ShippingPrice $price, $preference = null)
     {
@@ -437,8 +443,8 @@ class OrderFactory implements OrderFactoryInterface
     /**
      * Adds a shipping line to an order.
      *
-     * @param Order $order
-     * @return Order
+     * @param  \GetCandy\Api\Core\Orders\Models\Order  $order
+     * @return \GetCandy\Api\Core\Orders\Models\Order
      */
     protected function addShippingLine(&$order)
     {
@@ -490,8 +496,8 @@ class OrderFactory implements OrderFactoryInterface
     /**
      * Resolve the discounts to an order.
      *
-     * @param Order $order
-     * @return Order
+     * @param  \GetCandy\Api\Core\Orders\Models\Order  $order
+     * @return \GetCandy\Api\Core\Orders\Models\Order
      */
     protected function resolveDiscounts(&$order)
     {

@@ -28,10 +28,23 @@ class Category extends BaseModel
         Draftable,
         Versionable;
 
+    /**
+     * The Hashid connection name for enconding the id.
+     * 
+     * @var string
+     */
     protected $hashids = 'main';
 
+    /**
+     * @var string
+     */
     protected $settings = 'categories';
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */    
     protected $fillable = [
         'attribute_data', 'parent_id',
     ];
@@ -74,9 +87,8 @@ class Category extends BaseModel
     }
 
     /**
-     * @param string $table
-     *
-     * @return QueryBuilder
+     * @param  null|string $table
+     * @return \GetCandy\Api\Core\Categories\QueryBuilder
      */
     public function newUnscopedQuery($table = null)
     {
@@ -85,12 +97,12 @@ class Category extends BaseModel
 
     /**
      * Set the value of model's parent id key.
-     *
      * Behind the scenes node is appended to found parent node.
      *
-     * @param int $value
-     *
-     * @throws Exception If parent node doesn't exists
+     * @param  int  $value
+     * @return void
+     * 
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public function setParentIdAttribute($value)
     {
@@ -107,10 +119,10 @@ class Category extends BaseModel
 
     /**
      * Get a new base query that includes deleted nodes.
-     *
      * @since 1.1
      *
-     * @return QueryBuilder
+     * @param  null|string $table
+     * @return \GetCandy\Api\Core\Categories\QueryBuilder
      */
     public function newNestedSetQuery($table = null)
     {
@@ -123,6 +135,8 @@ class Category extends BaseModel
 
     /**
      * Call pending action.
+     * 
+     * @return void
      */
     protected function callPendingAction()
     {
@@ -177,8 +191,9 @@ class Category extends BaseModel
     /**
      * We use our own QueryBuilder here as withDepth was causing
      * a serious query issue when looking through category channels.
-     *
      * @since 2.0
+     * 
+     * @return \GetCandy\Api\Core\Categories\QueryBuilder
      */
     public function newEloquentBuilder($query)
     {

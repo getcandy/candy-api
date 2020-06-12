@@ -24,7 +24,7 @@ class PaymentManager extends Manager implements PaymentContract
     /**
      * Create the PayPal driver.
      *
-     * @return PayPal
+     * @return \GetCandy\Api\Core\Payments\Providers\PayPal
      */
     public function createPaypalDriver()
     {
@@ -36,7 +36,7 @@ class PaymentManager extends Manager implements PaymentContract
     /**
      * Create the sagepay driver.
      *
-     * @return SagePay
+     * @return \GetCandy\Api\Core\Payments\Providers\SagePay
      */
     public function createSagepayDriver()
     {
@@ -48,7 +48,7 @@ class PaymentManager extends Manager implements PaymentContract
     /**
      * Create the sagepay driver.
      *
-     * @return SagePay
+     * @return \GetCandy\Api\Core\Payments\Providers\Braintree
      */
     public function createBraintreeDriver()
     {
@@ -60,7 +60,7 @@ class PaymentManager extends Manager implements PaymentContract
     /**
      * Create the offline driver.
      *
-     * @return Offline
+     * @return \GetCandy\Api\Core\Payments\Providers\Offline
      */
     public function createOfflineDriver()
     {
@@ -73,8 +73,7 @@ class PaymentManager extends Manager implements PaymentContract
      * Build a layout provider instance.
      *
      * @param  string  $provider
-     * @param  array  $config
-     * @return \Laravel\Socialite\Two\AbstractProvider
+     * @return \GetCandy\Api\Core\Payments\Providers\AbstractProvider
      */
     public function buildProvider($provider)
     {
@@ -84,9 +83,9 @@ class PaymentManager extends Manager implements PaymentContract
     /**
      * Get the default driver name.
      *
-     * @throws \InvalidArgumentException
-     *
      * @return string
+     * 
+     * @throws \InvalidArgumentException
      */
     public function getDefaultDriver()
     {

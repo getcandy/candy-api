@@ -15,9 +15,7 @@ use Illuminate\Http\Request;
 class SearchController extends BaseController
 {
     /**
-     * The channel service.
-     *
-     * @var ChannelService
+     * @var \GetCandy\Api\Core\Channels\Services\ChannelService
      */
     protected $channels;
 
@@ -30,16 +28,15 @@ class SearchController extends BaseController
     /**
      * Performs a search against a type.
      *
-     * @param Request $request
-     * @param SearchContract $client
-     *
-     * @return array
+     * @param  \GetCandy\Api\Http\Requests\Search\SearchRequest  $request
+     * @param  \GetCandy\Api\Core\Search\SearchContract  $search
+     * @return array|\Illuminate\Http\Response
      */
     public function search(SearchRequest $request, SearchContract $search)
     {
         // Get channel
         $defaultChannel = $this->channels->getDefaultRecord();
-        $channel = $request->channel ?: $defaultChannel ? $defaultChannel->handle : null;
+        $channel = $request->channel ?: ($defaultChannel ? $defaultChannel->handle : null);
 
         try {
             $categories = $this->categories->getByHashedIds(
@@ -95,9 +92,9 @@ class SearchController extends BaseController
     /**
      * Gets suggested searches.
      *
-     * @param SearchRequest $request
-     * @param SearchContract $client
-     * @return void
+     * @param  \GetCandy\Api\Http\Requests\Search\SearchRequest  $request
+     * @param  \GetCandy\Api\Core\Search\SearchContract  $client
+     * @return array
      */
     public function suggest(SearchRequest $request, SearchContract $client)
     {
@@ -123,9 +120,11 @@ class SearchController extends BaseController
     /**
      * Handle the request to do an SKU search.
      *
-     * @param Request $request
-     * @param SearchContract $client
-     * @return json
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \GetCandy\Api\Core\Search\SearchContract  $client
+     * @return \Illuminate\Http\JsonResponse
+     * 
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function sku(Request $request, SearchContract $client)
     {

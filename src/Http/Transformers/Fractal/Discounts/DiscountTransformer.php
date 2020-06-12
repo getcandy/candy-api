@@ -12,6 +12,11 @@ class DiscountTransformer extends BaseTransformer
 {
     use IncludesAttributes;
 
+    /**
+     * Resources that can be included if requested.
+     *
+     * @var array
+     */
     protected $availableIncludes = [
         'sets', 'attribute_groups', 'channels', 'rewards',
     ];
@@ -33,9 +38,8 @@ class DiscountTransformer extends BaseTransformer
     /**
      * Include the sets in the resource.
      *
-     * @param Discount $discount
-     *
-     * @return void
+     * @param  \GetCandy\Api\Core\Discounts\Models\Discount  $discount
+     * @return \League\Fractal\Resource\Collection
      */
     public function includeSets(Discount $discount)
     {
@@ -43,8 +47,7 @@ class DiscountTransformer extends BaseTransformer
     }
 
     /**
-     * @param Product $product
-     *
+     * @param  \GetCandy\Api\Core\Discounts\Models\Discount  $discount
      * @return \League\Fractal\Resource\Collection
      */
     public function includeChannels(Discount $discount)

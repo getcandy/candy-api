@@ -12,6 +12,11 @@ class ShippingMethodTransformer extends BaseTransformer
 {
     use IncludesAttributes;
 
+    /**
+     * Resources that can be included if requested.
+     *
+     * @var array
+     */
     protected $availableIncludes = [
         'zones', 'prices', 'attribute_groups', 'channels', 'users', 'attributes',
     ];
@@ -41,8 +46,7 @@ class ShippingMethodTransformer extends BaseTransformer
     }
 
     /**
-     * @param ShippingMethod $method
-     *
+     * @param  \GetCandy\Api\Core\Shipping\Models\ShippingMethod  $method
      * @return \League\Fractal\Resource\Collection
      */
     public function includeChannels(ShippingMethod $method)

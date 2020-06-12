@@ -16,9 +16,8 @@ class SavedSearchService extends BaseService
     /**
      * Gets the saved searches for a model.
      *
-     * @param mixed $model
-     *
-     * @return Collection
+     * @param  string  $type
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getByType($type)
     {
@@ -28,9 +27,8 @@ class SavedSearchService extends BaseService
     /**
      * Stores a saved search.
      *
-     * @param array $data
-     *
-     * @return void
+     * @param  array  $data
+     * @return \GetCandy\Api\Core\Search\Models\SavedSearch
      */
     public function store($data)
     {

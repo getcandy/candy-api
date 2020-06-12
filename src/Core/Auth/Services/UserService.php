@@ -24,9 +24,12 @@ class UserService extends BaseService
 
     /**
      * Gets paginated data for the record.
-     * @param  int $length How many results per page
-     * @param  int  $page   The page to start
-     * @return Illuminate\Pagination\LengthAwarePaginator
+     * 
+     * @param  int  $length
+     * @param  null|int  $page
+     * @param  null|string $keywords
+     * @param  array  $ids
+     * @return \Illuminate\Pagination\LengthAwarePaginator
      */
     public function getPaginatedData($length = 50, $page = null, $keywords = null, $ids = [])
     {
@@ -115,8 +118,7 @@ class UserService extends BaseService
     /**
      * Creates a user token.
      *
-     * @param string $userId
-     *
+     * @param  string  $userId
      * @return PersonalAccessTokenResult
      */
     public function getImpersonationToken($userId)

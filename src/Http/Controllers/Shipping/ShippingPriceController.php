@@ -13,8 +13,10 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class ShippingPriceController extends BaseController
 {
     /**
-     * Returns a listing of channels.
-     * @return Json
+     * Returns a listing of shipping prices.
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
      */
     public function index(Request $request)
     {
@@ -24,9 +26,10 @@ class ShippingPriceController extends BaseController
     }
 
     /**
-     * Handles the request to show a channel based on it's hashed ID.
-     * @param  string $id
-     * @return Json
+     * Handles the request to show a shipping price based on it's hashed ID.
+     * 
+     * @param  string  $id
+     * @return array
      */
     public function show($id)
     {
@@ -40,9 +43,10 @@ class ShippingPriceController extends BaseController
     }
 
     /**
-     * Handles the request to create a new channel.
-     * @param  CreateRequest $request
-     * @return Json
+     * Handles the request to create a new shipping price.
+     * 
+     * @param  \GetCandy\Api\Http\Requests\Shipping\Pricing\StoreRequest  $request
+     * @return array
      */
     public function store($id, StoreRequest $request)
     {
@@ -70,10 +74,10 @@ class ShippingPriceController extends BaseController
     }
 
     /**
-     * Handles the request to delete a channel.
-     * @param  string        $id
-     * @param  DeleteRequest $request
-     * @return Json
+     * Handles the request to delete a shipping price.
+     * 
+     * @param  string  $id
+     * @return array|\Illuminate\Http\Response
      */
     public function destroy($id)
     {

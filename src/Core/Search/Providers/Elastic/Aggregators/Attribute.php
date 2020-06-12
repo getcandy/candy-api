@@ -19,7 +19,7 @@ class Attribute
     /**
      * The field to aggregate.
      *
-     * @var [type]
+     * @var mixed
      */
     protected $field;
 
@@ -31,8 +31,8 @@ class Attribute
     /**
      * Set the filter on the aggregation.
      *
-     * @param mixed $filter
-     * @return Attribute
+     * @param  mixed  $filter
+     * @return $this
      */
     public function addFilter($filter = null)
     {

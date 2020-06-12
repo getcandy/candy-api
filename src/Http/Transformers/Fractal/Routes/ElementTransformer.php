@@ -8,6 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class ElementTransformer extends BaseTransformer
 {
+    /**
+     * Resources that can be included if requested.
+     *
+     * @var array
+     */
     protected $availableIncludes = [
         'element',
         'layout',

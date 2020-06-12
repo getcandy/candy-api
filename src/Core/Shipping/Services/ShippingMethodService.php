@@ -11,12 +11,15 @@ use Illuminate\Pipeline\Pipeline;
 
 class ShippingMethodService extends BaseService
 {
+    /**
+     * @var array
+     */
     protected $pipes = [];
 
     /**
      * The basket service.
      *
-     * @var BasketService
+     * @var \GetCandy\Api\Core\Baskets\Services\BasketService
      */
     protected $baskets;
 
@@ -30,9 +33,8 @@ class ShippingMethodService extends BaseService
     /**
      * Create a shipping method.
      *
-     * @param array $data
-     *
-     * @return ShippingMethod
+     * @param  array  $data
+     * @return \GetCandy\Api\Core\Shipping\Models\ShippingMethod
      */
     public function create(array $data)
     {
@@ -56,10 +58,9 @@ class ShippingMethodService extends BaseService
     /**
      * Update a shipping method.
      *
-     * @param string $id
-     * @param array $data
-     *
-     * @return ShippingMethod
+     * @param  string  $id
+     * @param  array  $data
+     * @return \GetCandy\Api\Core\Shipping\Models\ShippingMethod
      */
     public function update($id, array $data)
     {
@@ -90,9 +91,11 @@ class ShippingMethodService extends BaseService
 
     /**
      * Gets paginated data for the record.
-     * @param  int $length How many results per page
-     * @param  int  $page   The page to start
-     * @return Illuminate\Pagination\LengthAwarePaginator
+     *
+     * @param  int  $length
+     * @param  int|null  $page
+     * @param  array|string|null  $relations
+     * @return \Illuminate\Pagination\LengthAwarePaginator
      */
     public function getPaginatedData($length = 50, $page = null, $relations = null)
     {
@@ -107,9 +110,12 @@ class ShippingMethodService extends BaseService
 
     /**
      * Returns model by a given hashed id.
-     * @param  string $id
-     * @throws  Illuminate\Database\Eloquent\ModelNotFoundException
-     * @return Illuminate\Database\Eloquent\Model
+     *
+     * @param  string  $id
+     * @param  array  $includes
+     * @return \Illuminate\Database\Eloquent\Model
+     *
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public function getByHashedId($id, $includes = [])
     {
@@ -121,9 +127,8 @@ class ShippingMethodService extends BaseService
     /**
      * Gets shipping methods for an order.
      *
-     * @param string $orderId
-     *
-     * @return ArrayCollection
+     * @param  string  $orderId
+     * @return mixed
      */
     public function getForOrder($orderId)
     {
@@ -179,10 +184,9 @@ class ShippingMethodService extends BaseService
     /**
      * Updates zones for a shipping method.
      *
-     * @param string $methodId
-     * @param array $data
-     *
-     * @return ShippingMethod
+     * @param  string  $methodId
+     * @param  array  $data
+     * @return \GetCandy\Api\Core\Shipping\Models\ShippingMethod
      */
     public function updateZones($methodId, $data = [])
     {
@@ -202,10 +206,9 @@ class ShippingMethodService extends BaseService
     /**
      * Update users for a shipping method.
      *
-     * @param string $methodId
-     * @param array $users
-     *
-     * @return ShippingMethod
+     * @param  string  $methodId
+     * @param  array  $users
+     * @return \GetCandy\Api\Core\Shipping\Models\ShippingMethod
      */
     public function updateUsers($methodId, $users = [])
     {
@@ -223,10 +226,9 @@ class ShippingMethodService extends BaseService
     /**
      * Remove a user from a shipping method.
      *
-     * @param string $methodId
-     * @param string $userId
-     *
-     * @return ShippingMethod
+     * @param  string  $methodId
+     * @param  string  $userId
+     * @return \GetCandy\Api\Core\Shipping\Models\ShippingMethod
      */
     public function deleteUser($methodId, $userId)
     {

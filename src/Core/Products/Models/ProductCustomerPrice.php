@@ -9,6 +9,11 @@ use GetCandy\Api\Core\Taxes\Models\Tax;
 
 class ProductCustomerPrice extends BaseModel
 {
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = [
         'customer_group_id',
         'tax_id',
@@ -28,7 +33,8 @@ class ProductCustomerPrice extends BaseModel
     }
 
     /**
-     * The Hashid Channel for encoding the id.
+     * The Hashid connection name for enconding the id.
+     * 
      * @var string
      */
     protected $hashids = 'product_family';

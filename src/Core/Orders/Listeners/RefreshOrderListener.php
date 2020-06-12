@@ -9,7 +9,7 @@ class RefreshOrderListener
     /**
      * Handle the event.
      *
-     * @param  OrderShipped  $event
+     * @param  \GetCandy\Api\Core\Orders\Events\OrderSavedEvent  $event
      * @return void
      */
     public function handle(OrderSavedEvent $event)

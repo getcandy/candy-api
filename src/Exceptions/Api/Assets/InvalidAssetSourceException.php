@@ -1,6 +1,6 @@
 <?php
 
-namespace GetCandy\Exceptions\Api\Assets;
+namespace GetCandy\Api\Exceptions\Api\Assets;
 
 use Exception;
 

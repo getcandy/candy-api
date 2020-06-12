@@ -6,10 +6,11 @@ class HashidValidator
 {
     /**
      * Determines whether a given hashid correctly decodes for the given model.
-     * @param  string $attribute
-     * @param  string $value
-     * @param  array $parameters
-     * @param  Validator $validator
+     * 
+     * @param  string  $attribute
+     * @param  string  $value
+     * @param  array  $parameters
+     * @param  \Illuminate\Contracts\Validation\Validator  $validator
      * @return bool
      */
     public function validForModel($attribute, $value, $parameters, $validator)

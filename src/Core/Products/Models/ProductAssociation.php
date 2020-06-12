@@ -8,11 +8,17 @@ use GetCandy\Api\Core\Scaffold\BaseModel;
 class ProductAssociation extends BaseModel
 {
     /**
-     * The Hashid Channel for encoding the id.
+     * The Hashid connection name for enconding the id.
+     * 
      * @var string
      */
     protected $hashids = 'product';
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = [
         'group_id',
         'association_id',
@@ -20,8 +26,9 @@ class ProductAssociation extends BaseModel
     ];
 
     /**
-     * Get the attributes associated to the product.
-     * @return Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * Get the parent product associated.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function parent()
     {

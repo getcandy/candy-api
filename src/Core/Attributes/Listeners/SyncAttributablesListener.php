@@ -9,7 +9,7 @@ class SyncAttributablesListener
     /**
      * Handle the event.
      *
-     * @param  OrderShipped  $event
+     * @param  \GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent  $event
      * @return void
      */
     public function handle(AttributableSavedEvent $event)

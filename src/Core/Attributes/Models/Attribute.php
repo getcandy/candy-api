@@ -9,6 +9,11 @@ class Attribute extends BaseModel
 {
     use HasTranslations;
 
+    /**
+     * The Hashid connection name for enconding the id.
+     * 
+     * @var string
+     */
     protected $hashids = 'attribute';
 
     /**
@@ -43,7 +48,9 @@ class Attribute extends BaseModel
 
     /**
      * Sets the name attribute to a json string.
-     * @param array $value
+     * 
+     * @param  array  $value
+     * @return void
      */
     public function setLookupsAttribute($value)
     {

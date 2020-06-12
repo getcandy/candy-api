@@ -14,6 +14,7 @@ class Braintree extends AbstractProvider
 
     /**
      * The Braintree api gateway.
+     * 
      * @var Braintree_Gateway
      */
     protected $gateway;
@@ -136,8 +137,8 @@ class Braintree extends AbstractProvider
     /**
      * Create a failed transaction.
      *
-     * @param array $errors
-     * @return Transaction
+     * @param  array  $result
+     * @return \GetCandy\Api\Core\Payments\Models\Transaction
      */
     protected function createFailedTransaction($result)
     {

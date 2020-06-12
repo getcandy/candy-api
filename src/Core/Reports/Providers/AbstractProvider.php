@@ -18,23 +18,23 @@ abstract class AbstractProvider
     /**
      * The from date for the query.
      *
-     * @var DateTime
+     * @var \DateTime
      */
     protected $from;
 
     /**
      * The from date for the query.
      *
-     * @var DateTime
+     * @var \DateTime
      */
     protected $to;
 
     /**
      * Sets the date range for the provider.
      *
-     * @param DateTime $from
-     * @param DateTime $to
-     * @return self
+     * @param  \DateTime  $from
+     * @param  \DateTime  $to
+     * @return $this
      */
     public function between(DateTime $from, DateTime $to)
     {
@@ -54,8 +54,8 @@ abstract class AbstractProvider
     /**
      * Set the mode value.
      *
-     * @param string $mode
-     * @return self
+     * @param  string  $mode
+     * @return $this
      */
     public function mode($mode)
     {
@@ -85,7 +85,10 @@ abstract class AbstractProvider
 
     /**
      * Gets order within the date range.
-     * @return \Illuminate\Support\Collection
+     *
+     * @param  \DateTime  $from
+     * @param  \DateTime  $to
+     * @return \Illuminate\Database\Query\Builder
      */
     protected function getOrderQuery(DateTime $from = null, DateTime $to = null)
     {
@@ -97,8 +100,11 @@ abstract class AbstractProvider
     }
 
     /**
-     * Gets order within the date range.
-     * @return \Illuminate\Support\Collection
+     * Gets order line within the date range.
+     *
+     * @param  \DateTime  $from
+     * @param  \DateTime  $to
+     * @return \Illuminate\Database\Query\Builder
      */
     protected function getOrderLineQuery(DateTime $from = null, DateTime $to = null)
     {

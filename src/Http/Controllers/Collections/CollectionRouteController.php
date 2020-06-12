@@ -8,10 +8,9 @@ use GetCandy\Api\Http\Requests\Collections\Routes\CreateRequest;
 class CollectionRouteController extends BaseController
 {
     /**
-     * @param                                                       $product
-     * @param \GetCandy\Api\Http\Requests\Products\CreateUrlRequest $request
-     *
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     * @param  string  $collection
+     * @param  \GetCandy\Api\Http\Requests\Collections\Routes\CreateRequest  $request
+     * @return \Illuminate\Http\Response
      */
     public function store($collection, CreateRequest $request)
     {

@@ -10,7 +10,7 @@ abstract class AbstractRunner implements InstallRunnerContract
     /**
      * The instance of the command.
      *
-     * @var Command
+     * @var \Illuminate\Console\Command
      */
     protected $command;
 
@@ -26,8 +26,8 @@ abstract class AbstractRunner implements InstallRunnerContract
     /**
      * Sets the command instance for running the installer.
      *
-     * @param Command $command
-     * @return self
+     * @param  \Illuminate\Console\Command  $command
+     * @return $this
      */
     public function onCommand(Command $command)
     {

@@ -7,6 +7,9 @@ use GetCandy\Api\Core\Tags\Models\Tag;
 
 class TagService extends BaseService
 {
+    /**
+     * @var \GetCandy\Api\Core\Tags\Models\Tag
+     */
     protected $model;
 
     public function __construct()
@@ -18,8 +21,7 @@ class TagService extends BaseService
      * Creates a resource from the given data.
      *
      * @param  array  $data
-     *
-     * @return GetCandy\Api\Core\Models\Tag
+     * @return \GetCandy\Api\Core\Tags\Models\Tag
      */
     public function create(array $data)
     {
@@ -33,12 +35,11 @@ class TagService extends BaseService
     /**
      * Updates a resource from the given data.
      *
-     * @param  string $id
+     * @param  string  $hashedId
      * @param  array  $data
+     * @return \GetCandy\Api\Core\Tags\Models\Tag
      *
-     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     *
-     * @return GetCandy\Api\Core\Models\Tag
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
     public function update($hashedId, array $data)
     {
@@ -57,11 +58,10 @@ class TagService extends BaseService
     /**
      * Deletes a resource by its given hashed ID.
      *
-     * @param  string $id
-     *
-     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException
-     *
+     * @param  string  $id
      * @return bool
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
     public function delete($id)
     {
@@ -92,8 +92,9 @@ class TagService extends BaseService
 
     /**
      * Either returns an existing tag or makes a new one.
-     * @param  string $value
-     * @return Tag
+     *
+     * @param  string  $value
+     * @return array
      */
     public function getOrCreateTag($value)
     {
@@ -111,6 +112,7 @@ class TagService extends BaseService
 
     /**
      * Returns an array of tag ids, ready for syncing.
+     *
      * @param  array  $tags
      * @return array
      */
@@ -127,7 +129,8 @@ class TagService extends BaseService
 
     /**
      * Gets the tag name, formatted, ready to go.
-     * @param  string $value
+     *
+     * @param  string  $value
      * @return string
      */
     public function getFormattedTagName($value)

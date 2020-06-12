@@ -11,7 +11,13 @@ class Route extends BaseModel
     use SoftDeletes,
         Draftable;
 
+    /**
+     * The Hashid connection name for enconding the id.
+     * 
+     * @var string
+     */
     protected $hashids = 'main';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -23,6 +29,8 @@ class Route extends BaseModel
 
     /**
      * Get all of the owning element models.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
     public function element()
     {

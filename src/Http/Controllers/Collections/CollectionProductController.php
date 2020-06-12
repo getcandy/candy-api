@@ -9,10 +9,9 @@ use GetCandy\Api\Http\Transformers\Fractal\Collections\CollectionTransformer;
 class CollectionProductController extends BaseController
 {
     /**
-     * @param                                                       $product
-     * @param \GetCandy\Api\Http\Requests\Products\CreateUrlRequest $request
-     *
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     * @param  string  $collection
+     * @param  \GetCandy\Api\Http\Requests\Collections\Products\UpdateRequest  $request
+     * @return array
      */
     public function store($collection, UpdateRequest $request)
     {

@@ -1,6 +1,6 @@
 <?php
 
-namespace GetCandy\Events;
+namespace GetCandy\Api\Events;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;

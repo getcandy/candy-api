@@ -10,10 +10,9 @@ use GetCandy\Api\Http\Resources\Routes\RouteResource;
 class ProductRouteController extends BaseController
 {
     /**
-     * @param                                                       $product
-     * @param \GetCandy\Api\Http\Requests\Products\CreateUrlRequest $request
-     *
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     * @param  string  $product
+     * @param  \GetCandy\Api\Http\Requests\Products\CreateUrlRequest  $request
+     * @return \GetCandy\Api\Http\Resources\Routes\RouteResource
      */
     public function store($product, CreateUrlRequest $request)
     {

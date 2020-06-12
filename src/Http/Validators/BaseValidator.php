@@ -6,10 +6,11 @@ class BaseValidator
 {
     /**
      * Validates the name for an attribute doesn't exist in the same group.
-     * @param  string $attribute
-     * @param  string $value
-     * @param  array $parameters
-     * @param  Validator $validator
+     * 
+     * @param  string  $attribute
+     * @param  string  $value
+     * @param  array  $parameters
+     * @param  \Illuminate\Contracts\Validation\Validator  $validator
      * @return bool
      */
     public function enabled($attribute, $value, $parameters, $validator)
