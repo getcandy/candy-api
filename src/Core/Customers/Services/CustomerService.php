@@ -14,7 +14,7 @@ class CustomerService extends BaseService
 
     /**
      * Registers a new customer.
-     * 
+     *
      * @param  array  $data
      * @return \Illuminate\Database\Eloquent\Model
      */
@@ -30,7 +30,7 @@ class CustomerService extends BaseService
 
     /**
      * Returns model by a given hashed id.
-     * 
+     *
      * @param  string  $id
      * @param  array  $includes
      * @return \Illuminate\Database\Eloquent\Model

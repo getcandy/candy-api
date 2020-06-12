@@ -157,7 +157,7 @@ class DiscountService extends BaseService
 
     /**
      * Returns model by a given hashed id.
-     * 
+     *
      * @param  string  $id
      * @param  array  $relations
      * @return \GetCandy\Api\Core\Discounts\Models\Discount

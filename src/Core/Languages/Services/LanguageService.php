@@ -53,8 +53,6 @@ class LanguageService extends BaseService
      *
      * @throws \Exception
      * @throws \GetCandy\Api\Exceptions\MinimumRecordRequiredException
-     *
-     * 
      */
     public function update($hashedId, array $data)
     {
@@ -129,7 +127,7 @@ class LanguageService extends BaseService
 
     /**
      * Checks all locales in the array exist.
-     * 
+     *
      * @param  array  $locales
      * @return bool
      */

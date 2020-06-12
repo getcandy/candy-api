@@ -24,7 +24,7 @@ class UserService extends BaseService
 
     /**
      * Gets paginated data for the record.
-     * 
+     *
      * @param  int  $length
      * @param  null|int  $page
      * @param  null|string $keywords

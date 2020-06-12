@@ -2,16 +2,15 @@
 
 namespace GetCandy\Api\Http\Controllers\Attributes;
 
+use GetCandy\Api\Exceptions\DuplicateValueException;
+use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\AttributeGroups\CreateRequest;
-use GetCandy\Api\Http\Requests\AttributeGroups\DeleteRequest;
 use GetCandy\Api\Http\Requests\AttributeGroups\ReorderRequest;
 use GetCandy\Api\Http\Requests\AttributeGroups\UpdateRequest;
 use GetCandy\Api\Http\Resources\Attributes\AttributeGroupCollection;
 use GetCandy\Api\Http\Resources\Attributes\AttributeGroupResource;
 use GetCandy\Api\Http\Transformers\Fractal\Attributes\AttributeGroupTransformer;
-use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
-use GetCandy\Api\Exceptions\DuplicateValueException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -21,7 +20,7 @@ class AttributeGroupController extends BaseController
 {
     /**
      * Returns a listing of attribute groups.
-     * 
+     *
      * @param  \Illuminate\Http\Request  $request
      * @return \GetCandy\Api\Http\Resources\Attributes\AttributeGroupCollection
      */
@@ -39,7 +38,7 @@ class AttributeGroupController extends BaseController
 
     /**
      * Handles the request to show an attribute group based on it's hashed ID.
-     * 
+     *
      * @param  string  $id
      * @param  \Illuminate\Http\Request  $request
      * @return \GetCandy\Api\Http\Resources\Attributes\AttributeGroupResource
@@ -58,7 +57,7 @@ class AttributeGroupController extends BaseController
 
     /**
      * Handles the request to create a new attribute group.
-     * 
+     *
      * @param  \GetCandy\Api\Http\Requests\AttributeGroups\CreateRequest  $request
      * @return \GetCandy\Api\Http\Resources\Attributes\AttributeGroupResource
      */
@@ -72,7 +71,7 @@ class AttributeGroupController extends BaseController
 
     /**
      * Handles the request to update an attribute group.
-     * 
+     *
      * @param  string  $id
      * @param  \GetCandy\Api\Http\Requests\AttributeGroups\UpdateRequest  $request
      * @return array|\GetCandy\Api\Http\Resources\Attributes\AttributeGroupResource
@@ -107,7 +106,7 @@ class AttributeGroupController extends BaseController
 
     /**
      * Handles the request to delete an attribute group.
-     * 
+     *
      * @param  string  $id
      * @param  \GetCandy\Api\Http\Requests\AttributeGroups\DeleteRequest  $request
      * @return \Illuminate\Http\Response

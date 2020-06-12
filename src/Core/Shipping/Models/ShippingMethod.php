@@ -15,7 +15,7 @@ class ShippingMethod extends BaseModel
 
     /**
      * The Hashid connection name for enconding the id.
-     * 
+     *
      * @var string
      */
     protected $hashids = 'main';
@@ -58,7 +58,7 @@ class ShippingMethod extends BaseModel
 
     /**
      * Get the attributes associated to the product.
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function channels()

@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Http\Requests\Taxes;
 
-use GetCandy\Api\Http\Requests\FormRequest;
 use GetCandy\Api\Core\Taxes\Models\Tax;
+use GetCandy\Api\Http\Requests\FormRequest;
 
 class CreateRequest extends FormRequest
 {

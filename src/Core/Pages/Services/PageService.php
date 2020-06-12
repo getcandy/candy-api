@@ -16,7 +16,7 @@ class PageService extends BaseService
 
     /**
      * Creates a page.
-     * 
+     *
      * @param  array  $data
      * @param  string|\GetCandy\Api\Core\Languages\Models\Language  $languageCode
      * @param  string|\GetCandy\Api\Core\Layouts\Models\Layout  $layout
@@ -24,7 +24,7 @@ class PageService extends BaseService
      * @param  string  $type
      * @param  null|\Illuminate\Database\Eloquent\Model  $relation
      * @return \GetCandy\Api\Core\Pages\Models\Page
-     * 
+     *
      * @throws \GetCandy\Exceptions\InvalidLanguageException
      * @throws \Symfony\Component\HttpKernel\Exception\HttpException
      */
@@ -97,7 +97,7 @@ class PageService extends BaseService
      * @param  string  $lang
      * @param  null|string  $slug
      * @return \GetCandy\Api\Core\Pages\Models\Page
-     * 
+     *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public function findPage($channel, $lang, $slug = null)

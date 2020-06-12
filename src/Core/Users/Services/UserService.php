@@ -21,10 +21,10 @@ class UserService extends BaseService implements UserContract
 
     /**
      * Returns model by a given hashed id.
-     * 
+     *
      * @param  string  $id
      * @return \Illuminate\Foundation\Auth\User
-     * 
+     *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public function getByHashedId($id)

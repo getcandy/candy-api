@@ -14,7 +14,7 @@ class Braintree extends AbstractProvider
 
     /**
      * The Braintree api gateway.
-     * 
+     *
      * @var Braintree_Gateway
      */
     protected $gateway;

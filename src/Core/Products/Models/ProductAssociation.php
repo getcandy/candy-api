@@ -9,7 +9,7 @@ class ProductAssociation extends BaseModel
 {
     /**
      * The Hashid connection name for enconding the id.
-     * 
+     *
      * @var string
      */
     protected $hashids = 'product';
@@ -27,7 +27,7 @@ class ProductAssociation extends BaseModel
 
     /**
      * Get the parent product associated.
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function parent()

@@ -12,14 +12,14 @@ class RecycleBin extends BaseModel
 
     /**
      * The Hashid connection name for enconding the id.
-     * 
+     *
      * @var string
      */
     protected $hashids = 'recycle_bin';
 
     /**
      * Get the owning recyclable model.
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
     public function recyclable()

@@ -82,7 +82,7 @@ class OrderService extends BaseService implements OrderServiceInterface
      * @param  string  $basketId
      * @param  null|\Illuminate\Foundation\Auth\User  $user
      * @return \GetCandy\Api\Core\Orders\Models\Order
-     * 
+     *
      * @throws \GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException
      */
     public function store($basketId, $user = null)
@@ -212,7 +212,7 @@ class OrderService extends BaseService implements OrderServiceInterface
      * @param  bool  $sendEmails
      * @param  array  $data
      * @return void
-     * 
+     *
      * @throws \Illuminate\Database\QueryException
      * @throws \InvalidArgumentException
      */

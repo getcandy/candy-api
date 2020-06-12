@@ -31,7 +31,7 @@ class CollectionController extends BaseController
 
     /**
      * Returns a listing of collections.
-     * 
+     *
      * @param  \Illuminate\Http\Request  $request
      * @param  \GetCandy\Api\Core\Collections\Criteria\CollectionCriteria  $criteria
      * @return \GetCandy\Api\Http\Resources\Collections\CollectionCollection
@@ -47,7 +47,7 @@ class CollectionController extends BaseController
 
     /**
      * Handles the request to show a collection based on it's hashed ID.
-     * 
+     *
      * @param  string  $id
      * @param  \Illuminate\Http\Request  $request
      * @param  \GetCandy\Api\Core\Collections\Criteria\CollectionCriteria  $criteria
@@ -95,7 +95,7 @@ class CollectionController extends BaseController
 
     /**
      * Handles the request to create a new collection.
-     * 
+     *
      * @param  \GetCandy\Api\Http\Requests\Collections\CreateRequest  $request
      * @return \GetCandy\Api\Http\Resources\Collections\CollectionResource
      */
@@ -108,7 +108,7 @@ class CollectionController extends BaseController
 
     /**
      * Handles the request to update a collection.
-     * 
+     *
      * @param  string  $id
      * @param  \GetCandy\Api\Http\Requests\Collections\UpdateRequest  $request
      * @return array|\GetCandy\Api\Http\Resources\Collections\CollectionResource
@@ -139,7 +139,7 @@ class CollectionController extends BaseController
 
     /**
      * Handles the request to delete a collection.
-     * 
+     *
      * @param  string  $id
      * @param  \GetCandy\Api\Http\Requests\Collections\DeleteRequest  $request
      * @return array|\Illuminate\Http\Response

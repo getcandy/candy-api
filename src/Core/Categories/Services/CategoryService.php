@@ -32,10 +32,10 @@ class CategoryService extends BaseService
 
     /**
      * Returns model by a given hashed id.
-     * 
+     *
      * @param  string  $id
      * @return \GetCandy\Api\Core\Categories\Models\Category
-     * 
+     *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public function getByHashedId($id)
@@ -290,7 +290,7 @@ class CategoryService extends BaseService
      *
      * @param  string  $id
      * @return bool
-     * 
+     *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
     public function delete($id)
