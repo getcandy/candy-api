@@ -11,7 +11,7 @@ class Attribute extends BaseModel
 
     /**
      * The Hashid connection name for enconding the id.
-     * 
+     *
      * @var string
      */
     protected $hashids = 'attribute';
@@ -48,7 +48,7 @@ class Attribute extends BaseModel
 
     /**
      * Sets the name attribute to a json string.
-     * 
+     *
      * @param  array  $value
      * @return void
      */

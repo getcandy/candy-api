@@ -12,7 +12,6 @@ use GetCandy\Api\Core\Payments\Exceptions\InvalidPaymentTokenException;
 use GetCandy\Api\Core\Payments\Exceptions\ThreeDSecureRequiredException;
 use GetCandy\Api\Core\Payments\Models\PaymentType;
 use GetCandy\Api\Core\Payments\PaymentContract;
-use GetCandy\Api\Core\Payments\PaymentManager;
 use GetCandy\Api\Core\Payments\PaymentResponse;
 use GetCandy\Api\Core\Payments\ThreeDSecureResponse;
 

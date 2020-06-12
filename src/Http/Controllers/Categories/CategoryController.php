@@ -6,15 +6,14 @@ use Drafting;
 use GetCandy\Api\Core\Categories\CategoryCriteria;
 use GetCandy\Api\Core\Categories\Models\Category;
 use GetCandy\Api\Core\Categories\Services\CategoryService;
+use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Categories\CreateRequest;
-use GetCandy\Api\Http\Requests\Categories\DeleteRequest;
 use GetCandy\Api\Http\Requests\Categories\ReorderRequest;
 use GetCandy\Api\Http\Requests\Categories\UpdateRequest;
 use GetCandy\Api\Http\Resources\Categories\CategoryCollection;
 use GetCandy\Api\Http\Resources\Categories\CategoryResource;
 use GetCandy\Api\Http\Transformers\Fractal\Categories\CategoryTransformer;
-use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
 use Hashids;
 use Illuminate\Http\Request;
 use Intervention\Image\Exception\NotFoundException;
@@ -70,7 +69,7 @@ class CategoryController extends BaseController
         }
         $category = $this->service->findById($id[0], [], false);
 
-        if (!$category) {
+        if (! $category) {
             return $this->errorNotFound();
         }
 
@@ -124,7 +123,7 @@ class CategoryController extends BaseController
 
     /**
      * Create new category from basic information.
-     * 
+     *
      * @param  \GetCandy\Api\Http\Requests\Categories\CreateRequest  $request
      * @return array|\Illuminate\Http\JsonResponse
      */
@@ -151,7 +150,7 @@ class CategoryController extends BaseController
 
     /**
      * Handles the request to reorder the categories.
-     * 
+     *
      * @param  \GetCandy\Api\Http\Requests\Categories\ReorderRequest  $request
      * @return array|\Illuminate\Http\JsonResponse
      */
@@ -177,7 +176,7 @@ class CategoryController extends BaseController
 
     /**
      * Handles the request to update a category.
-     * 
+     *
      * @param  string  $id
      * @param  \GetCandy\Api\Http\Requests\Categories\UpdateRequest  $request
      * @return array
@@ -245,7 +244,7 @@ class CategoryController extends BaseController
 
     /**
      * Handles the request to delete a category.
-     * 
+     *
      * @param  string  $id
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Http\Response

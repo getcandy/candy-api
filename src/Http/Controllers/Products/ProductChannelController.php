@@ -11,7 +11,7 @@ class ProductChannelController extends BaseController
 {
     /**
      * Handles the request to update a product's channels.
-     * 
+     *
      * @param  string  $product
      * @param  \GetCandy\Api\Http\Requests\Products\UpdateChannelRequest  $request
      * @param  \GetCandy\Api\Core\Products\Services\ProductChannelService  $service
@@ -26,7 +26,7 @@ class ProductChannelController extends BaseController
 
     /**
      * Handles the request to remove a product's channel.
-     * 
+     *
      * @param  string  $product
      * @param  mixed  $request (?)
      * @return void

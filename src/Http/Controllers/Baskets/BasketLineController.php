@@ -3,7 +3,6 @@
 namespace GetCandy\Api\Http\Controllers\Baskets;
 
 use GetCandy\Api\Core\Baskets\Factories\BasketLineFactory;
-use GetCandy\Api\Core\Baskets\Services\BasketLineService;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Baskets\ChangeQuantityRequest;
 use GetCandy\Api\Http\Requests\Baskets\CreateLinesRequest;

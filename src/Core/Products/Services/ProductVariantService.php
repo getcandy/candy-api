@@ -22,7 +22,7 @@ class ProductVariantService extends BaseService
 
     /**
      * Creates variants for a product.
-     * 
+     *
      * @param  string  $id
      * @param  array  $data
      * @return \GetCandy\Api\Core\Products\Models\Product
@@ -292,7 +292,7 @@ class ProductVariantService extends BaseService
      *
      * @param  string  $hashedId
      * @return bool
-     * 
+     *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
     public function delete($hashedId)
@@ -316,8 +316,8 @@ class ProductVariantService extends BaseService
      *     'weight' => [
      *         'cm' => 100
      *     ]
-     * ]
-     * 
+     * ].
+     *
      * @param  \GetCandy\Api\Core\Products\Models\ProductVariant  $variant
      * @param  array  $data
      * @return void

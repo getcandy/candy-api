@@ -11,7 +11,7 @@ class ProductCategoryController extends BaseController
 {
     /**
      * Handles the request to update a products categories.
-     * 
+     *
      * @param  string  $id
      * @param  \GetCandy\Api\Http\Requests\Products\UpdateCategoriesRequest  $request
      * @return array
@@ -25,7 +25,7 @@ class ProductCategoryController extends BaseController
 
     /**
      * Deletes a product's category.
-     * 
+     *
      * @param  string  $productId
      * @param  string  $categoryId
      * @return \Illuminate\Http\JsonResponse

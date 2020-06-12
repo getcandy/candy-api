@@ -21,7 +21,7 @@ class ProductAssociationService extends BaseService
 
     /**
      * Stores a product association.
-     * 
+     *
      * @param  string  $product
      * @param  array  $data
      * @return \Illuminate\Database\Eloquent\Collection
@@ -47,7 +47,7 @@ class ProductAssociationService extends BaseService
 
     /**
      * Destroys product association/s.
-     * 
+     *
      * @param  string  $product
      * @param  array|string  $association
      * @return bool

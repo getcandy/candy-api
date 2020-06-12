@@ -19,7 +19,7 @@ class RecycleBinController extends BaseController
 
     /**
      * Handles request to get all recycle bin items.
-     * 
+     *
      * @param  \Illuminate\Http\Request  $request
      * @return \GetCandy\Api\Http\Resources\RecycleBin\RecycleBinCollection
      */
@@ -36,7 +36,7 @@ class RecycleBinController extends BaseController
 
     /**
      * Handles request to get all recycle bin items.
-     * 
+     *
      * @param  string  $id
      * @param  \Illuminate\Http\Request  $request
      * @return array|\GetCandy\Api\Http\Resources\RecycleBin\RecycleBinResource

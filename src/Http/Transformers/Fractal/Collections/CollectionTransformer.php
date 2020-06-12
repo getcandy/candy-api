@@ -3,7 +3,6 @@
 namespace GetCandy\Api\Http\Transformers\Fractal\Collections;
 
 use GetCandy\Api\Core\Collections\Models\Collection;
-use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Traits\IncludesAttributes;
 use GetCandy\Api\Http\Transformers\Fractal\Assets\AssetTransformer;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
@@ -41,7 +40,7 @@ class CollectionTransformer extends BaseTransformer
 
     /**
      * Decorates the collection object for viewing.
-     * 
+     *
      * @param  \GetCandy\Api\Core\Collections\Models\Collection  $collection
      * @return array
      */
@@ -56,7 +55,7 @@ class CollectionTransformer extends BaseTransformer
 
     /**
      * Includes the products for the collection.
-     * 
+     *
      * @param  \GetCandy\Api\Core\Collections\Models\Collection  $collection
      * @param  null|\League\Fractal\ParamBag  $params
      * @return \League\Fractal\Resource\Collection

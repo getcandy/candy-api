@@ -61,7 +61,7 @@ class Indexable
 
     /**
      * Adds an items to an array.
-     * 
+     *
      * @param  string  $key
      * @param  string  $value
      * @return $this

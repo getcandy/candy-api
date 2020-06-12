@@ -28,7 +28,7 @@ class ProductCollectionController extends BaseController
 
     /**
      * Deletes a products collection.
-     * 
+     *
      * @param  string  $productId
      * @param  string  $collectionId
      * @return \Illuminate\Http\JsonResponse

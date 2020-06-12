@@ -3,7 +3,6 @@
 namespace GetCandy\Api\Core\Scopes;
 
 use GetCandy;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
 
 abstract class AbstractScope implements Scope
