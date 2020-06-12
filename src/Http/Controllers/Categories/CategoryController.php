@@ -67,9 +67,13 @@ class CategoryController extends BaseController
         }
         $category = $this->service->findById($id[0], [], false);
 
+        if (!$category) {
+            return $this->errorNotFound();
+        }
+
         $draft = \Drafting::with('categories')->firstOrCreate($category);
 
-        return new CategoryResource($draft->load($request->includes));
+        return new CategoryResource($draft->load($request->include));
     }
 
     public function show($id, Request $request)
