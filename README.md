@@ -8,12 +8,9 @@
 
 Build amazing online stores with full control over functionality and user experience using **headless e-commerce**. The **GetCandy E-Commerce API** provides all the features you need to get a storefront up and running using your favourite technology.
 
-
-
 ## 📖 Documentation
 
 For installation instructions and usage details, please take a look at the **[official guides](https://guides.getcandy.io/)**.
-
 
 ## 📄 License
 GetCandy API is open-sourced software licensed under the [Apache License 2.0](LICENSE)
