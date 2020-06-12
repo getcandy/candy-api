@@ -18,7 +18,7 @@ class AttributeTransformer extends BaseTransformer
 
     /**
      * Decorates the attribute object for viewing.
-     * 
+     *
      * @param  \GetCandy\Api\Core\Attributes\Models\Attribute  $product
      * @return array
      */

@@ -2,12 +2,12 @@
 
 namespace GetCandy\Api\Http\Controllers\Currencies;
 
+use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Currencies\CreateRequest;
 use GetCandy\Api\Http\Requests\Currencies\DeleteRequest;
 use GetCandy\Api\Http\Requests\Currencies\UpdateRequest;
 use GetCandy\Api\Http\Transformers\Fractal\Currencies\CurrencyTransformer;
-use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -16,7 +16,7 @@ class CurrencyController extends BaseController
 {
     /**
      * Returns a listing of currencies.
-     * 
+     *
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
@@ -29,7 +29,7 @@ class CurrencyController extends BaseController
 
     /**
      * Handles the request to show a currency based on it's hashed ID.
-     * 
+     *
      * @param  string  $code
      * @return array
      */
@@ -46,7 +46,7 @@ class CurrencyController extends BaseController
 
     /**
      * Handles the request to create a new currency.
-     * 
+     *
      * @param  \GetCandy\Api\Http\Requests\Currencies\CreateRequest  $request
      * @return array
      */
@@ -72,7 +72,7 @@ class CurrencyController extends BaseController
 
     /**
      * Handles the request to delete a currency.
-     * 
+     *
      * @param  string  $id
      * @param  \GetCandy\Api\Http\Requests\Currencies\DeleteRequest  $request
      * @return array|\Illuminate\Http\Response

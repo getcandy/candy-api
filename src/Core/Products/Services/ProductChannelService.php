@@ -21,7 +21,7 @@ class ProductChannelService extends BaseService
 
     /**
      * Stores a product association.
-     * 
+     *
      * @param  string  $product
      * @param  array  $data
      * @return \GetCandy\Api\Core\Products\Models\Product

@@ -22,7 +22,7 @@ class GetCandyInstaller
 {
     /**
      * The console command instance.
-     * 
+     *
      * @var \Illuminate\Console\Command
      */
     protected $command;

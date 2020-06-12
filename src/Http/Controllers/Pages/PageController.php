@@ -18,7 +18,7 @@ class PageController extends BaseController
 
     /**
      * Handles the request to show a page based on it's hashed ID.
-     * 
+     *
      * @param  string  $channel
      * @return array
      */

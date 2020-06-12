@@ -107,7 +107,7 @@ class Category extends AbstractAggregator
     /**
      * Get the post filter.
      *
-     * @param  array  $value 
+     * @param  array  $value
      * @return void
      */
     public function getPost($value)

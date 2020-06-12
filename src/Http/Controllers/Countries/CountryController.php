@@ -10,7 +10,7 @@ class CountryController extends BaseController
 {
     /**
      * Returns a listing of countries.
-     * 
+     *
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */

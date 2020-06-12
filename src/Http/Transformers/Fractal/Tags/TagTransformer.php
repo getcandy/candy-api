@@ -16,7 +16,7 @@ class TagTransformer extends BaseTransformer
 
     /**
      * Decorates the tag object for viewing.
-     * 
+     *
      * @param  \GetCandy\Api\Core\Tags\Models\Tag  $tag
      * @return array
      */

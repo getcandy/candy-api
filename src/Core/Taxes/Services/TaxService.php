@@ -50,7 +50,7 @@ class TaxService extends BaseService
      * @param  string  $id
      * @param  array  $data
      * @return \GetCandy\Api\Core\Taxes\Models\Tax
-     * 
+     *
      * @throws \Exception
      */
     public function update($id, array $data)

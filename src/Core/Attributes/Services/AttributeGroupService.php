@@ -53,7 +53,7 @@ class AttributeGroupService extends BaseService
 
     /**
      * Returns model by a given hashed id.
-     * 
+     *
      * @param  string  $id
      * @param  null|array|string  $includes
      * @return \GetCandy\Api\Core\Attributes\Models\AttributeGroup
@@ -102,7 +102,7 @@ class AttributeGroupService extends BaseService
 
     /**
      * Updates the positions of attribute groups.
-     * 
+     *
      * @param  array  $data
      * @return bool
      *

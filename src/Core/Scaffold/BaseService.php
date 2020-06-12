@@ -24,10 +24,10 @@ abstract class BaseService
 
     /**
      * Returns model by a given hashed id.
-     * 
+     *
      * @param  string  $id
      * @return \Illuminate\Database\Eloquent\Model
-     * 
+     *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public function getByHashedId($id)
@@ -39,7 +39,7 @@ abstract class BaseService
 
     /**
      * Get a collection of models from given Hashed IDs.
-     * 
+     *
      * @param  array  $ids
      * @return \Illuminate\Database\Eloquent\Collection
      */
@@ -132,7 +132,7 @@ abstract class BaseService
 
     /**
      * Gets paginated data for the record.
-     * 
+     *
      * @param  int  $length
      * @param  int|null  $page
      * @param  array|string|null  $relations
@@ -151,7 +151,7 @@ abstract class BaseService
 
     /**
      * Gets a new suggested default model.
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Model
      */
     public function getNewSuggestedDefault()

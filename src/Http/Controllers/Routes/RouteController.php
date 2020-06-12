@@ -23,7 +23,7 @@ class RouteController extends BaseController
 
     /**
      * Handles the request to show a route based on it's hashed ID.
-     * 
+     *
      * @param  \Illuminate\Http\Request  $request
      * @param  \GetCandy\Api\Core\Routes\RouteCriteria  $routes
      * @return array|\GetCandy\Api\Http\Resources\Routes\RouteResource

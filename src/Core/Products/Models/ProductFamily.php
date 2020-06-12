@@ -9,7 +9,7 @@ class ProductFamily extends BaseModel
 {
     /**
      * The Hashid connection name for enconding the id.
-     * 
+     *
      * @var string
      */
     protected $hashids = 'product_family';
@@ -23,7 +23,7 @@ class ProductFamily extends BaseModel
 
     /**
      * Get all of the attributes for the product family.
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public function attributes()

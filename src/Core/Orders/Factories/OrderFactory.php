@@ -12,7 +12,6 @@ use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Orders\Models\OrderDiscount;
 use GetCandy\Api\Core\Orders\Models\OrderLine;
 use GetCandy\Api\Core\Pricing\PriceCalculatorInterface;
-use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
 use GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface;
 use GetCandy\Api\Core\Settings\Services\SettingService;
 use GetCandy\Api\Core\Shipping\Models\ShippingPrice;
@@ -296,7 +295,7 @@ class OrderFactory implements OrderFactoryInterface
      * Get the active order.
      *
      * @return \GetCandy\Api\Core\Orders\Models\Order
-     * 
+     *
      * @throws \GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException
      */
     protected function getActiveOrder()

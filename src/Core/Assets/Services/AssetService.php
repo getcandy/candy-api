@@ -17,7 +17,7 @@ class AssetService extends BaseService
 
     /**
      * Gets the driver for the upload.
-     * 
+     *
      * @param  string  $mimeType
      * @return mixed
      */
@@ -30,7 +30,7 @@ class AssetService extends BaseService
 
     /**
      * Uploads an asset.
-     * 
+     *
      * @param  array  $data
      * @param  null|\Illuminate\Database\Eloquent\Model  $model
      * @param  int  $position

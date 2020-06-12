@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Controllers\Payments;
 
+use GetCandy\Api\Core\Payments\Exceptions\AlreadyRefundedException;
 use GetCandy\Api\Core\Payments\Exceptions\TransactionAmountException;
 use GetCandy\Api\Core\Payments\Models\Transaction;
 use GetCandy\Api\Http\Controllers\BaseController;
@@ -11,7 +12,6 @@ use GetCandy\Api\Http\Requests\Payments\VoidRequest;
 use GetCandy\Api\Http\Resources\Orders\OrderResource;
 use GetCandy\Api\Http\Resources\Transactions\TransactionResource;
 use GetCandy\Api\Http\Transformers\Fractal\Payments\ProviderTransformer;
-use GetCandy\Api\Core\Payments\Exceptions\AlreadyRefundedException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class PaymentController extends BaseController

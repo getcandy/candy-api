@@ -78,7 +78,7 @@ class AttributeService extends BaseService
 
     /**
      * Updates the positions of attributes.
-     * 
+     *
      * @param  array  $data
      * @return bool
      *
@@ -177,7 +177,7 @@ class AttributeService extends BaseService
 
     /**
      * Returns attributes for a group.
-     * 
+     *
      * @param  string  $groupId
      * @return \Illuminate\Database\Eloquent\Collection
      */
@@ -207,7 +207,7 @@ class AttributeService extends BaseService
 
     /**
      * Gets the last attribute for a group.
-     * 
+     *
      * @param  string  $groupId
      * @return null|\GetCandy\Api\Core\Attributes\Models\Attribute
      */
@@ -218,7 +218,7 @@ class AttributeService extends BaseService
 
     /**
      * Checks whether a attribute name exists in a group.
-     * 
+     *
      * @param  string  $value
      * @param  string  $groupId
      * @param  null|string  $attributeId

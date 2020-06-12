@@ -6,7 +6,7 @@ class RoutesValidator
 {
     /**
      * Validates the slug for a route.
-     * 
+     *
      * @param  string  $attribute
      * @param  string  $value
      * @param  array  $parameters

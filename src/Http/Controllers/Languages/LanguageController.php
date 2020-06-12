@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Controllers\Languages;
 
+use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Languages\CreateRequest;
 use GetCandy\Api\Http\Requests\Languages\DeleteRequest;
@@ -9,7 +10,6 @@ use GetCandy\Api\Http\Requests\Languages\UpdateRequest;
 use GetCandy\Api\Http\Resources\Languages\LanguageCollection;
 use GetCandy\Api\Http\Resources\Languages\LanguageResource;
 use GetCandy\Api\Http\Transformers\Fractal\Languages\LanguageTransformer;
-use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -18,7 +18,7 @@ class LanguageController extends BaseController
 {
     /**
      * Returns a listing of languages.
-     * 
+     *
      * @param  \Illuminate\Http\Request  $request
      * @return \GetCandy\Api\Http\Resources\Languages\LanguageCollection
      */
@@ -31,7 +31,7 @@ class LanguageController extends BaseController
 
     /**
      * Returns a single Language.
-     * 
+     *
      * @param  string  $id
      * @return array
      */
@@ -48,7 +48,7 @@ class LanguageController extends BaseController
 
     /**
      * Handles the request to create a new language.
-     * 
+     *
      * @param  \GetCandy\Api\Http\Requests\Languages\CreateRequest  $request
      * @return \GetCandy\Api\Http\Resources\Languages\LanguageResource
      */
@@ -61,7 +61,7 @@ class LanguageController extends BaseController
 
     /**
      * Handles the request to update a language.
-     * 
+     *
      * @param  string  $id
      * @param  \GetCandy\Api\Http\Requests\Languages\UpdateRequest  $request
      * @return array
@@ -81,7 +81,7 @@ class LanguageController extends BaseController
 
     /**
      * Handles the request to delete a language.
-     * 
+     *
      * @param  string  $id
      * @param  \GetCandy\Api\Http\Requests\Languages\DeleteRequest  $request
      * @return array|\Illuminate\Http\Response

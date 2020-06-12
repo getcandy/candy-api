@@ -25,7 +25,7 @@ class UserController extends BaseController
 
     /**
      * Handles the request to show a listing of all users.
-     * 
+     *
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
@@ -43,7 +43,7 @@ class UserController extends BaseController
 
     /**
      * Handles the request to show a user based on their hashed ID.
-     * 
+     *
      * @param  string  $id
      * @return array
      */
@@ -60,7 +60,7 @@ class UserController extends BaseController
 
     /**
      * Handles the request to create a new user.
-     * 
+     *
      * @param  \GetCandy\Api\Http\Requests\Users\CreateRequest  $request
      * @return array
      */
