@@ -37,12 +37,14 @@ class CreateAssetsTable extends Migration
     }
 
     /**
-     * Reverse the migrations.
+     * Reverse the migrations.$
      *
      * @return void
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('assets');
+        Schema::enableForeignKeyConstraints();
     }
 }
