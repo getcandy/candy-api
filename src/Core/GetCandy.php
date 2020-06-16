@@ -95,7 +95,7 @@ class GetCandy
         };
 
         $defaultOptions = [
-            'namespace' => 'GetCandy\Api\Http\Controllers',
+            'namespace' => '\GetCandy\Api\Http\Controllers',
             'middleware' => self::getDefaultMiddleware(),
         ];
 
