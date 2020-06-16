@@ -3,12 +3,12 @@
 namespace GetCandy\Api\Core\Categories\Drafting;
 
 use DB;
-use Versioning;
-use Illuminate\Database\Eloquent\Model;
 use GetCandy\Api\Core\Drafting\BaseDrafter;
-use GetCandy\Api\Core\Search\SearchContract;
 use GetCandy\Api\Core\Events\ModelPublishedEvent;
+use GetCandy\Api\Core\Search\SearchContract;
+use Illuminate\Database\Eloquent\Model;
 use NeonDigital\Drafting\Interfaces\DrafterInterface;
+use Versioning;
 
 class CategoryDrafter extends BaseDrafter implements DrafterInterface
 {

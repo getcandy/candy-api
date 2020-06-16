@@ -40,7 +40,7 @@ class BasketController extends BaseController
 
     /**
      * Returns a listing of baskets.
-     * 
+     *
      * @param  \Illuminate\Http\Request  $request
      * @return \GetCandy\Api\Http\Resources\Baskets\BasketCollection
      */
@@ -53,7 +53,7 @@ class BasketController extends BaseController
 
     /**
      * Handles the request to show a basket based on it's hashed ID.
-     * 
+     *
      * @param  string  $id
      * @return array|\GetCandy\Api\Http\Resources\Baskets\BasketResource
      */
@@ -70,7 +70,7 @@ class BasketController extends BaseController
 
     /**
      * Handles the request to add meta data to a basket.
-     * 
+     *
      * @param  string  $id
      * @param  \GetCandy\Api\Http\Requests\Baskets\AddMetaRequest  $request
      * @return array|\GetCandy\Api\Http\Resources\Baskets\BasketResource
@@ -187,7 +187,7 @@ class BasketController extends BaseController
      * @param  string  $basketId
      * @param  \GetCandy\Api\Http\Requests\Baskets\PutUserRequest  $request
      * @return array|\GetCandy\Api\Http\Resources\Baskets\BasketResource
-     * 
+     *
      * @deprecated 0.2.39
      * @deprecated Use claim instead, this function will be removed in 0.3.0
      */

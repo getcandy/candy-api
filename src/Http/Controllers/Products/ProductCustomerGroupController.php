@@ -11,7 +11,7 @@ class ProductCustomerGroupController extends BaseController
 {
     /**
      * Handles the request to update a product's customer groups.
-     * 
+     *
      * @param  string  $product
      * @param  \GetCandy\Api\Http\Requests\Products\UpdateCustomerGroupsRequest  $request
      * @param  \GetCandy\Api\Core\Products\Services\ProductCustomerGroupService  $service
@@ -26,7 +26,7 @@ class ProductCustomerGroupController extends BaseController
 
     /**
      * Handles the request to remove a product association.
-     * 
+     *
      * @param  string  $product
      * @param  mixed $request (?)
      * @return \Illuminate\Http\Response

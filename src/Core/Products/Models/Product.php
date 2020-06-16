@@ -84,14 +84,14 @@ class Product extends BaseModel
 
     /**
      * @var string
-     * 
+     *
      * @deprecated 0.9.0
      */
     public $transformer = ProductTransformer::class;
 
     /**
      * The Hashid connection name for enconding the id.
-     * 
+     *
      * @var string
      */
     protected $hashids = 'product';
@@ -161,7 +161,7 @@ class Product extends BaseModel
 
     /**
      * Get the collections associated to the product.
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function collections()
@@ -171,7 +171,7 @@ class Product extends BaseModel
 
     /**
      * Get the related family.
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function family()
@@ -181,7 +181,7 @@ class Product extends BaseModel
 
     /**
      * Get the products page.
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\MorphOne
      */
     public function page()

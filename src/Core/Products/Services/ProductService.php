@@ -36,11 +36,11 @@ class ProductService extends BaseService
 
     /**
      * Returns model by a given hashed id.
-     * 
+     *
      * @param  string  $id
      * @param  bool  $withDrafted
      * @return \GetCandy\Api\Core\Products\Models\Product
-     * 
+     *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public function getByHashedId($id, $withDrafted = false)
@@ -146,7 +146,7 @@ class ProductService extends BaseService
      *
      * @param  array  $data
      * @return \GetCandy\Api\Core\Products\Models\Product
-     * 
+     *
      * @throws \GetCandy\Exceptions\InvalidLanguageException
      */
     public function create(array $data)
@@ -260,7 +260,7 @@ class ProductService extends BaseService
 
     /**
      * Creates a product variant.
-     * 
+     *
      * @param  \GetCandy\Api\Core\Products\Models\Product  $product
      * @param  array  $data
      * @return \Illuminate\Database\Eloquent\Model
@@ -289,7 +289,7 @@ class ProductService extends BaseService
 
     /**
      * Gets paginated data for the record.
-     * 
+     *
      * @param  string|null  $channel
      * @param  int  $length
      * @param  int|null  $page
@@ -310,7 +310,7 @@ class ProductService extends BaseService
 
     /**
      * Gets the attributes from a given products id.
-     * 
+     *
      * @param  string  $id
      * @return array
      */
@@ -408,7 +408,7 @@ class ProductService extends BaseService
 
     /**
      * Gets the attributes from a given products id.
-     * 
+     *
      * @param  \GetCandy\Api\Core\Products\Models\Product  $product
      * @return \Illuminate\Database\Eloquent\Collection
      */
@@ -423,11 +423,11 @@ class ProductService extends BaseService
 
     /**
      * Updates the collections for a product.
-     * 
+     *
      * @param  string  $id
      * @param  array  $data
      * @return \GetCandy\Api\Core\Products\Models\Product
-     * 
+     *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public function updateCollections($id, array $data)

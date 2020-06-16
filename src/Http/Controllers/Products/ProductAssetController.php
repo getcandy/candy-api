@@ -43,7 +43,7 @@ class ProductAssetController extends BaseController
 
     /**
      * Uploads an asset for a product.
-     * 
+     *
      * @param  int  $id
      * @param  \GetCandy\Api\Http\Requests\Assets\UploadRequest  $request
      * @return void

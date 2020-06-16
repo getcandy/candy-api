@@ -8,7 +8,6 @@ use GetCandy\Api\Core\Payments\Models\Transaction;
 use GetCandy\Api\Core\Scaffold\BaseModel;
 use GetCandy\Api\Core\Scopes\OrderScope;
 use GetCandy\Api\Core\Traits\HasMeta;
-use Illuminate\Database\Eloquent\Builder;
 use Spatie\Activitylog\Traits\LogsActivity;
 
 class Order extends BaseModel
@@ -19,7 +18,7 @@ class Order extends BaseModel
 
     /**
      * The Hashid connection name for enconding the id.
-     * 
+     *
      * @var string
      */
     protected $hashids = 'order';

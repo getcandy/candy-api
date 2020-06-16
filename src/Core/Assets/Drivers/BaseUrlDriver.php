@@ -84,7 +84,7 @@ abstract class BaseUrlDriver
 
     /**
      * Prepares the asset.
-     * 
+     *
      * @param  array  $data
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return \GetCandy\Api\Core\Assets\Models\Asset
@@ -104,7 +104,7 @@ abstract class BaseUrlDriver
 
     /**
      * Generates a hashed name.
-     * 
+     *
      * @return string
      */
     public function hashName()
@@ -114,7 +114,7 @@ abstract class BaseUrlDriver
 
     /**
      * Get the thumbnail for the video.
-     * 
+     *
      * @return null|\Intervention\Image\Image
      */
     public function getThumbnail()
@@ -126,7 +126,7 @@ abstract class BaseUrlDriver
 
     /**
      * Gets an image from a given url.
-     * 
+     *
      * @param  string  $url
      * @return null|Intervention\Image\Image
      */

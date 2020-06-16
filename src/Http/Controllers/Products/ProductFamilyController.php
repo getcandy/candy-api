@@ -3,6 +3,8 @@
 namespace GetCandy\Api\Http\Controllers\Products;
 
 use GetCandy\Api\Core\Products\Criteria\ProductFamilyCriteria;
+use GetCandy\Api\Exceptions\InvalidLanguageException;
+use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\ProductFamilies\CreateRequest;
 use GetCandy\Api\Http\Requests\ProductFamilies\DeleteRequest;
@@ -10,8 +12,6 @@ use GetCandy\Api\Http\Requests\ProductFamilies\UpdateRequest;
 use GetCandy\Api\Http\Resources\Products\ProductFamilyCollection;
 use GetCandy\Api\Http\Resources\Products\ProductFamilyResource;
 use GetCandy\Api\Http\Transformers\Fractal\Products\ProductFamilyTransformer;
-use GetCandy\Api\Exceptions\InvalidLanguageException;
-use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -20,7 +20,7 @@ class ProductFamilyController extends BaseController
 {
     /**
      * Handles the request to show all product families.
-     * 
+     *
      * @param  \Illuminate\Http\Request  $request
      * @return \GetCandy\Api\Http\Resources\Products\ProductFamilyCollection
      */
@@ -57,7 +57,7 @@ class ProductFamilyController extends BaseController
 
     /**
      * Handles the request to create a new product family.
-     * 
+     *
      * @param  \GetCandy\Api\Http\Requests\ProductFamilies\CreateRequest  $request
      * @return array
      */
@@ -74,7 +74,7 @@ class ProductFamilyController extends BaseController
 
     /**
      * Handles the request to update a product family.
-     * 
+     *
      * @param  string  $id
      * @param  \GetCandy\Api\Http\Requests\ProductFamilies\UpdateRequest  $request
      * @return array
@@ -96,7 +96,7 @@ class ProductFamilyController extends BaseController
 
     /**
      * Handles the request to delete a product family.
-     * 
+     *
      * @param  string  $id
      * @param  \GetCandy\Api\Http\Requests\ProductFamilies\DeleteRequest  $request
      * @return array|\Illuminate\Http\Response

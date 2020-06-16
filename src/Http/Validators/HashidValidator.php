@@ -6,7 +6,7 @@ class HashidValidator
 {
     /**
      * Determines whether a given hashid correctly decodes for the given model.
-     * 
+     *
      * @param  string  $attribute
      * @param  string  $value
      * @param  array  $parameters

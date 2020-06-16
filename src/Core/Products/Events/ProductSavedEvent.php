@@ -3,7 +3,6 @@
 namespace GetCandy\Api\Core\Products\Events;
 
 use GetCandy\Api\Core\Products\Models\Product;
-use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;

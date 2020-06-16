@@ -7,7 +7,6 @@ use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Scaffold\BaseModel;
 use GetCandy\Api\Core\Traits\HasCompletion;
 use GetCandy\Api\Core\Traits\HasMeta;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Basket extends BaseModel
 {
@@ -15,7 +14,7 @@ class Basket extends BaseModel
 
     /**
      * The Hashid connection name for enconding the id.
-     * 
+     *
      * @var string
      */
     protected $hashids = 'basket';

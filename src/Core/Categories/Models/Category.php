@@ -30,7 +30,7 @@ class Category extends BaseModel
 
     /**
      * The Hashid connection name for enconding the id.
-     * 
+     *
      * @var string
      */
     protected $hashids = 'main';
@@ -44,7 +44,7 @@ class Category extends BaseModel
      * The attributes that are mass assignable.
      *
      * @var array
-     */    
+     */
     protected $fillable = [
         'attribute_data', 'parent_id',
     ];
@@ -101,7 +101,7 @@ class Category extends BaseModel
      *
      * @param  int  $value
      * @return void
-     * 
+     *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public function setParentIdAttribute($value)
@@ -135,7 +135,7 @@ class Category extends BaseModel
 
     /**
      * Call pending action.
-     * 
+     *
      * @return void
      */
     protected function callPendingAction()
@@ -192,7 +192,7 @@ class Category extends BaseModel
      * We use our own QueryBuilder here as withDepth was causing
      * a serious query issue when looking through category channels.
      * @since 2.0
-     * 
+     *
      * @return \GetCandy\Api\Core\Categories\QueryBuilder
      */
     public function newEloquentBuilder($query)

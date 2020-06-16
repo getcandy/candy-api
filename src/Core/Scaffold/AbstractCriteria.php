@@ -127,7 +127,7 @@ abstract class AbstractCriteria
      * Get the first result from the query.
      *
      * @return \Illuminate\Database\Eloquent\Model
-     * 
+     *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public function firstOrFail()

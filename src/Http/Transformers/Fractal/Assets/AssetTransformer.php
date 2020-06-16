@@ -16,7 +16,7 @@ class AssetTransformer extends BaseTransformer
     protected $defaultIncludes = [
         'tags',
     ];
-    
+
     /**
      * Resources that can be included if requested.
      *
@@ -28,7 +28,7 @@ class AssetTransformer extends BaseTransformer
 
     /**
      * Decorates the asset object for viewing.
-     * 
+     *
      * @param  \GetCandy\Api\Core\Assets\Models\Asset  $asset
      * @return array
      */

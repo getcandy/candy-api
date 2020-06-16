@@ -10,7 +10,7 @@ abstract class BaseTransformer extends TransformerAbstract
 {
     /**
      * Returns the correct translation for a name array.
-     * 
+     *
      * @param  mixed  $name
      * @return string
      */

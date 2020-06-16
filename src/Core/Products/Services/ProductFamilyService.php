@@ -56,7 +56,7 @@ class ProductFamilyService extends BaseService
 
     /**
      * Gets paginated data for the record.
-     * 
+     *
      * @param  int  $length
      * @param  int|null  $page
      * @param  string|array|null  $relations
@@ -84,7 +84,7 @@ class ProductFamilyService extends BaseService
      * @param  string  $id
      * @param  string|null  $target
      * @return bool
-     * 
+     *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
     public function delete($hashedId, $target = null)

@@ -14,7 +14,7 @@ class ShippingPriceController extends BaseController
 {
     /**
      * Returns a listing of shipping prices.
-     * 
+     *
      * @param  \Illuminate\Http\Request  $request
      * @return array
      */
@@ -27,7 +27,7 @@ class ShippingPriceController extends BaseController
 
     /**
      * Handles the request to show a shipping price based on it's hashed ID.
-     * 
+     *
      * @param  string  $id
      * @return array
      */
@@ -44,7 +44,7 @@ class ShippingPriceController extends BaseController
 
     /**
      * Handles the request to create a new shipping price.
-     * 
+     *
      * @param  \GetCandy\Api\Http\Requests\Shipping\Pricing\StoreRequest  $request
      * @return array
      */
@@ -75,7 +75,7 @@ class ShippingPriceController extends BaseController
 
     /**
      * Handles the request to delete a shipping price.
-     * 
+     *
      * @param  string  $id
      * @return array|\Illuminate\Http\Response
      */

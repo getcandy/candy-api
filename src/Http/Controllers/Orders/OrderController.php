@@ -55,7 +55,7 @@ class OrderController extends BaseController
 
     /**
      * Returns a listing of orders.
-     * 
+     *
      * @param  \Illuminate\Http\Request  $request
      * @return \GetCandy\Api\Http\Resources\Orders\OrderCollection
      */
@@ -124,7 +124,7 @@ class OrderController extends BaseController
 
     /**
      * Handles the request to show an order based on it's hashed ID.
-     * 
+     *
      * @param  string  $id
      * @param  \Illuminate\Http\Request  $request
      * @return array|\GetCandy\Api\Http\Resources\Orders\OrderResource
@@ -173,7 +173,7 @@ class OrderController extends BaseController
      * @param  \GetCandy\Api\Core\Orders\Interfaces\OrderCriteriaInterface  $criteria
      * @param  \GetCandy\Api\Core\Payments\Services\PaymentTypeService  $paymentTypes
      * @return array|\GetCandy\Api\Http\Resources\Orders\OrderResource|\GetCandy\Api\Http\Resources\Payments\ThreeDSecureResource
-     * 
+     *
      * @throws \GetCandy\Api\Core\Orders\Exceptions\OrderAlreadyProcessedException
      */
     public function process(

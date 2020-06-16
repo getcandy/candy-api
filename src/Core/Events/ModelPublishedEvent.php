@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Events;
 
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Queue\SerializesModels;
 
 class ModelPublishedEvent
 {
