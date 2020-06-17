@@ -48,7 +48,7 @@ class Indexer
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return void
      */
-    public function reindex($model)
+    public function reindex($model, $batchSize = 1000)
     {
         $type = $this->resolver->getType($model);
 
@@ -74,7 +74,7 @@ class Indexer
         $models = $model->withoutGlobalScopes([
             CustomerGroupScope::class,
             ChannelScope::class,
-        ])->limit(1000)
+        ])->limit($batchSize)
             ->offset($this->batch)
             ->get();
 
@@ -108,11 +108,11 @@ class Indexer
             $elasticaType->getIndex()->refresh();
 
             echo ':batch:'.$this->batch;
-            $this->batch += 1000;
+            $this->batch += $batchSize;
             $models = $model->withoutGlobalScopes([
                 CustomerGroupScope::class,
                 ChannelScope::class,
-            ])->limit(1000)->offset($this->batch)->get();
+            ])->limit($batchSize)->offset($this->batch)->get();
         }
 
         foreach ($aliases as $alias => $index) {
