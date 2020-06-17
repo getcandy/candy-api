@@ -341,7 +341,7 @@ class ProductService extends BaseService
         return $attributes;
     }
 
-    public function getSearchedIds($ids = [], $user = null)
+    public function getSearchedIds($ids = [], Array $includes = [])
     {
         $parsedIds = [];
         foreach ($ids as $hash) {
@@ -355,27 +355,13 @@ class ProductService extends BaseService
 
         $placeholders = implode(',', array_fill(0, count($parsedIds), '?')); // string for the query
 
-        $query = $this->model->with([
-            'routes',
-            'firstVariant',
-            'assets.transforms',
-            'variants.product',
-            'variants.tiers',
-            'variants.tiers.group',
-            'variants.customerPricing',
-            'primaryAsset',
-            'primaryAsset.transforms.transform',
-            'primaryAsset.transforms.asset',
-            'primaryAsset.transforms.asset.source',
-            'primaryAsset.tags',
-            'primaryAsset.source',
-        ])->whereIn('id', $parsedIds);
+        $query = $this->model->with($includes)->whereIn('products.id', $parsedIds);
 
         if (count($parsedIds)) {
-            $query = $query->orderByRaw("field(id,{$placeholders})", $parsedIds);
+            $query = $query->orderByRaw("field(products.id,{$placeholders})", $parsedIds);
         }
 
-        return $this->factory->collection($query->get());
+        return $query->get();
     }
 
     /**
