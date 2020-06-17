@@ -39,9 +39,9 @@ class ProductResource extends AbstractResource
     {
         return [
             'attributes' => new AttributeCollection($this->whenLoaded('attributes')),
-            'draft' => ['data' => new self($this->whenLoaded('draft'))],
-            'layout' => ['data' => new LayoutResource($this->whenLoaded('layout'))],
-            'published_parent' => ['data' => new self($this->whenLoaded('publishedParent'))],
+            'draft' => $this->include('draft', self::class),
+            'layout' => $this->include('layout', LayoutResource::class),
+            'published_parent' => $this->include('publishedParent', self::class),
             'assets' => new AssetCollection($this->whenLoaded('assets')),
             'family' => $this->include('family', ProductFamilyResource::class),
             'routes' => new RouteCollection($this->whenLoaded('routes')),
