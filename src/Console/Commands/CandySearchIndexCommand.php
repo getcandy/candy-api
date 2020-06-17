@@ -59,7 +59,7 @@ class CandySearchIndexCommand extends Command
             if ($this->option('queue')) {
                 ReindexSearchJob::dispatch($indexable);
             } else {
-                $search->indexer()->reindex($model, config('getcandy.search.batch_size'));
+                $search->indexer()->reindex($model, config('getcandy.search.batch_size', 1000));
             }
         }
 
