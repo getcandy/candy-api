@@ -2,15 +2,19 @@
 
 namespace GetCandy\Api\Http\Controllers\Search;
 
-use GetCandy\Api\Core\Categories\Services\CategoryService;
-use GetCandy\Api\Core\Channels\Services\ChannelService;
-use GetCandy\Api\Core\Products\Models\Product;
+use Illuminate\Http\Request;
 use GetCandy\Api\Core\Search\SearchContract;
+use GetCandy\Api\Core\Products\Models\Product;
+use Illuminate\Pagination\LengthAwarePaginator;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Search\SearchRequest;
-use GetCandy\Api\Http\Transformers\Fractal\Search\SearchSuggestionTransformer;
+use GetCandy\Api\Core\Channels\Services\ChannelService;
+use GetCandy\Api\Core\Products\Services\ProductService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
+use GetCandy\Api\Core\Categories\Services\CategoryService;
+use GetCandy\Api\Http\Resources\Products\ProductCollection;
+use GetCandy\Api\Http\Resources\Categories\CategoryCollection;
+use GetCandy\Api\Http\Transformers\Fractal\Search\SearchSuggestionTransformer;
 
 class SearchController extends BaseController
 {
@@ -19,10 +23,16 @@ class SearchController extends BaseController
      */
     protected $channels;
 
-    public function __construct(ChannelService $channels, CategoryService $categories)
+    /**
+     * @var \GetCandy\Api\Core\Products\Services\ProductService
+     */
+    protected $products;
+
+    public function __construct(ChannelService $channels, CategoryService $categories, ProductService $products)
     {
         $this->channels = $channels;
         $this->categories = $categories;
+        $this->products = $products;
     }
 
     /**
@@ -76,17 +86,55 @@ class SearchController extends BaseController
             return $this->errorInternalError($e->getMessage());
         }
 
-        $results = app('api')->search()->getResults(
-            $results,
-            $request->get('search_type', 'product'),
-            $request->include,
-            $page ?: 1,
-            $request->category,
-            $request->user(),
-            $request->ids_only ?: false
-        );
 
-        return response($results, 200);
+        $ids = collect();
+
+        if ($results->count()) {
+            foreach ($results as $r) {
+                $ids->push($r->getSource()['id'] ?? null);
+            }
+        }
+
+        $searchResponse = $results->getResponse();
+        $meta = $searchResponse->getData();
+
+        if ($request->search_type == 'category') {
+            $models = $this->categories->getSearchedIds($ids, $this->parseIncludes($request->include));
+            $paginator = new LengthAwarePaginator(
+                $models,
+                $meta['hits']['total'],
+                $results->getQuery()->getParam('size'),
+                $page
+            );
+
+            $resource = new CategoryCollection($paginator);
+        } else {
+            $models = $this->products->getSearchedIds($ids, $this->parseIncludes($request->include));
+            $paginator = new LengthAwarePaginator(
+                $models,
+                $meta['hits']['total'],
+                $results->getQuery()->getParam('size'),
+                $page
+            );
+
+            $resource = new ProductCollection($paginator);
+        }
+
+        // $results = app('api')->search()->getResults(
+        //     $results,
+        //     $request->get('search_type', 'product'),
+        //     $request->include,
+        //     $page ?: 1,
+        //     $request->category,
+        //     $request->user(),
+        //     $request->ids_only ?: false
+        // );
+
+        return $resource->additional([
+            'meta' => [
+                'aggregations' => $meta['aggregations']
+            ],
+        ]);
     }
 
     /**
