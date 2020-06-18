@@ -5,6 +5,7 @@ namespace GetCandy\Api\Http\Controllers\Search;
 use Illuminate\Http\Request;
 use GetCandy\Api\Core\Search\SearchContract;
 use GetCandy\Api\Core\Products\Models\Product;
+use GetCandy\Api\Http\Resources\ResourceUtils;
 use Illuminate\Pagination\LengthAwarePaginator;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Search\SearchRequest;
@@ -96,43 +97,30 @@ class SearchController extends BaseController
         }
 
         $searchResponse = $results->getResponse();
+
         $meta = $searchResponse->getData();
+        $query = $results->getQuery();
+
+        $service = $this->products;
+        $resource = ProductCollection::class;
 
         if ($request->search_type == 'category') {
-            $models = $this->categories->getSearchedIds($ids, $this->parseIncludes($request->include));
-            $paginator = new LengthAwarePaginator(
-                $models,
-                $meta['hits']['total'],
-                $results->getQuery()->getParam('size'),
-                $page
-            );
-
-            $resource = new CategoryCollection($paginator);
-        } else {
-            $models = $this->products->getSearchedIds($ids, $this->parseIncludes($request->include));
-            $paginator = new LengthAwarePaginator(
-                $models,
-                $meta['hits']['total'],
-                $results->getQuery()->getParam('size'),
-                $page
-            );
-
-            $resource = new ProductCollection($paginator);
+            $service = $this->categories;
+            $resource = CategoryCollection::class;
         }
 
-        // $results = app('api')->search()->getResults(
-        //     $results,
-        //     $request->get('search_type', 'product'),
-        //     $request->include,
-        //     $page ?: 1,
-        //     $request->category,
-        //     $request->user(),
-        //     $request->ids_only ?: false
-        // );
+        $models = $service->getSearchedIds($ids, $this->parseIncludes($request->include));
+        $paginator = new LengthAwarePaginator(
+            $models,
+            $meta['hits']['total'],
+            $results->getQuery()->getParam('size'),
+            $page
+        );
 
-        return $resource->additional([
+        return (new $resource($paginator))->additional([
             'meta' => [
-                'aggregations' => $meta['aggregations']
+                'aggregations' => $meta['aggregations'],
+                'highlight' => $query->getParam('highlight'),
             ],
         ]);
     }
