@@ -55,5 +55,19 @@ class MigrateAssetsToLinkTable extends Migration
 
     public function down()
     {
+        Schema::table('assets', function (Blueprint $table) {
+            $table->integer('position')->after('asset_source_id');
+        });
+        Schema::table('assets', function (Blueprint $table) {
+            $table->string('assetable_type')->after('location');
+        });
+        Schema::table('assets', function (Blueprint $table) {
+            $table->bigInteger('assetable_id')->after('assetable_type');
+        });
+        Schema::table('assets', function (Blueprint $table) {
+            $table->boolean('primary')->after('assetable_id')->default(false);
+        });
+
+        Schema::dropIfExists('assetables');
     }
 }

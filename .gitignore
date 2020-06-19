@@ -20,3 +20,4 @@ public/images/vendor/jquery.fancytree/dist/skin-win8/vline-rtl.gif
 /.vscode
 composer.lock
 PHPCompatibility/
+.phpunit.result.cache
