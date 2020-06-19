@@ -25,8 +25,7 @@ class ChannelScope extends AbstractScope
             $builder->join($relation->getTable(), function ($join) use ($relation, $model, $channel) {
                 $join->on("{$model->getTable()}.id", '=', $relation->getExistenceCompareKey())
                 ->where("{$relation->getTable()}.channel_id", $channel->getChannel()->id)
-                ->where("{$relation->getTable()}.published_at", '<=', Carbon::now())
-                ;
+                ->where("{$relation->getTable()}.published_at", '<=', Carbon::now());
             })->groupBy($relation->getExistenceCompareKey());
         });
     }
