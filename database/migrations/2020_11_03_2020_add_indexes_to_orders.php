@@ -34,7 +34,7 @@ class AddIndexesToOrders extends Migration
     public function down()
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->dropIndex(['placed_at']);
+            // $table->dropIndex(['placed_at']);
             $table->dropIndex(['sub_total']);
             $table->dropIndex(['shipping_method']);
             $table->dropIndex(['shipping_preference']);
