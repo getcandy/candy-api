@@ -5,7 +5,6 @@ namespace GetCandy\Api\Http\Controllers\Search;
 use Illuminate\Http\Request;
 use GetCandy\Api\Core\Search\SearchContract;
 use GetCandy\Api\Core\Products\Models\Product;
-use GetCandy\Api\Http\Resources\ResourceUtils;
 use Illuminate\Pagination\LengthAwarePaginator;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Search\SearchRequest;
@@ -87,7 +86,6 @@ class SearchController extends BaseController
             return $this->errorInternalError($e->getMessage());
         }
 
-
         $ids = collect();
 
         if ($results->count()) {
@@ -101,6 +99,9 @@ class SearchController extends BaseController
         $meta = $searchResponse->getData();
         $query = $results->getQuery();
 
+        $aggregations = $search->parseAggregations($meta['aggregations']);
+
+
         $service = $this->products;
         $resource = ProductCollection::class;
 
@@ -110,6 +111,7 @@ class SearchController extends BaseController
         }
 
         $models = $service->getSearchedIds($ids, $this->parseIncludes($request->include));
+
         $paginator = new LengthAwarePaginator(
             $models,
             $meta['hits']['total'],
@@ -119,7 +121,7 @@ class SearchController extends BaseController
 
         return (new $resource($paginator))->additional([
             'meta' => [
-                'aggregations' => $meta['aggregations'],
+                'aggregations' => $aggregations,
                 'highlight' => $query->getParam('highlight'),
             ],
         ]);
