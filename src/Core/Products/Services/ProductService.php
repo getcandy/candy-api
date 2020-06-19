@@ -341,7 +341,7 @@ class ProductService extends BaseService
         return $attributes;
     }
 
-    public function getSearchedIds($ids = [], Array $includes = [])
+    public function getSearchedIds($ids = [], array $includes = [])
     {
         $parsedIds = [];
         foreach ($ids as $hash) {

@@ -2,11 +2,11 @@
 
 namespace GetCandy\Api\Core\Search\Providers\Elastic;
 
-use Illuminate\Support\Arr;
-use GetCandy\Api\Core\Search\SearchContract;
-use GetCandy\Api\Http\Resources\Categories\CategoryResource;
-use GetCandy\Api\Http\Resources\Attributes\AttributeResource;
 use GetCandy\Api\Core\Search\Providers\Elastic\Types\ProductType;
+use GetCandy\Api\Core\Search\SearchContract;
+use GetCandy\Api\Http\Resources\Attributes\AttributeResource;
+use GetCandy\Api\Http\Resources\Categories\CategoryResource;
+use Illuminate\Support\Arr;
 
 class Elastic implements SearchContract
 {
@@ -41,7 +41,6 @@ class Elastic implements SearchContract
         return app()->make(ProductType::class);
     }
 
-
     public function parseAggregations(array $aggregations)
     {
         // Get our attributes.
@@ -57,12 +56,11 @@ class Elastic implements SearchContract
 
         return collect($aggregations)->map(function ($agg, $key) use ($attributes, $categories) {
             $extra = [
-                'handle' => $key
+                'handle' => $key,
             ];
 
             if ($key == 'categories') {
                 foreach ($agg['categories']['buckets'] as $bucketIndex => $bucket) {
-
                     $category = $categories->first(function ($cat) use ($bucket) {
                         return $cat->encodedId() == $bucket['key'];
                     });
@@ -79,9 +77,10 @@ class Elastic implements SearchContract
                 });
                 $extra['data'] = new AttributeResource($attribute);
             }
+
             return array_merge($extra, $agg[$key]);
         })->sortBy(function ($agg) {
-            return !empty($agg['data']) ? $agg['data']->resource->position : 0;
+            return ! empty($agg['data']) ? $agg['data']->resource->position : 0;
         });
     }
 }
