@@ -14,7 +14,7 @@ class ChannelRunner extends AbstractRunner implements InstallRunnerContract
             return;
         }
 
-        $channel = $this->command->anticipate('Choose a new channel name e.g. webstore', ['webstore']);
+        $channel = $this->command->anticipate('Choose a new channel name e.g. webstore', ['webstore'], 'webstore');
         $channelUrl = $this->command->ask('Whats the storefront URL this channel points to? (leave blank if unsure)');
 
         DB::table('channels')->insert([

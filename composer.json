@@ -24,7 +24,8 @@
         "laravel/helpers": "1.2.0",
         "neondigital/laravel-drafting": "dev-master",
         "neondigital/laravel-versioning": "dev-master",
-        "staudenmeir/eloquent-has-many-deep": "^1.7"
+        "staudenmeir/eloquent-has-many-deep": "^1.7",
+        "guzzlehttp/guzzle": "^6.5"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
