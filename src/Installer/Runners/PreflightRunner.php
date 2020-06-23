@@ -35,7 +35,7 @@ class PreflightRunner extends AbstractRunner implements InstallRunnerContract
         } catch (HttpException $e) {
             $esVersion = null;
         }
-        
+
         event(new PreflightCompletedEvent([
             'api' => [
                 'version' => $apiVersion,
