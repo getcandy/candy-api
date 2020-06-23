@@ -52,14 +52,14 @@ class InstallGetCandyCommand extends Command
 
             $elasticsearch = $event->response['elasticsearch'];
 
-            if(! $elasticsearch['connected']) {
+            if (! $elasticsearch['connected']) {
                 $this->error('Unable to connect to elasticsearh');
                 $this->warn('Did you remember to configure the connection in config/getcandy.php?');
 
                 exit(1);
             }
 
-            if(! $elasticsearch['success']) {
+            if (! $elasticsearch['success']) {
                 $this->error("GetCandy requires Elasticsearch version 6.8(.x). You're running version {$elasticsearch['version']}");
 
                 exit(1);
