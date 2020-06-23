@@ -37,7 +37,7 @@ class UserRunner extends AbstractRunner implements InstallRunnerContract
 
         $name = $this->command->ask('What\'s your name?');
 
-        $firstAndLast = explode(' ', $name);
+        [$firstName, $lastName] = explode(' ', $name, 2);
 
         $email = $this->command->ask("What's your email?");
 
@@ -64,6 +64,10 @@ class UserRunner extends AbstractRunner implements InstallRunnerContract
         ]);
 
         $user->save();
+        $user->details()->updateOrCreate([
+            'firstname' => $firstName,
+            'lastname' => $lastName,
+        ]);
 
         return $user;
     }
