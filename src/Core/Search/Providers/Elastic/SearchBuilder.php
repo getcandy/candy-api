@@ -515,7 +515,14 @@ class SearchBuilder
             return ! in_array($filter['handle'], $this->topFilters);
         });
 
-        $postFilters->each(function ($filter) use ($postFilter) {
+        $postFilters->each(function ($filter) use ($postFilter, $query) {
+            if (method_exists($filter['filter'], 'aggregate')) {
+                $query->addAggregation(
+                    $filter['filter']->aggregate()->getPost(
+                        $filter['filter']->getValue()
+                    )
+                );
+            }
             $postFilter->addFilter(
                 $filter['filter']->getQuery()
             );

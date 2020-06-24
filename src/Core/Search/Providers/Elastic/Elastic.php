@@ -2,8 +2,9 @@
 
 namespace GetCandy\Api\Core\Search\Providers\Elastic;
 
-use GetCandy\Api\Core\Search\Providers\Elastic\Types\ProductType;
 use GetCandy\Api\Core\Search\SearchContract;
+use GetCandy\Api\Core\Search\Providers\Elastic\Types\ProductType;
+use GetCandy\Api\Core\Search\Providers\Elastic\AggregationResolver;
 
 class Elastic implements SearchContract
 {
@@ -36,5 +37,12 @@ class Elastic implements SearchContract
     public function products()
     {
         return app()->make(ProductType::class);
+    }
+
+    public function parseAggregations(array $aggregations)
+    {
+        return (new AggregationResolver)->resolve(
+            $aggregations
+        );
     }
 }

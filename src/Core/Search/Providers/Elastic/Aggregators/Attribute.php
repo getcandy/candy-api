@@ -109,8 +109,10 @@ class Attribute
             $value = [$value];
         }
 
+
+        $postBool = new BoolQuery();
+
         foreach ($value as $value) {
-            $postBool = new BoolQuery();
             $match = new Match;
             $match->setFieldAnalyzer($this->field, 'standard');
             $match->setFieldQuery($this->field, $value);
