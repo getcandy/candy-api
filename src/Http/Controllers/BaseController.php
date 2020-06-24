@@ -35,10 +35,10 @@ class BaseController extends Controller
             $includes = explode(',', $includes);
         }
 
-        return array_map(function ($x) {
-            return lcfirst(implode(array_map(function ($y) {
-                return ucfirst($y);
-            }, explode('_', $x))));
+        return array_map(function ($inc) {
+            return lcfirst(implode(array_map(function ($str) {
+                return ucfirst($str);
+            }, explode('_', $inc))));
         }, $includes);
     }
 }
