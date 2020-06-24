@@ -109,7 +109,6 @@ class Attribute
             $value = [$value];
         }
 
-
         $postBool = new BoolQuery();
 
         foreach ($value as $value) {
