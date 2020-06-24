@@ -109,9 +109,4 @@ class AggregationResolver
             return ! empty($agg['data']) ? $agg['data']->resource->position : 0;
         });
     }
-
-    protected function resolveCategories()
-    {
-
-    }
 }
