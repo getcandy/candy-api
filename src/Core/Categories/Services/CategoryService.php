@@ -316,7 +316,7 @@ class CategoryService extends BaseService
         return $category->delete();
     }
 
-    public function getSearchedIds($ids = [])
+    public function getSearchedIds($ids = [], $includes = [])
     {
         $parsedIds = [];
         foreach ($ids as $hash) {
@@ -325,14 +325,7 @@ class CategoryService extends BaseService
 
         $placeholders = implode(',', array_fill(0, count($parsedIds), '?')); // string for the query
 
-        $query = $this->model->with([
-            'routes',
-            'products',
-            'assets',
-            'primaryAsset.transforms',
-            'primaryAsset.source',
-            'primaryAsset',
-        ])
+        $query = $this->model->with($includes)
             ->withoutGlobalScopes()
             ->whereIn('id', $parsedIds);
 

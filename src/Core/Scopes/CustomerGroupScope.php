@@ -17,8 +17,13 @@ class CustomerGroupScope extends AbstractScope
     public function apply(Builder $builder, Model $model)
     {
         $this->resolve(function () use ($builder) {
-            $builder->whereHas('customerGroups', function ($q) {
-                $q->whereIn('customer_groups.id', $this->getGroups())->where('visible', '=', true);
+            $model = $builder->getModel();
+            $relation = $model->customerGroups();
+            $builder->join($relation->getTable(), function ($join) use ($relation, $model) {
+                $join->on("{$model->getTable()}.id", '=', $relation->getExistenceCompareKey())
+                ->whereIn("{$relation->getTable()}.customer_group_id", $this->getGroups())
+                ->where("{$relation->getTable()}.visible", '=', true)
+                ->groupBy($relation->getExistenceCompareKey());
             });
         });
     }
