@@ -55,8 +55,8 @@ class AggregationResolver
             return Str::contains($key, '_after');
         });
         return [
-            'pre' => $this->resolveAggregations($preAggs),
-            'post' => $this->resolveAggregations($postAggs),
+            'available' => $this->resolveAggregations($preAggs),
+            'applied' => $this->resolveAggregations($postAggs),
         ];
     }
 
