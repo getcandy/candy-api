@@ -29,7 +29,7 @@ class AttributeResource extends AbstractResource
     public function includes()
     {
         return [
-            'group' => ['data' => new AttributeGroupResource($this->whenLoaded('group'))],
+            'group' => $this->include('group', AttributeGroupResource::class),
         ];
     }
 }

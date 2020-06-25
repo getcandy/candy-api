@@ -20,10 +20,13 @@ class ChannelScope extends AbstractScope
     {
         $channel = app()->getInstance()->make(ChannelFactoryInterface::class);
         $this->resolve(function () use ($builder, $channel) {
-            $builder->whereHas('channels', function ($query) use ($channel) {
-                $query->whereHandle($channel->current())
-                    ->whereDate('published_at', '<=', Carbon::now());
-            });
+            $model = $builder->getModel();
+            $relation = $model->channels();
+            $builder->join($relation->getTable(), function ($join) use ($relation, $model, $channel) {
+                $join->on("{$model->getTable()}.id", '=', $relation->getExistenceCompareKey())
+                ->where("{$relation->getTable()}.channel_id", $channel->getChannel()->id)
+                ->where("{$relation->getTable()}.published_at", '<=', Carbon::now());
+            })->groupBy($relation->getExistenceCompareKey());
         });
     }
 

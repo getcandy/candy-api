@@ -37,4 +37,11 @@ class Elastic implements SearchContract
     {
         return app()->make(ProductType::class);
     }
+
+    public function parseAggregations(array $aggregations)
+    {
+        return (new AggregationResolver)->resolve(
+            $aggregations
+        );
+    }
 }

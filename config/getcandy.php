@@ -132,6 +132,7 @@ return [
     */
     'search' => [
         'client' => \GetCandy\Api\Core\Search\Providers\Elastic\Elastic::class,
+        'batch_size' => 1000,
         'client_config' => [
             'elastic' => [
                 'host' => null,
