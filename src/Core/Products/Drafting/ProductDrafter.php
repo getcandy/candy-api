@@ -3,10 +3,14 @@
 namespace GetCandy\Api\Core\Products\Drafting;
 
 use DB;
-use GetCandy\Api\Core\Products\Events\ProductCreatedEvent;
-use Illuminate\Database\Eloquent\Model;
-use NeonDigital\Drafting\Interfaces\DrafterInterface;
 use Versioning;
+use GetCandy\Api\Core\Routes\Models\Route;
+use Illuminate\Database\Eloquent\Model;
+use GetCandy\Api\Core\Products\Models\Product;
+use GetCandy\Api\Core\Products\Models\ProductVariant;
+use NeonDigital\Drafting\Interfaces\DrafterInterface;
+use GetCandy\Api\Core\Products\Models\ProductAssociation;
+use GetCandy\Api\Core\Products\Events\ProductCreatedEvent;
 
 class ProductDrafter implements DrafterInterface
 {
@@ -82,13 +86,19 @@ class ProductDrafter implements DrafterInterface
                 'channels',
                 'customerGroups',
             ]);
-            $newProduct = $product->replicate();
+            $newProduct = new Product($product->only([
+                'attribute_data',
+                'option_data',
+                'product_family_id',
+                'layout_id',
+                'group_pricing',
+            ]));
             $newProduct->drafted_at = now();
             $newProduct->draft_parent_id = $product->id;
             $newProduct->save();
 
             $product->variants->each(function ($v) use ($newProduct) {
-                $new = $v->replicate();
+                $new = new ProductVariant($v->only($v->getFillable()));
                 $new->product_id = $newProduct->id;
                 $new->drafted_at = now();
                 $new->draft_parent_id = $v->id;
@@ -96,7 +106,7 @@ class ProductDrafter implements DrafterInterface
             });
 
             $product->routes->each(function ($r) use ($newProduct) {
-                $new = $r->replicate();
+                $new = new Route($r->only($r->getFillable()));
                 $new->element_id = $newProduct->id;
                 $new->element_type = get_class($newProduct);
                 $new->drafted_at = now();
@@ -109,7 +119,7 @@ class ProductDrafter implements DrafterInterface
             });
 
             $product->associations->each(function ($model) use ($newProduct) {
-                $assoc = $model->replicate();
+                $assoc = new ProductAssociation($model->only($model->getFillable()));
                 $assoc->product_id = $newProduct->id;
                 $assoc->save();
             });
