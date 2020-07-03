@@ -101,9 +101,7 @@ class Product extends BaseModel
      *
      * @var array
      */
-    protected $fillable = [
-        'id', 'name', 'price', 'attribute_data', 'option_data', 'deleted_at',
-    ];
+    protected $guarded = [];
 
     /**
      * Sets the option data attribute
