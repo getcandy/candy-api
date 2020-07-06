@@ -36,7 +36,7 @@ class CategoryController extends BaseController
         $criteria
             ->tree($request->tree)
             ->depth($request->depth)
-            ->include($request->include)
+            ->include($this->parseIncludes($request->include))
             ->limit($request->limit);
 
         if (! $request->tree) {
@@ -55,7 +55,7 @@ class CategoryController extends BaseController
         $category = $criteria->id($id)->first();
         $query = $category
             ->children()
-            ->with($request->include)
+            ->with($this->parseIncludes($request->include))
             ->withCount(['products', 'children']);
 
         return new CategoryCollection($query->get());
@@ -75,24 +75,18 @@ class CategoryController extends BaseController
 
         $draft = \Drafting::with('categories')->firstOrCreate($category);
 
-        return new CategoryResource($draft->load($request->include));
+        return new CategoryResource($draft->load($this->parseIncludes($request->include)));
     }
 
     public function show($id, Request $request)
     {
         $id = (new Category)->decodeId($id);
 
-        $includes = $request->include ?: [];
-
-        if ($includes && is_string($includes)) {
-            $includes = $this->parseIncludes($includes);
-        }
-
         if (! $id) {
             return $this->errorNotFound();
         }
 
-        $category = $this->service->findById($id, $includes, $request->draft);
+        $category = $this->service->findById($id, $this->parseIncludes($request->include), $request->draft);
 
         if (! $category) {
             return $this->errorNotFound();
@@ -203,10 +197,8 @@ class CategoryController extends BaseController
         \DB::transaction(function () use ($category) {
             Drafting::with('categories')->publish($category);
         });
-
-        $includes = $request->includes ? explode(',', $request->include) : [];
-
-        return new CategoryResource($category->load($includes));
+        
+        return new CategoryResource($category->load($this->parseIncludes($request->include)));
     }
 
     public function putChannels($id, Request $request)
