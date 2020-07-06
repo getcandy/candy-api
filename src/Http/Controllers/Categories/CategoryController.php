@@ -197,7 +197,7 @@ class CategoryController extends BaseController
         \DB::transaction(function () use ($category) {
             Drafting::with('categories')->publish($category);
         });
-        
+
         return new CategoryResource($category->load($this->parseIncludes($request->include)));
     }
 
