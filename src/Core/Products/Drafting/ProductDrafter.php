@@ -86,19 +86,13 @@ class ProductDrafter implements DrafterInterface
                 'channels',
                 'customerGroups',
             ]);
-            $newProduct = new Product($product->only([
-                'attribute_data',
-                'option_data',
-                'product_family_id',
-                'layout_id',
-                'group_pricing',
-            ]));
+            $newProduct = $product->replicate();
             $newProduct->drafted_at = now();
             $newProduct->draft_parent_id = $product->id;
             $newProduct->save();
 
             $product->variants->each(function ($v) use ($newProduct) {
-                $new = new ProductVariant($v->only($v->getFillable()));
+                $new = $v->replicate();
                 $new->product_id = $newProduct->id;
                 $new->drafted_at = now();
                 $new->draft_parent_id = $v->id;
@@ -106,7 +100,7 @@ class ProductDrafter implements DrafterInterface
             });
 
             $product->routes->each(function ($r) use ($newProduct) {
-                $new = new Route($r->only($r->getFillable()));
+                $new = $r->replicate();
                 $new->element_id = $newProduct->id;
                 $new->element_type = get_class($newProduct);
                 $new->drafted_at = now();
@@ -119,7 +113,7 @@ class ProductDrafter implements DrafterInterface
             });
 
             $product->associations->each(function ($model) use ($newProduct) {
-                $assoc = new ProductAssociation($model->only($model->getFillable()));
+                $assoc = $model->replicate();
                 $assoc->product_id = $newProduct->id;
                 $assoc->save();
             });
