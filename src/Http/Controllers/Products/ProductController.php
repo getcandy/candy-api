@@ -53,7 +53,7 @@ class ProductController extends BaseController
         }
 
         $products = $criteria
-            ->include($request->include)
+            ->include($this->parseIncludes($request->include))
             ->ids($request->ids)
             ->limit($request->get('limit', 50))
             ->paginated($paginate)
@@ -73,11 +73,7 @@ class ProductController extends BaseController
     {
         $id = Hashids::connection('product')->decode($idOrSku);
 
-        $includes = $request->include ?: [];
-
-        if ($includes && is_string($includes)) {
-            $includes = explode(',', $includes);
-        }
+        $includes = $this->parseIncludes($request->include);
 
         if (empty($id[0])) {
             $product = $this->service->findBySku($idOrSku, $includes, $request->draft);
@@ -102,7 +98,7 @@ class ProductController extends BaseController
         $product = $this->service->findById($id[0], [], false);
         $draft = Drafting::with('products')->firstOrCreate($product);
 
-        return new ProductResource($draft->load($request->includes));
+        return new ProductResource($draft->load($this->parseIncludes($request->include)));
     }
 
     public function publishDraft($id, Request $request)
@@ -115,9 +111,7 @@ class ProductController extends BaseController
 
         Drafting::with('products')->publish($product);
 
-        $includes = $request->includes ? explode(',', $request->includes) : [];
-
-        return new ProductResource($product->load($includes));
+        return new ProductResource($product->load($this->parseIncludes($request->include)));
     }
 
     public function recommended(Request $request, ProductCriteria $productCriteria, BasketCriteriaInterface $baskets)
