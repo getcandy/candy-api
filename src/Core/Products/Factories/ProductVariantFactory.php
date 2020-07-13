@@ -14,6 +14,11 @@ class ProductVariantFactory extends AbstractFactory implements ProductVariantInt
      */
     protected $variant;
 
+    public function getModelReference()
+    {
+        return ProductVariant::class;
+    }
+
     public function init(ProductVariant $variant)
     {
         $this->variant = $variant;

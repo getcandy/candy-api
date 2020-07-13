@@ -9,6 +9,7 @@ use GetCandy\Api\Core\Currencies\CurrencyConverter;
 use GetCandy\Api\Core\Factory;
 use GetCandy\Api\Core\GetCandy;
 use GetCandy\Api\Core\Users\Contracts\UserContract;
+use GetCandy\Api\Providers\RouteServiceProvider;
 use GetCandy\Api\Core\Users\Services\UserService;
 use GetCandy\Api\Http\Middleware\DetectHubRequestMiddleware;
 use GetCandy\Api\Http\Middleware\SetChannelMiddleware;
@@ -65,6 +66,7 @@ class ApiServiceProvider extends ServiceProvider
             TaxServiceProvider::class,
             UtilServiceProvider::class,
             ReportsServiceProvider::class,
+            RouteServiceProvider::class,
             RecycleBinServiceProvider::class,
         ];
         foreach ($providers as $provider) {
