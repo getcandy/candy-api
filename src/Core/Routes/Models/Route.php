@@ -16,7 +16,7 @@ class Route extends BaseModel
      *
      * @var string
      */
-    protected $hashids = 'main';
+    protected $hashids = 'route';
 
     /**
      * The attributes that are mass assignable.

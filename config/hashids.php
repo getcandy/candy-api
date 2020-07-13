@@ -114,6 +114,11 @@ return [
             'salt' => env('HASHIDS_TAX_SALT', 'tax'),
             'length' => 8,
         ],
+        'route' => [
+            'alphabet' => $alphabet,
+            'salt' => env('HASHIDS_ROUTE_SALT', 'route'),
+            'length' => 8,
+        ],
         'user' => [
             'alphabet' => $alphabet,
             'salt' => env('HASHIDS_USER_SALT', 'user'),
