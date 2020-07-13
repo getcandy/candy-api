@@ -26,4 +26,7 @@ abstract class AbstractFactory
         $this->calculator = $calculator;
         $this->api = $api;
     }
+
+    abstract function getModelReference();
+
 }
