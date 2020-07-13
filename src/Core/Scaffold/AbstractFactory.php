@@ -29,4 +29,15 @@ abstract class AbstractFactory
 
     abstract function getModelReference();
 
+    public function encodeId($id)
+    {
+        $class = $this->getModelReference();
+        return (new $class)->encode($id);
+    }
+
+    public function decodeId($id)
+    {
+        $class = $this->getModelReference();
+        return (new $class)->decodeId($id);
+    }
 }
