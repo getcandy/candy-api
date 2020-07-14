@@ -3,8 +3,9 @@
 namespace GetCandy\Api\Core;
 
 use File;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Facades\Route;
+use GetCandy\Api\Exceptions\InvalidServiceException;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 class GetCandy
 {
@@ -88,7 +89,7 @@ class GetCandy
         ];
     }
 
-    public static function routes(array $options = [], $callback = null)
+    public static function router(array $options = [], $callback = null)
     {
         $callback = $callback ?: function ($router) {
             $router->all();
@@ -104,5 +105,14 @@ class GetCandy
         Route::group($options, function ($router) use ($callback) {
             $callback(new RouteRegistrar($router));
         });
+    }
+
+    public function __call($name, $params)
+    {
+        try {
+            return app("getcandy.{$name}");
+        } catch (\Exception $e) {
+            throw new InvalidServiceException("Service \"{$name}\" doesn't exist");
+        }
     }
 }
