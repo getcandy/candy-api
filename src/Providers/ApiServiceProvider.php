@@ -12,6 +12,7 @@ use GetCandy\Api\Providers\UserServiceProvider;
 use GetCandy\Api\Core\Users\Services\UserService;
 use GetCandy\Api\Providers\LayoutServiceProvider;
 use GetCandy\Api\Http\Middleware\SetTaxMiddleware;
+use GetCandy\Api\Providers\SettingServiceProvider;
 use GetCandy\Api\Core\Currencies\CurrencyConverter;
 use GetCandy\Api\Core\Users\Contracts\UserContract;
 use GetCandy\Api\Http\Middleware\SetCustomerGroups;
@@ -75,6 +76,7 @@ class ApiServiceProvider extends ServiceProvider
             UtilServiceProvider::class,
             ReportsServiceProvider::class,
             RecycleBinServiceProvider::class,
+            SettingServiceProvider::class,
             UserServiceProvider::class
         ];
         foreach ($providers as $provider) {

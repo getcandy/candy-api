@@ -31,6 +31,7 @@ class GetCandyTest extends TestCase
             'products',
             'productFamilies',
             'productVariants',
+            'settings',
             'tags',
             'taxes',
             'users',

@@ -100,7 +100,7 @@ class OrderService extends BaseService implements OrderServiceInterface
             $order->basket()->associate($basket);
 
             // Get the default order status
-            $settings = app('api')->settings()->get('orders');
+            $settings = GetCandy::settings()->get('orders');
 
             if ($settings) {
                 $order->status = $settings->content['default_status'] ?? 'awaiting-payment';
@@ -794,9 +794,9 @@ class OrderService extends BaseService implements OrderServiceInterface
 
     public function getPdf($order)
     {
-        $settings['address'] = app('api')->settings()->get('address')['content'];
-        $settings['tax'] = app('api')->settings()->get('tax')['content'];
-        $settings['contact'] = app('api')->settings()->get('contact')['content'];
+        $settings['address'] = GetCandy::settings()->get('address')['content'];
+        $settings['tax'] = GetCandy::settings()->get('tax')['content'];
+        $settings['contact'] = GetCandy::settings()->get('contact')['content'];
 
         $data = [
             'order' => $order->load(['lines', 'discounts']),
