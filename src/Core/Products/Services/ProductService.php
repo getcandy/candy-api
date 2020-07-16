@@ -211,7 +211,7 @@ class ProductService extends BaseService
 
         $sku = $data['sku'];
         $i = 1;
-        while (app('api')->productVariants()->existsBySku($sku)) {
+        while (GetCandy::productVariants()->existsBySku($sku)) {
             $sku = $sku.$i;
             $i++;
         }

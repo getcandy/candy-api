@@ -56,7 +56,7 @@ class ProductVariantService extends BaseService
             $options = $this->mapOptions($options, $newVariant['options']);
             $sku = $newVariant['sku'];
             $i = 1;
-            while (app('api')->productVariants()->existsBySku($sku)) {
+            while (GetCandy::productVariants()->existsBySku($sku)) {
                 $sku = $sku.$i;
                 $i++;
             }
