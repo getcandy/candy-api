@@ -52,7 +52,7 @@ class DiscountTransformer extends BaseTransformer
      */
     public function includeChannels(Discount $discount)
     {
-        $channels = app('api')->channels()->getChannelsWithAvailability($discount, 'discounts');
+        $channels = GetCandy::channels()->getChannelsWithAvailability($discount, 'discounts');
 
         return $this->collection($channels, new ChannelTransformer);
     }

@@ -22,7 +22,7 @@ trait HasChannels
     {
         $roles = app('api')->roles()->getHubAccessRoles();
         $user = Auth::user();
-        $channels = app('api')->channels();
+        $channels = GetCandy::channels();
 
         if (! $channel && ($user && $user->hasAnyRole($roles) && GetCandy::isHubRequest())) {
             return $query;

@@ -111,7 +111,7 @@ class CategoryTransformer extends BaseTransformer
      */
     public function includeChannels(Category $category)
     {
-        $channels = app('api')->channels()->getChannelsWithAvailability($category, 'categories');
+        $channels = GetCandy::channels()->getChannelsWithAvailability($category, 'categories');
 
         return $this->collection($channels, new ChannelTransformer);
     }

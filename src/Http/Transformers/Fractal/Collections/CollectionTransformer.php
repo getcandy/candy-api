@@ -77,7 +77,7 @@ class CollectionTransformer extends BaseTransformer
      */
     public function includeChannels(Collection $collection)
     {
-        $channels = app('api')->channels()->getChannelsWithAvailability($collection, 'collections');
+        $channels = GetCandy::channels()->getChannelsWithAvailability($collection, 'collections');
 
         return $this->collection($channels, new ChannelTransformer);
     }

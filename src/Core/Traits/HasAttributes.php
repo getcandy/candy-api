@@ -45,7 +45,7 @@ trait HasAttributes
         }
 
         if (empty($this->attribute_data[$handle][$channel])) {
-            $defaultChannel = app('api')->channels()->getDefaultRecord();
+            $defaultChannel = GetCandy::channels()->getDefaultRecord();
             $channel = $defaultChannel->handle;
         }
 
@@ -124,7 +124,7 @@ trait HasAttributes
             $languagesArray[$lang->lang] = null;
         }
         // Get our channels
-        $channels = app('api')->channels()->getDataList();
+        $channels = GetCandy::channels()->getDataList();
         foreach ($channels as $channel) {
             $structure[$channel->handle] = $languagesArray;
         }

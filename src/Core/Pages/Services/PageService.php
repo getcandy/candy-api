@@ -67,9 +67,9 @@ class PageService extends BaseService
 
         if (! $channel instanceof Model) {
             if ($channel) {
-                $channel = app('api')->channels()->getByHashedId($channel);
+                $channel = GetCandy::channels()->getByHashedId($channel);
             } else {
-                $channel = app('api')->channels()->getDefaultRecord($channel);
+                $channel = GetCandy::channels()->getDefaultRecord($channel);
             }
         }
 

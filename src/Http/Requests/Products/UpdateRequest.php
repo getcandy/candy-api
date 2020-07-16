@@ -31,7 +31,7 @@ class UpdateRequest extends FormRequest
         ];
 
         $attributes = GetCandy::products()->getAttributes($this->product);
-        $defaultChannel = app('api')->channels()->getDefaultRecord();
+        $defaultChannel = GetCandy::channels()->getDefaultRecord();
         $defaultLanguage = app('api')->languages()->getDefaultRecord();
 
         foreach ($attributes as $attribute) {

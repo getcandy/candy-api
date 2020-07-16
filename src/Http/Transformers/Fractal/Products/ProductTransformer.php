@@ -194,7 +194,7 @@ class ProductTransformer extends BaseTransformer
      */
     public function includeChannels(Product $product)
     {
-        $channels = app('api')->channels()->getChannelsWithAvailability($product, 'products');
+        $channels = GetCandy::channels()->getChannelsWithAvailability($product, 'products');
 
         return $this->collection($channels, new ChannelTransformer);
     }
