@@ -29,6 +29,7 @@ class GetCandyTest extends TestCase
             'currencies',
             'customerGroups',
             'orders',
+            'payment_types',
             'products',
             'productFamilies',
             'productVariants',

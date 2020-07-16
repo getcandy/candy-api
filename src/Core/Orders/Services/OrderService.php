@@ -673,9 +673,9 @@ class OrderService extends BaseService implements OrderServiceInterface
         $order->save();
 
         if (! empty($data['payment_type_id'])) {
-            $type = app('api')->paymentTypes()->getByHashedId($data['payment_type_id']);
+            $type = GetCandy::paymentTypes()->getByHashedId($data['payment_type_id']);
         } elseif (! empty($data['payment_type'])) {
-            $type = app('api')->paymentTypes()->getByHandle($data['payment_type']);
+            $type = GetCandy::paymentTypes()->getByHandle($data['payment_type']);
         } else {
             $type = null;
         }
