@@ -5,6 +5,7 @@ namespace GetCandy\Api\Core\Search\Factories;
 use CurrencyConverter;
 use Elastica\Exception\InvalidException;
 use Elastica\ResultSet;
+use GetCandy;
 use GetCandy\Api\Core\Categories\Models\Category;
 use GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface;
 use GetCandy\Api\Core\Search\Interfaces\SearchResultInterface;
@@ -349,7 +350,7 @@ class SearchResultFactory implements SearchResultInterface
         $aggs = $this->results->getAggregations();
 
         // Get our filterable attributes;
-        $attributes = app('api')->attributes()->getFilterable();
+        $attributes = GetCandy::attributes()->getFilterable();
 
         $results = [];
 

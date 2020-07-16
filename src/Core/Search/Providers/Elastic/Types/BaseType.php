@@ -3,6 +3,7 @@
 namespace GetCandy\Api\Core\Search\Providers\Elastic\Types;
 
 use Carbon\Carbon;
+use GetCandy;
 use GetCandy\Api\Core\Scopes\ChannelScope;
 use GetCandy\Api\Core\Scopes\CustomerGroupScope;
 use GetCandy\Api\Core\Search\Indexable;
@@ -256,7 +257,7 @@ abstract class BaseType
 
     public function getMapping()
     {
-        $attributes = app('api')->attributes()->all()->reject(function ($attribute) {
+        $attributes = GetCandy::attributes()->all()->reject(function ($attribute) {
             return $attribute->system;
         })->mapWithKeys(function ($attribute) {
             $payload = [];

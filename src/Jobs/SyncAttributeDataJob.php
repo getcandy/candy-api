@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Jobs;
 
+use GetCandy;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -44,7 +45,7 @@ class SyncAttributeDataJob implements ShouldQueue
      */
     public function handle()
     {
-        $attributes = app('api')->attributes()->getAttributables($this->ids, $this->type);
+        $attributes = GetCandy::attributes()->getAttributables($this->ids, $this->type);
         foreach ($attributes as $attribute) {
             foreach ($attribute->attributables as $record) {
                 $model = $record->attributable;

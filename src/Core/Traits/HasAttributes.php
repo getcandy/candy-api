@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Traits;
 
+use GetCandy;
 use GetCandy\Api\Core\Attributes\Models\Attribute;
 use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
 use GetCandy\Api\Core\Channels\Interfaces\ChannelFactoryInterface;
@@ -135,7 +136,7 @@ trait HasAttributes
     {
         $mapping = $this->getDataMapping();
 
-        $attributes = app('api')->attributes()->getHandles();
+        $attributes = GetCandy::attributes()->getHandles();
         $attributeData = [];
         $assigned = [];
         foreach ($attributes as $attribute) {

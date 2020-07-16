@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Search\Providers\Elastic;
 
+use GetCandy;
 use GetCandy\Api\Http\Resources\Attributes\AttributeResource;
 use GetCandy\Api\Http\Resources\Categories\CategoryResource;
 use Illuminate\Support\Arr;
@@ -19,7 +20,7 @@ class AggregationResolver
      */
     public function getAggregatedAttributes(array $handles)
     {
-        return app('api')->attributes()->getByHandles($handles);
+        return GetCandy::attributes()->getByHandles($handles);
     }
 
     /**

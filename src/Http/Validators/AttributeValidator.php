@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Validators;
 
+use GetCandy;
 class AttributeValidator
 {
     /**
@@ -20,7 +21,7 @@ class AttributeValidator
         }
         $attributeId = empty($parameters[1]) ? null : $parameters[1];
 
-        return app('api')->attributes()->nameExistsInGroup($value, $parameters[0], $attributeId);
+        return GetCandy::attributes()->nameExistsInGroup($value, $parameters[0], $attributeId);
     }
 
     public function validateData($attribute, $value, $parameters, $validator)
@@ -30,6 +31,6 @@ class AttributeValidator
         }
         $classname = camel_case($parameters[0]);
 
-        return app('api')->{$classname}()->validateAttributeData($value);
+        return GetCandy::{$classname}()->validateAttributeData($value);
     }
 }

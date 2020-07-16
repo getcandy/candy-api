@@ -3,6 +3,7 @@
 namespace GetCandy\Api\Core\Scaffold;
 
 use Carbon\Carbon;
+use GetCandy;
 use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
 use Illuminate\Database\Eloquent\Model;
 
@@ -233,7 +234,7 @@ abstract class BaseService
         $model = $this->getByHashedId($id);
         $updatedData = $model->attribute_data;
         foreach ($data['attributes'] as $attribute) {
-            $ids[] = app('api')->attributes()->getDecodedId($attribute);
+            $ids[] = GetCandy::attributes()->getDecodedId($attribute);
         }
         $model->attributes()->sync($ids);
 

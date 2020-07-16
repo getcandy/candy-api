@@ -13,6 +13,7 @@ use GetCandy\Api\Http\Middleware\SetTaxMiddleware;
 use GetCandy\Api\Core\Currencies\CurrencyConverter;
 use GetCandy\Api\Core\Users\Contracts\UserContract;
 use GetCandy\Api\Http\Middleware\SetCustomerGroups;
+use GetCandy\Api\Providers\AttributeServiceProvider;
 use GetCandy\Api\Http\Middleware\SetLocaleMiddleware;
 use GetCandy\Api\Http\Middleware\SetChannelMiddleware;
 use GetCandy\Api\Console\Commands\ScoreProductsCommand;
@@ -50,6 +51,7 @@ class ApiServiceProvider extends ServiceProvider
     {
         $providers = [
             ActivityLogServiceProvider::class,
+            AttributeServiceProvider::class,
             AssetServiceProvider::class,
             CategoryServiceProvider::class,
             ChannelServiceProvider::class,
