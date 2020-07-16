@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Assets\Drivers;
 
+use GetCandy;
 use GetCandy\Api\Core\Assets\Contracts\AssetDriverContract;
 use GetCandy\Api\Core\Assets\Jobs\GenerateTransforms;
 use Image as InterventionImage;
@@ -18,10 +19,10 @@ class Image extends BaseUploadDriver implements AssetDriverContract
      */
     public function process(array $data, $model = null)
     {
-        $assetSources = app('api')->assetSources();
+        $assetSources = GetCandy::assetSources();
 
         if ($model) {
-            $source = app('api')->assetSources()->getByHandle($model->settings['asset_source']);
+            $source = GetCandy::assetSources()->getByHandle($model->settings['asset_source']);
         } else {
             $source = $assetSources->getDefaultRecord();
         }

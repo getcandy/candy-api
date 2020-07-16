@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Assets\Drivers;
 
+use GetCandy;
 use Carbon\Carbon;
 use GetCandy\Api\Core\Assets\Models\Asset;
 use Symfony\Component\Finder\SplFileInfo;
@@ -84,7 +85,7 @@ abstract class BaseUploadDriver
      */
     public function process(array $data, $model)
     {
-        $source = app('api')->assetSources()->getByHandle($model->settings['asset_source']);
+        $source = GetCandy::assetSources()->getByHandle($model->settings['asset_source']);
         $asset = $this->prepare($data, $source);
         $data['file']->storeAs($asset->location, $asset->filename, $source->disk);
         $model->assets()->save($asset);
