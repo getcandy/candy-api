@@ -27,6 +27,7 @@ class GetCandyTest extends TestCase
             'customerGroups',
             'products',
             'tags',
+            'users',
         ];
 
         foreach ($services as $service) {

@@ -158,7 +158,7 @@ class BasketService extends BaseService
     public function addUser($basketId, $userId)
     {
         $basket = $this->getByHashedId($basketId);
-        $user = app('api')->users()->getByHashedId($userId);
+        $user = GetCandy::users()->getByHashedId($userId);
         $basket->user()->associate($user);
         $basket->save();
 

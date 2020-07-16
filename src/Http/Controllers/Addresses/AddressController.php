@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Controllers\Addresses;
 
+use GetCandy;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Transformers\Fractal\Addresses\AddressTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -29,7 +30,7 @@ class AddressController extends BaseController
             } else {
                 $id = $authUser->encodedId();
             }
-            $user = app('api')->users()->getByHashedId($id);
+            $user = GetCandy::users()->getByHashedId($id);
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }

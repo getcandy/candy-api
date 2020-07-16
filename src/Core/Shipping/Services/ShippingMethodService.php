@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Shipping\Services;
 
+use GetCandy;
 use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
 use GetCandy\Api\Core\Baskets\Services\BasketService;
 use GetCandy\Api\Core\Scaffold\BaseService;
@@ -217,7 +218,7 @@ class ShippingMethodService extends BaseService
         $method->users()->detach();
 
         $method->users()->attach(
-            app('api')->users()->getDecodedIds($users)
+            GetCandy::users()->getDecodedIds($users)
         );
 
         return $method;
@@ -232,7 +233,7 @@ class ShippingMethodService extends BaseService
      */
     public function deleteUser($methodId, $userId)
     {
-        $user = app('api')->users()->getDecodedId($userId);
+        $user = GetCandy::users()->getDecodedId($userId);
         $method = $this->getByHashedId($methodId);
         $method->users()->detach($user);
 

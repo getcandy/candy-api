@@ -21,7 +21,7 @@ class CustomerService extends BaseService
      */
     public function register(array $data)
     {
-        $user = app('api')->users()->create($data);
+        $user = GetCandy::users()->create($data);
         $user->assignRole('customer');
         $retail = GetCandy::customerGroups()->getDefaultRecord();
         $user->groups()->sync([$retail->id]);
@@ -47,7 +47,7 @@ class CustomerService extends BaseService
 
     public function update($hashedId, array $data)
     {
-        $user = app('api')->users()->getByHashedId($id);
+        $user = GetCandy::users()->getByHashedId($id);
 
         if (! empty($data['customer_groups'])) {
             $groups = GetCandy::customerGroups()->getDecodedIds($data['customer_groups']);

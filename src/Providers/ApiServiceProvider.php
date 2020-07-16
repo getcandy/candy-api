@@ -8,6 +8,7 @@ use GetCandy\Api\Core\Factory;
 use GetCandy\Api\Core\GetCandy;
 use Illuminate\Support\ServiceProvider;
 use GetCandy\Api\Providers\TagServiceProvider;
+use GetCandy\Api\Providers\UserServiceProvider;
 use GetCandy\Api\Core\Users\Services\UserService;
 use GetCandy\Api\Http\Middleware\SetTaxMiddleware;
 use GetCandy\Api\Core\Currencies\CurrencyConverter;
@@ -72,6 +73,7 @@ class ApiServiceProvider extends ServiceProvider
             UtilServiceProvider::class,
             ReportsServiceProvider::class,
             RecycleBinServiceProvider::class,
+            UserServiceProvider::class
         ];
         foreach ($providers as $provider) {
             $this->app->register($provider, true);
