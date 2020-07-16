@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Requests\Baskets;
 
+use GetCandy;
 use GetCandy\Api\Http\Requests\FormRequest;
 
 class CreateRequest extends FormRequest
@@ -29,7 +30,7 @@ class CreateRequest extends FormRequest
             'basket_id' => 'hashid_is_valid:baskets',
         ];
 
-        $variants = app('api')->productVariants()->getByHashedIds(
+        $variants = GetCandy::productVariants()->getByHashedIds(
             collect($this->variants)->pluck('id')->toArray()
         );
 

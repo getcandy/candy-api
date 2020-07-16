@@ -205,7 +205,7 @@ class ProductTransformer extends BaseTransformer
      */
     public function includeCustomerGroups(Product $product)
     {
-        $groups = app('api')->customerGroups()->getGroupsWithAvailability($product, 'products');
+        $groups = GetCandy::customerGroups()->getGroupsWithAvailability($product, 'products');
 
         return $this->collection($groups, new CustomerGroupTransformer);
     }

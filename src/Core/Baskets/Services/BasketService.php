@@ -3,6 +3,7 @@
 namespace GetCandy\Api\Core\Baskets\Services;
 
 use Carbon\Carbon;
+use GetCandy;
 use GetCandy\Api\Core\Auth\Models\User;
 use GetCandy\Api\Core\Baskets\Events\BasketStoredEvent;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketFactoryInterface;
@@ -302,7 +303,7 @@ class BasketService extends BaseService
 
     protected function remapLines($basket, $variants = [])
     {
-        $service = app('api')->productVariants();
+        $service = GetCandy::productVariants();
 
         $collectedVariants = [];
 

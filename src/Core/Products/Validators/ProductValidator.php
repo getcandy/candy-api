@@ -2,11 +2,12 @@
 
 namespace GetCandy\Api\Core\Products\Validators;
 
+use GetCandy;
 class ProductValidator
 {
     public function available($attribute, $value, $parameter, $validator)
     {
-        $variant = app('api')->productVariants()->getByHashedId($value);
+        $variant = GetCandy::productVariants()->getByHashedId($value);
 
         if (! $variant) {
             return false;

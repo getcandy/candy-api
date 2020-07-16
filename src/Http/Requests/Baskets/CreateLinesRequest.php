@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Requests\Baskets;
 
+use GetCandy;
 use GetCandy\Api\Http\Requests\FormRequest;
 
 class CreateLinesRequest extends FormRequest
@@ -28,7 +29,7 @@ class CreateLinesRequest extends FormRequest
             'variants' => 'array|unique_lines',
         ];
 
-        $variants = app('api')->productVariants()->getByHashedIds(
+        $variants = GetCandy::productVariants()->getByHashedIds(
             collect($this->variants)->pluck('id')->toArray()
         );
 

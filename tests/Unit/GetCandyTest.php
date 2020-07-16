@@ -24,6 +24,7 @@ class GetCandyTest extends TestCase
             'assetSources',
             'channels',
             'customerGroups',
+            'products',
             'tags',
         ];
 
