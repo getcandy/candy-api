@@ -12,6 +12,7 @@ use GetCandy\Api\Core\Products\Factories\ProductFactory;
 use GetCandy\Api\Core\Products\Observers\ProductObserver;
 use GetCandy\Api\Core\Products\Interfaces\ProductInterface;
 use GetCandy\Api\Core\Products\Versioning\ProductVersioner;
+use GetCandy\Api\Core\Products\Services\ProductFamilyService;
 use GetCandy\Api\Core\Products\Services\ProductVariantService;
 use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
 use GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface;
@@ -51,6 +52,10 @@ class ProductServiceProvider extends ServiceProvider
 
         $this->app->bind('getcandy.products', function ($app) {
             return $app->make(ProductService::class);
+        });
+
+        $this->app->bind('getcandy.product_families', function ($app) {
+            return $app->make(ProductFamilyService::class);
         });
     }
 }

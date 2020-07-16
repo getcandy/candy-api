@@ -106,7 +106,7 @@ class ProductService extends BaseService
         }
 
         if (! empty($data['family_id'])) {
-            $family = app('api')->productFamilies()->getByHashedId($data['family_id']);
+            $family = GetCandy::productFamilies()->getByHashedId($data['family_id']);
             $family->products()->save($product);
         }
 
@@ -175,7 +175,7 @@ class ProductService extends BaseService
         // $product->layout()->associate($layout);
 
         if (! empty($data['family_id'])) {
-            $family = app('api')->productFamilies()->getByHashedId($data['family_id']);
+            $family = GetCandy::productFamilies()->getByHashedId($data['family_id']);
             if (! $family) {
                 abort(422);
             }
