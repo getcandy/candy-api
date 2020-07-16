@@ -155,7 +155,7 @@ class OrderService extends BaseService implements OrderServiceInterface
     {
         $order = $this->getByHashedId($orderId);
 
-        $price = app('api')->shippingPrices()->getByHashedId($shippingPriceId);
+        $price = GetCandy::shippingPrices()->getByHashedId($shippingPriceId);
 
         $updateFields = [
             'shipping_method' => $price->method->name,
