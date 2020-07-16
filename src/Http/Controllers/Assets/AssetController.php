@@ -53,7 +53,7 @@ class AssetController extends BaseController
     {
         $parent = null;
         if ($request->parent_id) {
-            $parent = app('api')->{$request->parent}()->getByHashedId($request->parent_id, true);
+            $parent = GetCandy::{$request->parent}()->getByHashedId($request->parent_id, true);
         }
 
         $data = $request->all();
