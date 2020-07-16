@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Validators;
 
+use GetCandy\Api\Exceptions\InvalidServiceException;
 class BaseValidator
 {
     /**
@@ -21,10 +22,11 @@ class BaseValidator
 
         $method = str_plural($parameters[0]);
 
-        if (! property_exists(app('api'), $method)) {
+        try {
+            $service = GetCandy::{$method}();
+            return $service->getEnabled($value, isset($parameters[1]) ? $parameters[1] : null);
+        } catch (InvalidServiceException $e) {
             return false;
         }
-
-        return app('api')->{$method}()->getEnabled($value, isset($parameters[1]) ? $parameters[1] : null);
     }
 }

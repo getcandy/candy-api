@@ -37,6 +37,7 @@ class GetCandyTest extends TestCase
             'pages',
             'payment_types',
             'products',
+            'productAssociations',
             'productFamilies',
             'productVariants',
             'associationGroups',

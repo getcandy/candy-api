@@ -150,7 +150,7 @@ class SearchController extends BaseController
             return $this->errorInternalError($e->getMessage());
         }
 
-        $results = app('api')->search()->getSuggestResults($results, $request->type);
+        $results = GetCandy::search()->getSuggestResults($results, $request->type);
 
         return $this->respondWithCollection($results, new SearchSuggestionTransformer);
     }

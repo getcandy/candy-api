@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Controllers\Products;
 
+use GetCandy;
 use GetCandy\Api\Core\Products\Services\ProductChannelService;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Products\UpdateChannelRequest;
@@ -33,6 +34,6 @@ class ProductChannelController extends BaseController
      */
     public function destroy($product, DeleteRequest $request)
     {
-        $result = app('api')->productAssociations()->destroy($product, $request->associations);
+        $result = GetCandy::productAssociations()->destroy($product, $request->associations);
     }
 }

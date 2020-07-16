@@ -26,7 +26,7 @@ class HashidValidator
         if (class_exists($method)) {
             $result = (bool) (new $method)->decodeId($value);
         } else {
-            $result = app('api')->{camel_case($method)}()->existsByHashedId($value);
+            $result = GetCandy::{camel_case($method)}()->existsByHashedId($value);
         }
 
         if (is_array($value)) {

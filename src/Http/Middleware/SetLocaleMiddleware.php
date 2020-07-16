@@ -21,7 +21,9 @@ class SetLocaleMiddleware
     public function handle($request, Closure $next)
     {
         $locale = $request->header('accept-language');
+
         $defaultLanguage = GetCandy::languages()->getDefaultRecord()->lang;
+
 
         if (! $locale) {
             $locale = $defaultLanguage;

@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Controllers\Products;
 
+use GetCandy;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Products\Associations\CreateRequest;
 use GetCandy\Api\Http\Requests\Products\Associations\DeleteRequest;
@@ -18,7 +19,7 @@ class ProductAssociationController extends BaseController
      */
     public function store($product, CreateRequest $request)
     {
-        $result = app('api')->productAssociations()->store($product, $request->all());
+        $result = GetCandy::productAssociations()->store($product, $request->all());
 
         return new ProductAssociationCollection($result);
     }
@@ -32,7 +33,7 @@ class ProductAssociationController extends BaseController
      */
     public function destroy($product, DeleteRequest $request)
     {
-        $result = app('api')->productAssociations()->destroy($product, $request->associations);
+        $result = GetCandy::productAssociations()->destroy($product, $request->associations);
 
         return $this->responseWithNoContent();
     }
