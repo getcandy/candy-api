@@ -16,7 +16,7 @@ class AssociationGroupController extends BaseController
      */
     public function index(Request $request)
     {
-        $groups = app('api')->associationGroups()->getPaginatedData();
+        $groups = GetCandy::associationGroups()->getPaginatedData();
 
         return $this->respondWithCollection($groups, new AssociationGroupTransformer);
     }
