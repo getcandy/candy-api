@@ -333,7 +333,7 @@ class SearchResultFactory implements SearchResultInterface
             return $item['_id'];
         });
 
-        return app('api')->{str_plural($type)}()->getSearchedIds($ids, true);
+        return GetCandy::{str_plural($type)}()->getSearchedIds($ids, true);
     }
 
     /**
