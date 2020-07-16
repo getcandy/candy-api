@@ -13,7 +13,7 @@ class AddressController extends BaseController
     public function update($id, Request $request)
     {
         try {
-            $address = app('api')->addresses()->update($id, $request->all());
+            $address = GetCandy::addresses()->update($id, $request->all());
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
@@ -34,7 +34,7 @@ class AddressController extends BaseController
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
-        $address = app('api')->addresses()->create($user, $request->all());
+        $address = GetCandy::addresses()->create($user, $request->all());
 
         return $this->respondWithItem($address, new AddressTransformer);
     }
@@ -42,7 +42,7 @@ class AddressController extends BaseController
     public function destroy($id)
     {
         try {
-            $result = app('api')->addresses()->delete($id);
+            $result = GetCandy::addresses()->delete($id);
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
@@ -53,7 +53,7 @@ class AddressController extends BaseController
     public function makeDefault($id, Request $request)
     {
         try {
-            $address = app('api')->addresses()->makeDefault($id);
+            $address = GetCandy::addresses()->makeDefault($id);
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
@@ -64,7 +64,7 @@ class AddressController extends BaseController
     public function removeDefault($id, Request $request)
     {
         try {
-            $address = app('api')->addresses()->removeDefault($id);
+            $address = GetCandy::addresses()->removeDefault($id);
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }

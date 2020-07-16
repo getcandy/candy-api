@@ -12,6 +12,7 @@ use GetCandy\Api\Providers\UserServiceProvider;
 use GetCandy\Api\Core\Users\Services\UserService;
 use GetCandy\Api\Providers\LayoutServiceProvider;
 use GetCandy\Api\Http\Middleware\SetTaxMiddleware;
+use GetCandy\Api\Providers\AddressServiceProvider;
 use GetCandy\Api\Providers\SettingServiceProvider;
 use GetCandy\Api\Core\Currencies\CurrencyConverter;
 use GetCandy\Api\Core\Users\Contracts\UserContract;
@@ -54,6 +55,7 @@ class ApiServiceProvider extends ServiceProvider
     protected function loadProviders()
     {
         $providers = [
+            AddressServiceProvider::class,
             ActivityLogServiceProvider::class,
             AttributeServiceProvider::class,
             AssetServiceProvider::class,

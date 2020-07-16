@@ -445,7 +445,7 @@ class OrderService extends BaseService implements OrderServiceInterface
 
         // If this address doesn't exist, create it.
         if (! empty($data['address_id'])) {
-            $shipping = app('api')->addresses()->getByHashedId($data['address_id']);
+            $shipping = GetCandy::addresses()->getByHashedId($data['address_id']);
             $payload = $shipping->only([
                 'firstname',
                 'lastname',
@@ -462,7 +462,7 @@ class OrderService extends BaseService implements OrderServiceInterface
             $payload['phone'] = $data['phone'] ?? null;
             $data = $payload;
         } elseif ($user) {
-            app('api')->addresses()->addAddress($user, $data, $type);
+            GetCandy::addresses()->addAddress($user, $data, $type);
         }
 
         $this->setFields($order, $data, $type);
