@@ -12,15 +12,16 @@ use Tests\TestCase;
 class GetCandyTest extends TestCase
 {
     /**
- * @group core
- */
+     * @group core
+     */
     public function test_can_resolve_services()
     {
         $services = [
             'assets',
-            'channels',
             'assetTransforms',
             'assetSources',
+            'channels',
+            'tags',
         ];
 
         foreach ($services as $service) {

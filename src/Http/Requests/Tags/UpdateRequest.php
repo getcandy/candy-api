@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Requests\Tags;
 
+use GetCandy;
 use GetCandy\Api\Http\Requests\FormRequest;
 
 class UpdateRequest extends FormRequest
@@ -23,7 +24,7 @@ class UpdateRequest extends FormRequest
      */
     public function rules()
     {
-        $decodedId = app('api')->tags()->getDecodedId($this->tag);
+        $decodedId = GetCandy::tags()->getDecodedId($this->tag);
 
         return [
             'name' => 'required|array|valid_locales',
