@@ -41,6 +41,7 @@ class GetCandyTest extends TestCase
             'associationGroups',
             'routes',
             'roles',
+            'savedBaskets',
             'settings',
             'shippingPrices',
             'shippingMethods',

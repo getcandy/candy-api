@@ -9,6 +9,7 @@ use GetCandy\Api\Core\Baskets\Services\BasketService;
 use GetCandy\Api\Core\Baskets\Factories\BasketFactory;
 use GetCandy\Api\Core\Baskets\Services\BasketLineService;
 use GetCandy\Api\Core\Baskets\Factories\BasketLineFactory;
+use GetCandy\Api\Core\Baskets\Services\SavedBasketService;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketLineInterface;
 use GetCandy\Api\Core\Baskets\Factories\BasketDiscountFactory;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketFactoryInterface;
@@ -47,6 +48,9 @@ class BasketServiceProvider extends ServiceProvider
 
         $this->app->bind('getcandy.basket_lines', function ($app) {
             return $app->make(BasketLineService::class);
+        });
+        $this->app->bind('getcandy.saved_baskets', function ($app) {
+            return $app->make(SavedBasketService::class);
         });
 
         $this->app->singleton(BasketDiscountFactoryInterface::class, function ($app) {
