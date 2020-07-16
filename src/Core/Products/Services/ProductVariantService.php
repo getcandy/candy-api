@@ -70,11 +70,11 @@ class ProductVariantService extends BaseService
 
             if (! empty($newVariant['tax_id'])) {
                 $variant->tax()->associate(
-                    app('api')->taxes()->getByHashedId($newVariant['tax_id'])
+                    GetCandy::taxes()->getByHashedId($newVariant['tax_id'])
                 );
             } else {
                 $variant->tax()->associate(
-                    app('api')->taxes()->getDefaultRecord()
+                    GetCandy::taxes()->getDefaultRecord()
                 );
             }
 
@@ -170,7 +170,7 @@ class ProductVariantService extends BaseService
 
         if (! empty($data['tax_id'])) {
             $variant->tax()->associate(
-                app('api')->taxes()->getByHashedId($data['tax_id'])
+                GetCandy::taxes()->getByHashedId($data['tax_id'])
             );
         } else {
             $variant->tax()->dissociate();
@@ -237,7 +237,7 @@ class ProductVariantService extends BaseService
             $price['customer_group_id'] = GetCandy::customerGroups()->getDecodedId($price['customer_group_id']);
 
             if (! empty($price['tax_id'])) {
-                $price['tax_id'] = app('api')->taxes()->getDecodedId($price['tax_id']);
+                $price['tax_id'] = GetCandy::taxes()->getDecodedId($price['tax_id']);
             } else {
                 $price['tax_id'] = null;
             }

@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Controllers\Taxes;
 
+use GetCandy;
 use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Taxes\CreateRequest;
@@ -22,7 +23,7 @@ class TaxController extends BaseController
      */
     public function index(Request $request)
     {
-        $paginator = app('api')->taxes()->getPaginatedData($request->per_page);
+        $paginator = GetCandy::taxes()->getPaginatedData($request->per_page);
 
         return $this->respondWithCollection($paginator, new TaxTransformer);
     }
@@ -36,7 +37,7 @@ class TaxController extends BaseController
     public function show($id)
     {
         try {
-            $currency = app('api')->taxes()->getByHashedId($id);
+            $currency = GetCandy::taxes()->getByHashedId($id);
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
@@ -52,7 +53,7 @@ class TaxController extends BaseController
      */
     public function store(CreateRequest $request)
     {
-        $result = app('api')->taxes()->create($request->all());
+        $result = GetCandy::taxes()->create($request->all());
 
         return $this->respondWithItem($result, new TaxTransformer);
     }
@@ -67,7 +68,7 @@ class TaxController extends BaseController
     public function update($id, UpdateRequest $request)
     {
         try {
-            $result = app('api')->taxes()->update($id, $request->all());
+            $result = GetCandy::taxes()->update($id, $request->all());
         } catch (MinimumRecordRequiredException $e) {
             return $this->errorUnprocessable($e->getMessage());
         } catch (NotFoundHttpException $e) {
@@ -87,7 +88,7 @@ class TaxController extends BaseController
     public function destroy($id, DeleteRequest $request)
     {
         try {
-            $result = app('api')->taxes()->delete($id);
+            $result = GetCandy::taxes()->delete($id);
         } catch (MinimumRecordRequiredException $e) {
             return $this->errorUnprocessable($e->getMessage());
         } catch (NotFoundHttpException $e) {

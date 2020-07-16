@@ -3,6 +3,7 @@
 namespace GetCandy\Api\Http\Middleware;
 
 use Closure;
+use GetCandy;
 use GetCandy\Api\Core\Taxes\Interfaces\TaxCalculatorInterface;
 
 class SetTaxMiddleware
@@ -28,7 +29,7 @@ class SetTaxMiddleware
     {
         // if (! $request->excl_tax) {
         $this->tax->setTax(
-            app('api')->taxes()->getDefaultRecord()
+            GetCandy::taxes()->getDefaultRecord()
         );
         // }
 

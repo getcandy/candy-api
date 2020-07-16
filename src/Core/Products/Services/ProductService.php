@@ -229,12 +229,12 @@ class ProductService extends BaseService
 
         if (! empty($data['tax_id'])) {
             $variant->tax()->associate(
-                app('api')->taxes()->getByHashedId($data['tax_id'])
+                GetCandy::taxes()->getByHashedId($data['tax_id'])
             );
             $variant->save();
         } else {
             $variant->tax()->associate(
-                app('api')->taxes()->getDefaultRecord()
+                GetCandy::taxes()->getDefaultRecord()
             );
             $variant->save();
         }

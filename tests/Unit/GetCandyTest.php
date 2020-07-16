@@ -28,6 +28,7 @@ class GetCandyTest extends TestCase
             'products',
             'productVariants',
             'tags',
+            'taxes',
             'users',
             'layouts',
         ];

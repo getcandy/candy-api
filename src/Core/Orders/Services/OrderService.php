@@ -5,6 +5,7 @@ namespace GetCandy\Api\Core\Orders\Services;
 use Auth;
 use Carbon\Carbon;
 use DB;
+use GetCandy;
 use GetCandy\Api\Core\ActivityLog\Interfaces\ActivityLogFactoryInterface;
 use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Core\Baskets\Services\BasketService;
@@ -168,7 +169,7 @@ class OrderService extends BaseService implements OrderServiceInterface
 
         $basket = $this->baskets->getForOrder($order);
 
-        $tax = app('api')->taxes()->getDefaultRecord();
+        $tax = GetCandy::taxes()->getDefaultRecord();
 
         $rate = $this->calculator->get(
             $price->rate,
