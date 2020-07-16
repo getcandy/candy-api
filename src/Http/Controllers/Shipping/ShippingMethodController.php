@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Controllers\Shipping;
 
+use GetCandy;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Shipping\CreateRequest;
 use GetCandy\Api\Http\Requests\Shipping\UpdateRequest;
@@ -22,7 +23,7 @@ class ShippingMethodController extends BaseController
      */
     public function index(Request $request)
     {
-        $methods = app('api')->shippingMethods()->getPaginatedData($request->per_page, $request->current_page);
+        $methods = GetCandy::shippingMethods()->getPaginatedData($request->per_page, $request->current_page);
 
         return new ShippingMethodCollection($methods);
     }
@@ -37,7 +38,7 @@ class ShippingMethodController extends BaseController
     public function show($id, Request $request)
     {
         try {
-            $shipping = app('api')->shippingMethods()->getByHashedId($id, explode(',', $request->includes));
+            $shipping = GetCandy::shippingMethods()->getByHashedId($id, explode(',', $request->includes));
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
@@ -53,7 +54,7 @@ class ShippingMethodController extends BaseController
      */
     public function store(CreateRequest $request)
     {
-        $result = app('api')->shippingMethods()->create($request->all());
+        $result = GetCandy::shippingMethods()->create($request->all());
 
         return $this->respondWithItem($result, new ShippingMethodTransformer);
     }
@@ -61,7 +62,7 @@ class ShippingMethodController extends BaseController
     public function update($id, UpdateRequest $request)
     {
         try {
-            $result = app('api')->shippingMethods()->update($id, $request->all());
+            $result = GetCandy::shippingMethods()->update($id, $request->all());
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
@@ -71,21 +72,21 @@ class ShippingMethodController extends BaseController
 
     public function updateZones($id, Request $request)
     {
-        $method = app('api')->shippingMethods()->updateZones($id, $request->all());
+        $method = GetCandy::shippingMethods()->updateZones($id, $request->all());
 
         return $this->respondWithItem($method, new ShippingMethodTransformer);
     }
 
     public function updateUsers($id, Request $request)
     {
-        $method = app('api')->shippingMethods()->updateUsers($id, $request->users);
+        $method = GetCandy::shippingMethods()->updateUsers($id, $request->users);
 
         return $this->respondWithItem($method, new ShippingMethodTransformer);
     }
 
     public function deleteUser($methodId, $userId)
     {
-        $method = app('api')->shippingMethods()->deleteUser($methodId, $userId);
+        $method = GetCandy::shippingMethods()->deleteUser($methodId, $userId);
 
         return $this->respondWithItem($method, new ShippingMethodTransformer);
     }
@@ -93,7 +94,7 @@ class ShippingMethodController extends BaseController
     public function destroy($methodId)
     {
         try {
-            $result = app('api')->shippingMethods()->delete($methodId);
+            $result = GetCandy::shippingMethods()->delete($methodId);
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
