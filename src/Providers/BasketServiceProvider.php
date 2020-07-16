@@ -7,6 +7,7 @@ use Illuminate\Support\ServiceProvider;
 use GetCandy\Api\Core\Baskets\BasketCriteria;
 use GetCandy\Api\Core\Baskets\Services\BasketService;
 use GetCandy\Api\Core\Baskets\Factories\BasketFactory;
+use GetCandy\Api\Core\Baskets\Services\BasketLineService;
 use GetCandy\Api\Core\Baskets\Factories\BasketLineFactory;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketLineInterface;
 use GetCandy\Api\Core\Baskets\Factories\BasketDiscountFactory;
@@ -42,6 +43,10 @@ class BasketServiceProvider extends ServiceProvider
 
         $this->app->bind('getcandy.baskets', function ($app) {
             return $app->make(BasketService::class);
+        });
+
+        $this->app->bind('getcandy.basket_lines', function ($app) {
+            return $app->make(BasketLineService::class);
         });
 
         $this->app->singleton(BasketDiscountFactoryInterface::class, function ($app) {

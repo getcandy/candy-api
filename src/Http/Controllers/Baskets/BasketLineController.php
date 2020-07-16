@@ -27,7 +27,7 @@ class BasketLineController extends BaseController
     public function __construct(BasketLineFactory $factory)
     {
         $this->factory = $factory;
-        $this->basketLines = app('api')->basketLines();
+        $this->basketLines = GetCandy::basketLines();
         $this->basketLines->setIncludes(Request::get('include'));
     }
 

@@ -24,6 +24,7 @@ class GetCandyTest extends TestCase
             'assetTransforms',
             'assetSources',
             'baskets',
+            'basketLines',
             'categories',
             'channels',
             'countries',
