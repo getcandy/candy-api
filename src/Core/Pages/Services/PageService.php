@@ -37,7 +37,7 @@ class PageService extends BaseService
          * Figure out which language this page belongs to
          */
         if (! $languageCode instanceof Model) {
-            $language = app('api')->languages()->getEnabledByCode($languageCode);
+            $language = GetCandy::languages()->getEnabledByCode($languageCode);
         } else {
             $language = $languageCode;
         }

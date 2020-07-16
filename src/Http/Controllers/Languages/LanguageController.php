@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Controllers\Languages;
 
+use GetCandy;
 use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Languages\CreateRequest;
@@ -24,7 +25,7 @@ class LanguageController extends BaseController
      */
     public function index(Request $request)
     {
-        $paginator = app('api')->languages()->getPaginatedData($request->per_page);
+        $paginator = GetCandy::languages()->getPaginatedData($request->per_page);
 
         return new LanguageCollection($paginator);
     }
@@ -38,7 +39,7 @@ class LanguageController extends BaseController
     public function show($id)
     {
         try {
-            $language = app('api')->languages()->getByHashedId($id);
+            $language = GetCandy::languages()->getByHashedId($id);
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
@@ -54,7 +55,7 @@ class LanguageController extends BaseController
      */
     public function store(CreateRequest $request)
     {
-        $result = app('api')->languages()->create($request->all());
+        $result = GetCandy::languages()->create($request->all());
 
         return new LanguageResource($result);
     }
@@ -69,7 +70,7 @@ class LanguageController extends BaseController
     public function update($id, UpdateRequest $request)
     {
         try {
-            $result = app('api')->languages()->update($id, $request->all());
+            $result = GetCandy::languages()->update($id, $request->all());
         } catch (MinimumRecordRequiredException $e) {
             return $this->errorUnprocessable($e->getMessage());
         } catch (NotFoundHttpException $e) {
@@ -89,7 +90,7 @@ class LanguageController extends BaseController
     public function destroy($id, DeleteRequest $request)
     {
         try {
-            $result = app('api')->languages()->delete($id);
+            $result = GetCandy::languages()->delete($id);
         } catch (MinimumRecordRequiredException $e) {
             return $this->errorUnprocessable($e->getMessage());
         } catch (NotFoundHttpException $e) {

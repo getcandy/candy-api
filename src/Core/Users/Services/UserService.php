@@ -95,9 +95,9 @@ class UserService extends BaseService implements UserContract
         // $user->title = $data['title'];
 
         if (empty($data['language'])) {
-            $lang = app('api')->languages()->getDefaultRecord();
+            $lang = GetCandy::languages()->getDefaultRecord();
         } else {
-            $lang = app('api')->languages()->getEnabledByLang($data['language']);
+            $lang = GetCandy::languages()->getEnabledByLang($data['language']);
         }
 
         $user->language()->associate($lang);

@@ -119,7 +119,7 @@ trait HasAttributes
         $structure = [];
         $languagesArray = [];
         // Get our languages
-        $languages = app('api')->languages()->getDataList();
+        $languages = GetCandy::languages()->getDataList();
         foreach ($languages as $lang) {
             $languagesArray[$lang->lang] = null;
         }
