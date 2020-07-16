@@ -24,7 +24,6 @@ class SetLocaleMiddleware
 
         $defaultLanguage = GetCandy::languages()->getDefaultRecord()->lang;
 
-
         if (! $locale) {
             $locale = $defaultLanguage;
         } else {

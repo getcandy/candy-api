@@ -2,12 +2,12 @@
 
 namespace GetCandy\Api\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use GetCandy\Api\Core\Search\SearchContract;
-use GetCandy\Api\Core\Search\Services\SearchService;
-use GetCandy\Api\Core\Search\Services\SavedSearchService;
 use GetCandy\Api\Core\Search\Factories\SearchResultFactory;
 use GetCandy\Api\Core\Search\Interfaces\SearchResultInterface;
+use GetCandy\Api\Core\Search\SearchContract;
+use GetCandy\Api\Core\Search\Services\SavedSearchService;
+use GetCandy\Api\Core\Search\Services\SearchService;
+use Illuminate\Support\ServiceProvider;
 
 class SearchServiceProvider extends ServiceProvider
 {

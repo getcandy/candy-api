@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use GetCandy\Api\Core\Tags\Services\TagService;
+use Illuminate\Support\ServiceProvider;
 
 class TagServiceProvider extends ServiceProvider
 {

@@ -112,6 +112,7 @@ class GetCandy
     {
         try {
             $resolvingName = Str::snake($name);
+
             return app("getcandy.{$resolvingName}");
         } catch (\Exception $e) {
             throw new InvalidServiceException("Service \"{$name}\" doesn't exist");

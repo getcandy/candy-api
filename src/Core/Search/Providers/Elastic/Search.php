@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Core\Search\Providers\Elastic;
 
-use GetCandy;
 use Elastica\Query;
 use Elastica\Query\Wildcard;
 use Elastica\Suggest;
+use GetCandy;
 use GetCandy\Api\Core\Search\ClientContract;
 use GetCandy\Api\Core\Search\Providers\Elastic\Sorts\CategorySort;
 

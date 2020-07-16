@@ -6,6 +6,7 @@ use GetCandy\Api\Core\Channels\Factories\ChannelFactory;
 use GetCandy\Api\Core\Channels\Interfaces\ChannelFactoryInterface;
 use GetCandy\Api\Core\Channels\Services\ChannelService;
 use Illuminate\Support\ServiceProvider;
+
 class ChannelServiceProvider extends ServiceProvider
 {
     public function register()

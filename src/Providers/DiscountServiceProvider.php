@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use GetCandy\Api\Core\Discounts\DiscountFactory;
 use GetCandy\Api\Core\Discounts\DiscountInterface;
 use GetCandy\Api\Core\Discounts\Services\DiscountService;
+use Illuminate\Support\ServiceProvider;
 
 class DiscountServiceProvider extends ServiceProvider
 {

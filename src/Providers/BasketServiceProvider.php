@@ -2,19 +2,19 @@
 
 namespace GetCandy\Api\Providers;
 
-use Validator;
-use Illuminate\Support\ServiceProvider;
 use GetCandy\Api\Core\Baskets\BasketCriteria;
-use GetCandy\Api\Core\Baskets\Services\BasketService;
-use GetCandy\Api\Core\Baskets\Factories\BasketFactory;
-use GetCandy\Api\Core\Baskets\Services\BasketLineService;
-use GetCandy\Api\Core\Baskets\Factories\BasketLineFactory;
-use GetCandy\Api\Core\Baskets\Services\SavedBasketService;
-use GetCandy\Api\Core\Baskets\Interfaces\BasketLineInterface;
 use GetCandy\Api\Core\Baskets\Factories\BasketDiscountFactory;
-use GetCandy\Api\Core\Baskets\Interfaces\BasketFactoryInterface;
+use GetCandy\Api\Core\Baskets\Factories\BasketFactory;
+use GetCandy\Api\Core\Baskets\Factories\BasketLineFactory;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketCriteriaInterface;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketDiscountFactoryInterface;
+use GetCandy\Api\Core\Baskets\Interfaces\BasketFactoryInterface;
+use GetCandy\Api\Core\Baskets\Interfaces\BasketLineInterface;
+use GetCandy\Api\Core\Baskets\Services\BasketLineService;
+use GetCandy\Api\Core\Baskets\Services\BasketService;
+use GetCandy\Api\Core\Baskets\Services\SavedBasketService;
+use Illuminate\Support\ServiceProvider;
+use Validator;
 
 class BasketServiceProvider extends ServiceProvider
 {
