@@ -2,11 +2,13 @@ name: PHP unit Tests
 on:
   push:
     branches:
+    - develop
     - master
     - feat/*
     - release/*
   pull_request:
     branches:
+      - develop
       - master
       - feat/*
       - release/*
