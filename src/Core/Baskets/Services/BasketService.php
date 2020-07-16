@@ -66,7 +66,7 @@ class BasketService extends BaseService
         }
 
         if (! $basket->currency) {
-            $basket->currency = app('api')->currencies()->getDefaultRecord()->code;
+            $basket->currency =GetCandy::currencies()->getDefaultRecord()->code;
         }
 
         $basket->save();
@@ -220,7 +220,7 @@ class BasketService extends BaseService
             $basket->currency = $data['currency'];
         }
         if (is_null($basket->currency)) {
-            $basket->currency = app('api')->currencies()->getDefaultRecord()->code;
+            $basket->currency =GetCandy::currencies()->getDefaultRecord()->code;
         }
 
         return $basket;

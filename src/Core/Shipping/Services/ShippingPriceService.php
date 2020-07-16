@@ -24,7 +24,7 @@ class ShippingPriceService extends BaseService
     public function create($shippingMethodId, array $data)
     {
         $method = app('api')->shippingMethods()->getByHashedId($shippingMethodId);
-        $currency = app('api')->currencies()->getByHashedId($data['currency_id']);
+        $currency =GetCandy::currencies()->getByHashedId($data['currency_id']);
         $zone = app('api')->shippingZones()->getByHashedId($data['zone_id']);
         $price = new ShippingPrice;
         $price->fill($data);
@@ -51,7 +51,7 @@ class ShippingPriceService extends BaseService
     public function update($id, array $data)
     {
         $price = $this->getByHashedId($id);
-        $currency = app('api')->currencies()->getByHashedId($data['currency_id']);
+        $currency =GetCandy::currencies()->getByHashedId($data['currency_id']);
 
         // event(new AttributableSavedEvent($product));
 

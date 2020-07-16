@@ -16,7 +16,14 @@ class CurrencyServiceProvider extends ServiceProvider
             return $app->make(CurrencyConverter::class);
         });
 
+        /**
+         * @deprecated
+         */
         $this->app->bind(CurrencyServiceInterface::class, function ($app) {
+            return $app->make(CurrencyService::class);
+        });
+
+        $this->app->bind('getcandy.currencies', function ($app) {
             return $app->make(CurrencyService::class);
         });
     }
