@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use GetCandy\Api\Core\Attributes\Services\AttributeService;
 use GetCandy\Api\Core\Attributes\Services\AttributeGroupService;
+use GetCandy\Api\Core\Attributes\Services\AttributeService;
+use Illuminate\Support\ServiceProvider;
 
 class AttributeServiceProvider extends ServiceProvider
 {

@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use GetCandy\Api\Core\Shipping\ShippingCalculator;
-use GetCandy\Api\Core\Shipping\Services\ShippingZoneService;
 use GetCandy\Api\Core\Shipping\Services\ShippingPriceService;
+use GetCandy\Api\Core\Shipping\Services\ShippingZoneService;
+use GetCandy\Api\Core\Shipping\ShippingCalculator;
+use Illuminate\Support\ServiceProvider;
 
 class ShippingServiceProvider extends ServiceProvider
 {

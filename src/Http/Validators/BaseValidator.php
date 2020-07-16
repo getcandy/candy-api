@@ -3,6 +3,7 @@
 namespace GetCandy\Api\Http\Validators;
 
 use GetCandy\Api\Exceptions\InvalidServiceException;
+
 class BaseValidator
 {
     /**
@@ -24,6 +25,7 @@ class BaseValidator
 
         try {
             $service = GetCandy::{$method}();
+
             return $service->getEnabled($value, isset($parameters[1]) ? $parameters[1] : null);
         } catch (InvalidServiceException $e) {
             return false;

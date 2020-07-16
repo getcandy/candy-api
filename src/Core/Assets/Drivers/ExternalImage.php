@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Assets\Drivers;
 
-use GetCandy;
 use Carbon\Carbon;
+use GetCandy;
 use GetCandy\Api\Core\Assets\Jobs\GenerateTransforms;
 use GetCandy\Api\Core\Assets\Models\Asset;
 use Illuminate\Database\Eloquent\Model;

@@ -3,14 +3,11 @@
 namespace GetCandy\Api\Core\Products\Drafting;
 
 use DB;
-use Versioning;
-use GetCandy\Api\Core\Routes\Models\Route;
-use Illuminate\Database\Eloquent\Model;
-use GetCandy\Api\Core\Products\Models\Product;
-use GetCandy\Api\Core\Products\Models\ProductVariant;
-use NeonDigital\Drafting\Interfaces\DrafterInterface;
-use GetCandy\Api\Core\Products\Models\ProductAssociation;
 use GetCandy\Api\Core\Products\Events\ProductCreatedEvent;
+use GetCandy\Api\Core\Products\Models\Product;
+use Illuminate\Database\Eloquent\Model;
+use NeonDigital\Drafting\Interfaces\DrafterInterface;
+use Versioning;
 
 class ProductDrafter implements DrafterInterface
 {

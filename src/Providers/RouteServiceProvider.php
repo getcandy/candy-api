@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use GetCandy\Api\Core\Routes\Services\RouteService;
+use Illuminate\Support\ServiceProvider;
 
 class RouteServiceProvider extends ServiceProvider
 {

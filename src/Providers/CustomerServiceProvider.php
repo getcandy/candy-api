@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use GetCandy\Api\Core\Customers\Services\CustomerService;
 use GetCandy\Api\Core\Customers\Services\CustomerGroupService;
+use GetCandy\Api\Core\Customers\Services\CustomerService;
+use Illuminate\Support\ServiceProvider;
 
 class CustomerServiceProvider extends ServiceProvider
 {

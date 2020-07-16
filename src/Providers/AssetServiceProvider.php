@@ -2,12 +2,12 @@
 
 namespace GetCandy\Api\Providers;
 
-use Versioning;
-use Illuminate\Support\ServiceProvider;
 use GetCandy\Api\Core\Assets\Services\AssetService;
-use GetCandy\Api\Core\Assets\Versioning\AssetVersioner;
 use GetCandy\Api\Core\Assets\Services\AssetSourceService;
 use GetCandy\Api\Core\Assets\Services\AssetTransformService;
+use GetCandy\Api\Core\Assets\Versioning\AssetVersioner;
+use Illuminate\Support\ServiceProvider;
+use Versioning;
 
 class AssetServiceProvider extends ServiceProvider
 {

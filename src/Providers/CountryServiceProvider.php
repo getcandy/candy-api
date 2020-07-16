@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use GetCandy\Api\Core\Countries\Services\CountryService;
+use Illuminate\Support\ServiceProvider;
 
 class CountryServiceProvider extends ServiceProvider
 {

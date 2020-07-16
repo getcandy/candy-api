@@ -3,23 +3,23 @@
 namespace GetCandy\Api\Providers;
 
 use Drafting;
-use Versioning;
-use Illuminate\Support\ServiceProvider;
-use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Products\Drafting\ProductDrafter;
-use GetCandy\Api\Core\Products\Services\ProductService;
 use GetCandy\Api\Core\Products\Factories\ProductFactory;
-use GetCandy\Api\Core\Products\Observers\ProductObserver;
-use GetCandy\Api\Core\Products\Interfaces\ProductInterface;
-use GetCandy\Api\Core\Products\Versioning\ProductVersioner;
-use GetCandy\Api\Core\Products\Services\ProductFamilyService;
-use GetCandy\Api\Core\Products\Services\ProductVariantService;
 use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
+use GetCandy\Api\Core\Products\Interfaces\ProductInterface;
+use GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface;
+use GetCandy\Api\Core\Products\Models\Product;
+use GetCandy\Api\Core\Products\Observers\ProductObserver;
+use GetCandy\Api\Core\Products\Services\ProductAssociationService;
 use GetCandy\Api\Core\Products\Services\ProductCategoryService;
 use GetCandy\Api\Core\Products\Services\ProductCollectionService;
-use GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface;
-use GetCandy\Api\Core\Products\Services\ProductAssociationService;
+use GetCandy\Api\Core\Products\Services\ProductFamilyService;
+use GetCandy\Api\Core\Products\Services\ProductService;
+use GetCandy\Api\Core\Products\Services\ProductVariantService;
 use GetCandy\Api\Core\Products\Versioning\ProductVariantVersioner;
+use GetCandy\Api\Core\Products\Versioning\ProductVersioner;
+use Illuminate\Support\ServiceProvider;
+use Versioning;
 
 class ProductServiceProvider extends ServiceProvider
 {

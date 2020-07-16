@@ -201,7 +201,7 @@ abstract class BaseService
         }
         $id = $this->model->decodeId($hashedId);
 
-        return $this->model->where($this->model->getTable() . '.id', '=', $id)->exists();
+        return $this->model->where($this->model->getTable().'.id', '=', $id)->exists();
     }
 
     public function getDataList()

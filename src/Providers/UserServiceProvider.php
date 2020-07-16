@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use GetCandy\Api\Core\Auth\Services\RoleService;
 use GetCandy\Api\Core\Users\Services\UserService;
+use Illuminate\Support\ServiceProvider;
 
 class UserServiceProvider extends ServiceProvider
 {

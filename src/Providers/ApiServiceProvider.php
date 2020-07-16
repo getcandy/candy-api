@@ -2,29 +2,23 @@
 
 namespace GetCandy\Api\Providers;
 
-use Validator;
-use League\Fractal\Manager;
+use GetCandy\Api\Console\Commands\CandySearchIndexCommand;
+use GetCandy\Api\Console\Commands\InstallGetCandyCommand;
+use GetCandy\Api\Console\Commands\ScoreProductsCommand;
+use GetCandy\Api\Core\Currencies\CurrencyConverter;
 use GetCandy\Api\Core\Factory;
 use GetCandy\Api\Core\GetCandy;
-use Illuminate\Support\ServiceProvider;
-use GetCandy\Api\Providers\TagServiceProvider;
-use GetCandy\Api\Providers\UserServiceProvider;
-use GetCandy\Api\Core\Users\Services\UserService;
-use GetCandy\Api\Providers\LayoutServiceProvider;
-use GetCandy\Api\Http\Middleware\SetTaxMiddleware;
-use GetCandy\Api\Providers\AddressServiceProvider;
-use GetCandy\Api\Providers\SettingServiceProvider;
-use GetCandy\Api\Core\Currencies\CurrencyConverter;
 use GetCandy\Api\Core\Users\Contracts\UserContract;
-use GetCandy\Api\Http\Middleware\SetCustomerGroups;
-use GetCandy\Api\Providers\AttributeServiceProvider;
-use GetCandy\Api\Http\Middleware\SetLocaleMiddleware;
-use GetCandy\Api\Http\Middleware\SetChannelMiddleware;
-use GetCandy\Api\Console\Commands\ScoreProductsCommand;
-use GetCandy\Api\Http\Middleware\SetCurrencyMiddleware;
-use GetCandy\Api\Console\Commands\InstallGetCandyCommand;
-use GetCandy\Api\Console\Commands\CandySearchIndexCommand;
+use GetCandy\Api\Core\Users\Services\UserService;
 use GetCandy\Api\Http\Middleware\DetectHubRequestMiddleware;
+use GetCandy\Api\Http\Middleware\SetChannelMiddleware;
+use GetCandy\Api\Http\Middleware\SetCurrencyMiddleware;
+use GetCandy\Api\Http\Middleware\SetCustomerGroups;
+use GetCandy\Api\Http\Middleware\SetLocaleMiddleware;
+use GetCandy\Api\Http\Middleware\SetTaxMiddleware;
+use Illuminate\Support\ServiceProvider;
+use League\Fractal\Manager;
+use Validator;
 
 class ApiServiceProvider extends ServiceProvider
 {
@@ -83,7 +77,7 @@ class ApiServiceProvider extends ServiceProvider
             ReportsServiceProvider::class,
             RecycleBinServiceProvider::class,
             SettingServiceProvider::class,
-            UserServiceProvider::class
+            UserServiceProvider::class,
         ];
         foreach ($providers as $provider) {
             $this->app->register($provider, true);

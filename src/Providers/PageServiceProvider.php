@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use GetCandy\Api\Core\Pages\Services\PageService;
+use Illuminate\Support\ServiceProvider;
 
 class PageServiceProvider extends ServiceProvider
 {

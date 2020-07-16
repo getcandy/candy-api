@@ -2,12 +2,11 @@
 
 namespace Tests\Unit\Shipping\Factories;
 
-use GetCandy as GetCandyFacade;
 use GetCandy\Api\Core\GetCandy;
+use GetCandy as GetCandyFacade;
 use Illuminate\Support\Str;
 use Route;
 use Tests\TestCase;
-
 
 class GetCandyTest extends TestCase
 {

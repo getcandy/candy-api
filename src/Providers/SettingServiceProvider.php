@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use GetCandy\Api\Core\Settings\Services\SettingService;
+use Illuminate\Support\ServiceProvider;
 
 class SettingServiceProvider extends ServiceProvider
 {

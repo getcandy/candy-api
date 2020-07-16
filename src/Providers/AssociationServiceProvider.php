@@ -2,9 +2,8 @@
 
 namespace GetCandy\Api\Providers;
 
-use Versioning;
-use Illuminate\Support\ServiceProvider;
 use GetCandy\Api\Core\Associations\Services\AssociationGroupService;
+use Illuminate\Support\ServiceProvider;
 
 class AssociationServiceProvider extends ServiceProvider
 {

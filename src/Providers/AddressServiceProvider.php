@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use GetCandy\Api\Core\Addresses\Services\AddressService;
+use Illuminate\Support\ServiceProvider;
 
 class AddressServiceProvider extends ServiceProvider
 {
