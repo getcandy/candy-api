@@ -48,7 +48,7 @@ class CategoryTransformer extends BaseTransformer
             'depth' => $category->depth,
             'products_count' => $category->products->count(),
             'children_count' => $category->children->count(),
-            'parent_id' => app('api')->categories()->getEncodedId($category->parent_id),
+            'parent_id' => GetCandy::categories()->getEncodedId($category->parent_id),
         ];
 
         if (! is_null($category->aggregate_selected)) {

@@ -32,7 +32,7 @@ class AggregationResolver
      */
     public function getAggregatedCategories(array $buckets)
     {
-        return app('api')->categories()->getByHashedIds(
+        return GetCandy::categories()->getByHashedIds(
             collect($buckets)->map(function ($cat) {
                 return $cat['key'];
             })->toArray()

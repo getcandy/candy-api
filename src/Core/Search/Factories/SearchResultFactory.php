@@ -400,7 +400,7 @@ class SearchResultFactory implements SearchResultInterface
 
         $selected = collect($selected);
 
-        $models = app('api')->categories()->getSearchedIds(array_keys($all));
+        $models = GetCandy::categories()->getSearchedIds(array_keys($all));
 
         foreach ($models as $category) {
             $category->aggregate_selected = $selected->contains($category->encodedId());

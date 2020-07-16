@@ -12,7 +12,7 @@ use Tests\TestCase;
 class GetCandyTest extends TestCase
 {
     /**
-     * @group core
+     * @group doo
      */
     public function test_can_resolve_services()
     {
@@ -23,6 +23,7 @@ class GetCandyTest extends TestCase
             'assetTransforms',
             'assetSources',
             'baskets',
+            'categories',
             'channels',
             'currencies',
             'customerGroups',
