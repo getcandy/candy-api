@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Pages\Services;
 
+use GetCandy;
 use GetCandy\Api\Core\Pages\Models\Page;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Exceptions\InvalidLanguageException;
@@ -51,7 +52,7 @@ class PageService extends BaseService
          * Sort out the layout for this page
          */
         if (! $layout instanceof Model) {
-            $layout = app('api')->layouts()->getByHashedId($layout);
+            $layout = GetCandy::layouts()->getByHashedId($layout);
         }
 
         if (! $layout) {

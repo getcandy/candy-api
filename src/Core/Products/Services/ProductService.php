@@ -111,7 +111,7 @@ class ProductService extends BaseService
         }
 
         if (! empty($data['layout_id'])) {
-            $layout = app('api')->layouts()->getByHashedId($data['layout_id']);
+            $layout = GetCandy::layouts()->getByHashedId($data['layout_id']);
             $product->layout_id = $layout->id;
         }
 
@@ -133,7 +133,7 @@ class ProductService extends BaseService
      */
     public function updateLayout($productId, $layoutId)
     {
-        $layout = app('api')->layouts()->getByHashedId($layoutId);
+        $layout = GetCandy::layouts()->getByHashedId($layoutId);
         $product = $this->getByHashedId($productId);
 
         $product->layout->associate($layout);
@@ -171,7 +171,7 @@ class ProductService extends BaseService
             $product->option_data = $data['option_data'];
         }
 
-        // $layout = app('api')->layouts()->getByHashedId($data['layout_id']);
+        // $layout = GetCandy::layouts()->getByHashedId($data['layout_id']);
         // $product->layout()->associate($layout);
 
         if (! empty($data['family_id'])) {

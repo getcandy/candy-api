@@ -10,6 +10,7 @@ use Illuminate\Support\ServiceProvider;
 use GetCandy\Api\Providers\TagServiceProvider;
 use GetCandy\Api\Providers\UserServiceProvider;
 use GetCandy\Api\Core\Users\Services\UserService;
+use GetCandy\Api\Providers\LayoutServiceProvider;
 use GetCandy\Api\Http\Middleware\SetTaxMiddleware;
 use GetCandy\Api\Core\Currencies\CurrencyConverter;
 use GetCandy\Api\Core\Users\Contracts\UserContract;
@@ -62,6 +63,7 @@ class ApiServiceProvider extends ServiceProvider
             BasketServiceProvider::class,
             CurrencyServiceProvider::class,
             DiscountServiceProvider::class,
+            LayoutServiceProvider::class,
             OrderServiceProvider::class,
             PaymentServiceProvider::class,
             PricingServiceProvider::class,

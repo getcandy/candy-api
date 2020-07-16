@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Categories\Services;
 
+use GetCandy;
 use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
 use GetCandy\Api\Core\Categories\Events\CategoryStoredEvent;
 use GetCandy\Api\Core\Categories\Models\Category;
@@ -133,7 +134,7 @@ class CategoryService extends BaseService
         }
 
         if (! empty($data['layout_id'])) {
-            $realLayoutId = app('api')->layouts()->getDecodedId($data['layout_id']);
+            $realLayoutId = GetCandy::layouts()->getDecodedId($data['layout_id']);
             $model->layout_id = $realLayoutId;
         }
 
@@ -221,7 +222,7 @@ class CategoryService extends BaseService
      */
     public function updateLayout($categoryId, $layoutId)
     {
-        $layout = app('api')->layouts()->getByHashedId($layoutId);
+        $layout = GetCandy::layouts()->getByHashedId($layoutId);
         $category = $this->getByHashedId($categoryId);
         $category->layout()->associate($layout);
         $category->save();
