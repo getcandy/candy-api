@@ -424,7 +424,7 @@ class ProductService extends BaseService
         $product = $this->getByHashedId($id);
 
         foreach ($data['collections'] as $attribute) {
-            $ids[] = app('api')->collections()->getDecodedId($attribute);
+            $ids[] = GetCandy::collections()->getDecodedId($attribute);
         }
 
         $product->collections()->sync($ids);
