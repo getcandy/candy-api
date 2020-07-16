@@ -18,7 +18,7 @@ class ProductAssetController extends BaseController
      */
     public function index($id, Request $request)
     {
-        $product = app('api')->products()->getByHashedId($id);
+        $product = GetCandy::products()->getByHashedId($id);
         $assets = GetCandy::assets()->getAssets($product, $request->all());
 
         return $this->respondWithCollection($assets, new AssetTransformer);
@@ -26,7 +26,7 @@ class ProductAssetController extends BaseController
 
     public function attach($productId, Request $request)
     {
-        $product = app('api')->products()->getByHashedId($productId, true);
+        $product = GetCandy::products()->getByHashedId($productId, true);
         $asset = GetCandy::assets()->getByHashedId($request->asset_id);
 
         if (! $asset || ! $product) {

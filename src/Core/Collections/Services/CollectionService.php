@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Collections\Services;
 
+use GetCandy;
 use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
 use GetCandy\Api\Core\Collections\Models\Collection;
 use GetCandy\Api\Core\Scaffold\BaseService;
@@ -120,7 +121,7 @@ class CollectionService extends BaseService
     public function syncProducts($collectionId, $products = [])
     {
         $collection = $this->getByHashedId($collectionId);
-        $productIds = app('api')->products()->getDecodedIds($products);
+        $productIds = GetCandy::products()->getDecodedIds($products);
         $collection->products()->withTimestamps()->sync($productIds);
 
         return $collection;

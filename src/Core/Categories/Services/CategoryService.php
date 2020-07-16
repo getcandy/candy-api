@@ -191,7 +191,7 @@ class CategoryService extends BaseService
         $ids = [];
 
         foreach ($data['products'] as $item) {
-            $ids[app('api')->products()->getDecodedId($item['id'])] = ['position' => $item['position']];
+            $ids[GetCandy::products()->getDecodedId($item['id'])] = ['position' => $item['position']];
         }
 
         $category->products()->sync($ids);

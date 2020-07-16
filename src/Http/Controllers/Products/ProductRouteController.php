@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Controllers\Products;
 
+use GetCandy;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Products\CreateUrlRequest;
 use GetCandy\Api\Http\Requests\Products\UpdateUrlsRequest;
@@ -16,14 +17,14 @@ class ProductRouteController extends BaseController
      */
     public function store($product, CreateUrlRequest $request)
     {
-        $result = app('api')->products()->createUrl($product, $request->all());
+        $result = GetCandy::products()->createUrl($product, $request->all());
 
         return new RouteResource($result);
     }
 
     public function update($product, UpdateUrlsRequest $request)
     {
-        $result = app('api')->products()->saveUrls($product, $request->urls);
+        $result = GetCandy::products()->saveUrls($product, $request->urls);
 
         return $this->respondWithNoContent();
     }

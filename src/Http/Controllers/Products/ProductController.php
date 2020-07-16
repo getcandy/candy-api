@@ -3,6 +3,7 @@
 namespace GetCandy\Api\Http\Controllers\Products;
 
 use Drafting;
+use GetCandy;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketCriteriaInterface;
 use GetCandy\Api\Core\Products\Factories\ProductDuplicateFactory;
 use GetCandy\Api\Core\Products\Models\Product;
@@ -126,7 +127,7 @@ class ProductController extends BaseController
             return $line->variant->product_id;
         })->toArray();
 
-        $products = app('api')->products()->getRecommendations($products);
+        $products = GetCandy::products()->getRecommendations($products);
 
         return new ProductRecommendationCollection($products);
     }
@@ -140,7 +141,7 @@ class ProductController extends BaseController
     public function store(CreateRequest $request)
     {
         try {
-            $result = app('api')->products()->create($request->all());
+            $result = GetCandy::products()->create($request->all());
         } catch (InvalidLanguageException $e) {
             return $this->errorUnprocessable($e->getMessage());
         }
@@ -158,7 +159,7 @@ class ProductController extends BaseController
     public function update($id, UpdateRequest $request)
     {
         try {
-            $result = app('api')->products()->update($id, $request->all());
+            $result = GetCandy::products()->update($id, $request->all());
         } catch (MinimumRecordRequiredException $e) {
             return $this->errorUnprocessable($e->getMessage());
         } catch (NotFoundHttpException $e) {
