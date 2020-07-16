@@ -14,7 +14,7 @@ class GetCandyTest extends TestCase
 {
     public function test_can_set_routes()
     {
-        GetCandy::routes();
+        GetCandy::router();
 
         $testCases = array_merge($this->clientRoutes, $this->adminRoutes);
 
@@ -29,7 +29,7 @@ class GetCandyTest extends TestCase
 
     public function test_can_be_used_as_facade()
     {
-        GetCandyFacade::routes();
+        GetCandyFacade::router();
 
         $testCases = array_merge($this->clientRoutes, $this->adminRoutes);
 
@@ -44,7 +44,7 @@ class GetCandyTest extends TestCase
 
     public function test_default_middleware_gets_applied()
     {
-        GetCandy::routes();
+        GetCandy::router();
 
         $defaultMiddleware = GetCandy::getDefaultMiddleware();
 
@@ -67,7 +67,7 @@ class GetCandyTest extends TestCase
 
     public function test_additional_middleware_can_be_set()
     {
-        GetCandy::routes([
+        GetCandy::router([
             'middleware' => 'test.middleware',
         ]);
 
@@ -93,7 +93,7 @@ class GetCandyTest extends TestCase
 
     public function test_custom_route_prefix_can_be_applied()
     {
-        GetCandy::routes([
+        GetCandy::router([
             'prefix' => 'foo',
         ]);
 
@@ -114,7 +114,7 @@ class GetCandyTest extends TestCase
         Route::group([
             'prefix' => 'foo',
         ], function () {
-            GetCandy::routes();
+            GetCandy::router();
         });
 
         $routeIterator = Route::getRoutes()->getIterator();
