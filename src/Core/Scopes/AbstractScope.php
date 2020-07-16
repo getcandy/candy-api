@@ -87,7 +87,7 @@ abstract class AbstractScope implements Scope
     protected function getGroups()
     {
         $user = $this->getUser();
-        $guestGroups = [app('api')->customerGroups()->getGuestId()];
+        $guestGroups = [GetCandy::customerGroups()->getGuestId()];
         if (! $user) {
             return $guestGroups;
         }

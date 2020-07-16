@@ -4,8 +4,8 @@ namespace GetCandy\Api\Core\Traits;
 
 use Auth;
 use Carbon\Carbon;
+use GetCandy;
 use GetCandy\Api\Core\Channels\Models\Channel;
-use GetCandy\Api\Core\GetCandy;
 use GetCandy\Api\Core\Scopes\ChannelScope;
 
 trait HasChannels
@@ -21,11 +21,10 @@ trait HasChannels
     public function scopeChannel($query, $channel = null)
     {
         $roles = app('api')->roles()->getHubAccessRoles();
-        $api = app()->getInstance()->make(GetCandy::class);
         $user = Auth::user();
         $channels = app('api')->channels();
 
-        if (! $channel && ($user && $user->hasAnyRole($roles) && $api->isHubRequest())) {
+        if (! $channel && ($user && $user->hasAnyRole($roles) && GetCandy::isHubRequest())) {
             return $query;
         }
 
@@ -48,7 +47,7 @@ trait HasChannels
         if ($user = app('auth')->user()) {
             return $user->groups->pluck('id')->toArray();
         } else {
-            return [app('api')->customerGroups()->getGuestId()];
+            return [GetCandy::customerGroups()->getGuestId()];
         }
     }
 

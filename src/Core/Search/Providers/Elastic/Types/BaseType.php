@@ -45,7 +45,7 @@ abstract class BaseType
     {
         $attributes = $this->attributeMapping($model);
 
-        $customerGroups = app('api')->customerGroups->all();
+        $customerGroups = GetCandy::customerGroups()->all();
 
         $indexables = collect();
 
