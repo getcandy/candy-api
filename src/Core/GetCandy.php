@@ -3,9 +3,10 @@
 namespace GetCandy\Api\Core;
 
 use File;
-use Illuminate\Support\Facades\Route;
 use GetCandy\Api\Exceptions\InvalidServiceException;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 
 class GetCandy
 {
@@ -110,7 +111,8 @@ class GetCandy
     public function __call($name, $params)
     {
         try {
-            return app("getcandy.{$name}");
+            $resolvingName = Str::snake($name);
+            return app("getcandy.{$resolvingName}");
         } catch (\Exception $e) {
             throw new InvalidServiceException("Service \"{$name}\" doesn't exist");
         }
