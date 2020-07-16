@@ -19,14 +19,14 @@ class PaymentController extends BaseController
 {
     public function provider()
     {
-        $provider = app('api')->payments()->getProvider();
+        $provider = GetCandy::payments()->getProvider();
 
         return $this->respondWithItem($provider, new ProviderTransformer);
     }
 
     public function providers()
     {
-        return app('api')->payments()->getProviders();
+        return GetCandy::payments()->getProviders();
     }
 
     /**
@@ -39,7 +39,7 @@ class PaymentController extends BaseController
     public function refund($id, RefundRequest $request)
     {
         try {
-            $transaction = app('api')->payments()->refund(
+            $transaction = GetCandy::payments()->refund(
                 $id,
                 $request->amount ?: null,
                 $request->notes ?: null
@@ -69,7 +69,7 @@ class PaymentController extends BaseController
     public function void($id, VoidRequest $request)
     {
         try {
-            $transaction = app('api')->payments()->void($id);
+            $transaction = GetCandy::payments()->void($id);
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }

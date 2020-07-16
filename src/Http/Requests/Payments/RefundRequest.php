@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Requests\Payments;
 
+use GetCandy;
 use GetCandy\Api\Http\Requests\FormRequest;
 
 class RefundRequest extends FormRequest
@@ -13,7 +14,7 @@ class RefundRequest extends FormRequest
      */
     public function authorize()
     {
-        // $this->transaction = app('api')->payments()->getByHashedId($this->id);
+        // $this->transaction = GetCandy::payments()->getByHashedId($this->id);
         return $this->user()->hasRole('admin');
     }
 

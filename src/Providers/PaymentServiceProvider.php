@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use GetCandy\Api\Core\Payments\PaymentManager;
 use GetCandy\Api\Core\Payments\PaymentContract;
 use GetCandy\Api\Core\Payments\Services\PaymentService;
+use GetCandy\Api\Core\Payments\Services\PaymentTypeService;
 
 class PaymentServiceProvider extends ServiceProvider
 {
@@ -15,8 +16,12 @@ class PaymentServiceProvider extends ServiceProvider
             return new PaymentManager($app);
         });
 
-        $this->app->bind('getcandy.payment_types', function ($app) {
+        $this->app->bind('getcandy.payments', function ($app) {
             return $app->make(PaymentService::class);
+        });
+
+        $this->app->bind('getcandy.payment_types', function ($app) {
+            return $app->make(PaymentTypeService::class);
         });
     }
 }
