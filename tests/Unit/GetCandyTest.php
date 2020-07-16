@@ -2,16 +2,33 @@
 
 namespace Tests\Unit\Shipping\Factories;
 
-use GetCandy\Api\Core\GetCandy;
 use GetCandy as GetCandyFacade;
+use GetCandy\Api\Core\GetCandy;
+use Illuminate\Support\Str;
 use Route;
 use Tests\TestCase;
 
-/**
- * @group core
- */
+
 class GetCandyTest extends TestCase
 {
+    /**
+ * @group core
+ */
+    public function test_can_resolve_services()
+    {
+        $services = [
+            'assets',
+            'channels',
+            'assetTransforms',
+            'assetSources',
+        ];
+
+        foreach ($services as $service) {
+            $instanceName = Str::snake($service);
+            $this->assertInstanceOf(get_class(app("getcandy.{$instanceName}")), GetCandyFacade::{$service}());
+        }
+    }
+
     public function test_can_set_routes()
     {
         GetCandy::router();
