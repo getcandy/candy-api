@@ -22,7 +22,6 @@ use GetCandy\Api\Http\Middleware\SetLocaleMiddleware;
 use GetCandy\Api\Http\Middleware\SetChannelMiddleware;
 use GetCandy\Api\Console\Commands\ScoreProductsCommand;
 use GetCandy\Api\Http\Middleware\SetCurrencyMiddleware;
-use GetCandy\Api\Providers\CustomerGroupServiceProvider;
 use GetCandy\Api\Console\Commands\InstallGetCandyCommand;
 use GetCandy\Api\Console\Commands\CandySearchIndexCommand;
 use GetCandy\Api\Http\Middleware\DetectHubRequestMiddleware;
@@ -62,7 +61,7 @@ class ApiServiceProvider extends ServiceProvider
             CategoryServiceProvider::class,
             ChannelServiceProvider::class,
             CollectionServiceProvider::class,
-            CustomerGroupServiceProvider::class,
+            CustomerServiceProvider::class,
             BasketServiceProvider::class,
             CurrencyServiceProvider::class,
             DiscountServiceProvider::class,
