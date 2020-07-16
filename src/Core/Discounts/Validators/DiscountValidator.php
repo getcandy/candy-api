@@ -3,6 +3,7 @@
 namespace GetCandy\Api\Core\Discounts\Validators;
 
 use Carbon\Carbon;
+use GetCandy;
 use GetCandy\Api\Core\Baskets\BasketCriteria;
 use GetCandy\Api\Core\Discounts\Factory;
 
@@ -42,7 +43,7 @@ class DiscountValidator
             ->first();
 
         // First off, if the coupon doesn't exist, then no..
-        if (! $coupon = app('api')->discounts()->getByCoupon($value)) {
+        if (! $coupon = GetCandy::discounts()->getByCoupon($value)) {
             return false;
         }
 
@@ -60,7 +61,7 @@ class DiscountValidator
             return false;
         }
 
-        $factory = app('api')->discounts()->getFactory($discount);
+        $factory = GetCandy::discounts()->getFactory($discount);
 
         $check = (new Factory)->checkCriteria(
             $factory,

@@ -66,7 +66,7 @@ class BasketService extends BaseService
         }
 
         if (! $basket->currency) {
-            $basket->currency =GetCandy::currencies()->getDefaultRecord()->code;
+            $basket->currency = GetCandy::currencies()->getDefaultRecord()->code;
         }
 
         $basket->save();
@@ -131,7 +131,7 @@ class BasketService extends BaseService
 
         if ($basket->discounts) {
             foreach ($basket->discounts as $discount) {
-                $discountFactory = app('api')->discounts()->getFactory($discount);
+                $discountFactory = GetCandy::discounts()->getFactory($discount);
                 $check = (new Factory)->checkCriteria(
                     $discountFactory,
                     $basket->user,
@@ -220,7 +220,7 @@ class BasketService extends BaseService
             $basket->currency = $data['currency'];
         }
         if (is_null($basket->currency)) {
-            $basket->currency =GetCandy::currencies()->getDefaultRecord()->code;
+            $basket->currency = GetCandy::currencies()->getDefaultRecord()->code;
         }
 
         return $basket;
@@ -352,7 +352,7 @@ class BasketService extends BaseService
     public function addDiscount($basketId, $coupon)
     {
         $basket = $this->getByHashedId($basketId);
-        $discountCriteria = app('api')->discounts()->getByCoupon($coupon);
+        $discountCriteria = GetCandy::discounts()->getByCoupon($coupon);
 
         $discount = $discountCriteria->set->discount;
         $discount->uses ? $discount->increment('uses') : 1;
@@ -386,7 +386,7 @@ class BasketService extends BaseService
             'lines.variant.customerPricing',
         ])->findOrFail($id);
 
-        $discount = app('api')->discounts()->getByHashedId($discountId);
+        $discount = GetCandy::discounts()->getByHashedId($discountId);
 
         $basket->discounts()->detach($discount);
 

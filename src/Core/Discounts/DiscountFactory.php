@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Discounts;
 
+use GetCandy;
 use GetCandy\Api\Core\Baskets\Models\Basket;
 use Illuminate\Database\Eloquent\Model;
 
@@ -36,7 +37,7 @@ class DiscountFactory implements DiscountInterface
     public function init()
     {
         // Pull in all the discounts.
-        $this->discounts = app('api')->discounts()->get();
+        $this->discounts = GetCandy::discounts()->get();
 
         return $this;
     }
@@ -75,7 +76,7 @@ class DiscountFactory implements DiscountInterface
     public function getApplied()
     {
         foreach ($this->discounts as $index => $discount) {
-            $factory = app('api')->discounts()->getFactory($discount);
+            $factory = GetCandy::discounts()->getFactory($discount);
             $discount->applied = $this->checkCriteria($factory, $this->user, $this->basket);
             if ($discount->stop) {
                 break;
