@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Controllers\Payments;
 
+use GetCandy;
 use GetCandy\Api\Core\Payments\Exceptions\AlreadyRefundedException;
 use GetCandy\Api\Core\Payments\Exceptions\TransactionAmountException;
 use GetCandy\Api\Core\Payments\Models\Transaction;
@@ -89,8 +90,8 @@ class PaymentController extends BaseController
     public function validateThreeD(ValidateThreeDRequest $request)
     {
         try {
-            $order = app('api')->orders()->getByHashedId($request->order_id);
-            $response = app('api')->orders()->processThreeDSecure(
+            $order = GetCandy::orders()->getByHashedId($request->order_id);
+            $response = GetCandy::orders()->processThreeDSecure(
                 $order,
                 $request->transaction,
                 $request->paRes
