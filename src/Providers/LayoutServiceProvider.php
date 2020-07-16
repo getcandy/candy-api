@@ -9,7 +9,7 @@ class LayoutServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->app->singleton('getcandy.layouts', function ($app) {
+        $this->app->bind('getcandy.layouts', function ($app) {
             return $app->make(LayoutService::class);
         });
     }
