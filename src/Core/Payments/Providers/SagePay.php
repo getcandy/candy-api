@@ -3,6 +3,7 @@
 namespace GetCandy\Api\Core\Payments\Providers;
 
 use Carbon\Carbon;
+use GetCandy;
 use GetCandy\Api\Core\Payments\Events\PaymentAttemptedEvent;
 use GetCandy\Api\Core\Payments\Events\PaymentFailedEvent;
 use GetCandy\Api\Core\Payments\Events\ThreeDSecureAttemptEvent;
@@ -78,7 +79,7 @@ class SagePay extends AbstractProvider
         $country = $this->order->billing_country;
 
         // Sage pay requires the country iso code, so we should find that to use.
-        // $countryModel = app('api')->countries()->getByName($country);
+        // $countryModel = GetCandy::countries()->getByName($country);
 
         // if ($countryModel) {
         //     $country = $countryModel->iso_a_2;

@@ -67,6 +67,7 @@ class ApiServiceProvider extends ServiceProvider
             CurrencyServiceProvider::class,
             DiscountServiceProvider::class,
             LanguageServiceProvider::class,
+            CountryServiceProvider::class,
             LayoutServiceProvider::class,
             OrderServiceProvider::class,
             PaymentServiceProvider::class,
