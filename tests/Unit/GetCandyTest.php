@@ -36,6 +36,7 @@ class GetCandyTest extends TestCase
             'products',
             'productFamilies',
             'productVariants',
+            'routes',
             'settings',
             'shippingPrices',
             'shippingMethods',

@@ -300,7 +300,7 @@ abstract class BaseService
             $previousUrl = null;
             foreach ($urls as $locale => $url) {
                 $i = 1;
-                while (app('api')->routes()->slugExists($url, $path) || $previousUrl == $url) {
+                while (GetCandy::routes()->slugExists($url, $path) || $previousUrl == $url) {
                     $url = $url.'-'.$i;
                     $i++;
                 }
@@ -315,7 +315,7 @@ abstract class BaseService
         } else {
             $i = 1;
             $url = $urls;
-            while (app('api')->routes()->slugExists($url)) {
+            while (GetCandy::routes()->slugExists($url)) {
                 $url = $url.'-'.$i;
                 $i++;
             }
@@ -432,7 +432,7 @@ abstract class BaseService
         $model = $this->getByHashedId($hashedId, true);
 
         try {
-            $existing = app('api')->routes()->getBySlug($data['slug']);
+            $existing = GetCandy::routes()->getBySlug($data['slug']);
 
             return $model;
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {

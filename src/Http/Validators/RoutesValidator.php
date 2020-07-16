@@ -2,6 +2,8 @@
 
 namespace GetCandy\Api\Http\Validators;
 
+use GetCandy;
+
 class RoutesValidator
 {
     /**
@@ -15,6 +17,6 @@ class RoutesValidator
      */
     public function uniqueRoute($attribute, $value, $parameters, $validator)
     {
-        return app('api')->routes()->uniqueSlug($value, $parameters[0]);
+        return GetCandy::routes()->uniqueSlug($value, $parameters[0]);
     }
 }
