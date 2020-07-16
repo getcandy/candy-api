@@ -1,0 +1,28 @@
+name: Laravel
+
+on:
+  push:
+    branches:
+    - master
+    - feat/*
+    - release/*
+  pull_request:
+    branches: 
+      - master
+      - feat/*
+      - release/*
+
+jobs:
+  laravel-tests:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install Dependencies
+      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+    - name: Execute tests (Unit and Feature tests) via PHPUnit
+      env:
+        DB_CONNECTION: sqlite
+        DB_DATABASE: :memory:
+      run: vendor/bin/phpunit
