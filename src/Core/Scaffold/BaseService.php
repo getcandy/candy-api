@@ -361,7 +361,7 @@ abstract class BaseService
     {
         $channelData = [];
         foreach ($data as $channel) {
-            $channelModel = app('api')->channels()->getByHashedId($channel['id']);
+            $channelModel = GetCandy::channels()->getByHashedId($channel['id']);
             $channelData[$channelModel->id] = [
                 'published_at' => $channel['published_at'] ? Carbon::parse($channel['published_at']) : null,
             ];
@@ -459,7 +459,7 @@ abstract class BaseService
     {
         $channelData = [];
         foreach ($channels as $channel) {
-            $channelModel = app('api')->channels()->getByHashedId($channel['id']);
+            $channelModel = GetCandy::channels()->getByHashedId($channel['id']);
             $channelData[$channelModel->id] = [
                 'published_at' => $channel['published_at'] ? Carbon::parse($channel['published_at']) : null,
             ];
