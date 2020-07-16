@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Customers\Services;
 
+use GetCandy;
 use GetCandy\Api\Core\Scaffold\BaseService;
 
 class CustomerService extends BaseService
@@ -22,7 +23,7 @@ class CustomerService extends BaseService
     {
         $user = app('api')->users()->create($data);
         $user->assignRole('customer');
-        $retail = app('api')->customerGroups()->getDefaultRecord();
+        $retail = GetCandy::customerGroups()->getDefaultRecord();
         $user->groups()->sync([$retail->id]);
 
         return $user;
@@ -49,7 +50,7 @@ class CustomerService extends BaseService
         $user = app('api')->users()->getByHashedId($id);
 
         if (! empty($data['customer_groups'])) {
-            $groups = app('api')->customerGroups()->getDecodedIds($data['customer_groups']);
+            $groups = GetCandy::customerGroups()->getDecodedIds($data['customer_groups']);
             $user->groups()->sync($groups);
         }
 

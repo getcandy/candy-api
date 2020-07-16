@@ -23,6 +23,7 @@ class GetCandyTest extends TestCase
             'assetTransforms',
             'assetSources',
             'channels',
+            'customerGroups',
             'tags',
         ];
 

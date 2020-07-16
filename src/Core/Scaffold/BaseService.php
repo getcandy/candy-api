@@ -380,7 +380,7 @@ abstract class BaseService
     {
         $groupData = [];
         foreach ($groups as $group) {
-            $groupModel = app('api')->customerGroups()->getByHashedId($group['id']);
+            $groupModel = GetCandy::customerGroups()->getByHashedId($group['id']);
             $groupData[$groupModel->id] = [
                 'visible' => $group['visible'],
                 'purchasable' => $group['purchasable'],

@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Discounts\Criteria;
 
+use GetCandy;
 use GetCandy\Api\Core\Discounts\Contracts\DiscountCriteriaContract;
 
 class CustomerGroup implements DiscountCriteriaContract
@@ -35,13 +36,13 @@ class CustomerGroup implements DiscountCriteriaContract
 
     protected function getRealIds()
     {
-        return collect(app('api')->customerGroups()->getDecodedIds($this->criteria['value']));
+        return collect(GetCandy::customerGroups()->getDecodedIds($this->criteria['value']));
     }
 
     public function check($user)
     {
         // dd($this->getRealIds());
-        // return app('api')->customerGroups()->userIsInGroup($this->value, $user);
+        // return GetCandy::customerGroups()->userIsInGroup($this->value, $user);
         return false;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Collections;
 
+use GetCandy;
 use GetCandy\Api\Core\Collections\Models\Collection;
 use GetCandy\Api\Core\Traits\IncludesAttributes;
 use GetCandy\Api\Http\Transformers\Fractal\Assets\AssetTransformer;
@@ -87,7 +88,7 @@ class CollectionTransformer extends BaseTransformer
      */
     public function includeCustomerGroups(Collection $collection)
     {
-        $groups = app('api')->customerGroups()->getGroupsWithAvailability($collection, 'collections');
+        $groups = GetCandy::customerGroups()->getGroupsWithAvailability($collection, 'collections');
 
         return $this->collection($groups, new CustomerGroupTransformer);
     }

@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Products\Services;
 
+use GetCandy;
 use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
 use GetCandy\Api\Core\Channels\Models\Channel;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
@@ -245,7 +246,7 @@ class ProductService extends BaseService
 
     protected function getPriceMapping($price)
     {
-        $customerGroups = app('api')->customerGroups()->all();
+        $customerGroups = GetCandy::customerGroups()->all();
 
         return $customerGroups->map(function ($group) use ($price) {
             return [

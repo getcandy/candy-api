@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Shipping\Services;
 
+use GetCandy;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Shipping\Models\ShippingPrice;
 use GetCandy\Api\Core\Shipping\Models\ShippingRegion;
@@ -76,7 +77,7 @@ class ShippingPriceService extends BaseService
     {
         $groupData = [];
         foreach ($groups as $group) {
-            $groupModel = app('api')->customerGroups()->getByHashedId($group['id']);
+            $groupModel = GetCandy::customerGroups()->getByHashedId($group['id']);
             $groupData[$groupModel->id] = [
                 'visible' => $group['visible'],
             ];

@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Products;
 
+use GetCandy;
 use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Traits\IncludesAttributes;
 use GetCandy\Api\Http\Transformers\Fractal\Assets\AssetTransformer;
