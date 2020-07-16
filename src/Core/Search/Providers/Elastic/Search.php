@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Search\Providers\Elastic;
 
+use GetCandy;
 use Elastica\Query;
 use Elastica\Query\Wildcard;
 use Elastica\Suggest;
@@ -253,7 +254,7 @@ class Search implements ClientContract
      */
     public function search($rank = true)
     {
-        $roles = app('api')->roles()->getHubAccessRoles();
+        $roles = GetCandy::roles()->getHubAccessRoles();
 
         $builder = $this->builder;
 

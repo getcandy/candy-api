@@ -37,7 +37,7 @@ abstract class AbstractScope implements Scope
 
     public function __construct()
     {
-        $this->roles = app('api')->roles()->getHubAccessRoles();
+        $this->roles = GetCandy::roles()->getHubAccessRoles();
     }
 
     /**

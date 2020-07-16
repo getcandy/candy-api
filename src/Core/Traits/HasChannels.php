@@ -20,7 +20,7 @@ trait HasChannels
 
     public function scopeChannel($query, $channel = null)
     {
-        $roles = app('api')->roles()->getHubAccessRoles();
+        $roles = GetCandy::roles()->getHubAccessRoles();
         $user = Auth::user();
         $channels = GetCandy::channels();
 

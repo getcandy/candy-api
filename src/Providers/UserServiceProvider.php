@@ -3,6 +3,7 @@
 namespace GetCandy\Api\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use GetCandy\Api\Core\Auth\Services\RoleService;
 use GetCandy\Api\Core\Users\Services\UserService;
 
 class UserServiceProvider extends ServiceProvider
@@ -11,6 +12,10 @@ class UserServiceProvider extends ServiceProvider
     {
         $this->app->singleton('getcandy.users', function ($app) {
             return $app->make(UserService::class);
+        });
+
+        $this->app->singleton('getcandy.roles', function ($app) {
+            return $app->make(RoleService::class);
         });
     }
 }
