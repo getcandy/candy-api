@@ -71,6 +71,7 @@ class ApiServiceProvider extends ServiceProvider
             LayoutServiceProvider::class,
             OrderServiceProvider::class,
             PaymentServiceProvider::class,
+            PageServiceProvider::class,
             PricingServiceProvider::class,
             ProductServiceProvider::class,
             RouteServiceProvider::class,
