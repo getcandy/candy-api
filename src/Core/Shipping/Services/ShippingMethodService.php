@@ -135,7 +135,7 @@ class ShippingMethodService extends BaseService
     {
         // Get the zones for this order...
         $order = GetCandy::orders()->getByHashedId($orderId);
-        $zones = app('api')->shippingZones()->getByCountryName($order->shipping_details['country']);
+        $zones = GetCandy::shippingZones()->getByCountryName($order->shipping_details['country']);
         $basket = $order->basket;
         $calculator = new ShippingCalculator(app());
 
@@ -197,7 +197,7 @@ class ShippingMethodService extends BaseService
 
         if (! empty($data['zones'])) {
             $method->zones()->attach(
-                app('api')->shippingZones()->getDecodedIds($data['zones'])
+                GetCandy::shippingZones()->getDecodedIds($data['zones'])
             );
         }
 

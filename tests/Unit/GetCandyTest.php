@@ -38,6 +38,7 @@ class GetCandyTest extends TestCase
             'settings',
             'shippingPrices',
             'shippingMethods',
+            'shippingZones',
             'tags',
             'taxes',
             'users',

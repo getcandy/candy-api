@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Controllers\Shipping;
 
+use GetCandy;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Shipping\Zones\CreateRequest;
 use GetCandy\Api\Http\Requests\Shipping\Zones\UpdateRequest;
@@ -21,7 +22,7 @@ class ShippingZoneController extends BaseController
      */
     public function index(Request $request)
     {
-        $zones = app('api')->shippingZones()->getPaginatedData(
+        $zones = GetCandy::shippingZones()->getPaginatedData(
             $request->per_page,
             $request->current_page,
             $this->parseIncludes($request->include)
@@ -40,7 +41,7 @@ class ShippingZoneController extends BaseController
     public function show($id, Request $request)
     {
         try {
-            $zone = app('api')->shippingZones()->getByHashedId($id, $this->parseIncludes($request->include));
+            $zone = GetCandy::shippingZones()->getByHashedId($id, $this->parseIncludes($request->include));
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
@@ -56,7 +57,7 @@ class ShippingZoneController extends BaseController
      */
     public function store(CreateRequest $request)
     {
-        $result = app('api')->shippingZones()->create($request->all());
+        $result = GetCandy::shippingZones()->create($request->all());
 
         return new ShippingZoneResource($result);
     }
@@ -64,7 +65,7 @@ class ShippingZoneController extends BaseController
     public function update($id, UpdateRequest $request)
     {
         try {
-            $result = app('api')->shippingZones()->update($id, $request->all());
+            $result = GetCandy::shippingZones()->update($id, $request->all());
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }

@@ -25,7 +25,7 @@ class ShippingPriceService extends BaseService
     {
         $method = GetCandy::shippingMethods()->getByHashedId($shippingMethodId);
         $currency =GetCandy::currencies()->getByHashedId($data['currency_id']);
-        $zone = app('api')->shippingZones()->getByHashedId($data['zone_id']);
+        $zone = GetCandy::shippingZones()->getByHashedId($data['zone_id']);
         $price = new ShippingPrice;
         $price->fill($data);
         $price->method()->associate($method);
