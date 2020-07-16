@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Controllers\Baskets;
 
+use GetCandy;
 use GetCandy\Api\Core\Baskets\Factories\BasketLineFactory;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Baskets\ChangeQuantityRequest;
@@ -39,7 +40,7 @@ class BasketLineController extends BaseController
     public function store(CreateLinesRequest $request)
     {
         try {
-            $basket = app('api')->baskets()->addLines($request->all(), $request->user());
+            $basket = GetCandy::baskets()->addLines($request->all(), $request->user());
         } catch (\Illuminate\Database\QueryException $e) {
             return $this->errorUnprocessable(trans('getcandy::validation.max_qty'));
         }

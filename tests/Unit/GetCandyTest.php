@@ -22,6 +22,7 @@ class GetCandyTest extends TestCase
             'attributeGroups',
             'assetTransforms',
             'assetSources',
+            'baskets',
             'channels',
             'currencies',
             'customerGroups',
