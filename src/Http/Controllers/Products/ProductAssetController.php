@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Controllers\Products;
 
+use GetCandy;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Assets\UploadRequest;
 use GetCandy\Api\Http\Transformers\Fractal\Assets\AssetTransformer;
@@ -18,7 +19,7 @@ class ProductAssetController extends BaseController
     public function index($id, Request $request)
     {
         $product = app('api')->products()->getByHashedId($id);
-        $assets = app('api')->assets()->getAssets($product, $request->all());
+        $assets = GetCandy::assets()->getAssets($product, $request->all());
 
         return $this->respondWithCollection($assets, new AssetTransformer);
     }
@@ -26,7 +27,7 @@ class ProductAssetController extends BaseController
     public function attach($productId, Request $request)
     {
         $product = app('api')->products()->getByHashedId($productId, true);
-        $asset = app('api')->assets()->getByHashedId($request->asset_id);
+        $asset = GetCandy::assets()->getByHashedId($request->asset_id);
 
         if (! $asset || ! $product) {
             return $this->errorNotFound();

@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Products\Services;
 
+use GetCandy;
 use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
 use GetCandy\Api\Core\Products\Models\ProductVariant;
 use GetCandy\Api\Core\Scaffold\BaseService;
@@ -163,7 +164,7 @@ class ProductVariantService extends BaseService
         }
 
         if (! empty($imageId)) {
-            $asset = app('api')->assets()->getByHashedId($imageId);
+            $asset = GetCandy::assets()->getByHashedId($imageId);
             $variant->image()->associate($asset);
         }
 
