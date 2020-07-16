@@ -115,9 +115,7 @@ class AttributeGroupController extends BaseController
     public function destroy($id, Request $request)
     {
         try {
-            $result = app('api')
-            ->attributeGroups()
-            ->delete(
+            $result = GetCandy::attributeGroups()->delete(
                 $id,
                 $request->group_id,
                 $request->delete_attributes
