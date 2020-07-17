@@ -18,6 +18,7 @@ class CountryController extends BaseController
     public function index(Request $request)
     {
         $countries = GetCandy::countries()->getGroupedByRegion();
+
         return new CountryGroupCollection($countries);
     }
 }
