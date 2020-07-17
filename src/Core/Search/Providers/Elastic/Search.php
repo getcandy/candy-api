@@ -178,7 +178,7 @@ class Search implements ClientContract
      */
     public function language($lang = 'en')
     {
-        $this->lang = $lang;
+        $this->builder->setLang($lang);
 
         return $this;
     }
