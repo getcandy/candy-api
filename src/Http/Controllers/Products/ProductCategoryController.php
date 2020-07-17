@@ -4,8 +4,8 @@ namespace GetCandy\Api\Http\Controllers\Products;
 
 use GetCandy;
 use GetCandy\Api\Http\Controllers\BaseController;
-use GetCandy\Api\Http\Resources\Categories\CategoryCollection;
 use GetCandy\Api\Http\Requests\Products\UpdateCategoriesRequest;
+use GetCandy\Api\Http\Resources\Categories\CategoryCollection;
 
 class ProductCategoryController extends BaseController
 {
@@ -19,6 +19,7 @@ class ProductCategoryController extends BaseController
     public function update($product, UpdateCategoriesRequest $request)
     {
         $categories = GetCandy::productCategories()->update($product, $request->all());
+
         return new CategoryCollection($categories);
     }
 

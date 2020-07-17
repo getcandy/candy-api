@@ -4,7 +4,7 @@ namespace GetCandy\Api\Http\Resources\Payments;
 
 use GetCandy\Api\Http\Resources\AbstractCollection;
 
-class ProductAssociationCollection extends AbstractCollection
+class PaymentProviderCollection extends AbstractCollection
 {
     /**
      * The resource that this resource collects.

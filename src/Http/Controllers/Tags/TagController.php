@@ -3,11 +3,11 @@
 namespace GetCandy\Api\Http\Controllers\Tags;
 
 use GetCandy;
-use Illuminate\Http\Request;
 use GetCandy\Api\Http\Controllers\BaseController;
-use GetCandy\Api\Http\Resources\Tags\TagResource;
 use GetCandy\Api\Http\Resources\Tags\TagCollection;
+use GetCandy\Api\Http\Resources\Tags\TagResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class TagController extends BaseController
@@ -38,6 +38,7 @@ class TagController extends BaseController
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
+
         return new TagResource($tag);
     }
 
@@ -70,6 +71,7 @@ class TagController extends BaseController
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
+
         return new TagResource($tag);
     }
 

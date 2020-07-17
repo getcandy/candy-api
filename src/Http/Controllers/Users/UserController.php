@@ -3,14 +3,14 @@
 namespace GetCandy\Api\Http\Controllers\Users;
 
 use GetCandy;
-use Illuminate\Http\Request;
-use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Core\Users\Contracts\UserContract;
+use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Users\CreateRequest;
 use GetCandy\Api\Http\Requests\Users\UpdateRequest;
-use GetCandy\Api\Http\Resources\Users\UserResource;
 use GetCandy\Api\Http\Resources\Users\UserCollection;
+use GetCandy\Api\Http\Resources\Users\UserResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
 
 class UserController extends BaseController
 {
@@ -38,6 +38,7 @@ class UserController extends BaseController
             $request->keywords,
             $request->ids
         );
+
         return new UserCollection($paginator);
     }
 
@@ -54,6 +55,7 @@ class UserController extends BaseController
         if (! $user) {
             return $this->errorNotFound('Cannot find user');
         }
+
         return new UserResource($user);
     }
 
@@ -81,6 +83,7 @@ class UserController extends BaseController
                 'addresses', 'roles.permissions', 'details',
             ])
         );
+
         return new UserResource($user);
     }
 

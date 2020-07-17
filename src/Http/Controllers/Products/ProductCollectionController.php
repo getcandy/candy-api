@@ -23,6 +23,7 @@ class ProductCollectionController extends BaseController
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
+
         return new CollectionCollection($collections);
     }
 

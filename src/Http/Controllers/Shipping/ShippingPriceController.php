@@ -3,13 +3,13 @@
 namespace GetCandy\Api\Http\Controllers\Shipping;
 
 use GetCandy;
-use Illuminate\Http\Request;
 use GetCandy\Api\Http\Controllers\BaseController;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use GetCandy\Api\Http\Requests\Shipping\Pricing\StoreRequest;
-use GetCandy\Api\Http\Resources\Shipping\ShippingPriceResource;
 use GetCandy\Api\Http\Requests\Shipping\Pricing\EstimateRequest;
+use GetCandy\Api\Http\Requests\Shipping\Pricing\StoreRequest;
 use GetCandy\Api\Http\Resources\Shipping\ShippingPriceCollection;
+use GetCandy\Api\Http\Resources\Shipping\ShippingPriceResource;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ShippingPriceController extends BaseController
@@ -23,6 +23,7 @@ class ShippingPriceController extends BaseController
     public function index(Request $request)
     {
         $prices = GetCandy::shippingPrices()->getPaginatedData($request->per_page, $request->current_page);
+
         return new ShippingPriceCollection($prices);
     }
 
@@ -39,6 +40,7 @@ class ShippingPriceController extends BaseController
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
+
         return new ShippingPriceResource($shippingPrice);
     }
 
@@ -62,12 +64,14 @@ class ShippingPriceController extends BaseController
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
+
         return new ShippingPriceResource($result);
     }
 
     public function estimate(EstimateRequest $request)
     {
         $result = GetCandy::shippingPrices()->estimate($request->amount, $request->zip, $request->limit);
+
         return new ShippingPriceResource($result);
     }
 
