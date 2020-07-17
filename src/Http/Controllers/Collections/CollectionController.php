@@ -148,7 +148,7 @@ class CollectionController extends BaseController
     public function destroy($id, DeleteRequest $request)
     {
         try {
-            $result = GetCandy::collections()->delete($id, true);
+            GetCandy::collections()->delete($id, true);
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }

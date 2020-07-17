@@ -83,7 +83,7 @@ class ShippingPriceController extends BaseController
     public function destroy($id)
     {
         try {
-            $result = GetCandy::shippingPrices()->delete($id);
+            GetCandy::shippingPrices()->delete($id);
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }

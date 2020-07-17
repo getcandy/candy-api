@@ -105,7 +105,7 @@ class ProductFamilyController extends BaseController
     public function destroy($id, DeleteRequest $request)
     {
         try {
-            $result = GetCandy::productFamilies()->delete($id, $request->product_family_id);
+            GetCandy::productFamilies()->delete($id, $request->product_family_id);
         } catch (MinimumRecordRequiredException $e) {
             return $this->errorUnprocessable($e->getMessage());
         } catch (NotFoundHttpException $e) {

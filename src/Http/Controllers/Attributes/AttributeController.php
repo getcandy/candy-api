@@ -79,7 +79,7 @@ class AttributeController extends BaseController
     public function reorder(ReorderRequest $request)
     {
         try {
-            $result = GetCandy::attributes()->reorder($request->all());
+            GetCandy::attributes()->reorder($request->all());
         } catch (HttpException $e) {
             return $this->errorUnprocessable($e->getMessage());
         } catch (DuplicateValueException $e) {
@@ -119,7 +119,7 @@ class AttributeController extends BaseController
     public function destroy($id, DeleteRequest $request)
     {
         try {
-            $result = GetCandy::attributes()->delete($id);
+            GetCandy::attributes()->delete($id);
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }

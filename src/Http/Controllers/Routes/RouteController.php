@@ -61,7 +61,7 @@ class RouteController extends BaseController
     public function destroy($id)
     {
         try {
-            $result = GetCandy::routes()->delete($id);
+            GetCandy::routes()->delete($id);
         } catch (MinimumRecordRequiredException $e) {
             return $this->errorUnprocessable($e->getMessage());
         } catch (NotFoundHttpException $e) {

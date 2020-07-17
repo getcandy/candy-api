@@ -245,7 +245,7 @@ class CategoryController extends BaseController
     public function destroy($id, Request $request)
     {
         try {
-            $result = GetCandy::categories()->delete($id);
+            GetCandy::categories()->delete($id);
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }

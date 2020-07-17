@@ -94,7 +94,7 @@ class ShippingMethodController extends BaseController
     public function destroy($methodId)
     {
         try {
-            $result = GetCandy::shippingMethods()->delete($methodId);
+            GetCandy::shippingMethods()->delete($methodId);
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }

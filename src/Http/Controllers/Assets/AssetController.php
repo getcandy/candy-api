@@ -84,7 +84,7 @@ class AssetController extends BaseController
     public function detach($assetId, $ownerId, Request $request)
     {
         try {
-            $result = GetCandy::assets()->detach($assetId, $ownerId, $request->type);
+            GetCandy::assets()->detach($assetId, $ownerId, $request->type);
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
@@ -95,7 +95,7 @@ class AssetController extends BaseController
     public function destroy($id)
     {
         try {
-            $result = GetCandy::assets()->delete($id);
+            GetCandy::assets()->delete($id);
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }

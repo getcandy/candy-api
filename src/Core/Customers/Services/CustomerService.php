@@ -47,14 +47,14 @@ class CustomerService extends BaseService
 
     public function update($hashedId, array $data)
     {
-        $user = GetCandy::users()->getByHashedId($id);
+        $user = GetCandy::users()->getByHashedId($hashedId);
 
         if (! empty($data['customer_groups'])) {
             $groups = GetCandy::customerGroups()->getDecodedIds($data['customer_groups']);
             $user->groups()->sync($groups);
         }
 
-        dd($user);
+        return $user;
     }
 
     public function getPaginatedData($length = 50, $page = null, $keywords = null, $includes = [])

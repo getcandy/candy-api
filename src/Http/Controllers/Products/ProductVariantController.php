@@ -99,7 +99,7 @@ class ProductVariantController extends BaseController
     public function destroy($id, DeleteRequest $request)
     {
         try {
-            $result = GetCandy::productVariants()->delete($id);
+            GetCandy::productVariants()->delete($id);
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         } catch (ModelNotFoundException $e) {

@@ -34,7 +34,7 @@ class ProductCustomerGroupController extends BaseController
      */
     public function destroy($product, DeleteRequest $request)
     {
-        $result = GetCandy::productAssociations()->destroy($product, $request->associations);
+        GetCandy::productAssociations()->destroy($product, $request->associations);
 
         return $this->respondWithNoContent();
     }

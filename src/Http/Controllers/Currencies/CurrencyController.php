@@ -81,7 +81,7 @@ class CurrencyController extends BaseController
     public function destroy($id, DeleteRequest $request)
     {
         try {
-            $result = GetCandy::currencies()->delete($id);
+            GetCandy::currencies()->delete($id);
         } catch (MinimumRecordRequiredException $e) {
             return $this->errorUnprocessable($e->getMessage());
         } catch (NotFoundHttpException $e) {

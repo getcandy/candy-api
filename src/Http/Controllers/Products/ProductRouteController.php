@@ -24,7 +24,7 @@ class ProductRouteController extends BaseController
 
     public function update($product, UpdateUrlsRequest $request)
     {
-        $result = GetCandy::products()->saveUrls($product, $request->urls);
+        GetCandy::products()->saveUrls($product, $request->urls);
 
         return $this->respondWithNoContent();
     }

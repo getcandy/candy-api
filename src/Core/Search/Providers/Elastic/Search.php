@@ -254,8 +254,6 @@ class Search implements ClientContract
      */
     public function search($rank = true)
     {
-        $roles = GetCandy::roles()->getHubAccessRoles();
-
         $builder = $this->builder;
 
         $builder

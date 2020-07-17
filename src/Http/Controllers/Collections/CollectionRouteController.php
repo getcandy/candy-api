@@ -15,7 +15,7 @@ class CollectionRouteController extends BaseController
      */
     public function store($collection, CreateRequest $request)
     {
-        $result = GetCandy::collections()->createUrl($collection, $request->all());
+        GetCandy::collections()->createUrl($collection, $request->all());
 
         return $this->respondWithNoContent();
     }

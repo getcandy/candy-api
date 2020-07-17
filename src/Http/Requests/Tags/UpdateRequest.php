@@ -24,8 +24,6 @@ class UpdateRequest extends FormRequest
      */
     public function rules()
     {
-        $decodedId = GetCandy::tags()->getDecodedId($this->tag);
-
         return [
             'name' => 'required|array|valid_locales',
         ];

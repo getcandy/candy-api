@@ -85,7 +85,7 @@ class TagController extends BaseController
     public function destroy($id, DeleteRequest $request)
     {
         try {
-            $result = GetCandy::tags()->delete($id);
+            GetCandy::tags()->delete($id);
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }

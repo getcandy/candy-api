@@ -95,7 +95,7 @@ class AttributeGroupController extends BaseController
     public function reorder(ReorderRequest $request)
     {
         try {
-            $result = GetCandy::attributeGroups()->updateGroupPositions($request->all());
+            GetCandy::attributeGroups()->updateGroupPositions($request->all());
         } catch (HttpException $e) {
             return $this->errorUnprocessable($e->getMessage());
         } catch (DuplicateValueException $e) {
@@ -115,7 +115,7 @@ class AttributeGroupController extends BaseController
     public function destroy($id, Request $request)
     {
         try {
-            $result = GetCandy::attributeGroups()->delete(
+            GetCandy::attributeGroups()->delete(
                 $id,
                 $request->group_id,
                 $request->delete_attributes

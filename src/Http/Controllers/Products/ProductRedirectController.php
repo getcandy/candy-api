@@ -15,7 +15,7 @@ class ProductRedirectController extends BaseController
      */
     public function store($product, CreateUrlRequest $request)
     {
-        $result = GetCandy::products()->createUrl($product, $request->all());
+        GetCandy::products()->createUrl($product, $request->all());
 
         return $this->respondWithNoContent();
     }

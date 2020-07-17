@@ -177,7 +177,7 @@ class BasketController extends BaseController
      */
     public function destroy($id, DeleteRequest $request)
     {
-        $result = GetCandy::baskets()->destroy($request->basket);
+        GetCandy::baskets()->destroy($request->basket);
 
         return $this->respondWithSuccess();
     }

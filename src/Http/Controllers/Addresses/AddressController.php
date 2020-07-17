@@ -42,7 +42,7 @@ class AddressController extends BaseController
     public function destroy($id)
     {
         try {
-            $result = GetCandy::addresses()->delete($id);
+            GetCandy::addresses()->delete($id);
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }

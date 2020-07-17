@@ -259,7 +259,7 @@ class OrderController extends BaseController
     public function expire($id)
     {
         try {
-            $result = GetCandy::orders()->expire($id);
+            GetCandy::orders()->expire($id);
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }

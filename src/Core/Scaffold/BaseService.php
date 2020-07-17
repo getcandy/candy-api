@@ -432,9 +432,7 @@ abstract class BaseService
         $model = $this->getByHashedId($hashedId, true);
 
         try {
-            $existing = GetCandy::routes()->getBySlug($data['slug']);
-
-            return $model;
+            return GetCandy::routes()->getBySlug($data['slug']);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
         }
 

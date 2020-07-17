@@ -27,7 +27,7 @@ class SavedSearchController extends BaseController
     public function destroy($id)
     {
         try {
-            $result = GetCandy::savedSearch()->delete($id);
+            GetCandy::savedSearch()->delete($id);
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
