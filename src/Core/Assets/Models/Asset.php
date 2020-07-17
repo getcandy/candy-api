@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Assets\Models;
 
+use GetCandy;
 use GetCandy\Api\Core\Scaffold\BaseModel;
 use GetCandy\Api\Core\Tags\Models\Tag;
 use Storage;
@@ -92,7 +93,7 @@ class Asset extends BaseModel
 
     public function uploader()
     {
-        return app('api')->assets()->getDriver($this->kind);
+        return GetCandy::assets()->getDriver($this->kind);
     }
 
     public function tags()

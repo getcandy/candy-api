@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Controllers\Routes;
 
+use GetCandy;
 use GetCandy\Api\Core\Routes\RouteCriteria;
 use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
 use GetCandy\Api\Http\Controllers\BaseController;
@@ -16,7 +17,7 @@ class RouteController extends BaseController
 {
     public function index()
     {
-        $pages = app('api')->routes()->getPaginatedData();
+        $pages = GetCandy::routes()->getPaginatedData();
 
         return $this->respondWithCollection($pages, new RouteTransformer);
     }
@@ -49,7 +50,7 @@ class RouteController extends BaseController
     public function update($id, UpdateRequest $request)
     {
         try {
-            $route = app('api')->routes()->update($id, $request->all());
+            $route = GetCandy::routes()->update($id, $request->all());
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
@@ -60,7 +61,7 @@ class RouteController extends BaseController
     public function destroy($id)
     {
         try {
-            $result = app('api')->routes()->delete($id);
+            GetCandy::routes()->delete($id);
         } catch (MinimumRecordRequiredException $e) {
             return $this->errorUnprocessable($e->getMessage());
         } catch (NotFoundHttpException $e) {

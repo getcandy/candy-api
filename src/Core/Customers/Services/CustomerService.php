@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Customers\Services;
 
+use GetCandy;
 use GetCandy\Api\Core\Scaffold\BaseService;
 
 class CustomerService extends BaseService
@@ -20,9 +21,9 @@ class CustomerService extends BaseService
      */
     public function register(array $data)
     {
-        $user = app('api')->users()->create($data);
+        $user = GetCandy::users()->create($data);
         $user->assignRole('customer');
-        $retail = app('api')->customerGroups()->getDefaultRecord();
+        $retail = GetCandy::customerGroups()->getDefaultRecord();
         $user->groups()->sync([$retail->id]);
 
         return $user;
@@ -46,14 +47,14 @@ class CustomerService extends BaseService
 
     public function update($hashedId, array $data)
     {
-        $user = app('api')->users()->getByHashedId($id);
+        $user = GetCandy::users()->getByHashedId($hashedId);
 
         if (! empty($data['customer_groups'])) {
-            $groups = app('api')->customerGroups()->getDecodedIds($data['customer_groups']);
+            $groups = GetCandy::customerGroups()->getDecodedIds($data['customer_groups']);
             $user->groups()->sync($groups);
         }
 
-        dd($user);
+        return $user;
     }
 
     public function getPaginatedData($length = 50, $page = null, $keywords = null, $includes = [])

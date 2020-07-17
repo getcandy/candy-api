@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Controllers\Users;
 
+use GetCandy;
 use GetCandy\Api\Core\Users\Contracts\UserContract;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Users\CreateRequest;
@@ -31,7 +32,7 @@ class UserController extends BaseController
      */
     public function index(Request $request)
     {
-        $paginator = app('api')->users()->getPaginatedData(
+        $paginator = GetCandy::users()->getPaginatedData(
             $request->per_page,
             $request->page,
             $request->keywords,
@@ -49,7 +50,7 @@ class UserController extends BaseController
      */
     public function show($id)
     {
-        $user = app('api')->users()->getByHashedId($id);
+        $user = GetCandy::users()->getByHashedId($id);
 
         if (! $user) {
             return $this->errorNotFound('Cannot find user');
@@ -66,7 +67,7 @@ class UserController extends BaseController
      */
     public function store(CreateRequest $request)
     {
-        $user = app('api')->users()->create($request->all());
+        $user = GetCandy::users()->create($request->all());
 
         return $this->respondWithItem($user, new UserTransformer);
     }
@@ -88,7 +89,7 @@ class UserController extends BaseController
 
     public function update($userId, UpdateRequest $request)
     {
-        $user = app('api')->users()->update($userId, $request->all());
+        $user = GetCandy::users()->update($userId, $request->all());
 
         return $this->respondWithItem($user, new UserTransformer);
     }
@@ -96,7 +97,7 @@ class UserController extends BaseController
     public function deleteReusablePayment($id, Request $request)
     {
         try {
-            $payment = app('api')->users()->getReusablePayment($id);
+            $payment = GetCandy::users()->getReusablePayment($id);
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
@@ -104,7 +105,7 @@ class UserController extends BaseController
         if ($payment->user_id != $request->user()->id) {
             $this->errorUnauthorized();
         }
-        app('api')->users()->deleteReusablePayment($payment);
+        GetCandy::users()->deleteReusablePayment($payment);
 
         return $this->respondWithNoContent();
     }

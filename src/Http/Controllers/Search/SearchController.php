@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Controllers\Search;
 
+use GetCandy;
 use GetCandy\Api\Core\Categories\Services\CategoryService;
 use GetCandy\Api\Core\Channels\Services\ChannelService;
 use GetCandy\Api\Core\Products\Models\Product;
@@ -64,7 +65,7 @@ class SearchController extends BaseController
         }
 
         // Get our filterable attributes.
-        $filterable = app('api')->attributes()->getFilterable()->pluck('handle')->toArray();
+        $filterable = GetCandy::attributes()->getFilterable()->pluck('handle')->toArray();
         $filterable[] = 'price';
 
         try {
@@ -149,7 +150,7 @@ class SearchController extends BaseController
             return $this->errorInternalError($e->getMessage());
         }
 
-        $results = app('api')->search()->getSuggestResults($results, $request->type);
+        $results = GetCandy::search()->getSuggestResults($results, $request->type);
 
         return $this->respondWithCollection($results, new SearchSuggestionTransformer);
     }

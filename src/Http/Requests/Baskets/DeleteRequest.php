@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Requests\Baskets;
 
+use GetCandy;
 use GetCandy\Api\Http\Requests\FormRequest;
 
 class DeleteRequest extends FormRequest
@@ -13,7 +14,7 @@ class DeleteRequest extends FormRequest
      */
     public function authorize()
     {
-        $basket = app('api')->baskets()->getByHashedId($this->basket);
+        $basket = GetCandy::baskets()->getByHashedId($this->basket);
         $this->basket = $basket;
 
         return $basket->user->id == $this->user()->id;

@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Controllers\Currencies;
 
+use GetCandy;
 use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Currencies\CreateRequest;
@@ -22,7 +23,7 @@ class CurrencyController extends BaseController
      */
     public function index(Request $request)
     {
-        $paginator = app('api')->currencies()->getPaginatedData($request->per_page);
+        $paginator = GetCandy::currencies()->getPaginatedData($request->per_page);
 
         return $this->respondWithCollection($paginator, new CurrencyTransformer);
     }
@@ -36,7 +37,7 @@ class CurrencyController extends BaseController
     public function show($code)
     {
         try {
-            $currency = app('api')->currencies()->getByCode($code);
+            $currency = GetCandy::currencies()->getByCode($code);
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
@@ -52,7 +53,7 @@ class CurrencyController extends BaseController
      */
     public function store(CreateRequest $request)
     {
-        $result = app('api')->currencies()->create($request->all());
+        $result = GetCandy::currencies()->create($request->all());
 
         return $this->respondWithItem($result, new CurrencyTransformer);
     }
@@ -60,7 +61,7 @@ class CurrencyController extends BaseController
     public function update($id, UpdateRequest $request)
     {
         try {
-            $result = app('api')->currencies()->update($id, $request->all());
+            $result = GetCandy::currencies()->update($id, $request->all());
         } catch (MinimumRecordRequiredException $e) {
             return $this->errorUnprocessable($e->getMessage());
         } catch (NotFoundHttpException $e) {
@@ -80,7 +81,7 @@ class CurrencyController extends BaseController
     public function destroy($id, DeleteRequest $request)
     {
         try {
-            $result = app('api')->currencies()->delete($id);
+            GetCandy::currencies()->delete($id);
         } catch (MinimumRecordRequiredException $e) {
             return $this->errorUnprocessable($e->getMessage());
         } catch (NotFoundHttpException $e) {

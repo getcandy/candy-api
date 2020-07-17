@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Controllers\Customers;
 
+use GetCandy;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Customers\CreateRequest;
 use GetCandy\Api\Http\Resources\Users\UserCollection;
@@ -19,7 +20,7 @@ class CustomerController extends BaseController
      */
     public function index(Request $request)
     {
-        $customers = app('api')->customers()->getPaginatedData(
+        $customers = GetCandy::customers()->getPaginatedData(
             $request->length,
             $request->page,
             $request->keywords,
@@ -31,7 +32,7 @@ class CustomerController extends BaseController
 
     public function show($id, Request $request)
     {
-        $customer = app('api')->customers()->getByHashedId($id, explode(',', $request->includes));
+        $customer = GetCandy::customers()->getByHashedId($id, explode(',', $request->includes));
 
         return new UserResource($customer);
     }
@@ -44,7 +45,7 @@ class CustomerController extends BaseController
      */
     public function store(CreateRequest $request)
     {
-        $customer = app('api')->customers()->register($request->all());
+        $customer = GetCandy::customers()->register($request->all());
 
         return $this->respondWithItem($customer, new UserTransformer);
     }

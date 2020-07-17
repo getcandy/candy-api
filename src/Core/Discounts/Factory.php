@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Discounts;
 
+use GetCandy;
 use GetCandy\Api\Core\Discounts\Criteria\Coupon;
 use GetCandy\Api\Core\Discounts\Criteria\ProductIn;
 
@@ -65,7 +66,7 @@ class Factory
         foreach ($basket->lines as $line) {
             $basket->subTotal += $line->currentTotal;
 
-            $tieredPrice = app('api')->productVariants()->getTieredPrice(
+            $tieredPrice = GetCandy::productVariants()->getTieredPrice(
                 $line->variant,
                 $line->quantity,
                 $basket->user

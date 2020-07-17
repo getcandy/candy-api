@@ -3,6 +3,7 @@
 namespace GetCandy\Api\Http\Controllers\Categories;
 
 use Drafting;
+use GetCandy;
 use GetCandy\Api\Core\Categories\CategoryCriteria;
 use GetCandy\Api\Core\Categories\Models\Category;
 use GetCandy\Api\Core\Categories\Services\CategoryService;
@@ -100,14 +101,14 @@ class CategoryController extends BaseController
 
     public function getNested()
     {
-        $categories = app('api')->categories()->getNestedList();
+        $categories = GetCandy::categories()->getNestedList();
 
         return $this->respondWithCollection($categories, new CategoryTransformer);
     }
 
     public function getByParent($parentID, Request $request)
     {
-        $categories = app('api')->categories()->getByParentID(
+        $categories = GetCandy::categories()->getByParentID(
             $parentID,
             $this->parseIncludes($request->include)
         );
@@ -124,7 +125,7 @@ class CategoryController extends BaseController
     public function store(CreateRequest $request)
     {
         try {
-            $response = app('api')->categories()->create($request->all());
+            $response = GetCandy::categories()->create($request->all());
         } catch (MinimumRecordRequiredException $e) {
             return $this->errorUnprocessable($e->getMessage());
         } catch (NotFoundHttpException $e) {
@@ -151,7 +152,7 @@ class CategoryController extends BaseController
     public function reorder(ReorderRequest $request)
     {
         try {
-            $response = app('api')->categories()->reorder($request->all());
+            $response = GetCandy::categories()->reorder($request->all());
         } catch (MinimumRecordRequiredException $e) {
             return $this->errorUnprocessable($e->getMessage());
         } catch (NotFoundHttpException $e) {
@@ -178,7 +179,7 @@ class CategoryController extends BaseController
     public function update($id, UpdateRequest $request)
     {
         try {
-            $result = app('api')->categories()->update($id, $request->all());
+            $result = GetCandy::categories()->update($id, $request->all());
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
@@ -204,7 +205,7 @@ class CategoryController extends BaseController
     public function putChannels($id, Request $request)
     {
         try {
-            $category = app('api')->categories()->updateChannels($id, $request->all());
+            $category = GetCandy::categories()->updateChannels($id, $request->all());
         } catch (NotFoundException $e) {
             return $this->errorNotFound();
         }
@@ -215,7 +216,7 @@ class CategoryController extends BaseController
     public function putCustomerGroups($id, Request $request)
     {
         try {
-            $category = app('api')->categories()->updateCustomerGroups($id, $request->groups ?: []);
+            $category = GetCandy::categories()->updateCustomerGroups($id, $request->groups ?: []);
         } catch (NotFoundException $e) {
             return $this->errorNotFound();
         }
@@ -226,7 +227,7 @@ class CategoryController extends BaseController
     public function putProducts($id, Request $request)
     {
         try {
-            $result = app('api')->categories()->updateProducts($id, $request->all());
+            $result = GetCandy::categories()->updateProducts($id, $request->all());
         } catch (NotFoundException $e) {
             return $this->errorNotFound();
         }
@@ -244,7 +245,7 @@ class CategoryController extends BaseController
     public function destroy($id, Request $request)
     {
         try {
-            $result = app('api')->categories()->delete($id);
+            GetCandy::categories()->delete($id);
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }

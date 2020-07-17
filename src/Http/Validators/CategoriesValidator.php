@@ -2,6 +2,8 @@
 
 namespace GetCandy\Api\Http\Validators;
 
+use GetCandy;
+
 class CategoriesValidator
 {
     /**
@@ -15,6 +17,6 @@ class CategoriesValidator
      */
     public function uniqueCategoryAttributeData($attribute, $value, $key, $validator)
     {
-        return app('api')->categories()->uniqueAttribute($key[0], $value);
+        return GetCandy::categories()->uniqueAttribute($key[0], $value);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Products\Services;
 
+use GetCandy;
 use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
 use GetCandy\Api\Core\Channels\Models\Channel;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
@@ -105,12 +106,12 @@ class ProductService extends BaseService
         }
 
         if (! empty($data['family_id'])) {
-            $family = app('api')->productFamilies()->getByHashedId($data['family_id']);
+            $family = GetCandy::productFamilies()->getByHashedId($data['family_id']);
             $family->products()->save($product);
         }
 
         if (! empty($data['layout_id'])) {
-            $layout = app('api')->layouts()->getByHashedId($data['layout_id']);
+            $layout = GetCandy::layouts()->getByHashedId($data['layout_id']);
             $product->layout_id = $layout->id;
         }
 
@@ -132,7 +133,7 @@ class ProductService extends BaseService
      */
     public function updateLayout($productId, $layoutId)
     {
-        $layout = app('api')->layouts()->getByHashedId($layoutId);
+        $layout = GetCandy::layouts()->getByHashedId($layoutId);
         $product = $this->getByHashedId($productId);
 
         $product->layout->associate($layout);
@@ -170,11 +171,11 @@ class ProductService extends BaseService
             $product->option_data = $data['option_data'];
         }
 
-        // $layout = app('api')->layouts()->getByHashedId($data['layout_id']);
+        // $layout = GetCandy::layouts()->getByHashedId($data['layout_id']);
         // $product->layout()->associate($layout);
 
         if (! empty($data['family_id'])) {
-            $family = app('api')->productFamilies()->getByHashedId($data['family_id']);
+            $family = GetCandy::productFamilies()->getByHashedId($data['family_id']);
             if (! $family) {
                 abort(422);
             }
@@ -210,7 +211,7 @@ class ProductService extends BaseService
 
         $sku = $data['sku'];
         $i = 1;
-        while (app('api')->productVariants()->existsBySku($sku)) {
+        while (GetCandy::productVariants()->existsBySku($sku)) {
             $sku = $sku.$i;
             $i++;
         }
@@ -228,12 +229,12 @@ class ProductService extends BaseService
 
         if (! empty($data['tax_id'])) {
             $variant->tax()->associate(
-                app('api')->taxes()->getByHashedId($data['tax_id'])
+                GetCandy::taxes()->getByHashedId($data['tax_id'])
             );
             $variant->save();
         } else {
             $variant->tax()->associate(
-                app('api')->taxes()->getDefaultRecord()
+                GetCandy::taxes()->getDefaultRecord()
             );
             $variant->save();
         }
@@ -245,7 +246,7 @@ class ProductService extends BaseService
 
     protected function getPriceMapping($price)
     {
-        $customerGroups = app('api')->customerGroups()->all();
+        $customerGroups = GetCandy::customerGroups()->all();
 
         return $customerGroups->map(function ($group) use ($price) {
             return [
@@ -423,7 +424,7 @@ class ProductService extends BaseService
         $product = $this->getByHashedId($id);
 
         foreach ($data['collections'] as $attribute) {
-            $ids[] = app('api')->collections()->getDecodedId($attribute);
+            $ids[] = GetCandy::collections()->getDecodedId($attribute);
         }
 
         $product->collections()->sync($ids);

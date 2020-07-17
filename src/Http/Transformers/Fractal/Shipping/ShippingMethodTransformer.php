@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Shipping;
 
+use GetCandy;
 use GetCandy\Api\Core\Shipping\Models\ShippingMethod;
 use GetCandy\Api\Core\Traits\IncludesAttributes;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
@@ -51,7 +52,7 @@ class ShippingMethodTransformer extends BaseTransformer
      */
     public function includeChannels(ShippingMethod $method)
     {
-        $channels = app('api')->channels()->getChannelsWithAvailability($method, 'shipping_methods');
+        $channels = GetCandy::channels()->getChannelsWithAvailability($method, 'shipping_methods');
 
         return $this->collection($channels, new ChannelTransformer);
     }

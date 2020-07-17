@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Assets\Services;
 
+use GetCandy;
 use GetCandy\Api\Core\Assets\Jobs\CleanUpAssetFiles;
 use GetCandy\Api\Core\Assets\Models\Asset;
 use GetCandy\Api\Core\Scaffold\BaseService;
@@ -74,7 +75,7 @@ class AssetService extends BaseService
             $model = $this->update($asset['id'], $asset);
 
             if (isset($asset['tags'])) {
-                $tagIds = app('api')->tags()->getSyncableIds($asset['tags']);
+                $tagIds = GetCandy::tags()->getSyncableIds($asset['tags']);
                 $model->tags()->sync($tagIds);
             }
         }

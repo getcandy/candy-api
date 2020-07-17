@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Taxes;
 
+use GetCandy;
 use GetCandy\Api\Core\Taxes\Interfaces\TaxCalculatorInterface;
 use GetCandy\Api\Core\Taxes\Models\Tax;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -28,7 +29,7 @@ class TaxCalculator implements TaxCalculatorInterface
 
     public function setDefault()
     {
-        $this->rate = app('api')->taxes()->getDefaultRecord();
+        $this->rate = GetCandy::taxes()->getDefaultRecord();
 
         return $this;
     }
@@ -46,7 +47,7 @@ class TaxCalculator implements TaxCalculatorInterface
             } elseif ($rate instanceof Tax) {
                 $this->percent = $rate->percentage;
             } else {
-                $this->percent = app('api')->taxes()->getByName($rate)->percentage;
+                $this->percent = GetCandy::taxes()->getByName($rate)->percentage;
             }
         } catch (ModelNotFoundException $e) {
             $this->setDefault();

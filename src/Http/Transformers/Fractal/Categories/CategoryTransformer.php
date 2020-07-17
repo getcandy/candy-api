@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Categories;
 
+use GetCandy;
 use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
 use GetCandy\Api\Core\Categories\Models\Category;
 use GetCandy\Api\Http\Transformers\Fractal\Assets\AssetTransformer;
@@ -47,7 +48,7 @@ class CategoryTransformer extends BaseTransformer
             'depth' => $category->depth,
             'products_count' => $category->products->count(),
             'children_count' => $category->children->count(),
-            'parent_id' => app('api')->categories()->getEncodedId($category->parent_id),
+            'parent_id' => GetCandy::categories()->getEncodedId($category->parent_id),
         ];
 
         if (! is_null($category->aggregate_selected)) {
@@ -110,7 +111,7 @@ class CategoryTransformer extends BaseTransformer
      */
     public function includeChannels(Category $category)
     {
-        $channels = app('api')->channels()->getChannelsWithAvailability($category, 'categories');
+        $channels = GetCandy::channels()->getChannelsWithAvailability($category, 'categories');
 
         return $this->collection($channels, new ChannelTransformer);
     }
@@ -163,7 +164,7 @@ class CategoryTransformer extends BaseTransformer
      */
     public function includeCustomerGroups(Category $category)
     {
-        $groups = app('api')->customerGroups()->getGroupsWithAvailability($category, 'categories');
+        $groups = GetCandy::customerGroups()->getGroupsWithAvailability($category, 'categories');
 
         return $this->collection($groups, new CustomerGroupTransformer);
     }

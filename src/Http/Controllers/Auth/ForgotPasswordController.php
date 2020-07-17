@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Controllers\Auth;
 
+use GetCandy;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Auth\ForgotPasswordRequest;
 use GetCandy\Api\Http\Transformers\Fractal\Auth\PasswordTokenTransformer;
@@ -56,7 +57,7 @@ class ForgotPasswordController extends BaseController
      */
     protected function getPasswordResetToken($email)
     {
-        $user = app('api')->users()->getByEmail($email);
+        $user = GetCandy::users()->getByEmail($email);
 
         if (! $user) {
             return false;

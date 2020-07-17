@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Controllers\Products;
 
+use GetCandy;
 use GetCandy\Api\Core\Products\Criteria\ProductFamilyCriteria;
 use GetCandy\Api\Exceptions\InvalidLanguageException;
 use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
@@ -26,7 +27,7 @@ class ProductFamilyController extends BaseController
      */
     public function index(Request $request)
     {
-        $paginator = app('api')->productFamilies()->getPaginatedData(
+        $paginator = GetCandy::productFamilies()->getPaginatedData(
             $request->per_page,
             $request->page ?: 1,
             $this->parseIncludes($request->includes),
@@ -64,7 +65,7 @@ class ProductFamilyController extends BaseController
     public function store(CreateRequest $request)
     {
         try {
-            $result = app('api')->productFamilies()->create($request->all());
+            $result = GetCandy::productFamilies()->create($request->all());
         } catch (InvalidLanguageException $e) {
             return $this->errorUnprocessable($e->getMessage());
         }
@@ -82,7 +83,7 @@ class ProductFamilyController extends BaseController
     public function update($id, UpdateRequest $request)
     {
         try {
-            $result = app('api')->productFamilies()->update($id, $request->all());
+            $result = GetCandy::productFamilies()->update($id, $request->all());
         } catch (MinimumRecordRequiredException $e) {
             return $this->errorUnprocessable($e->getMessage());
         } catch (NotFoundHttpException $e) {
@@ -104,7 +105,7 @@ class ProductFamilyController extends BaseController
     public function destroy($id, DeleteRequest $request)
     {
         try {
-            $result = app('api')->productFamilies()->delete($id, $request->product_family_id);
+            GetCandy::productFamilies()->delete($id, $request->product_family_id);
         } catch (MinimumRecordRequiredException $e) {
             return $this->errorUnprocessable($e->getMessage());
         } catch (NotFoundHttpException $e) {

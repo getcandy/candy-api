@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Products;
 
+use GetCandy;
 use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Traits\IncludesAttributes;
 use GetCandy\Api\Http\Transformers\Fractal\Assets\AssetTransformer;
@@ -193,7 +194,7 @@ class ProductTransformer extends BaseTransformer
      */
     public function includeChannels(Product $product)
     {
-        $channels = app('api')->channels()->getChannelsWithAvailability($product, 'products');
+        $channels = GetCandy::channels()->getChannelsWithAvailability($product, 'products');
 
         return $this->collection($channels, new ChannelTransformer);
     }
@@ -204,7 +205,7 @@ class ProductTransformer extends BaseTransformer
      */
     public function includeCustomerGroups(Product $product)
     {
-        $groups = app('api')->customerGroups()->getGroupsWithAvailability($product, 'products');
+        $groups = GetCandy::customerGroups()->getGroupsWithAvailability($product, 'products');
 
         return $this->collection($groups, new CustomerGroupTransformer);
     }

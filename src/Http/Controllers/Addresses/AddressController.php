@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Controllers\Addresses;
 
+use GetCandy;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Transformers\Fractal\Addresses\AddressTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -12,7 +13,7 @@ class AddressController extends BaseController
     public function update($id, Request $request)
     {
         try {
-            $address = app('api')->addresses()->update($id, $request->all());
+            $address = GetCandy::addresses()->update($id, $request->all());
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
@@ -29,11 +30,11 @@ class AddressController extends BaseController
             } else {
                 $id = $authUser->encodedId();
             }
-            $user = app('api')->users()->getByHashedId($id);
+            $user = GetCandy::users()->getByHashedId($id);
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
-        $address = app('api')->addresses()->create($user, $request->all());
+        $address = GetCandy::addresses()->create($user, $request->all());
 
         return $this->respondWithItem($address, new AddressTransformer);
     }
@@ -41,7 +42,7 @@ class AddressController extends BaseController
     public function destroy($id)
     {
         try {
-            $result = app('api')->addresses()->delete($id);
+            GetCandy::addresses()->delete($id);
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
@@ -52,7 +53,7 @@ class AddressController extends BaseController
     public function makeDefault($id, Request $request)
     {
         try {
-            $address = app('api')->addresses()->makeDefault($id);
+            $address = GetCandy::addresses()->makeDefault($id);
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
@@ -63,7 +64,7 @@ class AddressController extends BaseController
     public function removeDefault($id, Request $request)
     {
         try {
-            $address = app('api')->addresses()->removeDefault($id);
+            $address = GetCandy::addresses()->removeDefault($id);
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }

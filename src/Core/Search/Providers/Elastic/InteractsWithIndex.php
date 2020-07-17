@@ -4,6 +4,7 @@ namespace GetCandy\Api\Core\Search\Providers\Elastic;
 
 use Elastica\Status;
 use Elastica\Type\Mapping;
+use GetCandy;
 use GetCandy\Api\Core\Categories\Models\Category;
 use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Search\Providers\Elastic\Types\CategoryType;
@@ -39,7 +40,6 @@ trait InteractsWithIndex
 
     public function against($types)
     {
-        dd(1);
         $this->type = $this->getType($types);
 
         return $this;
@@ -52,7 +52,7 @@ trait InteractsWithIndex
      */
     protected function getDefaultIndex()
     {
-        $defaultLang = app('api')->languages()->getDefaultRecord();
+        $defaultLang = GetCandy::languages()->getDefaultRecord();
 
         return $this->getBaseIndexName()."_{$defaultLang->lang}";
     }

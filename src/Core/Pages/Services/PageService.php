@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Pages\Services;
 
+use GetCandy;
 use GetCandy\Api\Core\Pages\Models\Page;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Exceptions\InvalidLanguageException;
@@ -36,7 +37,7 @@ class PageService extends BaseService
          * Figure out which language this page belongs to
          */
         if (! $languageCode instanceof Model) {
-            $language = app('api')->languages()->getEnabledByCode($languageCode);
+            $language = GetCandy::languages()->getEnabledByCode($languageCode);
         } else {
             $language = $languageCode;
         }
@@ -51,7 +52,7 @@ class PageService extends BaseService
          * Sort out the layout for this page
          */
         if (! $layout instanceof Model) {
-            $layout = app('api')->layouts()->getByHashedId($layout);
+            $layout = GetCandy::layouts()->getByHashedId($layout);
         }
 
         if (! $layout) {
@@ -66,9 +67,9 @@ class PageService extends BaseService
 
         if (! $channel instanceof Model) {
             if ($channel) {
-                $channel = app('api')->channels()->getByHashedId($channel);
+                $channel = GetCandy::channels()->getByHashedId($channel);
             } else {
-                $channel = app('api')->channels()->getDefaultRecord($channel);
+                $channel = GetCandy::channels()->getDefaultRecord($channel);
             }
         }
 

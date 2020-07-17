@@ -3,6 +3,7 @@
 namespace GetCandy\Api\Core\Baskets\Services;
 
 use Carbon\Carbon;
+use GetCandy;
 use GetCandy\Api\Core\Auth\Models\User;
 use GetCandy\Api\Core\Baskets\Events\BasketStoredEvent;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketFactoryInterface;
@@ -65,7 +66,7 @@ class BasketService extends BaseService
         }
 
         if (! $basket->currency) {
-            $basket->currency = app('api')->currencies()->getDefaultRecord()->code;
+            $basket->currency = GetCandy::currencies()->getDefaultRecord()->code;
         }
 
         $basket->save();
@@ -130,7 +131,7 @@ class BasketService extends BaseService
 
         if ($basket->discounts) {
             foreach ($basket->discounts as $discount) {
-                $discountFactory = app('api')->discounts()->getFactory($discount);
+                $discountFactory = GetCandy::discounts()->getFactory($discount);
                 $check = (new Factory)->checkCriteria(
                     $discountFactory,
                     $basket->user,
@@ -157,7 +158,7 @@ class BasketService extends BaseService
     public function addUser($basketId, $userId)
     {
         $basket = $this->getByHashedId($basketId);
-        $user = app('api')->users()->getByHashedId($userId);
+        $user = GetCandy::users()->getByHashedId($userId);
         $basket->user()->associate($user);
         $basket->save();
 
@@ -219,7 +220,7 @@ class BasketService extends BaseService
             $basket->currency = $data['currency'];
         }
         if (is_null($basket->currency)) {
-            $basket->currency = app('api')->currencies()->getDefaultRecord()->code;
+            $basket->currency = GetCandy::currencies()->getDefaultRecord()->code;
         }
 
         return $basket;
@@ -302,7 +303,7 @@ class BasketService extends BaseService
 
     protected function remapLines($basket, $variants = [])
     {
-        $service = app('api')->productVariants();
+        $service = GetCandy::productVariants();
 
         $collectedVariants = [];
 
@@ -351,7 +352,7 @@ class BasketService extends BaseService
     public function addDiscount($basketId, $coupon)
     {
         $basket = $this->getByHashedId($basketId);
-        $discountCriteria = app('api')->discounts()->getByCoupon($coupon);
+        $discountCriteria = GetCandy::discounts()->getByCoupon($coupon);
 
         $discount = $discountCriteria->set->discount;
         $discount->uses ? $discount->increment('uses') : 1;
@@ -385,7 +386,7 @@ class BasketService extends BaseService
             'lines.variant.customerPricing',
         ])->findOrFail($id);
 
-        $discount = app('api')->discounts()->getByHashedId($discountId);
+        $discount = GetCandy::discounts()->getByHashedId($discountId);
 
         $basket->discounts()->detach($discount);
 

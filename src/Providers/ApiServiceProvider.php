@@ -48,24 +48,36 @@ class ApiServiceProvider extends ServiceProvider
     protected function loadProviders()
     {
         $providers = [
+            AddressServiceProvider::class,
             ActivityLogServiceProvider::class,
+            AssociationServiceProvider::class,
+            AttributeServiceProvider::class,
             AssetServiceProvider::class,
             CategoryServiceProvider::class,
             ChannelServiceProvider::class,
             CollectionServiceProvider::class,
+            CustomerServiceProvider::class,
             BasketServiceProvider::class,
             CurrencyServiceProvider::class,
             DiscountServiceProvider::class,
+            LanguageServiceProvider::class,
+            CountryServiceProvider::class,
+            LayoutServiceProvider::class,
             OrderServiceProvider::class,
             PaymentServiceProvider::class,
+            PageServiceProvider::class,
             PricingServiceProvider::class,
             ProductServiceProvider::class,
+            RouteServiceProvider::class,
             SearchServiceProvider::class,
             ShippingServiceProvider::class,
+            TagServiceProvider::class,
             TaxServiceProvider::class,
             UtilServiceProvider::class,
             ReportsServiceProvider::class,
             RecycleBinServiceProvider::class,
+            SettingServiceProvider::class,
+            UserServiceProvider::class,
         ];
         foreach ($providers as $provider) {
             $this->app->register($provider, true);

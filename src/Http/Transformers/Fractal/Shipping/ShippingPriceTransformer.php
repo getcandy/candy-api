@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Transformers\Fractal\Shipping;
 
+use GetCandy;
 use GetCandy\Api\Core\Pricing\PriceCalculatorInterface;
 use GetCandy\Api\Core\Shipping\Models\ShippingPrice;
 use GetCandy\Api\Http\Transformers\Fractal\BaseTransformer;
@@ -71,7 +72,7 @@ class ShippingPriceTransformer extends BaseTransformer
      */
     public function includeCustomerGroups(ShippingPrice $price)
     {
-        $groups = app('api')->customerGroups()->getGroupsWithAvailability($price, 'shipping_prices');
+        $groups = GetCandy::customerGroups()->getGroupsWithAvailability($price, 'shipping_prices');
 
         return $this->collection($groups, new CustomerGroupTransformer);
     }

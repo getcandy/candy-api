@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Requests\Users;
 
+use GetCandy;
 use GetCandy\Api\Http\Requests\FormRequest;
 
 class UpdateRequest extends FormRequest
@@ -13,7 +14,7 @@ class UpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        $user = app('api')->users()->getDecodedId($this->user);
+        $user = GetCandy::users()->getDecodedId($this->user);
 
         return $this->user()->hasRole('admin') || $this->user()->id == $user;
     }
@@ -25,7 +26,7 @@ class UpdateRequest extends FormRequest
      */
     public function rules()
     {
-        $user = app('api')->users()->getDecodedId($this->user);
+        $user = GetCandy::users()->getDecodedId($this->user);
 
         return [
             'email' => 'required|unique:users,email,'.$user,

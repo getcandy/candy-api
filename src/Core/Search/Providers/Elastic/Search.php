@@ -253,8 +253,6 @@ class Search implements ClientContract
      */
     public function search($rank = true)
     {
-        $roles = app('api')->roles()->getHubAccessRoles();
-
         $builder = $this->builder;
 
         $builder

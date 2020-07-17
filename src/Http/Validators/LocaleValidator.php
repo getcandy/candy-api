@@ -2,6 +2,8 @@
 
 namespace GetCandy\Api\Http\Validators;
 
+use GetCandy;
+
 class LocaleValidator
 {
     /**
@@ -19,7 +21,7 @@ class LocaleValidator
             return false;
         }
         $locales = array_keys($value);
-        if (! app('api')->languages()->allLocalesExist($locales)) {
+        if (! GetCandy::languages()->allLocalesExist($locales)) {
             return false;
         }
 

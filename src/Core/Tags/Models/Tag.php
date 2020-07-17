@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Tags\Models;
 
+use GetCandy;
 use GetCandy\Api\Core\Scaffold\BaseModel;
 
 class Tag extends BaseModel
@@ -24,7 +25,7 @@ class Tag extends BaseModel
 
     public function setNameAttribute($value)
     {
-        $this->attributes['name'] = app('api')->tags()->getFormattedTagName($value);
+        $this->attributes['name'] = GetCandy::tags()->getFormattedTagName($value);
     }
 
     /**

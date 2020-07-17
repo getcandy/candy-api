@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Traits;
 
+use GetCandy;
 use GetCandy\Api\Core\Attributes\Models\Attribute;
 use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
 use GetCandy\Api\Core\Channels\Interfaces\ChannelFactoryInterface;
@@ -44,7 +45,7 @@ trait HasAttributes
         }
 
         if (empty($this->attribute_data[$handle][$channel])) {
-            $defaultChannel = app('api')->channels()->getDefaultRecord();
+            $defaultChannel = GetCandy::channels()->getDefaultRecord();
             $channel = $defaultChannel->handle;
         }
 
@@ -118,12 +119,12 @@ trait HasAttributes
         $structure = [];
         $languagesArray = [];
         // Get our languages
-        $languages = app('api')->languages()->getDataList();
+        $languages = GetCandy::languages()->getDataList();
         foreach ($languages as $lang) {
             $languagesArray[$lang->lang] = null;
         }
         // Get our channels
-        $channels = app('api')->channels()->getDataList();
+        $channels = GetCandy::channels()->getDataList();
         foreach ($channels as $channel) {
             $structure[$channel->handle] = $languagesArray;
         }
@@ -135,7 +136,7 @@ trait HasAttributes
     {
         $mapping = $this->getDataMapping();
 
-        $attributes = app('api')->attributes()->getHandles();
+        $attributes = GetCandy::attributes()->getHandles();
         $attributeData = [];
         $assigned = [];
         foreach ($attributes as $attribute) {

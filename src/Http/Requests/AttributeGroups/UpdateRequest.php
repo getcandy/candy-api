@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Requests\AttributeGroups;
 
+use GetCandy;
 use GetCandy\Api\Http\Requests\FormRequest;
 
 class UpdateRequest extends FormRequest
@@ -24,7 +25,7 @@ class UpdateRequest extends FormRequest
      */
     public function rules()
     {
-        $service = app('api')->attributeGroups();
+        $service = GetCandy::attributeGroups();
 
         return [
             'handle' => 'required|unique:attribute_groups,handle,'.$service->getDecodedId($this->attribute_group),

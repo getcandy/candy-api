@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Controllers\Attributes;
 
+use GetCandy;
 use GetCandy\Api\Core\Attributes\Models\Attribute;
 use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
 use GetCandy\Api\Http\Controllers\BaseController;
@@ -25,7 +26,7 @@ class AttributeController extends BaseController
      */
     public function index(Request $request)
     {
-        // $attributes = app('api')->attributes()->getPaginatedData($request->per_page);
+        // $attributes = GetCandy::attributes()->getPaginatedData($request->per_page);
         $attributes = new Attribute;
 
         if ($request->handle) {
@@ -54,7 +55,7 @@ class AttributeController extends BaseController
     {
         $includes = $request->include ? explode(',', $request->include) : null;
         try {
-            $attribute = app('api')->attributes()->getByHashedId($id, $includes);
+            $attribute = GetCandy::attributes()->getByHashedId($id, $includes);
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
@@ -70,7 +71,7 @@ class AttributeController extends BaseController
      */
     public function store(CreateRequest $request)
     {
-        $result = app('api')->attributes()->create($request->all());
+        $result = GetCandy::attributes()->create($request->all());
 
         return new AttributeResource($result);
     }
@@ -78,7 +79,7 @@ class AttributeController extends BaseController
     public function reorder(ReorderRequest $request)
     {
         try {
-            $result = app('api')->attributes()->reorder($request->all());
+            GetCandy::attributes()->reorder($request->all());
         } catch (HttpException $e) {
             return $this->errorUnprocessable($e->getMessage());
         } catch (DuplicateValueException $e) {
@@ -98,7 +99,7 @@ class AttributeController extends BaseController
     public function update($id, UpdateRequest $request)
     {
         try {
-            $result = app('api')->attributes()->update($id, $request->all());
+            $result = GetCandy::attributes()->update($id, $request->all());
         } catch (MinimumRecordRequiredException $e) {
             return $this->errorUnprocessable($e->getMessage());
         } catch (NotFoundHttpException $e) {
@@ -118,7 +119,7 @@ class AttributeController extends BaseController
     public function destroy($id, DeleteRequest $request)
     {
         try {
-            $result = app('api')->attributes()->delete($id);
+            GetCandy::attributes()->delete($id);
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
