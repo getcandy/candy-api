@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Http\Requests\Tags;
 
-use GetCandy;
 use GetCandy\Api\Http\Requests\FormRequest;
 
 class UpdateRequest extends FormRequest
