@@ -3,10 +3,10 @@
 namespace GetCandy\Api\Http\Controllers\Products;
 
 use GetCandy;
-use Illuminate\Http\Request;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Assets\UploadRequest;
 use GetCandy\Api\Http\Resources\Assets\AssetCollection;
+use Illuminate\Http\Request;
 
 class ProductAssetController extends BaseController
 {

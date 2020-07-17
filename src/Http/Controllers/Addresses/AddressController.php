@@ -3,10 +3,10 @@
 namespace GetCandy\Api\Http\Controllers\Addresses;
 
 use GetCandy;
-use Illuminate\Http\Request;
 use GetCandy\Api\Http\Controllers\BaseController;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use GetCandy\Api\Http\Resources\Addresses\AddressResource;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
 
 class AddressController extends BaseController
 {

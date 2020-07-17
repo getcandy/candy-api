@@ -4,7 +4,7 @@ namespace GetCandy\Api\Http\Resources\Search;
 
 use GetCandy\Api\Http\Resources\AbstractResource;
 
-class SavedSearchResource extends AbstractResource
+class SearchSuggestionResource extends AbstractResource
 {
     public function payload()
     {

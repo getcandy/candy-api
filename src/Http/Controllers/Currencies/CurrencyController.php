@@ -3,15 +3,15 @@
 namespace GetCandy\Api\Http\Controllers\Currencies;
 
 use GetCandy;
-use Illuminate\Http\Request;
+use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Currencies\CreateRequest;
 use GetCandy\Api\Http\Requests\Currencies\DeleteRequest;
 use GetCandy\Api\Http\Requests\Currencies\UpdateRequest;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
-use GetCandy\Api\Http\Resources\Currencies\CurrencyResource;
 use GetCandy\Api\Http\Resources\Currencies\CurrencyCollection;
+use GetCandy\Api\Http\Resources\Currencies\CurrencyResource;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CurrencyController extends BaseController
@@ -25,6 +25,7 @@ class CurrencyController extends BaseController
     public function index(Request $request)
     {
         $paginator = GetCandy::currencies()->getPaginatedData($request->per_page);
+
         return new CurrencyCollection($paginator);
     }
 
@@ -41,6 +42,7 @@ class CurrencyController extends BaseController
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
+
         return new CurrencyResource($currency);
     }
 
@@ -66,6 +68,7 @@ class CurrencyController extends BaseController
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
+
         return new CurrencyResource($currency);
     }
 

@@ -65,6 +65,7 @@ class ShippingMethodController extends BaseController
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
+
         return new ShippingMethodResource($shippingMethod);
     }
 
