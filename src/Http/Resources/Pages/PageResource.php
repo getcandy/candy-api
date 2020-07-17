@@ -10,7 +10,7 @@ class PageResource extends AbstractResource
     {
         return [
             'id' => $this->encoded_id,
-            'slug' => $thispage->slug,
+            'slug' => $this->slug,
             'seo_title' => $this->seo_title,
             'seo_description' => $this->seo_description,
         ];

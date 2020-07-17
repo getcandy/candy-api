@@ -13,7 +13,7 @@ class PaymentProviderResource extends AbstractResource
         ];
 
         if (method_exists($this->resource, 'getClientToken')) {
-            $data['client_token'] = $provider->getClientToken();
+            $data['client_token'] = $this->resource->getClientToken();
         }
 
         if (method_exists($this->resource, 'getTokenExpiry')) {

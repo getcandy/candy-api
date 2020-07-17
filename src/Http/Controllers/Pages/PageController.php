@@ -22,10 +22,10 @@ class PageController extends BaseController
      * @param  string  $channel
      * @return array
      */
-    public function show($channel, $lang, $slug = null)
+    public function show($pageId, $lang, $slug = null)
     {
         try {
-            $currency = GetCandy::pages()->findPage($channel, $lang, $slug);
+            $page = GetCandy::pages()->findPage($pageId, $lang, $slug);
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
