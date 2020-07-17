@@ -17,7 +17,6 @@ use GetCandy\Api\Http\Middleware\SetCustomerGroups;
 use GetCandy\Api\Http\Middleware\SetLocaleMiddleware;
 use GetCandy\Api\Http\Middleware\SetTaxMiddleware;
 use Illuminate\Support\ServiceProvider;
-use League\Fractal\Manager;
 use Validator;
 
 class ApiServiceProvider extends ServiceProvider
@@ -168,10 +167,6 @@ class ApiServiceProvider extends ServiceProvider
 
         $this->app->singleton('api', function ($app) {
             return $app->make(Factory::class);
-        });
-
-        $this->app->singleton('fractal', function ($app) {
-            return new Manager();
         });
 
         $mediaDrivers = config('assets.upload_drivers', []);

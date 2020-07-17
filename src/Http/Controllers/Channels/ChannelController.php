@@ -10,7 +10,6 @@ use GetCandy\Api\Http\Requests\Channels\DeleteRequest;
 use GetCandy\Api\Http\Requests\Channels\UpdateRequest;
 use GetCandy\Api\Http\Resources\Channels\ChannelCollection;
 use GetCandy\Api\Http\Resources\Channels\ChannelResource;
-use GetCandy\Api\Http\Transformers\Fractal\Channels\ChannelTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -55,9 +54,9 @@ class ChannelController extends BaseController
      */
     public function store(CreateRequest $request)
     {
-        $result = GetCandy::channels()->create($request->all());
-
-        return $this->respondWithItem($result, new ChannelTransformer);
+        return new ChannelResource(
+            GetCandy::channels()->create($request->all())
+        );
     }
 
     /**
@@ -70,14 +69,13 @@ class ChannelController extends BaseController
     public function update($id, UpdateRequest $request)
     {
         try {
-            $result = GetCandy::channels()->update($id, $request->all());
+            $channel = GetCandy::channels()->update($id, $request->all());
         } catch (MinimumRecordRequiredException $e) {
             return $this->errorUnprocessable($e->getMessage());
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
-
-        return $this->respondWithItem($result, new ChannelTransformer);
+        return new ChannelResource($channel);
     }
 
     /**

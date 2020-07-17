@@ -12,7 +12,6 @@ use GetCandy\Api\Http\Requests\ProductFamilies\DeleteRequest;
 use GetCandy\Api\Http\Requests\ProductFamilies\UpdateRequest;
 use GetCandy\Api\Http\Resources\Products\ProductFamilyCollection;
 use GetCandy\Api\Http\Resources\Products\ProductFamilyResource;
-use GetCandy\Api\Http\Transformers\Fractal\Products\ProductFamilyTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -65,12 +64,12 @@ class ProductFamilyController extends BaseController
     public function store(CreateRequest $request)
     {
         try {
-            $result = GetCandy::productFamilies()->create($request->all());
+            $productFamily = GetCandy::productFamilies()->create($request->all());
         } catch (InvalidLanguageException $e) {
             return $this->errorUnprocessable($e->getMessage());
         }
 
-        return $this->respondWithItem($result, new ProductFamilyTransformer);
+        return new ProductFamilyResource($productFamily);
     }
 
     /**
@@ -83,7 +82,7 @@ class ProductFamilyController extends BaseController
     public function update($id, UpdateRequest $request)
     {
         try {
-            $result = GetCandy::productFamilies()->update($id, $request->all());
+            $productFamily = GetCandy::productFamilies()->update($id, $request->all());
         } catch (MinimumRecordRequiredException $e) {
             return $this->errorUnprocessable($e->getMessage());
         } catch (NotFoundHttpException $e) {
@@ -92,7 +91,7 @@ class ProductFamilyController extends BaseController
             return $this->errorUnprocessable($e->getMessage());
         }
 
-        return $this->respondWithItem($result, new ProductFamilyTransformer);
+        return new ProductFamilyResource($productFamily);
     }
 
     /**

@@ -8,7 +8,6 @@ use GetCandy\Api\Http\Requests\Shipping\CreateRequest;
 use GetCandy\Api\Http\Requests\Shipping\UpdateRequest;
 use GetCandy\Api\Http\Resources\Shipping\ShippingMethodCollection;
 use GetCandy\Api\Http\Resources\Shipping\ShippingMethodResource;
-use GetCandy\Api\Http\Transformers\Fractal\Shipping\ShippingMethodTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -54,41 +53,40 @@ class ShippingMethodController extends BaseController
      */
     public function store(CreateRequest $request)
     {
-        $result = GetCandy::shippingMethods()->create($request->all());
-
-        return $this->respondWithItem($result, new ShippingMethodTransformer);
+        return new ShippingMethodResource(
+            GetCandy::shippingMethods()->create($request->all())
+        );
     }
 
     public function update($id, UpdateRequest $request)
     {
         try {
-            $result = GetCandy::shippingMethods()->update($id, $request->all());
+            $shippingMethod = GetCandy::shippingMethods()->update($id, $request->all());
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
-
-        return $this->respondWithItem($result, new ShippingMethodTransformer);
+        return new ShippingMethodResource($shippingMethod);
     }
 
     public function updateZones($id, Request $request)
     {
-        $method = GetCandy::shippingMethods()->updateZones($id, $request->all());
-
-        return $this->respondWithItem($method, new ShippingMethodTransformer);
+        return new ShippingMethodResource(
+            GetCandy::shippingMethods()->updateZones($id, $request->all())
+        );
     }
 
     public function updateUsers($id, Request $request)
     {
-        $method = GetCandy::shippingMethods()->updateUsers($id, $request->users);
-
-        return $this->respondWithItem($method, new ShippingMethodTransformer);
+        return new ShippingMethodResource(
+            GetCandy::shippingMethods()->updateUsers($id, $request->users)
+        );
     }
 
     public function deleteUser($methodId, $userId)
     {
-        $method = GetCandy::shippingMethods()->deleteUser($methodId, $userId);
-
-        return $this->respondWithItem($method, new ShippingMethodTransformer);
+        return new ShippingMethodResource(
+            GetCandy::shippingMethods()->deleteUser($methodId, $userId)
+        );
     }
 
     public function destroy($methodId)

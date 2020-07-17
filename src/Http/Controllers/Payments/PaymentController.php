@@ -3,25 +3,25 @@
 namespace GetCandy\Api\Http\Controllers\Payments;
 
 use GetCandy;
-use GetCandy\Api\Core\Payments\Exceptions\AlreadyRefundedException;
-use GetCandy\Api\Core\Payments\Exceptions\TransactionAmountException;
-use GetCandy\Api\Core\Payments\Models\Transaction;
 use GetCandy\Api\Http\Controllers\BaseController;
-use GetCandy\Api\Http\Requests\Payments\RefundRequest;
-use GetCandy\Api\Http\Requests\Payments\ValidateThreeDRequest;
+use GetCandy\Api\Core\Payments\Models\Transaction;
 use GetCandy\Api\Http\Requests\Payments\VoidRequest;
 use GetCandy\Api\Http\Resources\Orders\OrderResource;
-use GetCandy\Api\Http\Resources\Transactions\TransactionResource;
-use GetCandy\Api\Http\Transformers\Fractal\Payments\ProviderTransformer;
+use GetCandy\Api\Http\Requests\Payments\RefundRequest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use GetCandy\Api\Http\Requests\Payments\ValidateThreeDRequest;
+use GetCandy\Api\Http\Resources\Payments\PaymentProviderResource;
+use GetCandy\Api\Http\Resources\Transactions\TransactionResource;
+use GetCandy\Api\Core\Payments\Exceptions\AlreadyRefundedException;
+use GetCandy\Api\Core\Payments\Exceptions\TransactionAmountException;
 
 class PaymentController extends BaseController
 {
     public function provider()
     {
-        $provider = GetCandy::payments()->getProvider();
-
-        return $this->respondWithItem($provider, new ProviderTransformer);
+        return new PaymentProviderResource(
+            GetCandy::payments()->getProvider()
+        );
     }
 
     public function providers()

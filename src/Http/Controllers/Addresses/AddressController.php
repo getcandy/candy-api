@@ -3,10 +3,10 @@
 namespace GetCandy\Api\Http\Controllers\Addresses;
 
 use GetCandy;
-use GetCandy\Api\Http\Controllers\BaseController;
-use GetCandy\Api\Http\Transformers\Fractal\Addresses\AddressTransformer;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use GetCandy\Api\Http\Controllers\BaseController;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use GetCandy\Api\Http\Resources\Addresses\AddressResource;
 
 class AddressController extends BaseController
 {
@@ -18,7 +18,7 @@ class AddressController extends BaseController
             return $this->errorNotFound();
         }
 
-        return $this->respondWithItem($address, new AddressTransformer);
+        return new AddressResource($address);
     }
 
     public function store(Request $request)
@@ -36,7 +36,7 @@ class AddressController extends BaseController
         }
         $address = GetCandy::addresses()->create($user, $request->all());
 
-        return $this->respondWithItem($address, new AddressTransformer);
+        return new AddressResource($address);
     }
 
     public function destroy($id)
@@ -58,7 +58,7 @@ class AddressController extends BaseController
             return $this->errorNotFound();
         }
 
-        return $this->respondWithItem($address, new AddressTransformer);
+        return new AddressResource($address);
     }
 
     public function removeDefault($id, Request $request)
@@ -69,6 +69,6 @@ class AddressController extends BaseController
             return $this->errorNotFound();
         }
 
-        return $this->respondWithItem($address, new AddressTransformer);
+        return new AddressResource($address);
     }
 }

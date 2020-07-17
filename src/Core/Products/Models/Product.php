@@ -5,7 +5,6 @@ namespace GetCandy\Api\Core\Products\Models;
 use GetCandy\Api\Core\Categories\Models\Category;
 use GetCandy\Api\Core\Collections\Models\Collection;
 use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaModel;
-use GetCandy\Api\Core\Http\Transformers\Fractal\Products\ProductTransformer;
 use GetCandy\Api\Core\Layouts\Models\Layout;
 use GetCandy\Api\Core\Pages\Models\Page;
 use GetCandy\Api\Core\RecycleBin\Traits\Recyclable;
@@ -81,13 +80,6 @@ class Product extends BaseModel
      * @var string
      */
     public $resource = ProductResource::class;
-
-    /**
-     * @var string
-     *
-     * @deprecated 0.9.0
-     */
-    public $transformer = ProductTransformer::class;
 
     /**
      * The Hashid connection name for enconding the id.

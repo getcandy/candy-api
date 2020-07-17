@@ -2,15 +2,15 @@
 
 namespace GetCandy\Api\Http\Controllers\Assets;
 
-use Carbon\Carbon;
-use GetCandy;
-use GetCandy\Api\Http\Controllers\BaseController;
-use GetCandy\Api\Http\Requests\Assets\UpdateAllRequest;
-use GetCandy\Api\Http\Requests\Assets\UploadRequest;
-use GetCandy\Api\Http\Transformers\Fractal\Assets\AssetTransformer;
-use Illuminate\Http\Request;
 use Image;
 use Storage;
+use GetCandy;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use GetCandy\Api\Http\Controllers\BaseController;
+use GetCandy\Api\Http\Requests\Assets\UploadRequest;
+use GetCandy\Api\Http\Resources\Assets\AssetResource;
+use GetCandy\Api\Http\Requests\Assets\UpdateAllRequest;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class AssetController extends BaseController
@@ -78,7 +78,7 @@ class AssetController extends BaseController
             return $this->respondWithError('Unable to upload asset');
         }
 
-        return $this->respondWithItem($asset, new AssetTransformer);
+        return new AssetResource($asset);
     }
 
     public function detach($assetId, $ownerId, Request $request)

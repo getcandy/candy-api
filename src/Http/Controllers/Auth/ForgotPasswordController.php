@@ -3,11 +3,11 @@
 namespace GetCandy\Api\Http\Controllers\Auth;
 
 use GetCandy;
-use GetCandy\Api\Http\Controllers\BaseController;
-use GetCandy\Api\Http\Requests\Auth\ForgotPasswordRequest;
-use GetCandy\Api\Http\Transformers\Fractal\Auth\PasswordTokenTransformer;
-use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Support\Facades\Password;
+use GetCandy\Api\Http\Controllers\BaseController;
+use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
+use GetCandy\Api\Http\Requests\Auth\ForgotPasswordRequest;
+use GetCandy\Api\Http\Resources\Auth\PasswordTokenResource;
 
 class ForgotPasswordController extends BaseController
 {
@@ -74,7 +74,7 @@ class ForgotPasswordController extends BaseController
      */
     protected function sendResetLinkResponse($token)
     {
-        return $this->respondWithItem($token, new PasswordTokenTransformer);
+        return new PasswordTokenResource($token);
     }
 
     /**

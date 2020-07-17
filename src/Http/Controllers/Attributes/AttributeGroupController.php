@@ -11,7 +11,6 @@ use GetCandy\Api\Http\Requests\AttributeGroups\ReorderRequest;
 use GetCandy\Api\Http\Requests\AttributeGroups\UpdateRequest;
 use GetCandy\Api\Http\Resources\Attributes\AttributeGroupCollection;
 use GetCandy\Api\Http\Resources\Attributes\AttributeGroupResource;
-use GetCandy\Api\Http\Transformers\Fractal\Attributes\AttributeGroupTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -88,8 +87,6 @@ class AttributeGroupController extends BaseController
         }
 
         return new AttributeGroupResource($result);
-
-        return $this->respondWithItem($result, new AttributeGroupTransformer);
     }
 
     public function reorder(ReorderRequest $request)

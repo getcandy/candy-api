@@ -3,14 +3,14 @@
 namespace GetCandy\Api\Http\Controllers\Users;
 
 use GetCandy;
-use GetCandy\Api\Core\Users\Contracts\UserContract;
+use Illuminate\Http\Request;
 use GetCandy\Api\Http\Controllers\BaseController;
+use GetCandy\Api\Core\Users\Contracts\UserContract;
 use GetCandy\Api\Http\Requests\Users\CreateRequest;
 use GetCandy\Api\Http\Requests\Users\UpdateRequest;
 use GetCandy\Api\Http\Resources\Users\UserResource;
-use GetCandy\Api\Http\Transformers\Fractal\Users\UserTransformer;
+use GetCandy\Api\Http\Resources\Users\UserCollection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
 
 class UserController extends BaseController
 {
@@ -38,8 +38,7 @@ class UserController extends BaseController
             $request->keywords,
             $request->ids
         );
-
-        return $this->respondWithCollection($paginator, new UserTransformer);
+        return new UserCollection($paginator);
     }
 
     /**
@@ -55,8 +54,7 @@ class UserController extends BaseController
         if (! $user) {
             return $this->errorNotFound('Cannot find user');
         }
-
-        return $this->respondWithItem($user, new UserTransformer);
+        return new UserResource($user);
     }
 
     /**
@@ -67,9 +65,9 @@ class UserController extends BaseController
      */
     public function store(CreateRequest $request)
     {
-        $user = GetCandy::users()->create($request->all());
-
-        return $this->respondWithItem($user, new UserTransformer);
+        return new UserResource(
+            GetCandy::users()->create($request->all())
+        );
     }
 
     public function getCurrentUser(Request $request)
@@ -83,15 +81,14 @@ class UserController extends BaseController
                 'addresses', 'roles.permissions', 'details',
             ])
         );
-
-        return $this->respondWithItem($user, new UserTransformer);
+        return new UserResource($user);
     }
 
     public function update($userId, UpdateRequest $request)
     {
-        $user = GetCandy::users()->update($userId, $request->all());
-
-        return $this->respondWithItem($user, new UserTransformer);
+        return new UserResource(
+            GetCandy::users()->update($userId, $request->all())
+        );
     }
 
     public function deleteReusablePayment($id, Request $request)

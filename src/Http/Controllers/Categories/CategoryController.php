@@ -14,7 +14,6 @@ use GetCandy\Api\Http\Requests\Categories\ReorderRequest;
 use GetCandy\Api\Http\Requests\Categories\UpdateRequest;
 use GetCandy\Api\Http\Resources\Categories\CategoryCollection;
 use GetCandy\Api\Http\Resources\Categories\CategoryResource;
-use GetCandy\Api\Http\Transformers\Fractal\Categories\CategoryTransformer;
 use Hashids;
 use Illuminate\Http\Request;
 use Intervention\Image\Exception\NotFoundException;
@@ -101,9 +100,9 @@ class CategoryController extends BaseController
 
     public function getNested()
     {
-        $categories = GetCandy::categories()->getNestedList();
-
-        return $this->respondWithCollection($categories, new CategoryTransformer);
+        return new CategoryCollection(
+            GetCandy::categories()->getNestedList()
+        );
     }
 
     public function getByParent($parentID, Request $request)
@@ -137,7 +136,7 @@ class CategoryController extends BaseController
         }
 
         if ($response) {
-            return $this->respondWithItem($response, new CategoryTransformer);
+            return new CategoryResource($response);
         }
 
         return response()->json('Error', 500);
@@ -179,12 +178,12 @@ class CategoryController extends BaseController
     public function update($id, UpdateRequest $request)
     {
         try {
-            $result = GetCandy::categories()->update($id, $request->all());
+            $category = GetCandy::categories()->update($id, $request->all());
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
 
-        return $this->respondWithItem($result, new CategoryTransformer);
+        return new CategoryResource($category);
     }
 
     public function publishDraft($id, Request $request)
@@ -227,12 +226,12 @@ class CategoryController extends BaseController
     public function putProducts($id, Request $request)
     {
         try {
-            $result = GetCandy::categories()->updateProducts($id, $request->all());
+            $category = GetCandy::categories()->updateProducts($id, $request->all());
         } catch (NotFoundException $e) {
             return $this->errorNotFound();
         }
 
-        return $this->respondWithItem($result, new CategoryTransformer);
+        return new CategoryResource($category);
     }
 
     /**
