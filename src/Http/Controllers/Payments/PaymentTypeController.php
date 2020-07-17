@@ -11,6 +11,7 @@ class PaymentTypeController extends BaseController
     public function index()
     {
         $types = GetCandy::paymentTypes()->all();
+
         return new PaymentTypeCollection($types);
     }
 }

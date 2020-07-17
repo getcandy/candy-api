@@ -3,9 +3,9 @@
 namespace GetCandy\Api\Http\Controllers\Baskets;
 
 use GetCandy;
-use Illuminate\Http\Request;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Resources\Baskets\SavedBasketResource;
+use Illuminate\Http\Request;
 
 class SavedBasketController extends BaseController
 {

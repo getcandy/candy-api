@@ -3,11 +3,11 @@
 namespace GetCandy\Api\Http\Controllers\Search;
 
 use GetCandy;
-use Illuminate\Http\Request;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Search\StoreRequest;
-use GetCandy\Api\Http\Resources\Search\SavedSearchResource;
 use GetCandy\Api\Http\Resources\Search\SavedSearchCollection;
+use GetCandy\Api\Http\Resources\Search\SavedSearchResource;
+use Illuminate\Http\Request;
 
 class SavedSearchController extends BaseController
 {

@@ -3,15 +3,15 @@
 namespace GetCandy\Api\Http\Controllers\Taxes;
 
 use GetCandy;
-use Illuminate\Http\Request;
+use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
 use GetCandy\Api\Http\Controllers\BaseController;
-use GetCandy\Api\Http\Resources\Taxes\TaxResource;
 use GetCandy\Api\Http\Requests\Taxes\CreateRequest;
 use GetCandy\Api\Http\Requests\Taxes\DeleteRequest;
 use GetCandy\Api\Http\Requests\Taxes\UpdateRequest;
 use GetCandy\Api\Http\Resources\Taxes\TaxCollection;
+use GetCandy\Api\Http\Resources\Taxes\TaxResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class TaxController extends BaseController
@@ -25,6 +25,7 @@ class TaxController extends BaseController
     public function index(Request $request)
     {
         $paginator = GetCandy::taxes()->getPaginatedData($request->per_page);
+
         return new TaxCollection($paginator);
     }
 
@@ -41,6 +42,7 @@ class TaxController extends BaseController
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
+
         return new TaxResource($tax);
     }
 
@@ -73,6 +75,7 @@ class TaxController extends BaseController
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
+
         return new TaxResource($tax);
     }
 

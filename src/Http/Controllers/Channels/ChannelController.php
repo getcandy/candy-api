@@ -75,6 +75,7 @@ class ChannelController extends BaseController
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
+
         return new ChannelResource($channel);
     }
 
