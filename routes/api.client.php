@@ -116,7 +116,6 @@ $router->post('password/reset', 'Auth\ResetPasswordController@reset');
 $router->post('password/reset/request', 'Auth\ForgotPasswordController@sendResetLinkEmail');
 
 $router->get('search', 'Search\SearchController@search');
-$router->get('search/suggest', 'Search\SearchController@suggest');
 $router->get('search/sku', 'Search\SearchController@sku');
 $router->get('search/products', 'Search\SearchController@products');
 
