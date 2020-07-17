@@ -128,34 +128,6 @@ class SearchController extends BaseController
     }
 
     /**
-     * Gets suggested searches.
-     *
-     * @param  \GetCandy\Api\Http\Requests\Search\SearchRequest  $request
-     * @param  \GetCandy\Api\Core\Search\SearchContract  $client
-     * @return array
-     */
-    public function suggest(SearchRequest $request, SearchContract $client)
-    {
-        try {
-            $results = $client
-                ->client()
-                ->language(app()->getLocale())
-                ->on('webstore')
-                ->against(Product::class)
-                ->user($request->user())
-                ->suggest($request->keywords);
-        } catch (\Elastica\Exception\Connection\HttpException $e) {
-            return $this->errorInternalError($e->getMessage());
-        } catch (\Elastica\Exception\ResponseException $e) {
-            return $this->errorInternalError($e->getMessage());
-        }
-
-        $results = GetCandy::search()->getSuggestResults($results, $request->type);
-
-        return $this->respondWithCollection($results, new SearchSuggestionTransformer);
-    }
-
-    /**
      * Handle the request to do an SKU search.
      *
      * @param  \Illuminate\Http\Request  $request
