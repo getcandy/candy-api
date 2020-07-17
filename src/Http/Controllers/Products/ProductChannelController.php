@@ -35,6 +35,7 @@ class ProductChannelController extends BaseController
     public function destroy($product, DeleteRequest $request)
     {
         GetCandy::productAssociations()->destroy($product, $request->associations);
+
         return $this->respondWithNoContent();
     }
 }
