@@ -5,7 +5,7 @@ namespace GetCandy\Api\Http\Controllers\Products;
 use GetCandy;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Assets\UploadRequest;
-use GetCandy\Api\Http\Transformers\Fractal\Assets\AssetTransformer;
+use GetCandy\Api\Http\Resources\Assets\AssetCollection;
 use Illuminate\Http\Request;
 
 class ProductAssetController extends BaseController
@@ -21,7 +21,7 @@ class ProductAssetController extends BaseController
         $product = GetCandy::products()->getByHashedId($id);
         $assets = GetCandy::assets()->getAssets($product, $request->all());
 
-        return $this->respondWithCollection($assets, new AssetTransformer);
+        return new AssetCollection($assets);
     }
 
     public function attach($productId, Request $request)

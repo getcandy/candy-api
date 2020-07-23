@@ -7,7 +7,6 @@ use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Customers\CreateRequest;
 use GetCandy\Api\Http\Resources\Users\UserCollection;
 use GetCandy\Api\Http\Resources\Users\UserResource;
-use GetCandy\Api\Http\Transformers\Fractal\Users\UserTransformer;
 use Illuminate\Http\Request;
 
 class CustomerController extends BaseController
@@ -45,8 +44,8 @@ class CustomerController extends BaseController
      */
     public function store(CreateRequest $request)
     {
-        $customer = GetCandy::customers()->register($request->all());
-
-        return $this->respondWithItem($customer, new UserTransformer);
+        return new UserResource(
+            GetCandy::customers()->register($request->all())
+        );
     }
 }

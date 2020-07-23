@@ -15,7 +15,6 @@
         "kalnoy/nestedset": "^5.0",
         "laravel/framework": "^7.0",
         "laravel/ui": "^2.0",
-        "league/fractal": "^0.17.0",
         "doctrine/dbal": "2.9.2",
         "ruflin/elastica": "^6.1",
         "spatie/laravel-permission": "^3.12",

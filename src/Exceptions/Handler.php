@@ -3,14 +3,14 @@
 namespace GetCandy\Api\Exceptions;
 
 use Exception;
-use GetCandy\Api\Core\Traits\Fractal;
+use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class Handler extends ExceptionHandler
 {
-    use Fractal;
+    use ReturnsJsonResponses;
 
     /**
      * A list of the exception types that should not be reported.

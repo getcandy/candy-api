@@ -5,7 +5,7 @@ namespace GetCandy\Api\Http\Controllers\Collections;
 use GetCandy;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Collections\Products\UpdateRequest;
-use GetCandy\Api\Http\Transformers\Fractal\Collections\CollectionTransformer;
+use GetCandy\Api\Http\Resources\Collections\CollectionResource;
 
 class CollectionProductController extends BaseController
 {
@@ -18,6 +18,6 @@ class CollectionProductController extends BaseController
     {
         $result = GetCandy::collections()->syncProducts($collection, $request->products);
 
-        return $this->respondWithItem($result, new CollectionTransformer);
+        return new CollectionResource($result);
     }
 }

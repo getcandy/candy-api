@@ -11,17 +11,17 @@ use GetCandy\Api\Http\Requests\Payments\RefundRequest;
 use GetCandy\Api\Http\Requests\Payments\ValidateThreeDRequest;
 use GetCandy\Api\Http\Requests\Payments\VoidRequest;
 use GetCandy\Api\Http\Resources\Orders\OrderResource;
+use GetCandy\Api\Http\Resources\Payments\PaymentProviderResource;
 use GetCandy\Api\Http\Resources\Transactions\TransactionResource;
-use GetCandy\Api\Http\Transformers\Fractal\Payments\ProviderTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class PaymentController extends BaseController
 {
     public function provider()
     {
-        $provider = GetCandy::payments()->getProvider();
-
-        return $this->respondWithItem($provider, new ProviderTransformer);
+        return new PaymentProviderResource(
+            GetCandy::payments()->getProvider()
+        );
     }
 
     public function providers()

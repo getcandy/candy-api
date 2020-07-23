@@ -19,7 +19,6 @@ use GetCandy\Api\Http\Requests\Products\UpdateRequest;
 use GetCandy\Api\Http\Resources\Products\ProductCollection;
 use GetCandy\Api\Http\Resources\Products\ProductRecommendationCollection;
 use GetCandy\Api\Http\Resources\Products\ProductResource;
-use GetCandy\Api\Http\Transformers\Fractal\Products\ProductTransformer;
 use Hashids;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
@@ -141,12 +140,12 @@ class ProductController extends BaseController
     public function store(CreateRequest $request)
     {
         try {
-            $result = GetCandy::products()->create($request->all());
+            $product = GetCandy::products()->create($request->all());
         } catch (InvalidLanguageException $e) {
             return $this->errorUnprocessable($e->getMessage());
         }
 
-        return $this->respondWithItem($result, new ProductTransformer);
+        return new ProductResource($product);
     }
 
     /**
@@ -159,7 +158,7 @@ class ProductController extends BaseController
     public function update($id, UpdateRequest $request)
     {
         try {
-            $result = GetCandy::products()->update($id, $request->all());
+            $product = GetCandy::products()->update($id, $request->all());
         } catch (MinimumRecordRequiredException $e) {
             return $this->errorUnprocessable($e->getMessage());
         } catch (NotFoundHttpException $e) {
@@ -170,7 +169,7 @@ class ProductController extends BaseController
             return $this->errorUnprocessable($e->getMessage());
         }
 
-        return $this->respondWithItem($result, new ProductTransformer);
+        return new ProductResouce($product);
     }
 
     public function duplicate($product, DuplicateRequest $request, ProductDuplicateFactory $factory)

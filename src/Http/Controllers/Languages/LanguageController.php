@@ -10,7 +10,6 @@ use GetCandy\Api\Http\Requests\Languages\DeleteRequest;
 use GetCandy\Api\Http\Requests\Languages\UpdateRequest;
 use GetCandy\Api\Http\Resources\Languages\LanguageCollection;
 use GetCandy\Api\Http\Resources\Languages\LanguageResource;
-use GetCandy\Api\Http\Transformers\Fractal\Languages\LanguageTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -44,7 +43,7 @@ class LanguageController extends BaseController
             return $this->errorNotFound();
         }
 
-        return $this->respondWithItem($language, new LanguageTransformer);
+        return new LanguageResource($language);
     }
 
     /**
@@ -55,9 +54,9 @@ class LanguageController extends BaseController
      */
     public function store(CreateRequest $request)
     {
-        $result = GetCandy::languages()->create($request->all());
-
-        return new LanguageResource($result);
+        return new LanguageResource(
+            GetCandy::languages()->create($request->all())
+        );
     }
 
     /**
@@ -70,14 +69,14 @@ class LanguageController extends BaseController
     public function update($id, UpdateRequest $request)
     {
         try {
-            $result = GetCandy::languages()->update($id, $request->all());
+            $language = GetCandy::languages()->update($id, $request->all());
         } catch (MinimumRecordRequiredException $e) {
             return $this->errorUnprocessable($e->getMessage());
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
 
-        return $this->respondWithItem($result, new LanguageTransformer);
+        return new LanguageResource($language);
     }
 
     /**

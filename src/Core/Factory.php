@@ -35,7 +35,6 @@ use GetCandy\Api\Core\Products\Services\ProductService;
 use GetCandy\Api\Core\Products\Services\ProductVariantService;
 use GetCandy\Api\Core\Routes\Services\RouteService;
 use GetCandy\Api\Core\Search\Services\SavedSearchService;
-use GetCandy\Api\Core\Search\Services\SearchService;
 use GetCandy\Api\Core\Settings\Services\SettingService;
 use GetCandy\Api\Core\Shipping\Services\ShippingMethodService;
 use GetCandy\Api\Core\Shipping\Services\ShippingPriceService;
@@ -190,12 +189,6 @@ class Factory
      * @var \GetCandy\Api\Core\Search\Services\SavedSearchService
      */
     protected $savedSearch;
-
-    /**
-     * @var \GetCandy\Api\Core\Search\Services\SearchService
-     */
-    protected $search;
-
     /**
      * @var \GetCandy\Api\Core\Settings\Services\SettingService
      */
@@ -269,7 +262,6 @@ class Factory
         RoleService $roles,
         RouteService $routes,
         SavedSearchService $savedSearch,
-        SearchService $search,
         SettingService $settings,
         SavedBasketService $savedBaskets,
         ShippingMethodService $shippingMethods,
@@ -311,7 +303,6 @@ class Factory
         $this->routes = $routes;
         $this->savedBaskets = $savedBaskets;
         $this->savedSearch = $savedSearch;
-        $this->search = $search;
         $this->settings = $settings;
         $this->shippingMethods = $shippingMethods;
         $this->shippingZones = $shippingZones;

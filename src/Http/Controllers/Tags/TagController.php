@@ -5,7 +5,7 @@ namespace GetCandy\Api\Http\Controllers\Tags;
 use GetCandy;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Resources\Tags\TagCollection;
-use GetCandy\Api\Http\Transformers\Fractal\Tags\TagTransformer;
+use GetCandy\Api\Http\Resources\Tags\TagResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -39,7 +39,7 @@ class TagController extends BaseController
             return $this->errorNotFound();
         }
 
-        return $this->respondWithItem($tag, new TagTransformer);
+        return new TagResource($tag);
     }
 
     /**
@@ -50,9 +50,9 @@ class TagController extends BaseController
      */
     public function store(Request $request)
     {
-        $tag = GetCandy::tags()->create($request->all());
-
-        return $this->respondWithItem($tag, new TagTransformer);
+        return new TagResource(
+            GetCandy::tags()->create($request->all())
+        );
     }
 
     /**
@@ -72,7 +72,7 @@ class TagController extends BaseController
             return $this->errorNotFound();
         }
 
-        return $this->respondWithItem($tag, new TagTransformer);
+        return new TagResource($tag);
     }
 
     /**
