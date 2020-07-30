@@ -7,7 +7,7 @@ use GetCandy;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Assets\UpdateAllRequest;
 use GetCandy\Api\Http\Requests\Assets\UploadRequest;
-use GetCandy\Api\Http\Transformers\Fractal\Assets\AssetTransformer;
+use GetCandy\Api\Http\Resources\Assets\AssetResource;
 use Illuminate\Http\Request;
 use Image;
 use Storage;
@@ -78,7 +78,7 @@ class AssetController extends BaseController
             return $this->respondWithError('Unable to upload asset');
         }
 
-        return $this->respondWithItem($asset, new AssetTransformer);
+        return new AssetResource($asset);
     }
 
     public function detach($assetId, $ownerId, Request $request)

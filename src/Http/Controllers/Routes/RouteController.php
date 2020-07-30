@@ -7,8 +7,8 @@ use GetCandy\Api\Core\Routes\RouteCriteria;
 use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Routes\UpdateRequest;
+use GetCandy\Api\Http\Resources\Routes\RouteCollection;
 use GetCandy\Api\Http\Resources\Routes\RouteResource;
-use GetCandy\Api\Http\Transformers\Fractal\Routes\RouteTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -17,9 +17,9 @@ class RouteController extends BaseController
 {
     public function index()
     {
-        $pages = GetCandy::routes()->getPaginatedData();
+        $routes = GetCandy::routes()->getPaginatedData();
 
-        return $this->respondWithCollection($pages, new RouteTransformer);
+        return new RouteCollection($routes);
     }
 
     /**
@@ -55,7 +55,7 @@ class RouteController extends BaseController
             return $this->errorNotFound();
         }
 
-        return $this->respondWithItem($route, new RouteTransformer);
+        return new RouteResource($route);
     }
 
     public function destroy($id)

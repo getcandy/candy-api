@@ -7,7 +7,6 @@ use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Discounts\UpdateRequest;
 use GetCandy\Api\Http\Resources\Discounts\DiscountCollection;
 use GetCandy\Api\Http\Resources\Discounts\DiscountResource;
-use GetCandy\Api\Http\Transformers\Fractal\Discounts\DiscountTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
@@ -27,16 +26,16 @@ class DiscountController extends BaseController
     public function store(Request $request)
     {
         // TODO: Add validation
-        $discount = GetCandy::discounts()->create($request->all());
-
-        return new DiscountResource($discount);
+        return new DiscountResource(
+            GetCandy::discounts()->create($request->all())
+        );
     }
 
     public function update($id, UpdateRequest $request)
     {
-        $discount = GetCandy::discounts()->update($id, $request->all());
-
-        return $this->respondWithItem($discount, new DiscountTransformer);
+        return new DiscountResource(
+            GetCandy::discounts()->update($id, $request->all())
+        );
     }
 
     /**
@@ -58,7 +57,5 @@ class DiscountController extends BaseController
         }
 
         return new DiscountResource($discount);
-
-        return $this->respondWithItem($discount, new DiscountTransformer);
     }
 }

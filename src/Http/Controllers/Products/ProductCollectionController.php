@@ -5,7 +5,7 @@ namespace GetCandy\Api\Http\Controllers\Products;
 use GetCandy;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Products\UpdateCollectionsRequest;
-use GetCandy\Api\Http\Transformers\Fractal\Collections\CollectionTransformer;
+use GetCandy\Api\Http\Resources\Collections\CollectionCollection;
 
 class ProductCollectionController extends BaseController
 {
@@ -24,7 +24,7 @@ class ProductCollectionController extends BaseController
             return $this->errorNotFound();
         }
 
-        return $this->respondWithCollection($collections, new CollectionTransformer);
+        return new CollectionCollection($collections);
     }
 
     /**

@@ -4,13 +4,10 @@ namespace GetCandy\Api\Http\Middleware;
 
 use Closure;
 use GetCandy;
-use GetCandy\Api\Core\Traits\Fractal;
 use Locale;
 
 class SetLocaleMiddleware
 {
-    use Fractal;
-
     /**
      * Handle an incoming request.
      *
