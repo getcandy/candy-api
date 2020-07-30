@@ -114,7 +114,7 @@ class SearchController extends BaseController
 
         $paginator = new LengthAwarePaginator(
             $models,
-            $meta['hits']['total'],
+            $meta['hits']['total']['value'],
             $results->getQuery()->getParam('size'),
             $page
         );
