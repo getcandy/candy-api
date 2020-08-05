@@ -507,9 +507,12 @@ class BasketService extends BaseService
             return [$l->variant->sku => $l->quantity];
         })->toArray();
 
+
         $userBasket->lines()->delete();
         $userBasket->lines()->createMany(
-            $newLines->merge($oldLines)->toArray()
+            $newLines->merge($oldLines)->filter(function ($line) {
+                return $line->variant->availableProduct;
+            })->toArray()
         );
 
         return $this->factory->init($userBasket)->changed(
