@@ -105,7 +105,7 @@ class UserTableSeeder extends Seeder
             'address' => '24 Nice Place',
             'city' => 'London',
             'county' => 'London',
-            'zip' => 'N1 1CE',
+            'postal_code' => 'N1 1CE',
             'shipping' => 1,
             'billing' => 0,
             'default' => 0,

@@ -2,9 +2,11 @@
 
 namespace Tests\Unit\Addresses\Services;
 
-use GetCandy\Api\Core\Addresses\Models\Address;
-use GetCandy\Api\Core\Addresses\Services\AddressService;
 use Tests\TestCase;
+use Tests\Stubs\User;
+use GetCandy\Api\Core\Addresses\Models\Address;
+use GetCandy\Api\Core\Countries\Models\Country;
+use GetCandy\Api\Core\Addresses\Services\AddressService;
 
 /**
  * @group addresses
@@ -89,6 +91,49 @@ class AddressServiceTest extends TestCase
 
         $address = Address::findOrFail($address->id);
         $this->assertNotDefaultAddress($address);
+    }
+
+    public function test_can_create_address_for_user()
+    {
+        $user = factory(User::class)->create();
+        $country = factory(Country::class)->create();
+        $data = [
+            'country_id' => $country->encoded_id,
+            'salutation' => 'Mr.',
+            'firstname' => 'Charles',
+            'lastname' => 'Davenport',
+            'email' => 'email@example.org',
+            'phone' => 1234567890,
+            'company_name' => 'Davenport Enterprise',
+            'address' => '1 Candy Way',
+            'address_two' => 'Candy Street',
+            'address_three' => 'Candy Address Three',
+            'city' => 'Candy City',
+            'county' => 'Candy County',
+            'postal_code' => 'Candy Postcode',
+            'billing' => true,
+            'shipping' => false,
+            'default' => true,
+            'delivery_instructions' => 'Test Instructions',
+            'last_used_at' => now(),
+            'meta' => ['some' => 'value'],
+        ];
+
+        $address = $this->service->create($user, $data);
+
+        foreach ($data as $key => $value) {
+            switch($key) {
+                case 'country_id':
+                    $this->assertEquals($country->id, $address->country->id);
+                break;
+                case 'last_used_at':
+                    $this->assertEquals(now()->format('y/m/d'), $address->last_used_at->format('y/m/d'));
+                break;
+                default:
+                    $this->assertEquals($value, $address->getAttribute($key));
+                break;
+            }
+        }
     }
 
     private function assertDefaultAddress(Address $address)

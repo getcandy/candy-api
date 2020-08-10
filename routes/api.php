@@ -275,7 +275,6 @@
     $router->resource('taxes', 'Taxes\TaxController', [
         'except' => ['edit', 'create'],
     ]);
-
     /*
      * Users
      */
