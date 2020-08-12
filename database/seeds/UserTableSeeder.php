@@ -104,7 +104,7 @@ class UserTableSeeder extends Seeder
             'lastname' => $customerData['lastname'],
             'address' => '24 Nice Place',
             'city' => 'London',
-            'county' => 'London',
+            'state' => 'London',
             'postal_code' => 'N1 1CE',
             'shipping' => 1,
             'billing' => 0,

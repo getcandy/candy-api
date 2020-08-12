@@ -21,7 +21,7 @@ class AddressResource extends AbstractResource
             'address_two' => $this->address_two,
             'address_three' => $this->address_three,
             'city' => $this->city,
-            'county' => $this->county,
+            'state' => $this->state,
             'postal_code' => $this->postal_code,
             'billing' => (bool) $this->billing,
             'shipping' => (bool) $this->shipping,

@@ -36,7 +36,7 @@ class Address extends BaseModel
             'address_two',
             'address_three',
             'city',
-            'region',
+            'state',
             'country_id',
             'postal_code',
         ]);
