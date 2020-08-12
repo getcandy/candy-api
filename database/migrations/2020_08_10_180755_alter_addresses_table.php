@@ -15,11 +15,11 @@ class AlterAddressesTable extends Migration
             $table->renameColumn('zip', 'postal_code');
         });
         Schema::table('addresses', function (Blueprint $table) {
-            $table->dropColumn('state');
+            $table->dropColumn('county');
         });
         Schema::table('addresses', function (Blueprint $table) {
             $table->string('salutation')->after('user_id')->nullable();
-            $table->text('delivery_instructions')->after('country_id')->nullable();
+            $table->text('delivery_instructions')->after('default')->nullable();
             $table->integer('country_id')->unsigned()->after('postal_code')->nullable();
             $table->foreign('country_id')->references('id')->on('countries');
             $table->string('phone')->after('lastname')->nullable()->index();
