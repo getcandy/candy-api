@@ -45,29 +45,6 @@ class AddressService extends BaseService
         return $this->create($user, $data);
     }
 
-    /**
-     * Create a new address.
-     *
-     * @param  \Illuminate\Database\Eloquent\Model  $user
-     * @param  array $data
-     * @return \GetCandy\Api\Core\Addresses\Models\Address
-     */
-    public function create($user, array $data)
-    {
-        $address = new Address;
-        if (!empty($data['country_id'])) {
-            $realId = (new Country)->decodeId($data['country_id']);
-            $country = Country::find($realId);
-            $address->country_id = $country->id;
-            unset($data['country_id']);
-        }
-        $address->fill($data);
-        $address->user()->associate($user);
-        $address->save();
-
-        return $address;
-    }
-
     public function update($id, array $data)
     {
         $address = $this->getByHashedId($id);
