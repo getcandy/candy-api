@@ -27,7 +27,10 @@ class FetchUserAction extends Action
      */
     public function rules()
     {
-        return [];
+        return [
+            'id' => 'integer|exists:users|required_without:encoded_id',
+            'encoded_id' => 'string|hashid_is_valid:users|required_without:id',
+        ];
     }
 
     /**
