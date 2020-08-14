@@ -14,7 +14,7 @@ class AddAddressPermissions extends Migration
     public function up()
     {
         // Get our admin role.
-        $role = Role::whereName('admin')->first();
+        $admin = Role::whereName('admin')->first();
         $customer = Role::whereName('customer')->first();
 
         // Create our missions
@@ -23,15 +23,18 @@ class AddAddressPermissions extends Migration
             'manage-addresses',
         ];
 
-        foreach ($permissions as $permission) {
-            $permission = Permission::firstOrCreate([
-                'name' => $permission,
-                'guard_name' => 'web'
-            ]);
-            $role->givePermissionTo($permission);
+        if ($admin) {
+            foreach ($permissions as $permission) {
+                $permission = Permission::firstOrCreate([
+                    'name' => $permission,
+                    'guard_name' => 'web'
+                ]);
+                $admin->givePermissionTo($permission);
+            }
         }
-
-        $customer->givePermissionTo('create-address');
+        if ($customer) {
+            $customer->givePermissionTo('create-address');
+        }
     }
 
     /**

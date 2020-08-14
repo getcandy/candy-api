@@ -21,12 +21,14 @@ class AddFetchUserPermissions extends Migration
             'manage-users'
         ];
 
-        foreach ($permissions as $permission) {
-            $permission = Permission::firstOrCreate([
-                'name' => $permission,
-                'guard_name' => 'web'
-            ]);
-            $admin->givePermissionTo($permission);
+        if ($admin) {
+            foreach ($permissions as $permission) {
+                $permission = Permission::firstOrCreate([
+                    'name' => $permission,
+                    'guard_name' => 'web'
+                ]);
+                $admin->givePermissionTo($permission);
+            }
         }
     }
 
