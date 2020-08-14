@@ -29,8 +29,6 @@ class UpdateAddressActionTest extends FeatureCase
         $response->assertJsonFragment([
             'default' => true
         ]);
-        $this->markTestIncomplete(
-            'This test requires open api spec validation'
-        );
+        $this->assertResponseValid($response, '/addresses/{addressId}', 'put');
     }
 }

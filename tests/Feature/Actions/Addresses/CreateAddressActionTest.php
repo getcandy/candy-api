@@ -42,8 +42,6 @@ class CreateAddressActionTest extends FeatureCase
 
         $response = $this->actingAs($user)->json('POST', 'addresses', $attributes);
         $response->assertStatus(201);
-        $this->markTestIncomplete(
-            'This test requires open api spec validation'
-        );
+        $this->assertResponseValid($response, '/addresses', 'post');
     }
 }

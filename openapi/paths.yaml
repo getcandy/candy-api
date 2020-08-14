@@ -1,0 +1,2 @@
+Addresses:
+  $ref: "../src/Core/Addresses/open-api.yaml"
