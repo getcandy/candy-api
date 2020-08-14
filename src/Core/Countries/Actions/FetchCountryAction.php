@@ -25,7 +25,10 @@ class FetchCountryAction extends Action
      */
     public function rules()
     {
-        return [];
+        return [
+            'id' => 'integer|exists:users|required_without:encoded_id',
+            'encoded_id' => 'string|hashid_is_valid:countries|required_without:id',
+        ];
     }
 
     /**
