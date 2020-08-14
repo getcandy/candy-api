@@ -7,7 +7,6 @@ use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Resources\Addresses\AddressResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-use GetCandy\Api\Core\Addresses\Actions\NewAddressAction;
 
 class AddressController extends BaseController
 {

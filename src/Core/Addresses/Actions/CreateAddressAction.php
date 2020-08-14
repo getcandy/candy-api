@@ -11,7 +11,7 @@ use GetCandy\Api\Http\Resources\Addresses\AddressResource;
 use Illuminate\Support\Arr;
 use Lorisleiva\Actions\Action;
 
-class NewAddressAction extends Action
+class CreateAddressAction extends Action
 {
     /**
      * Determine if the user is authorized to make this action.
