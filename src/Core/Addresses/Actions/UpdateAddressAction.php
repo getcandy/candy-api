@@ -7,12 +7,18 @@ use GetCandy;
 use Illuminate\Support\Arr;
 use Lorisleiva\Actions\Action;
 use GetCandy\Api\Core\Addresses\Models\Address;
-use GetCandy\Api\Core\Users\Actions\FetchUserAction;
 use GetCandy\Api\Core\Addresses\Resources\AddressResource;
 use GetCandy\Api\Core\Countries\Actions\FetchCountryAction;
 
-class CreateAddressAction extends Action
+class UpdateAddressAction extends Action
 {
+    /**
+     * The address object we want to update
+     *
+     * @var \GetCandy\Api\Core\Addresses\Models\Address
+     */
+    protected $address;
+
     /**
      * Determine if the user is authorized to make this action.
      *
@@ -20,10 +26,10 @@ class CreateAddressAction extends Action
      */
     public function authorize()
     {
-        if (!$this->user_id) {
-            return $this->user()->can('create', Address::class);
-        }
-        return $this->user()->can('manage-addresses');
+        $this->address = FetchAddressAction::run([
+            'encoded_id' => $this->addressId,
+        ]);
+        return $this->user()->can('update', $this->address);
     }
 
     /**
@@ -35,19 +41,19 @@ class CreateAddressAction extends Action
     {
         return [
             'salutation' => 'string',
-            'firstname' => 'required|string',
-            'lastname' => 'required|string',
+            'firstname' => 'string',
+            'lastname' => 'string',
             'company_name' => 'string',
             'email' => 'email',
             'phone' => 'numeric',
-            'address' => 'required|string',
+            'address' => 'string',
             'address_two' => 'string',
             'address_three' => 'string',
-            'city' => 'required|string',
-            'state' => 'required|string',
-            'postal_code' => 'required|string',
-            'country_id' => 'required|hashid_is_valid:countries',
-            'user_id' => 'string|hashid_is_valid:users',
+            'city' => 'string',
+            'state' => 'string',
+            'postal_code' => 'string',
+            'country_id' => 'hashid_is_valid:countries',
+            'user_id' => 'hashid_is_valid:users',
             'shipping' => 'boolean',
             'billing' => 'boolean',
             'default' => 'boolean',
@@ -64,27 +70,19 @@ class CreateAddressAction extends Action
      */
     public function handle()
     {
-        if ($this->user_id) {
-            $user = FetchUserAction::run([
-                'encoded_id' => $this->user_id,
-            ]);
-        } else {
-            $user = $this->user();
-        }
-
-        $address = new Address;
         $attributes = Arr::except($this->validated(), ['user_id', 'country_id']);
 
-        $country = FetchCountryAction::run([
-            'encoded_id' => $this->country_id
-        ]);
+        if ($this->country_id) {
+            $country = FetchCountryAction::run([
+                'encoded_id' => $this->country_id
+            ]);
+            $this->address->country()->associate($country);
+        }
 
-        $address->fill($attributes);
-        $address->country()->associate($country);
-        $address->user()->associate($user);
-        $address->save();
+        $this->address->fill($attributes);
+        $this->address->save();
 
-        return $address;
+        return $this->address;
     }
 
     /**

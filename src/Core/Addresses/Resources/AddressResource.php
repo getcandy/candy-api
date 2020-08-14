@@ -1,6 +1,6 @@
 <?php
 
-namespace GetCandy\Api\Http\Resources\Addresses;
+namespace GetCandy\Api\Core\Addresses\Resources;
 
 use GetCandy\Api\Http\Resources\AbstractResource;
 use GetCandy\Api\Http\Resources\Countries\CountryResource;

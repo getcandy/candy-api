@@ -18,7 +18,7 @@ use GetCandy\Api\Http\Middleware\SetLocaleMiddleware;
 use GetCandy\Api\Http\Middleware\SetTaxMiddleware;
 use Illuminate\Support\ServiceProvider;
 use Validator;
-
+use Illuminate\Support\Facades\Gate;
 class ApiServiceProvider extends ServiceProvider
 {
     /**
@@ -37,6 +37,9 @@ class ApiServiceProvider extends ServiceProvider
         $this->registerMiddleware();
         $this->mapCommands();
         $this->loadMigrations();
+        Gate::before(function ($user, $ability) {
+            return $user->hasRole('admin') ? true : null;
+        });
     }
 
     /**

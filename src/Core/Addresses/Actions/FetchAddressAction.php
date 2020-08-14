@@ -1,12 +1,12 @@
 <?php
 
-namespace GetCandy\Api\Core\Countries\Actions;
+namespace GetCandy\Api\Core\Addresses\Actions;
 
 use GetCandy;
 use Lorisleiva\Actions\Action;
-use GetCandy\Api\Core\Countries\Models\Country;
+use GetCandy\Api\Core\Addresses\Models\Address;
 
-class FetchCountryAction extends Action
+class FetchAddressAction extends Action
 {
     /**
      * Determine if the user is authorized to make this action.
@@ -26,8 +26,8 @@ class FetchCountryAction extends Action
     public function rules()
     {
         return [
-            'id' => 'integer|exists:countries|required_without:encoded_id',
-            'encoded_id' => 'string|hashid_is_valid:countries|required_without:id',
+            'id' => 'integer|exists:addresses|required_without:encoded_id',
+            'encoded_id' => 'string|hashid_is_valid:addresses|required_without:id',
         ];
     }
 
@@ -39,8 +39,8 @@ class FetchCountryAction extends Action
     public function handle()
     {
         if ($this->encoded_id) {
-            $this->id = (new Country)->decodeId($this->encoded_id);
+            $this->id = (new Address)->decodeId($this->encoded_id);
         }
-        return Country::findOrFail($this->id);
+        return Address::findOrFail($this->id);
     }
 }
