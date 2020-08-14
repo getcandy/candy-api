@@ -20,7 +20,8 @@
         'uses' => 'ActivityLog\ActivityLogController@store',
     ]);
 
-    $router->post('addresses', 'Addresses\AddressController@store');
+    $router->post('addresses', '\GetCandy\Api\Core\Addresses\Actions\NewAddressAction');
+
     $router->post('auth/impersonate', [
         'as' => 'auth.impersonate',
         'uses' => 'Auth\ImpersonateController@process',

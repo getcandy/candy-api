@@ -22,23 +22,6 @@ class AddressController extends BaseController
         return new AddressResource($address);
     }
 
-    public function store(Request $request)
-    {
-        try {
-            $authUser = $request->user();
-            if ($request->user_id && $authUser->hasRole('admin')) {
-                $id = $request->user_id;
-            } else {
-                $id = $authUser->encodedId();
-            }
-            $user = GetCandy::users()->getByHashedId($id);
-        } catch (ModelNotFoundException $e) {
-            return $this->errorNotFound();
-        }
-        $address = (new NewAddressAction($request->all()))->actingAs($user)->run();
-        return new AddressResource($address);
-    }
-
     public function destroy($id)
     {
         try {
