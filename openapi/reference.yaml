@@ -6298,7 +6298,10 @@ components:
         delivery_instructions:
           type: string
         meta:
-          type: object
+          anyOf:
+            - type: object
+            - type: array
+              items: {}
         last_used_at:
           type: string
     Attribute:

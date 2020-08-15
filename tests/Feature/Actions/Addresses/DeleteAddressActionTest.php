@@ -19,8 +19,6 @@ class DeleteAddressActionTest extends FeatureCase
         $addressId = $user->addresses->first()->encoded_id;
         $response = $this->actingAs($user)->json('DELETE', "addresses/{$addressId}");
         $response->assertStatus(204);
-        $this->markTestIncomplete(
-            'This test requires open api spec validation'
-        );
+        $this->assertResponseValid($response, '/addresses/{addressId}', 'delete');
     }
 }

@@ -24,7 +24,7 @@ $factory->define(Address::class, function (Faker $faker) {
         'company_name' => $faker->company,
         'address' => $faker->streetAddress,
         'address_two' => $faker->streetName,
-        'address_three' => null,
+        'address_three' => $faker->streetName,
         'city' => $faker->city,
         'state' => $faker->state,
         'postal_code' => $faker->postcode,
