@@ -43,7 +43,7 @@ class RegionalProvider extends AbstractProvider
         }
 
         $user = $basket->user;
-        $price = $prices->filter(function ($item) use ($weight, $basket, $user, $users, $order) {
+        $price = $prices->filter(function ($item) use ($weight, $basket, $user, $users) {
             if ($users->contains($user)) {
                 return $item;
             } elseif ($users->count()) {

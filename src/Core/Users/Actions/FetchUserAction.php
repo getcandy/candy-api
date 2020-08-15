@@ -3,10 +3,7 @@
 namespace GetCandy\Api\Core\Users\Actions;
 
 use App\User;
-use GetCandy;
 use Lorisleiva\Actions\Action;
-use GetCandy\Api\Core\Addresses\Models\Address;
-use GetCandy\Api\Core\Countries\Models\Country;
 
 class FetchUserAction extends Action
 {
@@ -44,6 +41,7 @@ class FetchUserAction extends Action
         if ($this->encoded_id) {
             $this->id = (new $userModel)->decodeId($this->encoded_id);
         }
+
         return (new $userModel)->findOrFail($this->id);
     }
 }

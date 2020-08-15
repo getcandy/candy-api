@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Http\Controllers\Attributes;
 
-use Tests\Feature\FeatureCase;
 use GetCandy\Api\Core\Countries\Models\Country;
+use Tests\Feature\FeatureCase;
 
 /**
  * @group addresses
@@ -36,8 +36,8 @@ class CreateAddressActionTest extends FeatureCase
             'last_used_at' => now()->toIso8601String(),
             'delivery_instructions' => 'Leave outside',
             'meta' => [
-                'foo' => 'bar'
-            ]
+                'foo' => 'bar',
+            ],
         ];
 
         $response = $this->actingAs($user)->json('POST', 'addresses', $attributes);

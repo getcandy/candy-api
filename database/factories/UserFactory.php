@@ -1,7 +1,7 @@
 <?php
 
-use Tests\Stubs\User;
 use Faker\Generator as Faker;
+use Tests\Stubs\User;
 
 /*
 |--------------------------------------------------------------------------

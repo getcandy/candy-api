@@ -3,8 +3,8 @@
 namespace GetCandy\Api\Core\Addresses\Models;
 
 use GetCandy\Api\Core\Auth\Models\User;
-use GetCandy\Api\Core\Scaffold\BaseModel;
 use GetCandy\Api\Core\Countries\Models\Country;
+use GetCandy\Api\Core\Scaffold\BaseModel;
 
 class Address extends BaseModel
 {
@@ -16,7 +16,7 @@ class Address extends BaseModel
     protected $hashids = 'user';
 
     protected $dates = [
-        'last_used_at'
+        'last_used_at',
     ];
 
     /**

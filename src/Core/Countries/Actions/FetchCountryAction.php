@@ -2,9 +2,8 @@
 
 namespace GetCandy\Api\Core\Countries\Actions;
 
-use GetCandy;
-use Lorisleiva\Actions\Action;
 use GetCandy\Api\Core\Countries\Models\Country;
+use Lorisleiva\Actions\Action;
 
 class FetchCountryAction extends Action
 {
@@ -41,6 +40,7 @@ class FetchCountryAction extends Action
         if ($this->encoded_id) {
             $this->id = (new Country)->decodeId($this->encoded_id);
         }
+
         return Country::findOrFail($this->id);
     }
 }

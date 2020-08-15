@@ -25,7 +25,7 @@ class Product extends AbstractImporter
         $updated = 0;
         $deleted = 0;
 
-        $this->rows->each(function ($line) use ($created, $updated, $deleted) {
+        $this->rows->each(function ($line) {
             $variant = $this->getBySku($line->sku);
 
             if (! $variant) {
