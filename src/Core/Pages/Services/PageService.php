@@ -115,7 +115,7 @@ class PageService extends BaseService
             });
         } else {
             $slug = $lang;
-            $result = $this->model->where(function ($q) use ($channel, $lang, $slug) {
+            $result = $this->model->where(function ($q) use ($channel , $slug) {
                 $q->whereHas('channel', function ($q2) use ($channel) {
                     $q2->where('handle', '=', $channel);
                 });

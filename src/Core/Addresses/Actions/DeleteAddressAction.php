@@ -2,14 +2,13 @@
 
 namespace GetCandy\Api\Core\Addresses\Actions;
 
-use GetCandy;
 use GetCandy\Api\Core\Addresses\Models\Address;
 use Lorisleiva\Actions\Action;
 
 class DeleteAddressAction extends Action
 {
     /**
-     * The address object we want to update
+     * The address object we want to update.
      *
      * @var \GetCandy\Api\Core\Addresses\Models\Address
      */
@@ -25,6 +24,7 @@ class DeleteAddressAction extends Action
         $this->address = FetchAddressAction::run([
             'encoded_id' => $this->addressId,
         ]);
+
         return $this->user()->can('delete', $this->address);
     }
 
@@ -49,7 +49,7 @@ class DeleteAddressAction extends Action
     }
 
     /**
-     * Returns the response from the action
+     * Returns the response from the action.
      *
      * @param   \GetCandy\Api\Core\Addresses\Models\Address  $result
      * @param   \Illuminate\Http\Request  $request

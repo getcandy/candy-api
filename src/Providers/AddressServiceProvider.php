@@ -2,15 +2,15 @@
 
 namespace GetCandy\Api\Providers;
 
-use Illuminate\Foundation\Support\Providers\AuthServiceProvider;
 use GetCandy\Api\Core\Addresses\Models\Address;
 use GetCandy\Api\Core\Addresses\Policies\AddressPolicy;
 use GetCandy\Api\Core\Addresses\Services\AddressService;
+use Illuminate\Foundation\Support\Providers\AuthServiceProvider;
 
 class AddressServiceProvider extends AuthServiceProvider
 {
     protected $policies = [
-        Address::class => AddressPolicy::class
+        Address::class => AddressPolicy::class,
     ];
 
     public function register()

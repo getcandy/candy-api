@@ -2,13 +2,13 @@
 
 namespace GetCandy\Api\Core\Addresses\Policies;
 
-use Illuminate\Foundation\Auth\User;
 use GetCandy\Api\Core\Addresses\Models\Address;
+use Illuminate\Foundation\Auth\User;
 
 class AddressPolicy
 {
     /**
-     * Determine if the user can create an address
+     * Determine if the user can create an address.
      *
      * @param  \App\User  $user
      * @return bool

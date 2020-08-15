@@ -3,13 +3,12 @@
 namespace GetCandy\Api\Core\Addresses\Actions;
 
 use DateTime;
-use GetCandy;
-use Illuminate\Support\Arr;
-use Lorisleiva\Actions\Action;
 use GetCandy\Api\Core\Addresses\Models\Address;
-use GetCandy\Api\Core\Users\Actions\FetchUserAction;
 use GetCandy\Api\Core\Addresses\Resources\AddressResource;
 use GetCandy\Api\Core\Countries\Actions\FetchCountryAction;
+use GetCandy\Api\Core\Users\Actions\FetchUserAction;
+use Illuminate\Support\Arr;
+use Lorisleiva\Actions\Action;
 
 class CreateAddressAction extends Action
 {
@@ -20,9 +19,10 @@ class CreateAddressAction extends Action
      */
     public function authorize()
     {
-        if (!$this->user_id) {
+        if (! $this->user_id) {
             return $this->user()->can('create', Address::class);
         }
+
         return $this->user()->can('manage-addresses');
     }
 
@@ -51,9 +51,9 @@ class CreateAddressAction extends Action
             'shipping' => 'boolean',
             'billing' => 'boolean',
             'default' => 'boolean',
-            'last_used_at' => 'date_format:' . DateTime::ATOM,
+            'last_used_at' => 'date_format:'.DateTime::ATOM,
             'delivery_instructions' => 'string',
-            'meta' => 'array'
+            'meta' => 'array',
         ];
     }
 
@@ -76,7 +76,7 @@ class CreateAddressAction extends Action
         $attributes = Arr::except($this->validated(), ['user_id', 'country_id']);
 
         $country = FetchCountryAction::run([
-            'encoded_id' => $this->country_id
+            'encoded_id' => $this->country_id,
         ]);
 
         $address->fill($attributes);
@@ -88,7 +88,7 @@ class CreateAddressAction extends Action
     }
 
     /**
-     * Returns the response from the action
+     * Returns the response from the action.
      *
      * @param   \GetCandy\Api\Core\Addresses\Models\Address  $result
      * @param   \Illuminate\Http\Request  $request

@@ -2,9 +2,8 @@
 
 namespace GetCandy\Api\Core\Addresses\Actions;
 
-use GetCandy;
-use Lorisleiva\Actions\Action;
 use GetCandy\Api\Core\Addresses\Models\Address;
+use Lorisleiva\Actions\Action;
 
 class FetchAddressAction extends Action
 {
@@ -41,6 +40,7 @@ class FetchAddressAction extends Action
         if ($this->encoded_id) {
             $this->id = (new Address)->decodeId($this->encoded_id);
         }
+
         return Address::findOrFail($this->id);
     }
 }
