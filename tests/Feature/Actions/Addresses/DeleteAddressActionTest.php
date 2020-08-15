@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Http\Controllers\Attributes;
 
-use Tests\Feature\FeatureCase;
 use GetCandy\Api\Core\Addresses\Models\Address;
+use Tests\Feature\FeatureCase;
 
 /**
  * @group addresses

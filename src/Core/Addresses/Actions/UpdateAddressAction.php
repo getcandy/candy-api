@@ -3,17 +3,16 @@
 namespace GetCandy\Api\Core\Addresses\Actions;
 
 use DateTime;
-use GetCandy;
-use Illuminate\Support\Arr;
-use Lorisleiva\Actions\Action;
 use GetCandy\Api\Core\Addresses\Models\Address;
 use GetCandy\Api\Core\Addresses\Resources\AddressResource;
 use GetCandy\Api\Core\Countries\Actions\FetchCountryAction;
+use Illuminate\Support\Arr;
+use Lorisleiva\Actions\Action;
 
 class UpdateAddressAction extends Action
 {
     /**
-     * The address object we want to update
+     * The address object we want to update.
      *
      * @var \GetCandy\Api\Core\Addresses\Models\Address
      */
@@ -29,6 +28,7 @@ class UpdateAddressAction extends Action
         $this->address = FetchAddressAction::run([
             'encoded_id' => $this->addressId,
         ]);
+
         return $this->user()->can('update', $this->address);
     }
 
@@ -57,9 +57,9 @@ class UpdateAddressAction extends Action
             'shipping' => 'boolean',
             'billing' => 'boolean',
             'default' => 'boolean',
-            'last_used_at' => 'date_format:' . DateTime::ATOM,
+            'last_used_at' => 'date_format:'.DateTime::ATOM,
             'delivery_instructions' => 'string',
-            'meta' => 'array'
+            'meta' => 'array',
         ];
     }
 
@@ -74,7 +74,7 @@ class UpdateAddressAction extends Action
 
         if ($this->country_id) {
             $country = FetchCountryAction::run([
-                'encoded_id' => $this->country_id
+                'encoded_id' => $this->country_id,
             ]);
             $this->address->country()->associate($country);
         }
@@ -86,7 +86,7 @@ class UpdateAddressAction extends Action
     }
 
     /**
-     * Returns the response from the action
+     * Returns the response from the action.
      *
      * @param   \GetCandy\Api\Core\Addresses\Models\Address  $result
      * @param   \Illuminate\Http\Request  $request

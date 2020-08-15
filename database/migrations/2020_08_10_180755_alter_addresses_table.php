@@ -36,11 +36,11 @@ class AlterAddressesTable extends Migration
             $country = $countries->first(function ($country) use ($address) {
                 return $country->name === $address->country;
             });
-            if (!$country) {
+            if (! $country) {
                 continue;
             }
             DB::table('addresses')->whereId($address->id)->update([
-                'country_id' => $country->id
+                'country_id' => $country->id,
             ]);
         }
 

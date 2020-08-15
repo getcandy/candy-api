@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Http\Controllers\Attributes;
 
-use Tests\Feature\FeatureCase;
 use GetCandy\Api\Core\Addresses\Models\Address;
+use Tests\Feature\FeatureCase;
 
 /**
  * @group addresses
@@ -22,11 +22,11 @@ class UpdateAddressActionTest extends FeatureCase
         ]);
 
         $response = $this->actingAs($user)->json('PUT', "addresses/{$address->encoded_id}", [
-            'default' => true
+            'default' => true,
         ]);
         $response->assertStatus(200);
         $response->assertJsonFragment([
-            'default' => true
+            'default' => true,
         ]);
         $this->assertResponseValid($response, '/addresses/{addressId}', 'put');
     }

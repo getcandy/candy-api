@@ -244,7 +244,7 @@ abstract class BaseType
     {
         $channels = $model->channels->filter(function ($channel) {
             return $channel->published_at <= Carbon::now();
-        })->map(function ($item) use ($lang) {
+        })->map(function ($item) {
             return [
                 'id' => $item->encodedId(),
                 'handle' => $item->handle,

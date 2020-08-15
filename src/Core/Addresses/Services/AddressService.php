@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Core\Addresses\Services;
 
-use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Addresses\Models\Address;
 use GetCandy\Api\Core\Countries\Models\Country;
+use GetCandy\Api\Core\Scaffold\BaseService;
 
 class AddressService extends BaseService
 {
@@ -48,7 +48,7 @@ class AddressService extends BaseService
     public function update($id, array $data)
     {
         $address = $this->getByHashedId($id);
-        if (!empty($data['country_id'])) {
+        if (! empty($data['country_id'])) {
             $realId = (new Country)->decodeId($data['country_id']);
             $country = Country::find($realId);
             $address->country_id = $country->id;
