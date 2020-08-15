@@ -37,7 +37,7 @@ class ApiServiceProvider extends ServiceProvider
         $this->registerMiddleware();
         $this->mapCommands();
         $this->loadMigrations();
-        Gate::before(function ($user, $ability) {
+        Gate::before(function ($user) {
             return $user->hasRole('admin') ? true : null;
         });
     }
