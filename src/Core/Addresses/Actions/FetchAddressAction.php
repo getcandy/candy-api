@@ -8,13 +8,24 @@ use Lorisleiva\Actions\Action;
 class FetchAddressAction extends Action
 {
     /**
+     * The fetched address model
+     *
+     * @var \GetCandy\Api\Core\Addresses\Models\Address
+     */
+    protected $address;
+
+    /**
      * Determine if the user is authorized to make this action.
      *
      * @return bool
      */
     public function authorize()
     {
-        return true;
+        if ($this->encoded_id) {
+            $this->id = (new Address)->decodeId($this->encoded_id);
+        }
+        $this->address = Address::findOrFail($this->id);
+        return $this->user()->can('view', $this->address);
     }
 
     /**
@@ -37,10 +48,6 @@ class FetchAddressAction extends Action
      */
     public function handle()
     {
-        if ($this->encoded_id) {
-            $this->id = (new Address)->decodeId($this->encoded_id);
-        }
-
-        return Address::findOrFail($this->id);
+        return $this->address;
     }
 }

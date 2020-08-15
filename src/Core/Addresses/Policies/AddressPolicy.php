@@ -20,7 +20,12 @@ class AddressPolicy
 
     public function update(?User $user, Address $address)
     {
-        return $user->can('manage-addresses') || $user->id === $address->user_id;
+        return $user->can('manage-addresses') || $user->id == $address->user_id;
+    }
+
+    public function view(?User $user, Address $address)
+    {
+        return $this->update($user, $address);
     }
 
     public function delete(?User $user, Address $address)
