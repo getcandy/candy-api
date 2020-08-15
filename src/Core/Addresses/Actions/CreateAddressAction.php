@@ -65,7 +65,6 @@ class CreateAddressAction extends Action
     public function handle()
     {
         $user = $this->user();
-        
         if ($this->user_id) {
             $user = FetchUserAction::run([
                 'encoded_id' => $this->user_id,
