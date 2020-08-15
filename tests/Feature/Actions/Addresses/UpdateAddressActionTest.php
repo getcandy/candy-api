@@ -4,7 +4,6 @@ namespace Tests\Feature\Http\Controllers\Attributes;
 
 use Tests\Feature\FeatureCase;
 use GetCandy\Api\Core\Addresses\Models\Address;
-use GetCandy\Api\Core\Countries\Models\Country;
 
 /**
  * @group addresses
