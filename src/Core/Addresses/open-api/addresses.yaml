@@ -1,9 +1,0 @@
-addresses:
-  get:
-    summary: 'Get some addresses'
-    operationId: get-addresses
-    tags:
-      - Addresses
-    responses:
-      '200':
-        description: OK
