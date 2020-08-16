@@ -3,13 +3,13 @@
 namespace GetCandy\Api\Core\Addresses\Actions;
 
 use DateTime;
-use Illuminate\Support\Arr;
-use Lorisleiva\Actions\Action;
 use GetCandy\Api\Core\Addresses\Models\Address;
-use GetCandy\Api\Core\Countries\Models\Country;
-use GetCandy\Api\Core\Users\Actions\FetchUserAction;
 use GetCandy\Api\Core\Addresses\Resources\AddressResource;
 use GetCandy\Api\Core\Countries\Actions\FetchCountryAction;
+use GetCandy\Api\Core\Countries\Models\Country;
+use GetCandy\Api\Core\Users\Actions\FetchUserAction;
+use Illuminate\Support\Arr;
+use Lorisleiva\Actions\Action;
 
 class CreateAddressAction extends Action
 {
@@ -49,8 +49,8 @@ class CreateAddressAction extends Action
             'city' => 'required|string',
             'state' => 'required|string',
             'postal_code' => 'required|string',
-            'country_id' => 'required|hashid_is_valid:' . Country::class,
-            'user_id' => 'string|hashid_is_valid:' . $userModel,
+            'country_id' => 'required|hashid_is_valid:'.Country::class,
+            'user_id' => 'string|hashid_is_valid:'.$userModel,
             'shipping' => 'boolean',
             'billing' => 'boolean',
             'default' => 'boolean',
