@@ -8,7 +8,7 @@ use Lorisleiva\Actions\Action;
 class FetchAddressAction extends Action
 {
     /**
-     * The fetched address model
+     * The fetched address model.
      *
      * @var \GetCandy\Api\Core\Addresses\Models\Address
      */
@@ -25,6 +25,7 @@ class FetchAddressAction extends Action
             $this->id = (new Address)->decodeId($this->encoded_id);
         }
         $this->address = Address::findOrFail($this->id);
+
         return $this->user()->can('view', $this->address);
     }
 

@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Addresses\Actions;
 
-use Tests\TestCase;
-use Tests\Stubs\User;
-use GetCandy\Api\Core\Addresses\Models\Address;
 use GetCandy\Api\Core\Addresses\Actions\FetchAddressAction;
+use GetCandy\Api\Core\Addresses\Models\Address;
+use Tests\Stubs\User;
+use Tests\TestCase;
 
 /**
  * @group addresses
