@@ -37,7 +37,7 @@ class FetchAddressAction extends Action
     {
         return [
             'id' => 'integer|exists:addresses|required_without:encoded_id',
-            'encoded_id' => 'string|hashid_is_valid:addresses|required_without:id',
+            'encoded_id' => 'string|hashid_is_valid:' . Address::class . '|required_without:id',
         ];
     }
 

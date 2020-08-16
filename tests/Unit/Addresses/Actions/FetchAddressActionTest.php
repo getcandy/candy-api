@@ -10,7 +10,7 @@ use GetCandy\Api\Core\Addresses\Actions\FetchAddressAction;
 /**
  * @group addresses
  */
-class FerchAddressActionTest extends TestCase
+class FetchAddressActionTest extends TestCase
 {
     public function test_can_retrieve_address_by_id()
     {
