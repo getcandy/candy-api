@@ -20,7 +20,7 @@ properties:
   state:
     type: string
   country:
-    $ref: '../..//countries/responses/CountryResponse.yaml'
+    $ref: '../../countries/responses/CountryResponse.yaml'
   postal_code:
     type: string
   salutation:
