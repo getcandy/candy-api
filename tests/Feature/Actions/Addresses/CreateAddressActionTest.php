@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Http\Controllers\Attributes;
+namespace Tests\Feature\Actions\Addresses;
 
 use GetCandy\Api\Core\Countries\Models\Country;
 use Tests\Feature\FeatureCase;
