@@ -1,0 +1,22 @@
+post:
+  summary: Create new address
+  operationId: post-addresses
+  responses:
+    '201':
+      description: Created
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/AddressResponse.yaml'
+    '401':
+      description: Unauthorized
+    '422':
+      description: Unprocessable Entity (WebDAV)
+  tags:
+    - Addresses
+  description: This endpoint allows you to create a new address
+  requestBody:
+    content:
+      multipart/form-data:
+        schema:
+          $ref: '../requests/CreateAddressBody.yaml'
