@@ -1,0 +1,5 @@
+title: AddressResponse
+type: object
+properties:
+  data:
+    $ref: '../models/Address.yaml'

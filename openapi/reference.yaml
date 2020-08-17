@@ -5964,7 +5964,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AddressResponse'
+                $ref: './addresses/responses/AddressResponse.yaml'
         '401':
           description: Unauthorized
         '422':
@@ -5976,7 +5976,7 @@ paths:
         content:
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/CreateAddressBody'
+              $ref: './addresses/requests/CreateAddressBody.yaml'
   '/addresses/{addressId}':
     put:
       summary: Update existing address
