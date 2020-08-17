@@ -5955,28 +5955,7 @@ paths:
       operationId: get-payments-types
       description: Returns a list of available Payment Types in the system
   /addresses:
-    post:
-      summary: Create new address
-      operationId: post-addresses
-      responses:
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AddressResponse'
-        '401':
-          description: Unauthorized
-        '422':
-          description: Unprocessable Entity (WebDAV)
-      tags:
-        - Addresses
-      description: This endpoint allows you to create a new address
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/CreateAddressBody'
+    $ref: './addresses/paths/addresses.yaml'
   '/addresses/{addressId}':
     put:
       summary: Update existing address

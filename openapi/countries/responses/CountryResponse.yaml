@@ -1,0 +1,7 @@
+title: CountryResponse
+type: object
+properties:
+  data:
+    $ref: '../models/Country.yaml'
+x-tags:
+  - Countries

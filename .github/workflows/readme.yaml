@@ -1,0 +1,15 @@
+name: Sync OAS to ReadMe
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: readmeio/github-readme-sync@2.0.0
+        with:
+          readme-oas-key: sYERqlRN0DChyUyK4vhtM3m0IJgeveAl:5f3af1461c57aa9fb9721010
+          oas-file-path: './openapi/reference.yaml'
+          api-version: 'v1.0.0'
