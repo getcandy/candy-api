@@ -7503,7 +7503,7 @@ components:
       type: object
       properties:
         data:
-          $ref: '#/components/schemas/Address'
+          $ref: './addresses/models/Address.yaml'
     AddressCollection:
       title: AddressCollection
       allOf:
