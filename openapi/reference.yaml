@@ -6284,7 +6284,7 @@ components:
         state:
           type: string
         country:
-          $ref: '#/components/schemas/CountryResponse'
+          $ref: './countries/responses/CountryResponse.yaml'
         postal_code:
           type: string
         salutation:
