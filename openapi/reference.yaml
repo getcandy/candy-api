@@ -8589,7 +8589,7 @@ components:
       type: object
       properties:
         data:
-          $ref: '#/components/schemas/Country'
+          $ref: './countries/models/Country.yaml'
       x-tags:
         - Countries
     CreateAddressBody:
