@@ -129,7 +129,7 @@ paths:
         content:
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/CreateChannelBody'
+              $ref: '#/components/schemas/UpdateChannelBody'
         description: ''
       tags:
         - Channels
@@ -1547,6 +1547,37 @@ paths:
               $ref: '#/components/schemas/AttachCategoryChannelsBody'
         description: ''
       description: Attaches channels to a catagory
+  '/categories/{categoryId}/drafts':
+    parameters:
+      - schema:
+          type: string
+        name: categoryId
+        in: path
+        required: true
+    post:
+      summary: Create or retrieve the current category draft
+      tags:
+        - Categories
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryResponse'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      operationId: post-categories-categoryId-drafts
+      description: Create or return the current category draft resource.
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: include
   '/categories/{categoryId}/customer-groups':
     parameters:
       - schema:
@@ -5024,9 +5055,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Search'
+                $ref: '#/components/schemas/SearchResponse'
       operationId: get-search
-      description: Search across products or categories
+      description: |-
+        Search across products or categories
+
+        You can filter across attributes by adding key=value to the search query, for filtering multiple values use key=value1:value2
       parameters:
         - schema:
             type: string
@@ -5071,6 +5105,10 @@ paths:
             type: string
           in: query
           name: sort
+        - schema:
+            type: boolean
+          in: query
+          name: full_response
   '/tags/{tagId}':
     parameters:
       - schema:
@@ -5625,7 +5663,8 @@ paths:
   /:
     get:
       summary: Get root
-      tags: []
+      tags:
+        - Root
       responses:
         '200':
           description: OK
@@ -5915,6 +5954,68 @@ paths:
                 $ref: '#/components/schemas/PaymentTypeCollection'
       operationId: get-payments-types
       description: Returns a list of available Payment Types in the system
+  /addresses:
+    post:
+      summary: Create new address
+      operationId: post-addresses
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressResponse'
+        '401':
+          description: Unauthorized
+        '422':
+          description: Unprocessable Entity (WebDAV)
+      tags:
+        - Addresses
+      description: This endpoint allows you to create a new address
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CreateAddressBody'
+  '/addresses/{addressId}':
+    put:
+      summary: Update existing address
+      operationId: put-addresses
+      responses:
+        '200':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressResponse'
+        '401':
+          description: Unauthorized
+        '422':
+          description: Unprocessable Entity (WebDAV)
+      tags:
+        - Addresses
+      description: This endpoint allows you to update an existing address
+      requestBody:
+        content:
+          application/javascript:
+            schema:
+              $ref: '#/components/schemas/UpdateAddressBody'
+        description: ''
+    delete:
+      summary: ''
+      operationId: delete-addresses-addressId
+      responses:
+        '204':
+          description: No Content
+      tags:
+        - Addresses
+      description: Delete an existing address
+    parameters:
+      - schema:
+          type: string
+        name: addressId
+        in: path
+        required: true
 components:
   schemas:
     Channel:
@@ -6180,13 +6281,28 @@ components:
           type: string
         city:
           type: string
-        county:
-          type: string
         state:
           type: string
         country:
+          $ref: '#/components/schemas/CountryResponse'
+        postal_code:
           type: string
-        zip:
+        salutation:
+          type: string
+        default:
+          type: boolean
+        shipping:
+          type: boolean
+        delivery:
+          type: boolean
+        delivery_instructions:
+          type: string
+        meta:
+          anyOf:
+            - type: object
+            - type: array
+              items: {}
+        last_used_at:
           type: string
     Attribute:
       title: Attribute
@@ -7859,45 +7975,38 @@ components:
         data:
           $ref: '#/components/schemas/Invoice'
     Search:
-      title: Search
+      oneOf:
+        - $ref: '#/components/schemas/Product'
+        - $ref: '#/components/schemas/Category'
+    SearchResponse:
       type: object
+      title: ''
+      x-tags:
+        - Search
       properties:
-        suggestions:
-          type: object
-        meta:
-          type: object
-          properties:
-            sort:
-              type: string
-            category_page:
-              type: boolean
-            pagination:
-              type: object
-              properties:
-                data:
-                  type: object
-                  properties:
-                    total:
-                      type: integer
-                    count:
-                      type: integer
-                    per_page:
-                      type: integer
-                    current_page:
-                      type: integer
-                    total_pages:
-                      type: integer
-            aggregation:
-              type: object
-              properties:
-                data:
-                  type: object
         data:
           type: array
           items:
-            type: object
-    SearchResponse:
-      $ref: '#/components/schemas/Search'
+            $ref: '#/components/schemas/Search'
+        meta:
+          allOf:
+            - $ref: '#/components/schemas/Pagination'
+            - type: object
+              properties:
+                aggregation:
+                  type: object
+                  properties:
+                    available:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/Aggregation'
+                    applied:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/Aggregation'
+        links:
+          $ref: '#/components/schemas/Links'
+      description: ''
     UserFields:
       title: UserFields
       type: object
@@ -8446,6 +8555,143 @@ components:
               items:
                 $ref: '#/components/schemas/PaymentType'
         - $ref: '#/components/schemas/PaginatedResponse'
+    Aggregation:
+      title: Aggregation
+      type: object
+      properties:
+        handle:
+          type: string
+        doc_count:
+          type: integer
+        data:
+          type: object
+        buckets:
+          type: array
+          items: {}
+    Country:
+      title: Country
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        region:
+          type: string
+        iso_a_2:
+          type: string
+        iso_a_3:
+          type: string
+        iso_numeric:
+          type: string
+    CountryResponse:
+      title: CountryResponse
+      type: object
+      properties:
+        data:
+          $ref: '#/components/schemas/Country'
+      x-tags:
+        - Countries
+    CreateAddressBody:
+      title: CreateAddressBody
+      type: object
+      properties:
+        salutation:
+          type: string
+        firstname:
+          type: string
+        lastname:
+          type: string
+        company_name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        address:
+          type: string
+        address_two:
+          type: string
+        address_three:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        postal_code:
+          type: string
+        country_id:
+          type: string
+        shipping:
+          type: boolean
+        user_id:
+          type: string
+        billing:
+          type: boolean
+        default:
+          type: boolean
+        last_used_at:
+          type: string
+        delivery_instructions:
+          type: string
+        meta:
+          type: array
+          items: {}
+      required:
+        - firstname
+        - lastname
+        - address
+        - city
+        - state
+        - postal_code
+        - country_id
+      x-tags:
+        - Addresses
+    UpdateAddressBody:
+      title: UpdateAddressBody
+      type: object
+      x-tags:
+        - Addresses
+      properties:
+        salutation:
+          type: string
+        firstname:
+          type: string
+        lastname:
+          type: string
+        company_name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        address:
+          type: string
+        address_two:
+          type: string
+        address_three:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        postal_code:
+          type: string
+        country_id:
+          type: string
+        shipping:
+          type: boolean
+        billing:
+          type: boolean
+        default:
+          type: boolean
+        last_used_at:
+          type: string
+        delivery_instructions:
+          type: string
+        meta:
+          type: array
+          items: {}
   securitySchemes:
     auth:
       type: oauth2

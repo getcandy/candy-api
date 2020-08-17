@@ -2,6 +2,8 @@
 
 namespace GetCandy\Api\Http\Validators;
 
+use GetCandy;
+
 class HashidValidator
 {
     /**

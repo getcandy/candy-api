@@ -20,7 +20,10 @@
         'uses' => 'ActivityLog\ActivityLogController@store',
     ]);
 
-    $router->post('addresses', 'Addresses\AddressController@store');
+    $router->post('addresses', '\GetCandy\Api\Core\Addresses\Actions\CreateAddressAction');
+    $router->put('addresses/{addressId}', '\GetCandy\Api\Core\Addresses\Actions\UpdateAddressAction');
+    $router->delete('addresses/{addressId}', '\GetCandy\Api\Core\Addresses\Actions\DeleteAddressAction');
+
     $router->post('auth/impersonate', [
         'as' => 'auth.impersonate',
         'uses' => 'Auth\ImpersonateController@process',
@@ -275,7 +278,6 @@
     $router->resource('taxes', 'Taxes\TaxController', [
         'except' => ['edit', 'create'],
     ]);
-
     /*
      * Users
      */

@@ -7,6 +7,8 @@ use Carbon\Carbon;
 use DB;
 use GetCandy;
 use GetCandy\Api\Core\ActivityLog\Interfaces\ActivityLogFactoryInterface;
+use GetCandy\Api\Core\Addresses\Actions\CreateAddressAction;
+use GetCandy\Api\Core\Addresses\Actions\FetchAddressAction;
 use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Core\Baskets\Services\BasketService;
 use GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface;
@@ -445,7 +447,9 @@ class OrderService extends BaseService implements OrderServiceInterface
 
         // If this address doesn't exist, create it.
         if (! empty($data['address_id'])) {
-            $shipping = GetCandy::addresses()->getByHashedId($data['address_id']);
+            $shipping = FetchAddressAction::run([
+                'encoded_id' => $data['address_id'],
+            ]);
             $payload = $shipping->only([
                 'firstname',
                 'lastname',
@@ -462,7 +466,11 @@ class OrderService extends BaseService implements OrderServiceInterface
             $payload['phone'] = $data['phone'] ?? null;
             $data = $payload;
         } elseif ($user) {
-            GetCandy::addresses()->addAddress($user, $data, $type);
+            // TODO: Reassess when we refactor order addresses.
+            $addressData = $data;
+            $addressData[$type] = true;
+            $addressData['postal_code'] = $data['zip'];
+            CreateAddressAction::run($addressData);
         }
 
         $this->setFields($order, $data, $type);

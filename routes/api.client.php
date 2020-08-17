@@ -118,7 +118,6 @@ $router->post('password/reset/request', 'Auth\ForgotPasswordController@sendReset
 $router->get('search', 'Search\SearchController@search');
 $router->get('search/sku', 'Search\SearchController@sku');
 $router->get('search/products', 'Search\SearchController@products');
-
 /*
     * Shipping
     */

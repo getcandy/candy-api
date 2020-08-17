@@ -2,15 +2,18 @@
 
 namespace GetCandy\Api\Providers;
 
-use GetCandy\Api\Core\Addresses\Services\AddressService;
-use Illuminate\Support\ServiceProvider;
+use GetCandy\Api\Core\Addresses\Models\Address;
+use GetCandy\Api\Core\Addresses\Policies\AddressPolicy;
+use Illuminate\Foundation\Support\Providers\AuthServiceProvider;
 
-class AddressServiceProvider extends ServiceProvider
+class AddressServiceProvider extends AuthServiceProvider
 {
+    protected $policies = [
+        Address::class => AddressPolicy::class,
+    ];
+
     public function register()
     {
-        $this->app->singleton('getcandy.addresses', function ($app) {
-            return $app->make(AddressService::class);
-        });
+        $this->registerPolicies();
     }
 }

@@ -12,6 +12,7 @@
         "braintree/braintree_php": "3.*",
         "hashids/hashids": "^4.0",
         "intervention/image": "^2.4.2",
+        "lorisleiva/laravel-actions": "^1.1",
         "kalnoy/nestedset": "^5.0",
         "laravel/framework": "^7.0",
         "laravel/ui": "^2.0",
