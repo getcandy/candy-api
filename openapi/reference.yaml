@@ -7866,7 +7866,7 @@ components:
             data:
               type: array
               items:
-                $ref: ''
+                $ref: '#/components/schemas/User'
         - $ref: '#/components/schemas/PaginatedResponse'
     AssetTransformCollection:
       title: AssetTransformCollection
