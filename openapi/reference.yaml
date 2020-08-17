@@ -987,7 +987,7 @@ paths:
       parameters:
         - schema:
             type: boolean
-            default: 'false'
+            default: false
           in: query
           name: all_records
           description: Will skip pagination and return all records
@@ -4196,7 +4196,7 @@ paths:
           name: include
         - schema:
             type: boolean
-            default: 'true'
+            default: true
           in: query
           name: paginated
           description: ''
@@ -5092,8 +5092,8 @@ paths:
           name: rank
           description: Whether to rank results based on config
         - schema:
-            type: string
-            default: 'false'
+            type: boolean
+            default: false
           in: query
           name: ids_only
           description: "Will only return result ID's, good for performance"
