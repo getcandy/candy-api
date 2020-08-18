@@ -12,6 +12,8 @@ info:
 servers:
   - url: 'http://localhost:3000/api/v1'
 paths:
+  /addresses:
+    $ref: './addresses/paths/addresses.yaml'
   /channels:
     get:
       summary: Get all channels
@@ -5954,8 +5956,6 @@ paths:
                 $ref: '#/components/schemas/PaymentTypeCollection'
       operationId: get-payments-types
       description: Returns a list of available Payment Types in the system
-  /addresses:
-    $ref: './addresses/paths/addresses.yaml'
   '/addresses/{addressId}':
     put:
       summary: Update existing address
