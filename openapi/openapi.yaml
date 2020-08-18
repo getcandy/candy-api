@@ -15,6 +15,11 @@ servers:
 paths:
   /addresses:
     $ref: './addresses/paths/addresses.yaml'
+  '/addresses/{addressId}':
+    $ref: './addresses/paths/addresses.id.yaml'
+
+### BELOW: Paths that have not been updated
+
   /channels:
     get:
       summary: Get all channels
@@ -5957,45 +5962,6 @@ paths:
                 $ref: '#/components/schemas/PaymentTypeCollection'
       operationId: get-payments-types
       description: Returns a list of available Payment Types in the system
-  '/addresses/{addressId}':
-    put:
-      summary: Update existing address
-      operationId: put-addresses
-      responses:
-        '200':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AddressResponse'
-        '401':
-          description: Unauthorized
-        '422':
-          description: Unprocessable Entity (WebDAV)
-      tags:
-        - Addresses
-      description: This endpoint allows you to update an existing address
-      requestBody:
-        content:
-          application/javascript:
-            schema:
-              $ref: '#/components/schemas/UpdateAddressBody'
-        description: ''
-    delete:
-      summary: ''
-      operationId: delete-addresses-addressId
-      responses:
-        '204':
-          description: No Content
-      tags:
-        - Addresses
-      description: Delete an existing address
-    parameters:
-      - schema:
-          type: string
-        name: addressId
-        in: path
-        required: true
 components:
   schemas:
     Channel:
