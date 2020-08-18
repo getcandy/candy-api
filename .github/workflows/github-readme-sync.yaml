@@ -11,5 +11,4 @@ jobs:
       - uses: readmeio/github-readme-sync@2.0.0
         with:
           readme-oas-key: ${{ secrets.README_OAS_KEY }}
-          oas-file-path: './openapi/reference.yaml'
           api-version: 'v1.0.0'
