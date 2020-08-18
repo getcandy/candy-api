@@ -1,4 +1,5 @@
 openapi: 3.0.0
+x-samples-languages: ['curl', 'node', 'php', 'javascript', 'python']
 info:
   title: GetCandy
   contact:
