@@ -23,7 +23,7 @@ abstract class FeatureCase extends TestCase
     {
         parent::setUp();
         $this->buildOpenApiValidator(
-            realpath(__DIR__.'/../../openapi/reference.yaml')
+            realpath(__DIR__.'/../../openapi/openapi.yaml')
         );
         GetCandy::router();
     }
