@@ -11,7 +11,7 @@ jobs:
       - uses: actions/setup-node@v2-beta
         with:
           node-version: '12'
-      - run: npm install speccy
+      - run: npm install -g speccy
       - run: speccy resolve openapi/openapi.yaml -o openapi/openapi-full.yaml
       - uses: readmeio/github-readme-sync@2.0.0
         with:
