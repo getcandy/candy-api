@@ -1,4 +1,5 @@
 openapi: 3.0.0
+x-samples-languages: ['curl', 'node', 'php', 'javascript', 'python']
 info:
   title: GetCandy
   contact:
@@ -12,6 +13,13 @@ info:
 servers:
   - url: 'http://localhost:3000/api/v1'
 paths:
+  /addresses:
+    $ref: './addresses/paths/addresses.yaml'
+  '/addresses/{addressId}':
+    $ref: './addresses/paths/addresses.id.yaml'
+
+### BELOW: Paths that have not been updated
+
   /channels:
     get:
       summary: Get all channels
@@ -5954,68 +5962,6 @@ paths:
                 $ref: '#/components/schemas/PaymentTypeCollection'
       operationId: get-payments-types
       description: Returns a list of available Payment Types in the system
-  /addresses:
-    post:
-      summary: Create new address
-      operationId: post-addresses
-      responses:
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AddressResponse'
-        '401':
-          description: Unauthorized
-        '422':
-          description: Unprocessable Entity (WebDAV)
-      tags:
-        - Addresses
-      description: This endpoint allows you to create a new address
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/CreateAddressBody'
-  '/addresses/{addressId}':
-    put:
-      summary: Update existing address
-      operationId: put-addresses
-      responses:
-        '200':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AddressResponse'
-        '401':
-          description: Unauthorized
-        '422':
-          description: Unprocessable Entity (WebDAV)
-      tags:
-        - Addresses
-      description: This endpoint allows you to update an existing address
-      requestBody:
-        content:
-          application/javascript:
-            schema:
-              $ref: '#/components/schemas/UpdateAddressBody'
-        description: ''
-    delete:
-      summary: ''
-      operationId: delete-addresses-addressId
-      responses:
-        '204':
-          description: No Content
-      tags:
-        - Addresses
-      description: Delete an existing address
-    parameters:
-      - schema:
-          type: string
-        name: addressId
-        in: path
-        required: true
 components:
   schemas:
     Channel:
@@ -6284,7 +6230,7 @@ components:
         state:
           type: string
         country:
-          $ref: '#/components/schemas/CountryResponse'
+          $ref: './countries/responses/CountryResponse.yaml'
         postal_code:
           type: string
         salutation:
@@ -7503,7 +7449,7 @@ components:
       type: object
       properties:
         data:
-          $ref: '#/components/schemas/Address'
+          $ref: './addresses/models/Address.yaml'
     AddressCollection:
       title: AddressCollection
       allOf:
@@ -8589,7 +8535,7 @@ components:
       type: object
       properties:
         data:
-          $ref: '#/components/schemas/Country'
+          $ref: './countries/models/Country.yaml'
       x-tags:
         - Countries
     CreateAddressBody:

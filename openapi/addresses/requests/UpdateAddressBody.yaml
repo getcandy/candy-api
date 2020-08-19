@@ -1,0 +1,44 @@
+title: UpdateAddressBody
+type: object
+x-tags:
+  - Addresses
+properties:
+  salutation:
+    type: string
+  firstname:
+    type: string
+  lastname:
+    type: string
+  company_name:
+    type: string
+  email:
+    type: string
+  phone:
+    type: string
+  address:
+    type: string
+  address_two:
+    type: string
+  address_three:
+    type: string
+  city:
+    type: string
+  state:
+    type: string
+  postal_code:
+    type: string
+  country_id:
+    type: string
+  shipping:
+    type: boolean
+  billing:
+    type: boolean
+  default:
+    type: boolean
+  last_used_at:
+    type: string
+  delivery_instructions:
+    type: string
+  meta:
+    type: array
+    items: {}

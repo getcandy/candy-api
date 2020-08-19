@@ -1,0 +1,38 @@
+put:
+  summary: Update existing address
+  operationId: put-addresses
+  responses:
+    '200':
+      description: Created
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/AddressResponse.yaml'
+    '401':
+      description: Unauthorized
+    '422':
+      description: Unprocessable Entity
+  tags:
+    - Addresses
+  description: This endpoint allows you to update an existing address
+  requestBody:
+    content:
+      application/javascript:
+        schema:
+          $ref: '../requests/UpdateAddressBody.yaml'
+    description: ''
+delete:
+  summary: ''
+  operationId: delete-addresses-addressId
+  responses:
+    '204':
+      description: No Content
+  tags:
+    - Addresses
+  description: Delete an existing address
+parameters:
+  - schema:
+      type: string
+    name: addressId
+    in: path
+    required: true
