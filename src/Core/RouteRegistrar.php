@@ -46,7 +46,7 @@ class RouteRegistrar
     }
 
     /**
-     * Register the auth routes
+     * Register the auth routes.
      *
      * @return  void
      */
@@ -56,19 +56,19 @@ class RouteRegistrar
     }
 
     /**
-     * Provide a sanctum template to use
+     * Provide a sanctum template to use.
      *
      * @return  void
      */
     public function templateSanctum()
     {
         $this->router->group([
-            'middleware' => ['auth:sanctum', 'api']
+            'middleware' => ['auth:sanctum', 'api'],
         ], function () {
             $this->auth();
         });
         $this->router->group([
-            'middleware' => ['api']
+            'middleware' => ['api'],
         ], function () {
             $this->guest();
         });

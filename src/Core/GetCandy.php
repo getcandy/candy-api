@@ -95,7 +95,7 @@ class GetCandy
         $callback = $callback ?: function ($router) use ($options) {
             $template = $options['template'] ?? null;
             if ($template) {
-                $method = 'template' . ucfirst($template);
+                $method = 'template'.ucfirst($template);
                 if (method_exists($router, $method)) {
                     $router->{$method}();
                 }
