@@ -92,8 +92,16 @@ class GetCandy
 
     public static function router(array $options = [], $callback = null)
     {
-        $callback = $callback ?: function ($router) {
-            $router->all();
+        $callback = $callback ?: function ($router) use ($options) {
+            $template = $options['template'] ?? null;
+            if ($template) {
+                $method = 'template' . ucfirst($template);
+                if (method_exists($router, $method)) {
+                    $router->{$method}();
+                }
+            } else {
+                $router->all();
+            }
         };
 
         $defaultOptions = [
