@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Resources\Assets;
 
+use Storage;
 use GetCandy\Api\Http\Resources\AbstractResource;
 use GetCandy\Api\Http\Resources\Tags\TagCollection;
 
