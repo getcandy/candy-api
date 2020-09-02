@@ -13,7 +13,7 @@ class CreateChannelTest extends FeatureCase
     {
         $user = $this->admin();
 
-        $response = $this->actingAs($user)->json('POST', "channels", [
+        $response = $this->actingAs($user)->json('POST', 'channels', [
             'name' => 'Foo',
             'handle' => 'bar',
         ]);
@@ -27,10 +27,9 @@ class CreateChannelTest extends FeatureCase
     {
         $user = $this->admin();
 
-        $response = $this->actingAs($user)->json('POST', "channels", []);
+        $response = $this->actingAs($user)->json('POST', 'channels', []);
 
         $response->assertStatus(422);
         $this->assertResponseValid($response, '/channels', 'post');
     }
-
 }

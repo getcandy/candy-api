@@ -3,8 +3,8 @@
 namespace GetCandy\Api\Core\Channels\Actions;
 
 use GetCandy\Api\Core\Channels\Models\Channel;
-use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Channels\Resources\ChannelResource;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
 
 class FetchDefaultChannel extends AbstractAction
 {
@@ -30,7 +30,7 @@ class FetchDefaultChannel extends AbstractAction
      *
      * @return array
      */
-    public function rules() : array
+    public function rules(): array
     {
         return [];
     }
@@ -53,11 +53,12 @@ class FetchDefaultChannel extends AbstractAction
      *
      * @return  \GetCandy\Api\Core\Channels\Resources\ChannelResource
      */
-    public function response($result, $request) : ChannelResource
+    public function response($result, $request): ChannelResource
     {
-        if (!$result) {
+        if (! $result) {
             return $this->errorNotFound();
         }
+
         return new ChannelResource($result);
     }
 }

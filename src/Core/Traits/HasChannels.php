@@ -3,11 +3,11 @@
 namespace GetCandy\Api\Core\Traits;
 
 use Auth;
-use GetCandy;
 use Carbon\Carbon;
-use GetCandy\Api\Core\Scopes\ChannelScope;
-use GetCandy\Api\Core\Channels\Models\Channel;
+use GetCandy;
 use GetCandy\Api\Core\Channels\Actions\FetchDefaultChannel;
+use GetCandy\Api\Core\Channels\Models\Channel;
+use GetCandy\Api\Core\Scopes\ChannelScope;
 
 trait HasChannels
 {

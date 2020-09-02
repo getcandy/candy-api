@@ -6,9 +6,8 @@ use GetCandy\Api\Core\Channels\Models\Channel;
 
 class ChannelObserver
 {
-
     /**
-     * Handle the Channel "updated" event
+     * Handle the Channel "updated" event.
      *
      * @param  \GetCandy\Api\Core\Channels\Models\Channel  $channel
      * @return void
@@ -17,7 +16,7 @@ class ChannelObserver
     {
         if ($channel->default) {
             Channel::whereDefault(true)->where('id', '!=', $channel->id)->update([
-                'default' => false
+                'default' => false,
             ]);
         }
     }

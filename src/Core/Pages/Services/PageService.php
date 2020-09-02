@@ -3,12 +3,12 @@
 namespace GetCandy\Api\Core\Pages\Services;
 
 use GetCandy;
-use Illuminate\Database\Eloquent\Model;
+use GetCandy\Api\Core\Channels\Actions\FetchChannel;
+use GetCandy\Api\Core\Channels\Actions\FetchDefaultChannel;
 use GetCandy\Api\Core\Pages\Models\Page;
 use GetCandy\Api\Core\Scaffold\BaseService;
-use GetCandy\Api\Core\Channels\Actions\FetchChannel;
 use GetCandy\Api\Exceptions\InvalidLanguageException;
-use GetCandy\Api\Core\Channels\Actions\FetchDefaultChannel;
+use Illuminate\Database\Eloquent\Model;
 
 class PageService extends BaseService
 {
