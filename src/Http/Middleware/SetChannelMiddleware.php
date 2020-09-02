@@ -17,8 +17,9 @@ class SetChannelMiddleware
     public function handle($request, Closure $next)
     {
         SetCurrentChannel::run([
-            'handle' => $request->header('X-CANDY-CHANNEL') ?: $request->channel
+            'handle' => $request->header('X-CANDY-CHANNEL') ?: $request->channel,
         ]);
+
         return $next($request);
     }
 }
