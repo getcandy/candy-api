@@ -15,7 +15,7 @@ class FetchChannels extends AbstractAction
      */
     public function authorize()
     {
-        $this->paginate = is_null($this->paginate) ?: $this->paginate;
+        $this->paginate = $this->paginate === null ?: $this->paginate;
 
         return true;
     }
