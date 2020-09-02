@@ -3,17 +3,18 @@
 namespace GetCandy\Api\Http\Controllers\Search;
 
 use GetCandy;
-use GetCandy\Api\Core\Categories\Services\CategoryService;
-use GetCandy\Api\Core\Channels\Services\ChannelService;
-use GetCandy\Api\Core\Products\Services\ProductService;
+use Illuminate\Http\Request;
 use GetCandy\Api\Core\Search\SearchContract;
+use Illuminate\Pagination\LengthAwarePaginator;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Search\SearchRequest;
-use GetCandy\Api\Http\Resources\Categories\CategoryCollection;
-use GetCandy\Api\Http\Resources\Products\ProductCollection;
+use GetCandy\Api\Core\Channels\Services\ChannelService;
+use GetCandy\Api\Core\Products\Services\ProductService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
+use GetCandy\Api\Core\Categories\Services\CategoryService;
+use GetCandy\Api\Core\Channels\Actions\FetchDefaultChannel;
+use GetCandy\Api\Http\Resources\Products\ProductCollection;
+use GetCandy\Api\Http\Resources\Categories\CategoryCollection;
 
 class SearchController extends BaseController
 {
@@ -27,9 +28,8 @@ class SearchController extends BaseController
      */
     protected $products;
 
-    public function __construct(ChannelService $channels, CategoryService $categories, ProductService $products)
+    public function __construct(CategoryService $categories, ProductService $products)
     {
-        $this->channels = $channels;
         $this->categories = $categories;
         $this->products = $products;
     }
@@ -44,7 +44,7 @@ class SearchController extends BaseController
     public function search(SearchRequest $request, SearchContract $search)
     {
         // Get channel
-        $defaultChannel = $this->channels->getDefaultRecord();
+        $defaultChannel = FetchDefaultChannel::run();
         $channel = $request->channel ?: ($defaultChannel ? $defaultChannel->handle : null);
 
         try {

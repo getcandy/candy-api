@@ -101,9 +101,15 @@
     /*
      * Channels
      */
-    $router->resource('channels', 'Channels\ChannelController', [
-        'except' => ['edit', 'create', 'show'],
-    ]);
+
+    $router->get('channels', '\GetCandy\Api\Core\Channels\Actions\FetchChannels');
+    $router->post('channels', '\GetCandy\Api\Core\Channels\Actions\CreateChannel');
+    $router->put('channels/{encoded_id}', '\GetCandy\Api\Core\Channels\Actions\UpdateChannel');
+    $router->delete('channels/{encoded_id}', '\GetCandy\Api\Core\Channels\Actions\DeleteChannel');
+
+    // $router->resource('channels', 'Channels\ChannelController', [
+    //     'except' => ['edit', 'create', 'show'],
+    // ]);
 
     /*
      * Collections

@@ -3,10 +3,12 @@
 namespace GetCandy\Api\Core\Pages\Services;
 
 use GetCandy;
+use Illuminate\Database\Eloquent\Model;
 use GetCandy\Api\Core\Pages\Models\Page;
 use GetCandy\Api\Core\Scaffold\BaseService;
+use GetCandy\Api\Core\Channels\Actions\FetchChannel;
 use GetCandy\Api\Exceptions\InvalidLanguageException;
-use Illuminate\Database\Eloquent\Model;
+use GetCandy\Api\Core\Channels\Actions\FetchDefaultChannel;
 
 class PageService extends BaseService
 {
@@ -67,9 +69,11 @@ class PageService extends BaseService
 
         if (! $channel instanceof Model) {
             if ($channel) {
-                $channel = GetCandy::channels()->getByHashedId($channel);
+                $channel = FetchChannel::run([
+                    'encoded_id' => $channel,
+                ]);
             } else {
-                $channel = GetCandy::channels()->getDefaultRecord($channel);
+                $channel = FetchDefaultChannel::run();
             }
         }
 

@@ -17,13 +17,12 @@ $router->get('/', function () {
     return response()->json([
         'version' => GetCandy::version(),
         'locale' => app()->getLocale(),
-        'channel' => new GetCandy\Api\Http\Resources\Channels\ChannelResource($channel->getChannel()),
+        'channel' => new \GetCandy\Api\Core\Channels\Resources\ChannelResource($channel->getChannel()),
         'currency' => new GetCandy\Api\Http\Resources\Currencies\CurrencyResource($currency->get()),
     ]);
 });
 
-// $router->get('channels', 'Channels\ChannelController@index');
-$router->get('channels/{id}', 'Channels\ChannelController@show');
+$router->get('channels/{encoded_id}', '\GetCandy\Api\Core\Channels\Actions\FetchChannel');
 $router->get('collections', 'Collections\CollectionController@index');
 $router->get('collections/{id}', 'Collections\CollectionController@show');
 $router->get('categories/{id}', 'Categories\CategoryController@show');

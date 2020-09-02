@@ -3,10 +3,11 @@
 namespace GetCandy\Api\Core\Traits;
 
 use Auth;
-use Carbon\Carbon;
 use GetCandy;
-use GetCandy\Api\Core\Channels\Models\Channel;
+use Carbon\Carbon;
 use GetCandy\Api\Core\Scopes\ChannelScope;
+use GetCandy\Api\Core\Channels\Models\Channel;
+use GetCandy\Api\Core\Channels\Actions\FetchDefaultChannel;
 
 trait HasChannels
 {
@@ -22,7 +23,6 @@ trait HasChannels
     {
         $roles = GetCandy::roles()->getHubAccessRoles();
         $user = Auth::user();
-        $channels = GetCandy::channels();
 
         if (! $channel && ($user && $user->hasAnyRole($roles) && GetCandy::isHubRequest())) {
             return $query;
@@ -30,7 +30,7 @@ trait HasChannels
 
         // // If no channel is set, we need to get the default one.
         if (! $channel) {
-            $channel = $channels->getDefaultRecord()->handle;
+            $channel = FetchDefaultChannel::run()->handle;
         }
 
         // dump($channel, $this);

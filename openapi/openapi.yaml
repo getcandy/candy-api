@@ -17,139 +17,12 @@ paths:
     $ref: './addresses/paths/addresses.yaml'
   '/addresses/{addressId}':
     $ref: './addresses/paths/addresses.id.yaml'
+  /channels:
+    $ref: './channels/paths/channels.yaml'
+  '/channels/{channelId}':
+    $ref: './channels/paths/channels.id.yaml'
 
 ### BELOW: Paths that have not been updated
-
-  /channels:
-    get:
-      summary: Get all channels
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ChannelCollection'
-      operationId: get-channels
-      parameters:
-        - schema:
-            type: string
-          in: query
-          name: includes
-          description: Comma separated includes for the resource
-        - schema:
-            type: number
-          in: query
-          name: per_page
-          description: How many results per page
-      description: Gets a paginated list of all channel
-      tags:
-        - Channels
-    post:
-      summary: Create a new channel
-      description: Create a new channel resource
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Channel'
-      operationId: post-channels
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/CreateChannelBody'
-            examples: {}
-        description: ''
-      tags:
-        - Channels
-  '/channels/{channelId}':
-    parameters:
-      - schema:
-          type: string
-        name: channelId
-        in: path
-        required: true
-    get:
-      summary: Get the channel resource
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ChannelResponse'
-              examples:
-                example-1:
-                  value:
-                    data:
-                      id: y3g6v91o
-                      name: Webstore
-                      handle: webstore
-                      url: 'http://webstore.test'
-                      default: true
-                      published_at: null
-                    meta:
-                      lang: en
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-      operationId: get-channels-channelId
-      description: ''
-      parameters:
-        - schema:
-            type: string
-          in: query
-          name: includes
-      tags:
-        - Channels
-    put:
-      summary: Update the channel resource
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ChannelResponse'
-        '422':
-          description: Unprocessable Entity
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  handle:
-                    type: array
-                    items:
-                      type: string
-                  name:
-                    type: array
-                    items:
-                      type: string
-      operationId: put-channels-channelId
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/UpdateChannelBody'
-        description: ''
-      tags:
-        - Channels
-    delete:
-      summary: Delete the channel resource
-      responses:
-        '204':
-          description: No Content
-      operationId: delete-channels-channelId
-      tags:
-        - Channels
-      description: ''
   /orders:
     get:
       summary: Get orders
@@ -5964,69 +5837,6 @@ paths:
       description: Returns a list of available Payment Types in the system
 components:
   schemas:
-    Channel:
-      title: Channel
-      description: |-
-        ## Available includes
-
-        - products
-        - categories
-        - collections
-        - discounts
-        - shippingMethods
-      x-examples:
-        webstore:
-          id: y3g6v91o
-          name: Webstore
-          handle: webstore
-          url: 'https://storefront.test'
-          default: true
-      properties:
-        id:
-          type: string
-          example: y3g6v91o
-        name:
-          type: string
-          example: Webstore
-        handle:
-          type: string
-          example: webstore
-        url:
-          type: string
-          format: uri
-          example: "https:\\/\\/storefront.test"
-        default:
-          type: boolean
-          default: false
-          example: true
-      x-tags:
-        - channel
-      type: object
-    Pagination:
-      title: Pagination
-      type: object
-      properties:
-        current_page:
-          type: integer
-          default: 1
-          format: int32
-          example: 1
-        from:
-          type: integer
-          example: 24
-        last_page:
-          type: integer
-          default: 15
-          example: 15
-        path:
-          type: string
-        per_page:
-          type: integer
-          example: 1
-        to:
-          type: integer
-        total:
-          type: integer
     Error:
       title: Error
       type: object
@@ -6578,7 +6388,7 @@ components:
         children:
           $ref: '#/components/schemas/CategoryCollection'
         channels:
-          $ref: '#/components/schemas/ChannelCollection'
+          $ref: './channels/responses/ChannelCollection.yaml'
         ancestors:
           $ref: '#/components/schemas/CategoryCollection'
         routes:
@@ -6713,7 +6523,7 @@ components:
         layout:
           $ref: '#/components/schemas/LayoutResponse'
         channels:
-          $ref: '#/components/schemas/ChannelCollection'
+          $ref: './channels/responses/ChannelCollection.yaml'
         assets:
           $ref: '#/components/schemas/AssetCollection'
         attributes:
@@ -6965,7 +6775,7 @@ components:
             routes:
               $ref: '#/components/schemas/RouteCollection'
             channels:
-              $ref: '#/components/schemas/ChannelCollection'
+              $ref: './channels/responses/ChannelCollection.yaml'
             first_variant:
               $ref: '#/components/schemas/ProductVariantResponse'
             primary_asset:
@@ -7281,29 +7091,12 @@ components:
           type: string
         recyclable:
           type: object
-    ChannelResponse:
-      title: ChannelResponse
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/Channel'
-    ChannelCollection:
-      title: ChannelCollection
-      allOf:
-        - type: object
-          properties:
-            data:
-              type: array
-              items:
-                $ref: '#/components/schemas/Channel'
-        - $ref: '#/components/schemas/Pagination'
-      description: ''
     PaginatedResponse:
       title: PaginatedResponse
       type: object
       properties:
         meta:
-          $ref: '#/components/schemas/Pagination'
+          $ref: './global/models/Pagination.yaml'
         links:
           $ref: '#/components/schemas/Links'
     AssetResponse:
@@ -7936,7 +7729,7 @@ components:
             $ref: '#/components/schemas/Search'
         meta:
           allOf:
-            - $ref: '#/components/schemas/Pagination'
+            - $ref: './global/models/Pagination.yaml'
             - type: object
               properties:
                 aggregation:
@@ -8123,16 +7916,8 @@ components:
       properties:
         quantity:
           type: integer
-    CreateChannelBody:
-      title: CreateChannelBody
-      type: object
-      properties:
-        handle:
-          type: string
-        name:
-          type: string
     UpdateChannelBody:
-      $ref: '#/components/schemas/CreateChannelBody'
+      $ref: './channels/requests/CreateChannelBody.yaml'
     CreateCategoryBody:
       title: CreateCategoryBody
       type: object

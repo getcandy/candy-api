@@ -1,0 +1,11 @@
+title: Error
+type: object
+properties:
+  error:
+    type: object
+    schema:
+      type: object
+      properties:
+        http_code:
+          type: number
+          message: string

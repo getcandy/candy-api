@@ -1,0 +1,50 @@
+get:
+  summary: Get all channels
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/ChannelCollection.yaml'
+  operationId: get-channels
+  parameters:
+    - schema:
+        type: string
+      in: query
+      name: includes
+      description: Comma separated includes for the resource
+    - schema:
+        type: number
+      in: query
+      name: per_page
+      description: How many results per page
+  description: Gets a paginated list of all channel
+  tags:
+    - Channels
+post:
+  summary: Create a new channel
+  description: Create a new channel resource
+  responses:
+    '201':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../models/Channel.yaml'
+    '422':
+      description: Unprocessable Entity
+      content:
+          application/json:
+            schema:
+              $ref: '../../global/responses/Unprocessable.yaml'
+  operationId: post-channels
+  requestBody:
+    content:
+      multipart/form-data:
+        schema:
+          $ref: '../requests/CreateChannelBody.yaml'
+        examples: {}
+    description: ''
+  tags:
+    - Channels
