@@ -2,9 +2,10 @@
 
 namespace GetCandy\Api\Core\Channels\Factories;
 
+use GetCandy\Api\Core\Channels\Actions\FetchChannel;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use GetCandy\Api\Core\Channels\Actions\FetchDefaultChannel;
 use GetCandy\Api\Core\Channels\Interfaces\ChannelFactoryInterface;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ChannelFactory implements ChannelFactoryInterface
 {

@@ -3,20 +3,10 @@
 namespace GetCandy\Api\Http\Middleware;
 
 use Closure;
-use GetCandy\Api\Core\Channels\Interfaces\ChannelFactoryInterface;
+use GetCandy\Api\Core\Channels\Actions\SetCurrentChannel;
 
 class SetChannelMiddleware
 {
-    /**
-     * @var \GetCandy\Api\Core\Channels\Interfaces\ChannelFactoryInterface
-     */
-    protected $channel;
-
-    public function __construct(ChannelFactoryInterface $channel)
-    {
-        $this->channel = $channel;
-    }
-
     /**
      * Handle an incoming request.
      *
@@ -26,11 +16,9 @@ class SetChannelMiddleware
      */
     public function handle($request, Closure $next)
     {
-        // Only set if one isn't set so it's easier to override it.
-        $this->channel->set(
-            $request->header('X-CANDY-CHANNEL') ?: $request->channel
-        );
-
+        SetCurrentChannel::run([
+            'handle' => $request->header('X-CANDY-CHANNEL') ?: $request->channel
+        ]);
         return $next($request);
     }
 }
