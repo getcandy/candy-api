@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Channels\Actions;
 
-use Tests\Feature\FeatureCase;
-use GetCandy\Api\Core\Channels\Models\Channel;
 use GetCandy\Api\Core\Channels\Actions\FetchChannel;
+use GetCandy\Api\Core\Channels\Models\Channel;
+use Tests\Feature\FeatureCase;
 
 /**
  * @group channels
@@ -28,12 +28,10 @@ class FetchChannelTest extends FeatureCase
         $user = $this->admin();
         $channel = factory(Channel::class)->create();
 
-
         $record = (new FetchChannel)->actingAs($user)->run([
             'handle' => $channel->handle,
         ]);
 
         $this->assertEquals($channel->id, $record->id);
     }
-
 }

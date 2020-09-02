@@ -3,8 +3,8 @@
 namespace GetCandy\Api\Core\Channels\Actions;
 
 use GetCandy\Api\Core\Channels\Models\Channel;
-use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Channels\Resources\ChannelResource;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
 
 class CreateChannel extends AbstractAction
 {
@@ -23,7 +23,7 @@ class CreateChannel extends AbstractAction
      *
      * @return array
      */
-    public function rules() : array
+    public function rules(): array
     {
         return [
             'name' => 'required|unique:channels,name',
@@ -36,9 +36,10 @@ class CreateChannel extends AbstractAction
      *
      * @return \GetCandy\Api\Core\Channels\Models\Channel
      */
-    public function handle() : Channel
+    public function handle(): Channel
     {
         $channel = Channel::create($this->validated());
+
         return $channel->load($this->resolveEagerRelations());
     }
 

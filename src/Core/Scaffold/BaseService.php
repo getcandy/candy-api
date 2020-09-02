@@ -2,11 +2,11 @@
 
 namespace GetCandy\Api\Core\Scaffold;
 
-use GetCandy;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
-use GetCandy\Api\Core\Channels\Actions\FetchChannel;
+use GetCandy;
 use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
+use GetCandy\Api\Core\Channels\Actions\FetchChannel;
+use Illuminate\Database\Eloquent\Model;
 
 abstract class BaseService
 {

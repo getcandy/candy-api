@@ -3,18 +3,17 @@
 namespace GetCandy\Api\Http\Controllers\Search;
 
 use GetCandy;
-use Illuminate\Http\Request;
-use GetCandy\Api\Core\Search\SearchContract;
-use Illuminate\Pagination\LengthAwarePaginator;
-use GetCandy\Api\Http\Controllers\BaseController;
-use GetCandy\Api\Http\Requests\Search\SearchRequest;
-use GetCandy\Api\Core\Channels\Services\ChannelService;
-use GetCandy\Api\Core\Products\Services\ProductService;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use GetCandy\Api\Core\Categories\Services\CategoryService;
 use GetCandy\Api\Core\Channels\Actions\FetchDefaultChannel;
-use GetCandy\Api\Http\Resources\Products\ProductCollection;
+use GetCandy\Api\Core\Products\Services\ProductService;
+use GetCandy\Api\Core\Search\SearchContract;
+use GetCandy\Api\Http\Controllers\BaseController;
+use GetCandy\Api\Http\Requests\Search\SearchRequest;
 use GetCandy\Api\Http\Resources\Categories\CategoryCollection;
+use GetCandy\Api\Http\Resources\Products\ProductCollection;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class SearchController extends BaseController
 {

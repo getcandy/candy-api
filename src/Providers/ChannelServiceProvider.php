@@ -2,11 +2,11 @@
 
 namespace GetCandy\Api\Providers;
 
-use Illuminate\Support\ServiceProvider;
-use GetCandy\Api\Core\Channels\Models\Channel;
 use GetCandy\Api\Core\Channels\Factories\ChannelFactory;
-use GetCandy\Api\Core\Channels\Observers\ChannelObserver;
 use GetCandy\Api\Core\Channels\Interfaces\ChannelFactoryInterface;
+use GetCandy\Api\Core\Channels\Models\Channel;
+use GetCandy\Api\Core\Channels\Observers\ChannelObserver;
+use Illuminate\Support\ServiceProvider;
 
 class ChannelServiceProvider extends ServiceProvider
 {

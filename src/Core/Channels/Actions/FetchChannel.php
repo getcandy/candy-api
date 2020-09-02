@@ -26,9 +26,10 @@ class FetchChannel extends AbstractAction
      */
     public function authorize()
     {
-        if ($this->encoded_id && !$this->handle) {
+        if ($this->encoded_id && ! $this->handle) {
             $this->id = (new Channel)->decodeId($this->encoded_id);
         }
+
         return true;
     }
 
@@ -37,12 +38,12 @@ class FetchChannel extends AbstractAction
      *
      * @return array
      */
-    public function rules() : array
+    public function rules(): array
     {
         return [
             'id' => 'integer|required_without_all:encoded_id,handle',
             'encoded_id' => 'string|hashid_is_valid:'.Channel::class.'|required_without_all:id,handle',
-            'handle' => 'string|required_without_all:encoded_id,id'
+            'handle' => 'string|required_without_all:encoded_id,id',
         ];
     }
 
@@ -58,6 +59,7 @@ class FetchChannel extends AbstractAction
             if ($this->handle) {
                 return $query->whereHandle($this->handle)->firstOrFail();
             }
+
             return $query->findOrFail($this->id);
         } catch (ModelNotFoundException $e) {
             if ($this->runningAs('controller')) {
@@ -67,7 +69,7 @@ class FetchChannel extends AbstractAction
         }
     }
 
-        /**
+    /**
      * Returns the response from the action.
      *
      * @param   \GetCandy\Api\Core\Addresses\Models\Address  $result
@@ -77,9 +79,10 @@ class FetchChannel extends AbstractAction
      */
     public function response($result, $request)
     {
-        if (!$result) {
+        if (! $result) {
             return $this->errorNotFound();
         }
+
         return new ChannelResource($result);
     }
 }
