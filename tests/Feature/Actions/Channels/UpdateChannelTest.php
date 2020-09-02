@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Actions\Addresses;
 
-use Tests\Feature\FeatureCase;
 use GetCandy\Api\Core\Channels\Models\Channel;
+use Tests\Feature\FeatureCase;
 
 /**
  * @group channels
@@ -41,5 +41,4 @@ class UpdateChannelTest extends FeatureCase
         $response->assertStatus(422);
         $this->assertResponseValid($response, '/channels/{channelId}', 'put');
     }
-
 }

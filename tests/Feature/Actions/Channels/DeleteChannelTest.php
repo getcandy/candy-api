@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Actions\Channels;
 
-use Tests\Feature\FeatureCase;
 use GetCandy\Api\Core\Channels\Models\Channel;
+use Tests\Feature\FeatureCase;
 
 /**
  * @group channels

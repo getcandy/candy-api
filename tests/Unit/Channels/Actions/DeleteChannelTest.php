@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Channels\Actions;
 
-use Tests\Feature\FeatureCase;
-use GetCandy\Api\Core\Channels\Models\Channel;
 use GetCandy\Api\Core\Channels\Actions\DeleteChannel;
+use GetCandy\Api\Core\Channels\Models\Channel;
 use GetCandy\Api\Core\Exceptions\DefaultRecordRequiredException;
+use Tests\Feature\FeatureCase;
 
 /**
  * @group channels

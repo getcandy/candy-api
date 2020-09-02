@@ -3,9 +3,8 @@
 namespace GetCandy\Api\Core\Channels\Actions;
 
 use GetCandy\Api\Core\Channels\Models\Channel;
-use GetCandy\Api\Core\Scaffold\AbstractAction;
-use GetCandy\Api\Core\Collections\Models\Collection;
 use GetCandy\Api\Core\Channels\Resources\ChannelCollection;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
 
 class FetchChannels extends AbstractAction
 {
@@ -17,6 +16,7 @@ class FetchChannels extends AbstractAction
     public function authorize()
     {
         $this->paginate = is_null($this->paginate) ?: $this->paginate;
+
         return true;
     }
 
@@ -29,7 +29,7 @@ class FetchChannels extends AbstractAction
     {
         return [
             'per_page' => 'numeric|max:200',
-            'paginate' => 'boolean'
+            'paginate' => 'boolean',
         ];
     }
 
@@ -42,9 +42,10 @@ class FetchChannels extends AbstractAction
     {
         $includes = $this->resolveEagerRelations();
 
-        if (!$this->paginate) {
+        if (! $this->paginate) {
             return Channel::with($includes)->get();
         }
+
         return Channel::with($includes)->paginate($this->per_page ?? 50);
     }
 
@@ -56,7 +57,7 @@ class FetchChannels extends AbstractAction
      *
      * @return  \GetCandy\Api\Core\Channels\Resources\ChannelCollection
      */
-    public function response($result, $request) : ChannelCollection
+    public function response($result, $request): ChannelCollection
     {
         return new ChannelCollection($result);
     }

@@ -3,9 +3,8 @@
 namespace GetCandy\Api\Core\Channels\Actions;
 
 use GetCandy\Api\Core\Channels\Models\Channel;
-use GetCandy\Api\Core\Scaffold\AbstractAction;
-use GetCandy\Api\Core\Channels\Actions\FetchChannel;
 use GetCandy\Api\Core\Channels\Resources\ChannelResource;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
 
 class UpdateChannel extends AbstractAction
 {
@@ -26,6 +25,7 @@ class UpdateChannel extends AbstractAction
         $this->channel = FetchChannel::run([
             'encoded_id' => $this->encoded_id,
         ]);
+
         return $this->user()->can('update', $this->channel);
     }
 
@@ -34,7 +34,7 @@ class UpdateChannel extends AbstractAction
      *
      * @return array
      */
-    public function rules() : array
+    public function rules(): array
     {
         return [
             'name' => "unique:channels,name,{$this->channel->id}",
@@ -49,9 +49,10 @@ class UpdateChannel extends AbstractAction
      *
      * @return \GetCandy\Api\Core\Channels\Models\Channel
      */
-    public function handle() : Channel
+    public function handle(): Channel
     {
         $this->channel->update($this->validated());
+
         return $this->channel;
     }
 
@@ -63,7 +64,7 @@ class UpdateChannel extends AbstractAction
      *
      * @return  \GetCandy\Api\Core\Channels\Resources\ChannelResource
      */
-    public function response($result, $request) : ChannelResource
+    public function response($result, $request): ChannelResource
     {
         return new ChannelResource($result);
     }

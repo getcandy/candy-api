@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Actions\Addresses;
 
-use Tests\Feature\FeatureCase;
 use GetCandy\Api\Core\Channels\Models\Channel;
+use Tests\Feature\FeatureCase;
 
 /**
  * @group channels
@@ -15,7 +15,7 @@ class FetchChannelsTest extends FeatureCase
         $user = $this->admin();
         factory(Channel::class, 10)->create();
 
-        $response = $this->actingAs($user)->json('GET', "channels");
+        $response = $this->actingAs($user)->json('GET', 'channels');
 
         $response->assertStatus(200);
         $this->assertResponseValid($response, '/channels', 'get');
@@ -26,7 +26,7 @@ class FetchChannelsTest extends FeatureCase
         $user = $this->admin();
         factory(Channel::class, 25)->create();
 
-        $response = $this->actingAs($user)->json('GET', "channels", [
+        $response = $this->actingAs($user)->json('GET', 'channels', [
             'per_page' => 5,
         ]);
 
@@ -40,7 +40,7 @@ class FetchChannelsTest extends FeatureCase
         $user = $this->admin();
         factory(Channel::class, 250)->create();
 
-        $response = $this->actingAs($user)->json('GET', "channels", [
+        $response = $this->actingAs($user)->json('GET', 'channels', [
             'paginate' => false,
         ]);
 

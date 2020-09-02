@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Channels\Policies;
 
-use Illuminate\Foundation\Auth\User;
 use GetCandy\Api\Core\Channels\Models\Channel;
+use Illuminate\Foundation\Auth\User;
 
 class ChannelPolicy
 {
