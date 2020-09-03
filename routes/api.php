@@ -49,9 +49,12 @@
      * Attributes
      */
     $router->put('attributes/order', 'Attributes\AttributeController@reorder');
-    $router->resource('attributes', 'Attributes\AttributeController', [
-        'except' => ['edit', 'create'],
-    ]);
+
+    $router->get('attributes', '\GetCandy\Api\Core\Attributes\Actions\FetchAttributes');
+    $router->get('attributes/{encoded_id}', '\GetCandy\Api\Core\Attributes\Actions\FetchAttribute');
+    // $router->resource('attributes', 'Attributes\AttributeController', [
+    //     'except' => ['edit', 'create'],
+    // ]);
 
     /*
      * Attribute Groups
