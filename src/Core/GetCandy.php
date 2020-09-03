@@ -3,12 +3,12 @@
 namespace GetCandy\Api\Core;
 
 use File;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Route;
-use GetCandy\Api\Exceptions\InvalidServiceException;
-use GetCandy\Api\Core\Channels\Actions\SetCurrentChannel;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use GetCandy\Api\Core\Channels\Actions\FetchCurrentChannel;
+use GetCandy\Api\Core\Channels\Actions\SetCurrentChannel;
+use GetCandy\Api\Exceptions\InvalidServiceException;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 
 class GetCandy
 {

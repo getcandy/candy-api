@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Core\Scopes;
 
-use Carbon\Carbon;
 use GetCandy\Api\Core\Channels\Interfaces\ChannelFactoryInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
