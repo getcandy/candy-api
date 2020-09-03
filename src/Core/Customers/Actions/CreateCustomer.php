@@ -4,7 +4,6 @@ namespace GetCandy\Api\Core\Customers\Actions;
 
 use GetCandy;
 use Illuminate\Support\Arr;
-use GetCandy\Api\Core\Channels\Models\Channel;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Customers\Models\Customer;
 use GetCandy\Api\Core\Customers\Actions\AttachUser;

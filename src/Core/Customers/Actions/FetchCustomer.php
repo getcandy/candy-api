@@ -6,7 +6,6 @@ use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Customers\Models\Customer;
 use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use GetCandy\Api\Core\Channels\Resources\ChannelResource;
 use GetCandy\Api\Core\Customers\Resources\CustomerResource;
 
 class FetchCustomer extends AbstractAction
@@ -70,10 +69,10 @@ class FetchCustomer extends AbstractAction
     /**
      * Returns the response from the action.
      *
-     * @param   \GetCandy\Api\Core\Addresses\Models\Address  $result
+     * @param   \GetCandy\Api\Core\Customers\Models\Customer  $result
      * @param   \Illuminate\Http\Request  $request
      *
-     * @return  \GetCandy\Api\Core\Channels\Resources\ChannelResource|\Illuminate\Http\JsonResponse
+     * @return  \GetCandy\Api\Core\Customers\Resources\CustomerResource|\Illuminate\Http\JsonResponse
      */
     public function response($result, $request)
     {

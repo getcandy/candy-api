@@ -46,7 +46,10 @@ class FetchCustomers extends AbstractAction
             return Customer::with($includes)->get();
         }
 
-        return Customer::with($includes)->withCount($this->resolveRelationCounts())->paginate($this->per_page ?? 50);
+        return Customer::with($includes)
+            ->withCount(
+                $this->resolveRelationCounts()
+            )->paginate($this->per_page ?? 50);
     }
 
     /**
