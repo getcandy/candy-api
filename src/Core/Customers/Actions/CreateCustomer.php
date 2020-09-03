@@ -3,11 +3,10 @@
 namespace GetCandy\Api\Core\Customers\Actions;
 
 use GetCandy;
-use Illuminate\Support\Arr;
-use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Customers\Models\Customer;
-use GetCandy\Api\Core\Customers\Actions\AttachUser;
 use GetCandy\Api\Core\Customers\Resources\CustomerResource;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
+use Illuminate\Support\Arr;
 
 class CreateCustomer extends AbstractAction
 {
@@ -29,7 +28,7 @@ class CreateCustomer extends AbstractAction
     public function rules(): array
     {
         return [
-            'user_id' => 'required|string|hashid_is_valid:'. GetCandy::getUserModel() .'|required_without_all:id,handle',
+            'user_id' => 'required|string|hashid_is_valid:'.GetCandy::getUserModel().'|required_without_all:id,handle',
             'title' => 'nullable|string',
             'firstname' => 'nullable|string',
             'lastname' => 'nullable|string',

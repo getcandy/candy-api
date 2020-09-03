@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Customers\Policies;
 
-use Illuminate\Foundation\Auth\User;
 use GetCandy\Api\Core\Customers\Models\Customer;
+use Illuminate\Foundation\Auth\User;
 
 class CustomerPolicy
 {

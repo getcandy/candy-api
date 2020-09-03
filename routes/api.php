@@ -123,7 +123,7 @@
      */
 
     $router->group([
-        'prefix' => 'customers'
+        'prefix' => 'customers',
     ], function ($group) {
         $group->get('/', '\GetCandy\Api\Core\Customers\Actions\FetchCustomers');
         $group->post('{encoded_id}/users', '\GetCandy\Api\Core\Customers\Actions\AttachUser');

@@ -2,10 +2,9 @@
 
 namespace GetCandy\Api\Core\Customers\Actions;
 
-use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Customers\Models\Customer;
-use GetCandy\Api\Core\Customers\Actions\FetchCustomer;
 use GetCandy\Api\Core\Customers\Resources\CustomerResource;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
 
 class UpdateCustomer extends AbstractAction
 {
@@ -57,6 +56,7 @@ class UpdateCustomer extends AbstractAction
     public function handle(): Customer
     {
         $this->customer->update($this->validated());
+
         return $this->customer;
     }
 

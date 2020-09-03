@@ -21,7 +21,7 @@ class CustomerResource extends AbstractResource
             'fields' => $this->fields,
             $this->mergeWhen($this->users_count !== null, [
                 'users_count' => $this->users_count,
-            ])
+            ]),
         ];
     }
 

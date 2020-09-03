@@ -3,9 +3,7 @@
 namespace GetCandy\Api\Core\Customers\Actions;
 
 use GetCandy\Api\Core\Scaffold\AbstractAction;
-use GetCandy\Api\Core\Customers\Models\Customer;
 use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
-use GetCandy\Api\Core\Customers\Actions\FetchCustomer;
 
 class DeleteCustomer extends AbstractAction
 {
@@ -52,7 +50,7 @@ class DeleteCustomer extends AbstractAction
     /**
      * Execute the action and return a result.
      *
-     * @return boolean
+     * @return bool
      */
     public function handle()
     {
