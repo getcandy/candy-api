@@ -110,7 +110,7 @@ trait ReturnsJsonResponses
 
     public function respondWithNoContent()
     {
-        return response(null, 204);
+        return response()->json(null, 204);
     }
 
     public function respondWithSuccess($message = null)
@@ -157,6 +157,6 @@ trait ReturnsJsonResponses
      */
     protected function respondWithArray(array $array, array $headers = [])
     {
-        return response($array, $this->statusCode)->withHeaders($headers);
+        return response()->json($array, $this->statusCode)->withHeaders($headers);
     }
 }

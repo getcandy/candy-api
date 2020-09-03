@@ -5,6 +5,7 @@ namespace GetCandy\Api\Core\Scaffold;
 use Carbon\Carbon;
 use GetCandy;
 use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
+use GetCandy\Api\Core\Channels\Actions\FetchChannel;
 use Illuminate\Database\Eloquent\Model;
 
 abstract class BaseService
@@ -361,7 +362,9 @@ abstract class BaseService
     {
         $channelData = [];
         foreach ($data as $channel) {
-            $channelModel = GetCandy::channels()->getByHashedId($channel['id']);
+            $channelModel = FetchChannel::run([
+                'encoded_id' => $channel['id'],
+            ]);
             $channelData[$channelModel->id] = [
                 'published_at' => $channel['published_at'] ? Carbon::parse($channel['published_at']) : null,
             ];
@@ -457,7 +460,9 @@ abstract class BaseService
     {
         $channelData = [];
         foreach ($channels as $channel) {
-            $channelModel = GetCandy::channels()->getByHashedId($channel['id']);
+            $channelModel = FetchChannel::run([
+                'encoded_id' => $channel['id'],
+            ]);
             $channelData[$channelModel->id] = [
                 'published_at' => $channel['published_at'] ? Carbon::parse($channel['published_at']) : null,
             ];

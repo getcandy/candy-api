@@ -1,0 +1,8 @@
+title: Unprocessable Entity
+type: object
+properties:
+  message:
+    type: string
+    example: "The given data was invalid."
+  errors:
+    type: object

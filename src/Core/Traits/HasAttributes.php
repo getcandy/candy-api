@@ -5,6 +5,8 @@ namespace GetCandy\Api\Core\Traits;
 use GetCandy;
 use GetCandy\Api\Core\Attributes\Models\Attribute;
 use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
+use GetCandy\Api\Core\Channels\Actions\FetchChannels;
+use GetCandy\Api\Core\Channels\Actions\FetchDefaultChannel;
 use GetCandy\Api\Core\Channels\Interfaces\ChannelFactoryInterface;
 
 trait HasAttributes
@@ -45,7 +47,7 @@ trait HasAttributes
         }
 
         if (empty($this->attribute_data[$handle][$channel])) {
-            $defaultChannel = GetCandy::channels()->getDefaultRecord();
+            $defaultChannel = FetchDefaultChannel::run();
             $channel = $defaultChannel->handle;
         }
 
@@ -124,7 +126,9 @@ trait HasAttributes
             $languagesArray[$lang->lang] = null;
         }
         // Get our channels
-        $channels = GetCandy::channels()->getDataList();
+        $channels = FetchChannels::run([
+            'paginate' => false,
+        ]);
         foreach ($channels as $channel) {
             $structure[$channel->handle] = $languagesArray;
         }

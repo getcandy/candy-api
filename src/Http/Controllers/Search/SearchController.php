@@ -4,7 +4,7 @@ namespace GetCandy\Api\Http\Controllers\Search;
 
 use GetCandy;
 use GetCandy\Api\Core\Categories\Services\CategoryService;
-use GetCandy\Api\Core\Channels\Services\ChannelService;
+use GetCandy\Api\Core\Channels\Actions\FetchDefaultChannel;
 use GetCandy\Api\Core\Products\Services\ProductService;
 use GetCandy\Api\Core\Search\SearchContract;
 use GetCandy\Api\Http\Controllers\BaseController;
@@ -27,9 +27,8 @@ class SearchController extends BaseController
      */
     protected $products;
 
-    public function __construct(ChannelService $channels, CategoryService $categories, ProductService $products)
+    public function __construct(CategoryService $categories, ProductService $products)
     {
-        $this->channels = $channels;
         $this->categories = $categories;
         $this->products = $products;
     }
@@ -44,7 +43,7 @@ class SearchController extends BaseController
     public function search(SearchRequest $request, SearchContract $search)
     {
         // Get channel
-        $defaultChannel = $this->channels->getDefaultRecord();
+        $defaultChannel = FetchDefaultChannel::run();
         $channel = $request->channel ?: ($defaultChannel ? $defaultChannel->handle : null);
 
         try {

@@ -1,6 +1,6 @@
 <?php
 
-namespace GetCandy\Api\Http\Resources\Channels;
+namespace GetCandy\Api\Core\Channels\Resources;
 
 use Carbon\Carbon;
 use GetCandy\Api\Http\Resources\AbstractResource;

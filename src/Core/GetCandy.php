@@ -3,6 +3,8 @@
 namespace GetCandy\Api\Core;
 
 use File;
+use GetCandy\Api\Core\Channels\Actions\FetchCurrentChannel;
+use GetCandy\Api\Core\Channels\Actions\SetCurrentChannel;
 use GetCandy\Api\Exceptions\InvalidServiceException;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Facades\Route;
@@ -61,6 +63,18 @@ class GetCandy
         $this->isHubRequest = $bool;
 
         return $this;
+    }
+
+    public static function onChannel($channel, \Closure $closure)
+    {
+        $current = FetchCurrentChannel::run();
+        SetCurrentChannel::run([
+            'handle' => $channel,
+        ]);
+        $closure();
+        SetCurrentChannel::run([
+            'handle' => $current->handle,
+        ]);
     }
 
     /**
