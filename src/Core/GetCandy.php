@@ -3,6 +3,8 @@
 namespace GetCandy\Api\Core;
 
 use File;
+use GetCandy\Api\Core\Channels\Actions\FetchCurrentChannel;
+use GetCandy\Api\Core\Channels\Actions\SetCurrentChannel;
 use GetCandy\Api\Exceptions\InvalidServiceException;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Facades\Route;
@@ -63,6 +65,18 @@ class GetCandy
         return $this;
     }
 
+    public static function onChannel($channel, \Closure $closure)
+    {
+        $current = FetchCurrentChannel::run();
+        SetCurrentChannel::run([
+            'handle' => $channel,
+        ]);
+        $closure();
+        SetCurrentChannel::run([
+            'handle' => $current->handle,
+        ]);
+    }
+
     /**
      * Gets the value for isHubRequest.
      *
@@ -97,8 +111,16 @@ class GetCandy
 
     public static function router(array $options = [], $callback = null)
     {
-        $callback = $callback ?: function ($router) {
-            $router->all();
+        $callback = $callback ?: function ($router) use ($options) {
+            $template = $options['template'] ?? null;
+            if ($template) {
+                $method = 'template'.ucfirst($template);
+                if (method_exists($router, $method)) {
+                    $router->{$method}();
+                }
+            } else {
+                $router->all();
+            }
         };
 
         $defaultOptions = [

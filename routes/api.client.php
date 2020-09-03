@@ -11,13 +11,12 @@
 */
 
 $router->get('/', function () {
-    $channel = app()->make(GetCandy\Api\Core\Channels\Interfaces\ChannelFactoryInterface::class);
     $currency = app()->make(GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface::class);
 
     return response()->json([
         'version' => GetCandy::version(),
         'locale' => app()->getLocale(),
-        'channel' => new \GetCandy\Api\Core\Channels\Resources\ChannelResource($channel->getChannel()),
+        'channel' => GetCandy\Api\Core\Channels\Actions\FetchCurrentChannel::run(),
         'currency' => new GetCandy\Api\Http\Resources\Currencies\CurrencyResource($currency->get()),
     ]);
 });
