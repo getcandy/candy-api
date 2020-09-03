@@ -27,8 +27,18 @@ $router->get('collections/{id}', 'Collections\CollectionController@show');
 $router->get('categories/{id}', 'Categories\CategoryController@show');
 $router->get('products/recommended', 'Products\ProductController@recommended');
 $router->get('products/{product}', 'Products\ProductController@show');
-$router->post('customers', 'Customers\CustomerController@store');
 $router->get('products', 'Products\ProductController@index');
+
+/*
+* Customers
+*/
+$router->group([
+    'prefix' => 'customers',
+], function ($group) {
+    $group->get('{encoded_id}', '\GetCandy\Api\Core\Customers\Actions\FetchCustomer');
+    $group->put('{encoded_id}', '\GetCandy\Api\Core\Customers\Actions\UpdateCustomer');
+    $group->post('/', '\GetCandy\Api\Core\Customers\Actions\CreateCustomer');
+});
 
 /*
     * Baskets
@@ -68,13 +78,6 @@ $router->get('countries', 'Countries\CountryController@index');
     */
 $router->resource('currencies', 'Currencies\CurrencyController', [
     'except' => ['edit', 'create'],
-]);
-
-/*
-    * Customers
-    */
-$router->resource('customers', 'Customers\CustomerController', [
-    'except' => ['index', 'edit', 'create', 'show'],
 ]);
 
 /*

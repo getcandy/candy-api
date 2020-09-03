@@ -121,12 +121,17 @@
     /*
      * Customers
      */
+
+    $router->group([
+        'prefix' => 'customers',
+    ], function ($group) {
+        $group->get('/', '\GetCandy\Api\Core\Customers\Actions\FetchCustomers');
+        $group->post('{encoded_id}/users', '\GetCandy\Api\Core\Customers\Actions\AttachUser');
+        $group->delete('{encoded_id}', '\GetCandy\Api\Core\Customers\Actions\DeleteCustomer');
+    });
+
     $router->resource('customers/groups', 'Customers\CustomerGroupController', [
         'except' => ['edit', 'create', 'show'],
-    ]);
-
-    $router->resource('customers', 'Customers\CustomerController', [
-        'except' => ['edit', 'create', 'store'],
     ]);
 
     /*

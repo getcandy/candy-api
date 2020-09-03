@@ -104,6 +104,11 @@ class GetCandy
         ];
     }
 
+    public function getUserModel()
+    {
+        return config('app.providers.users.model', \App\User::class);
+    }
+
     public static function router(array $options = [], $callback = null)
     {
         $callback = $callback ?: function ($router) use ($options) {
