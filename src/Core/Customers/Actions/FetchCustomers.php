@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Core\Customers\Actions;
 
-use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Customers\Models\Customer;
 use GetCandy\Api\Core\Customers\Resources\CustomerCollection;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
 
 class FetchCustomers extends AbstractAction
 {

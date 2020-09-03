@@ -3,10 +3,9 @@
 namespace GetCandy\Api\Core\Customers\Actions;
 
 use GetCandy;
-use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Customers\Models\Customer;
-use GetCandy\Api\Core\Customers\Actions\FetchCustomer;
 use GetCandy\Api\Core\Customers\Resources\CustomerResource;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
 
 class AttachUser extends AbstractAction
 {
@@ -39,7 +38,7 @@ class AttachUser extends AbstractAction
     public function rules(): array
     {
         return [
-            'user_id' => 'required|string|hashid_is_valid:'. GetCandy::getUserModel() .'|required_without_all:id,handle',
+            'user_id' => 'required|string|hashid_is_valid:'.GetCandy::getUserModel().'|required_without_all:id,handle',
         ];
     }
 
@@ -54,6 +53,7 @@ class AttachUser extends AbstractAction
         $realUserId = (new $userModel)->decodeId($this->user_id);
         $user = (new $userModel)->find($realUserId);
         $this->customer->users()->save($user);
+
         return $this->customer;
     }
 

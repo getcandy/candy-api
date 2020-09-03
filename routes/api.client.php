@@ -34,7 +34,7 @@ $router->get('products', 'Products\ProductController@index');
 * Customers
 */
 $router->group([
-    'prefix' => 'customers'
+    'prefix' => 'customers',
 ], function ($group) {
     $group->get('{encoded_id}', '\GetCandy\Api\Core\Customers\Actions\FetchCustomer');
     $group->put('{encoded_id}', '\GetCandy\Api\Core\Customers\Actions\UpdateCustomer');

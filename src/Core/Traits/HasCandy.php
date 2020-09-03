@@ -2,16 +2,15 @@
 
 namespace GetCandy\Api\Core\Traits;
 
-use Spatie\Permission\Traits\HasRoles;
-use GetCandy\Api\Core\Orders\Models\Order;
-use GetCandy\Api\Core\Baskets\Models\Basket;
-use GetCandy\Api\Core\Users\Models\UserDetail;
 use GetCandy\Api\Core\Addresses\Models\Address;
-use GetCandy\Api\Core\Customers\Models\Customer;
-use GetCandy\Api\Core\Languages\Models\Language;
+use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Core\Baskets\Models\SavedBasket;
+use GetCandy\Api\Core\Customers\Models\Customer;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
+use GetCandy\Api\Core\Languages\Models\Language;
+use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Payments\Models\ReusablePayment;
+use Spatie\Permission\Traits\HasRoles;
 
 trait HasCandy
 {

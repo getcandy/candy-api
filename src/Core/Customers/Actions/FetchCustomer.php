@@ -2,11 +2,11 @@
 
 namespace GetCandy\Api\Core\Customers\Actions;
 
-use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Customers\Models\Customer;
+use GetCandy\Api\Core\Customers\Resources\CustomerResource;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use GetCandy\Api\Core\Customers\Resources\CustomerResource;
 
 class FetchCustomer extends AbstractAction
 {
@@ -35,10 +35,11 @@ class FetchCustomer extends AbstractAction
                 ->withCount($this->resolveRelationCounts())
                 ->findOrFail($this->id);
         } catch (ModelNotFoundException $e) {
-            if (!$this->runningAs('controller')) {
+            if (! $this->runningAs('controller')) {
                 throw $e;
             }
         }
+
         return $this->user() && $this->user()->can('view', $this->customer);
     }
 
