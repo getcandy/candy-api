@@ -3,11 +3,10 @@
 namespace GetCandy\Api\Core\Customers\Actions;
 
 use GetCandy;
-use Illuminate\Support\Arr;
-use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Customers\Models\Customer;
 use GetCandy\Api\Core\Customers\Resources\CustomerResource;
-use GetCandy\Api\Core\Customers\Actions\AttachUserToCustomer;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
+use Illuminate\Support\Arr;
 
 class CreateCustomer extends AbstractAction
 {
@@ -57,6 +56,7 @@ class CreateCustomer extends AbstractAction
                 'user_id' => $this->user_id,
             ]);
         }
+
         return $customer->load($this->resolveEagerRelations());
     }
 

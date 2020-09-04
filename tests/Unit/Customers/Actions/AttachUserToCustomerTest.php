@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Customers\Actions;
 
-use Tests\Stubs\User;
-use Tests\Feature\FeatureCase;
-use GetCandy\Api\Core\Customers\Models\Customer;
 use GetCandy\Api\Core\Customers\Actions\AttachUserToCustomer;
+use GetCandy\Api\Core\Customers\Models\Customer;
+use Tests\Feature\FeatureCase;
+use Tests\Stubs\User;
 
 /**
  * @group customers_unit
