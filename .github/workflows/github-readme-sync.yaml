@@ -13,8 +13,10 @@ jobs:
           node-version: '12'
       - run: npm install -g speccy
       - run: speccy resolve openapi/openapi.yaml -o openapi/openapi-full.yaml
-      - uses: readmeio/github-readme-sync@2.0.0
-        with:
-          readme-oas-key: ${{ secrets.README_OAS_KEY }}
-          oas-file-path: openapi/openapi-full.yaml
-          api-version: 'v1.0.0'
+      - run: npm install rdme -g
+      - run: rdme swagger openapi/openapi-full.yaml --version=v1.0 --key=${{ secrets.README_OAS_KEY }}
+#       - uses: readmeio/github-readme-sync@2.0.0
+#         with:
+#           readme-oas-key: ${{ secrets.README_OAS_KEY }}
+#           oas-file-path: openapi/openapi-full.yaml
+#           api-version: 'v1.0.0'
