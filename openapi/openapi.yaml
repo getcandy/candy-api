@@ -6,7 +6,7 @@ info:
     name: GetCandy
     url: 'https://getcandy.io'
     email: support@getcandy.io
-  version: '1.0'
+  version: 'v1.0.0'
   license:
     name: MIT
   description: The GetCandy API
