@@ -30,6 +30,6 @@ class CustomerPolicy
 
     public function delete(?User $user, Customer $customer)
     {
-        return $this->update($user, $channel);
+        return $this->update($user, $customer);
     }
 }
