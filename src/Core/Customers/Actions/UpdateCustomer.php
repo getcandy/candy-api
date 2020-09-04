@@ -42,7 +42,7 @@ class UpdateCustomer extends AbstractAction
             'lastname' => 'nullable|string',
             'contact_number' => 'nullable|string',
             'alt_contact_number' => 'nullable|string',
-            'vat_no' => 'nullable|string',
+            'vat_no' => 'nullable|alpha_num',
             'company_name' => 'nullable|string',
             'fields' => 'nullable|array',
         ];

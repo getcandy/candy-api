@@ -16,6 +16,15 @@ abstract class AbstractAction extends Action
         return $this->convertPassableStringToArray($this->counts);
     }
 
+    /**
+     * @param Action $action
+     * @return static
+     */
+    public static function createFrom(Action $action)
+    {
+        return (new static)->fill($action->all())->actingAs($action->user());
+    }
+
     private function convertPassableStringToArray($string)
     {
         $includes = $string ?: [];

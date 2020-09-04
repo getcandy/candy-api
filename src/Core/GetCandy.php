@@ -106,7 +106,7 @@ class GetCandy
 
     public function getUserModel()
     {
-        return config('app.providers.users.model', \App\User::class);
+        return config('auth.providers.users.model', \App\User::class);
     }
 
     public static function router(array $options = [], $callback = null)

@@ -1,0 +1,55 @@
+get:
+  summary: Get all customers
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/CustomerCollection.yaml'
+  operationId: get-customers
+  parameters:
+    - schema:
+        type: string
+      in: query
+      name: include
+      description: Comma separated include for the resource
+    - schema:
+        type: number
+      in: query
+      name: per_page
+      description: How many results per page
+    - schema:
+        type: number
+      in: query
+      name: counts
+      description: Comma seperated count include to show relation counts
+  description: Gets a paginated list of all customers
+  tags:
+    - Customers
+post:
+  summary: Create a new customer
+  description: Create a new customer
+  responses:
+    '201':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../models/Customer.yaml'
+    '422':
+      description: Unprocessable Entity
+      content:
+          application/json:
+            schema:
+              $ref: '../../global/responses/Unprocessable.yaml'
+  operationId: post-customers
+  requestBody:
+    content:
+      multipart/form-data:
+        schema:
+          $ref: '../requests/CreateCustomerBody.yaml'
+        examples: {}
+    description: ''
+  tags:
+    - Customers

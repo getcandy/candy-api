@@ -3,10 +3,11 @@
 namespace GetCandy\Api\Core\Customers\Actions;
 
 use GetCandy;
+use Illuminate\Support\Arr;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Customers\Models\Customer;
 use GetCandy\Api\Core\Customers\Resources\CustomerResource;
-use GetCandy\Api\Core\Scaffold\AbstractAction;
-use Illuminate\Support\Arr;
+use GetCandy\Api\Core\Customers\Actions\AttachUserToCustomer;
 
 class CreateCustomer extends AbstractAction
 {
@@ -28,7 +29,7 @@ class CreateCustomer extends AbstractAction
     public function rules(): array
     {
         return [
-            'user_id' => 'required|string|hashid_is_valid:'.GetCandy::getUserModel().'|required_without_all:id,handle',
+            'user_id' => 'nullable|string|hashid_is_valid:'.GetCandy::getUserModel(),
             'title' => 'nullable|string',
             'firstname' => 'nullable|string',
             'lastname' => 'nullable|string',
@@ -50,11 +51,12 @@ class CreateCustomer extends AbstractAction
         $customer = Customer::create(
             Arr::except($this->validated(), ['user_id', 'country_id'])
         );
-        AttachUser::run([
-            'encoded_id' => $customer->encoded_id,
-            'user_id' => $this->user_id,
-        ]);
-
+        if ($this->user_id) {
+            AttachUserToCustomer::run([
+                'encoded_id' => $customer->encoded_id,
+                'user_id' => $this->user_id,
+            ]);
+        }
         return $customer->load($this->resolveEagerRelations());
     }
 

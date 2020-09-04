@@ -7,7 +7,7 @@ use GetCandy\Api\Core\Customers\Models\Customer;
 use GetCandy\Api\Core\Customers\Resources\CustomerResource;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
 
-class AttachUser extends AbstractAction
+class AttachUserToCustomer extends AbstractAction
 {
     /**
      * The address object we want to update.
@@ -23,9 +23,7 @@ class AttachUser extends AbstractAction
      */
     public function authorize()
     {
-        $this->customer = FetchCustomer::run([
-            'encoded_id' => $this->encoded_id,
-        ]);
+        $this->customer = $this->delegateTo(FetchCustomer::class);
 
         return $this->user()->can('update', $this->customer);
     }

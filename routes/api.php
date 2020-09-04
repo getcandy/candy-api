@@ -126,7 +126,7 @@
         'prefix' => 'customers',
     ], function ($group) {
         $group->get('/', '\GetCandy\Api\Core\Customers\Actions\FetchCustomers');
-        $group->post('{encoded_id}/users', '\GetCandy\Api\Core\Customers\Actions\AttachUser');
+        $group->post('{encoded_id}/users', '\GetCandy\Api\Core\Customers\Actions\AttachUserToCustomer');
         $group->delete('{encoded_id}', '\GetCandy\Api\Core\Customers\Actions\DeleteCustomer');
     });
 
