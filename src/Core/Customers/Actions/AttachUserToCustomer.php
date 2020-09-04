@@ -55,6 +55,7 @@ class AttachUserToCustomer extends AbstractAction
         $realUserId = (new $userModel)->decodeId($this->user_id);
         $user = (new $userModel)->find($realUserId);
         $this->customer->users()->save($user);
+
         return $this->customer;
     }
 
