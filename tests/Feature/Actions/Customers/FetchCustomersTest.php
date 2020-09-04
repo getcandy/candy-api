@@ -13,7 +13,7 @@ class FetchCustomersTest extends FeatureCase
     {
         $user = $this->admin();
 
-        $response = $this->actingAs($user)->json('GET', "customers");
+        $response = $this->actingAs($user)->json('GET', 'customers');
 
         $response->assertStatus(200);
 

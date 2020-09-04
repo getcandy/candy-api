@@ -28,7 +28,7 @@ class CreateCustomerTest extends FeatureCase
         $user = $this->admin();
 
         $response = $this->actingAs($user)->json('POST', 'customers', [
-            'user_id' => 123123123
+            'user_id' => 123123123,
         ]);
 
         $response->assertStatus(422);
