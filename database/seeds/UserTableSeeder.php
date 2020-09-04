@@ -2,11 +2,12 @@
 
 namespace Seeds;
 
-use GetCandy\Api\Core\Addresses\Models\Address;
-use GetCandy\Api\Core\Auth\Models\User;
-use GetCandy\Api\Core\Customers\Models\CustomerGroup;
-use GetCandy\Api\Core\Users\Models\UserDetail;
 use Illuminate\Database\Seeder;
+use Tests\Stubs\User;
+use GetCandy\Api\Core\Users\Models\UserDetail;
+use GetCandy\Api\Core\Addresses\Models\Address;
+use GetCandy\Api\Core\Customers\Models\Customer;
+use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 
 class UserTableSeeder extends Seeder
 {
@@ -26,27 +27,30 @@ class UserTableSeeder extends Seeder
             'password' => \Hash::make('password'),
         ]);
 
-        UserDetail::forceCreate([
-            'user_id' => $admin->id,
+        $admin->customer()->create([
             'title' => 'Lord',
             'firstname' => 'Thanos',
             'lastname' => 'Balancer',
         ]);
+
         $admin->language()->associate($language);
         $admin->save();
 
         $customerData = $this->customerData();
-        $customer = User::create([
+        $user = User::create([
             'id' => 7,
             'name' => $customerData['firstname'],
             'email' => $customerData['email'],
             'password' => $customerData['password'],
         ]);
 
-        $userDetail = $this->userDetail($customer, $customerData);
-        UserDetail::forceCreate($userDetail);
+        $user->customer()->create([
+            'title' => $user['title'],
+            'firstname' => $user['firstname'],
+            'lastname' => $user['lastname'],
+        ]);
 
-        $shippingAddress = $this->addressData($customer, $customerData);
+        $shippingAddress = $this->addressData($user, $customerData);
         $billingAddress = array_merge($shippingAddress, [
             'billing' => 1,
             'shipping' => 0,
@@ -56,10 +60,10 @@ class UserTableSeeder extends Seeder
 
         $group = CustomerGroup::find(2);
 
-        $customer->groups()->attach($group->id);
-        $customer->language()->associate($language);
+        $user->groups()->attach($group->id);
+        $user->language()->associate($language);
 
-        $customer->save();
+        $user->save();
     }
 
     /**
