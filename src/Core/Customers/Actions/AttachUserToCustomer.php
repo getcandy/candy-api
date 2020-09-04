@@ -23,7 +23,11 @@ class AttachUserToCustomer extends AbstractAction
      */
     public function authorize()
     {
-        $this->customer = $this->delegateTo(FetchCustomer::class);
+        $this->customer = (new FetchCustomer)
+            ->actingAs($this->user())
+            ->run([
+                'encoded_id' => $this->encoded_id,
+            ]);
 
         return $this->user()->can('update', $this->customer);
     }
@@ -51,7 +55,6 @@ class AttachUserToCustomer extends AbstractAction
         $realUserId = (new $userModel)->decodeId($this->user_id);
         $user = (new $userModel)->find($realUserId);
         $this->customer->users()->save($user);
-
         return $this->customer;
     }
 
