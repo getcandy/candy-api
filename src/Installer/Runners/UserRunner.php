@@ -64,7 +64,7 @@ class UserRunner extends AbstractRunner implements InstallRunnerContract
         ]);
 
         $user->save();
-        $user->details()->updateOrCreate([
+        $user->customer()->updateOrCreate([
             'firstname' => $nameParts[0],
             'lastname' => $nameParts[1] ?? null,
         ]);

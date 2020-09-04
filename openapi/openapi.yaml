@@ -6,7 +6,7 @@ info:
     name: GetCandy
     url: 'https://getcandy.io'
     email: support@getcandy.io
-  version: '1.0'
+  version: 1.0.0
   license:
     name: MIT
   description: The GetCandy API
@@ -21,6 +21,13 @@ paths:
     $ref: './channels/paths/channels.yaml'
   '/channels/{channelId}':
     $ref: './channels/paths/channels.id.yaml'
+  /customers:
+    $ref: './customers/paths/customers.yaml'
+  '/customers/{customerId}/users':
+    $ref: './customers/paths/customers.id.users.yaml'
+  '/customers/{customerId}':
+    $ref: './customers/paths/customers.id.yaml'
+
 
 ### BELOW: Paths that have not been updated
   /orders:

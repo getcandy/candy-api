@@ -1,0 +1,6 @@
+title: CustomerResponse
+type: object
+properties:
+  data:
+    $ref: '../models/Customer.yaml'
+    
