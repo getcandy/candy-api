@@ -19,6 +19,7 @@ abstract class AbstractAction extends Action
     /**
      * @param Action $action
      * @return static
+     * See https://github.com/lorisleiva/laravel-actions/issues/57
      */
     public static function createFrom(Action $action)
     {
