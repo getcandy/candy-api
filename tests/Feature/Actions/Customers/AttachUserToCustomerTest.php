@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Actions\Customers;
 
-use Tests\Stubs\User;
-use Tests\Feature\FeatureCase;
 use GetCandy\Api\Core\Customers\Models\Customer;
+use Tests\Feature\FeatureCase;
+use Tests\Stubs\User;
 
 /**
  * @group customerss
@@ -24,6 +24,6 @@ class AttachUserToCustomerTest extends FeatureCase
 
         $response->assertStatus(200);
 
-        $this->assertResponseValid($response, "/customers/{customerId}/users", 'post');
+        $this->assertResponseValid($response, '/customers/{customerId}/users', 'post');
     }
 }
