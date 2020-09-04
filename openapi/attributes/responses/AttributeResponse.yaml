@@ -1,0 +1,5 @@
+title: AttributeResponse
+type: object
+properties:
+  data:
+    $ref: '../models/Attribute.yaml'

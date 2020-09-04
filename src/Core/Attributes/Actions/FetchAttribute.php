@@ -1,15 +1,17 @@
 <?php
 
-namespace GetCandy\Api\Core\Channels\Actions;
+namespace GetCandy\Api\Core\Attributes\Actions;
 
 use GetCandy\Api\Core\Scaffold\AbstractAction;
+use GetCandy\Api\Core\Attributes\Models\Attribute;
 use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use GetCandy\Api\Core\Attributes\Resources\AttributeResource;
 
 class FetchAttribute extends AbstractAction
 {
     use ReturnsJsonResponses;
-    
+
     /**
      * Determine if the user is authorized to make this action.
      *
@@ -18,7 +20,7 @@ class FetchAttribute extends AbstractAction
     public function authorize()
     {
         if ($this->encoded_id && ! $this->handle) {
-            $this->id = (new Channel)->decodeId($this->encoded_id);
+            $this->id = (new Attribute)->decodeId($this->encoded_id);
         }
 
         return true;
@@ -29,11 +31,11 @@ class FetchAttribute extends AbstractAction
      *
      * @return array
      */
-    public function rules(): array
+    public function rules()
     {
         return [
             'id' => 'integer|required_without_all:encoded_id,handle',
-            'encoded_id' => 'string|hashid_is_valid:'.Channel::class.'|required_without_all:id,handle',
+            'encoded_id' => 'string|hashid_is_valid:'.Attribute::class.'|required_without_all:id,handle',
             'handle' => 'string|required_without_all:encoded_id,id',
         ];
     }
@@ -41,12 +43,12 @@ class FetchAttribute extends AbstractAction
     /**
      * Execute the action and return a result.
      *
-     * @return \GetCandy\Api\Core\Channels\Models\Channel|null
+     * @return \GetCandy\Api\Core\Attributes\Models\Attribute|null
      */
     public function handle()
     {
         try {
-            $query = Channel::with($this->resolveEagerRelations());
+            $query = Attribute::with($this->resolveEagerRelations());
             if ($this->handle) {
                 return $query->whereHandle($this->handle)->firstOrFail();
             }
@@ -63,10 +65,10 @@ class FetchAttribute extends AbstractAction
     /**
      * Returns the response from the action.
      *
-     * @param   \GetCandy\Api\Core\Addresses\Models\Address  $result
+     * @param   \GetCandy\Api\Core\Attributes\Models\Attribute  $result
      * @param   \Illuminate\Http\Request  $request
      *
-     * @return  \GetCandy\Api\Core\Channels\Resources\ChannelResource|\Illuminate\Http\JsonResponse
+     * @return  \GetCandy\Api\Core\Attributes\Resources\AttributeResource|\Illuminate\Http\JsonResponse
      */
     public function response($result, $request)
     {
@@ -74,6 +76,6 @@ class FetchAttribute extends AbstractAction
             return $this->errorNotFound();
         }
 
-        return new ChannelResource($result);
+        return new AttributeResource($result);
     }
 }

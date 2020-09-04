@@ -50,8 +50,14 @@
      */
     $router->put('attributes/order', 'Attributes\AttributeController@reorder');
 
-    $router->get('attributes', '\GetCandy\Api\Core\Attributes\Actions\FetchAttributes');
-    $router->get('attributes/{encoded_id}', '\GetCandy\Api\Core\Attributes\Actions\FetchAttribute');
+    $router->group([
+        'prefix' => 'attributes',
+    ], function ($group) {
+        $group->get('/', '\GetCandy\Api\Core\Attributes\Actions\FetchAttributes');
+        $group->get('{encoded_id}', '\GetCandy\Api\Core\Attributes\Actions\FetchAttribute');
+    });
+
+
     // $router->resource('attributes', 'Attributes\AttributeController', [
     //     'except' => ['edit', 'create'],
     // ]);
