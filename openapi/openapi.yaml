@@ -146,7 +146,7 @@ paths:
                   description: Corresponds to status set in config
                 send_emails:
                   type: boolean
-                  default: 0
+                  default: false
                   example: true
         description: ''
       parameters:
@@ -378,9 +378,8 @@ paths:
                   type: boolean
                   default: false
                 scopeable:
-                  type: integer
+                  type: boolean
                   default: false
-                  format: int32
                 translatable:
                   type: boolean
                   default: false
