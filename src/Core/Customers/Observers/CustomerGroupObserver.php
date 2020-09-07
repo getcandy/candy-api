@@ -33,7 +33,7 @@ class CustomerGroupObserver
     }
 
     /**
-     * Sets records apart from the one passed to not be default
+     * Sets records apart from the one passed to not be default.
      *
      * @param   CustomerGroup  $customerGroup
      *

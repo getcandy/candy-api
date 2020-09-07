@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Actions\Customers;
 
-use Tests\Feature\FeatureCase;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
+use Tests\Feature\FeatureCase;
 
 /**
  * @group customer-groups

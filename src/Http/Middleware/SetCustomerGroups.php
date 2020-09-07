@@ -24,7 +24,7 @@ class SetCustomerGroups
                 $groups = FetchCustomerGroups::run([
                     'paginate' => false,
                 ]);
-            } else if ($request->user()->customer) {
+            } elseif ($request->user()->customer) {
                 $groups = $request->user()->customer->customerGroups;
             } else {
                 $groups = collect([FetchDefaultCustomerGroup::run()]);

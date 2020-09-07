@@ -131,7 +131,7 @@
     });
 
     /**
-     * Customer groups
+     * Customer groups.
      */
     $router->group([
         'prefix' => 'customer-groups',

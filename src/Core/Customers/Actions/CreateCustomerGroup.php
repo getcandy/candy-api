@@ -2,11 +2,10 @@
 
 namespace GetCandy\Api\Core\Customers\Actions;
 
-use GetCandy;
-use Illuminate\Support\Arr;
-use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 use GetCandy\Api\Core\Customers\Resources\CustomerGroupResource;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
+use Illuminate\Support\Arr;
 
 class CreateCustomerGroup extends AbstractAction
 {
@@ -30,7 +29,7 @@ class CreateCustomerGroup extends AbstractAction
         return [
             'name' => 'required|string',
             'handle' => 'required|unique:customer_groups,handle',
-            'default' => 'boolean'
+            'default' => 'boolean',
         ];
     }
 

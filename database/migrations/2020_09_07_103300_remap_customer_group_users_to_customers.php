@@ -23,7 +23,7 @@ class RemapCustomerGroupUsersToCustomers extends Migration
 
         Schema::dropIfExists('customer_group_user');
 
-        if (!Schema::hasTable('customer_customer_group')) {
+        if (! Schema::hasTable('customer_customer_group')) {
             Schema::create('customer_customer_group', function (Blueprint $table) {
                 $table->increments('id');
                 $table->integer('customer_group_id')->unsigned();
@@ -33,7 +33,6 @@ class RemapCustomerGroupUsersToCustomers extends Migration
                 $table->timestamps();
             });
         }
-
 
         foreach ($customerMapping as $data) {
             foreach ($data['customer_groups'] as $groupId) {
