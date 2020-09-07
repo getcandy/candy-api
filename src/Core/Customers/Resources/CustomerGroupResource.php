@@ -3,7 +3,6 @@
 namespace GetCandy\Api\Core\Customers\Resources;
 
 use GetCandy\Api\Http\Resources\AbstractResource;
-use GetCandy\Api\Core\Customers\Resources\CustomerCollection;
 
 class CustomerGroupResource extends AbstractResource
 {

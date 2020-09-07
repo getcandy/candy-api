@@ -3,8 +3,8 @@
 namespace GetCandy\Api\Core\Scopes;
 
 use GetCandy;
-use Illuminate\Database\Eloquent\Scope;
 use GetCandy\Api\Core\Customers\Actions\FetchDefaultCustomerGroup;
+use Illuminate\Database\Eloquent\Scope;
 
 abstract class AbstractScope implements Scope
 {

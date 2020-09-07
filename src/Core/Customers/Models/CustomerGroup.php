@@ -2,12 +2,10 @@
 
 namespace GetCandy\Api\Core\Customers\Models;
 
-use GetCandy\Api\Core\Auth\Models\User;
-use GetCandy\Api\Core\Scaffold\BaseModel;
-use GetCandy\Api\Core\Products\Models\Product;
-use GetCandy\Api\Core\Customers\Models\Customer;
 use GetCandy\Api\Core\Categories\Models\Category;
 use GetCandy\Api\Core\Collections\Models\Collection;
+use GetCandy\Api\Core\Products\Models\Product;
+use GetCandy\Api\Core\Scaffold\BaseModel;
 use GetCandy\Api\Core\Shipping\Models\ShippingPrice;
 
 class CustomerGroup extends BaseModel

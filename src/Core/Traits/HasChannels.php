@@ -48,6 +48,7 @@ trait HasChannels
             return $user->groups->pluck('id')->toArray();
         } else {
             $defaultGroup = FetchDefaultCustomerGroup::run();
+
             return [$defaultGroup->id];
         }
     }

@@ -2,11 +2,10 @@
 
 namespace Tests\Unit\CustomerGroups\Actions;
 
-use Tests\Feature\FeatureCase;
-use GetCandy\Api\Core\Channels\Actions\DeleteChannel;
-use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 use GetCandy\Api\Core\Customers\Actions\DeleteCustomerGroup;
+use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 use GetCandy\Api\Core\Exceptions\DefaultRecordRequiredException;
+use Tests\Feature\FeatureCase;
 
 /**
  * @group customer-groups

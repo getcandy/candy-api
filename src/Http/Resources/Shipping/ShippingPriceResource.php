@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Http\Resources\Shipping;
 
+use GetCandy\Api\Core\Customers\Resources\CustomerGroupCollection;
 use GetCandy\Api\Core\Pricing\PriceCalculator;
 use GetCandy\Api\Http\Resources\AbstractResource;
 use GetCandy\Api\Http\Resources\Currencies\CurrencyResource;
-use GetCandy\Api\Core\Customers\Resources\CustomerGroupCollection;
 
 class ShippingPriceResource extends AbstractResource
 {

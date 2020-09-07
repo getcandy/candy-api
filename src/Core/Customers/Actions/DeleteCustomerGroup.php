@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Core\Customers\Actions;
 
-use Illuminate\Http\JsonResponse;
+use GetCandy\Api\Core\Exceptions\DefaultRecordRequiredException;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
-use GetCandy\Api\Core\Exceptions\DefaultRecordRequiredException;
+use Illuminate\Http\JsonResponse;
 
 class DeleteCustomerGroup extends AbstractAction
 {

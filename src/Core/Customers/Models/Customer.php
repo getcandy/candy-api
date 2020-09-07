@@ -4,7 +4,6 @@ namespace GetCandy\Api\Core\Customers\Models;
 
 use GetCandy;
 use GetCandy\Api\Core\Scaffold\BaseModel;
-use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 
 class Customer extends BaseModel
 {
