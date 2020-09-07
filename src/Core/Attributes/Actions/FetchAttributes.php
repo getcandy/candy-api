@@ -2,11 +2,10 @@
 
 namespace GetCandy\Api\Core\Attributes\Actions;
 
-use GetCandy\Api\Core\Channels\Models\Channel;
-use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Attributes\Models\Attribute;
-use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
 use GetCandy\Api\Core\Attributes\Resources\AttributeCollection;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
+use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
 
 class FetchAttributes extends AbstractAction
 {

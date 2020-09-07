@@ -57,7 +57,6 @@
         $group->get('{encoded_id}', '\GetCandy\Api\Core\Attributes\Actions\FetchAttribute');
     });
 
-
     // $router->resource('attributes', 'Attributes\AttributeController', [
     //     'except' => ['edit', 'create'],
     // ]);

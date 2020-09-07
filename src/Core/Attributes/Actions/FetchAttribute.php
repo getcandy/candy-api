@@ -2,11 +2,11 @@
 
 namespace GetCandy\Api\Core\Attributes\Actions;
 
-use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Attributes\Models\Attribute;
+use GetCandy\Api\Core\Attributes\Resources\AttributeResource;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use GetCandy\Api\Core\Attributes\Resources\AttributeResource;
 
 class FetchAttribute extends AbstractAction
 {

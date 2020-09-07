@@ -2,10 +2,9 @@
 
 namespace Tests\Feature\Actions\Attributes;
 
-use Tests\Feature\FeatureCase;
-use GetCandy\Api\Core\Channels\Models\Channel;
 use GetCandy\Api\Core\Attributes\Models\Attribute;
 use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
+use Tests\Feature\FeatureCase;
 
 /**
  * @group attributes

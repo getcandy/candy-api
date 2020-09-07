@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
+use Illuminate\Support\Str;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +17,7 @@ use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
 
 $factory->define(AttributeGroup::class, function (Faker $faker) {
     $name = $faker->unique()->company;
+
     return [
         'name' => $name,
         'handle' => Str::slug($name),

@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 use GetCandy\Api\Core\Attributes\Models\Attribute;
+use Illuminate\Support\Str;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,9 +17,10 @@ use GetCandy\Api\Core\Attributes\Models\Attribute;
 
 $factory->define(Attribute::class, function (Faker $faker) {
     $name = $faker->unique()->company;
+
     return [
         'name' => [
-            'en' => $name
+            'en' => $name,
         ],
         'handle' => Str::slug($name),
         'position' => $faker->numberBetween(1, 10),
