@@ -1,0 +1,69 @@
+parameters:
+  - schema:
+      type: string
+    name: customerId
+    in: path
+    required: true
+get:
+  summary: Get the customer resource
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/CustomerResponse.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/Error.yaml'
+  operationId: get-customers-customerId
+  description: ''
+  parameters:
+    - schema:
+        type: string
+      in: query
+      name: include
+  tags:
+    - Customers
+put:
+  summary: Update the customer resource
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/CustomerResponse.yaml'
+    '422':
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/Unprocessable.yaml'
+  operationId: put-customers-customerId
+  requestBody:
+    content:
+      multipart/form-data:
+        schema:
+          $ref: '../requests/UpdateCustomerBody.yaml'
+    description: ''
+  tags:
+    - Customers
+delete:
+  summary: Delete the customer resource
+  responses:
+    '204':
+      description: No Content
+    '422':
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/Unprocessable.yaml'
+  operationId: delete-customers-customerId
+  tags:
+    - Customers
+  description: ''

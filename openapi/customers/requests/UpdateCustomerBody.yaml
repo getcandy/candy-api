@@ -1,0 +1,30 @@
+title: UpdateCustomerBody
+type: object
+properties:
+  firstname:
+    type: string
+    example: Joe
+    nullable: true
+  lastname:
+    type: string
+    example: Bloggs
+    nullable: true
+  contact_number:
+    type: number
+    example: 123456789
+    nullable: true
+  alt_contact_number:
+    type: number
+    example: 45553211244
+    nullable: true
+  company_name:
+    type: string
+    example: ACME Enterprise
+    nullable: true
+  vat_no:
+    type: string
+    example: GB12312
+    nullable: true
+  fields:
+    type: object
+    nullable: true

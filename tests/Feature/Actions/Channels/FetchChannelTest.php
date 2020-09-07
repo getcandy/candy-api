@@ -21,11 +21,6 @@ class FetchChannelTest extends FeatureCase
         $this->assertResponseValid($response, '/channels/{channelId}', 'get');
     }
 
-    /**
-     * @group foo
-     *
-     * @return  [type]  [return description]
-     */
     public function test_can_handle_not_found()
     {
         $user = $this->admin();
