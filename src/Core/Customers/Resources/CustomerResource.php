@@ -4,6 +4,7 @@ namespace GetCandy\Api\Core\Customers\Resources;
 
 use GetCandy\Api\Http\Resources\AbstractResource;
 use GetCandy\Api\Http\Resources\Users\UserCollection;
+use GetCandy\Api\Core\Customers\Resources\CustomerGroupCollection;
 
 class CustomerResource extends AbstractResource
 {
@@ -28,6 +29,7 @@ class CustomerResource extends AbstractResource
     public function includes()
     {
         return [
+            'customer_groups' => new CustomerGroupCollection($this->whenLoaded('customerGroups')),
             'users' => new UserCollection($this->whenLoaded('users')),
         ];
     }

@@ -24,11 +24,6 @@ trait HasCandy
      */
     protected $hashids = 'user';
 
-    public function groups()
-    {
-        return $this->belongsToMany(CustomerGroup::class);
-    }
-
     public function inGroup($group)
     {
         return $this->groups()->where('handle', '=', $group)->exists();

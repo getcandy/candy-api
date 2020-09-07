@@ -1,0 +1,69 @@
+parameters:
+  - schema:
+      type: string
+    name: customerGroupId
+    in: path
+    required: true
+get:
+  summary: Get a single customer group
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/CustomerGroupResponse.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/Error.yaml'
+  operationId: get-customer-group-customerGroupId
+  description: ''
+  parameters:
+    - schema:
+        type: string
+      in: query
+      name: includes
+  tags:
+    - Customer Groups
+put:
+  summary: Update the customer group resource
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/CustomerGroupResponse.yaml'
+    '422':
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/Unprocessable.yaml'
+  operationId: put-customer-groups-customerGroupId
+  requestBody:
+    content:
+      multipart/form-data:
+        schema:
+          $ref: '../requests/UpdateCustomerGroupBody.yaml'
+    description: ''
+  tags:
+    - Customer Groups
+delete:
+  summary: Delete the customer group resource
+  responses:
+    '204':
+      description: No Content
+    '422':
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/Unprocessable.yaml'
+  operationId: delete-customer-groups-customerGroupId
+  tags:
+    - Customer Groups
+  description: ''

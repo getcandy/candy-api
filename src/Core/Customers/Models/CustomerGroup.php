@@ -3,10 +3,11 @@
 namespace GetCandy\Api\Core\Customers\Models;
 
 use GetCandy\Api\Core\Auth\Models\User;
+use GetCandy\Api\Core\Scaffold\BaseModel;
+use GetCandy\Api\Core\Products\Models\Product;
+use GetCandy\Api\Core\Customers\Models\Customer;
 use GetCandy\Api\Core\Categories\Models\Category;
 use GetCandy\Api\Core\Collections\Models\Collection;
-use GetCandy\Api\Core\Products\Models\Product;
-use GetCandy\Api\Core\Scaffold\BaseModel;
 use GetCandy\Api\Core\Shipping\Models\ShippingPrice;
 
 class CustomerGroup extends BaseModel
@@ -18,12 +19,14 @@ class CustomerGroup extends BaseModel
      */
     protected $hashids = 'main';
 
+    protected $fillable = ['name', 'handle', 'default'];
+
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function users()
+    public function customers()
     {
-        return $this->hasMany(User::class);
+        return $this->belongsToMany(Customer::class);
     }
 
     /**

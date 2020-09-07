@@ -4,6 +4,7 @@ namespace GetCandy\Api\Core\Customers\Models;
 
 use GetCandy;
 use GetCandy\Api\Core\Scaffold\BaseModel;
+use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 
 class Customer extends BaseModel
 {
@@ -17,6 +18,11 @@ class Customer extends BaseModel
     public function getFieldsAttribute($val)
     {
         return json_decode($val);
+    }
+
+    public function customerGroups()
+    {
+        return $this->belongsToMany(CustomerGroup::class);
     }
 
     public function getFullNameAttribute()
