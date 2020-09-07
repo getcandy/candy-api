@@ -1,4 +1,4 @@
-title: CustomerGroup
+title: CustomerGroupCollection
 allOf:
   - type: object
     properties:
