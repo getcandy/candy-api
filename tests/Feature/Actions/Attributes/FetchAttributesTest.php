@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Actions\Attributes;
 
-use Tests\Feature\FeatureCase;
 use GetCandy\Api\Core\Attributes\Models\Attribute;
 use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
+use Tests\Feature\FeatureCase;
 
 /**
  * @group attributes
@@ -16,7 +16,7 @@ class FetchAttributesTest extends FeatureCase
         $user = $this->admin();
         $group = factory(AttributeGroup::class)->create();
 
-        for ($i=0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $group->attributes()->save(factory(Attribute::class)->make());
         }
 
@@ -31,7 +31,7 @@ class FetchAttributesTest extends FeatureCase
         $user = $this->admin();
         $group = factory(AttributeGroup::class)->create();
 
-        for ($i=0; $i < 10; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             $group->attributes()->save(factory(Attribute::class)->make());
         }
 
@@ -49,7 +49,7 @@ class FetchAttributesTest extends FeatureCase
         $user = $this->admin();
         $group = factory(AttributeGroup::class)->create();
 
-        for ($i=0; $i < 100; $i++) {
+        for ($i = 0; $i < 100; $i++) {
             $group->attributes()->save(factory(Attribute::class)->make());
         }
 
