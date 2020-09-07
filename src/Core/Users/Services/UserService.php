@@ -3,12 +3,12 @@
 namespace GetCandy\Api\Core\Users\Services;
 
 use GetCandy;
-use GetCandy\Api\Core\Scaffold\BaseService;
-use GetCandy\Api\Core\Foundation\Actions\DecodeIds;
-use GetCandy\Api\Core\Users\Contracts\UserContract;
-use GetCandy\Api\Core\Customers\Models\CustomerGroup;
-use GetCandy\Api\Core\Payments\Models\ReusablePayment;
 use GetCandy\Api\Core\Customers\Actions\FetchDefaultCustomerGroup;
+use GetCandy\Api\Core\Customers\Models\CustomerGroup;
+use GetCandy\Api\Core\Foundation\Actions\DecodeIds;
+use GetCandy\Api\Core\Payments\Models\ReusablePayment;
+use GetCandy\Api\Core\Scaffold\BaseService;
+use GetCandy\Api\Core\Users\Contracts\UserContract;
 
 class UserService extends BaseService implements UserContract
 {
@@ -119,14 +119,13 @@ class UserService extends BaseService implements UserContract
         if (! empty($data['customer_groups'])) {
             $groupData = DecodeIds::run([
                 'model' => CustomerGroup::class,
-                'encoded_ids' => $data['customer_groups']
+                'encoded_ids' => $data['customer_groups'],
             ]);
             $user->groups()->sync($groupData);
         } else {
             $default = FetchDefaultCustomerGroup::run();
             $user->groups()->attach($default);
         }
-
 
         $user->save();
 
@@ -180,7 +179,7 @@ class UserService extends BaseService implements UserContract
         if (! empty($data['customer_groups'])) {
             $groupData = DecodeIds::run([
                 'model' => CustomerGroup::class,
-                'encoded_ids' => $data['customer_groups']
+                'encoded_ids' => $data['customer_groups'],
             ]);
             $user->groups()->sync($groupData);
         } else {
