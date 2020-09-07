@@ -16,7 +16,9 @@ class FetchAttributesTest extends FeatureCase
         $user = $this->admin();
         $group = factory(AttributeGroup::class)->create();
 
-        $group->attributes()->saveMany(factory(Attribute::class)->make());
+        for ($i=0; $i < 10; $i++) {
+            $group->attributes()->save(factory(Attribute::class)->make());
+        }
 
         $response = $this->actingAs($user)->json('GET', 'attributes');
 
@@ -27,9 +29,13 @@ class FetchAttributesTest extends FeatureCase
     public function test_can_paginate_results()
     {
         $user = $this->admin();
-        factory(Attribute::class, 25)->create();
+        $group = factory(AttributeGroup::class)->create();
 
-        $response = $this->actingAs($user)->json('GET', 'channels', [
+        for ($i=0; $i < 10; $i++) {
+            $group->attributes()->save(factory(Attribute::class)->make());
+        }
+
+        $response = $this->actingAs($user)->json('GET', 'attributes', [
             'per_page' => 5,
         ]);
 
@@ -41,9 +47,13 @@ class FetchAttributesTest extends FeatureCase
     public function test_can_return_all_records()
     {
         $user = $this->admin();
-        factory(Channel::class, 250)->create();
+        $group = factory(AttributeGroup::class)->create();
 
-        $response = $this->actingAs($user)->json('GET', 'channels', [
+        for ($i=0; $i < 100; $i++) {
+            $group->attributes()->save(factory(Attribute::class)->make());
+        }
+
+        $response = $this->actingAs($user)->json('GET', 'attributes', [
             'paginate' => false,
         ]);
 

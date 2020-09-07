@@ -21,6 +21,8 @@ paths:
     $ref: './channels/paths/channels.yaml'
   '/channels/{channelId}':
     $ref: './channels/paths/channels.id.yaml'
+  /attributes:
+    $ref: './attributes/paths/attributes.yaml'
   '/attributes/{attributeId}':
     $ref: './attributes/paths/attributes.id.yaml'
 
