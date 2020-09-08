@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Core\Countries\Resources;
 
-use GetCandy\Api\Core\Countries\Resources\CountryResource;
 use GetCandy\Api\Http\Resources\AbstractResource;
 
 class StateResource extends AbstractResource

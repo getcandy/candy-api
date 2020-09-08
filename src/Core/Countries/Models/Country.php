@@ -3,7 +3,6 @@
 namespace GetCandy\Api\Core\Countries\Models;
 
 use GetCandy\Api\Core\Scaffold\BaseModel;
-use GetCandy\Api\Core\Countries\Models\State;
 
 class Country extends BaseModel
 {

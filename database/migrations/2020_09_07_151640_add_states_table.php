@@ -12,7 +12,7 @@ class AddStatesTable extends Migration
     {
         $states = json_decode(File::get(realpath(__DIR__.'/../../states.json')));
 
-        if (!Schema::hasTable('states')) {
+        if (! Schema::hasTable('states')) {
             Schema::create('states', function (Blueprint $table) {
                 $table->increments('id');
                 $table->integer('country_id')->unsigned();
@@ -21,7 +21,6 @@ class AddStatesTable extends Migration
                 $table->string('code');
             });
         }
-
 
         foreach ($states as $state) {
             DB::table('states')->insert([

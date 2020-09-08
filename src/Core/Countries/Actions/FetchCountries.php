@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Core\Countries\Actions;
 
-use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Countries\Models\Country;
 use GetCandy\Api\Core\Countries\Resources\CountryCollection;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
 
 class FetchCountries extends AbstractAction
 {
@@ -46,7 +46,7 @@ class FetchCountries extends AbstractAction
 
         $query = Country::with($includes);
 
-        if (!$this->show_disabled) {
+        if (! $this->show_disabled) {
             $query = $query->enabled();
         }
 

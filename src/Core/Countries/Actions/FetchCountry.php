@@ -26,7 +26,7 @@ class FetchCountry extends Action
     {
         return [
             'id' => 'integer|exists:countries|required_without_all:encoded_id,name',
-            'encoded_id' => 'string|hashid_is_valid:' . Country::class . '|required_without_all:id,name',
+            'encoded_id' => 'string|hashid_is_valid:'.Country::class.'|required_without_all:id,name',
             'name' => 'nullable|string|required_without_all:id,encoded_id',
         ];
     }
