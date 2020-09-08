@@ -5,6 +5,7 @@ namespace GetCandy\Api\Core\Customers\Actions;
 use GetCandy;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Customers\Models\Customer;
+use GetCandy\Api\Core\Foundation\Actions\DecodeIds;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 use GetCandy\Api\Core\Customers\Resources\CustomerResource;
 
@@ -27,9 +28,8 @@ class AttachCustomerToGroups extends AbstractAction
         $this->customer = (new FetchCustomer)
             ->actingAs($this->user())
             ->run([
-                'encoded_id' => $this->encoded_id,
+                'encoded_id' => $this->customer_id,
             ]);
-                dd(1);
         return $this->user()->can('update', $this->customer);
     }
 
@@ -42,6 +42,7 @@ class AttachCustomerToGroups extends AbstractAction
     {
         return [
             'customer_group_ids' => 'required|array',
+            'customer_id' => 'required|string|hashid_is_valid:'.Customer::class.'|required_without_all:id,handle',
         ];
     }
 
@@ -57,11 +58,7 @@ class AttachCustomerToGroups extends AbstractAction
             'encoded_ids' => $this->customer_group_ids,
         ]);
 
-        dd($realIds);
-        $userModel = GetCandy::getUserModel();
-        $realUserId = (new $userModel)->decodeId($this->user_id);
-        $user = (new $userModel)->find($realUserId);
-        $this->customer->users()->save($user);
+        $this->customer->customerGroups()->sync($realIds);
 
         return $this->customer;
     }

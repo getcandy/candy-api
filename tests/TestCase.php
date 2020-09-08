@@ -168,4 +168,13 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
 
         return $this->app->make(BasketFactory::class)->init($basket)->get();
     }
+
+    public function admin()
+    {
+        $user = User::first();
+        $user->assignRole('admin');
+
+        return $user;
+    }
+
 }
