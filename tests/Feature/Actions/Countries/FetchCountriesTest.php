@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Actions\Customers;
 
-use Tests\Feature\FeatureCase;
 use GetCandy\Api\Core\Countries\Models\Country;
 use GetCandy\Api\Installer\Runners\CountryRunner;
+use Tests\Feature\FeatureCase;
 
 /**
  * @group countries
