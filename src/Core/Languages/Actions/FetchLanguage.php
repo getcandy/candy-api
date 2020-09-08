@@ -2,11 +2,11 @@
 
 namespace GetCandy\Api\Core\Languages\Actions;
 
-use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Languages\Models\Language;
+use GetCandy\Api\Core\Languages\Resources\LanguageResource;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use GetCandy\Api\Core\Languages\Resources\LanguageResource;
 
 class FetchLanguage extends AbstractAction
 {
@@ -52,7 +52,7 @@ class FetchLanguage extends AbstractAction
     {
         return [
             'id' => 'integer|required_without:encoded_id',
-            'encoded_id' => 'string|hashid_is_valid:'.Language::class.'|required_without:id'
+            'encoded_id' => 'string|hashid_is_valid:'.Language::class.'|required_without:id',
         ];
     }
 

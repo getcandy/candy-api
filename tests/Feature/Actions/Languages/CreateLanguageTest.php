@@ -18,7 +18,7 @@ class CreateLanguageTest extends FeatureCase
             'iso' => 'gba',
             'name' => 'English',
             'default' => 1,
-            'enabled' => 1
+            'enabled' => 1,
         ]);
 
         $response->assertStatus(201);

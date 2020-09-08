@@ -2,10 +2,9 @@
 
 namespace GetCandy\Api\Core\Languages\Actions;
 
-use GetCandy;
-use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Languages\Models\Language;
 use GetCandy\Api\Core\Languages\Resources\LanguageResource;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
 
 class CreateLanguage extends AbstractAction
 {
@@ -31,7 +30,7 @@ class CreateLanguage extends AbstractAction
             'iso' => 'required|string|unique:languages,iso',
             'name' => 'required|string',
             'default' => 'boolean',
-            'enabled' => 'boolean'
+            'enabled' => 'boolean',
         ];
     }
 
@@ -43,6 +42,7 @@ class CreateLanguage extends AbstractAction
     public function handle()
     {
         $language = Language::create($this->validated());
+
         return $language->load($this->resolveEagerRelations());
     }
 
