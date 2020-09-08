@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Core\Languages\Actions;
 
-use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Languages\Models\Language;
 use GetCandy\Api\Core\Languages\Resources\LanguageCollection;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
 
 class FetchLanguages extends AbstractAction
 {
