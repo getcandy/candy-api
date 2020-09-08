@@ -3,6 +3,7 @@
 namespace GetCandy\Api\Core\Countries\Models;
 
 use GetCandy\Api\Core\Scaffold\BaseModel;
+use GetCandy\Api\Core\Countries\Models\State;
 
 class Country extends BaseModel
 {
@@ -19,12 +20,8 @@ class Country extends BaseModel
      * @var array
      */
     protected $fillable = [
-        'name',
-        'iso_a_2',
-        'iso_a_3',
-        'iso_numeric',
-        'region',
-        'sub_region',
+        'enabled',
+        'preferred',
     ];
 
     public function scopeEnabled($query)
@@ -40,5 +37,10 @@ class Country extends BaseModel
     public function scopeDisabled($query)
     {
         return $query->whereEnabled(false);
+    }
+
+    public function states()
+    {
+        return $this->hasMany(State::class);
     }
 }

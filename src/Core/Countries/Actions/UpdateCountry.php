@@ -2,10 +2,11 @@
 
 namespace GetCandy\Api\Core\Countries\Actions;
 
-use GetCandy\Api\Core\Countries\Models\Country;
+use Illuminate\Support\Arr;
 use Lorisleiva\Actions\Action;
+use GetCandy\Api\Core\Countries\Models\Country;
 
-class FetchCountryAction extends Action
+class UpdateCountry extends Action
 {
     /**
      * Determine if the user is authorized to make this action.
@@ -14,7 +15,7 @@ class FetchCountryAction extends Action
      */
     public function authorize()
     {
-        return true;
+        return $this->user()->can('manage-countries');
     }
 
     /**
@@ -27,6 +28,8 @@ class FetchCountryAction extends Action
         return [
             'id' => 'integer|exists:countries|required_without:encoded_id',
             'encoded_id' => 'string|hashid_is_valid:' . Country::class . '|required_without:id',
+            'preferred' => 'nullable|boolean',
+            'enabled' => 'nullable|boolean'
         ];
     }
 
@@ -41,6 +44,10 @@ class FetchCountryAction extends Action
             $this->id = (new Country)->decodeId($this->encoded_id);
         }
 
-        return Country::findOrFail($this->id);
+        $country = Country::findOrFail($this->id);
+
+        $country->update(Arr::except($this->validated(), ['id', 'encoded_id']));
+
+        return $country;
     }
 }

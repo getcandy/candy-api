@@ -27,6 +27,10 @@ paths:
     $ref: './customers/paths/customers.id.users.yaml'
   '/customers/{customerId}':
     $ref: './customers/paths/customers.id.yaml'
+  '/countries':
+    $ref: './countries/paths/countries.yaml'
+  '/countries/{countryId}':
+    $ref: './countries/paths/countries.id.yaml'
 
 
 ### BELOW: Paths that have not been updated

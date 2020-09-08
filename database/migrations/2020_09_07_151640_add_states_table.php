@@ -3,17 +3,33 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class AddFieldsToCountriesTable extends Migration
+class AddStatesTable extends Migration
 {
     /**
      * Run the migrations.
      */
     public function up()
     {
-        Schema::create('states', function (Blueprint $table) {
-            $table->boolean('preferred')->after('id');
-            $table->boolean('enabled')->after('id')->default(true);
-        });
+        $states = json_decode(File::get(realpath(__DIR__.'/../../states.json')));
+
+        if (!Schema::hasTable('states')) {
+            Schema::create('states', function (Blueprint $table) {
+                $table->increments('id');
+                $table->integer('country_id')->unsigned();
+                $table->foreign('country_id')->references('id')->on('countries');
+                $table->string('name');
+                $table->string('code');
+            });
+        }
+
+
+        foreach ($states as $state) {
+            DB::table('states')->insert([
+                'country_id' => $state->countryId,
+                'name' => $state->name,
+                'code' => $state->abbreviation,
+            ]);
+        }
     }
 
     /**

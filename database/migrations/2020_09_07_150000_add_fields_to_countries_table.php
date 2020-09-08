@@ -11,7 +11,7 @@ class AddFieldsToCountriesTable extends Migration
     public function up()
     {
         Schema::table('countries', function (Blueprint $table) {
-            $table->boolean('preferred')->after('id');
+            $table->boolean('preferred')->after('id')->default(false);
             $table->boolean('enabled')->after('id')->default(true);
         });
     }

@@ -13,3 +13,7 @@ properties:
     type: string
   iso_numeric:
     type: string
+  preferred:
+    type: boolean
+  enabled:
+    type: boolean
