@@ -71,7 +71,7 @@ $router->get('categories/{category}/children', 'Categories\CategoryController@ch
 /*
     * Countries
     */
-$router->get('countries', 'Countries\CountryController@index');
+$router->get('countries', '\GetCandy\Api\Core\Countries\Actions\FetchCountries');
 
 /*
     * Currencies

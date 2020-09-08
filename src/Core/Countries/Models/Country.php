@@ -26,4 +26,19 @@ class Country extends BaseModel
         'region',
         'sub_region',
     ];
+
+    public function scopeEnabled($query)
+    {
+        return $query->whereEnabled(true);
+    }
+
+    public function scopePreferred($query)
+    {
+        return $query->wherePreferred(true);
+    }
+
+    public function scopeDisabled($query)
+    {
+        return $query->whereEnabled(false);
+    }
 }
