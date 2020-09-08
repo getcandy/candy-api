@@ -128,7 +128,7 @@
         $group->get('/', '\GetCandy\Api\Core\Customers\Actions\FetchCustomers');
         $group->post('{encoded_id}/users', '\GetCandy\Api\Core\Customers\Actions\AttachUserToCustomer');
         $group->delete('{encoded_id}', '\GetCandy\Api\Core\Customers\Actions\DeleteCustomer');
-        $group->post('{encoded_id}/customer-groups', '\GetCandy\Api\Core\Customers\Actions\AttachCustomerToGroups');
+        $group->put('{encoded_id}/customer-groups', '\GetCandy\Api\Core\Customers\Actions\AttachCustomerToGroups');
     });
 
     /**

@@ -25,6 +25,8 @@ paths:
     $ref: './customers/paths/customers.yaml'
   '/customers/{customerId}/users':
     $ref: './customers/paths/customers.id.users.yaml'
+  '/customers/{customerId}/customer-groups':
+    $ref: './customers/paths/customers.id.customer-groups.yaml'
   '/customers/{customerId}':
     $ref: './customers/paths/customers.id.yaml'
   '/customer-groups':
