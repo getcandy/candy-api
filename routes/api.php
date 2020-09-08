@@ -151,11 +151,13 @@
     ]);
 
     /*
-     * Languages
-     */
-    $router->resource('languages', 'Languages\LanguageController', [
-        'except' => ['edit', 'create'],
-    ]);
+    * Languages
+    */
+    $router->group([
+        'prefix' => 'languages',
+    ], function ($group) {
+        $group->post('/', '\GetCandy\Api\Core\Languages\Actions\CreateLanguage');
+    });
 
     /*
      * Layouts

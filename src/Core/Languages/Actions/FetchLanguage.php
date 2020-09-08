@@ -1,23 +1,23 @@
 <?php
 
-namespace GetCandy\Api\Core\Customers\Actions;
+namespace GetCandy\Api\Core\Languages\Actions;
 
-use GetCandy\Api\Core\Customers\Models\Customer;
-use GetCandy\Api\Core\Customers\Resources\CustomerResource;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
+use GetCandy\Api\Core\Languages\Models\Language;
 use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use GetCandy\Api\Core\Languages\Resources\LanguageResource;
 
-class FetchCustomer extends AbstractAction
+class FetchLanguage extends AbstractAction
 {
     use ReturnsJsonResponses;
 
     /**
      * The fetched address model.
      *
-     * @var Customer
+     * @var \GetCandy\Api\Core\Languages\Models\Language
      */
-    protected $customer;
+    protected $language;
 
     /**
      * Determine if the user is authorized to make this action.
@@ -27,11 +27,11 @@ class FetchCustomer extends AbstractAction
     public function authorize()
     {
         if ($this->encoded_id && ! $this->handle) {
-            $this->id = (new Customer)->decodeId($this->encoded_id);
+            $this->id = (new Language)->decodeId($this->encoded_id);
         }
 
         try {
-            $this->customer = Customer::with($this->resolveEagerRelations())
+            $this->customer = Language::with($this->resolveEagerRelations())
                 ->withCount($this->resolveRelationCounts())
                 ->findOrFail($this->id);
         } catch (ModelNotFoundException $e) {
@@ -40,7 +40,7 @@ class FetchCustomer extends AbstractAction
             }
         }
 
-        return $this->user() && $this->user()->can('view', $this->customer);
+        return true;
     }
 
     /**
@@ -51,16 +51,15 @@ class FetchCustomer extends AbstractAction
     public function rules(): array
     {
         return [
-            'id' => 'integer|required_without_all:encoded_id,handle',
-            'encoded_id' => 'string|hashid_is_valid:'.Customer::class.'|required_without_all:id,handle',
-            'handle' => 'string|required_without_all:encoded_id,id',
+            'id' => 'integer|required_without:encoded_id',
+            'encoded_id' => 'string|hashid_is_valid:'.Language::class.'|required_without:id'
         ];
     }
 
     /**
      * Execute the action and return a result.
      *
-     * @return \GetCandy\Api\Core\Customers\Models\Customer|null
+     * @return \GetCandy\Api\Core\Languages\Models\Language|null
      */
     public function handle()
     {
@@ -70,10 +69,10 @@ class FetchCustomer extends AbstractAction
     /**
      * Returns the response from the action.
      *
-     * @param   \GetCandy\Api\Core\Customers\Models\Customer  $result
+     * @param   \GetCandy\Api\Core\Languages\Models\Language  $result
      * @param   \Illuminate\Http\Request  $request
      *
-     * @return  \GetCandy\Api\Core\Customers\Resources\CustomerResource|\Illuminate\Http\JsonResponse
+     * @return  \GetCandy\Api\Core\Languages\Resources\LanguageResource|\Illuminate\Http\JsonResponse
      */
     public function response($result, $request)
     {
@@ -81,6 +80,6 @@ class FetchCustomer extends AbstractAction
             return $this->errorNotFound();
         }
 
-        return new CustomerResource($result);
+        return new LanguageResource($result);
     }
 }
