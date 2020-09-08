@@ -2,12 +2,11 @@
 
 namespace GetCandy\Api\Core\Customers\Actions;
 
-use GetCandy;
-use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Customers\Models\Customer;
-use GetCandy\Api\Core\Foundation\Actions\DecodeIds;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 use GetCandy\Api\Core\Customers\Resources\CustomerResource;
+use GetCandy\Api\Core\Foundation\Actions\DecodeIds;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
 
 class AttachCustomerToGroups extends AbstractAction
 {
@@ -30,6 +29,7 @@ class AttachCustomerToGroups extends AbstractAction
             ->run([
                 'encoded_id' => $this->customer_id,
             ]);
+
         return $this->user()->can('update', $this->customer);
     }
 

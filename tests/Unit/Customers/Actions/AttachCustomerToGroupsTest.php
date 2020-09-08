@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Customers\Actions;
 
-use Tests\TestCase;
+use GetCandy\Api\Core\Customers\Actions\AttachCustomerToGroups;
 use GetCandy\Api\Core\Customers\Models\Customer;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
-use GetCandy\Api\Core\Customers\Actions\AttachCustomerToGroups;
+use Tests\TestCase;
 
 /**
  * @group customer-groups-new
