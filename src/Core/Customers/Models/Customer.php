@@ -19,6 +19,11 @@ class Customer extends BaseModel
         return json_decode($val);
     }
 
+    public function customerGroups()
+    {
+        return $this->belongsToMany(CustomerGroup::class);
+    }
+
     public function getFullNameAttribute()
     {
         return trim($this->title.' '.$this->firstname.' '.$this->lastname);

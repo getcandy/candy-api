@@ -28,6 +28,7 @@ class CustomerResource extends AbstractResource
     public function includes()
     {
         return [
+            'customer_groups' => new CustomerGroupCollection($this->whenLoaded('customerGroups')),
             'users' => new UserCollection($this->whenLoaded('users')),
         ];
     }
