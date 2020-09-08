@@ -4,13 +4,13 @@ namespace Tests\Unit\Customers\Actions;
 
 use GetCandy\Api\Core\Customers\Actions\AttachUserToCustomer;
 use GetCandy\Api\Core\Customers\Models\Customer;
-use Tests\Feature\FeatureCase;
+use Tests\TestCase;
 use Tests\Stubs\User;
 
 /**
- * @group customers_unit
+ * @group customer-groups
  */
-class AttachUserToCustomerTest extends FeatureCase
+class AttachUserToCustomerTest extends TestCase
 {
     public function test_can_attach_user_to_customer_record()
     {
