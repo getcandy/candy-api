@@ -4,8 +4,8 @@ namespace Tests\Unit\Customers\Actions;
 
 use GetCandy\Api\Core\Customers\Actions\AttachUserToCustomer;
 use GetCandy\Api\Core\Customers\Models\Customer;
-use Tests\TestCase;
 use Tests\Stubs\User;
+use Tests\TestCase;
 
 /**
  * @group customer-groups
