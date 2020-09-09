@@ -2,11 +2,10 @@
 
 namespace GetCandy\Api\Http\Middleware;
 
-use Locale;
 use Closure;
-use GetCandy;
 use GetCandy\Api\Core\Languages\Actions\FetchDefaultLanguage;
 use GetCandy\Api\Core\Languages\Actions\FetchEnabledLanguageByCode;
+use Locale;
 
 class SetLocaleMiddleware
 {
@@ -32,7 +31,7 @@ class SetLocaleMiddleware
                 $languages = explode(',', $locale);
             }
             $requestedLocale = FetchEnabledLanguageByCode::run([
-                'code' => $languages[0] ?? $languages
+                'code' => $languages[0] ?? $languages,
             ]);
             if (! $requestedLocale) {
                 $locale = $defaultLanguage;

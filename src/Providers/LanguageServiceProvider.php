@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use GetCandy\Api\Core\Languages\Models\Language;
 use GetCandy\Api\Core\Languages\Observers\LanguageObserver;
+use Illuminate\Support\ServiceProvider;
 
 class LanguageServiceProvider extends ServiceProvider
 {

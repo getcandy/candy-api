@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Scaffold;
 
-use Lorisleiva\Actions\Action;
 use Illuminate\Database\Eloquent\Builder;
+use Lorisleiva\Actions\Action;
 
 abstract class AbstractAction extends Action
 {
@@ -45,7 +45,7 @@ abstract class AbstractAction extends Action
     protected function compileSearchQuery(Builder $query, $parameters)
     {
         foreach ($parameters as $field => $value) {
-            if (method_exists($query->getModel(), 'scope' . ucfirst($field))) {
+            if (method_exists($query->getModel(), 'scope'.ucfirst($field))) {
                 $query->{$field}($value);
                 continue;
             }
@@ -55,6 +55,7 @@ abstract class AbstractAction extends Action
             }
             $query->where($field, '=', $value);
         }
+
         return $query;
     }
 }

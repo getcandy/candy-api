@@ -29,7 +29,7 @@ class FetchEnabledLanguageByCode extends AbstractAction
     public function rules()
     {
         return [
-            'code' => 'required|string'
+            'code' => 'required|string',
         ];
     }
 

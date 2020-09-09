@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Languages\Actions;
 
-use Tests\TestCase;
-use GetCandy\Api\Core\Languages\Models\Language;
 use GetCandy\Api\Core\Languages\Actions\FetchLanguages;
+use GetCandy\Api\Core\Languages\Models\Language;
+use Tests\TestCase;
 
 /**
  * @group languages
@@ -74,8 +74,8 @@ class FetchLangugesTest extends TestCase
         $languages = FetchLanguages::run([
             'paginate' => false,
             'search' => [
-                'lang' => ['en', 'sk']
-            ]
+                'lang' => ['en', 'sk'],
+            ],
         ]);
 
         $test = Language::whereIn('lang', ['en', 'sk'])->count();

@@ -39,9 +39,10 @@ class Language extends BaseModel
 
     public function scopeLang($query, $lang)
     {
-        if (!is_array($lang)) {
+        if (! is_array($lang)) {
             $lang = [$lang];
         }
+
         return $query->whereIn('lang', $lang);
     }
 
