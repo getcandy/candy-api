@@ -21,11 +21,11 @@ class AttributeRunner extends AbstractRunner implements InstallRunnerContract
             $seoGroupId = DB::table('attribute_groups')->whereHandle('seo')->select('id')->first()->id;
         }
 
-        if (! DB::table('attributes')->where('group_id', '=', $marketingGroupId)->count()) {
+        if (! DB::table('attributes')->where('attribute_group_id', '=', $marketingGroupId)->count()) {
             $this->addMarketingAttributes($marketingGroupId);
         }
 
-        if (! DB::table('attributes')->where('group_id', '=', $seoGroupId)->count()) {
+        if (! DB::table('attributes')->where('attribute_group_id', '=', $seoGroupId)->count()) {
             $this->addSeoAttributes($seoGroupId);
         }
     }
@@ -101,7 +101,7 @@ class AttributeRunner extends AbstractRunner implements InstallRunnerContract
                 'name' => json_encode(['en' => 'Name']),
                 'handle' => 'name',
                 'position' => 1,
-                'group_id' => $groupId,
+                'attribute_group_id' => $groupId,
                 'required' => true,
                 'scopeable' => 1,
                 'searchable' => 1,
@@ -113,7 +113,7 @@ class AttributeRunner extends AbstractRunner implements InstallRunnerContract
                 'name' => json_encode(['en' => 'Short Description']),
                 'handle' => 'short_description',
                 'position' => 2,
-                'group_id' => $groupId,
+                'attribute_group_id' => $groupId,
                 'required' => false,
                 'scopeable' => 1,
                 'searchable' => 1,
@@ -125,7 +125,7 @@ class AttributeRunner extends AbstractRunner implements InstallRunnerContract
                 'name' => json_encode(['en' => 'Description']),
                 'handle' => 'description',
                 'position' => 3,
-                'group_id' => $groupId,
+                'attribute_group_id' => $groupId,
                 'required' => false,
                 'scopeable' => 1,
                 'searchable' => 1,
@@ -149,7 +149,7 @@ class AttributeRunner extends AbstractRunner implements InstallRunnerContract
                 'name' => json_encode(['en' => 'Page Title']),
                 'handle' => 'page_title',
                 'position' => 1,
-                'group_id' => $groupId,
+                'attribute_group_id' => $groupId,
                 'required' => true,
                 'scopeable' => 1,
                 'searchable' => 1,
@@ -161,7 +161,7 @@ class AttributeRunner extends AbstractRunner implements InstallRunnerContract
                 'name' => json_encode(['en' => 'Meta description']),
                 'handle' => 'meta_description',
                 'position' => 2,
-                'group_id' => $groupId,
+                'attribute_group_id' => $groupId,
                 'required' => false,
                 'scopeable' => 1,
                 'searchable' => 1,
@@ -173,7 +173,7 @@ class AttributeRunner extends AbstractRunner implements InstallRunnerContract
                 'name' => json_encode(['en' => 'Meta Keywords']),
                 'handle' => 'meta_keywords',
                 'position' => 3,
-                'group_id' => $groupId,
+                'attribute_group_id' => $groupId,
                 'required' => false,
                 'scopeable' => 1,
                 'searchable' => 1,

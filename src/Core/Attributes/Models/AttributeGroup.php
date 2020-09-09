@@ -23,6 +23,7 @@ class AttributeGroup extends BaseModel
      */
     protected $fillable = [
         'name',
+        'handle',
         'position',
     ];
 
@@ -33,6 +34,6 @@ class AttributeGroup extends BaseModel
      */
     public function attributes()
     {
-        return $this->hasMany(Attribute::class, 'group_id')->orderBy('position');
+        return $this->hasMany(Attribute::class)->orderBy('position');
     }
 }

@@ -134,7 +134,7 @@ class AttributeService extends BaseService
         $attribute->fill($data);
 
         if (! empty($data['group_id'])) {
-            $attribute->group_id = GetCandy::attributeGroups()->getDecodedId($data['group_id']);
+            $attribute->attribute_group_id = GetCandy::attributeGroups()->getDecodedId($data['group_id']);
         }
 
         $attribute->save();

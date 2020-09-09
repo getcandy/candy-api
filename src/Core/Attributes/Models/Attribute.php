@@ -22,6 +22,7 @@ class Attribute extends BaseModel
      * @var array
      */
     protected $fillable = [
+        'attribute_group_id',
         'name',
         'handle',
         'position',
@@ -33,7 +34,7 @@ class Attribute extends BaseModel
         'type',
     ];
 
-    public function group()
+    public function attributeGroup()
     {
         return $this->belongsTo(AttributeGroup::class);
     }

@@ -27,11 +27,16 @@ class AttributeValidator
 
     public function validateData($attribute, $value, $parameters, $validator)
     {
+        dd($parameters[0]);
         if (! is_array($value) || empty($parameters[0])) {
             return false;
         }
         $classname = camel_case($parameters[0]);
 
-        return GetCandy::{$classname}()->validateAttributeData($value);
+        foreach ($value as $locale => $values) {
+            if (!is_array($values)) {
+                return false;
+            }
+        }
     }
 }

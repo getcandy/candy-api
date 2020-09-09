@@ -45,6 +45,7 @@
      */
 
     $router->get('associations/groups', 'Associations\AssociationGroupController@index');
+
     /*
      * Attributes
      */
@@ -55,19 +56,25 @@
     ], function ($group) {
         $group->get('/', '\GetCandy\Api\Core\Attributes\Actions\FetchAttributes');
         $group->get('{encoded_id}', '\GetCandy\Api\Core\Attributes\Actions\FetchAttribute');
+        $group->post('/', '\GetCandy\Api\Core\Attributes\Actions\CreateAttribute');
+        $group->put('{encoded_id}', '\GetCandy\Api\Core\Attributes\Actions\UpdateAttribute');
+        $group->delete('{encoded_id}', '\GetCandy\Api\Core\Attributes\Actions\DeleteAttribute');
     });
-
-    // $router->resource('attributes', 'Attributes\AttributeController', [
-    //     'except' => ['edit', 'create'],
-    // ]);
 
     /*
      * Attribute Groups
      */
     $router->put('attribute-groups/order', 'Attributes\AttributeGroupController@reorder');
-    $router->resource('attribute-groups', 'Attributes\AttributeGroupController', [
-        'except' => ['edit', 'create'],
-    ]);
+
+    $router->group([
+        'prefix' => 'attribute-groups',
+    ], function ($group) {
+        $group->get('/', '\GetCandy\Api\Core\Attributes\Actions\FetchAttributeGroups');
+        $group->get('{encoded_id}', '\GetCandy\Api\Core\Attributes\Actions\FetchAttributeGroup');
+        $group->post('/', '\GetCandy\Api\Core\Attributes\Actions\CreateAttributeGroup');
+        $group->put('{encoded_id}', '\GetCandy\Api\Core\Attributes\Actions\UpdateAttributeGroup');
+        $group->delete('{encoded_id}', '\GetCandy\Api\Core\Attributes\Actions\DeleteAttributeGroup');
+    });
 
     /*
      * Baskets

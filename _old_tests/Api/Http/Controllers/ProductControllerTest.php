@@ -384,7 +384,7 @@ class ProductControllerTest extends TestCase
         $attribute->name = ['en' => 'Foo bar', 'sv' => 'Fee ber'];
         $attribute->handle = 'foo-bar';
         $attribute->position = 1;
-        $attribute->group_id = \GetCandy\Api\Attributes\Models\AttributeGroup::first()->id;
+        $attribute->attribute_group_id = \GetCandy\Api\Attributes\Models\AttributeGroup::first()->id;
         $attribute->required = true;
         $attribute->save();
 

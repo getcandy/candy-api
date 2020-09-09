@@ -1,0 +1,85 @@
+parameters:
+  - schema:
+      type: string
+    name: attributeGroupId
+    in: path
+    required: true
+get:
+  summary: Get an attribute group
+  tags:
+    - Attribute Groups
+  responses:
+    '200':
+      description: OK
+      headers: {}
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/AttributeGroupResponse.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/Error.yaml'
+  operationId: get-attribute-groups-attributeId
+  parameters:
+    - schema:
+        type: string
+      in: query
+      name: include
+      description: ''
+  description: Returns an attribute group from a given ID.
+put:
+  summary: Update an attribute group
+  operationId: put-attribute-groups-attributeGroupId
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/AttributeGroupResponse.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/Error.yaml'
+    '422':
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/Unprocessable.yaml'
+  description: Updates an attribute group from a given ID.
+  parameters: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../requests/UpdateAttributeGroupBody.yaml'
+  tags:
+    - Attribute Groups
+delete:
+  summary: Delete an attribute group
+  operationId: delete-attribute-groups-attributeGroupId
+  responses:
+    '204':
+      description: No Content
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/Error.yaml'
+          examples:
+            not-found-example:
+              value:
+                error:
+                  http_code: 404
+                  message: Resource not found
+  tags:
+    - Attribute Groups
+  description: Delete an attribute group.
+  parameters: []

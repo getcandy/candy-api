@@ -25,6 +25,10 @@ paths:
     $ref: './attributes/paths/attributes.yaml'
   '/attributes/{attributeId}':
     $ref: './attributes/paths/attributes.id.yaml'
+  /attribute-groups:
+    $ref: './attribute-groups/paths/attribute-groups.yaml'
+  '/attribute-groups/{attributeGroupId}':
+    $ref: './attribute-groups/paths/attribute-groups.id.yaml'
   /customers:
     $ref: './customers/paths/customers.yaml'
   '/customers/{customerId}/users':
@@ -493,83 +497,6 @@ paths:
                         links: []
       operationId: get-associations-groups
       description: Returns a paginated response of association groups available in the system
-  /attribute-groups:
-    get:
-      summary: Paginated list of Attribute Groups
-      tags:
-        - Attributes
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AttributeGroupCollection'
-              examples:
-                without-pagination-example:
-                  value:
-                    data:
-                      - id: vokq5kmj
-                        name:
-                          en: General
-                        handle: general
-                        position: '1'
-                      - id: mqkj8wyj
-                        name:
-                          en: Meta Information
-                          sv: SEO
-                        handle: seo
-                        position: '2'
-                      - id: 96e7nk8r
-                        name:
-                          en: Default
-                        handle: default
-                        position: '4'
-      operationId: get-attribute-groups
-      parameters:
-        - schema:
-            type: boolean
-            default: false
-          in: query
-          name: all_records
-          description: Will skip pagination and return all records
-        - schema:
-            type: string
-          in: query
-          name: include
-      description: Returns a paginated list of available attribute groups
-    post:
-      summary: Create an Attribute Group
-      tags:
-        - Attributes
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AttributeGroupResponse'
-              examples:
-                created-example:
-                  value:
-                    data:
-                      id: m1wrpejy
-                      name:
-                        en: New Group
-                      handle: new-group
-                      position: '13'
-      operationId: post-attribute-groups
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/CreateAttributeGroupBody'
-            examples:
-              create-example:
-                value:
-                  name:
-                    en: New Group
-                  handle: new-group
   /attribute-groups/reorder:
     put:
       summary: Reorder attribute groups
@@ -602,85 +529,6 @@ paths:
                     vokq5kmj: 1
                     mqkj8wyj: 2
       description: Sends a request to reorder the attribute groups in the system
-  '/attribute-groups/{attributeGroupId}':
-    parameters:
-      - schema:
-          type: string
-        name: attributeGroupId
-        in: path
-        required: true
-    put:
-      summary: Update an attribute group
-      tags:
-        - Attributes
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AttributeGroupResponse'
-      operationId: put-attribute-groups-attributeGroupId
-      description: Updates an attribute group.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AttributeGroup'
-    get:
-      summary: Get a single attribute group
-      tags:
-        - Attributes
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/AttributeGroupResponse'
-              examples:
-                full-example:
-                  value:
-                    data:
-                      id: vokq5kmj
-                      name:
-                        en: General
-                      handle: general
-                      position: '1'
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-              examples:
-                not-found-example:
-                  value:
-                    error:
-                      http_code: 404
-                      message: Resource not found
-      operationId: get-attribute-groups-attributeGroupId
-      parameters:
-        - schema:
-            type: integer
-          in: query
-          name: include
-      description: Gets a single attribute group
-    delete:
-      summary: Delete an attribute group
-      tags:
-        - Attributes
-      responses:
-        '204':
-          description: No Content
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-      operationId: delete-attribute-groups-attributeGroupId
-      description: Deletes an attribute group
   /baskets/resolve:
     post:
       summary: Resolve a basket

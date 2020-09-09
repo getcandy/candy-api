@@ -1,0 +1,7 @@
+title: CreateAttributeGroupBody
+type: object
+properties:
+  handle:
+    type: string
+  name:
+    type: string

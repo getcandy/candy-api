@@ -1,0 +1,42 @@
+get:
+  summary: Get Attribute Groups
+  tags:
+    - Attribute Groups
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/AttributeGroupCollection.yaml'
+  operationId: get-attribute-groups
+  parameters: []
+  description: Return a paginated response of attribute groups
+post:
+  summary: Create Attribute Group
+  tags:
+    - Attribute Groups
+  responses:
+    '201':
+      description: Created
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/AttributeGroupResponse.yaml'
+    '422':
+      description: Unprocessable Entity
+      content:
+          application/json:
+            schema:
+              $ref: '../../global/responses/Unprocessable.yaml'
+  operationId: post-attribute-groups
+  description: Create a new attribute group
+  requestBody:
+    content:
+      multipart/form-data:
+        schema:
+          $ref: '../requests/CreateAttributeGroupBody.yaml'
+        examples: {}
+    description: ''
+  parameters: []
+

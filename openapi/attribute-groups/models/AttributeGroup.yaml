@@ -1,0 +1,13 @@
+title: AttributeGroup
+type: object
+description: |-
+properties:
+  id:
+    type: string
+    example: dnj4zky5
+  name:
+    type: object
+  handle:
+    type: string
+  position:
+    type: integer
