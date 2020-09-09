@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Core\Traits;
 
-use GetCandy;
 use GetCandy\Api\Core\Attributes\Actions\FetchAttributes;
 use GetCandy\Api\Core\Attributes\Models\Attribute;
 use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
