@@ -1,0 +1,13 @@
+title: CreateCustomerGroupBody
+type: object
+properties:
+  handle:
+    type: string
+  name:
+    type: string
+  default:
+    type: boolean
+    nullable: true
+  system:
+    type: boolean
+    nullable: true

@@ -1,0 +1,30 @@
+title: Customer Groups
+description: |-
+x-examples:
+  webstore:
+    id: y3g6v91o
+    name: Retail
+    handle: retail
+    default: true
+    system: true
+properties:
+  id:
+    type: string
+    example: y3g6v91o
+  name:
+    type: string
+    example: Retail
+  handle:
+    type: string
+    example: retail
+  default:
+    type: boolean
+    default: false
+    example: true
+  system:
+    type: boolean
+    default: false
+    example: false
+x-tags:
+  - Customer Groups
+type: object

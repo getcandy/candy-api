@@ -3,6 +3,7 @@
 namespace GetCandy\Api\Core\Scopes;
 
 use GetCandy;
+use GetCandy\Api\Core\Customers\Actions\FetchDefaultCustomerGroup;
 use Illuminate\Database\Eloquent\Scope;
 
 abstract class AbstractScope implements Scope
@@ -87,7 +88,8 @@ abstract class AbstractScope implements Scope
     protected function getGroups()
     {
         $user = $this->getUser();
-        $guestGroups = [GetCandy::customerGroups()->getGuestId()];
+        $defaultGroup = FetchDefaultCustomerGroup::run();
+        $guestGroups = [$defaultGroup->id];
         if (! $user) {
             return $guestGroups;
         }

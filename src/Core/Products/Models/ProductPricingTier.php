@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Core\Products\Models;
 
-use GetCandy;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 use GetCandy\Api\Core\Pricing\PriceCalculatorInterface;
 use GetCandy\Api\Core\Scaffold\BaseModel;
@@ -93,7 +92,9 @@ class ProductPricingTier extends BaseModel
         if ($user = app('auth')->user()) {
             return $user->groups->pluck('id')->toArray();
         } else {
-            return [GetCandy::customerGroups()->getGuestId()];
+            $defaultGroup = FetchDefaultCustomerGroup::run();
+
+            return [$defaultGroup->id];
         }
     }
 }

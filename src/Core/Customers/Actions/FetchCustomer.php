@@ -26,6 +26,8 @@ class FetchCustomer extends AbstractAction
      */
     public function authorize()
     {
+        // $this->validate($this->rules());
+
         if ($this->encoded_id && ! $this->handle) {
             $this->id = (new Customer)->decodeId($this->encoded_id);
         }

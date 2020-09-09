@@ -1,0 +1,50 @@
+get:
+  summary: Get all customer groups
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/CustomerGroupCollection.yaml'
+  operationId: get-customer-groups
+  parameters:
+    - schema:
+        type: string
+      in: query
+      name: includes
+      description: Comma separated includes for the resource
+    - schema:
+        type: number
+      in: query
+      name: per_page
+      description: How many results per page
+  description: Gets a paginated list of all customer groups
+  tags:
+    - Customer Groups
+post:
+  summary: Create a new customer group
+  description: Create a new customer group
+  responses:
+    '201':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/CustomerGroupResponse.yaml'
+    '422':
+      description: Unprocessable Entity
+      content:
+          application/json:
+            schema:
+              $ref: '../../global/responses/Unprocessable.yaml'
+  operationId: post-customer-groups
+  requestBody:
+    content:
+      multipart/form-data:
+        schema:
+          $ref: '../requests/CreateCustomerGroupBody.yaml'
+        examples: {}
+    description: ''
+  tags:
+    - Customer Groups
