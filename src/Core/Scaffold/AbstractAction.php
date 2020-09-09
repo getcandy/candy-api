@@ -47,11 +47,13 @@ abstract class AbstractAction extends Action
         foreach ($parameters as $field => $value) {
             if (method_exists($query->getModel(), 'scope' . ucfirst($field))) {
                 $query->{$field}($value);
-            } else if (is_array($value)) {
-                $query->whereIn($field, $value);
-            } else {
-                $query->where($field, '=', $value);
+                continue;
             }
+            if (is_array($value)) {
+                $query->whereIn($field, $value);
+                continue;
+            }
+            $query->where($field, '=', $value);
         }
         return $query;
     }
