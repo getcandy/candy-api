@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 use GetCandy\Api\Core\Languages\Models\Language;
+use Illuminate\Support\Str;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +23,6 @@ $factory->define(Language::class, function (Faker $faker) {
         'lang' => ucfirst($name),
         'iso' => Str::slug($name),
         'default' => $faker->boolean,
-        'enabled' => $faker->boolean
+        'enabled' => $faker->boolean,
     ];
 });

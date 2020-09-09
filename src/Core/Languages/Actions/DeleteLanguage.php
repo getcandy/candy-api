@@ -4,7 +4,6 @@ namespace GetCandy\Api\Core\Languages\Actions;
 
 use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
-use GetCandy\Api\Core\Languages\Actions\FetchLanguage;
 
 class DeleteLanguage extends AbstractAction
 {
@@ -19,7 +18,6 @@ class DeleteLanguage extends AbstractAction
     {
         return $this->user()->can('manage-languages');
     }
-
 
     /**
      * Get the validation rules that apply to the action.
@@ -46,7 +44,7 @@ class DeleteLanguage extends AbstractAction
     /**
      * Returns the response from the action.
      *
-     * @param   boolean
+     * @param   bool
      * @param   \Illuminate\Http\Request  $request
      *
      * @return  \Illuminate\Http\JsonResponse

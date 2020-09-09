@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Actions\Languages;
 
-use Tests\Feature\FeatureCase;
 use GetCandy\Api\Core\Languages\Models\Language;
+use Tests\Feature\FeatureCase;
 
 /**
  * @group languages
