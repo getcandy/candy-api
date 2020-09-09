@@ -10,7 +10,7 @@ class AddStatesTable extends Migration
      */
     public function up()
     {
-        $states = json_decode(File::get(realpath(__DIR__.'/../../states.json')));
+        $states = json_decode(File::get(__DIR__.'/../../states.json'));
 
         if (! Schema::hasTable('states')) {
             Schema::create('states', function (Blueprint $table) {
