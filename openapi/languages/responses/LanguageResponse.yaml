@@ -1,0 +1,6 @@
+title: LanguageResponse
+type: object
+properties:
+  data:
+    $ref: '../models/Language.yaml'
+    

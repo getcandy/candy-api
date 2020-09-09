@@ -1,6 +1,6 @@
 <?php
 
-namespace GetCandy\Api\Http\Resources\Languages;
+namespace GetCandy\Api\Core\Languages\Resources;
 
 use GetCandy\Api\Http\Resources\AbstractCollection;
 

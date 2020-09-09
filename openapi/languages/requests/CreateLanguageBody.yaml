@@ -1,0 +1,20 @@
+title: CreateLanguageBody
+type: object
+properties:
+  name:
+    type: string
+  lang:
+    type: string
+  iso:
+    type: string
+    description: Unique
+  enabled:
+    type: boolean
+  default:
+    type: boolean
+  current:
+    type: boolean
+required:
+  - name
+  - lang
+  - iso

@@ -1,0 +1,26 @@
+title: Language
+description: |-
+properties:
+  id:
+    type: string
+    example: y3g6v91o
+  iso:
+    type: string
+    example: gb
+  lang:
+    type: string
+    example: en
+  name:
+    type: string
+    example: English
+  default:
+    type: boolean
+    default: false
+    example: true
+  enabled:
+    type: boolean
+    default: false
+    example: true
+x-tags:
+  - Languages
+type: object

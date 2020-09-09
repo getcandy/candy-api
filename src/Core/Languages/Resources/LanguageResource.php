@@ -1,6 +1,6 @@
 <?php
 
-namespace GetCandy\Api\Http\Resources\Languages;
+namespace GetCandy\Api\Core\Languages\Resources;
 
 use GetCandy\Api\Http\Resources\AbstractResource;
 
@@ -9,7 +9,7 @@ class LanguageResource extends AbstractResource
     public function payload()
     {
         return [
-            'id' => $this->encodedId(),
+            'id' => $this->encoded_id,
             'name' => $this->name,
             'lang' => $this->lang,
             'iso' => $this->iso,

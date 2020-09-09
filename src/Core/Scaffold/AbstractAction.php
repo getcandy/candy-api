@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Scaffold;
 
+use Illuminate\Database\Eloquent\Builder;
 use Lorisleiva\Actions\Action;
 
 abstract class AbstractAction extends Action
@@ -39,5 +40,22 @@ abstract class AbstractAction extends Action
                 return ucfirst($str);
             }, explode('_', $inc))));
         }, $includes);
+    }
+
+    protected function compileSearchQuery(Builder $query, $parameters)
+    {
+        foreach ($parameters as $field => $value) {
+            if (method_exists($query->getModel(), 'scope'.ucfirst($field))) {
+                $query->{$field}($value);
+                continue;
+            }
+            if (is_array($value)) {
+                $query->whereIn($field, $value);
+                continue;
+            }
+            $query->where($field, '=', $value);
+        }
+
+        return $query;
     }
 }
