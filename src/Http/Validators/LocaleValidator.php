@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Http\Validators;
 
-use GetCandy;
 use GetCandy\Api\Core\Languages\Actions\FetchLanguages;
 
 class LocaleValidator
@@ -26,8 +25,8 @@ class LocaleValidator
         $languages = FetchLanguages::run([
             'paginate' => false,
             'search' => [
-                'lang' => $locales
-            ]
+                'lang' => $locales,
+            ],
         ]);
 
         return $languages->count() === count($locales);

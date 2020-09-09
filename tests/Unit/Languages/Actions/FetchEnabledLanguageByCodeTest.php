@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Languages\Actions;
 
-use Tests\TestCase;
-use GetCandy\Api\Core\Languages\Models\Language;
 use GetCandy\Api\Core\Languages\Actions\FetchEnabledLanguageByCode;
+use GetCandy\Api\Core\Languages\Models\Language;
+use Tests\TestCase;
 
 /**
  * @group languages
@@ -21,26 +21,25 @@ class FetchEnabledLanguageByCodeTest extends TestCase
         ]);
         $languageB = factory(Language::class)->create([
             'enabled' => true,
-            'iso' => 'sk'
+            'iso' => 'sk',
         ]);
         $languageC = factory(Language::class)->create([
             'enabled' => false,
-            'iso' => 'dk'
+            'iso' => 'dk',
         ]);
 
         $this->assertFalse($languageA->enabled);
         $this->assertTrue($languageB->enabled);
         $this->assertFalse($languageC->enabled);
 
-
         $language = FetchEnabledLanguageByCode::run([
-            'code' => $languageB->iso
+            'code' => $languageB->iso,
         ]);
 
         $this->assertEquals($languageB->id, $language->id);
 
         $language = FetchEnabledLanguageByCode::run([
-            'code' => $languageC->iso
+            'code' => $languageC->iso,
         ]);
 
         $this->assertNull($language);

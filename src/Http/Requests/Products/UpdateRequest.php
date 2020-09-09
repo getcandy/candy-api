@@ -3,9 +3,9 @@
 namespace GetCandy\Api\Http\Requests\Products;
 
 use GetCandy;
-use GetCandy\Api\Http\Requests\FormRequest;
 use GetCandy\Api\Core\Channels\Actions\FetchDefaultChannel;
 use GetCandy\Api\Core\Languages\Actions\FetchDefaultLanguage;
+use GetCandy\Api\Http\Requests\FormRequest;
 
 class UpdateRequest extends FormRequest
 {
