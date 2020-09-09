@@ -19,7 +19,7 @@ $factory->define(AttributeGroup::class, function (Faker $faker) {
     $name = $faker->unique()->company;
 
     return [
-        'name' => $name,
+        'name' => ['en' => $name],
         'handle' => Str::slug($name),
         'position' => $faker->numberBetween(1, 10),
     ];
