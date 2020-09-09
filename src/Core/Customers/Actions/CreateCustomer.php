@@ -37,6 +37,7 @@ class CreateCustomer extends AbstractAction
             'vat_no' => 'nullable|string',
             'company_name' => 'nullable|string',
             'fields' => 'nullable|array',
+            'customer_group_ids' => 'nullable|array',
         ];
     }
 
@@ -48,12 +49,19 @@ class CreateCustomer extends AbstractAction
     public function handle(): Customer
     {
         $customer = Customer::create(
-            Arr::except($this->validated(), ['user_id', 'country_id'])
+            Arr::except($this->validated(), ['user_id', 'country_id', 'customer_group_ids'])
         );
         if ($this->user_id) {
             AttachUserToCustomer::run([
                 'encoded_id' => $customer->encoded_id,
                 'user_id' => $this->user_id,
+            ]);
+        }
+
+        if ($this->customer_group_ids) {
+            AttachCustomerToGroups::run([
+                'customer_id' => $customer->encoded_id,
+                'customer_group_ids' => $this->customer_group_ids,
             ]);
         }
 

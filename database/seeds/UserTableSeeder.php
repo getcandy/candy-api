@@ -3,6 +3,7 @@
 namespace Seeds;
 
 use GetCandy\Api\Core\Addresses\Models\Address;
+use GetCandy\Api\Core\Customers\Models\Customer;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 use GetCandy\Api\Core\Users\Models\UserDetail;
 use Illuminate\Database\Seeder;
@@ -43,10 +44,14 @@ class UserTableSeeder extends Seeder
             'password' => $customerData['password'],
         ]);
 
-        $user->customer()->create([
+        $customer = Customer::create([
             'title' => $user['title'],
             'firstname' => $user['firstname'],
             'lastname' => $user['lastname'],
+        ]);
+
+        $user->update([
+            'customer_id' => $customer->id,
         ]);
 
         $shippingAddress = $this->addressData($user, $customerData);
@@ -59,7 +64,7 @@ class UserTableSeeder extends Seeder
 
         $group = CustomerGroup::find(2);
 
-        $user->groups()->attach($group->id);
+        $user->refresh()->customer->customerGroups()->attach($group->id);
         $user->language()->associate($language);
 
         $user->save();

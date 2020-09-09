@@ -26,7 +26,6 @@ class GetCandyTest extends TestCase
             'categories',
             'collections',
             'currencies',
-            'customerGroups',
             'languages',
             'orders',
             'pages',

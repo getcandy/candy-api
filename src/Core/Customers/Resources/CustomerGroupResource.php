@@ -1,6 +1,6 @@
 <?php
 
-namespace GetCandy\Api\Http\Resources\Customers;
+namespace GetCandy\Api\Core\Customers\Resources;
 
 use GetCandy\Api\Http\Resources\AbstractResource;
 
@@ -14,6 +14,13 @@ class CustomerGroupResource extends AbstractResource
             'handle' => $this->handle,
             'visible' => $this->pivot->visible ?? false,
             'purchasable' => $this->pivot->purchasable ?? false,
+        ];
+    }
+
+    public function includes()
+    {
+        return [
+            'customers' => new CustomerCollection($this->whenLoaded('customers')),
         ];
     }
 }

@@ -4,6 +4,8 @@ namespace GetCandy\Api\Http\Middleware;
 
 use Closure;
 use GetCandy;
+use GetCandy\Api\Core\Customers\Actions\FetchCustomerGroups;
+use GetCandy\Api\Core\Customers\Actions\FetchDefaultCustomerGroup;
 
 class SetCustomerGroups
 {
@@ -19,12 +21,14 @@ class SetCustomerGroups
         if (($user = $request->user()) && ! count(GetCandy::getGroups())) {
             // Are we an admin?
             if ($user->hasRole('admin')) {
-                $groups = GetCandy::customerGroups()->all();
+                $groups = FetchCustomerGroups::run([
+                    'paginate' => false,
+                ]);
+            } elseif ($request->user()->customer) {
+                $groups = $request->user()->customer->customerGroups;
             } else {
-                $groups = $request->user()->groups;
+                $groups = collect([FetchDefaultCustomerGroup::run()]);
             }
-        } else {
-            $groups = collect([GetCandy::customerGroups()->getGuest()]);
         }
         GetCandy::setGroups($groups);
 

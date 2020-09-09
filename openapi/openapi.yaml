@@ -25,14 +25,18 @@ paths:
     $ref: './customers/paths/customers.yaml'
   '/customers/{customerId}/users':
     $ref: './customers/paths/customers.id.users.yaml'
+  '/customers/{customerId}/customer-groups':
+    $ref: './customers/paths/customers.id.customer-groups.yaml'
   '/customers/{customerId}':
     $ref: './customers/paths/customers.id.yaml'
   '/countries':
     $ref: './countries/paths/countries.yaml'
   '/countries/{countryId}':
     $ref: './countries/paths/countries.id.yaml'
-
-
+  '/customer-groups':
+    $ref: './customer-groups/paths/customer-groups.yaml'
+  '/customer-groups/{customerGroupId}':
+    $ref: './customer-groups/paths/customer-groups.id.yaml'
 ### BELOW: Paths that have not been updated
   /orders:
     get:
@@ -1782,25 +1786,6 @@ paths:
           description: No Content
       operationId: delete-collections-collectionId
       description: Delete a Collection by its ID
-  /customers/groups:
-    get:
-      summary: Get Customer Groups
-      tags:
-        - Customers
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CustomerGroupCollection'
-      operationId: get-customers-groups
-      description: Return a paginated CustomerGroup response
-      parameters:
-        - schema:
-            type: string
-          in: query
-          name: include
   '/orders/email-preview/{status}':
     parameters:
       - schema:
@@ -6412,7 +6397,7 @@ components:
         attributes:
           $ref: '#/components/schemas/AttributeCollection'
         customer_groups:
-          $ref: '#/components/schemas/CustomerGroupCollection'
+          $ref: './customer-groups/responses/CustomerGroupCollection.yaml'
         products:
           $ref: '#/components/schemas/ProductCollection'
     AttributeGroup:
@@ -6541,28 +6526,7 @@ components:
         products:
           $ref: '#/components/schemas/ProductCollection'
         customer_groups:
-          $ref: '#/components/schemas/CustomerGroupCollection'
-    CustomerGroup:
-      title: CustomerGroup
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        handle:
-          type: string
-        visible:
-          type: string
-        purchasable:
-          type: boolean
-      x-examples:
-        full-example:
-          id: v8l4pl01
-          name: Retail
-          handle: retail
-          visible: false
-          purchasable: false
+          $ref: './customer-groups/responses/CustomerGroupCollection.yaml'
     Discount:
       title: Discount
       type: object
@@ -6803,7 +6767,7 @@ components:
             versions:
               $ref: '#/components/schemas/VersionCollection'
             customer_groups:
-              $ref: '#/components/schemas/CustomerGroupCollection'
+              $ref: './customer-groups/responses/CustomerGroupCollection.yaml'
             attributes:
               $ref: '#/components/schemas/AttributeCollection'
             layout:
@@ -7236,17 +7200,7 @@ components:
       type: object
       properties:
         data:
-          $ref: '#/components/schemas/CustomerGroup'
-    CustomerGroupCollection:
-      title: CustomerGroupCollection
-      allOf:
-        - type: object
-          properties:
-            data:
-              type: array
-              items:
-                $ref: '#/components/schemas/CustomerGroup'
-        - $ref: '#/components/schemas/PaginatedResponse'
+          $ref: './customer-groups/models/CustomerGroup.yaml'
     AddressResponse:
       title: AddressResponse
       type: object

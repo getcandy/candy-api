@@ -133,11 +133,20 @@
         $group->get('/', '\GetCandy\Api\Core\Customers\Actions\FetchCustomers');
         $group->post('{encoded_id}/users', '\GetCandy\Api\Core\Customers\Actions\AttachUserToCustomer');
         $group->delete('{encoded_id}', '\GetCandy\Api\Core\Customers\Actions\DeleteCustomer');
+        $group->put('{encoded_id}/customer-groups', '\GetCandy\Api\Core\Customers\Actions\AttachCustomerToGroups');
     });
 
-    $router->resource('customers/groups', 'Customers\CustomerGroupController', [
-        'except' => ['edit', 'create', 'show'],
-    ]);
+    /**
+     * Customer groups.
+     */
+    $router->group([
+        'prefix' => 'customer-groups',
+    ], function ($route) {
+        $route->get('/', '\GetCandy\Api\Core\Customers\Actions\FetchCustomerGroups');
+        $route->get('{encoded_id}', '\GetCandy\Api\Core\Customers\Actions\FetchCustomerGroup');
+        $route->delete('{encoded_id}', '\GetCandy\Api\Core\Customers\Actions\DeleteCustomerGroup');
+        $route->post('/', '\GetCandy\Api\Core\Customers\Actions\CreateCustomerGroup');
+    });
 
     /*
      * Discounts
