@@ -45,7 +45,10 @@ class SyncAttributeDataJob implements ShouldQueue
      */
     public function handle()
     {
-        $attributes = GetCandy::attributes()->getAttributables($this->ids, $this->type);
+        $attributes = FetchAttributables::run([
+            'encoded_ids' => $this->ids,
+            'type' => $this->type,
+        ]);
         foreach ($attributes as $attribute) {
             foreach ($attribute->attributables as $record) {
                 $model = $record->attributable;

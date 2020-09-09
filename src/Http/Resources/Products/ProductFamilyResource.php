@@ -3,7 +3,7 @@
 namespace GetCandy\Api\Http\Resources\Products;
 
 use GetCandy\Api\Http\Resources\AbstractResource;
-use GetCandy\Api\Http\Resources\Attributes\AttributeCollection;
+use GetCandy\Api\Core\Attributes\Resources\AttributeCollection;
 
 class ProductFamilyResource extends AbstractResource
 {

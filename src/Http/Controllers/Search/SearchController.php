@@ -62,7 +62,13 @@ class SearchController extends BaseController
         }
 
         // Get our filterable attributes.
-        $filterable = GetCandy::attributes()->getFilterable()->pluck('handle')->toArray();
+        $filterable = FetchAttributes::run([
+            'paginate' => false,
+            'search' => [
+                'filterable' => true
+            ]
+        ])->pluck('handle')->toArray();
+        
         $filterable[] = 'price';
 
         try {

@@ -17,8 +17,6 @@ class GetCandyTest extends TestCase
     {
         $services = [
             'assets',
-            'attributes',
-            'attributeGroups',
             'assetTransforms',
             'assetSources',
             'baskets',

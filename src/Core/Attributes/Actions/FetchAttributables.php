@@ -4,10 +4,12 @@ namespace GetCandy\Api\Core\Attributes\Actions;
 
 use GetCandy\Api\Core\Attributes\Models\Attribute;
 use GetCandy\Api\Core\Attributes\Resources\AttributeCollection;
+use GetCandy\Api\Core\Foundation\Actions\DecodeId;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
+use Illuminate\Support\Collection;
 
-class FetchAttributes extends AbstractAction
+class FetchAttributables extends AbstractAction
 {
     use ReturnsJsonResponses;
 
@@ -26,45 +28,43 @@ class FetchAttributes extends AbstractAction
      *
      * @return array
      */
-    public function rules(): array
+    public function rules()
     {
         return [
-            'per_page' => 'numeric|max:200',
-            'paginate' => 'boolean',
+            'type' => 'string|required',
+            'encoded_ids' => 'array|required',
         ];
-    }
-
-    public function afterValidator($validator)
-    {
-        $this->set('paginate', $this->paginate === null ?: $this->paginate);
     }
 
     /**
      * Execute the action and return a result.
      *
-     * @return \GetCandy\Api\Core\Channels\Models\Channel|null
+     * @return \Illuminate\Support\Collection
      */
     public function handle()
     {
-        $includes = $this->resolveEagerRelations();
+        $ids = [];
+        foreach ($this->encoded_ids as $hash) {
+            $ids[] = DecodeId::run([
+                'model' => $this->type,
+                'encoded_id' => $hash
+            ]);
+        }
+        $query = Attribute::with(['attributables', 'attributables.records']);
 
-        $query = Attribute::with($includes);
-
-        if ($this->search) {
-            $query = $this->compileSearchQuery($query, $this->search);
+        if ($this->type) {
+            $query = Attribute::with(['attributables' => function ($query) {
+                $query->where('attributable_type', '=', $this->type);
+            }, 'attributables.records']);
         }
 
-        if (! $this->paginate) {
-            return $query->select($this->select ?? '*')->get();
-        }
-
-        return $query->select($this->select ?? '*')->paginate($this->per_page ?? 50);
+        return $query->find($ids);
     }
 
     /**
      * Returns the response from the action.
      *
-     * @param   \GetCandy\Api\Core\Attributes\Models\Attribute  $result
+     * @param   \Illuminate\Support\Collection  $result
      * @param   \Illuminate\Http\Request  $request
      *
      * @return  \GetCandy\Api\Core\Attributes\Resources\AttributeCollection|\Illuminate\Http\JsonResponse

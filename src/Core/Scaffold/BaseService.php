@@ -2,11 +2,12 @@
 
 namespace GetCandy\Api\Core\Scaffold;
 
-use Carbon\Carbon;
 use GetCandy;
-use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
-use GetCandy\Api\Core\Channels\Actions\FetchChannel;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use GetCandy\Api\Core\Channels\Actions\FetchChannel;
+use GetCandy\Api\Core\Attributes\Actions\FetchAttribute;
+use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
 
 abstract class BaseService
 {
@@ -235,7 +236,9 @@ abstract class BaseService
         $model = $this->getByHashedId($id);
         $updatedData = $model->attribute_data;
         foreach ($data['attributes'] as $attribute) {
-            $ids[] = GetCandy::attributes()->getDecodedId($attribute);
+            $ids[] = FetchAttribute::run([
+                'encoded_id' => $attribute,
+            ]);
         }
         $model->attributes()->sync($ids);
 

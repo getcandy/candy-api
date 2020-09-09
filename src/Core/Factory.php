@@ -6,8 +6,6 @@ use GetCandy\Api\Core\Assets\Services\AssetService;
 use GetCandy\Api\Core\Assets\Services\AssetSourceService;
 use GetCandy\Api\Core\Assets\Services\AssetTransformService;
 use GetCandy\Api\Core\Associations\Services\AssociationGroupService;
-use GetCandy\Api\Core\Attributes\Services\AttributeGroupService;
-use GetCandy\Api\Core\Attributes\Services\AttributeService;
 use GetCandy\Api\Core\Auth\Services\RoleService;
 use GetCandy\Api\Core\Baskets\Services\BasketLineService;
 use GetCandy\Api\Core\Baskets\Services\BasketService;
@@ -55,16 +53,6 @@ class Factory
      * @var \GetCandy\Api\Core\Associations\Services\AssociationGroupService
      */
     protected $associationGroups;
-
-    /**
-     * @var \GetCandy\Api\Core\Attributes\Services\AttributeService
-     */
-    protected $attributes;
-
-    /**
-     * @var \GetCandy\Api\Core\Attributes\Services\AttributeGroupService
-     */
-    protected $attributeGroups;
 
     /**
      * @var \GetCandy\Api\Core\Baskets\Services\BasketService
@@ -215,8 +203,6 @@ class Factory
         AssetSourceService $assetSources,
         AssetTransformService $transforms,
         AssociationGroupService $associationGroups,
-        AttributeGroupService $attributeGroups,
-        AttributeService $attributes,
         BasketLineService $basketLines,
         BasketService $baskets,
         CategoryService $categories,
@@ -251,8 +237,6 @@ class Factory
         $this->assetSources = $assetSources;
         $this->assets = $assets;
         $this->associationGroups = $associationGroups;
-        $this->attributeGroups = $attributeGroups;
-        $this->attributes = $attributes;
         $this->basketLines = $basketLines;
         $this->baskets = $baskets;
         $this->categories = $categories;

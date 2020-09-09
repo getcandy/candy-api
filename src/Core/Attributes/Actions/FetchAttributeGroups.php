@@ -48,11 +48,17 @@ class FetchAttributeGroups extends AbstractAction
     {
         $includes = $this->resolveEagerRelations();
 
-        if (! $this->paginate) {
-            return AttributeGroup::with($includes)->get();
+        $query = AttributeGroup::with($includes);
+
+        if ($this->search) {
+            $query = $this->compileSearchQuery($query, $this->search);
         }
 
-        return AttributeGroup::with($includes)->paginate($this->per_page ?? 50);
+        if (! $this->paginate) {
+            return $query->get();
+        }
+
+        return $query->paginate($this->per_page ?? 50);
     }
 
     /**

@@ -4,8 +4,9 @@ namespace GetCandy\Api\Core\Traits;
 
 use GetCandy;
 use GetCandy\Api\Core\Attributes\Models\Attribute;
-use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
 use GetCandy\Api\Core\Channels\Actions\FetchChannels;
+use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
+use GetCandy\Api\Core\Attributes\Actions\FetchAttributes;
 use GetCandy\Api\Core\Channels\Actions\FetchDefaultChannel;
 use GetCandy\Api\Core\Channels\Interfaces\ChannelFactoryInterface;
 
@@ -140,7 +141,10 @@ trait HasAttributes
     {
         $mapping = $this->getDataMapping();
 
-        $attributes = GetCandy::attributes()->getHandles();
+        $attributes = FetchAttributes::run([
+            'paginate' => false,
+            'select' => ['handle', 'id'],
+        ]);
         $attributeData = [];
         $assigned = [];
         foreach ($attributes as $attribute) {
