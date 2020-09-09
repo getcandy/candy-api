@@ -3,12 +3,12 @@
 namespace GetCandy\Api\Core\Search\Providers\Elastic;
 
 use GetCandy;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
-use Illuminate\Support\Collection;
 use GetCandy\Api\Core\Attributes\Actions\FetchAttributes;
-use GetCandy\Api\Http\Resources\Categories\CategoryResource;
 use GetCandy\Api\Http\Resources\Attributes\AttributeResource;
+use GetCandy\Api\Http\Resources\Categories\CategoryResource;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 class AggregationResolver
 {
@@ -24,8 +24,8 @@ class AggregationResolver
         return FetchAttributes::run([
             'paginate' => false,
             'search' => [
-                'handle' => $handles
-            ]
+                'handle' => $handles,
+            ],
         ]);
     }
 

@@ -2,11 +2,11 @@
 
 namespace GetCandy\Api\Core\Attributes\Actions;
 
-use GetCandy\Api\Core\Scaffold\AbstractAction;
-use GetCandy\Api\Core\Foundation\Actions\DecodeId;
-use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
-use GetCandy\Api\Core\Foundation\Actions\DecodeIds;
 use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
+use GetCandy\Api\Core\Foundation\Actions\DecodeId;
+use GetCandy\Api\Core\Foundation\Actions\DecodeIds;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
+use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
 
 class ReorderAttributeGroups extends AbstractAction
 {
@@ -37,7 +37,7 @@ class ReorderAttributeGroups extends AbstractAction
     /**
      * Execute the action and return a result.
      *
-     * @return boolean
+     * @return bool
      */
     public function handle()
     {
@@ -59,14 +59,14 @@ class ReorderAttributeGroups extends AbstractAction
                         'model' => AttributeGroup::class,
                         'encoded_ids' => collect($this->ordering)->map(function ($grp) {
                             return $grp['id'];
-                        })->toArray()
-                    ])
-                ]
+                        })->toArray(),
+                    ]),
+                ],
             ]);
 
         foreach ($groups as $group) {
             $group->update([
-                'position' => $parsed[$group->id]
+                'position' => $parsed[$group->id],
             ]);
         }
 
@@ -76,7 +76,7 @@ class ReorderAttributeGroups extends AbstractAction
     /**
      * Returns the response from the action.
      *
-     * @param   boolean  $result
+     * @param   bool  $result
      * @param   \Illuminate\Http\Request  $request
      *
      * @return  \Illuminate\Http\JsonResponse

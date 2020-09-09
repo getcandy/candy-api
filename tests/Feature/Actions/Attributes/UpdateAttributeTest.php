@@ -17,7 +17,7 @@ class UpdateAttributeTest extends FeatureCase
 
         $response = $this->actingAs($user)->json('PUT', "attributes/{$attribute->encoded_id}", [
             'name' => [
-                'en' => 'Test Attribute'
+                'en' => 'Test Attribute',
             ],
             'handle' => 'test-attribute-handle',
             'type' => 'text',

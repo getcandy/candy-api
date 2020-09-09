@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Core\Attributes\Actions;
 
-use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
-use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
 use GetCandy\Api\Core\Attributes\Resources\AttributeGroupCollection;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
+use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
 
 class FetchAttributeGroups extends AbstractAction
 {

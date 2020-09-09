@@ -2,14 +2,12 @@
 
 namespace GetCandy\Api\Core\Attributes\Actions;
 
-use Illuminate\Support\Arr;
-use GetCandy\Api\Core\Scaffold\AbstractAction;
-use GetCandy\Api\Core\Attributes\Models\Attribute;
-use GetCandy\Api\Core\Foundation\Actions\DecodeId;
-use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
 use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
-use GetCandy\Api\Core\Attributes\Actions\FetchAttributeGroup;
 use GetCandy\Api\Core\Attributes\Resources\AttributeGroupResource;
+use GetCandy\Api\Core\Foundation\Actions\DecodeId;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
+use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
+use Illuminate\Support\Arr;
 
 class UpdateAttributeGroup extends AbstractAction
 {
@@ -40,7 +38,7 @@ class UpdateAttributeGroup extends AbstractAction
         return [
             'encoded_id' => 'required|hashid_is_valid:'.AttributeGroup::class,
             'name' => 'nullable|array',
-            'handle' => 'string|nullable|unique:attribute_groups,handle,' . $groupId,
+            'handle' => 'string|nullable|unique:attribute_groups,handle,'.$groupId,
         ];
     }
 
@@ -58,6 +56,7 @@ class UpdateAttributeGroup extends AbstractAction
         $data = Arr::except($this->validated(), ['encoded_id']);
 
         $group->update($data);
+
         return $group;
     }
 

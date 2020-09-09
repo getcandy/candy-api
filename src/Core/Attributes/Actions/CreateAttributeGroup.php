@@ -2,11 +2,11 @@
 
 namespace GetCandy\Api\Core\Attributes\Actions;
 
-use Illuminate\Support\Arr;
-use GetCandy\Api\Core\Scaffold\AbstractAction;
-use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
 use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
 use GetCandy\Api\Core\Attributes\Resources\AttributeGroupResource;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
+use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
+use Illuminate\Support\Arr;
 
 class CreateAttributeGroup extends AbstractAction
 {
@@ -45,7 +45,7 @@ class CreateAttributeGroup extends AbstractAction
         $group = new AttributeGroup(
             Arr::except($this->validated(), ['attribute_group_id'])
         );
-        
+
         $group->position = AttributeGroup::count() + 1;
         $group->save();
 

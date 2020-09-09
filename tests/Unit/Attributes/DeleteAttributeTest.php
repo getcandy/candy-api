@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Attributes\Actions;
 
-use Tests\TestCase;
-use GetCandy\Api\Core\Attributes\Models\Attribute;
 use GetCandy\Api\Core\Attributes\Actions\DeleteAttribute;
+use GetCandy\Api\Core\Attributes\Models\Attribute;
+use Tests\TestCase;
 
 /**
  * @group attributes
@@ -29,7 +29,7 @@ class DeleteAttributeTest extends TestCase
         $user = $this->admin();
 
         $attribute = factory(Attribute::class)->create([
-            'system' => true
+            'system' => true,
         ]);
 
         (new DeleteAttribute)->actingAs($user)->run([

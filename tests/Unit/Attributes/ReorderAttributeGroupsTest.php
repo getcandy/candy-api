@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Attributes\Actions;
 
-use Tests\TestCase;
-use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
 use GetCandy\Api\Core\Attributes\Actions\ReorderAttributeGroups;
+use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
+use Tests\TestCase;
 
 /**
  * @group attributes
@@ -29,6 +29,7 @@ class ReorderAttributeGroupsTest extends TestCase
 
         $positions = $groups->map(function ($group) {
             $pos = $group->position;
+
             return [
                 'id' => $group->encoded_id,
                 'position' => $pos + 1,
@@ -36,7 +37,7 @@ class ReorderAttributeGroupsTest extends TestCase
         });
 
         (new ReorderAttributeGroups)->actingAs($user)->run([
-            'ordering' => $positions->toArray()
+            'ordering' => $positions->toArray(),
         ]);
 
         $this->assertEquals(2, $groupOne->refresh()->position);

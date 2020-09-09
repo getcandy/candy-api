@@ -7,7 +7,6 @@ use GetCandy\Api\Core\Attributes\Resources\AttributeCollection;
 use GetCandy\Api\Core\Foundation\Actions\DecodeId;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
-use Illuminate\Support\Collection;
 
 class FetchAttributables extends AbstractAction
 {
@@ -47,7 +46,7 @@ class FetchAttributables extends AbstractAction
         foreach ($this->encoded_ids as $hash) {
             $ids[] = DecodeId::run([
                 'model' => $this->type,
-                'encoded_id' => $hash
+                'encoded_id' => $hash,
             ]);
         }
         $query = Attribute::with(['attributables', 'attributables.records']);

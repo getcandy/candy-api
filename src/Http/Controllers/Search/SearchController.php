@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Http\Controllers\Search;
 
-use GetCandy;
 use GetCandy\Api\Core\Categories\Services\CategoryService;
 use GetCandy\Api\Core\Channels\Actions\FetchDefaultChannel;
 use GetCandy\Api\Core\Products\Services\ProductService;
@@ -65,10 +64,10 @@ class SearchController extends BaseController
         $filterable = FetchAttributes::run([
             'paginate' => false,
             'search' => [
-                'filterable' => true
-            ]
+                'filterable' => true,
+            ],
         ])->pluck('handle')->toArray();
-        
+
         $filterable[] = 'price';
 
         try {

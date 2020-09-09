@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Scaffold;
 
-use Lorisleiva\Actions\Action;
 use Illuminate\Database\Eloquent\Builder;
+use Lorisleiva\Actions\Action;
 
 abstract class AbstractAction extends Action
 {
