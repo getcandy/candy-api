@@ -2,19 +2,16 @@
 
 namespace GetCandy\Api\Core\Languages\Actions;
 
-use GetCandy\Api\Core\Customers\Models\Customer;
-use GetCandy\Api\Core\Customers\Resources\CustomerResource;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
+use GetCandy\Api\Core\Customers\Models\Customer;
+use GetCandy\Api\Core\Languages\Models\Language;
+use GetCandy\Api\Core\Foundation\Actions\DecodeId;
+use GetCandy\Api\Core\Languages\Actions\FetchLanguage;
+use GetCandy\Api\Core\Customers\Resources\CustomerResource;
+use GetCandy\Api\Core\Languages\Resources\LanguageResource;
 
 class UpdateLanguage extends AbstractAction
 {
-    /**
-     * The address object we want to update.
-     *
-     * @var \GetCandy\Api\Core\Languages\Models\Language
-     */
-    protected $language;
-
     /**
      * Determine if the user is authorized to make this action.
      *
@@ -22,9 +19,7 @@ class UpdateLanguage extends AbstractAction
      */
     public function authorize()
     {
-        $this->language = $this->deletegateTo(FetchLanguage::class);
-
-        return $this->user()->can('update', $this->customer);
+        return $this->user()->can('manage-languages');
     }
 
     /**
@@ -34,28 +29,29 @@ class UpdateLanguage extends AbstractAction
      */
     public function rules(): array
     {
+        $languageId = DecodeId::run([
+            'encoded_id' => $this->encoded_id,
+            'model' => Language::class,
+        ]);
         return [
-            'title' => 'nullable|string',
-            'firstname' => 'nullable|string',
-            'lastname' => 'nullable|string',
-            'contact_number' => 'nullable|string',
-            'alt_contact_number' => 'nullable|string',
-            'vat_no' => 'nullable|alpha_num',
-            'company_name' => 'nullable|string',
-            'fields' => 'nullable|array',
+            'lang' => 'nullable|string',
+            'iso' => 'nullable|string|unique:languages,iso,' . $languageId,
+            'name' => 'nullable|string',
+            'default' => 'boolean',
+            'enabled' => 'boolean'
         ];
     }
 
     /**
      * Execute the action and return a result.
      *
-     * @return \GetCandy\Api\Core\Customers\Models\Customer
+     * @return \GetCandy\Api\Core\Languages\Models\Language
      */
-    public function handle(): Customer
+    public function handle()
     {
-        $this->customer->update($this->validated());
-
-        return $this->customer;
+        $language = $this->delegateTo(FetchLanguage::class);
+        $language->update($this->validated());
+        return $language;
     }
 
     /**
@@ -64,10 +60,10 @@ class UpdateLanguage extends AbstractAction
      * @param   \GetCandy\Api\Core\Customers\Models\Customer  $result
      * @param   \Illuminate\Http\Request  $request
      *
-     * @return  \GetCandy\Api\Core\Customers\Resources\CustomerResource
+     * @return  \GetCandy\Api\Core\Languages\Resources\LanguageResource
      */
-    public function response($result, $request): CustomerResource
+    public function response($result, $request)
     {
-        return new CustomerResource($result);
+        return new LanguageResource($result);
     }
 }
