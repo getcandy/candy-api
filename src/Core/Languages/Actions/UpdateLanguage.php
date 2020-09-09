@@ -2,13 +2,10 @@
 
 namespace GetCandy\Api\Core\Languages\Actions;
 
-use GetCandy\Api\Core\Scaffold\AbstractAction;
-use GetCandy\Api\Core\Customers\Models\Customer;
-use GetCandy\Api\Core\Languages\Models\Language;
 use GetCandy\Api\Core\Foundation\Actions\DecodeId;
-use GetCandy\Api\Core\Languages\Actions\FetchLanguage;
-use GetCandy\Api\Core\Customers\Resources\CustomerResource;
+use GetCandy\Api\Core\Languages\Models\Language;
 use GetCandy\Api\Core\Languages\Resources\LanguageResource;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
 
 class UpdateLanguage extends AbstractAction
 {
@@ -33,12 +30,13 @@ class UpdateLanguage extends AbstractAction
             'encoded_id' => $this->encoded_id,
             'model' => Language::class,
         ]);
+
         return [
             'lang' => 'nullable|string',
-            'iso' => 'nullable|string|unique:languages,iso,' . $languageId,
+            'iso' => 'nullable|string|unique:languages,iso,'.$languageId,
             'name' => 'nullable|string',
             'default' => 'boolean',
-            'enabled' => 'boolean'
+            'enabled' => 'boolean',
         ];
     }
 
@@ -51,6 +49,7 @@ class UpdateLanguage extends AbstractAction
     {
         $language = $this->delegateTo(FetchLanguage::class);
         $language->update($this->validated());
+
         return $language;
     }
 
