@@ -3,9 +3,9 @@
 namespace Tests\Unit\Attributes\Actions;
 
 use DB;
-use Tests\TestCase;
-use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Attributes\Actions\FetchAttributables;
+use GetCandy\Api\Core\Products\Models\Product;
+use Tests\TestCase;
 
 /**
  * @group attributes
@@ -26,11 +26,10 @@ class FetchAttributablesTest extends TestCase
                 'attribute_id' => 2,
                 'attributable_id' => 2,
                 'attributable_type' => Product::class,
-            ]
+            ],
         ]);
 
         $attributables = DB::table('attributables')->get();
-
 
         $productIds = [];
 
@@ -42,7 +41,7 @@ class FetchAttributablesTest extends TestCase
 
         $result = (new FetchAttributables)->actingAs($user)->run([
             'encoded_ids' => $ids,
-            'type' => Product::class
+            'type' => Product::class,
         ]);
 
         $this->assertCount(count($ids), $result);

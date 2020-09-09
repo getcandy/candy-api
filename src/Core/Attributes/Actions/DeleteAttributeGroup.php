@@ -2,10 +2,9 @@
 
 namespace GetCandy\Api\Core\Attributes\Actions;
 
+use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
-use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
-use GetCandy\Api\Core\Attributes\Actions\FetchAttributeGroup;
 
 class DeleteAttributeGroup extends AbstractAction
 {
@@ -42,22 +41,24 @@ class DeleteAttributeGroup extends AbstractAction
     public function handle()
     {
         $group = $this->delegateTo(FetchAttributeGroup::class);
+
         return $group->delete();
     }
 
     /**
      * Returns the response from the action.
      *
-     * @param   boolean $result
+     * @param   bool $result
      * @param   \Illuminate\Http\Request  $request
      *
      * @return  \Illuminate\Http\JsonResponse
      */
     public function response($result, $request)
     {
-        if (!$result) {
+        if (! $result) {
             return $this->errorUnprocessable('Unable to delete attribute group');
         }
+
         return $this->respondWithNoContent();
     }
 }

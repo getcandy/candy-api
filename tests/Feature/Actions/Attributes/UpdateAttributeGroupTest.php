@@ -17,7 +17,7 @@ class UpdateAttributeGroupTest extends FeatureCase
 
         $response = $this->actingAs($user)->json('PUT', "attribute-groups/{$attribute->encoded_id}", [
             'name' => [
-                'en' => 'Test Attribute'
+                'en' => 'Test Attribute',
             ],
             'handle' => 'test-attribute-handle',
         ]);

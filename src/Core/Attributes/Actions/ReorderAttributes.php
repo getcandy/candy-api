@@ -37,7 +37,7 @@ class ReorderAttributes extends AbstractAction
     /**
      * Execute the action and return a result.
      *
-     * @return boolean
+     * @return bool
      */
     public function handle()
     {
@@ -59,14 +59,14 @@ class ReorderAttributes extends AbstractAction
                         'model' => Attribute::class,
                         'encoded_ids' => collect($this->ordering)->map(function ($att) {
                             return $att['id'];
-                        })->toArray()
-                    ])
-                ]
+                        })->toArray(),
+                    ]),
+                ],
             ]);
 
         foreach ($attributes as $attribute) {
             $attribute->update([
-                'position' => $parsed[$attribute->id]
+                'position' => $parsed[$attribute->id],
             ]);
         }
 
@@ -76,7 +76,7 @@ class ReorderAttributes extends AbstractAction
     /**
      * Returns the response from the action.
      *
-     * @param   boolean  $result
+     * @param   bool  $result
      * @param   \Illuminate\Http\Request  $request
      *
      * @return  \Illuminate\Http\JsonResponse

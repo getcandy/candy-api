@@ -2,14 +2,13 @@
 
 namespace GetCandy\Api\Core\Attributes\Actions;
 
-use Illuminate\Support\Arr;
-use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Attributes\Models\Attribute;
-use GetCandy\Api\Core\Foundation\Actions\DecodeId;
-use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
 use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
-use GetCandy\Api\Core\Attributes\Actions\FetchAttribute;
 use GetCandy\Api\Core\Attributes\Resources\AttributeResource;
+use GetCandy\Api\Core\Foundation\Actions\DecodeId;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
+use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
+use Illuminate\Support\Arr;
 
 class UpdateAttribute extends AbstractAction
 {
@@ -40,7 +39,7 @@ class UpdateAttribute extends AbstractAction
         return [
             'attribute_group_id' => 'nullable|hashid_is_valid:'.AttributeGroup::class,
             'name' => 'nullable|array',
-            'handle' => 'string|nullable|unique:attributes,handle,' . $attributeId,
+            'handle' => 'string|nullable|unique:attributes,handle,'.$attributeId,
             'variant' => 'boolean',
             'searchable' => 'boolean',
             'filterable' => 'boolean',
@@ -74,6 +73,7 @@ class UpdateAttribute extends AbstractAction
             ]);
         }
         $attribute->update($data);
+
         return $attribute;
     }
 

@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Attributes\Actions;
 
-use Tests\TestCase;
+use GetCandy\Api\Core\Attributes\Actions\UpdateAttribute;
 use GetCandy\Api\Core\Attributes\Models\Attribute;
 use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
-use GetCandy\Api\Core\Attributes\Actions\UpdateAttribute;
+use Tests\TestCase;
 
 /**
  * @group attributes
@@ -23,9 +23,9 @@ class UpdateAttributeTest extends TestCase
             'attribute_group_id' => $group->encoded_id,
             'encoded_id' => $attribute->encoded_id,
             'name' => [
-                'en' => 'Foo bar'
+                'en' => 'Foo bar',
             ],
-            'handle' => 'HANDLE!'
+            'handle' => 'HANDLE!',
         ]);
 
         $this->assertEquals(['en' => 'Foo bar'], $attribute->name);

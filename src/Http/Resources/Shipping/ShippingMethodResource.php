@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Http\Resources\Shipping;
 
+use GetCandy\Api\Core\Attributes\Resources\AttributeCollection;
 use GetCandy\Api\Core\Channels\Resources\ChannelCollection;
 use GetCandy\Api\Core\Customers\Resources\CustomerGroupCollection;
 use GetCandy\Api\Http\Resources\AbstractResource;
-use GetCandy\Api\Core\Attributes\Resources\AttributeCollection;
 
 class ShippingMethodResource extends AbstractResource
 {

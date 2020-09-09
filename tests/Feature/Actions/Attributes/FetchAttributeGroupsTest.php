@@ -15,7 +15,6 @@ class FetchAttributeGroupsTest extends FeatureCase
         $user = $this->admin();
         $group = factory(AttributeGroup::class, 100)->create();
 
-
         $response = $this->actingAs($user)->json('GET', 'attribute-groups');
 
         $response->assertStatus(200);

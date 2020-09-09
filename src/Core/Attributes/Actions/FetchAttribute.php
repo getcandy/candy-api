@@ -22,6 +22,7 @@ class FetchAttribute extends AbstractAction
         if ($this->encoded_id && ! $this->handle) {
             $this->id = (new Attribute)->decodeId($this->encoded_id);
         }
+
         return true;
     }
 

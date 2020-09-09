@@ -2,11 +2,11 @@
 
 namespace GetCandy\Api\Http\Resources\Collections;
 
+use GetCandy\Api\Core\Attributes\Resources\AttributeCollection;
 use GetCandy\Api\Core\Channels\Resources\ChannelCollection;
 use GetCandy\Api\Core\Customers\Resources\CustomerGroupCollection;
 use GetCandy\Api\Http\Resources\AbstractResource;
 use GetCandy\Api\Http\Resources\Assets\AssetCollection;
-use GetCandy\Api\Core\Attributes\Resources\AttributeCollection;
 use GetCandy\Api\Http\Resources\Products\ProductCollection;
 use GetCandy\Api\Http\Resources\Routes\RouteCollection;
 use GetCandy\Api\Http\Resources\Versioning\VersionCollection;

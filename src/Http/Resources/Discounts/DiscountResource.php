@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Http\Resources\Discounts;
 
-use GetCandy\Api\Http\Resources\AbstractResource;
 use GetCandy\Api\Core\Attributes\Resources\AttributeCollection;
+use GetCandy\Api\Http\Resources\AbstractResource;
 
 class DiscountResource extends AbstractResource
 {

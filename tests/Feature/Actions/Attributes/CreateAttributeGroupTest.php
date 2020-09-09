@@ -15,9 +15,9 @@ class CreateAttributeGroupTest extends FeatureCase
         $user = $this->admin();
         $group = factory(AttributeGroup::class)->create();
 
-        $response = $this->actingAs($user)->json('POST', "attribute-groups", [
+        $response = $this->actingAs($user)->json('POST', 'attribute-groups', [
             'name' => [
-                'en' => 'Test Attribute Group'
+                'en' => 'Test Attribute Group',
             ],
             'handle' => 'test-attribute-group-handle',
         ]);
