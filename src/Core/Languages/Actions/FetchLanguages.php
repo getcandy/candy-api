@@ -30,6 +30,7 @@ class FetchLanguages extends AbstractAction
         return [
             'per_page' => 'numeric|max:200',
             'paginate' => 'boolean',
+            'search' => 'nullable|array',
         ];
     }
 
@@ -42,12 +43,17 @@ class FetchLanguages extends AbstractAction
     {
         $includes = $this->resolveEagerRelations();
 
-        if (! $this->paginate) {
-            return Language::with($includes)->get();
+        $query = Language::with($includes);
+
+        if ($this->search) {
+            $query = $this->compileSearchQuery($query, $this->search);
         }
 
-        return Language::with($includes)
-            ->withCount(
+        if (! $this->paginate) {
+            return $query->get();
+        }
+
+        return $query->withCount(
                 $this->resolveRelationCounts()
             )->paginate($this->per_page ?? 50);
     }

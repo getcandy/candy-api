@@ -3,8 +3,9 @@
 namespace GetCandy\Api\Http\Requests\Products;
 
 use GetCandy;
-use GetCandy\Api\Core\Channels\Actions\FetchDefaultChannel;
 use GetCandy\Api\Http\Requests\FormRequest;
+use GetCandy\Api\Core\Channels\Actions\FetchDefaultChannel;
+use GetCandy\Api\Core\Languages\Actions\FetchDefaultLanguage;
 
 class UpdateRequest extends FormRequest
 {
@@ -33,7 +34,7 @@ class UpdateRequest extends FormRequest
 
         $attributes = GetCandy::products()->getAttributes($this->product);
         $defaultChannel = FetchDefaultChannel::run();
-        $defaultLanguage = GetCandy::languages()->getDefaultRecord();
+        $defaultLanguage = FetchDefaultLanguage::run();
 
         foreach ($attributes as $attribute) {
             if ($attribute->required) {

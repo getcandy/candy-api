@@ -3,6 +3,7 @@
 namespace GetCandy\Api\Core\Scaffold;
 
 use Lorisleiva\Actions\Action;
+use Illuminate\Database\Eloquent\Builder;
 
 abstract class AbstractAction extends Action
 {
@@ -39,5 +40,19 @@ abstract class AbstractAction extends Action
                 return ucfirst($str);
             }, explode('_', $inc))));
         }, $includes);
+    }
+
+    protected function compileSearchQuery(Builder $query, $parameters)
+    {
+        foreach ($parameters as $field => $value) {
+            if (method_exists($query->getModel(), 'scope' . ucfirst($field))) {
+                $query->{$field}($value);
+            } else if (is_array($value)) {
+                $query->whereIn($field, $value);
+            } else {
+                $query->where($field, '=', $value);
+            }
+        }
+        return $query;
     }
 }

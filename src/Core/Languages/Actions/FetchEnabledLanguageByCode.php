@@ -6,18 +6,10 @@ use GetCandy\Api\Core\Languages\Models\Language;
 use GetCandy\Api\Core\Languages\Resources\LanguageResource;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class FetchLanguage extends AbstractAction
+class FetchEnabledLanguageByCode extends AbstractAction
 {
     use ReturnsJsonResponses;
-
-    /**
-     * The fetched address model.
-     *
-     * @var \GetCandy\Api\Core\Languages\Models\Language
-     */
-    protected $language;
 
     /**
      * Determine if the user is authorized to make this action.
@@ -26,20 +18,6 @@ class FetchLanguage extends AbstractAction
      */
     public function authorize()
     {
-        if ($this->encoded_id && ! $this->handle) {
-            $this->id = (new Language)->decodeId($this->encoded_id);
-        }
-
-        try {
-            $this->language = Language::with($this->resolveEagerRelations())
-                ->withCount($this->resolveRelationCounts())
-                ->findOrFail($this->id);
-        } catch (ModelNotFoundException $e) {
-            if (! $this->runningAs('controller')) {
-                throw $e;
-            }
-        }
-
         return true;
     }
 
@@ -48,11 +26,10 @@ class FetchLanguage extends AbstractAction
      *
      * @return array
      */
-    public function rules(): array
+    public function rules()
     {
         return [
-            'id' => 'integer|required_without:encoded_id',
-            'encoded_id' => 'string|hashid_is_valid:'.Language::class.'|required_without:id',
+            'code' => 'required|string'
         ];
     }
 
@@ -63,7 +40,7 @@ class FetchLanguage extends AbstractAction
      */
     public function handle()
     {
-        return $this->language;
+        return Language::enabled()->code($this->code)->first();
     }
 
     /**

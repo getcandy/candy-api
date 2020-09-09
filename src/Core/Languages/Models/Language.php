@@ -21,4 +21,32 @@ class Language extends BaseModel
     protected $fillable = [
         'lang', 'iso', 'name', 'default', 'enabled',
     ];
+
+    public function scopeDefault($query)
+    {
+        return $query->whereDefault(true);
+    }
+
+    public function scopeEnabled($query)
+    {
+        return $query->whereEnabled(true);
+    }
+
+    public function scopeDisabled($query)
+    {
+        return $query->whereEnabled(false);
+    }
+
+    public function scopeLang($query, $lang)
+    {
+        if (!is_array($lang)) {
+            $lang = [$lang];
+        }
+        return $query->whereIn('lang', $lang);
+    }
+
+    public function scopeCode($query, $code)
+    {
+        return $query->whereIso($code);
+    }
 }

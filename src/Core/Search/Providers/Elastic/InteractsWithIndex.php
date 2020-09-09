@@ -52,7 +52,7 @@ trait InteractsWithIndex
      */
     protected function getDefaultIndex()
     {
-        $defaultLang = GetCandy::languages()->getDefaultRecord();
+        $defaultLang = FetchDefaultLanguage::run();
 
         return $this->getBaseIndexName()."_{$defaultLang->lang}";
     }

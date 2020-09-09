@@ -4,8 +4,9 @@ namespace GetCandy\Api\Core\Traits;
 
 use GetCandy;
 use GetCandy\Api\Core\Attributes\Models\Attribute;
-use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
 use GetCandy\Api\Core\Channels\Actions\FetchChannels;
+use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
+use GetCandy\Api\Core\Languages\Actions\FetchLanguages;
 use GetCandy\Api\Core\Channels\Actions\FetchDefaultChannel;
 use GetCandy\Api\Core\Channels\Interfaces\ChannelFactoryInterface;
 
@@ -121,7 +122,9 @@ trait HasAttributes
         $structure = [];
         $languagesArray = [];
         // Get our languages
-        $languages = GetCandy::languages()->getDataList();
+        $languages = FetchLanguages::run([
+            'paginate' => false,
+        ]);
         foreach ($languages as $lang) {
             $languagesArray[$lang->lang] = null;
         }

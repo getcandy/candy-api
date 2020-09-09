@@ -2,12 +2,12 @@
 
 namespace Seeds;
 
+use Tests\Stubs\User;
+use Illuminate\Database\Seeder;
 use GetCandy\Api\Core\Addresses\Models\Address;
 use GetCandy\Api\Core\Customers\Models\Customer;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
-use GetCandy\Api\Core\Users\Models\UserDetail;
-use Illuminate\Database\Seeder;
-use Tests\Stubs\User;
+use GetCandy\Api\Core\Languages\Actions\FetchDefaultLanguage;
 
 class UserTableSeeder extends Seeder
 {
@@ -18,7 +18,7 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
-        $language = app('api')->languages()->getDefaultRecord();
+        $language = FetchDefaultLanguage::run();
 
         $admin = User::create([
             'id' => 2,
