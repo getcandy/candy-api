@@ -4,11 +4,11 @@ namespace GetCandy\Api\Core\Traits;
 
 use GetCandy;
 use GetCandy\Api\Core\Attributes\Models\Attribute;
-use GetCandy\Api\Core\Channels\Actions\FetchChannels;
 use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
-use GetCandy\Api\Core\Languages\Actions\FetchLanguages;
+use GetCandy\Api\Core\Channels\Actions\FetchChannels;
 use GetCandy\Api\Core\Channels\Actions\FetchDefaultChannel;
 use GetCandy\Api\Core\Channels\Interfaces\ChannelFactoryInterface;
+use GetCandy\Api\Core\Languages\Actions\FetchLanguages;
 
 trait HasAttributes
 {

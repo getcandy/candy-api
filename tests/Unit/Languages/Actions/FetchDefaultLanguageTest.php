@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Languages\Actions;
 
-use Tests\TestCase;
-use GetCandy\Api\Core\Languages\Models\Language;
 use GetCandy\Api\Core\Languages\Actions\FetchDefaultLanguage;
+use GetCandy\Api\Core\Languages\Models\Language;
+use Tests\TestCase;
 
 /**
  * @group languages
@@ -28,7 +28,6 @@ class FetchDefaultLanguageTest extends TestCase
         $this->assertFalse($languageA->default);
         $this->assertTrue($languageB->default);
         $this->assertFalse($languageC->default);
-
 
         $language = FetchDefaultLanguage::run();
 
