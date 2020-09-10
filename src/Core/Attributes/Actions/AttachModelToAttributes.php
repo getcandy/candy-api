@@ -4,6 +4,8 @@ namespace GetCandy\Api\Core\Attributes\Actions;
 
 use Illuminate\Http\JsonResponse;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
+use GetCandy\Api\Core\Attributes\Models\Attribute;
+use GetCandy\Api\Core\Foundation\Actions\DecodeIds;
 
 class AttachModelToAttributes extends AbstractAction
 {
