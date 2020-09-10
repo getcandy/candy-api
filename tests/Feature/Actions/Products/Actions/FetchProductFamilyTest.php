@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Actions\Products;
 
-use Tests\Feature\FeatureCase;
 use GetCandy\Api\Core\Products\Models\ProductFamily;
+use Tests\Feature\FeatureCase;
 
 /**
  * @group product-families

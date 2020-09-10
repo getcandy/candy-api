@@ -4,7 +4,6 @@ namespace GetCandy\Api\Core\Products\Actions;
 
 use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
-use GetCandy\Api\Core\Products\Actions\FetchProductFamily;
 
 class DeleteProductFamily extends AbstractAction
 {
