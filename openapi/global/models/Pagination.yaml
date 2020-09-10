@@ -9,6 +9,7 @@ properties:
   from:
     type: integer
     example: 24
+    nullable: true
   last_page:
     type: integer
     default: 15
@@ -20,5 +21,6 @@ properties:
     example: 1
   to:
     type: integer
+    nullable: true
   total:
     type: integer

@@ -34,7 +34,6 @@ class GetCandyTest extends TestCase
             'productFamilies',
             'productVariants',
             'associationGroups',
-            'routes',
             'roles',
             'savedBaskets',
             'settings',

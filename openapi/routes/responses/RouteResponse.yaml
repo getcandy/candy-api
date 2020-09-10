@@ -1,0 +1,6 @@
+title: RouteResponse
+type: object
+properties:
+  data:
+    $ref: '../models/Route.yaml'
+    

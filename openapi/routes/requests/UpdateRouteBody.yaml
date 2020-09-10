@@ -1,0 +1,19 @@
+title: CreateRouteBody
+type: object
+properties:
+  default:
+    type: boolean
+  redirect:
+    type: boolean
+  slug:
+    type: string
+  path:
+    type: string
+  locale:
+    type: string
+  description:
+    type: string
+required:
+  - name
+  - lang
+  - iso
