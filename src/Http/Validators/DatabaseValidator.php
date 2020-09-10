@@ -3,7 +3,6 @@
 namespace GetCandy\Api\Http\Validators;
 
 use DB;
-use GetCandy;
 
 class DatabaseValidator
 {
@@ -16,7 +15,7 @@ class DatabaseValidator
         } else {
             $query = $query->where($parameters[1], '=', $parameters[2]);
         }
-        
-        return !$query->exists();
+
+        return ! $query->exists();
     }
 }

@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Actions\Routes;
 
-use Tests\Feature\FeatureCase;
 use GetCandy\Api\Core\Routes\Models\Route;
+use Tests\Feature\FeatureCase;
 
 /**
  * @group routes

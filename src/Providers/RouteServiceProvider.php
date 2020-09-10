@@ -8,6 +8,5 @@ class RouteServiceProvider extends ServiceProvider
 {
     public function register()
     {
-
     }
 }

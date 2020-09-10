@@ -34,7 +34,6 @@ class CreateRouteTest extends TestCase
 
         $product = factory(Product::class)->create();
 
-
         (new CreateRoute)->actingAs($user)->run([
             'slug' => 'foo-bar',
             'element' => $product,
