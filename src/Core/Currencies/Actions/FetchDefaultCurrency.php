@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Core\Currencies\Actions;
 
-use GetCandy\Api\Core\Scaffold\AbstractAction;
-use GetCandy\Api\Core\Currencies\Models\Currency;
 use GetCandy\Api\Core\Channels\Resources\ChannelResource;
+use GetCandy\Api\Core\Currencies\Models\Currency;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
 
 class FetchDefaultCurrency extends AbstractAction
 {

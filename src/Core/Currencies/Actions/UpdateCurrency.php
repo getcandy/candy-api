@@ -2,11 +2,10 @@
 
 namespace GetCandy\Api\Core\Currencies\Actions;
 
-use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Currencies\Models\Currency;
-use GetCandy\Api\Core\Foundation\Actions\DecodeId;
-use GetCandy\Api\Core\Currencies\Actions\FetchCurrency;
 use GetCandy\Api\Core\Currencies\Resources\CurrencyResource;
+use GetCandy\Api\Core\Foundation\Actions\DecodeId;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
 
 class UpdateCurrency extends AbstractAction
 {
@@ -34,7 +33,7 @@ class UpdateCurrency extends AbstractAction
 
         return [
             'name' => 'nullable',
-            'code' => 'nullable|unique:currencies,code,' . $currencyId,
+            'code' => 'nullable|unique:currencies,code,'.$currencyId,
             'enabled' => 'nullable|boolean',
             'exchange_rate' => 'nullable|string',
             'format' => 'nullable|string',

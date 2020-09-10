@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Core\Currencies\Actions;
 
+use GetCandy\Api\Core\Exceptions\DefaultRecordRequiredException;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
-use GetCandy\Api\Core\Exceptions\DefaultRecordRequiredException;
 
 class DeleteCurrency extends AbstractAction
 {
@@ -44,6 +44,7 @@ class DeleteCurrency extends AbstractAction
             if (! $this->runningAs('controller')) {
                 throw new DefaultRecordRequiredException;
             }
+
             return false;
         }
 
@@ -63,6 +64,7 @@ class DeleteCurrency extends AbstractAction
         if (! $result) {
             return $this->errorUnprocessable('You cannot remove the default record.');
         }
+
         return $this->respondWithNoContent();
     }
 }

@@ -2,12 +2,11 @@
 
 namespace GetCandy\Api\Core\Currencies\Actions;
 
-use GetCandy\Api\Core\Scaffold\AbstractAction;
-use GetCandy\Api\Core\Languages\Models\Language;
 use GetCandy\Api\Core\Currencies\Models\Currency;
+use GetCandy\Api\Core\Currencies\Resources\CurrencyResource;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use GetCandy\Api\Core\Currencies\Resources\CurrencyResource;
 
 class FetchCurrency extends AbstractAction
 {

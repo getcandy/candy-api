@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Currencies\Observers;
 
-use GetCandy\Api\Core\Languages\Models\Language;
 use GetCandy\Api\Core\Currencies\Models\Currency;
+use GetCandy\Api\Core\Languages\Models\Language;
 
 class CurrencyObserver
 {
