@@ -14,7 +14,7 @@ class CreateProductFamilyTest extends FeatureCase
         $user = $this->admin();
 
         $response = $this->actingAs($user)->json('post', 'product-families', [
-            'name' => 'Foo bar'
+            'name' => 'Foo bar',
         ]);
 
         $response->assertStatus(201);
@@ -27,13 +27,13 @@ class CreateProductFamilyTest extends FeatureCase
         $user = $this->admin();
 
         $response = $this->actingAs($user)->json('post', 'product-families', [
-            'name' => 'Foo bar'
+            'name' => 'Foo bar',
         ]);
 
         $response->assertStatus(201);
 
         $response = $this->actingAs($user)->json('post', 'product-families', [
-            'name' => 'Foo bar'
+            'name' => 'Foo bar',
         ]);
 
         $response->assertStatus(422);

@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Core\Products\Actions;
 
-use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Products\Models\ProductFamily;
 use GetCandy\Api\Core\Products\Resources\ProductFamilyCollection;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
 
 class FetchProductFamilies extends AbstractAction
 {

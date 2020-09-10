@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Channels\Actions;
 
-use Tests\TestCase;
-use GetCandy\Api\Core\Attributes\Models\Attribute;
-use GetCandy\Api\Core\Products\Models\ProductFamily;
-use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
 use GetCandy\Api\Core\Attributes\Actions\AttachModelToAttributes;
+use GetCandy\Api\Core\Attributes\Models\Attribute;
+use GetCandy\Api\Core\Attributes\Models\AttributeGroup;
+use GetCandy\Api\Core\Products\Models\ProductFamily;
+use Tests\TestCase;
 
 /**
  * @group attributes
@@ -28,7 +28,7 @@ class AttachModelToAttributesTest extends TestCase
             'model' => $productFamily,
             'attribute_ids' => $attributeGroup->attributes->map(function ($att) {
                 return $att->encoded_id;
-            })->toArray()
+            })->toArray(),
         ]);
 
         $this->assertCount($attributeGroup->attributes->count(), $productFamily->load('attributes')->attributes);

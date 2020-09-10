@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Actions\Products;
 
-use Tests\Feature\FeatureCase;
 use GetCandy\Api\Core\Products\Models\ProductFamily;
+use Tests\Feature\FeatureCase;
 
 /**
  * @group product-families
@@ -17,12 +17,12 @@ class UpdateProductFamilyTest extends FeatureCase
         $productfamily = factory(ProductFamily::class)->create();
 
         $response = $this->actingAs($user)->json('put', "product-families/{$productfamily->encoded_id}", [
-            'name' => 'Foo bar'
+            'name' => 'Foo bar',
         ]);
 
         $data = json_decode($response->content());
 
-        $this->assertEquals('Foo bar',  $data->data->name);
+        $this->assertEquals('Foo bar', $data->data->name);
 
         $response->assertStatus(200);
 

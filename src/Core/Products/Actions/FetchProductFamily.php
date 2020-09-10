@@ -2,12 +2,11 @@
 
 namespace GetCandy\Api\Core\Products\Actions;
 
-use GetCandy\Api\Core\Scaffold\AbstractAction;
-use GetCandy\Api\Core\Languages\Models\Language;
-use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
 use GetCandy\Api\Core\Products\Models\ProductFamily;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use GetCandy\Api\Core\Products\Resources\ProductFamilyResource;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
+use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class FetchProductFamily extends AbstractAction
 {
@@ -55,6 +54,7 @@ class FetchProductFamily extends AbstractAction
             if (! $this->runningAs('controller')) {
                 throw $e;
             }
+
             return null;
         }
     }
