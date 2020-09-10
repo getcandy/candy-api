@@ -5,7 +5,6 @@ namespace GetCandy\Api\Core\Root\Actions;
 use GetCandy;
 use GetCandy\Api\Core\Channels\Actions\FetchCurrentChannel;
 use GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface;
-use GetCandy\Api\Core\Languages\Models\Language;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Http\Resources\Currencies\CurrencyResource;
 
