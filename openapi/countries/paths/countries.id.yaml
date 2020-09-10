@@ -1,0 +1,54 @@
+parameters:
+  - schema:
+      type: string
+    name: countryId
+    in: path
+    required: true
+get:
+  summary: Get the country resource
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/CountryResponse.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/Error.yaml'
+  operationId: get-countries-countryId
+  description: ''
+  parameters:
+    - schema:
+        type: string
+      in: query
+      name: include
+  tags:
+    - Countries
+put:
+  summary: Update the country resource
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/CountryResponse.yaml'
+    '422':
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/Unprocessable.yaml'
+  operationId: put-countries-countryId
+  requestBody:
+    content:
+      multipart/form-data:
+        schema:
+          $ref: '../requests/UpdateCountryBody.yaml'
+    description: ''
+  tags:
+    - Countries

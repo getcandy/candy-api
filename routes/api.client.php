@@ -69,9 +69,9 @@ $router->get('categories', 'Categories\CategoryController@index');
 $router->get('categories/{category}/children', 'Categories\CategoryController@children');
 
 /*
-    * Countries
-    */
-$router->get('countries', 'Countries\CountryController@index');
+* Countries
+*/
+$router->get('countries', '\GetCandy\Api\Core\Countries\Actions\FetchCountries');
 
 /*
 * Languages

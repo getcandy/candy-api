@@ -14,7 +14,6 @@ use GetCandy\Api\Core\Baskets\Services\BasketService;
 use GetCandy\Api\Core\Baskets\Services\SavedBasketService;
 use GetCandy\Api\Core\Categories\Services\CategoryService;
 use GetCandy\Api\Core\Collections\Services\CollectionService;
-use GetCandy\Api\Core\Countries\Services\CountryService;
 use GetCandy\Api\Core\Currencies\Services\CurrencyService;
 use GetCandy\Api\Core\Discounts\Services\DiscountService;
 use GetCandy\Api\Core\Layouts\Services\LayoutService;
@@ -84,11 +83,6 @@ class Factory
      * @var \GetCandy\Api\Core\Categories\Services\CategoryService
      */
     protected $categories;
-
-    /**
-     * @var \GetCandy\Api\Core\Countries\Services\CountryService
-     */
-    protected $countries;
 
     /**
      * @var \GetCandy\Api\Core\Currencies\Services\CurrencyService
@@ -216,7 +210,6 @@ class Factory
         CategoryService $categories,
         CollectionService $collections,
         CurrencyService $currencies,
-        CountryService $countries,
         DiscountService $discounts,
         LayoutService $layouts,
         OrderService $orders,
@@ -250,7 +243,6 @@ class Factory
         $this->baskets = $baskets;
         $this->categories = $categories;
         $this->collections = $collections;
-        $this->countries = $countries;
         $this->currencies = $currencies;
         $this->discounts = $discounts;
         $this->layouts = $layouts;

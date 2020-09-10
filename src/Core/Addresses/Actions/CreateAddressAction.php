@@ -5,7 +5,7 @@ namespace GetCandy\Api\Core\Addresses\Actions;
 use DateTime;
 use GetCandy\Api\Core\Addresses\Models\Address;
 use GetCandy\Api\Core\Addresses\Resources\AddressResource;
-use GetCandy\Api\Core\Countries\Actions\FetchCountryAction;
+use GetCandy\Api\Core\Countries\Actions\FetchCountry;
 use GetCandy\Api\Core\Countries\Models\Country;
 use GetCandy\Api\Core\Users\Actions\FetchUserAction;
 use Illuminate\Support\Arr;
@@ -77,7 +77,7 @@ class CreateAddressAction extends Action
         $address = new Address;
         $attributes = Arr::except($this->validated(), ['user_id', 'country_id']);
 
-        $country = FetchCountryAction::run([
+        $country = FetchCountry::run([
             'encoded_id' => $this->country_id,
         ]);
 

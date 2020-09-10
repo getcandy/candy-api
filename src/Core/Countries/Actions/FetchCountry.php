@@ -5,7 +5,7 @@ namespace GetCandy\Api\Core\Countries\Actions;
 use GetCandy\Api\Core\Countries\Models\Country;
 use Lorisleiva\Actions\Action;
 
-class FetchCountryAction extends Action
+class FetchCountry extends Action
 {
     /**
      * Determine if the user is authorized to make this action.
@@ -25,8 +25,9 @@ class FetchCountryAction extends Action
     public function rules()
     {
         return [
-            'id' => 'integer|exists:countries|required_without:encoded_id',
-            'encoded_id' => 'string|hashid_is_valid:countries|required_without:id',
+            'id' => 'integer|exists:countries|required_without_all:encoded_id,name',
+            'encoded_id' => 'string|hashid_is_valid:'.Country::class.'|required_without_all:id,name',
+            'name' => 'nullable|string|required_without_all:id,encoded_id',
         ];
     }
 
@@ -39,6 +40,10 @@ class FetchCountryAction extends Action
     {
         if ($this->encoded_id) {
             $this->id = (new Country)->decodeId($this->encoded_id);
+        }
+
+        if ($this->name) {
+            return Country::whereName($this->name)->first();
         }
 
         return Country::findOrFail($this->id);

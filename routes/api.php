@@ -119,6 +119,11 @@
     ]);
 
     /*
+    * Countries
+    */
+    $router->put('countries/{encoded_id}', '\GetCandy\Api\Core\Countries\Actions\UpdateCountry');
+
+    /*
      * Customers
      */
 

@@ -29,6 +29,10 @@ paths:
     $ref: './customers/paths/customers.id.customer-groups.yaml'
   '/customers/{customerId}':
     $ref: './customers/paths/customers.id.yaml'
+  '/countries':
+    $ref: './countries/paths/countries.yaml'
+  '/countries/{countryId}':
+    $ref: './countries/paths/countries.id.yaml'
   '/customer-groups':
     $ref: './customer-groups/paths/customer-groups.yaml'
   '/customer-groups/{customerGroupId}':
@@ -37,8 +41,6 @@ paths:
     $ref: './languages/paths/languages.yaml'
   '/languages/{languageId}':
     $ref: './languages/paths/languages.id.yaml'
-
-
 ### BELOW: Paths that have not been updated
   /orders:
     get:
