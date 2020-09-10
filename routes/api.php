@@ -123,6 +123,14 @@
     */
     $router->put('countries/{encoded_id}', '\GetCandy\Api\Core\Countries\Actions\UpdateCountry');
 
+    $router->group([
+        'prefix' => 'currencies',
+    ], function ($group) {
+        $group->post('/', '\GetCandy\Api\Core\Currencies\Actions\CreateCurrency');
+        $group->put('{encoded_id}', '\GetCandy\Api\Core\Currencies\Actions\UpdateCurrency');
+        $group->delete('{encoded_id}', '\GetCandy\Api\Core\Currencies\Actions\DeleteCurrency');
+    });
+
     /*
      * Customers
      */

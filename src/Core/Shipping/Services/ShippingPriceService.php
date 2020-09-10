@@ -6,6 +6,7 @@ use GetCandy;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Shipping\Models\ShippingPrice;
 use GetCandy\Api\Core\Shipping\Models\ShippingRegion;
+use GetCandy\Api\Core\Currencies\Actions\FetchCurrency;
 
 class ShippingPriceService extends BaseService
 {
@@ -24,7 +25,9 @@ class ShippingPriceService extends BaseService
     public function create($shippingMethodId, array $data)
     {
         $method = GetCandy::shippingMethods()->getByHashedId($shippingMethodId);
-        $currency = GetCandy::currencies()->getByHashedId($data['currency_id']);
+        $currency = FetchCurrency::run([
+            'encoded_id' => $data['currency_id'],
+        ]);
         $zone = GetCandy::shippingZones()->getByHashedId($data['zone_id']);
         $price = new ShippingPrice;
         $price->fill($data);
@@ -51,7 +54,9 @@ class ShippingPriceService extends BaseService
     public function update($id, array $data)
     {
         $price = $this->getByHashedId($id);
-        $currency = GetCandy::currencies()->getByHashedId($data['currency_id']);
+        $currency = FetchCurrency::run([
+            'encoded_id' => $data['currency_id'],
+        ]);
 
         // event(new AttributableSavedEvent($product));
 

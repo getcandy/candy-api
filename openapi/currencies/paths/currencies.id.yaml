@@ -1,0 +1,70 @@
+parameters:
+  - schema:
+      type: string
+    name: currencyId
+    in: path
+    required: true
+get:
+  summary: Fetch Currency
+  tags:
+    - Currencies
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/CurrencyResponse.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/Error.yaml'
+  operationId: get-currencies-currencyId
+  description: Get a Currency by ID
+put:
+  summary: Update Currency
+  tags:
+    - Currencies
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/CurrencyResponse.yaml'
+    '422':
+      description: Unprocessable Entity
+      content:
+          application/json:
+            schema:
+              $ref: '../../global/responses/Unprocessable.yaml'
+  operationId: put-currencies-currencyId
+  description: "Update a Currency using it's ID"
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../models/Currency.yaml'
+delete:
+  summary: Delete Currency
+  tags:
+    - Currencies
+  responses:
+    '204':
+      description: No Content
+    '422':
+      description: Unprocessable Entity
+      content:
+          application/json:
+            schema:
+              $ref: '../../global/responses/Unprocessable.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/Error.yaml'
+  operationId: delete-currency-currencyId
+  description: Delete a Currency by its ID

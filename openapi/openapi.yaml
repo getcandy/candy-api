@@ -29,6 +29,10 @@ paths:
     $ref: './customers/paths/customers.id.customer-groups.yaml'
   '/customers/{customerId}':
     $ref: './customers/paths/customers.id.yaml'
+  /currencies:
+    $ref: './currencies/paths/currencies.yaml'
+  '/currencies/{currencyId}':
+    $ref: './currencies/paths/currencies.id.yaml'
   '/countries':
     $ref: './countries/paths/countries.yaml'
   '/countries/{countryId}':

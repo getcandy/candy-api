@@ -73,6 +73,13 @@ $router->get('categories/{category}/children', 'Categories\CategoryController@ch
 */
 $router->get('countries', '\GetCandy\Api\Core\Countries\Actions\FetchCountries');
 
+$router->group([
+    'prefix' => 'currencies',
+], function ($group) {
+    $group->get('/', '\GetCandy\Api\Core\Currencies\Actions\FetchCurrencies');
+    $group->get('{encoded_id}', '\GetCandy\Api\Core\Currencies\Actions\FetchCurrency');
+});
+
 /*
 * Languages
 */
@@ -82,13 +89,6 @@ $router->group([
     $group->get('/', '\GetCandy\Api\Core\Languages\Actions\FetchLanguages');
     $group->get('/{encoded_id}', '\GetCandy\Api\Core\Languages\Actions\FetchLanguage');
 });
-
-/*
-    * Currencies
-    */
-$router->resource('currencies', 'Currencies\CurrencyController', [
-    'except' => ['edit', 'create'],
-]);
 
 /*
     * Orders

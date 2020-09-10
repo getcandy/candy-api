@@ -1,0 +1,20 @@
+title: UpdateCurrencyRequest
+type: object
+properties:
+  name:
+    type: string
+  code:
+    type: string
+    description: Unique
+  enabled:
+    type: boolean
+  exchange_rate:
+    type: string
+  format:
+    type: string
+  decimal_point:
+    type: string
+  thousand_point:
+    type: string
+  default:
+    type: boolean

@@ -1,0 +1,26 @@
+title: CreateCurrencyRequest
+type: object
+properties:
+  name:
+    type: string
+  code:
+    type: string
+    description: Unique
+  enabled:
+    type: boolean
+  exchange_rate:
+    type: string
+  format:
+    type: string
+  decimal_point:
+    type: string
+  thousand_point:
+    type: string
+  default:
+    type: boolean
+required:
+  - name
+  - code
+  - enabled
+  - exchange_rate
+  - format

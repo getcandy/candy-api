@@ -25,7 +25,6 @@ class GetCandyTest extends TestCase
             'basketLines',
             'categories',
             'collections',
-            'currencies',
             'orders',
             'pages',
             'payment_types',

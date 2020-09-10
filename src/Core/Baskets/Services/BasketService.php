@@ -2,18 +2,19 @@
 
 namespace GetCandy\Api\Core\Baskets\Services;
 
-use Carbon\Carbon;
 use GetCandy;
+use Carbon\Carbon;
 use GetCandy\Api\Core\Auth\Models\User;
-use GetCandy\Api\Core\Baskets\Events\BasketStoredEvent;
-use GetCandy\Api\Core\Baskets\Interfaces\BasketFactoryInterface;
-use GetCandy\Api\Core\Baskets\Models\Basket;
-use GetCandy\Api\Core\Baskets\Models\SavedBasket;
 use GetCandy\Api\Core\Discounts\Factory;
-use GetCandy\Api\Core\Discounts\Models\Discount;
 use GetCandy\Api\Core\Orders\Models\Order;
-use GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface;
 use GetCandy\Api\Core\Scaffold\BaseService;
+use GetCandy\Api\Core\Baskets\Models\Basket;
+use GetCandy\Api\Core\Discounts\Models\Discount;
+use GetCandy\Api\Core\Baskets\Models\SavedBasket;
+use GetCandy\Api\Core\Baskets\Events\BasketStoredEvent;
+use GetCandy\Api\Core\Currencies\Actions\FetchDefaultCurrency;
+use GetCandy\Api\Core\Baskets\Interfaces\BasketFactoryInterface;
+use GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface;
 
 class BasketService extends BaseService
 {
@@ -66,7 +67,7 @@ class BasketService extends BaseService
         }
 
         if (! $basket->currency) {
-            $basket->currency = GetCandy::currencies()->getDefaultRecord()->code;
+            $basket->currency = FetchDefaultCurrency::run()->code;
         }
 
         $basket->save();
@@ -220,7 +221,7 @@ class BasketService extends BaseService
             $basket->currency = $data['currency'];
         }
         if (is_null($basket->currency)) {
-            $basket->currency = GetCandy::currencies()->getDefaultRecord()->code;
+            $basket->currency = FetchDefaultCurrency::run()->code;
         }
 
         return $basket;
