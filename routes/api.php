@@ -250,9 +250,15 @@
     /*
      * Product families
      */
-    $router->resource('product-families', 'Products\ProductFamilyController', [
-        'except' => ['edit', 'create'],
-    ]);
+    $router->group([
+        'prefix' => 'product-families',
+    ], function ($group) {
+        $group->get('/', '\GetCandy\Api\Core\Products\Actions\FetchProductFamilies');
+        $group->get('{encoded_id}', '\GetCandy\Api\Core\Products\Actions\FetchProductFamily');
+        $group->put('{encoded_id}', '\GetCandy\Api\Core\Products\Actions\UpdateProductFamily');
+        $group->delete('{encoded_id}', '\GetCandy\Api\Core\Products\Actions\DeleteProductFamily');
+        $group->post('/', '\GetCandy\Api\Core\Products\Actions\CreateProductFamily');
+    });
 
     /*
      * Routes

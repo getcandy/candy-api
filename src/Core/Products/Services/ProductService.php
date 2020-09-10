@@ -3,17 +3,18 @@
 namespace GetCandy\Api\Core\Products\Services;
 
 use GetCandy;
-use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
+use Illuminate\Database\Eloquent\Model;
+use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Channels\Models\Channel;
+use GetCandy\Api\Core\Products\Models\Product;
+use GetCandy\Api\Core\Scopes\CustomerGroupScope;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
+use GetCandy\Api\Core\Search\Events\IndexableSavedEvent;
+use GetCandy\Api\Core\Products\Actions\FetchProductFamily;
 use GetCandy\Api\Core\Products\Events\ProductCreatedEvent;
 use GetCandy\Api\Core\Products\Interfaces\ProductInterface;
-use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Products\Models\ProductRecommendation;
-use GetCandy\Api\Core\Scaffold\BaseService;
-use GetCandy\Api\Core\Scopes\CustomerGroupScope;
-use GetCandy\Api\Core\Search\Events\IndexableSavedEvent;
-use Illuminate\Database\Eloquent\Model;
+use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
 
 class ProductService extends BaseService
 {
@@ -106,7 +107,9 @@ class ProductService extends BaseService
         }
 
         if (! empty($data['family_id'])) {
-            $family = GetCandy::productFamilies()->getByHashedId($data['family_id']);
+            $family = FetchProductFamily::run([
+                'encoded_id' => $data['family_id'],
+            ]);
             $family->products()->save($product);
         }
 
@@ -175,7 +178,9 @@ class ProductService extends BaseService
         // $product->layout()->associate($layout);
 
         if (! empty($data['family_id'])) {
-            $family = GetCandy::productFamilies()->getByHashedId($data['family_id']);
+            $family = FetchProductFamily::run([
+                'encoded_id' => $data['family_id'],
+            ]);
             if (! $family) {
                 abort(422);
             }
