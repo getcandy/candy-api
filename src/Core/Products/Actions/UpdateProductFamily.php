@@ -2,10 +2,11 @@
 
 namespace GetCandy\Api\Core\Products\Actions;
 
+use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Foundation\Actions\DecodeId;
 use GetCandy\Api\Core\Products\Models\ProductFamily;
 use GetCandy\Api\Core\Products\Resources\ProductFamilyResource;
-use GetCandy\Api\Core\Scaffold\AbstractAction;
+use GetCandy\Api\Core\Attributes\Actions\AttachModelToAttributes;
 
 class UpdateProductFamily extends AbstractAction
 {
@@ -33,6 +34,7 @@ class UpdateProductFamily extends AbstractAction
 
         return [
             'name' => 'required|string|unique:product_families,name,'.$productFamilyId,
+            'attribute_ids' => 'array',
         ];
     }
 
@@ -45,6 +47,13 @@ class UpdateProductFamily extends AbstractAction
     {
         $productFamily = $this->delegateTo(FetchProductFamily::class);
         $productFamily->update($this->validated());
+
+        if ($this->attribute_ids) {
+            AttachModelToAttributes::run([
+                'model' => $productFamily,
+                'attribute_ids' => $this->attribute_ids,
+            ]);
+        }
 
         return $productFamily;
     }

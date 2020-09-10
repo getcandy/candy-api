@@ -5,8 +5,9 @@ namespace GetCandy\Api\Core\Products\Actions;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Products\Models\ProductFamily;
 use GetCandy\Api\Core\Products\Resources\ProductFamilyResource;
+use GetCandy\Api\Core\Attributes\Actions\AttachModelToAttributes;
 
-class CreatePRoductFamily extends AbstractAction
+class CreateProductFamily extends AbstractAction
 {
     /**
      * Determine if the user is authorized to make this action.
@@ -26,7 +27,8 @@ class CreatePRoductFamily extends AbstractAction
     public function rules()
     {
         return [
-            'name' => 'required|unique:product_families,name'
+            'name' => 'required|unique:product_families,name',
+            'attribute_ids' => 'array',
         ];
     }
 
@@ -37,7 +39,16 @@ class CreatePRoductFamily extends AbstractAction
      */
     public function handle()
     {
-        return ProductFamily::create($this->validated())->load($this->resolveEagerRelations());
+        $productFamily = ProductFamily::create($this->validated());
+
+        if ($this->attribute_ids) {
+            AttachModelToAttributes::run([
+                'model' => $productFamily,
+                'attribute_ids' => $this->attribute_ids,
+            ]);
+        }
+
+        return $productFamily->load($this->resolveEagerRelations());
     }
 
     /**
