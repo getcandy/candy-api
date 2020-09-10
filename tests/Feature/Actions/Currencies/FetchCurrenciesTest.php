@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Actions\Currencies;
 
-use Tests\Feature\FeatureCase;
 use GetCandy\Api\Core\Currencies\Models\Currency;
+use Tests\Feature\FeatureCase;
 
 /**
  * @group channels

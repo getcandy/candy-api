@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Core\Currencies\Actions;
 
-use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Currencies\Models\Currency;
 use GetCandy\Api\Core\Currencies\Resources\CurrencyResource;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
 
 class CreateCurrency extends AbstractAction
 {
