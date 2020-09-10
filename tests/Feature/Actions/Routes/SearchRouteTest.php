@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Actions\Routes;
 
-use Tests\Feature\FeatureCase;
 use GetCandy\Api\Core\Routes\Models\Route;
+use Tests\Feature\FeatureCase;
 
 /**
  * @group routess
@@ -16,7 +16,7 @@ class SearchRouteTest extends FeatureCase
 
         $route = factory(Route::class)->create();
 
-        $response = $this->actingAs($user)->json('GET', "routes/search", [
+        $response = $this->actingAs($user)->json('GET', 'routes/search', [
             'slug' => $route->slug,
         ]);
 

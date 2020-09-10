@@ -32,7 +32,7 @@ class FetchRoute extends AbstractAction
         return [
             'id' => 'integer|required_without_all:encoded_id,search',
             'encoded_id' => 'string|hashid_is_valid:'.Route::class.'|required_without_all:id,search',
-            'search' => 'required_without_all:encoded_id,id'
+            'search' => 'required_without_all:encoded_id,id',
         ];
     }
 
@@ -47,8 +47,9 @@ class FetchRoute extends AbstractAction
             $this->id = (new Route)->decodeId($this->encoded_id);
         }
 
-        if (!$this->id) {
+        if (! $this->id) {
             $query = Route::getQuery();
+
             return $this->compileSearchQuery($query, $this->search)->first();
         }
 
@@ -61,6 +62,7 @@ class FetchRoute extends AbstractAction
                 throw $e;
             }
         }
+
         return null;
     }
 

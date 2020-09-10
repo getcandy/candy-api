@@ -3,7 +3,6 @@
 namespace GetCandy\Api\Core\Routes\Actions;
 
 use GetCandy\Api\Core\Foundation\Actions\DecodeId;
-use GetCandy\Api\Core\Routes\Actions\FetchRoute;
 use GetCandy\Api\Core\Routes\Models\Route;
 use GetCandy\Api\Core\Routes\Resources\RouteResource;
 use GetCandy\Api\Core\Scaffold\AbstractAction;

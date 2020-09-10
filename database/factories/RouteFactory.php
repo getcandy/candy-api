@@ -1,9 +1,9 @@
 <?php
 
-use Illuminate\Support\Str;
 use Faker\Generator as Faker;
-use GetCandy\Api\Core\Routes\Models\Route;
 use GetCandy\Api\Core\Products\Models\Product;
+use GetCandy\Api\Core\Routes\Models\Route;
+use Illuminate\Support\Str;
 
 /*
 |--------------------------------------------------------------------------

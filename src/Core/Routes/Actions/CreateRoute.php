@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Core\Routes\Actions;
 
-use Illuminate\Support\Arr;
+use GetCandy\Api\Core\Routes\Resources\RouteResource;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
-use GetCandy\Api\Core\Routes\Resources\RouteResource;
+use Illuminate\Support\Arr;
 
 class CreateRoute extends AbstractAction
 {
@@ -29,8 +29,8 @@ class CreateRoute extends AbstractAction
     public function rules()
     {
         return [
-            'slug' => 'required|unique_with:routes,path,' . $this->path,
-            'path' => 'unique_with:routes,slug,' . $this->slug,
+            'slug' => 'required|unique_with:routes,path,'.$this->path,
+            'path' => 'unique_with:routes,slug,'.$this->slug,
             'element' => 'required',
             'lang' => 'required|string',
             'default' => 'boolean',
