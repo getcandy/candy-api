@@ -35,7 +35,7 @@ class UpdateRoute extends AbstractAction
             'slug' => 'required|unique_with:routes,path,'.$this->path.','.$routeId,
             'path' => 'unique_with:routes,slug,'.$this->slug.','.$routeId,
             'lang' => 'nullable|string',
-            'name' => 'nullable|string',
+            'description' => 'nullable|string',
             'default' => 'boolean',
             'redirect' => 'boolean',
         ];
