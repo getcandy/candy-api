@@ -97,6 +97,5 @@ class UpdateRouteTest extends TestCase
             'lang' => 'en',
             'default' => true,
         ]);
-
     }
 }
