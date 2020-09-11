@@ -10,12 +10,16 @@ class DatabaseValidator
     {
         $query = DB::table($parameters[0])->where($attribute, '=', $value);
 
-        if (empty($parameters[2])) {
-            $query = $query->whereNull($parameters[1]);
-        } else {
-            $query = $query->where($parameters[1], '=', $parameters[2]);
+        $routeId = $parameters[3] ?? null;
+
+        if ($routeId) {
+            $query = $query->where('id', '!=', $routeId);
         }
 
-        return ! $query->exists();
+        if (empty($parameters[2])) {
+            return ! $query->whereNull($parameters[1])->exists();
+        }
+
+        return ! $query->where($parameters[1], '=', $parameters[2])->exists();
     }
 }

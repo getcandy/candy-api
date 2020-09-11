@@ -32,10 +32,12 @@ class UpdateRoute extends AbstractAction
         ]);
 
         return [
+            'slug' => 'required|unique_with:routes,path,' . $this->path . ',' . $routeId,
+            'path' => 'unique_with:routes,slug,' . $this->slug . ',' . $routeId,
             'lang' => 'nullable|string',
-            'slug' => 'nullable|string',
             'name' => 'nullable|string',
             'default' => 'boolean',
+            'redirect' => 'boolean',
         ];
     }
 
