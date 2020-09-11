@@ -230,12 +230,12 @@
      */
 
     $router->prefix('reports')->namespace('Reports')->group(function ($router) {
-        $router->get('/sales', 'ReportController@sales');
-        $router->get('/orders', 'ReportController@orders');
-        $router->get('/orders/customers', 'ReportController@orderCustomers');
-        $router->get('/orders/averages', 'ReportController@orderAverages');
-        $router->get('/products/best-sellers', 'ReportController@bestSellers');
-        $router->get('/metrics/{subject}', 'ReportController@metrics');
+        $router->get('/sales', '\GetCandy\Api\Core\Reports\Actions\FetchSalesReport');
+        $router->get('/orders', '\GetCandy\Api\Core\Reports\Actions\FetchOrdersReport');
+        $router->get('/orders/customers', '\GetCandy\Api\Core\Reports\Actions\FetchCustomerOrderReport');
+        $router->get('/orders/averages', '\GetCandy\Api\Core\Reports\Actions\FetchOrderAveragesReport');
+        $router->get('/products/best-sellers',  '\GetCandy\Api\Core\Reports\Actions\FetchBestSellersReport');
+        $router->get('/metrics/{subject}', '\GetCandy\Api\Core\Reports\Actions\FetchMetricsReport');
     });
 
     /*

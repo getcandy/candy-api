@@ -1,0 +1,81 @@
+get:
+  summary: Get sales report
+  tags:
+    - Reports
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                month:
+                  type: string
+                sub_total:
+                  type: string
+                delivery_total:
+                  type: string
+                tax_total:
+                  type: string
+                order_total:
+                  type: string
+                discount_total:
+                  type: string
+          examples:
+            dataset-example:
+              value:
+                - month: March 2020
+                  sub_total: '2163897'
+                  delivery_total: '145489'
+                  tax_total: '460781'
+                  order_total: '2770167'
+                  discount_total: '0'
+    '422':
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              errors:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    from:
+                      type: array
+                      items:
+                        type: string
+                    to:
+                      type: array
+                      items:
+                        type: string
+          examples:
+            invalid-missing-data-example:
+              value:
+                message: The given data was invalid.
+                errors:
+                  from:
+                    - The from field is required.
+                    - The from is not a valid date.
+                  to:
+                    - The to field is required.
+                    - The to is not a valid date.
+  operationId: get-reports-orders
+  description: Returns a report for orders between a given date range
+  parameters:
+    - schema:
+        type: string
+      in: query
+      name: from
+      description: The from date
+    - schema:
+        type: string
+      in: query
+      name: to
+      description: The to date

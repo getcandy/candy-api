@@ -9,23 +9,6 @@ use Illuminate\Http\Request;
 
 class ReportController extends BaseController
 {
-    public function sales(Request $request, ReportManagerContract $reports)
-    {
-        $this->validate($request, [
-            'from' => 'required|date',
-            'to' => 'required|date',
-        ]);
-
-        $report = $reports->with('sales')
-            ->mode($request->mode ?: 'monthly')
-            ->between(
-                Carbon::parse($request->from),
-                Carbon::parse($request->to)
-            )->get();
-
-        return response()->json($report);
-    }
-
     public function metrics(Request $request, ReportManagerContract $reports)
     {
         $report = $reports->with($request->subject)->metrics();
@@ -33,39 +16,6 @@ class ReportController extends BaseController
         return response()->json($report);
     }
 
-    public function orders(Request $request, ReportManagerContract $reports)
-    {
-        $this->validate($request, [
-            'from' => 'required|date',
-            'to' => 'required|date|after:from',
-        ]);
-
-        $report = $reports->with('orders')
-            ->mode($request->mode ?: 'monthly')
-            ->between(
-                Carbon::parse($request->from),
-                Carbon::parse($request->to)
-            )->get();
-
-        return response()->json($report);
-    }
-
-    public function orderCustomers(Request $request, ReportManagerContract $reports)
-    {
-        $this->validate($request, [
-            'from' => 'required|date',
-            'to' => 'required|date|after:from',
-        ]);
-
-        $report = $reports->with('orders')
-            ->mode($request->mode ?: 'monthly')
-            ->between(
-                Carbon::parse($request->from),
-                Carbon::parse($request->to)
-            )->customers();
-
-        return response()->json($report);
-    }
 
     public function orderAverages(Request $request, ReportManagerContract $reports)
     {
@@ -74,11 +24,11 @@ class ReportController extends BaseController
             'to' => 'required|date|after:from',
         ]);
 
-        $report = $reports->with('orders')
+        return $reports->with('orders')
             ->mode($request->mode ?: 'monthly')
             ->between(
-                Carbon::parse($request->from),
-                Carbon::parse($request->to)
+                Carbon::parse($this->from),
+                Carbon::parse($this->to)
             )->averages();
 
         return response()->json($report);
