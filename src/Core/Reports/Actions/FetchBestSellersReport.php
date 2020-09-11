@@ -45,7 +45,7 @@ class FetchBestSellersReport extends AbstractAction
         ->between(
             Carbon::parse($this->from),
             Carbon::parse($this->to)
-        )->bestSellers($request->limit ?? 50);
+        )->bestSellers($this->limit ?? 50);
     }
 
     /**

@@ -39,7 +39,7 @@ class FetchSalesReport extends AbstractAction
      */
     public function handle(ReportManagerContract $reports)
     {
-        return $report = $reports->with('sales')
+        return $reports->with('sales')
         ->mode($this->mode ?: 'monthly')
         ->between(
             Carbon::parse($this->from),
