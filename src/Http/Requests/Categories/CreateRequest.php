@@ -27,7 +27,7 @@ class CreateRequest extends FormRequest
     {
         return [
             'attributes.*.value' => 'required|unique_category_attribute:name',
-            'url' => 'required|unique_route:'.$this->path,
+            'url' => 'required',
         ];
     }
 
@@ -40,7 +40,6 @@ class CreateRequest extends FormRequest
     {
         return [
             'attributes.*.value.unique_category_attribute' => 'The name must be unique',
-            'routes.*.slug.unique_route' => 'The slug must be unique',
         ];
     }
 }

@@ -263,9 +263,13 @@
     /*
      * Routes
      */
-    $router->resource('routes', 'Routes\RouteController', [
-        'except' => ['index', 'show', 'edit', 'create'],
-    ]);
+    $router->group([
+        'prefix' => 'routes',
+    ], function ($route) {
+        $route->get('/', '\GetCandy\Api\Core\Routes\Actions\FetchRoutes');
+        $route->delete('{encoded_id}', '\GetCandy\Api\Core\Routes\Actions\DeleteRoute');
+        $route->put('{encoded_id}', '\GetCandy\Api\Core\Routes\Actions\UpdateRoute');
+    });
 
     /*
      * Saved search

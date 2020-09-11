@@ -109,10 +109,15 @@ $router->get('payments/provider', 'Payments\PaymentController@provider');
 $router->get('payments/providers', 'Payments\PaymentController@providers');
 $router->get('payments/types', 'Payments\PaymentTypeController@index');
 
-$router->get('routes', 'Routes\RouteController@index');
-$router->get('routes/{slug}', [
-    'uses' => 'Routes\RouteController@show',
-])->where(['slug' => '.*']);
+/*
+* Routes
+*/
+$router->group([
+    'prefix' => 'routes',
+], function ($route) {
+    $route->get('search', '\GetCandy\Api\Core\Routes\Actions\SearchForRoute');
+    $route->get('{encoded_id}', '\GetCandy\Api\Core\Routes\Actions\FetchRoute');
+});
 
 $router->post('password/reset', 'Auth\ResetPasswordController@reset');
 $router->post('password/reset/request', 'Auth\ForgotPasswordController@sendResetLinkEmail');

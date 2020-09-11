@@ -1,0 +1,23 @@
+title: CreateRouteBody
+type: object
+properties:
+  element_type:
+    type: string
+  element_id:
+    type: integer
+  default:
+    type: boolean
+  redirect:
+    type: boolean
+  slug:
+    type: string
+  path:
+    type: string
+  locale:
+    type: string
+  description:
+    type: string
+required:
+  - name
+  - lang
+  - iso

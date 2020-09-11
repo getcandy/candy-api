@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use GetCandy;
 use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
 use GetCandy\Api\Core\Channels\Actions\FetchChannel;
+use GetCandy\Api\Core\Routes\Actions\SearchForRoute;
 use Illuminate\Database\Eloquent\Model;
 
 abstract class BaseService
@@ -301,7 +302,7 @@ abstract class BaseService
             $previousUrl = null;
             foreach ($urls as $locale => $url) {
                 $i = 1;
-                while (GetCandy::routes()->slugExists($url, $path) || $previousUrl == $url) {
+                while (SearchForRoute::run(['slug' => $url, 'path' => $path]) || $previousUrl == $url) {
                     $url = $url.'-'.$i;
                     $i++;
                 }
@@ -316,7 +317,7 @@ abstract class BaseService
         } else {
             $i = 1;
             $url = $urls;
-            while (GetCandy::routes()->slugExists($url)) {
+            while (SearchForRoute::run(['slug' => $url])) {
                 $url = $url.'-'.$i;
                 $i++;
             }
@@ -435,7 +436,7 @@ abstract class BaseService
         $model = $this->getByHashedId($hashedId, true);
 
         try {
-            return GetCandy::routes()->getBySlug($data['slug']);
+            return SearchForRoute::run(['slug' => $data['slug']]);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
         }
 
