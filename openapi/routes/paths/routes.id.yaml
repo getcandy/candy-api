@@ -26,7 +26,7 @@ get:
 put:
   summary: Update Route
   tags:
-    - Route
+    - Routes
   responses:
     '200':
       description: OK

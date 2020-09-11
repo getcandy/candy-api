@@ -14,7 +14,7 @@ get:
 post:
   summary: Create Route
   tags:
-    - Route
+    - Routes
   responses:
     '201':
       description: OK
