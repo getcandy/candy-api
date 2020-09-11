@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Core\Reports\Actions;
 
-use Illuminate\Support\Carbon;
-use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Reports\Contracts\ReportManagerContract;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
+use Illuminate\Support\Carbon;
 
 class FetchOrderAveragesReport extends AbstractAction
 {
@@ -28,7 +28,7 @@ class FetchOrderAveragesReport extends AbstractAction
         return [
             'from' => 'required|date',
             'to' => 'required|date|after:from',
-            'model' => 'string'
+            'model' => 'string',
         ];
     }
 

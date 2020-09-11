@@ -234,7 +234,7 @@
         $router->get('/orders', '\GetCandy\Api\Core\Reports\Actions\FetchOrdersReport');
         $router->get('/orders/customers', '\GetCandy\Api\Core\Reports\Actions\FetchCustomerOrderReport');
         $router->get('/orders/averages', '\GetCandy\Api\Core\Reports\Actions\FetchOrderAveragesReport');
-        $router->get('/products/best-sellers',  '\GetCandy\Api\Core\Reports\Actions\FetchBestSellersReport');
+        $router->get('/products/best-sellers', '\GetCandy\Api\Core\Reports\Actions\FetchBestSellersReport');
         $router->get('/metrics/{subject}', '\GetCandy\Api\Core\Reports\Actions\FetchMetricsReport');
     });
 

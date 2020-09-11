@@ -16,7 +16,6 @@ class ReportController extends BaseController
         return response()->json($report);
     }
 
-
     public function orderAverages(Request $request, ReportManagerContract $reports)
     {
         $this->validate($request, [
