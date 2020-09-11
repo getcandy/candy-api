@@ -11,27 +11,3 @@ get:
             $ref: '../responses/RouteCollection.yaml'
   operationId: get-routes
   description: Returns a paginated list of Routes
-post:
-  summary: Create Route
-  tags:
-    - Routes
-  responses:
-    '201':
-      description: OK
-      content:
-        application/json:
-          schema:
-            $ref: '../responses/RouteResponse.yaml'
-    '422':
-      description: Unprocessable Entity
-      content:
-          application/json:
-            schema:
-              $ref: '../../global/responses/Unprocessable.yaml'
-  operationId: post-routes
-  description: Create a new route
-  requestBody:
-    content:
-      multipart/form-data:
-        schema:
-          $ref: '../requests/CreateRouteBody.yaml'
