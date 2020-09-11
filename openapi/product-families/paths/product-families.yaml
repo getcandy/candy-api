@@ -1,0 +1,38 @@
+get:
+  summary: Get product families
+  tags:
+    - Product Families
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/ProductFamilyCollection.yaml'
+  operationId: get-product-families
+  description: Returns a paginated list of all product families.
+  parameters:
+    - schema:
+        type: string
+      in: query
+      name: include
+      description: Define included relationships
+post:
+  summary: Create product family
+  tags:
+    - Product Families
+  responses:
+    '201':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/ProductFamilyResponse.yaml'
+    '422':
+      description: Unprocessable Entity
+      content:
+          application/json:
+            schema:
+              $ref: '../../global/responses/Unprocessable.yaml'
+  operationId: post-product-families
+  description: Create a new product family.

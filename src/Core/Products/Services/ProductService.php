@@ -6,6 +6,7 @@ use GetCandy;
 use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
 use GetCandy\Api\Core\Channels\Models\Channel;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
+use GetCandy\Api\Core\Products\Actions\FetchProductFamily;
 use GetCandy\Api\Core\Products\Events\ProductCreatedEvent;
 use GetCandy\Api\Core\Products\Interfaces\ProductInterface;
 use GetCandy\Api\Core\Products\Models\Product;
@@ -106,7 +107,9 @@ class ProductService extends BaseService
         }
 
         if (! empty($data['family_id'])) {
-            $family = GetCandy::productFamilies()->getByHashedId($data['family_id']);
+            $family = FetchProductFamily::run([
+                'encoded_id' => $data['family_id'],
+            ]);
             $family->products()->save($product);
         }
 
@@ -175,7 +178,9 @@ class ProductService extends BaseService
         // $product->layout()->associate($layout);
 
         if (! empty($data['family_id'])) {
-            $family = GetCandy::productFamilies()->getByHashedId($data['family_id']);
+            $family = FetchProductFamily::run([
+                'encoded_id' => $data['family_id'],
+            ]);
             if (! $family) {
                 abort(422);
             }

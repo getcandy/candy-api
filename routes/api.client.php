@@ -10,16 +10,7 @@
 |
 */
 
-$router->get('/', function () {
-    $currency = app()->make(GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface::class);
-
-    return response()->json([
-        'version' => GetCandy::version(),
-        'locale' => app()->getLocale(),
-        'channel' => GetCandy\Api\Core\Channels\Actions\FetchCurrentChannel::run(),
-        'currency' => new GetCandy\Api\Http\Resources\Currencies\CurrencyResource($currency->get()),
-    ]);
-});
+$router->get('/', '\GetCandy\Api\Core\Root\Actions\FetchRoot');
 
 $router->get('channels/{encoded_id}', '\GetCandy\Api\Core\Channels\Actions\FetchChannel');
 $router->get('collections', 'Collections\CollectionController@index');
