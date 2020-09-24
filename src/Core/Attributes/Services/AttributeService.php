@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Attributes\Services;
 
+use GetCandy;
 use GetCandy\Api\Core\Attributes\Events\AttributeSavedEvent;
 use GetCandy\Api\Core\Attributes\Models\Attribute;
 use GetCandy\Api\Core\Scaffold\BaseService;
@@ -27,7 +28,7 @@ class AttributeService extends BaseService
      */
     public function create(array $data)
     {
-        $attributeGroup = app('api')->attributeGroups()->getByHashedId($data['group_id']);
+        $attributeGroup = GetCandy::attributeGroups()->getByHashedId($data['group_id']);
 
         if (! $attributeGroup) {
             abort(400, 'Attribute group with ID "'.$data['group_id'].'" doesn\'t exist');
@@ -133,7 +134,7 @@ class AttributeService extends BaseService
         $attribute->fill($data);
 
         if (! empty($data['group_id'])) {
-            $attribute->group_id = app('api')->attributeGroups()->getDecodedId($data['group_id']);
+            $attribute->group_id = GetCandy::attributeGroups()->getDecodedId($data['group_id']);
         }
 
         $attribute->save();

@@ -2,12 +2,14 @@
 
 namespace GetCandy\Api\Http\Controllers\Currencies;
 
+use GetCandy;
 use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Currencies\CreateRequest;
 use GetCandy\Api\Http\Requests\Currencies\DeleteRequest;
 use GetCandy\Api\Http\Requests\Currencies\UpdateRequest;
-use GetCandy\Api\Http\Transformers\Fractal\Currencies\CurrencyTransformer;
+use GetCandy\Api\Http\Resources\Currencies\CurrencyCollection;
+use GetCandy\Api\Http\Resources\Currencies\CurrencyResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -22,9 +24,9 @@ class CurrencyController extends BaseController
      */
     public function index(Request $request)
     {
-        $paginator = app('api')->currencies()->getPaginatedData($request->per_page);
+        $paginator = GetCandy::currencies()->getPaginatedData($request->per_page);
 
-        return $this->respondWithCollection($paginator, new CurrencyTransformer);
+        return new CurrencyCollection($paginator);
     }
 
     /**
@@ -36,12 +38,12 @@ class CurrencyController extends BaseController
     public function show($code)
     {
         try {
-            $currency = app('api')->currencies()->getByCode($code);
+            $currency = GetCandy::currencies()->getByCode($code);
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
 
-        return $this->respondWithItem($currency, new CurrencyTransformer);
+        return new CurrencyResource($currency);
     }
 
     /**
@@ -52,22 +54,22 @@ class CurrencyController extends BaseController
      */
     public function store(CreateRequest $request)
     {
-        $result = app('api')->currencies()->create($request->all());
-
-        return $this->respondWithItem($result, new CurrencyTransformer);
+        return new CurrencyResource(
+            GetCandy::currencies()->create($request->all())
+        );
     }
 
     public function update($id, UpdateRequest $request)
     {
         try {
-            $result = app('api')->currencies()->update($id, $request->all());
+            $currency = GetCandy::currencies()->update($id, $request->all());
         } catch (MinimumRecordRequiredException $e) {
             return $this->errorUnprocessable($e->getMessage());
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
 
-        return $this->respondWithItem($result, new CurrencyTransformer);
+        return new CurrencyResource($currency);
     }
 
     /**
@@ -80,7 +82,7 @@ class CurrencyController extends BaseController
     public function destroy($id, DeleteRequest $request)
     {
         try {
-            $result = app('api')->currencies()->delete($id);
+            GetCandy::currencies()->delete($id);
         } catch (MinimumRecordRequiredException $e) {
             return $this->errorUnprocessable($e->getMessage());
         } catch (NotFoundHttpException $e) {

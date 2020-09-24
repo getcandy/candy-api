@@ -2,10 +2,12 @@
 
 namespace GetCandy\Api\Core\Orders\Validators;
 
+use GetCandy;
+
 class OrderIsActiveValidator
 {
     public function validate($attribute, $value, $parameters, $validator)
     {
-        return app('api')->orders()->isActive($value);
+        return GetCandy::orders()->isActive($value);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Scaffold;
 
+use GetCandy;
 use GetCandy\Api\Core\Routes\Models\Route;
 use GetCandy\Api\Core\Traits\Hashids;
 use Illuminate\Database\Eloquent\Model;
@@ -21,7 +22,7 @@ abstract class BaseModel extends Model
 
     public function getSettingsAttribute()
     {
-        $settings = app('api')->settings()->get($this->settings);
+        $settings = GetCandy::settings()->get($this->settings);
         if (! $settings) {
             return [];
         }

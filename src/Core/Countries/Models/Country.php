@@ -19,11 +19,27 @@ class Country extends BaseModel
      * @var array
      */
     protected $fillable = [
-        'name',
-        'iso_a_2',
-        'iso_a_3',
-        'iso_numeric',
-        'region',
-        'sub_region',
+        'enabled',
+        'preferred',
     ];
+
+    public function scopeEnabled($query)
+    {
+        return $query->whereEnabled(true);
+    }
+
+    public function scopePreferred($query)
+    {
+        return $query->wherePreferred(true);
+    }
+
+    public function scopeDisabled($query)
+    {
+        return $query->whereEnabled(false);
+    }
+
+    public function states()
+    {
+        return $this->hasMany(State::class);
+    }
 }

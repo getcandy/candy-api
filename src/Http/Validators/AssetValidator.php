@@ -2,6 +2,8 @@
 
 namespace GetCandy\Api\Http\Validators;
 
+use GetCandy;
+
 class AssetValidator
 {
     public function validAssetUrl($attribute, $value, $parameters, $validator)
@@ -20,21 +22,21 @@ class AssetValidator
 
     protected function validateYoutubeUrl($url)
     {
-        $driver = app('api')->assets()->getDriver('youtube');
+        $driver = GetCandy::assets()->getDriver('youtube');
 
         return (bool) $driver->getInfo($url);
     }
 
     protected function validateVimeoUrl($url)
     {
-        $driver = app('api')->assets()->getDriver('vimeo');
+        $driver = GetCandy::assets()->getDriver('vimeo');
 
         return $driver->getInfo($url);
     }
 
     protected function validateExternalUrl($url)
     {
-        $driver = app('api')->assets()->getDriver('external');
+        $driver = GetCandy::assets()->getDriver('external');
 
         return $driver->getInfo($url);
     }

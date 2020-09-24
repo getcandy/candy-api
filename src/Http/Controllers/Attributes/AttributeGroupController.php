@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Controllers\Attributes;
 
+use GetCandy;
 use GetCandy\Api\Exceptions\DuplicateValueException;
 use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
 use GetCandy\Api\Http\Controllers\BaseController;
@@ -10,7 +11,6 @@ use GetCandy\Api\Http\Requests\AttributeGroups\ReorderRequest;
 use GetCandy\Api\Http\Requests\AttributeGroups\UpdateRequest;
 use GetCandy\Api\Http\Resources\Attributes\AttributeGroupCollection;
 use GetCandy\Api\Http\Resources\Attributes\AttributeGroupResource;
-use GetCandy\Api\Http\Transformers\Fractal\Attributes\AttributeGroupTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -28,9 +28,9 @@ class AttributeGroupController extends BaseController
     {
         $includes = $request->include ? explode(',', $request->include) : null;
         if ($request->all_records) {
-            $results = app('api')->attributeGroups()->all($includes);
+            $results = GetCandy::attributeGroups()->all($includes);
         } else {
-            $results = app('api')->attributeGroups()->getPaginatedData($request->per_page, $request->page ?: 1, $includes);
+            $results = GetCandy::attributeGroups()->getPaginatedData($request->per_page, $request->page ?: 1, $includes);
         }
 
         return new AttributeGroupCollection($results);
@@ -47,7 +47,7 @@ class AttributeGroupController extends BaseController
     {
         $includes = $request->include ? explode(',', $request->include) : null;
         try {
-            $attributeGroup = app('api')->attributeGroups()->getByHashedId($id, $includes);
+            $attributeGroup = GetCandy::attributeGroups()->getByHashedId($id, $includes);
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
@@ -64,7 +64,7 @@ class AttributeGroupController extends BaseController
     public function store(CreateRequest $request)
     {
         $includes = $request->include ? explode(',', $request->include) : null;
-        $result = app('api')->attributeGroups()->create($request->all(), $includes);
+        $result = GetCandy::attributeGroups()->create($request->all(), $includes);
 
         return new AttributeGroupResource($result);
     }
@@ -79,7 +79,7 @@ class AttributeGroupController extends BaseController
     public function update($id, UpdateRequest $request)
     {
         try {
-            $result = app('api')->attributeGroups()->update($id, $request->all());
+            $result = GetCandy::attributeGroups()->update($id, $request->all());
         } catch (MinimumRecordRequiredException $e) {
             return $this->errorUnprocessable($e->getMessage());
         } catch (NotFoundHttpException $e) {
@@ -87,14 +87,12 @@ class AttributeGroupController extends BaseController
         }
 
         return new AttributeGroupResource($result);
-
-        return $this->respondWithItem($result, new AttributeGroupTransformer);
     }
 
     public function reorder(ReorderRequest $request)
     {
         try {
-            $result = app('api')->attributeGroups()->updateGroupPositions($request->all());
+            GetCandy::attributeGroups()->updateGroupPositions($request->all());
         } catch (HttpException $e) {
             return $this->errorUnprocessable($e->getMessage());
         } catch (DuplicateValueException $e) {
@@ -114,9 +112,7 @@ class AttributeGroupController extends BaseController
     public function destroy($id, Request $request)
     {
         try {
-            $result = app('api')
-            ->attributeGroups()
-            ->delete(
+            GetCandy::attributeGroups()->delete(
                 $id,
                 $request->group_id,
                 $request->delete_attributes

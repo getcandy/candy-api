@@ -1,0 +1,26 @@
+title: Pagination
+type: object
+properties:
+  current_page:
+    type: integer
+    default: 1
+    format: int32
+    example: 1
+  from:
+    type: integer
+    example: 24
+    nullable: true
+  last_page:
+    type: integer
+    default: 15
+    example: 15
+  path:
+    type: string
+  per_page:
+    type: integer
+    example: 1
+  to:
+    type: integer
+    nullable: true
+  total:
+    type: integer

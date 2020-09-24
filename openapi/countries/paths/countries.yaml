@@ -1,0 +1,24 @@
+get:
+  summary: Get all countries
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/CountryCollection.yaml'
+  operationId: get-countries
+  parameters:
+    - schema:
+        type: string
+      in: query
+      name: include
+      description: Comma separated includes for the resource
+    - schema:
+        type: number
+      in: query
+      name: per_page
+      description: How many results per page
+  description: Gets a paginated list of all channel
+  tags:
+    - Countries

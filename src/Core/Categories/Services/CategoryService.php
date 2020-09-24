@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Categories\Services;
 
+use GetCandy;
 use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
 use GetCandy\Api\Core\Categories\Events\CategoryStoredEvent;
 use GetCandy\Api\Core\Categories\Models\Category;
@@ -133,7 +134,7 @@ class CategoryService extends BaseService
         }
 
         if (! empty($data['layout_id'])) {
-            $realLayoutId = app('api')->layouts()->getDecodedId($data['layout_id']);
+            $realLayoutId = GetCandy::layouts()->getDecodedId($data['layout_id']);
             $model->layout_id = $realLayoutId;
         }
 
@@ -167,7 +168,7 @@ class CategoryService extends BaseService
         $category = $this->getByHashedId($id, true);
         $groupData = [];
         foreach ($groups as $group) {
-            $groupModel = app('api')->customerGroups->getByHashedId($group['id']);
+            $groupModel = GetCandy::customerGroups()->getByHashedId($group['id']);
             $groupData[$groupModel->id] = [
                 'visible' => $group['visible'],
                 'purchasable' => $group['purchasable'],
@@ -190,7 +191,7 @@ class CategoryService extends BaseService
         $ids = [];
 
         foreach ($data['products'] as $item) {
-            $ids[app('api')->products()->getDecodedId($item['id'])] = ['position' => $item['position']];
+            $ids[GetCandy::products()->getDecodedId($item['id'])] = ['position' => $item['position']];
         }
 
         $category->products()->sync($ids);
@@ -221,7 +222,7 @@ class CategoryService extends BaseService
      */
     public function updateLayout($categoryId, $layoutId)
     {
-        $layout = app('api')->layouts()->getByHashedId($layoutId);
+        $layout = GetCandy::layouts()->getByHashedId($layoutId);
         $category = $this->getByHashedId($categoryId);
         $category->layout()->associate($layout);
         $category->save();

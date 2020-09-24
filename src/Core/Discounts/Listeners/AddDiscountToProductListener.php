@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Discounts\Listeners;
 
+use GetCandy;
 use GetCandy\Api\Core\Discounts\Factory;
 use GetCandy\Api\Core\Products\Events\ProductViewedEvent;
 
@@ -26,8 +27,8 @@ class AddDiscountToProductListener
     public function handle(ProductViewedEvent $event)
     {
         $product = $event->product();
-        $discounts = app('api')->discounts()->get();
-        $sets = app('api')->discounts()->parse($discounts);
+        $discounts = GetCandy::discounts()->get();
+        $sets = GetCandy::discounts()->parse($discounts);
 
         $product->max_price = 0;
         $product->min_price = 0;

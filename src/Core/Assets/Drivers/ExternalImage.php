@@ -3,6 +3,7 @@
 namespace GetCandy\Api\Core\Assets\Drivers;
 
 use Carbon\Carbon;
+use GetCandy;
 use GetCandy\Api\Core\Assets\Jobs\GenerateTransforms;
 use GetCandy\Api\Core\Assets\Models\Asset;
 use Illuminate\Database\Eloquent\Model;
@@ -34,7 +35,7 @@ class ExternalImage extends BaseUrlDriver
      */
     public function process(array $data, Model $model)
     {
-        $this->source = app('api')->assetSources()->getByHandle($model->settings['asset_source']);
+        $this->source = GetCandy::assetSources()->getByHandle($model->settings['asset_source']);
 
         // if (!$this->info) {
         $this->getInfo($data['url']);

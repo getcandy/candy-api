@@ -3,6 +3,7 @@
 namespace GetCandy\Api\Http\Controllers\Categories;
 
 use Drafting;
+use GetCandy;
 use GetCandy\Api\Core\Categories\CategoryCriteria;
 use GetCandy\Api\Core\Categories\Models\Category;
 use GetCandy\Api\Core\Categories\Services\CategoryService;
@@ -13,7 +14,6 @@ use GetCandy\Api\Http\Requests\Categories\ReorderRequest;
 use GetCandy\Api\Http\Requests\Categories\UpdateRequest;
 use GetCandy\Api\Http\Resources\Categories\CategoryCollection;
 use GetCandy\Api\Http\Resources\Categories\CategoryResource;
-use GetCandy\Api\Http\Transformers\Fractal\Categories\CategoryTransformer;
 use Hashids;
 use Illuminate\Http\Request;
 use Intervention\Image\Exception\NotFoundException;
@@ -36,7 +36,7 @@ class CategoryController extends BaseController
         $criteria
             ->tree($request->tree)
             ->depth($request->depth)
-            ->include($request->include)
+            ->include($this->parseIncludes($request->include))
             ->limit($request->limit);
 
         if (! $request->tree) {
@@ -55,7 +55,7 @@ class CategoryController extends BaseController
         $category = $criteria->id($id)->first();
         $query = $category
             ->children()
-            ->with($request->include)
+            ->with($this->parseIncludes($request->include))
             ->withCount(['products', 'children']);
 
         return new CategoryCollection($query->get());
@@ -75,24 +75,18 @@ class CategoryController extends BaseController
 
         $draft = \Drafting::with('categories')->firstOrCreate($category);
 
-        return new CategoryResource($draft->load($request->include));
+        return new CategoryResource($draft->load($this->parseIncludes($request->include)));
     }
 
     public function show($id, Request $request)
     {
         $id = (new Category)->decodeId($id);
 
-        $includes = $request->include ?: [];
-
-        if ($includes && is_string($includes)) {
-            $includes = $this->parseIncludes($includes);
-        }
-
         if (! $id) {
             return $this->errorNotFound();
         }
 
-        $category = $this->service->findById($id, $includes, $request->draft);
+        $category = $this->service->findById($id, $this->parseIncludes($request->include), $request->draft);
 
         if (! $category) {
             return $this->errorNotFound();
@@ -106,14 +100,14 @@ class CategoryController extends BaseController
 
     public function getNested()
     {
-        $categories = app('api')->categories()->getNestedList();
-
-        return $this->respondWithCollection($categories, new CategoryTransformer);
+        return new CategoryCollection(
+            GetCandy::categories()->getNestedList()
+        );
     }
 
     public function getByParent($parentID, Request $request)
     {
-        $categories = app('api')->categories()->getByParentID(
+        $categories = GetCandy::categories()->getByParentID(
             $parentID,
             $this->parseIncludes($request->include)
         );
@@ -130,7 +124,7 @@ class CategoryController extends BaseController
     public function store(CreateRequest $request)
     {
         try {
-            $response = app('api')->categories()->create($request->all());
+            $response = GetCandy::categories()->create($request->all());
         } catch (MinimumRecordRequiredException $e) {
             return $this->errorUnprocessable($e->getMessage());
         } catch (NotFoundHttpException $e) {
@@ -142,7 +136,7 @@ class CategoryController extends BaseController
         }
 
         if ($response) {
-            return $this->respondWithItem($response, new CategoryTransformer);
+            return new CategoryResource($response);
         }
 
         return response()->json('Error', 500);
@@ -157,7 +151,7 @@ class CategoryController extends BaseController
     public function reorder(ReorderRequest $request)
     {
         try {
-            $response = app('api')->categories()->reorder($request->all());
+            $response = GetCandy::categories()->reorder($request->all());
         } catch (MinimumRecordRequiredException $e) {
             return $this->errorUnprocessable($e->getMessage());
         } catch (NotFoundHttpException $e) {
@@ -184,12 +178,12 @@ class CategoryController extends BaseController
     public function update($id, UpdateRequest $request)
     {
         try {
-            $result = app('api')->categories()->update($id, $request->all());
+            $category = GetCandy::categories()->update($id, $request->all());
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
 
-        return $this->respondWithItem($result, new CategoryTransformer);
+        return new CategoryResource($category);
     }
 
     public function publishDraft($id, Request $request)
@@ -204,15 +198,13 @@ class CategoryController extends BaseController
             Drafting::with('categories')->publish($category);
         });
 
-        $includes = $request->includes ? explode(',', $request->include) : [];
-
-        return new CategoryResource($category->load($includes));
+        return new CategoryResource($category->load($this->parseIncludes($request->include)));
     }
 
     public function putChannels($id, Request $request)
     {
         try {
-            $category = app('api')->categories()->updateChannels($id, $request->all());
+            $category = GetCandy::categories()->updateChannels($id, $request->all());
         } catch (NotFoundException $e) {
             return $this->errorNotFound();
         }
@@ -223,7 +215,7 @@ class CategoryController extends BaseController
     public function putCustomerGroups($id, Request $request)
     {
         try {
-            $category = app('api')->categories()->updateCustomerGroups($id, $request->groups ?: []);
+            $category = GetCandy::categories()->updateCustomerGroups($id, $request->groups ?: []);
         } catch (NotFoundException $e) {
             return $this->errorNotFound();
         }
@@ -234,12 +226,12 @@ class CategoryController extends BaseController
     public function putProducts($id, Request $request)
     {
         try {
-            $result = app('api')->categories()->updateProducts($id, $request->all());
+            $category = GetCandy::categories()->updateProducts($id, $request->all());
         } catch (NotFoundException $e) {
             return $this->errorNotFound();
         }
 
-        return $this->respondWithItem($result, new CategoryTransformer);
+        return new CategoryResource($category);
     }
 
     /**
@@ -252,7 +244,7 @@ class CategoryController extends BaseController
     public function destroy($id, Request $request)
     {
         try {
-            $result = app('api')->categories()->delete($id);
+            GetCandy::categories()->delete($id);
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }

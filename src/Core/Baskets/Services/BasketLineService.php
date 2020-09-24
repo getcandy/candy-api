@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Baskets\Services;
 
+use GetCandy;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketFactoryInterface;
 use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Core\Baskets\Models\BasketLine;
@@ -51,7 +52,7 @@ class BasketLineService extends BaseService
         $id = $this->getDecodedId($id);
 
         return $this->model->where('id', '=', $id)->whereHas('variant', function ($q) use ($variant) {
-            $realId = app('api')->productVariants()->getDecodedId($variant);
+            $realId = GetCandy::productVariants()->getDecodedId($variant);
 
             return $q->where('id', '=', $realId);
         })->exists();

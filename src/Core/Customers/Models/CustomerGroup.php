@@ -17,12 +17,14 @@ class CustomerGroup extends BaseModel
      */
     protected $hashids = 'main';
 
+    protected $fillable = ['name', 'handle', 'default'];
+
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function users()
+    public function customers()
     {
-        return $this->hasMany(config('auth.providers.users.model'));
+        return $this->belongsToMany(Customer::class);
     }
 
     /**

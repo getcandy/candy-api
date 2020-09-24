@@ -2,17 +2,17 @@
 
 namespace GetCandy\Api\Core\Search\Providers\Elastic;
 
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
-use Illuminate\Support\Collection;
-use GetCandy\Api\Http\Resources\Categories\CategoryResource;
+use GetCandy;
 use GetCandy\Api\Http\Resources\Attributes\AttributeResource;
+use GetCandy\Api\Http\Resources\Categories\CategoryResource;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 class AggregationResolver
 {
-
     /**
-     * Returns the attributes which have been aggregated
+     * Returns the attributes which have been aggregated.
      *
      * @param   array  $handles  Array of attribute handles
      *
@@ -20,11 +20,11 @@ class AggregationResolver
      */
     public function getAggregatedAttributes(array $handles)
     {
-        return app('api')->attributes()->getByHandles($handles);
+        return GetCandy::attributes()->getByHandles($handles);
     }
 
     /**
-     * Returns categories which have been aggregated
+     * Returns categories which have been aggregated.
      *
      * @param   array  $buckets  The category aggregate bucket data
      *
@@ -32,7 +32,7 @@ class AggregationResolver
      */
     public function getAggregatedCategories(array $buckets)
     {
-        return app('api')->categories()->getByHashedIds(
+        return GetCandy::categories()->getByHashedIds(
             collect($buckets)->map(function ($cat) {
                 return $cat['key'];
             })->toArray()
@@ -40,7 +40,7 @@ class AggregationResolver
     }
 
     /**
-     * Resolve the search aggregations
+     * Resolve the search aggregations.
      *
      * @param   array  $aggregations
      *
@@ -49,11 +49,12 @@ class AggregationResolver
     public function resolve(array $aggregations)
     {
         $preAggs = collect($aggregations)->filter(function ($agg, $key) {
-            return !Str::contains($key, '_after');
+            return ! Str::contains($key, '_after');
         });
         $postAggs = collect($aggregations)->filter(function ($agg, $key) {
             return Str::contains($key, '_after');
         });
+
         return [
             'available' => $this->resolveAggregations($preAggs),
             'applied' => $this->resolveAggregations($postAggs),

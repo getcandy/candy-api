@@ -2,8 +2,9 @@
 
 namespace GetCandy\Api\Core\Channels\Factories;
 
+use GetCandy\Api\Core\Channels\Actions\FetchChannel;
+use GetCandy\Api\Core\Channels\Actions\FetchDefaultChannel;
 use GetCandy\Api\Core\Channels\Interfaces\ChannelFactoryInterface;
-use GetCandy\Api\Core\Channels\Services\ChannelService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ChannelFactory implements ChannelFactoryInterface
@@ -14,16 +15,6 @@ class ChannelFactory implements ChannelFactoryInterface
     protected $channel;
 
     /**
-     * @var \GetCandy\Api\Core\Channels\Services\ChannelService
-     */
-    protected $service;
-
-    public function __construct(ChannelService $channels)
-    {
-        $this->service = $channels;
-    }
-
-    /**
      * Set the value for channel.
      *
      * @param  null|string|\GetCandy\Api\Core\Channels\Models\Channel  $channel
@@ -32,7 +23,7 @@ class ChannelFactory implements ChannelFactoryInterface
     public function set($channel = null)
     {
         if (! $channel) {
-            $channel = $this->service->getDefaultRecord();
+            $channel = FetchDefaultChannel::run();
         }
         $this->setChannel($channel);
     }
@@ -47,7 +38,9 @@ class ChannelFactory implements ChannelFactoryInterface
     {
         if (is_string($channel)) {
             try {
-                $channel = $this->service->getByHandle($channel);
+                $channel = FetchChannel::run([
+                    'handle' => $channel,
+                ]);
             } catch (ModelNotFoundException $e) {
                 $channel = $this->set();
             }

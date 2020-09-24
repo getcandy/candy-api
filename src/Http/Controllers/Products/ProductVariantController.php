@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Controllers\Products;
 
+use GetCandy;
 use GetCandy\Api\Exceptions\InvalidLanguageException;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\ProductVariants\CreateRequest;
@@ -24,7 +25,7 @@ class ProductVariantController extends BaseController
      */
     public function index(Request $request)
     {
-        $paginator = app('api')->productVariants()->getPaginatedData($request->per_page);
+        $paginator = GetCandy::productVariants()->getPaginatedData($request->per_page);
 
         return new ProductVariantCollection($paginator);
     }
@@ -38,7 +39,7 @@ class ProductVariantController extends BaseController
     public function show($id)
     {
         try {
-            $variant = app('api')->productVariants()->getByHashedId($id);
+            $variant = GetCandy::productVariants()->getByHashedId($id);
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
@@ -56,7 +57,7 @@ class ProductVariantController extends BaseController
     public function store($product, CreateRequest $request)
     {
         try {
-            $result = app('api')->productVariants()->create($product, $request->all());
+            $result = GetCandy::productVariants()->create($product, $request->all());
         } catch (HttpException $e) {
             return $this->errorUnprocessable($e->getMessage());
         } catch (NotFoundHttpException $e) {
@@ -76,7 +77,7 @@ class ProductVariantController extends BaseController
     public function update($id, UpdateRequest $request)
     {
         try {
-            $result = app('api')->productVariants()->update($id, $request->all());
+            $result = GetCandy::productVariants()->update($id, $request->all());
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         } catch (InvalidLanguageException $e) {
@@ -98,7 +99,7 @@ class ProductVariantController extends BaseController
     public function destroy($id, DeleteRequest $request)
     {
         try {
-            $result = app('api')->productVariants()->delete($id);
+            GetCandy::productVariants()->delete($id);
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         } catch (ModelNotFoundException $e) {
@@ -111,7 +112,7 @@ class ProductVariantController extends BaseController
     public function updateInventory($variant, Request $request)
     {
         try {
-            $result = app('api')->productVariants()->updateInventory($variant, $request->inventory);
+            $result = GetCandy::productVariants()->updateInventory($variant, $request->inventory);
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         } catch (ModelNotFoundException $e) {

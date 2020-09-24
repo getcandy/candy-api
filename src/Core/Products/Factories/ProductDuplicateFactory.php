@@ -76,7 +76,7 @@ class ProductDuplicateFactory implements ProductInterface
         $currentAssets = $this->product->assets;
         $assets = collect();
 
-        $currentAssets->each(function ($a) use ($assets, $newProduct) {
+        $currentAssets->each(function ($a) use ($newProduct) {
             $newAsset = $a->replicate();
 
             // Move the file to it's new location

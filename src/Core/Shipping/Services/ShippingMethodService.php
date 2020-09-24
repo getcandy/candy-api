@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Shipping\Services;
 
+use GetCandy;
 use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
 use GetCandy\Api\Core\Baskets\Services\BasketService;
 use GetCandy\Api\Core\Scaffold\BaseService;
@@ -133,8 +134,8 @@ class ShippingMethodService extends BaseService
     public function getForOrder($orderId)
     {
         // Get the zones for this order...
-        $order = app('api')->orders()->getByHashedId($orderId);
-        $zones = app('api')->shippingZones()->getByCountryName($order->shipping_details['country']);
+        $order = GetCandy::orders()->getByHashedId($orderId);
+        $zones = GetCandy::shippingZones()->getByCountryName($order->shipping_details['country']);
         $basket = $order->basket;
         $calculator = new ShippingCalculator(app());
 
@@ -196,7 +197,7 @@ class ShippingMethodService extends BaseService
 
         if (! empty($data['zones'])) {
             $method->zones()->attach(
-                app('api')->shippingZones()->getDecodedIds($data['zones'])
+                GetCandy::shippingZones()->getDecodedIds($data['zones'])
             );
         }
 
@@ -217,7 +218,7 @@ class ShippingMethodService extends BaseService
         $method->users()->detach();
 
         $method->users()->attach(
-            app('api')->users()->getDecodedIds($users)
+            GetCandy::users()->getDecodedIds($users)
         );
 
         return $method;
@@ -232,7 +233,7 @@ class ShippingMethodService extends BaseService
      */
     public function deleteUser($methodId, $userId)
     {
-        $user = app('api')->users()->getDecodedId($userId);
+        $user = GetCandy::users()->getDecodedId($userId);
         $method = $this->getByHashedId($methodId);
         $method->users()->detach($user);
 

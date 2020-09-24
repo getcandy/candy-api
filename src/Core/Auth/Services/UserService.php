@@ -2,14 +2,15 @@
 
 namespace GetCandy\Api\Core\Auth\Services;
 
+use GetCandy\Api\Core\Auth\Models\User;
+use GetCandy\Api\Core\Foundation\Actions\DecodeIds;
 use GetCandy\Api\Core\Scaffold\BaseService;
 
 class UserService extends BaseService
 {
     public function __construct()
     {
-        $userclass = config('auth.providers.users.model');
-        $this->model = new $userclass;
+        $this->model = new User();
     }
 
     public function getCustomerGroups($user = null)
@@ -91,10 +92,13 @@ class UserService extends BaseService
         }
 
         if (! empty($data['customer_groups'])) {
-            $groupData = app('api')->customerGroups()->getDecodedIds($data['customer_groups']);
+            $groupData = DecodeIds::run([
+                'model' => CustomerGroup::class,
+                'encoded_ids' => $data['customer_groups'],
+            ]);
             $user->groups()->sync($groupData);
         } else {
-            $default = app('api')->customerGroups()->getDefaultRecord();
+            $default = FetchDefaultCustomerGroup::run();
             $user->groups()->attach($default);
         }
 

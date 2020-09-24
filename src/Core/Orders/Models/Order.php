@@ -315,12 +315,11 @@ class Order extends BaseModel
 
     public function transactions()
     {
-        return $this->hasMany(Transaction::class);
+        return $this->hasMany(Transaction::class)->orderBy('created_at', 'desc');
     }
 
     public function discounts()
     {
-        // dd($this->id);
         return $this->hasMany(OrderDiscount::class);
     }
 }

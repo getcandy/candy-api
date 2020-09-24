@@ -1,0 +1,37 @@
+get:
+  summary: Get Languages
+  tags:
+    - Languages
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/LanguageCollection.yaml'
+  operationId: get-languages
+  description: Returns a paginated list of Languages
+post:
+  summary: Create Language
+  tags:
+    - Languages
+  responses:
+    '201':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/LanguageResponse.yaml'
+    '422':
+      description: Unprocessable Entity
+      content:
+          application/json:
+            schema:
+              $ref: '../../global/responses/Unprocessable.yaml'
+  operationId: post-languages
+  description: Create a new language
+  requestBody:
+    content:
+      multipart/form-data:
+        schema:
+          $ref: '../requests/CreateLanguageBody.yaml'

@@ -4,6 +4,7 @@ namespace GetCandy\Api\Core\Products\Drafting;
 
 use DB;
 use GetCandy\Api\Core\Products\Events\ProductCreatedEvent;
+use GetCandy\Api\Core\Products\Models\Product;
 use Illuminate\Database\Eloquent\Model;
 use NeonDigital\Drafting\Interfaces\DrafterInterface;
 use Versioning;

@@ -1,0 +1,19 @@
+title: Country
+type: object
+properties:
+  id:
+    type: string
+  name:
+    type: string
+  region:
+    type: string
+  iso_a_2:
+    type: string
+  iso_a_3:
+    type: string
+  iso_numeric:
+    type: string
+  preferred:
+    type: boolean
+  enabled:
+    type: boolean

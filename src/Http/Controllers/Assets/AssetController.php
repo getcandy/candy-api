@@ -3,10 +3,11 @@
 namespace GetCandy\Api\Http\Controllers\Assets;
 
 use Carbon\Carbon;
+use GetCandy;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Assets\UpdateAllRequest;
 use GetCandy\Api\Http\Requests\Assets\UploadRequest;
-use GetCandy\Api\Http\Transformers\Fractal\Assets\AssetTransformer;
+use GetCandy\Api\Http\Resources\Assets\AssetResource;
 use Illuminate\Http\Request;
 use Image;
 use Storage;
@@ -52,7 +53,7 @@ class AssetController extends BaseController
     {
         $parent = null;
         if ($request->parent_id) {
-            $parent = app('api')->{$request->parent}()->getByHashedId($request->parent_id, true);
+            $parent = GetCandy::{$request->parent}()->getByHashedId($request->parent_id, true);
         }
 
         $data = $request->all();
@@ -67,7 +68,7 @@ class AssetController extends BaseController
             $data['alt'] = $parent->attribute('name');
         }
 
-        $asset = app('api')->assets()->upload(
+        $asset = GetCandy::assets()->upload(
             $data,
             $parent,
             $parent ? $parent->assets()->count() + 1 : 1
@@ -77,13 +78,13 @@ class AssetController extends BaseController
             return $this->respondWithError('Unable to upload asset');
         }
 
-        return $this->respondWithItem($asset, new AssetTransformer);
+        return new AssetResource($asset);
     }
 
     public function detach($assetId, $ownerId, Request $request)
     {
         try {
-            $result = app('api')->assets()->detach($assetId, $ownerId, $request->type);
+            GetCandy::assets()->detach($assetId, $ownerId, $request->type);
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
@@ -94,7 +95,7 @@ class AssetController extends BaseController
     public function destroy($id)
     {
         try {
-            $result = app('api')->assets()->delete($id);
+            GetCandy::assets()->delete($id);
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
@@ -104,7 +105,7 @@ class AssetController extends BaseController
 
     public function updateAll(UpdateAllRequest $request)
     {
-        $result = app('api')->assets()->updateAll($request->assets);
+        $result = GetCandy::assets()->updateAll($request->assets);
         if (! $result) {
             $this->respondWithError();
         }

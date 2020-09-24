@@ -1,0 +1,6 @@
+title: ChannelResponse
+type: object
+properties:
+  data:
+    $ref: '../models/Channel.yaml'
+    

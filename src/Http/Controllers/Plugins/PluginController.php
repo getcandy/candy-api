@@ -4,7 +4,7 @@ namespace GetCandy\Api\Http\Controllers\Plugins;
 
 use GetCandy\Api\Core\Plugins\PluginManagerInterface;
 use GetCandy\Api\Http\Controllers\BaseController;
-use GetCandy\Api\Http\Transformers\Fractal\Plugins\PluginTransformer;
+use GetCandy\Api\Http\Resources\Payments\PluginCollection;
 
 class PluginController extends BaseController
 {
@@ -12,6 +12,6 @@ class PluginController extends BaseController
     {
         $plugins = $plugins->all();
 
-        return $this->respondWithCollection($plugins, new PluginTransformer);
+        return new PluginCollection($plugins);
     }
 }

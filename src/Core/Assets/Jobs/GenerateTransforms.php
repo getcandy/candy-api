@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Assets\Jobs;
 
+use GetCandy;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -46,7 +47,7 @@ class GenerateTransforms implements ShouldQueue
     public function handle()
     {
         foreach ($this->assets as $asset) {
-            app('api')->transforms()->transform(array_merge(
+            GetCandy::assetTransforms()->transform(array_merge(
                 ['thumbnail'],
                 $this->settings['transforms'] ?? []
             ), $asset);

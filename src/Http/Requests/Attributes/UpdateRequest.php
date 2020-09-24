@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Requests\Attributes;
 
+use GetCandy;
 use GetCandy\Api\Http\Requests\FormRequest;
 
 class UpdateRequest extends FormRequest
@@ -24,7 +25,7 @@ class UpdateRequest extends FormRequest
      */
     public function rules()
     {
-        $decodedId = app('api')->attributes()->getDecodedId($this->attribute);
+        $decodedId = GetCandy::attributes()->getDecodedId($this->attribute);
 
         return [
             'name' => 'required|array|valid_locales',

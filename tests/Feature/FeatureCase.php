@@ -23,9 +23,9 @@ abstract class FeatureCase extends TestCase
     {
         parent::setUp();
         $this->buildOpenApiValidator(
-            realpath(__DIR__.'/../../open-api.yaml')
+            realpath(__DIR__.'/../../openapi/openapi.yaml')
         );
-        GetCandy::routes();
+        GetCandy::router();
     }
 
     protected function getResponseContents($response)

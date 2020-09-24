@@ -23,11 +23,7 @@ class Channel extends BaseModel
      *
      * @var array
      */
-    protected $fillable = [
-        'name',
-        'handle',
-        'default',
-    ];
+    protected $guarded = [];
 
     public function products()
     {

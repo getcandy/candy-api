@@ -1,0 +1,9 @@
+title: UpdateCountryRequest
+type: object
+properties:
+  preferred:
+    type: boolean
+    nullable: true
+  enabled:
+    type: boolean
+    nullable: true

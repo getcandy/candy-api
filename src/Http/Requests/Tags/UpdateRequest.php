@@ -23,8 +23,6 @@ class UpdateRequest extends FormRequest
      */
     public function rules()
     {
-        $decodedId = app('api')->tags()->getDecodedId($this->tag);
-
         return [
             'name' => 'required|array|valid_locales',
         ];

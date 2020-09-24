@@ -2,6 +2,10 @@
 
 namespace GetCandy\Api\Core\Users\Services;
 
+use GetCandy;
+use GetCandy\Api\Core\Customers\Actions\FetchDefaultCustomerGroup;
+use GetCandy\Api\Core\Customers\Models\CustomerGroup;
+use GetCandy\Api\Core\Foundation\Actions\DecodeIds;
 use GetCandy\Api\Core\Payments\Models\ReusablePayment;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Users\Contracts\UserContract;
@@ -56,11 +60,11 @@ class UserService extends BaseService implements UserContract
      */
     public function getPaginatedData($length = 50, $page = null, $keywords = null, $ids = [])
     {
-        $query = $this->model->with(['details']);
+        $query = $this->model->with(['customer']);
         if ($keywords) {
             $keywords = explode(' ', $keywords);
             foreach ($keywords as $keyword) {
-                $query = $query->whereHas('details', function ($q) use ($keyword) {
+                $query = $query->whereHas('customer', function ($q) use ($keyword) {
                     $q->where('firstname', 'LIKE', '%'.$keyword.'%')
                         ->orWhere('lastname', 'LIKE', '%'.$keyword.'%')
                         ->orWhere('company_name', 'LIKE', '%'.$keyword.'%')
@@ -94,9 +98,9 @@ class UserService extends BaseService implements UserContract
         // $user->title = $data['title'];
 
         if (empty($data['language'])) {
-            $lang = app('api')->languages()->getDefaultRecord();
+            $lang = GetCandy::languages()->getDefaultRecord();
         } else {
-            $lang = app('api')->languages()->getEnabledByLang($data['language']);
+            $lang = GetCandy::languages()->getEnabledByLang($data['language']);
         }
 
         $user->language()->associate($lang);
@@ -113,10 +117,13 @@ class UserService extends BaseService implements UserContract
         }
 
         if (! empty($data['customer_groups'])) {
-            $groupData = app('api')->customerGroups()->getDecodedIds($data['customer_groups']);
+            $groupData = DecodeIds::run([
+                'model' => CustomerGroup::class,
+                'encoded_ids' => $data['customer_groups'],
+            ]);
             $user->groups()->sync($groupData);
         } else {
-            $default = app('api')->customerGroups()->getDefaultRecord();
+            $default = FetchDefaultCustomerGroup::run();
             $user->groups()->attach($default);
         }
 
@@ -170,10 +177,13 @@ class UserService extends BaseService implements UserContract
         }
 
         if (! empty($data['customer_groups'])) {
-            $groupData = app('api')->customerGroups()->getDecodedIds($data['customer_groups']);
+            $groupData = DecodeIds::run([
+                'model' => CustomerGroup::class,
+                'encoded_ids' => $data['customer_groups'],
+            ]);
             $user->groups()->sync($groupData);
         } else {
-            $default = app('api')->customerGroups()->getDefaultRecord();
+            $default = FetchDefaultCustomerGroup::run();
             $user->groups()->attach($default);
         }
 

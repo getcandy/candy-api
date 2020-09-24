@@ -1,0 +1,15 @@
+title: UpdateChannelBody
+type: object
+properties:
+  handle:
+    type: string
+    nullable: true
+  name:
+    type: string
+    nullable: true
+  url:
+    type: string
+    nullable: true
+  default:
+    type: boolean
+    nullable: true

@@ -1,0 +1,63 @@
+get:
+  summary: Get Language
+  tags:
+    - Languages
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/LanguageResponse.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/Error.yaml'
+  operationId: get-languages-languageId
+  description: Get a Language by ID
+put:
+  summary: Update Language
+  tags:
+    - Languages
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/LanguageResponse.yaml'
+          examples:
+            language-example:
+              value:
+                data:
+                  id: 6z8m9gmj
+                  name: English
+                  lang: en
+                  iso: gb
+                  default: true
+                  enabled: true
+                  current: false
+  operationId: put-languages-languageId
+  description: "Update a Language using it's ID"
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../models/Language.yaml'
+delete:
+  summary: Delete Language
+  tags:
+    - Languages
+  responses:
+    '204':
+      description: No Content
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/Error.yaml'
+  operationId: delete-languages-languageId
+  description: Delete a Language by its ID

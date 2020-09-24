@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Controllers\Baskets;
 
+use GetCandy;
 use GetCandy\Api\Core\Baskets\Factories\BasketFactory;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketCriteriaInterface;
 use GetCandy\Api\Core\Discounts\Services\DiscountService;
@@ -46,7 +47,7 @@ class BasketController extends BaseController
      */
     public function index(Request $request)
     {
-        $paginator = app('api')->baskets()->getPaginatedData($request->per_page);
+        $paginator = GetCandy::baskets()->getPaginatedData($request->per_page);
 
         return new BasketCollection($paginator);
     }
@@ -60,7 +61,7 @@ class BasketController extends BaseController
     public function show($id)
     {
         try {
-            $basket = app('api')->baskets()->getByHashedId($id);
+            $basket = GetCandy::baskets()->getByHashedId($id);
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
@@ -78,7 +79,7 @@ class BasketController extends BaseController
     public function addMeta($id, AddMetaRequest $request)
     {
         try {
-            $basket = app('api')->baskets()->getByHashedId($id);
+            $basket = GetCandy::baskets()->getByHashedId($id);
             $basket->meta = array_merge($basket->meta, [$request->key => $request->value]);
             $basket->save();
         } catch (ModelNotFoundException $e) {
@@ -118,7 +119,7 @@ class BasketController extends BaseController
 
     public function deleteDiscount($basketId, DeleteDiscountRequest $request)
     {
-        $basket = app('api')->baskets()->deleteDiscount($basketId, $request->discount_id);
+        $basket = GetCandy::baskets()->deleteDiscount($basketId, $request->discount_id);
 
         return new BasketResource($this->factory->init($basket->refresh())->get());
     }
@@ -132,7 +133,7 @@ class BasketController extends BaseController
     public function store(CreateRequest $request)
     {
         // try {
-        $basket = app('api')->baskets()->store($request->all(), $request->user());
+        $basket = GetCandy::baskets()->store($request->all(), $request->user());
         // } catch (\Illuminate\Database\QueryException $e) {
         //     return $this->errorUnprocessable(trans('getcandy::validation.max_qty'));
         // }
@@ -149,7 +150,7 @@ class BasketController extends BaseController
      */
     public function save($id, SaveRequest $request)
     {
-        $basket = app('api')->baskets()->save($id, $request->name);
+        $basket = GetCandy::baskets()->save($id, $request->name);
 
         return new BasketResource($basket);
     }
@@ -162,7 +163,7 @@ class BasketController extends BaseController
      */
     public function saved(Request $request)
     {
-        $baskets = app('api')->baskets()->getSaved($request->user());
+        $baskets = GetCandy::baskets()->getSaved($request->user());
 
         return new SavedBasketCollection($baskets);
     }
@@ -176,7 +177,7 @@ class BasketController extends BaseController
      */
     public function destroy($id, DeleteRequest $request)
     {
-        $result = app('api')->baskets()->destroy($request->basket);
+        GetCandy::baskets()->destroy($request->basket);
 
         return $this->respondWithSuccess();
     }
@@ -195,7 +196,7 @@ class BasketController extends BaseController
     {
         // TODO Remove in 0.3.0
         try {
-            $basket = app('api')->baskets()->addUser($basketId, $request->user_id);
+            $basket = GetCandy::baskets()->addUser($basketId, $request->user_id);
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
@@ -213,7 +214,7 @@ class BasketController extends BaseController
     public function claim($basketId, ClaimBasketRequest $request)
     {
         try {
-            $basket = app('api')->baskets()->addUser($basketId, $request->user()->encodedId());
+            $basket = GetCandy::baskets()->addUser($basketId, $request->user()->encodedId());
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
@@ -224,7 +225,7 @@ class BasketController extends BaseController
     public function deleteUser($basketId)
     {
         try {
-            $basket = app('api')->baskets()->removeUser($basketId);
+            $basket = GetCandy::baskets()->removeUser($basketId);
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
@@ -240,7 +241,7 @@ class BasketController extends BaseController
      */
     public function current(Request $request)
     {
-        $basket = app('api')->baskets()->getCurrentForUser($request->user(), $request->includes);
+        $basket = GetCandy::baskets()->getCurrentForUser($request->user(), $request->includes);
         if (! $basket) {
             return $this->errorNotFound("Basket does't exist");
         }
@@ -256,7 +257,7 @@ class BasketController extends BaseController
      */
     public function resolve(Request $request)
     {
-        $basket = app('api')->baskets()->resolve($request->user(), $request->basket_id, $request->merge);
+        $basket = GetCandy::baskets()->resolve($request->user(), $request->basket_id, $request->merge);
 
         return new BasketResource($basket);
     }

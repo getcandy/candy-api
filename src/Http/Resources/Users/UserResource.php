@@ -2,10 +2,11 @@
 
 namespace GetCandy\Api\Http\Resources\Users;
 
+use GetCandy\Api\Core\Addresses\Resources\AddressCollection;
+use GetCandy\Api\Core\Customers\Resources\CustomerGroupCollection;
+use GetCandy\Api\Core\Customers\Resources\CustomerResource;
 use GetCandy\Api\Http\Resources\AbstractResource;
 use GetCandy\Api\Http\Resources\Acl\RoleCollection;
-use GetCandy\Api\Http\Resources\Addresses\AddressCollection;
-use GetCandy\Api\Http\Resources\Customers\CustomerGroupCollection;
 use GetCandy\Api\Http\Resources\Orders\OrderCollection;
 use GetCandy\Api\Http\Resources\Orders\OrderResource;
 
@@ -23,8 +24,7 @@ class UserResource extends AbstractResource
     public function includes()
     {
         return [
-            // 'details' => $this->include('details', UserDetailsResource::class),
-            'details' => $this->include('details', UserDetailsResource::class),
+            'customer' => $this->include('customer', CustomerResource::class),
             'first_order' => $this->include('firstOrder', OrderResource::class),
             'roles' => new RoleCollection($this->whenLoaded('roles')),
             'groups' => new CustomerGroupCollection($this->whenLoaded('groups')),

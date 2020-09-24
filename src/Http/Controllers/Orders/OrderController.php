@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Controllers\Orders;
 
+use GetCandy;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketCriteriaInterface;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketFactoryInterface;
 use GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException;
@@ -93,7 +94,7 @@ class OrderController extends BaseController
 
     public function getTypes(Request $request)
     {
-        $types = app('api')->orders()->getTypes();
+        $types = GetCandy::orders()->getTypes();
 
         return response()->json([
             'data' => $types,
@@ -235,7 +236,7 @@ class OrderController extends BaseController
     public function bulkUpdate(BulkUpdateRequest $request)
     {
         try {
-            app('api')->orders()->bulkUpdate(
+            GetCandy::orders()->bulkUpdate(
                 $request->orders,
                 $request->field,
                 $request->value,
@@ -258,7 +259,7 @@ class OrderController extends BaseController
     public function expire($id)
     {
         try {
-            $result = app('api')->orders()->expire($id);
+            GetCandy::orders()->expire($id);
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
@@ -276,7 +277,7 @@ class OrderController extends BaseController
     public function shippingAddress($id, StoreAddressRequest $request)
     {
         try {
-            $order = app('api')->orders()->setShipping($id, $request->all(), $request->user());
+            $order = GetCandy::orders()->setShipping($id, $request->all(), $request->user());
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
@@ -294,7 +295,7 @@ class OrderController extends BaseController
     public function update($id, UpdateRequest $request)
     {
         try {
-            $order = app('api')->orders()->update($id, $request->all(), $request->send_emails ?: false, $request->data);
+            $order = GetCandy::orders()->update($id, $request->all(), $request->send_emails ?: false, $request->data);
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
@@ -331,7 +332,7 @@ class OrderController extends BaseController
     public function addContact($orderId, Request $request)
     {
         try {
-            $order = app('api')->orders()->setContact($orderId, $request->all());
+            $order = GetCandy::orders()->setContact($orderId, $request->all());
             if ($request->meta) {
                 $order->update([
                     'meta' => array_merge($order->meta ?? [], $request->meta ?? []),
@@ -354,7 +355,7 @@ class OrderController extends BaseController
     public function billingAddress($id, StoreAddressRequest $request)
     {
         try {
-            $order = app('api')->orders()->setBilling($id, $request->all());
+            $order = GetCandy::orders()->setBilling($id, $request->all());
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
@@ -407,7 +408,7 @@ class OrderController extends BaseController
         if (! $order) {
             return $this->errorUnauthorized();
         }
-        $pdf = app('api')->orders()->getPdf($order);
+        $pdf = GetCandy::orders()->getPdf($order);
 
         return new PdfResource($pdf);
     }
@@ -430,7 +431,7 @@ class OrderController extends BaseController
             ]);
         }
 
-        $order = app('api')->orders()->getByHashedId($request->id);
+        $order = GetCandy::orders()->getByHashedId($request->id);
 
         // Instantiate the mailer.
         $mailerObject = new $mailer($order);

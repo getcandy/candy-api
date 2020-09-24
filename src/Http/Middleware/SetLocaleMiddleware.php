@@ -3,13 +3,12 @@
 namespace GetCandy\Api\Http\Middleware;
 
 use Closure;
-use GetCandy\Api\Core\Traits\Fractal;
+use GetCandy\Api\Core\Languages\Actions\FetchDefaultLanguage;
+use GetCandy\Api\Core\Languages\Actions\FetchEnabledLanguageByCode;
 use Locale;
 
 class SetLocaleMiddleware
 {
-    use Fractal;
-
     /**
      * Handle an incoming request.
      *
@@ -20,7 +19,8 @@ class SetLocaleMiddleware
     public function handle($request, Closure $next)
     {
         $locale = $request->header('accept-language');
-        $defaultLanguage = app('api')->languages()->getDefaultRecord()->lang;
+
+        $defaultLanguage = FetchDefaultLanguage::run()->lang;
 
         if (! $locale) {
             $locale = $defaultLanguage;
@@ -30,7 +30,9 @@ class SetLocaleMiddleware
             } else {
                 $languages = explode(',', $locale);
             }
-            $requestedLocale = app('api')->languages()->getEnabledByLang($languages);
+            $requestedLocale = FetchEnabledLanguageByCode::run([
+                'code' => $languages[0] ?? $languages,
+            ]);
             if (! $requestedLocale) {
                 $locale = $defaultLanguage;
             } else {

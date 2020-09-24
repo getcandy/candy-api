@@ -92,7 +92,9 @@ class ProductPricingTier extends BaseModel
         if ($user = app('auth')->user()) {
             return $user->groups->pluck('id')->toArray();
         } else {
-            return [app('api')->customerGroups()->getGuestId()];
+            $defaultGroup = FetchDefaultCustomerGroup::run();
+
+            return [$defaultGroup->id];
         }
     }
 }

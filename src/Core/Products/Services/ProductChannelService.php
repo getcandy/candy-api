@@ -2,21 +2,14 @@
 
 namespace GetCandy\Api\Core\Products\Services;
 
-use GetCandy\Api\Core\Channels\Services\ChannelService;
 use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Scaffold\BaseService;
 
 class ProductChannelService extends BaseService
 {
-    /**
-     * @var \GetCandy\Api\Core\Channels\Services\ChannelService
-     */
-    protected $channelService;
-
-    public function __construct(ChannelService $channels)
+    public function __construct()
     {
         $this->model = new Product;
-        $this->channelService = $channels;
     }
 
     /**

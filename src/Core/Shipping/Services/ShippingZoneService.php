@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Shipping\Services;
 
+use GetCandy;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Shipping\Models\ShippingZone;
 
@@ -26,7 +27,7 @@ class ShippingZoneService extends BaseService
 
         if (! empty($data['countries'])) {
             $shipping->countries()->attach(
-                app('api')->countries()->getDecodedIds($data['countries'])
+                GetCandy::countries()->getDecodedIds($data['countries'])
             );
         }
 
@@ -71,7 +72,7 @@ class ShippingZoneService extends BaseService
 
         if (! empty($data['countries'])) {
             $shipping->countries()->attach(
-                app('api')->countries()->getDecodedIds($data['countries'])
+                GetCandy::countries()->getDecodedIds($data['countries'])
             );
         }
 

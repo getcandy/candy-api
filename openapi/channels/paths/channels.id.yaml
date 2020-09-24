@@ -1,0 +1,81 @@
+parameters:
+  - schema:
+      type: string
+    name: channelId
+    in: path
+    required: true
+get:
+  summary: Get the channel resource
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/ChannelResponse.yaml'
+          examples:
+            example-1:
+              value:
+                data:
+                  id: y3g6v91o
+                  name: Webstore
+                  handle: webstore
+                  url: 'http://webstore.test'
+                  default: true
+                  published_at: null
+                meta:
+                  lang: en
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/Error.yaml'
+  operationId: get-channels-channelId
+  description: ''
+  parameters:
+    - schema:
+        type: string
+      in: query
+      name: includes
+  tags:
+    - Channels
+put:
+  summary: Update the channel resource
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/ChannelResponse.yaml'
+    '422':
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/Unprocessable.yaml'
+  operationId: put-channels-channelId
+  requestBody:
+    content:
+      multipart/form-data:
+        schema:
+          $ref: '../requests/UpdateChannelBody.yaml'
+    description: ''
+  tags:
+    - Channels
+delete:
+  summary: Delete the channel resource
+  responses:
+    '204':
+      description: No Content
+    '422':
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/Unprocessable.yaml'
+  operationId: delete-channels-channelId
+  tags:
+    - Channels
+  description: ''

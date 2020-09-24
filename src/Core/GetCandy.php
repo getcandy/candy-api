@@ -3,8 +3,12 @@
 namespace GetCandy\Api\Core;
 
 use File;
+use GetCandy\Api\Core\Channels\Actions\FetchCurrentChannel;
+use GetCandy\Api\Core\Channels\Actions\SetCurrentChannel;
+use GetCandy\Api\Exceptions\InvalidServiceException;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 
 class GetCandy
 {
@@ -61,6 +65,18 @@ class GetCandy
         return $this;
     }
 
+    public static function onChannel($channel, \Closure $closure)
+    {
+        $current = FetchCurrentChannel::run();
+        SetCurrentChannel::run([
+            'handle' => $channel,
+        ]);
+        $closure();
+        SetCurrentChannel::run([
+            'handle' => $current->handle,
+        ]);
+    }
+
     /**
      * Gets the value for isHubRequest.
      *
@@ -88,10 +104,23 @@ class GetCandy
         ];
     }
 
-    public static function routes(array $options = [], $callback = null)
+    public function getUserModel()
     {
-        $callback = $callback ?: function ($router) {
-            $router->all();
+        return config('auth.providers.users.model', \App\User::class);
+    }
+
+    public static function router(array $options = [], $callback = null)
+    {
+        $callback = $callback ?: function ($router) use ($options) {
+            $template = $options['template'] ?? null;
+            if ($template) {
+                $method = 'template'.ucfirst($template);
+                if (method_exists($router, $method)) {
+                    $router->{$method}();
+                }
+            } else {
+                $router->all();
+            }
         };
 
         $defaultOptions = [
@@ -104,5 +133,16 @@ class GetCandy
         Route::group($options, function ($router) use ($callback) {
             $callback(new RouteRegistrar($router));
         });
+    }
+
+    public function __call($name, $params)
+    {
+        try {
+            $resolvingName = Str::snake($name);
+
+            return app("getcandy.{$resolvingName}");
+        } catch (\Exception $e) {
+            throw new InvalidServiceException("Service \"{$name}\" doesn't exist");
+        }
     }
 }

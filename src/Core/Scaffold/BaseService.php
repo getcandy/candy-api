@@ -3,7 +3,10 @@
 namespace GetCandy\Api\Core\Scaffold;
 
 use Carbon\Carbon;
+use GetCandy;
 use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
+use GetCandy\Api\Core\Channels\Actions\FetchChannel;
+use GetCandy\Api\Core\Routes\Actions\SearchForRoute;
 use Illuminate\Database\Eloquent\Model;
 
 abstract class BaseService
@@ -200,7 +203,7 @@ abstract class BaseService
         }
         $id = $this->model->decodeId($hashedId);
 
-        return $this->model->where('id', '=', $id)->exists();
+        return $this->model->where($this->model->getTable().'.id', '=', $id)->exists();
     }
 
     public function getDataList()
@@ -233,7 +236,7 @@ abstract class BaseService
         $model = $this->getByHashedId($id);
         $updatedData = $model->attribute_data;
         foreach ($data['attributes'] as $attribute) {
-            $ids[] = app('api')->attributes()->getDecodedId($attribute);
+            $ids[] = GetCandy::attributes()->getDecodedId($attribute);
         }
         $model->attributes()->sync($ids);
 
@@ -299,7 +302,7 @@ abstract class BaseService
             $previousUrl = null;
             foreach ($urls as $locale => $url) {
                 $i = 1;
-                while (app('api')->routes()->slugExists($url, $path) || $previousUrl == $url) {
+                while (SearchForRoute::run(['slug' => $url, 'path' => $path]) || $previousUrl == $url) {
                     $url = $url.'-'.$i;
                     $i++;
                 }
@@ -314,7 +317,7 @@ abstract class BaseService
         } else {
             $i = 1;
             $url = $urls;
-            while (app('api')->routes()->slugExists($url)) {
+            while (SearchForRoute::run(['slug' => $url])) {
                 $url = $url.'-'.$i;
                 $i++;
             }
@@ -360,7 +363,9 @@ abstract class BaseService
     {
         $channelData = [];
         foreach ($data as $channel) {
-            $channelModel = app('api')->channels()->getByHashedId($channel['id']);
+            $channelModel = FetchChannel::run([
+                'encoded_id' => $channel['id'],
+            ]);
             $channelData[$channelModel->id] = [
                 'published_at' => $channel['published_at'] ? Carbon::parse($channel['published_at']) : null,
             ];
@@ -379,7 +384,7 @@ abstract class BaseService
     {
         $groupData = [];
         foreach ($groups as $group) {
-            $groupModel = app('api')->customerGroups()->getByHashedId($group['id']);
+            $groupModel = GetCandy::customerGroups()->getByHashedId($group['id']);
             $groupData[$groupModel->id] = [
                 'visible' => $group['visible'],
                 'purchasable' => $group['purchasable'],
@@ -431,9 +436,7 @@ abstract class BaseService
         $model = $this->getByHashedId($hashedId, true);
 
         try {
-            $existing = app('api')->routes()->getBySlug($data['slug']);
-
-            return $model;
+            return SearchForRoute::run(['slug' => $data['slug']]);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
         }
 
@@ -458,7 +461,9 @@ abstract class BaseService
     {
         $channelData = [];
         foreach ($channels as $channel) {
-            $channelModel = app('api')->channels()->getByHashedId($channel['id']);
+            $channelModel = FetchChannel::run([
+                'encoded_id' => $channel['id'],
+            ]);
             $channelData[$channelModel->id] = [
                 'published_at' => $channel['published_at'] ? Carbon::parse($channel['published_at']) : null,
             ];

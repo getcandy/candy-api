@@ -4,6 +4,7 @@ namespace GetCandy\Api\Http\Controllers\Collections;
 
 use DB;
 use Drafting;
+use GetCandy;
 use GetCandy\Api\Core\Collections\Criteria\CollectionCriteria;
 use GetCandy\Api\Core\Collections\Models\Collection;
 use GetCandy\Api\Core\Collections\Services\CollectionService;
@@ -101,7 +102,7 @@ class CollectionController extends BaseController
      */
     public function store(CreateRequest $request)
     {
-        $result = app('api')->collections()->create($request->all());
+        $result = GetCandy::collections()->create($request->all());
 
         return new CollectionResource($result);
     }
@@ -116,7 +117,7 @@ class CollectionController extends BaseController
     public function update($id, UpdateRequest $request)
     {
         try {
-            $result = app('api')->collections()->update($id, $request->all());
+            $result = GetCandy::collections()->update($id, $request->all());
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
@@ -147,7 +148,7 @@ class CollectionController extends BaseController
     public function destroy($id, DeleteRequest $request)
     {
         try {
-            $result = app('api')->collections()->delete($id, true);
+            GetCandy::collections()->delete($id, true);
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }

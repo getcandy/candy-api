@@ -2,6 +2,8 @@
 
 namespace GetCandy\Api\Core\Baskets\Validators;
 
+use GetCandy;
+
 class BasketValidator
 {
     public function uniqueLines($value, $parameters, $basketId, $validator)
@@ -13,7 +15,7 @@ class BasketValidator
 
     public function inStock($attribute, $value, $parameters, $validator)
     {
-        return app('api')->productVariants()->canAddToBasket($parameters[0] ?? null, $value);
+        return GetCandy::productVariants()->canAddToBasket($parameters[0] ?? null, $value);
     }
 
     public function minQuantity($attribute, $value, $parameters, $validator)

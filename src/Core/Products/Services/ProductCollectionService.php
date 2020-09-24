@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Products\Services;
 
+use GetCandy;
 use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Scaffold\BaseService;
 
@@ -15,7 +16,7 @@ class ProductCollectionService extends BaseService
     public function update($product, array $data)
     {
         $product = $this->getByHashedId($product);
-        $collection_ids = app('api')->collections()->getDecodedIds($data['collections']);
+        $collection_ids = GetCandy::collections()->getDecodedIds($data['collections']);
         $product->collections()->sync($collection_ids);
 
         return $product->collections;
@@ -24,7 +25,7 @@ class ProductCollectionService extends BaseService
     public function delete($productId, $collectionId)
     {
         $product = $this->getByHashedId($productId);
-        $collectionId = app('api')->collections()->getDecodedId($collectionId);
+        $collectionId = GetCandy::collections()->getDecodedId($collectionId);
         $product->collections()->detach($collectionId);
 
         return $product->collections;

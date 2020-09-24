@@ -2,12 +2,12 @@
 
 namespace GetCandy\Api\Http\Controllers\Shipping;
 
+use GetCandy;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Shipping\CreateRequest;
 use GetCandy\Api\Http\Requests\Shipping\UpdateRequest;
 use GetCandy\Api\Http\Resources\Shipping\ShippingMethodCollection;
 use GetCandy\Api\Http\Resources\Shipping\ShippingMethodResource;
-use GetCandy\Api\Http\Transformers\Fractal\Shipping\ShippingMethodTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -22,7 +22,7 @@ class ShippingMethodController extends BaseController
      */
     public function index(Request $request)
     {
-        $methods = app('api')->shippingMethods()->getPaginatedData($request->per_page, $request->current_page);
+        $methods = GetCandy::shippingMethods()->getPaginatedData($request->per_page, $request->current_page);
 
         return new ShippingMethodCollection($methods);
     }
@@ -37,7 +37,7 @@ class ShippingMethodController extends BaseController
     public function show($id, Request $request)
     {
         try {
-            $shipping = app('api')->shippingMethods()->getByHashedId($id, explode(',', $request->includes));
+            $shipping = GetCandy::shippingMethods()->getByHashedId($id, explode(',', $request->includes));
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
@@ -53,47 +53,47 @@ class ShippingMethodController extends BaseController
      */
     public function store(CreateRequest $request)
     {
-        $result = app('api')->shippingMethods()->create($request->all());
-
-        return $this->respondWithItem($result, new ShippingMethodTransformer);
+        return new ShippingMethodResource(
+            GetCandy::shippingMethods()->create($request->all())
+        );
     }
 
     public function update($id, UpdateRequest $request)
     {
         try {
-            $result = app('api')->shippingMethods()->update($id, $request->all());
+            $shippingMethod = GetCandy::shippingMethods()->update($id, $request->all());
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
 
-        return $this->respondWithItem($result, new ShippingMethodTransformer);
+        return new ShippingMethodResource($shippingMethod);
     }
 
     public function updateZones($id, Request $request)
     {
-        $method = app('api')->shippingMethods()->updateZones($id, $request->all());
-
-        return $this->respondWithItem($method, new ShippingMethodTransformer);
+        return new ShippingMethodResource(
+            GetCandy::shippingMethods()->updateZones($id, $request->all())
+        );
     }
 
     public function updateUsers($id, Request $request)
     {
-        $method = app('api')->shippingMethods()->updateUsers($id, $request->users);
-
-        return $this->respondWithItem($method, new ShippingMethodTransformer);
+        return new ShippingMethodResource(
+            GetCandy::shippingMethods()->updateUsers($id, $request->users)
+        );
     }
 
     public function deleteUser($methodId, $userId)
     {
-        $method = app('api')->shippingMethods()->deleteUser($methodId, $userId);
-
-        return $this->respondWithItem($method, new ShippingMethodTransformer);
+        return new ShippingMethodResource(
+            GetCandy::shippingMethods()->deleteUser($methodId, $userId)
+        );
     }
 
     public function destroy($methodId)
     {
         try {
-            $result = app('api')->shippingMethods()->delete($methodId);
+            GetCandy::shippingMethods()->delete($methodId);
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }

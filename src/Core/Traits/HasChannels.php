@@ -4,8 +4,9 @@ namespace GetCandy\Api\Core\Traits;
 
 use Auth;
 use Carbon\Carbon;
+use GetCandy;
+use GetCandy\Api\Core\Channels\Actions\FetchDefaultChannel;
 use GetCandy\Api\Core\Channels\Models\Channel;
-use GetCandy\Api\Core\GetCandy;
 use GetCandy\Api\Core\Scopes\ChannelScope;
 
 trait HasChannels
@@ -20,18 +21,16 @@ trait HasChannels
 
     public function scopeChannel($query, $channel = null)
     {
-        $roles = app('api')->roles()->getHubAccessRoles();
-        $api = app()->getInstance()->make(GetCandy::class);
+        $roles = GetCandy::roles()->getHubAccessRoles();
         $user = Auth::user();
-        $channels = app('api')->channels();
 
-        if (! $channel && ($user && $user->hasAnyRole($roles) && $api->isHubRequest())) {
+        if (! $channel && ($user && $user->hasAnyRole($roles) && GetCandy::isHubRequest())) {
             return $query;
         }
 
         // // If no channel is set, we need to get the default one.
         if (! $channel) {
-            $channel = $channels->getDefaultRecord()->handle;
+            $channel = FetchDefaultChannel::run()->handle;
         }
 
         // dump($channel, $this);
@@ -48,7 +47,9 @@ trait HasChannels
         if ($user = app('auth')->user()) {
             return $user->groups->pluck('id')->toArray();
         } else {
-            return [app('api')->customerGroups()->getGuestId()];
+            $defaultGroup = FetchDefaultCustomerGroup::run();
+
+            return [$defaultGroup->id];
         }
     }
 

@@ -1,0 +1,13 @@
+title: CreateChannelBody
+type: object
+properties:
+  handle:
+    type: string
+  name:
+    type: string
+  url:
+    type: string
+    nullable: true
+  default:
+    type: boolean
+    nullable: true

@@ -1,0 +1,38 @@
+title: Channel
+description: |-
+  ## Available includes
+
+  - products
+  - categories
+  - collections
+  - discounts
+  - shippingMethods
+x-examples:
+  webstore:
+    id: y3g6v91o
+    name: Webstore
+    handle: webstore
+    url: 'localhost:8080'
+    default: true
+properties:
+  id:
+    type: string
+    example: y3g6v91o
+  name:
+    type: string
+    example: Webstore
+  handle:
+    type: string
+    example: webstore
+  url:
+    type: string
+    format: string
+    example: "localhost:8080"
+    nullable: true
+  default:
+    type: boolean
+    default: false
+    example: true
+x-tags:
+  - Channels
+type: object

@@ -2,8 +2,9 @@
 
 namespace GetCandy\Api\Http\Controllers\Baskets;
 
+use GetCandy;
 use GetCandy\Api\Http\Controllers\BaseController;
-use GetCandy\Api\Http\Transformers\Fractal\Baskets\SavedBasketTransformer;
+use GetCandy\Api\Http\Resources\Baskets\SavedBasketResource;
 use Illuminate\Http\Request;
 
 class SavedBasketController extends BaseController
@@ -17,8 +18,8 @@ class SavedBasketController extends BaseController
      */
     public function update($id, Request $request)
     {
-        $basket = app('api')->savedBaskets()->update($id, $request->all());
-
-        return $this->respondWithItem($basket, new SavedBasketTransformer);
+        return new SavedBasketResource(
+            GetCandy::savedBaskets()->update($id, $request->all())
+        );
     }
 }

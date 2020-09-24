@@ -39,7 +39,6 @@ trait InteractsWithIndex
 
     public function against($types)
     {
-        dd(1);
         $this->type = $this->getType($types);
 
         return $this;
@@ -52,7 +51,7 @@ trait InteractsWithIndex
      */
     protected function getDefaultIndex()
     {
-        $defaultLang = app('api')->languages()->getDefaultRecord();
+        $defaultLang = FetchDefaultLanguage::run();
 
         return $this->getBaseIndexName()."_{$defaultLang->lang}";
     }

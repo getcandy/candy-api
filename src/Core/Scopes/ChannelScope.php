@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Core\Scopes;
 
-use Carbon\Carbon;
 use GetCandy\Api\Core\Channels\Interfaces\ChannelFactoryInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -22,10 +21,10 @@ class ChannelScope extends AbstractScope
         $this->resolve(function () use ($builder, $channel) {
             $model = $builder->getModel();
             $relation = $model->channels();
-            $builder->join($relation->getTable(), function ($join) use ($relation, $model, $channel) {
+            $builder->addSelect("{$model->getTable()}.*")->join($relation->getTable(), function ($join) use ($relation, $model, $channel) {
                 $join->on("{$model->getTable()}.id", '=', $relation->getExistenceCompareKey())
                 ->where("{$relation->getTable()}.channel_id", $channel->getChannel()->id)
-                ->where("{$relation->getTable()}.published_at", '<=', Carbon::now());
+                ->whereDate("{$relation->getTable()}.published_at", '<=', now());
             })->groupBy($relation->getExistenceCompareKey());
         });
     }

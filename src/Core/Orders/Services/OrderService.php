@@ -5,7 +5,10 @@ namespace GetCandy\Api\Core\Orders\Services;
 use Auth;
 use Carbon\Carbon;
 use DB;
+use GetCandy;
 use GetCandy\Api\Core\ActivityLog\Interfaces\ActivityLogFactoryInterface;
+use GetCandy\Api\Core\Addresses\Actions\CreateAddressAction;
+use GetCandy\Api\Core\Addresses\Actions\FetchAddressAction;
 use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Core\Baskets\Services\BasketService;
 use GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface;
@@ -99,7 +102,7 @@ class OrderService extends BaseService implements OrderServiceInterface
             $order->basket()->associate($basket);
 
             // Get the default order status
-            $settings = app('api')->settings()->get('orders');
+            $settings = GetCandy::settings()->get('orders');
 
             if ($settings) {
                 $order->status = $settings->content['default_status'] ?? 'awaiting-payment';
@@ -154,7 +157,7 @@ class OrderService extends BaseService implements OrderServiceInterface
     {
         $order = $this->getByHashedId($orderId);
 
-        $price = app('api')->shippingPrices()->getByHashedId($shippingPriceId);
+        $price = GetCandy::shippingPrices()->getByHashedId($shippingPriceId);
 
         $updateFields = [
             'shipping_method' => $price->method->name,
@@ -168,7 +171,7 @@ class OrderService extends BaseService implements OrderServiceInterface
 
         $basket = $this->baskets->getForOrder($order);
 
-        $tax = app('api')->taxes()->getDefaultRecord();
+        $tax = GetCandy::taxes()->getDefaultRecord();
 
         $rate = $this->calculator->get(
             $price->rate,
@@ -444,7 +447,9 @@ class OrderService extends BaseService implements OrderServiceInterface
 
         // If this address doesn't exist, create it.
         if (! empty($data['address_id'])) {
-            $shipping = app('api')->addresses()->getByHashedId($data['address_id']);
+            $shipping = FetchAddressAction::run([
+                'encoded_id' => $data['address_id'],
+            ]);
             $payload = $shipping->only([
                 'firstname',
                 'lastname',
@@ -461,7 +466,11 @@ class OrderService extends BaseService implements OrderServiceInterface
             $payload['phone'] = $data['phone'] ?? null;
             $data = $payload;
         } elseif ($user) {
-            app('api')->addresses()->addAddress($user, $data, $type);
+            // TODO: Reassess when we refactor order addresses.
+            $addressData = $data;
+            $addressData[$type] = true;
+            $addressData['postal_code'] = $data['zip'];
+            CreateAddressAction::run($addressData);
         }
 
         $this->setFields($order, $data, $type);
@@ -672,9 +681,9 @@ class OrderService extends BaseService implements OrderServiceInterface
         $order->save();
 
         if (! empty($data['payment_type_id'])) {
-            $type = app('api')->paymentTypes()->getByHashedId($data['payment_type_id']);
+            $type = GetCandy::paymentTypes()->getByHashedId($data['payment_type_id']);
         } elseif (! empty($data['payment_type'])) {
-            $type = app('api')->paymentTypes()->getByHandle($data['payment_type']);
+            $type = GetCandy::paymentTypes()->getByHandle($data['payment_type']);
         } else {
             $type = null;
         }
@@ -793,9 +802,9 @@ class OrderService extends BaseService implements OrderServiceInterface
 
     public function getPdf($order)
     {
-        $settings['address'] = app('api')->settings()->get('address')['content'];
-        $settings['tax'] = app('api')->settings()->get('tax')['content'];
-        $settings['contact'] = app('api')->settings()->get('contact')['content'];
+        $settings['address'] = GetCandy::settings()->get('address')['content'];
+        $settings['tax'] = GetCandy::settings()->get('tax')['content'];
+        $settings['contact'] = GetCandy::settings()->get('contact')['content'];
 
         $data = [
             'order' => $order->load(['lines', 'discounts']),

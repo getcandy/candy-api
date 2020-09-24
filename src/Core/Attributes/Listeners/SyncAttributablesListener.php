@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Attributes\Listeners;
 
+use GetCandy;
 use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
 
 class SyncAttributablesListener
@@ -28,7 +29,7 @@ class SyncAttributablesListener
                 return $existing->contains($attribute);
             });
         }
-        $attributes = app('api')->attributes()->getByHandles($mapped->toArray());
+        $attributes = GetCandy::attributes()->getByHandles($mapped->toArray());
 
         $event->model->attributes()->sync($attributes->pluck('id')->toArray());
     }

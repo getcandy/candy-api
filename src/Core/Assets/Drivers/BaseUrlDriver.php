@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Assets\Drivers;
 
+use GetCandy;
 use GetCandy\Api\Core\Assets\Jobs\GenerateTransforms;
 use GetCandy\Api\Core\Assets\Models\Asset;
 use GuzzleHttp\Client;
@@ -49,10 +50,10 @@ abstract class BaseUrlDriver
      */
     public function process(array $data, Model $model = null)
     {
-        $assetSources = app('api')->assetSources();
+        $assetSources = GetCandy::assetSources();
 
         if ($model) {
-            $this->source = app('api')->assetSources()->getByHandle($model->settings['asset_source']);
+            $this->source = GetCandy::assetSources()->getByHandle($model->settings['asset_source']);
         } else {
             $this->source = $assetSources->getDefaultRecord();
         }

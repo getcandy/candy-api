@@ -1,0 +1,42 @@
+title: Address
+type: object
+properties:
+  phone:
+    type: string
+  email:
+    type: string
+  firstname:
+    type: string
+  lastname:
+    type: string
+  address:
+    type: string
+  address_two:
+    type: string
+  address_three:
+    type: string
+  city:
+    type: string
+  state:
+    type: string
+  country:
+    $ref: '../../countries/responses/CountryResponse.yaml'
+  postal_code:
+    type: string
+  salutation:
+    type: string
+  default:
+    type: boolean
+  shipping:
+    type: boolean
+  delivery:
+    type: boolean
+  delivery_instructions:
+    type: string
+  meta:
+    anyOf:
+      - type: object
+      - type: array
+        items: {}
+  last_used_at:
+    type: string

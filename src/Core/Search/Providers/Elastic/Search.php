@@ -178,7 +178,7 @@ class Search implements ClientContract
      */
     public function language($lang = 'en')
     {
-        $this->lang = $lang;
+        $this->builder->setLang($lang);
 
         return $this;
     }
@@ -253,8 +253,6 @@ class Search implements ClientContract
      */
     public function search($rank = true)
     {
-        $roles = app('api')->roles()->getHubAccessRoles();
-
         $builder = $this->builder;
 
         $builder

@@ -20,7 +20,14 @@ class OrderServiceProvider extends ServiceProvider
             return $app->make(OrderCriteria::class);
         });
 
+        /**
+         * @deprecated
+         */
         $this->app->bind(OrderServiceInterface::class, function ($app) {
+            return $app->make(OrderService::class);
+        });
+
+        $this->app->bind('getcandy.orders', function ($app) {
             return $app->make(OrderService::class);
         });
 

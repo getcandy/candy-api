@@ -2,6 +2,9 @@
 
 namespace GetCandy\Api\Core\Pages\Services;
 
+use GetCandy;
+use GetCandy\Api\Core\Channels\Actions\FetchChannel;
+use GetCandy\Api\Core\Channels\Actions\FetchDefaultChannel;
 use GetCandy\Api\Core\Pages\Models\Page;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Exceptions\InvalidLanguageException;
@@ -36,7 +39,7 @@ class PageService extends BaseService
          * Figure out which language this page belongs to
          */
         if (! $languageCode instanceof Model) {
-            $language = app('api')->languages()->getEnabledByCode($languageCode);
+            $language = GetCandy::languages()->getEnabledByCode($languageCode);
         } else {
             $language = $languageCode;
         }
@@ -51,7 +54,7 @@ class PageService extends BaseService
          * Sort out the layout for this page
          */
         if (! $layout instanceof Model) {
-            $layout = app('api')->layouts()->getByHashedId($layout);
+            $layout = GetCandy::layouts()->getByHashedId($layout);
         }
 
         if (! $layout) {
@@ -66,9 +69,11 @@ class PageService extends BaseService
 
         if (! $channel instanceof Model) {
             if ($channel) {
-                $channel = app('api')->channels()->getByHashedId($channel);
+                $channel = FetchChannel::run([
+                    'encoded_id' => $channel,
+                ]);
             } else {
-                $channel = app('api')->channels()->getDefaultRecord($channel);
+                $channel = FetchDefaultChannel::run();
             }
         }
 
@@ -114,7 +119,7 @@ class PageService extends BaseService
             });
         } else {
             $slug = $lang;
-            $result = $this->model->where(function ($q) use ($channel, $lang, $slug) {
+            $result = $this->model->where(function ($q) use ($channel , $slug) {
                 $q->whereHas('channel', function ($q2) use ($channel) {
                     $q2->where('handle', '=', $channel);
                 });

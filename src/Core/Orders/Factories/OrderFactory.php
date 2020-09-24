@@ -3,6 +3,7 @@
 namespace GetCandy\Api\Core\Orders\Factories;
 
 use DB;
+use GetCandy;
 use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface;
 use GetCandy\Api\Core\Orders\Events\OrderSavedEvent;
@@ -455,7 +456,7 @@ class OrderFactory implements OrderFactoryInterface
 
         $order->update($updateFields);
 
-        $tax = app('api')->taxes()->getDefaultRecord();
+        $tax = GetCandy::taxes()->getDefaultRecord();
 
         $rate = $this->calculator->get(
             $this->shipping->rate,

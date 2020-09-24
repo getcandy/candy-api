@@ -2,16 +2,15 @@
 
 namespace GetCandy\Api\Http\Controllers\Search;
 
+use GetCandy;
 use GetCandy\Api\Core\Categories\Services\CategoryService;
-use GetCandy\Api\Core\Channels\Services\ChannelService;
-use GetCandy\Api\Core\Products\Models\Product;
+use GetCandy\Api\Core\Channels\Actions\FetchDefaultChannel;
 use GetCandy\Api\Core\Products\Services\ProductService;
 use GetCandy\Api\Core\Search\SearchContract;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Search\SearchRequest;
 use GetCandy\Api\Http\Resources\Categories\CategoryCollection;
 use GetCandy\Api\Http\Resources\Products\ProductCollection;
-use GetCandy\Api\Http\Transformers\Fractal\Search\SearchSuggestionTransformer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -28,9 +27,8 @@ class SearchController extends BaseController
      */
     protected $products;
 
-    public function __construct(ChannelService $channels, CategoryService $categories, ProductService $products)
+    public function __construct(CategoryService $categories, ProductService $products)
     {
-        $this->channels = $channels;
         $this->categories = $categories;
         $this->products = $products;
     }
@@ -45,7 +43,7 @@ class SearchController extends BaseController
     public function search(SearchRequest $request, SearchContract $search)
     {
         // Get channel
-        $defaultChannel = $this->channels->getDefaultRecord();
+        $defaultChannel = FetchDefaultChannel::run();
         $channel = $request->channel ?: ($defaultChannel ? $defaultChannel->handle : null);
 
         try {
@@ -64,7 +62,7 @@ class SearchController extends BaseController
         }
 
         // Get our filterable attributes.
-        $filterable = app('api')->attributes()->getFilterable()->pluck('handle')->toArray();
+        $filterable = GetCandy::attributes()->getFilterable()->pluck('handle')->toArray();
         $filterable[] = 'price';
 
         try {
@@ -113,7 +111,7 @@ class SearchController extends BaseController
 
         $paginator = new LengthAwarePaginator(
             $models,
-            $meta['hits']['total'],
+            $meta['hits']['total']['value'],
             $results->getQuery()->getParam('size'),
             $page
         );
@@ -124,34 +122,6 @@ class SearchController extends BaseController
                 'highlight' => $query->getParam('highlight'),
             ],
         ]);
-    }
-
-    /**
-     * Gets suggested searches.
-     *
-     * @param  \GetCandy\Api\Http\Requests\Search\SearchRequest  $request
-     * @param  \GetCandy\Api\Core\Search\SearchContract  $client
-     * @return array
-     */
-    public function suggest(SearchRequest $request, SearchContract $client)
-    {
-        try {
-            $results = $client
-                ->client()
-                ->language(app()->getLocale())
-                ->on('webstore')
-                ->against(Product::class)
-                ->user($request->user())
-                ->suggest($request->keywords);
-        } catch (\Elastica\Exception\Connection\HttpException $e) {
-            return $this->errorInternalError($e->getMessage());
-        } catch (\Elastica\Exception\ResponseException $e) {
-            return $this->errorInternalError($e->getMessage());
-        }
-
-        $results = app('api')->search()->getSuggestResults($results, $request->type);
-
-        return $this->respondWithCollection($results, new SearchSuggestionTransformer);
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Orders\Listeners;
 
+use GetCandy;
 use GetCandy\Api\Core\Orders\Events\OrderSavedEvent;
 
 class RefreshOrderListener
@@ -19,6 +20,6 @@ class RefreshOrderListener
         if ($order->placed_at) {
             return;
         }
-        app('api')->orders()->recalculate($order);
+        GetCandy::orders()->recalculate($order);
     }
 }

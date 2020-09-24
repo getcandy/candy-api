@@ -20,7 +20,10 @@
         'uses' => 'ActivityLog\ActivityLogController@store',
     ]);
 
-    $router->post('addresses', 'Addresses\AddressController@store');
+    $router->post('addresses', '\GetCandy\Api\Core\Addresses\Actions\CreateAddressAction');
+    $router->put('addresses/{addressId}', '\GetCandy\Api\Core\Addresses\Actions\UpdateAddressAction');
+    $router->delete('addresses/{addressId}', '\GetCandy\Api\Core\Addresses\Actions\DeleteAddressAction');
+
     $router->post('auth/impersonate', [
         'as' => 'auth.impersonate',
         'uses' => 'Auth\ImpersonateController@process',
@@ -98,9 +101,11 @@
     /*
      * Channels
      */
-    $router->resource('channels', 'Channels\ChannelController', [
-        'except' => ['edit', 'create', 'show'],
-    ]);
+
+    $router->get('channels', '\GetCandy\Api\Core\Channels\Actions\FetchChannels');
+    $router->post('channels', '\GetCandy\Api\Core\Channels\Actions\CreateChannel');
+    $router->put('channels/{encoded_id}', '\GetCandy\Api\Core\Channels\Actions\UpdateChannel');
+    $router->delete('channels/{encoded_id}', '\GetCandy\Api\Core\Channels\Actions\DeleteChannel');
 
     /*
      * Collections
@@ -114,15 +119,34 @@
     ]);
 
     /*
+    * Countries
+    */
+    $router->put('countries/{encoded_id}', '\GetCandy\Api\Core\Countries\Actions\UpdateCountry');
+
+    /*
      * Customers
      */
-    $router->resource('customers/groups', 'Customers\CustomerGroupController', [
-        'except' => ['edit', 'create', 'show'],
-    ]);
 
-    $router->resource('customers', 'Customers\CustomerController', [
-        'except' => ['edit', 'create', 'store'],
-    ]);
+    $router->group([
+        'prefix' => 'customers',
+    ], function ($group) {
+        $group->get('/', '\GetCandy\Api\Core\Customers\Actions\FetchCustomers');
+        $group->post('{encoded_id}/users', '\GetCandy\Api\Core\Customers\Actions\AttachUserToCustomer');
+        $group->delete('{encoded_id}', '\GetCandy\Api\Core\Customers\Actions\DeleteCustomer');
+        $group->put('{encoded_id}/customer-groups', '\GetCandy\Api\Core\Customers\Actions\AttachCustomerToGroups');
+    });
+
+    /**
+     * Customer groups.
+     */
+    $router->group([
+        'prefix' => 'customer-groups',
+    ], function ($route) {
+        $route->get('/', '\GetCandy\Api\Core\Customers\Actions\FetchCustomerGroups');
+        $route->get('{encoded_id}', '\GetCandy\Api\Core\Customers\Actions\FetchCustomerGroup');
+        $route->delete('{encoded_id}', '\GetCandy\Api\Core\Customers\Actions\DeleteCustomerGroup');
+        $route->post('/', '\GetCandy\Api\Core\Customers\Actions\CreateCustomerGroup');
+    });
 
     /*
      * Discounts
@@ -132,11 +156,15 @@
     ]);
 
     /*
-     * Languages
-     */
-    $router->resource('languages', 'Languages\LanguageController', [
-        'except' => ['edit', 'create'],
-    ]);
+    * Languages
+    */
+    $router->group([
+        'prefix' => 'languages',
+    ], function ($group) {
+        $group->post('/', '\GetCandy\Api\Core\Languages\Actions\CreateLanguage');
+        $group->delete('{encoded_id}', '\GetCandy\Api\Core\Languages\Actions\DeleteLanguage');
+        $group->put('{encoded_id}', '\GetCandy\Api\Core\Languages\Actions\UpdateLanguage');
+    });
 
     /*
      * Layouts
@@ -222,16 +250,26 @@
     /*
      * Product families
      */
-    $router->resource('product-families', 'Products\ProductFamilyController', [
-        'except' => ['edit', 'create'],
-    ]);
+    $router->group([
+        'prefix' => 'product-families',
+    ], function ($group) {
+        $group->get('/', '\GetCandy\Api\Core\Products\Actions\FetchProductFamilies');
+        $group->get('{encoded_id}', '\GetCandy\Api\Core\Products\Actions\FetchProductFamily');
+        $group->put('{encoded_id}', '\GetCandy\Api\Core\Products\Actions\UpdateProductFamily');
+        $group->delete('{encoded_id}', '\GetCandy\Api\Core\Products\Actions\DeleteProductFamily');
+        $group->post('/', '\GetCandy\Api\Core\Products\Actions\CreateProductFamily');
+    });
 
     /*
      * Routes
      */
-    $router->resource('routes', 'Routes\RouteController', [
-        'except' => ['index', 'show', 'edit', 'create'],
-    ]);
+    $router->group([
+        'prefix' => 'routes',
+    ], function ($route) {
+        $route->get('/', '\GetCandy\Api\Core\Routes\Actions\FetchRoutes');
+        $route->delete('{encoded_id}', '\GetCandy\Api\Core\Routes\Actions\DeleteRoute');
+        $route->put('{encoded_id}', '\GetCandy\Api\Core\Routes\Actions\UpdateRoute');
+    });
 
     /*
      * Saved search
@@ -275,7 +313,6 @@
     $router->resource('taxes', 'Taxes\TaxController', [
         'except' => ['edit', 'create'],
     ]);
-
     /*
      * Users
      */

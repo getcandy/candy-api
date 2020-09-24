@@ -16,8 +16,8 @@ use GetCandy\Api\Http\Middleware\SetCurrencyMiddleware;
 use GetCandy\Api\Http\Middleware\SetCustomerGroups;
 use GetCandy\Api\Http\Middleware\SetLocaleMiddleware;
 use GetCandy\Api\Http\Middleware\SetTaxMiddleware;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
-use League\Fractal\Manager;
 use Validator;
 
 class ApiServiceProvider extends ServiceProvider
@@ -38,6 +38,9 @@ class ApiServiceProvider extends ServiceProvider
         $this->registerMiddleware();
         $this->mapCommands();
         $this->loadMigrations();
+        Gate::before(function ($user) {
+            return $user->hasRole('admin') ? true : null;
+        });
     }
 
     /**
@@ -48,24 +51,36 @@ class ApiServiceProvider extends ServiceProvider
     protected function loadProviders()
     {
         $providers = [
+            AddressServiceProvider::class,
             ActivityLogServiceProvider::class,
+            AssociationServiceProvider::class,
+            AttributeServiceProvider::class,
             AssetServiceProvider::class,
             CategoryServiceProvider::class,
             ChannelServiceProvider::class,
             CollectionServiceProvider::class,
+            CustomerServiceProvider::class,
             BasketServiceProvider::class,
             CurrencyServiceProvider::class,
             DiscountServiceProvider::class,
+            LanguageServiceProvider::class,
+            CountryServiceProvider::class,
+            LayoutServiceProvider::class,
             OrderServiceProvider::class,
             PaymentServiceProvider::class,
+            PageServiceProvider::class,
             PricingServiceProvider::class,
             ProductServiceProvider::class,
+            RouteServiceProvider::class,
             SearchServiceProvider::class,
             ShippingServiceProvider::class,
+            TagServiceProvider::class,
             TaxServiceProvider::class,
             UtilServiceProvider::class,
             ReportsServiceProvider::class,
             RecycleBinServiceProvider::class,
+            SettingServiceProvider::class,
+            UserServiceProvider::class,
         ];
         foreach ($providers as $provider) {
             $this->app->register($provider, true);
@@ -112,9 +127,9 @@ class ApiServiceProvider extends ServiceProvider
     {
         Validator::extend('unique_name_in_group', 'GetCandy\Api\Http\Validators\AttributeValidator@uniqueNameInGroup');
         Validator::extend('hashid_is_valid', 'GetCandy\Api\Http\Validators\HashidValidator@validForModel');
+        Validator::extend('unique_with', 'GetCandy\Api\Http\Validators\DatabaseValidator@uniqueWith');
         Validator::extend('valid_structure', 'GetCandy\Api\Http\Validators\AttributeValidator@validateData');
         Validator::extend('unique_category_attribute', 'GetCandy\Api\Http\Validators\CategoriesValidator@uniqueCategoryAttributeData');
-        Validator::extend('unique_route', 'GetCandy\Api\Http\Validators\RoutesValidator@uniqueRoute');
         Validator::extend('check_coupon', 'GetCandy\Api\Core\Discounts\Validators\DiscountValidator@checkCoupon');
         Validator::extend('valid_locales', 'GetCandy\Api\Http\Validators\LocaleValidator@validate');
         Validator::extend('enabled', 'GetCandy\Api\Http\Validators\BaseValidator@enabled');
@@ -156,10 +171,6 @@ class ApiServiceProvider extends ServiceProvider
 
         $this->app->singleton('api', function ($app) {
             return $app->make(Factory::class);
-        });
-
-        $this->app->singleton('fractal', function ($app) {
-            return new Manager();
         });
 
         $mediaDrivers = config('assets.upload_drivers', []);

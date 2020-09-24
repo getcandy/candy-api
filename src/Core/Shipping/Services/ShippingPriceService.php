@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Shipping\Services;
 
+use GetCandy;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Shipping\Models\ShippingPrice;
 use GetCandy\Api\Core\Shipping\Models\ShippingRegion;
@@ -22,9 +23,9 @@ class ShippingPriceService extends BaseService
      */
     public function create($shippingMethodId, array $data)
     {
-        $method = app('api')->shippingMethods()->getByHashedId($shippingMethodId);
-        $currency = app('api')->currencies()->getByHashedId($data['currency_id']);
-        $zone = app('api')->shippingZones()->getByHashedId($data['zone_id']);
+        $method = GetCandy::shippingMethods()->getByHashedId($shippingMethodId);
+        $currency = GetCandy::currencies()->getByHashedId($data['currency_id']);
+        $zone = GetCandy::shippingZones()->getByHashedId($data['zone_id']);
         $price = new ShippingPrice;
         $price->fill($data);
         $price->method()->associate($method);
@@ -50,7 +51,7 @@ class ShippingPriceService extends BaseService
     public function update($id, array $data)
     {
         $price = $this->getByHashedId($id);
-        $currency = app('api')->currencies()->getByHashedId($data['currency_id']);
+        $currency = GetCandy::currencies()->getByHashedId($data['currency_id']);
 
         // event(new AttributableSavedEvent($product));
 
@@ -76,7 +77,7 @@ class ShippingPriceService extends BaseService
     {
         $groupData = [];
         foreach ($groups as $group) {
-            $groupModel = app('api')->customerGroups()->getByHashedId($group['id']);
+            $groupModel = GetCandy::customerGroups()->getByHashedId($group['id']);
             $groupData[$groupModel->id] = [
                 'visible' => $group['visible'],
             ];

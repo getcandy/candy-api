@@ -45,8 +45,32 @@ class RouteRegistrar
         $this->router->group([], __DIR__.'/../../routes/api.client.php');
     }
 
+    /**
+     * Register the auth routes.
+     *
+     * @return  void
+     */
     public function auth()
     {
         $this->router->group([], __DIR__.'/../../routes/api.php');
+    }
+
+    /**
+     * Provide a sanctum template to use.
+     *
+     * @return  void
+     */
+    public function templateSanctum()
+    {
+        $this->router->group([
+            'middleware' => ['auth:sanctum', 'api'],
+        ], function () {
+            $this->auth();
+        });
+        $this->router->group([
+            'middleware' => ['api'],
+        ], function () {
+            $this->guest();
+        });
     }
 }
