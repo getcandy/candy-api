@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 
 class AddStatesTable extends Migration
 {
@@ -10,8 +11,6 @@ class AddStatesTable extends Migration
      */
     public function up()
     {
-        $states = json_decode(File::get(__DIR__.'/../../states.json'));
-
         if (! Schema::hasTable('states')) {
             Schema::create('states', function (Blueprint $table) {
                 $table->increments('id');
@@ -21,6 +20,14 @@ class AddStatesTable extends Migration
                 $table->string('code');
             });
         }
+
+        // Do we have countries in the database already? i.e. are we coming from an upgrade or install
+        // If it's a fresh install we don't add states here...
+        if (! DB::table('countries')->count()) {
+            return true;
+        }
+
+        $states = json_decode(File::get(__DIR__.'/../../states.json'));
 
         foreach ($states as $state) {
             DB::table('states')->insert([
