@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 
 class AddStatesTable extends Migration
 {
@@ -23,7 +23,7 @@ class AddStatesTable extends Migration
 
         // Do we have countries in the database already? i.e. are we coming from an upgrade or install
         // If it's a fresh install we don't add states here...
-        if (!DB::table('countries')->count()) {
+        if (! DB::table('countries')->count() ) {
             return true;
         }
 
