@@ -28,9 +28,7 @@ class PreflightRunner extends AbstractRunner implements InstallRunnerContract
 
         try {
             $elastica = new Client(config('getcandy.search.client_config.elastic'));
-
             $result = $elastica->request('/');
-
             $esVersion = $result->getData()['version']['number'];
         } catch (HttpException $e) {
             $esVersion = null;

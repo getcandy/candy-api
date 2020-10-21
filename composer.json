@@ -24,6 +24,7 @@
         "neondigital/laravel-drafting": "dev-master",
         "neondigital/laravel-versioning": "dev-master",
         "staudenmeir/eloquent-has-many-deep": "^1.13",
+        "laravel/legacy-factories": "^1.0.4",
         "guzzlehttp/guzzle": "^7.1.0"
     },
     "require-dev": {
@@ -31,7 +32,7 @@
         "mockery/mockery": "~1.0",
         "phpunit/phpunit": "^9.2",
         "filp/whoops": "~2.0",
-        "orchestra/testbench": "^5.2",
+        "orchestra/testbench": "^6.2",
         "league/openapi-psr7-validator": "^0.7",
         "neondigital/laravel-openapi-validator": "^0.1",
         "brianium/paratest": "^4.1"

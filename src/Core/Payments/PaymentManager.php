@@ -77,7 +77,7 @@ class PaymentManager extends Manager implements PaymentContract
      */
     public function buildProvider($provider)
     {
-        return $this->app->make($provider);
+        return $this->container->make($provider);
     }
 
     /**
