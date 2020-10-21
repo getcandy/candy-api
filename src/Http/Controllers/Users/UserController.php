@@ -80,7 +80,7 @@ class UserController extends BaseController
 
         return new UserResource(
             $request->user()->load([
-                'addresses.country', 'roles.permissions', 'details',
+                'addresses.country', 'roles.permissions', 'customer',
             ])
         );
 

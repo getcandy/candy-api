@@ -35,7 +35,7 @@ class UserService extends BaseService implements UserContract
     {
         $id = $this->model->decodeId($id);
 
-        return $this->model->with('details')->findOrFail($id);
+        return $this->model->with('customer')->findOrFail($id);
     }
 
     /**

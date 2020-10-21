@@ -1,3 +1,9 @@
+parameters:
+  - schema:
+      type: string
+    name: languageId
+    in: path
+    required: true
 get:
   summary: Get Language
   tags:
