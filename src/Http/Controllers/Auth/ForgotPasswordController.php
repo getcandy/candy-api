@@ -8,6 +8,7 @@ use GetCandy\Api\Http\Requests\Auth\ForgotPasswordRequest;
 use GetCandy\Api\Http\Resources\Auth\PasswordTokenResource;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 use Illuminate\Support\Facades\Password;
+use GetCandy\Api\Core\Users\Actions\FetchUser;
 
 class ForgotPasswordController extends BaseController
 {
@@ -57,7 +58,9 @@ class ForgotPasswordController extends BaseController
      */
     protected function getPasswordResetToken($email)
     {
-        $user = GetCandy::users()->getByEmail($email);
+        $user = FetchUser::run([
+            'email' => $email,
+        ]);
 
         if (! $user) {
             return false;

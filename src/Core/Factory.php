@@ -33,7 +33,6 @@ use GetCandy\Api\Core\Shipping\Services\ShippingPriceService;
 use GetCandy\Api\Core\Shipping\Services\ShippingZoneService;
 use GetCandy\Api\Core\Tags\Services\TagService;
 use GetCandy\Api\Core\Taxes\Services\TaxService;
-use GetCandy\Api\Core\Users\Services\UserService;
 
 class Factory
 {
@@ -181,11 +180,6 @@ class Factory
      */
     protected $transforms;
 
-    /**
-     * @var \GetCandy\Api\Core\Users\Services\UserService
-     */
-    protected $users;
-
     public function __construct(
         AssetService $assets,
         AssetSourceService $assetSources,
@@ -217,8 +211,7 @@ class Factory
         ShippingZoneService $shippingZones,
         ShippingPriceService $shippingPrices,
         TagService $tags,
-        TaxService $taxes,
-        UserService $users
+        TaxService $taxes
     ) {
         $this->assetSources = $assetSources;
         $this->assets = $assets;
@@ -251,7 +244,6 @@ class Factory
         $this->tags = $tags;
         $this->taxes = $taxes;
         $this->transforms = $transforms;
-        $this->users = $users;
     }
 
     public function __call($name, $arguments)

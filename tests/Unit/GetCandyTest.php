@@ -41,7 +41,6 @@ class GetCandyTest extends TestCase
             'shippingZones',
             'tags',
             'taxes',
-            'users',
             'layouts',
         ];
 
