@@ -316,12 +316,17 @@
     /*
      * Users
      */
-    $router->get('users/fields', 'Users\UserController@fields');
-    $router->get('users/current', 'Users\UserController@getCurrentUser');
-    $router->delete('users/payments/{id}', 'Users\UserController@deleteReusablePayment');
-    $router->resource('users', 'Users\UserController', [
-        'except' => ['create', 'store'],
-    ]);
+    $router->get('users/fields', '\GetCandy\Api\Core\Users\Actions\FetchUserFields');
+    $router->get('users/current', '\GetCandy\Api\Core\Users\Actions\FetchCurrentUser');
+
+    $router->get('users', '\GetCandy\Api\Core\Users\Actions\FetchUsers');
+    $router->get('users/{encoded_id}', '\GetCandy\Api\Core\Users\Actions\FetchUser');
+    $router->put('users/{encoded_id}', '\GetCandy\Api\Core\Users\Actions\UpdateUser');
+
+    /*
+     * Reusable payments
+     */
+    $router->delete('reusable-payments/{encoded_id}', '\GetCandy\Api\Core\ReusablePayments\Actions\DeleteReusablePayment');
 
     /*
      * Account

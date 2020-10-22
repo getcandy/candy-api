@@ -131,7 +131,9 @@ $router->get('search/products', 'Search\SearchController@products');
 $router->get('shipping', 'Shipping\ShippingMethodController@index');
 $router->get('shipping/prices/estimate', 'Shipping\ShippingPriceController@estimate');
 
-$router->post('users', 'Users\UserController@store');
-$router->post('users/{userid}', 'Users\UserController@update');
+/*
+ * Users
+ */
+$router->post('users', '\GetCandy\Api\Core\Users\Actions\CreateUser');
 
 $router->get('plugins', 'Plugins\PluginController@index');
