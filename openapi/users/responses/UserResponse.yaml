@@ -1,0 +1,7 @@
+title: UserResponse
+type: object
+properties:
+  data:
+    $ref: '../models/User.yaml'
+x-tags:
+  - Users

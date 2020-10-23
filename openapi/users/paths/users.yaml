@@ -1,0 +1,50 @@
+get:
+  summary: Get all users
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/UserCollection.yaml'
+  operationId: get-users
+  parameters:
+    - schema:
+        type: string
+      in: query
+      name: include
+      description: Comma separated includes for the resource
+    - schema:
+        type: number
+      in: query
+      name: per_page
+      description: How many results per page
+  description: Gets a paginated list of all users
+  tags:
+    - Users
+post:
+  summary: Create a new user
+  description: Create a new user resource
+  responses:
+    '201':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../models/User.yaml'
+    '422':
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/Unprocessable.yaml'
+  operationId: post-users
+  requestBody:
+    content:
+      multipart/form-data:
+        schema:
+          $ref: '../requests/CreateUserBody.yaml'
+        examples: {}
+    description: ''
+  tags:
+    - Users
