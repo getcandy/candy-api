@@ -2,7 +2,10 @@
 
 namespace GetCandy\Api\Core\Users\Actions;
 
+use GetCandy;
+use GetCandy\Api\Core\Customers\Actions\AttachCustomerToGroups;
 use GetCandy\Api\Core\Customers\Actions\FetchDefaultCustomerGroup;
+use GetCandy\Api\Core\Customers\Models\Customer;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 use GetCandy\Api\Core\Foundation\Actions\DecodeIds;
 use GetCandy\Api\Core\Languages\Actions\FetchDefaultLanguage;
@@ -33,10 +36,10 @@ class CreateUser extends Action
             'firstname' => 'required|string',
             'lastname' => 'required|string',
             'email' => 'required|email',
-            'password' => 'required', // specifics on password requirements?
-            'language' => '',
-            'details' => '',
-            'customer_groups' => '',
+            'password' => 'required|string|min:6',
+            'language' => 'nullable|string',
+            'details' => 'nullable|array',
+            'customer_groups' => 'nullable|array',
         ];
     }
 
@@ -64,22 +67,23 @@ class CreateUser extends Action
 
         $user->save();
 
-        // abstract to CreateDetails
-        $this->details['firstname'] = $this->firstname;
-        $this->details['lastname'] = $this->lastname;
-        $this->details['fields'] = $this->details['fields'] ?? [];
-        $this->details['user_id'] = $user->id;
-        $user->details()->create($this->details);
+        $details = $this->details;
+        $details['firstname'] = $this->firstname;
+        $details['lastname'] = $this->lastname;
+        $details['fields'] = $this->details['fields'] ?? [];
+
+        $customer = Customer::create($details);
+        $customer->users()->save($user);
 
         if ($this->customer_groups) {
-            $user->groups()->sync(
+            $customer->customerGroups()->sync(
                 DecodeIds::run([
                     'model' => CustomerGroup::class,
                     'encoded_ids' => $this->customer_groups,
                 ])
             );
         } else {
-            $user->groups()->attach(FetchDefaultCustomerGroup::run());
+            $customer->customerGroups()->attach(FetchDefaultCustomerGroup::run());
         }
 
         $user->save();

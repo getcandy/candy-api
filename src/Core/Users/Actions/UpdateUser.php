@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Users\Actions;
 
+use GetCandy;
 use GetCandy\Api\Core\Customers\Actions\FetchDefaultCustomerGroup;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 use GetCandy\Api\Core\Foundation\Actions\DecodeIds;
@@ -28,14 +29,14 @@ class UpdateUser extends Action
     public function rules()
     {
         return [
-            'encoded_id' => '',
+            'encoded_id' => 'required|string|hashid_is_valid:'.GetCandy::getUserModel(),
             'firstname' => 'string',
             'lastname' => 'string',
             'email' => 'email',
-            'password' => '', // specifics on password requirements?
-            'language' => '',
-            'details' => '',
-            'customer_groups' => '',
+            'password' => 'string|min:6',
+            'language' => 'string',
+            'details' => 'nullable|array',
+            'customer_groups' => 'nullable|array',
         ];
     }
 
@@ -46,37 +47,34 @@ class UpdateUser extends Action
      */
     public function handle()
     {
-        $user = FetchUser::run([
-            'encoded_id' => $this->encoded_id,
-        ]);
+        $userModel = config('auth.providers.users.model', User::class);
+        $userModelInstance = (new $userModel);
+
+        $user = (new $userModel)->findOrFail($userModelInstance->decodeId($this->encoded_id));
 
         $user->email = $this->email ?? $user->email;
         if ($this->password) {
             $user->password = bcrypt($this->password);
         }
 
-        // abstract to CreateDetails
         if ($this->details) {
-            $this->details['firstname'] = $this->firstname;
-            $this->details['lastname'] = $this->lastname;
-            $this->details['fields'] = $this->details['fields'] ?? [];
-            $this->details['user_id'] = $user->id;
+            $details = $this->details;
+            $details['firstname'] = $this->firstname ?? $user->firstname;
+            $details['lastname'] = $this->lastname ?? $user->lastname;
+            $details['fields'] = $this->details['fields'] ?? [];
 
-            $user->details()->updateOrCreate(
-                ['user_id' => $user->id],
-                $this->details
-            );
+            $user->customer()->update($details);
         }
 
         if ($this->customer_groups) {
-            $user->groups()->sync(
+            $user->customer->customerGroups()->sync(
                 DecodeIds::run([
                     'model' => CustomerGroup::class,
                     'encoded_ids' => $this->customer_groups,
                 ])
             );
         } else {
-            $user->groups()->attach(FetchDefaultCustomerGroup::run());
+            $user->customer->customerGroups()->attach(FetchDefaultCustomerGroup::run());
         }
 
         $user->save();
