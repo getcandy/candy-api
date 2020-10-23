@@ -5478,7 +5478,7 @@ components:
         logs:
           $ref: '#/components/schemas/ActivityLogCollection'
         user:
-          $ref: '#/components/schemas/UserResponse'
+          $ref: 'users/responses/UserResponse.yaml'
     Address:
       title: Address
       type: object
@@ -6938,22 +6938,6 @@ components:
               items:
                 $ref: '#/components/schemas/Transaction'
         - $ref: '#/components/schemas/PaginatedResponse'
-    UserResponse:
-      title: UserResponse
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/User'
-    UserCollection:
-      title: UserCollection
-      allOf:
-        - type: object
-          properties:
-            data:
-              type: array
-              items:
-                $ref: '#/components/schemas/User'
-        - $ref: '#/components/schemas/PaginatedResponse'
     AssetTransformCollection:
       title: AssetTransformCollection
       allOf:
@@ -7484,7 +7468,7 @@ components:
         created_at:
           type: string
         user:
-          $ref: '#/components/schemas/UserResponse'
+          $ref: 'users/responses/UserResponse.yaml'
     ActivityLogResponse:
       title: ActivityLogResponse
       type: object
