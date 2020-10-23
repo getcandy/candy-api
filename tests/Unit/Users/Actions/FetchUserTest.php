@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Users\Actions;
 
-use GetCandy\Api\Core\Users\Actions\FetchCurrentUser;
 use GetCandy\Api\Core\Users\Actions\FetchUser;
 use Tests\Feature\FeatureCase;
 
@@ -16,7 +15,7 @@ class FetchUserTest extends FeatureCase
         $user = $this->admin();
 
         $currentUser = (new FetchUser)->actingAs($user)->run([
-            'email' => $user->email
+            'email' => $user->email,
         ]);
 
         $this->assertEquals($user->id, $currentUser->id);

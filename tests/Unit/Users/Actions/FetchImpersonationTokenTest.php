@@ -23,5 +23,4 @@ class FetchImpersonationTokenTest extends FeatureCase
 
         $this->assertNotEmpty($result);
     }
-
 }

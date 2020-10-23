@@ -15,10 +15,10 @@ class CreateUserTest extends FeatureCase
             'firstname' => 'Customer',
             'lastname' => 'Unknown',
             'email' => 'test@email.com',
-            'password' => 'supersecret'
+            'password' => 'supersecret',
         ];
 
-        $response = $this->json('POST', "users", $attributes);
+        $response = $this->json('POST', 'users', $attributes);
 
         $response->assertStatus(201);
         $this->assertResponseValid($response, '/users', 'post');

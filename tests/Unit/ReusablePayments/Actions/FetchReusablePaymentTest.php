@@ -34,5 +34,4 @@ class FetchReusablePaymentTest extends FeatureCase
 
         $this->assertEquals($reusablePayment->id, $record->id);
     }
-
 }

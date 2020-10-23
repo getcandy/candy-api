@@ -57,5 +57,4 @@ class ResetPasswordTest extends FeatureCase
 
         $this->assertFalse($result);
     }
-
 }

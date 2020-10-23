@@ -46,7 +46,7 @@ class CreateReusablePayment extends Action
     }
 
     /**
-     * Returns the response from the action
+     * Returns the response from the action.
      *
      * @param \GetCandy\Api\Core\ReusablePayments\Models\ReusablePayment  $result
      * @param \Illuminate\Http\Request  $request

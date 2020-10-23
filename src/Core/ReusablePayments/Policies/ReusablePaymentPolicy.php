@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User;
 class ReusablePaymentPolicy
 {
     /**
-     * Determine if the user can create a reusable payment
+     * Determine if the user can create a reusable payment.
      *
      * @param User $user
      * @return bool
@@ -19,7 +19,7 @@ class ReusablePaymentPolicy
     }
 
     /**
-     * Determine if the user can update a reusable payment
+     * Determine if the user can update a reusable payment.
      *
      * @param User $user
      * @param ReusablePayment $reusablePayment
@@ -31,7 +31,7 @@ class ReusablePaymentPolicy
     }
 
     /**
-     * Determine if the user can view a reusable payment
+     * Determine if the user can view a reusable payment.
      *
      * @param User $user
      * @param ReusablePayment $reusablePayment
@@ -43,7 +43,7 @@ class ReusablePaymentPolicy
     }
 
     /**
-     * Determine if the user can delete a reusable payment
+     * Determine if the user can delete a reusable payment.
      *
      * @param User $user
      * @param ReusablePayment $reusablePayment

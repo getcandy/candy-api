@@ -16,7 +16,7 @@ class FetchUserFieldsTest extends FeatureCase
 
         $this->assertContains($fields, [
             [],
-            config('getcandy.user.fields')
+            config('getcandy.user.fields'),
         ]);
     }
 

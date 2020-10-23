@@ -3,7 +3,6 @@
 namespace GetCandy\Api\Core\Users\Actions;
 
 use GetCandy;
-use GetCandy\Api\Core\Customers\Actions\AttachCustomerToGroups;
 use GetCandy\Api\Core\Customers\Actions\FetchDefaultCustomerGroup;
 use GetCandy\Api\Core\Customers\Models\Customer;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
@@ -61,7 +60,7 @@ class CreateUser extends Action
             $user->language()->associate(FetchDefaultLanguage::run());
         } else {
             $user->language()->associate(FetchEnabledLanguageByCode::run([
-                'code' => $this->language
+                'code' => $this->language,
             ]));
         }
 
@@ -92,7 +91,7 @@ class CreateUser extends Action
     }
 
     /**
-     * Returns the response from the action
+     * Returns the response from the action.
      *
      * @param $result
      * @param \Illuminate\Http\Request  $request

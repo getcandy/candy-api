@@ -57,7 +57,7 @@ class FetchUsers extends Action
             }
         }
 
-        if (!empty($ids)) {
+        if (! empty($ids)) {
             $realIds = collect($ids)->map(function ($id) use ($userModel) {
                 return $userModel->decodeId($id);
             })->toArray();
@@ -72,7 +72,7 @@ class FetchUsers extends Action
     }
 
     /**
-     * Returns the response from the action
+     * Returns the response from the action.
      *
      * @param $result
      * @param \Illuminate\Http\Request  $request

@@ -47,5 +47,4 @@ class ResetPassword extends Action
 
         return $this->user;
     }
-
 }

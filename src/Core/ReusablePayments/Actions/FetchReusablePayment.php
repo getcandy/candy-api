@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Core\ReusablePayments\Actions;
 
-use GetCandy\Api\Core\Addresses\Models\Address;
 use GetCandy\Api\Core\ReusablePayments\Models\ReusablePayment;
 use Lorisleiva\Actions\Action;
 

@@ -11,7 +11,7 @@ class DeleteReusablePayment extends Action
     use ReturnsJsonResponses;
 
     /**
-     * The reusable payment object we want to delete
+     * The reusable payment object we want to delete.
      *
      * @var \GetCandy\Api\Core\ReusablePayments\Models\ReusablePayment
      */

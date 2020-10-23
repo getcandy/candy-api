@@ -52,7 +52,7 @@ class FetchUser extends Action
     }
 
     /**
-     * Returns the response from the action
+     * Returns the response from the action.
      *
      * @param $result
      * @param \Illuminate\Http\Request  $request

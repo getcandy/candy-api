@@ -29,7 +29,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * Create token
+     * Create token.
      *
      * @param $string
      * @return string

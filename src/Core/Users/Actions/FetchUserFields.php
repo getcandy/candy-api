@@ -51,7 +51,7 @@ class FetchUserFields extends Action
     {
         return $this->respondWithArray([
             'data' => [
-                'fields' => $result
+                'fields' => $result,
             ],
         ]);
     }

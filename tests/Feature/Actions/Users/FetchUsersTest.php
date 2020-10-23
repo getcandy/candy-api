@@ -16,7 +16,7 @@ class FetchUsersTest extends FeatureCase
 
         factory(User::class, 25)->create();
 
-        $response = $this->actingAs($user)->json('GET', "users");
+        $response = $this->actingAs($user)->json('GET', 'users');
 
         $response->assertStatus(200);
         $this->assertResponseValid($response, '/users', 'get');
@@ -26,7 +26,7 @@ class FetchUsersTest extends FeatureCase
     {
         $user = factory(User::class)->create();
 
-        $response = $this->actingAs($user)->json('GET', "users");
+        $response = $this->actingAs($user)->json('GET', 'users');
 
         $response->assertStatus(403);
     }

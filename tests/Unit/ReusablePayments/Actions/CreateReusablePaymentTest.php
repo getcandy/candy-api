@@ -25,7 +25,7 @@ class CreateReusablePaymentTest extends FeatureCase
 
         $this->assertDatabaseHas('reusable_payments', [
             'user_id' => $user->id,
-            'type' => 'visa'
+            'type' => 'visa',
         ]);
     }
 
