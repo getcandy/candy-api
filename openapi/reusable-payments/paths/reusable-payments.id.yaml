@@ -16,6 +16,6 @@ parameters:
         content:
           application/json:
             schema:
-              $ref: '../../global/response/Unauthenticated.yaml'
+              $ref: '../../global/response/Unauthorized.yaml'
     operationId: delete-users-payments-id
     description: Removes a users reusable payment method. This can be invoked by any admin user and also the user who the record belongs to.

@@ -8,7 +8,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/UserFieldsResponse'
+            $ref: '../responses/UserFieldsResponse.yaml'
           examples:
             basic-example:
               value:

@@ -38,7 +38,7 @@ parameters:
         content:
           application/json:
             schema:
-              $ref: '../../global/responses/Unauthenticated.yaml'
+              $ref: '../../global/responses/Unauthorized.yaml'
       '404':
         description: Not Found
         content:
@@ -79,7 +79,7 @@ parameters:
         content:
           application/json:
             schema:
-              $ref: '../../global/responses/Unauthenticated.yaml'
+              $ref: '../../global/responses/Unauthorized.yaml'
       '404':
         description: Not Found
         content:

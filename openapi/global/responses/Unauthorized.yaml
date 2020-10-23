@@ -1,0 +1,8 @@
+title: Unauthorized
+type: object
+properties:
+  error:
+    type: string
+x-examples:
+  unauthorized-example:
+    error: Unauthorized.
