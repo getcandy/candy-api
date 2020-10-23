@@ -31,7 +31,7 @@ class FetchUsers extends Action
             'per_page' => 'numeric|max:200',
             'paginate' => 'boolean',
             'keywords' => 'string',
-            'ids' => '',
+            'ids' => 'array',
         ];
     }
 

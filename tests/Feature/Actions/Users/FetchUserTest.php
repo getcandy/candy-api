@@ -12,7 +12,6 @@ class FetchUserTest extends FeatureCase
 {
     public function test_can_run_action_as_controller()
     {
-        $this->withExceptionHandling();
         $user = $this->admin();
 
         $response = $this->actingAs($user)->json('GET', "users/{$user->encoded_id}");

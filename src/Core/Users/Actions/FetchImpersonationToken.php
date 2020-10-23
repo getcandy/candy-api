@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Users\Actions;
 
+use GetCandy;
 use Lorisleiva\Actions\Action;
 
 class FetchImpersonationToken extends Action
@@ -25,7 +26,7 @@ class FetchImpersonationToken extends Action
     {
         return [
             'id' => 'integer|exists:users|required_without:encoded_id',
-            'encoded_id' => 'string|hashid_is_valid:users|required_without:id',
+            'encoded_id' => 'string|hashid_is_valid:'.GetCandy::getUserModel().'|required_without:id',
         ];
     }
 

@@ -28,7 +28,7 @@ class FetchUser extends Action
         return [
             'id' => 'integer|exists:users,id|required_without_all:encoded_id,email',
             'encoded_id' => 'string|hashid_is_valid:'.GetCandy::getUserModel().'|required_without_all:id,email',
-            'email' => 'string|required_without_all:id,encoded_id',
+            'email' => 'email|required_without_all:id,encoded_id',
         ];
     }
 
@@ -45,7 +45,7 @@ class FetchUser extends Action
         }
 
         if ($this->email) {
-            return (new $userModel)->where('email', '=', $this->email)->first();
+            return (new $userModel)->where('email', '=', $this->email)->firstOrFail();
         }
 
         return (new $userModel)->findOrFail($this->id);
