@@ -29,9 +29,9 @@ class CreateReusablePayment extends Action
             'user_id' => 'required|exists:users,id',
             'type' => 'required|string',
             'provider' => 'required|string',
-            'last_four' => 'required|string|max:4',
-            'token' => 'required',
-            'expires_at' => 'required',
+            'last_four' => 'required|digits:4',
+            'token' => 'required|string',
+            'expires_at' => 'required|date',
         ];
     }
 

@@ -13,7 +13,6 @@ class UpdateUserTest extends FeatureCase
 {
     public function test_can_run_action_as_controller()
     {
-        $this->withExceptionHandling();
         $user = factory(User::class)->create(['name' => 'Customer']);
         $customer = factory(Customer::class)->create();
         $customer->users()->save($user);
