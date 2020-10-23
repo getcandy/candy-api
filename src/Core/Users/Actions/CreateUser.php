@@ -49,7 +49,7 @@ class CreateUser extends Action
      */
     public function handle()
     {
-        $userModel = config('auth.providers.users.model', User::class);
+        $userModel = GetCandy::getUserModel();
 
         $user = (new $userModel);
         $user->name = $this->firstname.' '.$this->lastname;

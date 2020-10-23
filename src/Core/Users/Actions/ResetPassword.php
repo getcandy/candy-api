@@ -25,8 +25,8 @@ class ResetPassword extends Action
     public function rules()
     {
         return [
-            'current_password' => 'string|min:6',
-            'new_password' => 'string|min:6',
+            'current_password' => 'required|string',
+            'new_password' => 'required|string|min:6',
             'user' => 'required',
         ];
     }

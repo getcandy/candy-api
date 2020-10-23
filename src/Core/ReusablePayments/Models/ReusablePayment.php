@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\ReusablePayments\Models;
 
+use GetCandy;
 use GetCandy\Api\Core\Scaffold\BaseModel;
 
 class ReusablePayment extends BaseModel
@@ -13,7 +14,7 @@ class ReusablePayment extends BaseModel
      *
      * @var string
      */
-    protected $hashids = 'product';
+    protected $hashids = 'main';
 
     /**
      * The attributes that are mass assignable.
@@ -21,4 +22,16 @@ class ReusablePayment extends BaseModel
      * @var array
      */
     protected $guarded = [];
+
+    /**
+     * Get reusable payment user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user()
+    {
+        $class = GetCandy::getUserModel();
+
+        return $this->belongsTo($class);
+    }
 }

@@ -37,7 +37,7 @@ class FetchImpersonationToken extends Action
      */
     public function handle()
     {
-        $userModel = config('auth.providers.users.model', User::class);
+        $userModel = GetCandy::getUserModel();
         if ($this->encoded_id) {
             $this->id = (new $userModel)->decodeId($this->encoded_id);
         }

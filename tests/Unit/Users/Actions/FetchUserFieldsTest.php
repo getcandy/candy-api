@@ -19,5 +19,4 @@ class FetchUserFieldsTest extends FeatureCase
             config('getcandy.user.fields'),
         ]);
     }
-
 }

@@ -20,5 +20,4 @@ class FetchUserTest extends FeatureCase
 
         $this->assertEquals($user->id, $currentUser->id);
     }
-
 }

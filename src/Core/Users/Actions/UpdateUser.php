@@ -47,10 +47,9 @@ class UpdateUser extends Action
      */
     public function handle()
     {
-        $userModel = config('auth.providers.users.model', User::class);
-        $userModelInstance = (new $userModel);
+        $userModel = GetCandy::getUserModel();
 
-        $user = (new $userModel)->findOrFail($userModelInstance->decodeId($this->encoded_id));
+        $user = (new $userModel)->findOrFail((new $userModel)->decodeId($this->encoded_id));
 
         $user->email = $this->email ?? $user->email;
         if ($this->password) {

@@ -42,14 +42,14 @@ class FetchUsers extends Action
      */
     public function handle()
     {
-        $userModel = config('auth.providers.users.model', User::class);
+        $userModel = GetCandy::getUserModel();
 
         $query = (new $userModel)->with(['customer']);
         if ($this->keywords) {
             $keywords = explode(' ', $this->keywords);
             foreach ($keywords as $keyword) {
-                $query = $query->whereHas('customer', function ($q) use ($keyword) {
-                    $q->where('firstname', 'LIKE', '%'.$keyword.'%')
+                $query = $query->whereHas('customer', function ($innerQuery) use ($keyword) {
+                    $innerQuery->where('firstname', 'LIKE', '%'.$keyword.'%')
                         ->orWhere('lastname', 'LIKE', '%'.$keyword.'%')
                         ->orWhere('company_name', 'LIKE', '%'.$keyword.'%')
                         ->orWhere('email', 'LIKE', '%'.$keyword.'%');
