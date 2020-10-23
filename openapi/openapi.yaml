@@ -51,6 +51,16 @@ paths:
     $ref: './product-families/paths/product-families.yaml'
   '/product-families/{productFamilyId}':
     $ref: './product-families/paths/product-families.id.yaml'
+  /users:
+    $ref: './users/paths/users.yaml'
+  '/users/{userId}':
+    $ref: './users/paths/users.id.yaml'
+  '/users/fields':
+    $ref: './users/paths/users.fields.yaml'
+  '/users/current':
+    $ref: './users/paths/users.current.yaml'
+  '/reusable-payments/{reusablePaymentId}':
+    $ref: './reusable-payments/paths/reusable-payments.id.yaml'
 ### BELOW: Paths that have not been updated
   /orders:
     get:
@@ -4880,205 +4890,6 @@ paths:
                 $ref: '#/components/schemas/Error'
       operationId: delete-taxes-taxId
       description: "Delete a tax record by it's ID."
-  '/users/payments/{id}':
-    parameters:
-      - schema:
-          type: string
-        name: id
-        in: path
-        required: true
-    delete:
-      summary: Delete reusable payment
-      tags:
-        - Payments
-      responses:
-        '204':
-          description: No Content
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Unauthenticated'
-      operationId: delete-users-payments-id
-      description: Removes a users reusable payment method. This can be invoked by any admin user and also the user who the record belongs to.
-  /users/fields:
-    get:
-      summary: Get custom user fields
-      tags:
-        - Customers
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserFieldsResponse'
-              examples:
-                basic-example:
-                  value:
-                    data:
-                      fields:
-                        account_number:
-                          label: Account Number
-                          type: text
-      operationId: get-users-fields
-      description: This endpoint returns any available user fields which have been defined in the getcandy config.
-  /users/current:
-    get:
-      summary: Get the current user
-      tags:
-        - Users
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserResponse'
-      operationId: get-users-current
-      description: Returns the user associated to the access token.
-  /users:
-    get:
-      summary: Get users
-      tags:
-        - Users
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserCollection'
-      operationId: get-users
-      description: Get a paginated list of users.
-    post:
-      summary: Create user
-      tags:
-        - Users
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserResponse'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Unauthenticated'
-      operationId: post-users
-      description: Create a new user in the system
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                firstname:
-                  type: string
-                lastname:
-                  type: string
-                password:
-                  type: string
-                password_confirmation:
-                  type: string
-              required:
-                - email
-                - firstname
-                - lastname
-                - password
-                - password_confirmation
-  '/users/{userId}':
-    parameters:
-      - schema:
-          type: string
-        name: userId
-        in: path
-        required: true
-    get:
-      summary: Get user
-      tags:
-        - Users
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserResponse'
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-      operationId: get-users-userId
-      description: Get a user by their given ID.
-    put:
-      summary: ''
-      operationId: put-users-userId
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserResponse'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Unauthorized'
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-      tags:
-        - Users
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                password:
-                  type: string
-                password_confirmation:
-                  type: string
-              required:
-                - email
-      description: Updates a user record from their ID.
-    delete:
-      summary: ''
-      operationId: delete-users-userId
-      responses:
-        '204':
-          description: No Content
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Unauthorized'
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-      tags:
-        - Users
-      description: Delete a user by their given ID.
   /account/password:
     post:
       summary: Reset  password
@@ -6644,16 +6455,6 @@ components:
           name: VAT
           percentage: 20
           default: true
-    User:
-      title: User
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        email:
-          type: string
     Unauthorized:
       title: Unauthorized
       type: object
@@ -7292,18 +7093,6 @@ components:
         links:
           $ref: '#/components/schemas/Links'
       description: ''
-    UserFields:
-      title: UserFields
-      type: object
-      properties:
-        fields:
-          type: object
-    UserFieldsResponse:
-      title: UserFieldsResponse
-      type: object
-      properties:
-        data:
-          $ref: '#/components/schemas/UserFields'
     VersionResponse:
       title: VersionResponse
       type: object
