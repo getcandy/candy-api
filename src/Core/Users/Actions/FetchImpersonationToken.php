@@ -46,4 +46,19 @@ class FetchImpersonationToken extends Action
 
         return $user->createToken(str_random(25));
     }
+
+    /**
+     * Returns the response from the action.
+     *
+     * @param   array  $result
+     * @param   \Illuminate\Http\Request  $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function response($result, $request)
+    {
+        return $this->respondWithArray([
+            'access_token' => $result,
+        ]);
+    }
 }

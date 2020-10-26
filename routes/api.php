@@ -19,10 +19,7 @@
     $router->put('addresses/{addressId}', '\GetCandy\Api\Core\Addresses\Actions\UpdateAddressAction');
     $router->delete('addresses/{addressId}', '\GetCandy\Api\Core\Addresses\Actions\DeleteAddressAction');
 
-    $router->post('auth/impersonate', [
-        'as' => 'auth.impersonate',
-        'uses' => 'Auth\ImpersonateController@process',
-    ]);
+    $router->post('auth/impersonate', '\GetCandy\Api\Core\Users\Actions\FetchImpersonationToken');
 
     /*
      * Assets

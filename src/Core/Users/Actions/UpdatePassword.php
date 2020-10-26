@@ -11,7 +11,7 @@ class UpdatePassword extends Action
     use ReturnsJsonResponses;
 
     /**
-     * Determine if the user is authorized to make this action.
+     * Determine if the user is authmorized to make this action.
      *
      * @return bool
      */
@@ -51,6 +51,14 @@ class UpdatePassword extends Action
         return $this->user;
     }
 
+    /**
+     * Returns the response from the action.
+     *
+     * @param $result
+     * @param \Illuminate\Http\Request  $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function response($result, $request)
     {
         if (! $result) {
