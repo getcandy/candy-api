@@ -5,11 +5,6 @@
     */
     $router->post('import', 'Utils\ImportController@process');
 
-    $router->post('account/password', [
-        'as' => 'account.password.reset',
-        'uses' => 'Auth\AccountController@resetPassword',
-    ]);
-
     $router->get('activity-log', [
         'as' => 'activitylog.index',
         'uses' => 'ActivityLog\ActivityLogController@index',
@@ -331,10 +326,7 @@
     /*
      * Account
      */
-    $router->post('account/password', [
-        'as' => 'account.password.reset',
-        'uses' => 'Auth\AccountController@resetPassword',
-    ]);
+    $router->post('account/password', '\GetCandy\Api\Core\Users\Actions\UpdatePassword');
 
     /**
      * Recycle bin.

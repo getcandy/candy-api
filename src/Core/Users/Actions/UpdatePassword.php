@@ -2,11 +2,14 @@
 
 namespace GetCandy\Api\Core\Users\Actions;
 
+use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
 use Illuminate\Support\Facades\Hash;
 use Lorisleiva\Actions\Action;
 
-class ResetPassword extends Action
+class UpdatePassword extends Action
 {
+    use ReturnsJsonResponses;
+
     /**
      * Determine if the user is authorized to make this action.
      *
@@ -46,5 +49,14 @@ class ResetPassword extends Action
         $this->user->save();
 
         return $this->user;
+    }
+
+    public function response($result, $request)
+    {
+        if (! $result) {
+            return $this->errorForbidden();
+        }
+
+        return $this->respondWithSuccess('Password changed');
     }
 }

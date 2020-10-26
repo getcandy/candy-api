@@ -2,14 +2,14 @@
 
 namespace Tests\Unit\Users\Actions;
 
-use GetCandy\Api\Core\Users\Actions\ResetPassword;
+use GetCandy\Api\Core\Users\Actions\UpdatePassword;
 use Tests\Feature\FeatureCase;
 use Tests\Stubs\User;
 
 /**
  * @group channels
  */
-class ResetPasswordTest extends FeatureCase
+class UpdatePasswordTest extends FeatureCase
 {
     public function test_can_change_user_password()
     {
@@ -21,7 +21,7 @@ class ResetPasswordTest extends FeatureCase
             'user' => $user,
         ];
 
-        $result = ResetPassword::run($attributes);
+        $result = UpdatePassword::run($attributes);
 
         $this->assertNotFalse($result);
 
@@ -40,7 +40,7 @@ class ResetPasswordTest extends FeatureCase
 
         $this->expectException('\Illuminate\Validation\ValidationException');
 
-        ResetPassword::run($attributes);
+        UpdatePassword::run($attributes);
     }
 
     public function test_cannot_change_user_password_if_current_is_invalid()
@@ -53,7 +53,7 @@ class ResetPasswordTest extends FeatureCase
             'user' => $user,
         ];
 
-        $result = ResetPassword::run($attributes);
+        $result = UpdatePassword::run($attributes);
 
         $this->assertFalse($result);
     }

@@ -2,7 +2,7 @@
 
 namespace GetCandy\Api\Core\Users\Actions;
 
-use App\User;
+use GetCandy;
 use GetCandy\Api\Core\Users\Resources\UserCollection;
 use Lorisleiva\Actions\Action;
 
@@ -57,8 +57,8 @@ class FetchUsers extends Action
             }
         }
 
-        if (! empty($ids)) {
-            $realIds = collect($ids)->map(function ($id) use ($userModel) {
+        if (! empty($this->ids)) {
+            $realIds = collect($this->ids)->map(function ($id) use ($userModel) {
                 return $userModel->decodeId($id);
             })->toArray();
             $query = $query->whereIn('id', $realIds);
