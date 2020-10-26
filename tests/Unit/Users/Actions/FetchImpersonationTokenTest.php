@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Users\Actions;
 
-use GetCandy\Api\Core\Users\Actions\FetchImpersonationToken;
+use GetCandy\Api\Core\Auth\Actions\FetchImpersonationToken;
 use Tests\Feature\FeatureCase;
 use Tests\Stubs\User;
 

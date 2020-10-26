@@ -1,6 +1,6 @@
 <?php
 
-namespace GetCandy\Api\Core\Users\Actions;
+namespace GetCandy\Api\Core\Auth\Actions;
 
 use GetCandy;
 use Lorisleiva\Actions\Action;

@@ -19,7 +19,7 @@
     $router->put('addresses/{addressId}', '\GetCandy\Api\Core\Addresses\Actions\UpdateAddressAction');
     $router->delete('addresses/{addressId}', '\GetCandy\Api\Core\Addresses\Actions\DeleteAddressAction');
 
-    $router->post('auth/impersonate', '\GetCandy\Api\Core\Users\Actions\FetchImpersonationToken');
+    $router->post('auth/impersonate', '\GetCandy\Api\Core\Auth\Actions\FetchImpersonationToken');
 
     /*
      * Assets
