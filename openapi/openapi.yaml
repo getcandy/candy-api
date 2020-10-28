@@ -2217,7 +2217,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Address'
+              $ref: './addresses/models/Address.yaml'
         description: All fields are required when an `address_id` is not present.
   '/orders/{orderId}/shipping/methods':
     parameters:
@@ -2441,7 +2441,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Address'
+              $ref: './addresses/models/Address.yaml'
         description: All fields are required when an `address_id` is not present.
       description: Update an orders billing address
   '/orders/{orderId}/lines':
@@ -5638,9 +5638,9 @@ components:
               type: string
               example: example@example.com
         billing_details:
-          $ref: '#/components/schemas/Address'
+          $ref: './addresses/models/Address.yaml'
         shipping_details:
-          $ref: '#/components/schemas/Address'
+          $ref: './addresses/models/Address.yaml'
         status:
           type: string
           example: payment-received
@@ -5668,49 +5668,6 @@ components:
           $ref: '#/components/schemas/ActivityLogCollection'
         user:
           $ref: '#/components/schemas/UserResponse'
-    Address:
-      title: Address
-      type: object
-      properties:
-        phone:
-          type: string
-        email:
-          type: string
-        firstname:
-          type: string
-        lastname:
-          type: string
-        address:
-          type: string
-        address_two:
-          type: string
-        address_three:
-          type: string
-        city:
-          type: string
-        state:
-          type: string
-        country:
-          $ref: './countries/responses/CountryResponse.yaml'
-        postal_code:
-          type: string
-        salutation:
-          type: string
-        default:
-          type: boolean
-        shipping:
-          type: boolean
-        delivery:
-          type: boolean
-        delivery_instructions:
-          type: string
-        meta:
-          anyOf:
-            - type: object
-            - type: array
-              items: {}
-        last_used_at:
-          type: string
     Attribute:
       title: Attribute
       type: object
@@ -6229,36 +6186,6 @@ components:
       required:
         - id
       description: "###\_Available includes\n- sets\n- rewards\n- items"
-    Language:
-      title: Language
-      type: object
-      x-examples:
-        language-example:
-          id: 6z8m9gmj
-          name: English
-          lang: en
-          iso: gb
-          default: 1
-          enabled: 1
-          current: false
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        lang:
-          type: string
-        iso:
-          type: string
-        default:
-          type: boolean
-        enabled:
-          type: boolean
-        current:
-          type: boolean
-      required:
-        - id
-      description: ''
     Layout:
       title: Layout
       type: object
@@ -6829,7 +6756,7 @@ components:
             data:
               type: array
               items:
-                $ref: '#/components/schemas/Address'
+                $ref: './addresses/models/Address.yaml'
         - $ref: '#/components/schemas/PaginatedResponse'
     DiscountCollection:
       title: DiscountCollection
@@ -6853,14 +6780,14 @@ components:
         - type: object
           properties:
             data:
-              $ref: '#/components/schemas/Language'
+              $ref: './langauges/models/Language.yaml'
         - $ref: '#/components/schemas/PaginatedResponse'
     LanguageResponse:
       title: LanguageResponse
       type: object
       properties:
         data:
-          $ref: '#/components/schemas/Language'
+          $ref: './langauges/models/Language.yaml'
     LayoutResponse:
       title: LayoutResponse
       type: object
@@ -6875,7 +6802,7 @@ components:
             data:
               type: array
               items:
-                $ref: '#/components/schemas/Language'
+                $ref: './langauges/models/Language.yaml'
         - $ref: '#/components/schemas/Layout'
     ProductCollection:
       title: ProductCollection
@@ -7842,23 +7769,8 @@ components:
           type: object
         buckets:
           type: array
-          items: {}
-    Country:
-      title: Country
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        region:
-          type: string
-        iso_a_2:
-          type: string
-        iso_a_3:
-          type: string
-        iso_numeric:
-          type: string
+          items:
+            type: string
     CountryResponse:
       title: CountryResponse
       type: object
