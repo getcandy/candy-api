@@ -3,8 +3,9 @@
 namespace GetCandy\Api\Core\Scopes;
 
 use GetCandy;
-use GetCandy\Api\Core\Customers\Actions\FetchDefaultCustomerGroup;
 use Illuminate\Database\Eloquent\Scope;
+use Illuminate\Database\Eloquent\Builder;
+use GetCandy\Api\Core\Customers\Actions\FetchDefaultCustomerGroup;
 
 abstract class AbstractScope implements Scope
 {
@@ -78,6 +79,14 @@ abstract class AbstractScope implements Scope
         $user = $this->getUser();
 
         return $user ? $user->hasAnyRole($this->roles) : false;
+    }
+
+    protected function filterColumns(Builder $builder, array $incoming)
+    {
+        $existingColumns = $builder->getQuery()->columns ?: [];
+        return collect($incoming)->filter(function ($column) use ($existingColumns) {
+            return !in_array($column, $existingColumns);
+        });
     }
 
     /**
