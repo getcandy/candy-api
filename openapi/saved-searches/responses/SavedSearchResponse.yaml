@@ -1,0 +1,5 @@
+title: SavedSearchResponse
+type: object
+properties:
+  data:
+    $ref: '../models/SavedSearch.yaml'

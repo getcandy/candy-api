@@ -1,0 +1,25 @@
+parameters:
+  - schema:
+      type: string
+    name: parentId
+    in: path
+    description: If omitted will return top level catgories
+    required: true
+get:
+  summary: Get categories by parent id
+  tags:
+    - Categories
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/CategoryCollection.yaml'
+  operationId: get-categories-parent-parentId?
+  description: Returns categories by a given parent ID.
+  parameters:
+    - schema:
+        type: string
+      in: query
+      name: include

@@ -1,0 +1,78 @@
+get:
+  summary: Get Collections
+  tags:
+    - Collections
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/CollectionCollection.yaml'
+  operationId: get-collections
+  parameters:
+    - schema:
+        type: string
+        enum:
+          - routes
+          - layout
+          - channels
+          - assets
+          - attributes
+          - routes
+          - products
+          - customer_groups
+      in: query
+      name: include
+      description: ''
+    - schema:
+        type: string
+        default: '25'
+      in: query
+      name: per_page
+    - schema:
+        type: string
+      in: query
+      name: full_response
+    - schema:
+        type: string
+      in: query
+      name: sort
+    - schema:
+        type: string
+      in: query
+      name: page
+  description: Get a paginated response of collections.
+post:
+  summary: Create Collection
+  operationId: post-collections
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/CollectionResponse.yaml'
+  tags:
+    - Collections
+  description: Create a new collection.
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            name:
+              type: object
+              properties:
+                en:
+                  type: string
+            url:
+              type: string
+        examples:
+          new-example:
+            value:
+              name:
+                en: New Collection
+              url: new-collection
+    description: Creates a new collection.

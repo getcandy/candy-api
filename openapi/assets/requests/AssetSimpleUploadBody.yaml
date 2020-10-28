@@ -1,0 +1,7 @@
+title: AssetSimpleUploadBody
+type: object
+properties:
+  file:
+    type: object
+required:
+  - file

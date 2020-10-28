@@ -1,0 +1,6 @@
+ProductRecommendationResponse:
+  title: ProductRecommendationResponse
+  type: object
+  properties:
+    data:
+      $ref: '../models/ProductRecommendation.yaml'

@@ -1,0 +1,5 @@
+title: RecycleBinResponse
+type: object
+properties:
+  data:
+    $ref: '../models/RecycleBin.yaml'

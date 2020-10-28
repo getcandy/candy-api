@@ -1,0 +1,17 @@
+title: CreateBasketBody
+type: object
+properties:
+  variants:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: string
+        quantity:
+          type: integer
+      required:
+        - id
+        - quantity
+  basket_id:
+    type: string

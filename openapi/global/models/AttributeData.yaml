@@ -1,0 +1,5 @@
+title: AttributeData
+type: object
+properties:
+  attribute_data:
+    type: object

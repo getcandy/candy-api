@@ -1,0 +1,7 @@
+title: OrderTypeCollection
+type: object
+properties:
+  data:
+    type: array
+    items:
+      $ref: '../models/OrderType.yaml'

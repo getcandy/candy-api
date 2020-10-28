@@ -1,0 +1,27 @@
+parameters:
+  - schema:
+      type: string
+    name: categoryId
+    in: path
+    required: true
+put:
+  summary: Attach products
+  operationId: put-categories-categoryId-products
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/CategoryResponse.yaml'
+  tags:
+    - Categories
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../requests/AttachCategoryProductsBody.yaml'
+        examples:
+          example-1: {}
+    description: 'When using "custom" sort type, sorting will be based on the position.'
+  description: Attaches products to a category resource.

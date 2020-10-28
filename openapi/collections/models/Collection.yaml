@@ -1,0 +1,31 @@
+title: Collection
+type: object
+description: |-
+  ### Available includes
+
+  - routes
+  - layout
+  - channels
+  - assets
+  - attributes
+  - products
+  - customerGroups
+properties:
+  id:
+    type: string
+  attribute_data:
+    type: object
+  routes:
+    $ref: '../../routes/responses/RouteCollection.yaml'
+  layout:
+    $ref: '../../layouts/responses/LayoutResponse.yaml'
+  channels:
+    $ref: '../../channels/responses/ChannelCollection.yaml'
+  assets:
+    $ref: '../../assets/responses/AssetCollection.yaml'
+  attributes:
+    $ref: '../../attributes/responses/AttributeCollection.yaml'
+  products:
+    $ref: '../../products/responses/ProductCollection.yaml'
+  customer_groups:
+    $ref: '../../customer-groups/responses/CustomerGroupCollection.yaml'

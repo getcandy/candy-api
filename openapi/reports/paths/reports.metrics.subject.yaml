@@ -1,0 +1,52 @@
+parameters:
+  - schema:
+      type: string
+      enum:
+        - sales
+        - orders
+    name: subject
+    in: path
+    required: true
+get:
+  summary: Get metric data
+  tags:
+    - Reports
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              current_month:
+                type: string
+              previous_month:
+                type: string
+              today:
+                type: string
+              yesterday:
+                type: string
+              current_week:
+                type: string
+              previous_week:
+                type: string
+          examples:
+            orders-example:
+              value:
+                current_month: 0
+                previous_month: 1077
+                today: 0
+                yesterday: 0
+                current_week: 0
+                previous_week: 0
+            sales-example:
+              value:
+                current_month: 0
+                previous_month: '8626214'
+                today: 0
+                yesterday: 0
+                current_week: 0
+                previous_week: 0
+  operationId: get-reports-metrics-subject
+  description: Returns metric (KPI) data for either sales or orders.

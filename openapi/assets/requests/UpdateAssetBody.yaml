@@ -1,0 +1,16 @@
+title: UpdateAssetBody
+type: object
+properties:
+  assets:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+      required:
+        - id

@@ -1,0 +1,76 @@
+get:
+  summary: Paginated list of Attribute Groups
+  tags:
+    - Attributes
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/AttributeGroupCollection.yaml'
+          examples:
+            without-pagination-example:
+              value:
+                data:
+                  - id: vokq5kmj
+                    name:
+                      en: General
+                    handle: general
+                    position: '1'
+                  - id: mqkj8wyj
+                    name:
+                      en: Meta Information
+                      sv: SEO
+                    handle: seo
+                    position: '2'
+                  - id: 96e7nk8r
+                    name:
+                      en: Default
+                    handle: default
+                    position: '4'
+  operationId: get-attribute-groups
+  parameters:
+    - schema:
+        type: boolean
+        default: false
+      in: query
+      name: all_records
+      description: Will skip pagination and return all records
+    - schema:
+        type: string
+      in: query
+      name: include
+  description: Returns a paginated list of available attribute groups
+post:
+  summary: Create an Attribute Group
+  tags:
+    - Attributes
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/AttributeGroupResponse.yaml'
+          examples:
+            created-example:
+              value:
+                data:
+                  id: m1wrpejy
+                  name:
+                    en: New Group
+                  handle: new-group
+                  position: '13'
+  operationId: post-attribute-groups
+  requestBody:
+    content:
+      multipart/form-data:
+        schema:
+          $ref: '../requests/CreateAttributeGroupBody.yaml'
+        examples:
+          create-example:
+            value:
+              name:
+                en: New Group
+              handle: new-group

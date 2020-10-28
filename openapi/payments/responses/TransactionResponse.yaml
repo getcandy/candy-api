@@ -1,0 +1,5 @@
+title: TransactionResponse
+type: object
+properties:
+  data:
+    $ref: '../models/Transaction.yaml'

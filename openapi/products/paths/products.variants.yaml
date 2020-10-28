@@ -1,0 +1,18 @@
+get:
+  summary: Get Product Variants
+  tags:
+    - Product Variants
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/ProductVariantCollection.yaml'
+  operationId: get-products-variants
+  parameters:
+    - schema:
+        type: string
+      in: query
+      name: include
+  description: Get a paginated list of all product variants in the system

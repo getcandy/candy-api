@@ -1,0 +1,18 @@
+title: CreateCategoryBody
+type: object
+properties:
+  url:
+    type: string
+  path:
+    type: string
+  name:
+    type: object
+    required:
+      - en
+    properties:
+      en:
+        type: string
+required:
+  - name
+  - path
+  - url

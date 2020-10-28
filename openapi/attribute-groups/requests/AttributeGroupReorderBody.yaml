@@ -1,0 +1,11 @@
+title: AttributeGroupReorderBody
+type: object
+properties:
+  groups:
+    type: array
+    items:
+      type: object
+      properties:
+        groupId:
+          type: integer
+          format: int32

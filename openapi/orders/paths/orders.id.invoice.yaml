@@ -1,0 +1,21 @@
+parameters:
+  - schema:
+      type: string
+    name: orderId
+    in: path
+    required: true
+get:
+  summary: Get order invoice
+  tags:
+    - Orders
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/InvoiceResponse.yaml'
+    '401':
+      description: Unauthorized
+  operationId: get-orders-id-invoice
+  description: Get an orders invoice

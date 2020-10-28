@@ -1,0 +1,19 @@
+title: PaymentProvider
+type: object
+properties:
+  id:
+    type: string
+  name:
+    type: string
+  client_token:
+    type: string
+    description: |
+      If supported
+  exires_at:
+    type: string
+    description: If supported
+x-examples:
+  provider-example:
+    name: SagePay
+    client_token: 123456-1234-1234-1234-123456789
+    exires_at: '2020-04-03T13:24:23.211000Z'

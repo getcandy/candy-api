@@ -1,0 +1,15 @@
+parameters:
+  - schema:
+      type: string
+    name: basketId
+    in: path
+    required: true
+delete:
+  summary: Remove discount
+  tags:
+    - Baskets
+  responses:
+    '204':
+      description: No Content
+  operationId: delete-baskets-basketId-discounts
+  description: 'Allows a user/guest to remove a basket from their basket. Useful if you can only have one discount at a time and they wish to use a different one. '

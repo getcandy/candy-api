@@ -1,0 +1,14 @@
+title: Role
+type: object
+x-tags:
+  - ACL
+  - Authentication
+properties:
+  id:
+    type: string
+  name:
+    type: string
+  guard_name:
+    type: string
+  permissions:
+    $ref: '../responses/PermissionCollection.yaml'

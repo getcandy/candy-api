@@ -1,0 +1,5 @@
+title: TaxResponse
+type: object
+properties:
+  data:
+    $ref: '../models/Tax.yaml'

@@ -1,0 +1,5 @@
+title: UserFieldsResponse
+type: object
+properties:
+  data:
+    $ref: '../models/UserFields.yaml'

@@ -1,0 +1,27 @@
+parameters:
+  - schema:
+      type: string
+    name: assetId
+    in: path
+    required: true
+    description: The hashed asset id
+  - schema:
+      type: string
+    name: ownerId
+    in: path
+    required: true
+    description: The hashed owner id
+post:
+  summary: "Detach an asset from it's model"
+  tags:
+    - Assets
+  responses:
+    '204':
+      description: No Content
+  operationId: post-assets-assetId-detach-ownerId
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../requests/AssetDetachBody.yaml'
+  description: Detaches any assets from a given model. Useful if you want to remove certain assets from a product (or another model) without deleting the asset itself.

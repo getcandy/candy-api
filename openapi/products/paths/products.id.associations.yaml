@@ -1,0 +1,42 @@
+parameters:
+  - schema:
+      type: string
+    name: productId
+    in: path
+    required: true
+post:
+  summary: Update product associations
+  tags:
+    - Products
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/ProductResponse.yaml'
+  operationId: post-products-product-associations
+  description: Updates product associations
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            relations:
+              type: object
+              properties:
+                association_id:
+                  type: string
+                type:
+                  type: string
+    description: ''
+delete:
+  summary: ''
+  operationId: delete-products-productId-associations
+  responses:
+    '204':
+      description: No Content
+  description: Removes product associations
+  tags:
+    - Products

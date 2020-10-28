@@ -1,0 +1,36 @@
+get:
+  summary: Get all tags
+  tags:
+    - Tags
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/TagCollection.yaml'
+  operationId: get-tags
+  description: Get paginated list of tags
+post:
+  summary: ''
+  operationId: post-tags
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/TagResponse.yaml'
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+          required:
+            - name
+  description: Create a new tag
+  tags:
+    - Tags

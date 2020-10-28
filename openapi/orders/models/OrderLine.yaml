@@ -1,0 +1,33 @@
+title: OrderLine
+type: object
+properties:
+  id:
+    type: string
+  quantity:
+    type: integer
+  line_total:
+    type: integer
+  discount_total:
+    type: integer
+  delivery_total:
+    type: integer
+  unit_price:
+    type: integer
+  unit_qty:
+    type: integer
+  tax_total:
+    type: integer
+  tax_rate:
+    type: integer
+  description:
+    type: string
+  option:
+    type: string
+  sku:
+    type: string
+  is_shipping:
+    type: boolean
+  is_manual:
+    type: boolean
+  meta:
+    type: object

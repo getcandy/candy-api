@@ -1,0 +1,9 @@
+title: ProductAssociation
+type: object
+properties:
+  id:
+    type: string
+  association:
+    $ref: '../../products/responses/ProductResponse.yaml'
+  group:
+    $ref: '../responses/AssociationGroupResponse.yaml'
