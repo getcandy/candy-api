@@ -1,0 +1,7 @@
+title: SettingCollection
+type: object
+properties:
+  data:
+    type: array
+    items:
+      $ref: '../models/Setting.yaml'

@@ -1,0 +1,30 @@
+parameters:
+  - schema:
+      type: string
+    name: orderId
+    in: path
+    required: true
+put:
+  summary: Add contact details
+  tags:
+    - Orders
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/OrderResponse.yaml'
+  operationId: put-orders-id-contact
+  description: Add contact details to an order
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            email:
+              type: string
+            phone:
+              type: string
+    description: ''

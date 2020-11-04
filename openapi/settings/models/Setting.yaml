@@ -1,0 +1,20 @@
+title: Setting
+type: object
+properties:
+  id:
+    type: string
+  name:
+    type: string
+  handle:
+    type: string
+  content:
+    type: object
+x-examples:
+  products-example:
+    id: v8l4pl01
+    name: Products
+    handle: products
+    content:
+      transforms:
+        - large_thumbnail
+      asset_source: products

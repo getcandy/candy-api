@@ -1,0 +1,28 @@
+type: object
+title: ''
+x-tags:
+  - Search
+properties:
+  data:
+    type: array
+    items:
+      $ref: '../models/Search.yaml'
+  meta:
+    allOf:
+      - $ref: '../../global/models/Pagination.yaml'
+      - type: object
+        properties:
+          aggregation:
+            type: object
+            properties:
+              available:
+                type: array
+                items:
+                  $ref: '../models/Aggregation.yaml'
+              applied:
+                type: array
+                items:
+                  $ref: '../models/Aggregation.yaml'
+  links:
+    $ref: '../../global/models/Links.yaml'
+description: ''

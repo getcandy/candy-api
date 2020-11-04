@@ -1,0 +1,13 @@
+get:
+  summary: Get Payment Provider
+  tags:
+    - Payments
+  operationId: get-payments-provider
+  description: 'Gets the default, configured payment provider.'
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/PaymentProviderResponse.yaml'

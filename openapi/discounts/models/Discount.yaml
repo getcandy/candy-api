@@ -1,0 +1,45 @@
+title: Discount
+type: object
+x-examples:
+  discount-simple-example:
+    id: 1xl0e6n4
+    start_at: '2019-06-04 14:27:02'
+    end_at: null
+    priority: 0
+    status: 1
+    stop_rules: false
+    uses: 0
+    name: Buy one get one free
+  discount-full-example:
+    id: 1xl0e6n4
+    start_at: '2019-06-04 14:27:02'
+    end_at: null
+    priority: 0
+    status: 1
+    stop_rules: false
+    uses: 0
+    attribute_data:
+      name:
+        webstore:
+          en: Buy one get one free
+properties:
+  id:
+    type: string
+  start_at:
+    type: string
+    format: date-time
+  end_at:
+    type: string
+    format: date-time
+  priority:
+    type: boolean
+  status:
+    type: boolean
+  stop_rules:
+    type: boolean
+  uses:
+    type: integer
+    format: int32
+required:
+  - id
+description: "###\_Available includes\n- sets\n- rewards\n- items"

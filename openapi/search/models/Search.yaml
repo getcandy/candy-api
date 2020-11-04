@@ -1,0 +1,4 @@
+title: Search
+oneOf:
+  - $ref: '../../products/models/Product.yaml'
+  - $ref: '../../categories/models/Category.yaml'

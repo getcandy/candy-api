@@ -1,0 +1,9 @@
+title: AssetTransform
+type: object
+properties:
+  id:
+    type: string
+  handle:
+    type: string
+  url:
+    type: string

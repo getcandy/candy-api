@@ -1,0 +1,7 @@
+title: ProductTierPriceCollection
+type: object
+properties:
+  data:
+    type: array
+    items:
+      $ref: '../models/ProductTierPrice.yaml'

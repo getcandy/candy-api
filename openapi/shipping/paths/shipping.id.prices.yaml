@@ -1,0 +1,64 @@
+parameters:
+  - schema:
+      type: string
+    name: shippingMethodId
+    in: path
+    required: true
+post:
+  summary: Add shipping price
+  tags:
+    - Shipping
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/ShippingPriceResponse.yaml'
+    '422':
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              rate:
+                type: array
+                items:
+                  type: string
+              zone_id:
+                type: array
+                items:
+                  type: string
+              currency_id:
+                type: array
+                items:
+                  type: string
+          examples:
+            unprocessable-example:
+              value:
+                rate:
+                  - The rate field is required.
+                zone_id:
+                  - The zone id field is required.
+                currency_id:
+                  - The currency id field is required.
+  operationId: post-shipping-id-prices
+  description: Add a price to a shipping method.
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            rate:
+              type: number
+            zone_id:
+              type: string
+            currency_id:
+              type: string
+          required:
+            - rate
+            - zone_id
+            - currency_id
+    description: ''

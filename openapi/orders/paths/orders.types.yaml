@@ -1,0 +1,20 @@
+get:
+  summary: Get order types
+  tags:
+    - Orders
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/OrderTypeCollection.yaml'
+          examples:
+            order-types-example:
+              value:
+                data:
+                  - label: Collection
+                  - label: PayPal
+                  - label: SagePay
+  operationId: get-orders-types
+  description: Returns all order types currently in the system

@@ -1,0 +1,14 @@
+title: AttachCategoryCustomerGroupsBody
+type: object
+properties:
+  groups:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: string
+        visible:
+          type: boolean
+        purchasable:
+          type: boolean

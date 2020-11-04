@@ -1,0 +1,7 @@
+title: OrderExport
+type: object
+properties:
+  format:
+    type: string
+  content:
+    type: string

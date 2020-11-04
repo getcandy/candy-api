@@ -1,0 +1,10 @@
+title: AddBasketMetaBody
+type: object
+properties:
+  value:
+    type: string
+  key:
+    type: string
+required:
+  - key
+  - value

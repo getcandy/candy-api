@@ -1,0 +1,43 @@
+post:
+  summary: Create basket lines
+  tags:
+    - Baskets
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../../baskets/responses/BasketResponse.yaml'
+  operationId: post-basket-lines
+  description: Add lines to a basket
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../requests/CreateBasketLinesBody.yaml'
+        examples:
+          create-lines-example:
+            value:
+              basket_id: 15rf2395etf34t
+              variants:
+                - id: 534ed23ewdas
+                  quantity: 1
+                  meta:
+                    giftwrapped: true
+delete:
+  summary: Delete basket lines
+  tags:
+    - Baskets
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '../../baskets/responses/BasketResponse.yaml'
+  operationId: delete-basket-lines
+  description: Removes basket lines from a basket

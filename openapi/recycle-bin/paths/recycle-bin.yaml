@@ -1,0 +1,13 @@
+get:
+  summary: Get records
+  tags:
+    - Recycle Bin
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/RecycleBinCollection.yaml'
+  operationId: get-recycle-bin
+  description: Returns a paginated list of all recycle bin items.

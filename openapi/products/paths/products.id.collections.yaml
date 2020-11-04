@@ -1,0 +1,44 @@
+parameters:
+  - schema:
+      type: string
+    name: productId
+    in: path
+    required: true
+post:
+  summary: Update Product collections
+  tags:
+    - Products
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/ProductResponse.yaml'
+    '422':
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              collections:
+                type: array
+                items:
+                  type: string
+  operationId: post-products-productId-collections
+  description: Update a products collections.
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            collections:
+              type: array
+              description: An array of collection IDs to associate
+              items:
+                type: string
+          required:
+            - collections
+    description: ''

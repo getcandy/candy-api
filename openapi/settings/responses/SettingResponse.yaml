@@ -1,0 +1,5 @@
+title: SettingResponse
+type: object
+properties:
+  data:
+    $ref: '../models/Setting.yaml'

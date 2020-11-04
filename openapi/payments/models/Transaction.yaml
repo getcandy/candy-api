@@ -1,0 +1,58 @@
+title: Transaction
+type: object
+properties:
+  id:
+    type: string
+  transaction_id:
+    type: string
+  merchant:
+    type: string
+  amount:
+    type: integer
+    format: int32
+  card_type:
+    type: string
+  last_four:
+    type: string
+  provider:
+    type: string
+  driver:
+    type: string
+  success:
+    type: boolean
+  refund:
+    type: boolean
+  address_matched:
+    type: boolean
+  cvc_matched:
+    type: boolean
+  threed_secure:
+    type: boolean
+  postcode_matched:
+    type: boolean
+  status:
+    type: string
+  notes:
+    type: string
+  created_at:
+    type: string
+    format: date
+x-examples:
+  normal-example:
+    id: 2sef73d8ssefsf8
+    transaction_id: 1234-1234-1234-1234
+    merchant: mystorefront
+    amount: 7845
+    card_type: Visa
+    last_four: '1234'
+    provider: SagePay
+    driver: sagepay
+    success: true
+    refund: false
+    address_matched: true
+    cvc_matched: true
+    threed_secure: true
+    postcode_matched: true
+    status: Ok
+    notes: null
+    created_at: '2020-04-30T11:44:34.000000Z'

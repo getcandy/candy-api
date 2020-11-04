@@ -1,0 +1,31 @@
+put:
+  summary: Reorder attribute groups
+  tags:
+    - Attributes
+  responses:
+    '204':
+      description: No Content
+    '422':
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/AttributeGroupOrderUnprocessableResponse.yaml'
+          examples:
+            uprocessable-response:
+              value:
+                groups:
+                  - The groups field is required.
+  operationId: put-attribute-groups-reorder
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../requests/AttributeGroupReorderBody.yaml'
+        examples:
+          reorder-request-example:
+            value:
+              groups:
+                vokq5kmj: 1
+                mqkj8wyj: 2
+  description: Sends a request to reorder the attribute groups in the system

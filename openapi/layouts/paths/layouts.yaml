@@ -1,0 +1,13 @@
+get:
+  summary: Get Layouts
+  tags:
+    - Layouts
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/LayoutCollection.yaml'
+  operationId: get-layouts
+  description: Get a paginated list of Layouts

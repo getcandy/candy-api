@@ -1,0 +1,9 @@
+title: TaxCollection
+allOf:
+  - type: object
+    properties:
+      data:
+        type: array
+        items:
+          $ref: '../models/Tax.yaml'
+  - $ref: '../../global/models/Pagination.yaml'

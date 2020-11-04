@@ -1,0 +1,5 @@
+title: OrderExportResponse
+type: object
+properties:
+  data:
+    $ref: '../models/OrderExport.yaml'

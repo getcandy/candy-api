@@ -1,0 +1,9 @@
+title: CollectionCollection
+allOf:
+  - type: object
+    properties:
+      data:
+        type: array
+        items:
+          $ref: '../models/Collection.yaml'
+  - $ref: '../../global/models/Pagination.yaml'

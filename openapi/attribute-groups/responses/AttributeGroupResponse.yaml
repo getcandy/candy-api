@@ -1,0 +1,5 @@
+title: AttributeGroupResponse
+type: object
+properties:
+  data:
+    $ref: '../models/AttributeGroup.yaml'

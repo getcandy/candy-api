@@ -1,0 +1,27 @@
+parameters:
+  - schema:
+      type: string
+    name: productId
+    in: path
+    required: true
+post:
+  summary: Create Product route
+  tags:
+    - Products
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/ProductResponse.yaml'
+  operationId: post-product-urls
+  description: Creates and syncs a new product route.
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            slug:
+              type: string

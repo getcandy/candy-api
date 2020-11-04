@@ -1,0 +1,7 @@
+title: AttributeGroupOrderUnprocessableResponse
+type: object
+properties:
+  attributes:
+    type: array
+    items:
+      type: string

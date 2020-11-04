@@ -1,0 +1,13 @@
+get:
+  summary: Payment types
+  tags:
+    - Payments
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/PaymentTypeCollection.yaml'
+  operationId: get-payments-types
+  description: Returns a list of available Payment Types in the system

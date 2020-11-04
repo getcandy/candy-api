@@ -1,0 +1,10 @@
+title: Unauthenticated
+type: object
+properties:
+  error:
+    type: string
+x-examples:
+  example:
+    error: Unauthenticated.
+x-tags:
+  - Statuses
