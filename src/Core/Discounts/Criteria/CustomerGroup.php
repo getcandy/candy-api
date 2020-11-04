@@ -40,8 +40,30 @@ class CustomerGroup implements DiscountCriteriaContract
 
     public function check($user)
     {
-        // dd($this->getRealIds());
-        // return app('api')->customerGroups()->userIsInGroup($this->value, $user);
-        return false;
+        if (!$user && !$this->value) {
+            return false;
+        }
+
+        $passes = false;
+
+        foreach ($this->value as $group) {
+            if (!$user && $group->default) {
+                $passes = true;
+                continue;
+            }
+
+            if (!$user) {
+                continue;
+            }
+        }
+
+        // If we have a user, check if they're in the group.
+        if ($user) {
+            $passes = $user->groups->filter(function ($group) {
+                return in_array($group->id, $this->value->pluck('id')->toArray());
+            })->count();
+        }
+
+        return $passes;
     }
 }
