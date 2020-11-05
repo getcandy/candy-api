@@ -1,0 +1,9 @@
+title: ProductCollection
+allOf:
+  - type: object
+    properties:
+      data:
+        type: array
+        items:
+          $ref: '../models/Product.yaml'
+  - $ref: '../../global/models/Pagination.yaml'

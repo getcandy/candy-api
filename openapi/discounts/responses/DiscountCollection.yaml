@@ -1,0 +1,9 @@
+title: DiscountCollection
+allOf:
+  - type: object
+    properties:
+      data:
+        type: array
+        items:
+          $ref: '../models/Discount.yaml'
+  - $ref: '../../global/models/Pagination.yaml'

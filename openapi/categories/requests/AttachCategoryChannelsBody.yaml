@@ -1,0 +1,17 @@
+title: AttachCategoryChannelsBody
+type: object
+properties:
+  channels:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: string
+        published_at:
+          type: string
+      required:
+        - id
+        - published_at
+required:
+  - channels

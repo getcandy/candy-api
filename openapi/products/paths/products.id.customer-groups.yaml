@@ -1,0 +1,48 @@
+parameters:
+  - schema:
+      type: string
+    name: productId
+    in: path
+    required: true
+post:
+  summary: Update customer groups
+  tags:
+    - Products
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/ProductResponse.yaml'
+  operationId: post-products-product-customer-groups
+  description: Update a products customer groups
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            groups:
+              type: array
+              items:
+                type: object
+                properties:
+                  visible:
+                    type: boolean
+                  purchasable:
+                    type: boolean
+                required:
+                  - visible
+                  - purchasable
+          required:
+            - groups
+delete:
+  summary: Detach customer groups
+  operationId: delete-products-product-customer-groups
+  responses:
+    '204':
+      description: No Content
+  tags:
+    - Products
+  description: Detaches customer groups from a product

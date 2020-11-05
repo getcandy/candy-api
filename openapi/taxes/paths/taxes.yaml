@@ -1,0 +1,61 @@
+get:
+  summary: Get taxes
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/TaxCollection.yaml'
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/Unauthenticated.yaml'
+  operationId: get-taxes
+  description: Get a paginated list of taxes
+  tags:
+    - Taxes
+post:
+  summary: Create tax
+  tags:
+    - Taxes
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/TaxResponse.yaml'
+    '422':
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: array
+                items:
+                  type: string
+              percentage:
+                type: array
+                items:
+                  type: string
+  operationId: post-taxes
+  description: Create a new tax resource.
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Unique name
+            percentage:
+              type: number
+          required:
+            - name
+            - percentage

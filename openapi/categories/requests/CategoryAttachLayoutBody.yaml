@@ -1,0 +1,5 @@
+title: CategoryAttachLayoutBody
+type: object
+properties:
+  layout_id:
+    type: string

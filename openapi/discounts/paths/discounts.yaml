@@ -1,0 +1,76 @@
+get:
+  summary: Get Discounts
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/DiscountCollection.yaml'
+  operationId: get-discounts
+  description: Returns a paginated list of Discounts
+  tags:
+    - Discounts
+post:
+  summary: Create Discount
+  tags:
+    - Discounts
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/DiscountResponse.yaml'
+  operationId: post-discounts
+  description: Create a new Discount.
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            start_at:
+              type: string
+              format: date-time
+              example: '2017-07-21T17:32:28Z'
+            end_at:
+              type: string
+              format: date-time
+              example: '2017-07-21T17:32:28Z'
+            name:
+              type: object
+              properties:
+                en:
+                  type: string
+                  example: Buy one get one free
+            uses:
+              type: integer
+            status:
+              type: boolean
+            channels:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  published_at:
+                    type: string
+                    format: date-time
+                    example: '2017-07-21T17:32:28Z'
+                required:
+                  - id
+          required:
+            - name
+        examples:
+          create-example:
+            value:
+              name:
+                en: Buy one get one free
+              start_at: '2019-06-04 14:27:02'
+              end_at: '2019-06-04 14:27:02'
+              channels:
+                - id: 1xl0e6n4
+                  published_at: '2019-06-04 14:27:02'
+    description: Create a base Discount for editing.

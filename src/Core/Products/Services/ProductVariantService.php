@@ -3,10 +3,12 @@
 namespace GetCandy\Api\Core\Products\Services;
 
 use GetCandy;
-use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
-use GetCandy\Api\Core\Products\Models\ProductVariant;
 use GetCandy\Api\Core\Scaffold\BaseService;
+use GetCandy\Api\Core\Foundation\Actions\DecodeId;
+use GetCandy\Api\Core\Customers\Models\CustomerGroup;
+use GetCandy\Api\Core\Products\Models\ProductVariant;
 use GetCandy\Api\Core\Search\Events\IndexableSavedEvent;
+use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
 
 class ProductVariantService extends BaseService
 {
@@ -234,7 +236,10 @@ class ProductVariantService extends BaseService
         $variant->customerPricing()->delete();
 
         foreach ($prices as $price) {
-            $price['customer_group_id'] = GetCandy::customerGroups()->getDecodedId($price['customer_group_id']);
+            $price['customer_group_id'] = DecodeId::run([
+                'model' => CustomerGroup::class,
+                'encoded_id' => $price['customer_group_id'],
+            ]);
 
             if (! empty($price['tax_id'])) {
                 $price['tax_id'] = GetCandy::taxes()->getDecodedId($price['tax_id']);
@@ -251,7 +256,10 @@ class ProductVariantService extends BaseService
         $variant->tiers()->delete();
 
         foreach ($tiers as $tier) {
-            $tier['customer_group_id'] = GetCandy::customerGroups()->getDecodedId($tier['customer_group_id']);
+            $tier['customer_group_id'] = DecodeId::run([
+                'model' => CustomerGroup::class,
+                'encoded_id' => $tier['customer_group_id'],
+            ]);
             $variant->tiers()->create($tier);
         }
     }

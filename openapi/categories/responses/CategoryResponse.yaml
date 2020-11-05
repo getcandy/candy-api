@@ -1,0 +1,5 @@
+title: CategoryResponse
+type: object
+properties:
+  data:
+    $ref: '../models/Category.yaml'

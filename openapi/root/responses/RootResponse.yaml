@@ -1,0 +1,11 @@
+title: Root
+type: object
+properties:
+  version:
+    type: string
+  locale:
+    type: string
+  channel:
+    type: string
+  currency:
+    type: string

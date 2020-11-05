@@ -1,0 +1,24 @@
+parameters:
+  - schema:
+      type: string
+    name: categoryId
+    in: path
+    required: true
+post:
+  summary: Update a category layout
+  tags:
+    - Categories
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/CategoryResponse.yaml'
+  operationId: post-categories-category-layouts
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../requests/CategoryAttachLayoutBody.yaml'
+  description: Attaches layouts to a category resource

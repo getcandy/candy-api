@@ -1,0 +1,9 @@
+title: RoleCollection
+allOf:
+  - type: object
+    properties:
+      data:
+        type: array
+        items:
+          $ref: '../models/Role.yaml'
+  - $ref: '../../global/models/Pagination.yaml'

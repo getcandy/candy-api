@@ -1,0 +1,17 @@
+title: AttachCategoryProductsBody
+type: object
+properties:
+  products:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: string
+        position:
+          type: integer
+          format: int32
+          example: 1
+  sort_type:
+    type: string
+    description: 'custom, min_price:asc, min_price:desc, sku:asc, sku:desc'

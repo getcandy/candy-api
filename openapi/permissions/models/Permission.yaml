@@ -1,0 +1,12 @@
+title: Permission
+type: object
+properties:
+  id:
+    type: string
+  name:
+    type: string
+  guard_name:
+    type: string
+x-tags:
+  - ACL
+  - Authentication

@@ -1,0 +1,73 @@
+get:
+  summary: Get shipping methods
+  tags:
+    - Shipping
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/ShippingMethodCollection.yaml'
+  operationId: get-shipping
+  description: Returns a paginated list of shipping methods
+  parameters:
+    - schema:
+        type: integer
+      in: query
+      name: per_page
+    - schema:
+        type: string
+      in: query
+      name: include
+post:
+  summary: Create shipping method
+  tags:
+    - Shipping
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '../models/ShippingMethod.yaml'
+    '422':
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: array
+                items:
+                  type: string
+              type:
+                type: array
+                items:
+                  type: string
+  operationId: post-shipping
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - standard
+                - dhl
+                - regional
+            name:
+              type: object
+              properties:
+                en:
+                  type: string
+          required:
+            - type
+  description: Create a new shipping method.
+  parameters: []

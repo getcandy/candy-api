@@ -1,0 +1,5 @@
+title: ProductTierPriceResponse
+type: object
+properties:
+  data:
+    $ref: '../models/ProductTierPrice.yaml'

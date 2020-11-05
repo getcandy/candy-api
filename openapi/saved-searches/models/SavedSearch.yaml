@@ -1,0 +1,15 @@
+title: SavedSearch
+type: object
+properties:
+  id:
+    type: string
+  name:
+    type: string
+  payload:
+    type: object
+x-examples:
+  saved-search-example:
+    id: wz6d39dj
+    name: Red Sweets
+    payload:
+      keywords: Red sweets

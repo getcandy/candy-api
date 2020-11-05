@@ -1,0 +1,9 @@
+title: ShippingZoneCollection
+allOf:
+  - type: object
+    properties:
+      data:
+        type: array
+        items:
+          $ref: '../models/ShippingZone.yaml'
+  - $ref: '../../global/models/Pagination.yaml'

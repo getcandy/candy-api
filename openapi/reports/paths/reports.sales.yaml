@@ -1,0 +1,215 @@
+get:
+  summary: Get sales report
+  tags:
+    - Reports
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              labels:
+                type: array
+                items:
+                  type: string
+              datasets:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    label:
+                      type: string
+                    backgroundColor:
+                      type: string
+                    yAxisId:
+                      type: string
+                    borderColor:
+                      type: string
+                    data:
+                      type: array
+                      items:
+                        type: string
+                    fill:
+                      type: boolean
+          examples:
+            monthly-example:
+              value:
+                labels:
+                  - January 2019
+                  - February 2019
+                  - March 2019
+                  - April 2019
+                  - May 2019
+                  - June 2019
+                  - July 2019
+                  - August 2019
+                  - September 2019
+                  - October 2019
+                  - November 2019
+                  - December 2019
+                datasets:
+                  - label: Orders
+                    backgroundColor: '#E7028C'
+                    yAxisID: A
+                    borderColor: '#E7028C'
+                    data:
+                      - 4803
+                      - 4703
+                      - 5147
+                      - 4805
+                      - 4964
+                      - 4907
+                      - 5525
+                      - 4734
+                      - 5210
+                      - 5733
+                      - 4867
+                      - 3258
+                    fill: false
+                  - label: Revenue
+                    backgroundColor: '#0099e5'
+                    yAxisID: B
+                    borderColor: '#0099e5'
+                    data:
+                      - '44492929'
+                      - '42988674'
+                      - '46779741'
+                      - '43873165'
+                      - '45938827'
+                      - '47167482'
+                      - '52133245'
+                      - '43647302'
+                      - '48852965'
+                      - '54670528'
+                      - '46422960'
+                      - '31355558'
+                    fill: false
+            weekly-example:
+              value:
+                labels:
+                  - Week Comm. 02/01/2020
+                  - Week Comm. 06/01/2020
+                  - Week Comm. 16/01/2020
+                  - Week Comm. 20/01/2020
+                  - Week Comm. 29/01/2020
+                datasets:
+                  - label: Orders
+                    backgroundColor: '#E7028C'
+                    yAxisID: A
+                    borderColor: '#E7028C'
+                    data:
+                      - 347
+                      - 1297
+                      - 1335
+                      - 1314
+                      - 1231
+                    fill: false
+                  - label: Revenue
+                    backgroundColor: '#0099e5'
+                    yAxisID: B
+                    borderColor: '#0099e5'
+                    data:
+                      - '2980381'
+                      - '13029474'
+                      - '12304326'
+                      - '12530776'
+                      - '10988167'
+                    fill: false
+            daily-example:
+              value:
+                labels:
+                  - 1st January 2020
+                  - 2nd January 2020
+                  - 3rd January 2020
+                  - 4th January 2020
+                  - 5th January 2020
+                  - 6th January 2020
+                  - 7th January 2020
+                datasets:
+                  - label: Orders
+                    backgroundColor: '#E7028C'
+                    yAxisID: A
+                    borderColor: '#E7028C'
+                    data:
+                      - 20
+                      - 157
+                      - 121
+                      - 22
+                      - 27
+                      - 247
+                      - 255
+                    fill: false
+                  - label: Revenue
+                    backgroundColor: '#0099e5'
+                    yAxisID: B
+                    borderColor: '#0099e5'
+                    data:
+                      - '102132'
+                      - '1370854'
+                      - '1096602'
+                      - '161444'
+                      - '249349'
+                      - '2925187'
+                      - '2263469'
+                    fill: false
+    '422':
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              errors:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    from:
+                      type: array
+                      items:
+                        type: string
+                    to:
+                      type: array
+                      items:
+                        type: string
+          examples:
+            unprocessable-example:
+              value:
+                message: The given data was invalid.
+                errors:
+                  from:
+                    - The from field is required.
+                    - The from is not a valid date.
+                  to:
+                    - The to field is required.
+                    - The to is not a valid date.
+  operationId: get-reports-sales
+  parameters:
+    - schema:
+        type: string
+      in: query
+      name: from
+      description: The from date
+      required: true
+    - schema:
+        type: string
+      in: query
+      name: to
+      description: The to date
+    - schema:
+        type: string
+        enum:
+          - weekly
+          - monthly
+          - daily
+      in: query
+      name: mode
+      description: The dataset mode
+  description: |-
+    This endpoints returns sales report figures.
+
+    > Currently this provides data suitable for chartjs.org but this is subject to change and be more decoupled in a future release.

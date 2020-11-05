@@ -1,0 +1,7 @@
+title: UpdateAttributesBody
+type: object
+properties:
+  attributes:
+    type: object
+required:
+  - attributes

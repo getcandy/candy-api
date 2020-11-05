@@ -1,0 +1,7 @@
+title: Invoice
+type: object
+properties:
+  encoding:
+    type: string
+  content:
+    type: string

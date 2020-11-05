@@ -1,0 +1,24 @@
+title: AttributeGroup
+type: object
+x-examples:
+  full-example:
+    id: vokq5kmj
+    name:
+      en: General
+    handle: general
+    position: '1'
+description: |-
+  ### Available includes
+  - attributes
+properties:
+  id:
+    type: string
+  name:
+    type: object
+  handle:
+    type: string
+  position:
+    type: integer
+    format: int32
+  attributes:
+    $ref: '../../attributes/responses/AttributeCollection.yaml'

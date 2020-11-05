@@ -1,0 +1,7 @@
+title: ProductUpdateBody
+type: object
+properties:
+  attribute_data:
+    type: object
+  family_id:
+    type: string

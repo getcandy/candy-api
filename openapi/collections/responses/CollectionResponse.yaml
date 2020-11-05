@@ -1,0 +1,5 @@
+title: CollectionResponse
+type: object
+properties:
+  data:
+    $ref: '../models/Collection.yaml'

@@ -1,0 +1,9 @@
+title: AttributeGroupCollection
+allOf:
+  - type: object
+    properties:
+      data:
+        type: array
+        items:
+          $ref: '../models/AttributeGroup.yaml'
+  - $ref: '../../global/models/Pagination.yaml'

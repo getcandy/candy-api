@@ -1,0 +1,16 @@
+title: CreateBasketLinesBody
+type: object
+properties:
+  variants:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: string
+        quantity:
+          type: integer
+        meta:
+          type: object
+  basket_id:
+    type: string

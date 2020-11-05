@@ -1,0 +1,72 @@
+title: ShippingPrice
+type: object
+description: "###\_Available Includes\n\n- method\n- zone\n- currency\n- customer_groups"
+x-examples:
+  example-with-zone-method:
+    id: ujafe83dd
+    rate: 795
+    tax: 159
+    fixed: true
+    min_basket: 0
+    min_basket_tax: 0
+    min_weight: '0.00000'
+    weight_unit: kg
+    min_height: '0.00000'
+    height_unit: cm
+    min_width: '0.00000'
+    width_unit: cm
+    min_depth: '0.00000'
+    depth_unit: cm
+    min_volume: '0.00000'
+    volume_unit: l
+    method:
+      data:
+        id: v5ters33
+        type: regional
+        name: Standard Delivery
+        description: Standard delivery
+        code: ND
+    zone:
+      data:
+        id: awd012es
+        name: Region 1
+properties:
+  id:
+    type: string
+  rate:
+    type: integer
+    format: int32
+  tax:
+    type: integer
+    format: int32
+  fixed:
+    type: boolean
+  min_basket:
+    type: integer
+    description: Minimum basket total to be eligible
+  min_basket_tax:
+    type: integer
+  min_weight:
+    type: string
+  weight_unit:
+    type: string
+  min_height:
+    type: string
+  height_unit:
+    type: string
+  min_width:
+    type: string
+  width_unit:
+    type: string
+  min_depth:
+    type: string
+  depth_unit:
+    type: string
+  min_volume:
+    type: string
+  volume_unit:
+    type: string
+  method:
+    $ref: '../responses/ShippingMethodResponse.yaml'
+  zone:
+    $ref: '../responses/ShippingZoneResponse.yaml'

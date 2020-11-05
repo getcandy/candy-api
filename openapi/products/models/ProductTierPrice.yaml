@@ -1,0 +1,13 @@
+title: ProductTierPrice
+type: object
+properties:
+  id:
+    type: string
+  lower_limit:
+    type: integer
+  price:
+    type: number
+  tax:
+    type: number
+  group:
+    $ref: '../../customer-groups/responses/CustomerGroupResponse.yaml'

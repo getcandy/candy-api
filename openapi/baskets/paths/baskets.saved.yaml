@@ -1,0 +1,23 @@
+get:
+  summary: Get a users saved baskets
+  tags:
+    - Baskets
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/SavedBasketCollection.yaml'
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/Unauthenticated.yaml'
+          examples:
+            example-1:
+              value:
+                error: Unauthenticated.
+  operationId: get-baskets-saved
+  description: Returns an authenticatd users saved baskets.

@@ -4,6 +4,7 @@ namespace GetCandy\Api\Core\Search\Providers\Elastic\Sorts;
 
 use GetCandy;
 use Illuminate\Database\Eloquent\Model;
+use GetCandy\Api\Core\Customers\Actions\FetchDefaultCustomerGroup;
 
 abstract class AbstractSort
 {
@@ -124,7 +125,7 @@ abstract class AbstractSort
                 $groups = $this->user->groups;
             }
         } else {
-            $groups = [GetCandy::customerGroups()->getGuest()];
+            $groups = [FetchDefaultCustomerGroup::run()];
         }
 
         return $groups;

@@ -1,0 +1,13 @@
+title: AssetSimple
+type: object
+properties:
+  thumbnail_url:
+    type: string
+  thumbnail:
+    type: string
+  url:
+    type: string
+  filename:
+    type: string
+  path:
+    type: string

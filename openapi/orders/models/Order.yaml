@@ -1,0 +1,152 @@
+title: Order
+type: object
+x-examples:
+  full-response:
+    id: 34fSEsef23ewds
+    display_id: '#ORD-1234567'
+    sub_total: 24150
+    type: SagePay
+    delivery_total: 0
+    discount_total: 0
+    tax_total: 4830
+    shipping_preference: null
+    shipping_method: Standard Delivery
+    order_total: 28980
+    reference: CANDY-123456789
+    customer_reference: null
+    invoice_reference: '#INV-CANDY-123456789'
+    vat_no: null
+    tracking_no: null
+    dispatched_at: null
+    currency: GBP
+    customer_name: Sweet Tooth
+    contact_details:
+      phone: ''
+      email: sweets@sweettooth.com
+    billing_details:
+      phone: ''
+      email: null
+      firstname: Sweet
+      lastname: Tooth
+      address: Sweet Shop Inc.
+      address_two: Pastry Lane
+      address_three: null
+      city: Chelmsford
+      county: Essex
+      state: null
+      country: United Kingdom
+      zip: CM2 5TH
+    shipping_details:
+      method: Standard Delivery
+      preference: null
+      phone: 12345-678910
+      email: null
+      firstname: Sweet
+      lastname: Tooth
+      address: Sweet Shop Inc.
+      address_two: Pastry Lane
+      address_three: null
+      city: Chelmsford
+      county: Essex
+      state: null
+      country: United Kingdom
+      zip: CM2 5TH
+    status: dispatched
+    created_at: '2018-02-28T15:33:26.000000Z'
+    updated_at: '2019-06-04T08:22:29.000000Z'
+    placed_at: '2018-02-28T15:34:57.000000Z'
+    notes: "Please don't ring the doorbell and run away"
+    meta: []
+properties:
+  id:
+    type: string
+    example: 123RFesfes356P
+  display_id:
+    type: string
+    example: '#ORD-123456'
+  sub_total:
+    type: integer
+    format: int32
+    example: 12345
+  type:
+    type: string
+    example: SagePay
+  delivery_total:
+    type: integer
+    format: int32
+    example: 1307
+  discount_total:
+    type: integer
+  tax_total:
+    type: integer
+    format: int32
+    example: 1307
+  shipping_preference:
+    type: string
+  shipping_method:
+    type: string
+    example: Standard Delivery
+  order_total:
+    type: integer
+    format: int32
+    example: 7845
+  reference:
+    type: string
+    example: CUSTOM-REFERENCE
+  customer_reference:
+    type: string
+  invoice_reference:
+    type: string
+    example: '#INV-1234567'
+  vat_no:
+    type: string
+  tracking_no:
+    type: string
+  dispatched_at:
+    type: string
+  currency:
+    type: string
+    example: GBP
+  customer_name:
+    type: string
+    example: Thanos
+  contact_details:
+    type: object
+    properties:
+      phone:
+        type: string
+        example: '12345678910'
+      email:
+        type: string
+        example: example@example.com
+  billing_details:
+    $ref: '../../addresses/models/Address.yaml'
+  shipping_details:
+    $ref: '../../addresses/models/Address.yaml'
+  status:
+    type: string
+    example: payment-received
+  created_at:
+    type: string
+  updated_at:
+    type: string
+  notes:
+    type: string
+  meta:
+    type: array
+    items:
+      type: object
+  basket:
+    $ref: '../../baskets/responses/BasketResponse.yaml'
+  discounts:
+    type: string
+  transactions:
+    $ref: '../../payments/responses/TransactionCollection.yaml'
+  lines:
+    $ref: '../responses/OrderLineCollection.yaml'
+  shipping:
+    $ref: '../responses/OrderLineResponse.yaml'
+  logs:
+    $ref: '../../activity-log/responses/ActivityLogCollection.yaml'
+  user:
+    $ref: '../../users/responses/UserResponse.yaml'

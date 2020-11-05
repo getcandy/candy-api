@@ -1,0 +1,110 @@
+parameters:
+  - schema:
+      type: string
+    name: orderId
+    in: path
+    required: true
+get:
+  summary: Get Order Shipping Methods
+  tags:
+    - Orders
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../../shipping/responses/ShippingPriceCollection.yaml'
+          examples:
+            full-example:
+              value:
+                data:
+                  - id: awd2qwda0d
+                    rate: 795
+                    tax: 159
+                    fixed: true
+                    min_basket: 0
+                    min_basket_tax: 0
+                    min_weight: '0.00000'
+                    weight_unit: kg
+                    min_height: '0.00000'
+                    height_unit: cm
+                    min_width: '0.00000'
+                    width_unit: cm
+                    min_depth: '0.00000'
+                    depth_unit: cm
+                    min_volume: '0.00000'
+                    volume_unit: l
+                    method:
+                      data:
+                        id: v8l4pl01
+                        type: regional
+                        name: Standard Delivery
+                        description: Method Description
+                        code: ND
+                    zone:
+                      data:
+                        id: p09prlrn
+                        name: Region One
+                  - id: 92owerfd3
+                    rate: 3000
+                    tax: 600
+                    fixed: true
+                    min_basket: 0
+                    min_basket_tax: 0
+                    min_weight: '0.00000'
+                    weight_unit: kg
+                    min_height: '0.00000'
+                    height_unit: cm
+                    min_width: '0.00000'
+                    width_unit: cm
+                    min_depth: '0.00000'
+                    depth_unit: cm
+                    min_volume: '0.00000'
+                    volume_unit: l
+                    method:
+                      data:
+                        id: awd2e15gtfd
+                        type: regional
+                        name: Next Working Day
+                        description: Next day delivery - excluding weekends
+                        code: ND1030
+                    zone:
+                      data:
+                        id: 0o3wesde3
+                        name: Region One
+                  - id: eqdas9932
+                    rate: 2000
+                    tax: 400
+                    fixed: true
+                    min_basket: 0
+                    min_basket_tax: 0
+                    min_weight: '0.00000'
+                    weight_unit: kg
+                    min_height: '0.00000'
+                    height_unit: cm
+                    min_width: '0.00000'
+                    width_unit: cm
+                    min_depth: '0.00000'
+                    depth_unit: cm
+                    min_volume: '0.00000'
+                    volume_unit: l
+                    method:
+                      data:
+                        id: wz6d39dj
+                        type: regional
+                        name: Next Working Day - Before 1pm
+                        description: Next working day before 1pm
+                        code: ND1230
+                    zone:
+                      data:
+                        id: 12qewdfs4
+                        name: Region One
+  operationId: get-orders-id-shipping-methods
+  description: "This will return a list of all ShippingMethod's that are available for this order."
+  parameters:
+    - schema:
+        type: string
+      in: query
+      name: include
+      description: The available resources to include

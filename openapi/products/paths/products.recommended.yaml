@@ -1,0 +1,22 @@
+get:
+  summary: Get recommended products
+  tags:
+    - Products
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/ProductRecommendationCollection.yaml'
+  operationId: get-products-recommended
+  parameters:
+    - schema:
+        type: string
+      in: query
+      name: basket_id
+      required: true
+  description: |-
+    This endpoint will return recommended products based on a basket.
+
+    Using product associations, the API will find products in the basket and display any relations that have been defined.

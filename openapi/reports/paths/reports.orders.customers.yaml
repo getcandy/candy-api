@@ -1,0 +1,44 @@
+get:
+  summary: Get Customer Report
+  tags:
+    - Reports
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              '202003':
+                type: object
+                properties:
+                  label:
+                    type: string
+                  new:
+                    type: integer
+                  returning:
+                    type: integer
+                  total:
+                    type: integer
+          examples:
+            basic-example:
+              value:
+                '202003':
+                  label: March 2020
+                  new: 204
+                  returning: 1980
+                  total: 2184
+  operationId: get-reports-orders-customers
+  description: Returns a monthly grouped list of new/returning and total customers.
+  parameters:
+    - schema:
+        type: string
+      in: query
+      name: from
+      description: The from date
+    - schema:
+        type: string
+      in: query
+      name: to
+      description: The to date
