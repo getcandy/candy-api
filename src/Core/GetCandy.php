@@ -47,7 +47,7 @@ class GetCandy
             return 'Unknown';
         }
 
-        return $packages->first(function ($p) {
+        return ($packages->has('packages') ? collect($packages->get('packages')) : $packages)->first(function ($p) {
             return $p->name === 'getcandy/candy-api';
         })->version;
     }
