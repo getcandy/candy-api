@@ -1,0 +1,5 @@
+title: ProductAssociationResponse
+type: object
+properties:
+  data:
+    $ref: '../models/ProductAssociation.yaml'

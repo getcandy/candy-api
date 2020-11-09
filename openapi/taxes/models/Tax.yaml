@@ -1,0 +1,17 @@
+title: Tax
+type: object
+properties:
+  id:
+    type: string
+  name:
+    type: string
+  percentage:
+    type: number
+  default:
+    type: boolean
+x-examples:
+  tax-example:
+    id: xndgx1jz
+    name: VAT
+    percentage: 20
+    default: true

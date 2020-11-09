@@ -1,0 +1,9 @@
+title: LayoutCollection
+allOf:
+  - type: object
+    properties:
+      data:
+        type: array
+        items:
+          $ref: '../models/Layout.yaml'
+  - $ref: '../../global/models/Pagination.yaml'

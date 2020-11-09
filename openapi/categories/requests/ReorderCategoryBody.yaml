@@ -1,0 +1,15 @@
+title: ReorderCategoryBody
+type: object
+properties:
+  action:
+    type: string
+    description: 'before, after, over'
+  moved_node:
+    type: string
+    description: The ID of the category which moved
+  node:
+    type: string
+    description: The id of the category affected
+required:
+  - node
+  - moved_node

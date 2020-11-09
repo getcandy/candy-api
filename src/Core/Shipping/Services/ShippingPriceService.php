@@ -6,6 +6,7 @@ use GetCandy;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Shipping\Models\ShippingPrice;
 use GetCandy\Api\Core\Shipping\Models\ShippingRegion;
+use GetCandy\Api\Core\Customers\Actions\FetchCustomerGroup;
 
 class ShippingPriceService extends BaseService
 {
@@ -77,7 +78,9 @@ class ShippingPriceService extends BaseService
     {
         $groupData = [];
         foreach ($groups as $group) {
-            $groupModel = GetCandy::customerGroups()->getByHashedId($group['id']);
+            $groupModel = FetchCustomerGroup::run([
+                'encoded_id' => $group['id'],
+            ]);
             $groupData[$groupModel->id] = [
                 'visible' => $group['visible'],
             ];

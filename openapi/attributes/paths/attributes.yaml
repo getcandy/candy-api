@@ -1,0 +1,191 @@
+get:
+  summary: Get Attributes
+  tags:
+    - Attributes
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/AttributeCollection.yaml'
+          examples:
+            paginated-example:
+              value:
+                data:
+                  - id: dnj4zky5
+                    name:
+                      en: Name
+                      sv: Namn
+                    handle: name
+                    position: '1'
+                    filterable: false
+                    scopeable: true
+                    translatable: true
+                    variant: false
+                    searchable: true
+                    localised: true
+                    type: text
+                    required: true
+                    lookups: null
+                    system: false
+                    group:
+                      data:
+                        id: vokq5kmj
+                        name:
+                          en: General
+                        handle: general
+                        position: '1'
+                links:
+                  first: 'http://storefront.test/api/v1/attributes?page=1'
+                  last: 'http://storefront.test/api/v1/attributes?page=5'
+                  prev: null
+                  next: 'http://storefront.test/api/v1/attributes?page=2'
+                meta:
+                  current_page: 1
+                  from: 1
+                  last_page: 5
+                  path: 'http://storefront.test/api/v1/attributes'
+                  per_page: 15
+                  to: 15
+                  total: 70
+  operationId: get-attributes
+  parameters: []
+  description: Return a paged array of attributes
+post:
+  summary: Create Attribute
+  tags:
+    - Attributes
+  responses:
+    '201':
+      description: Created
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/AttributeResponse.yaml'
+          examples:
+            post-example:
+              value:
+                data:
+                  id: w52log2p
+                  name:
+                    en: New attribute
+                  handle: new-attribute
+                  position: 2
+                  system: false
+                  lookups: null
+                  required: false
+                  type: text
+                  localised: false
+                  searchable: false
+                  variant: false
+                  translatable: false
+                  scopeable: false
+                  filterable: false
+                meta:
+                  lang: en
+    '422':
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              group_id:
+                type: array
+                items:
+                  type: string
+              name:
+                type: array
+                items:
+                  type: string
+              handle:
+                type: array
+                items:
+                  type: string
+          examples:
+            full-unprocessable:
+              value:
+                group_id:
+                  - The group id field is required.
+                name:
+                  - The name field is required.
+                handle:
+                  - The handle field is required.
+  operationId: post-attributes
+  description: Create a new attribute
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            group_id:
+              type: string
+              example: q1jo3jm4
+            name:
+              type: array
+              items:
+                type: object
+                properties:
+                  locale:
+                    type: string
+                required:
+                  - locale
+            handle:
+              type: string
+            position:
+              type: integer
+              format: int32
+              example: 12
+            filterable:
+              type: boolean
+              default: false
+            scopeable:
+              type: boolean
+              default: false
+            translatable:
+              type: boolean
+              default: false
+            variant:
+              type: boolean
+              default: false
+            searchable:
+              type: boolean
+              default: false
+            localised:
+              type: boolean
+              default: false
+            type:
+              type: string
+              default: text
+            required:
+              type: boolean
+              default: false
+            lookups:
+              type: array
+              items:
+                type: object
+                properties:
+                  label:
+                    type: string
+                  value:
+                    type: string
+            system:
+              type: boolean
+              default: false
+          required:
+            - group_id
+            - name
+            - handle
+        examples:
+          post-example:
+            value:
+              group_id: q1w24k3l
+              name:
+                en: New attribute
+              handle: new-attribute
+              lookups:
+                label: Lookup 1
+                value: lookup-1
+  parameters: []

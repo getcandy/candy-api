@@ -1,0 +1,5 @@
+title: ShippingZoneResponse
+type: object
+properties:
+  data:
+    $ref: '../models/ShippingZone.yaml'

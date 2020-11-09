@@ -1,0 +1,5 @@
+title: ProductVariantResponse
+type: object
+properties:
+  data:
+    $ref: '../models/ProductVariant.yaml'

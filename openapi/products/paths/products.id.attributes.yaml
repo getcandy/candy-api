@@ -1,0 +1,43 @@
+parameters:
+  - schema:
+      type: string
+    name: productId
+    in: path
+    required: true
+post:
+  summary: Update Product attributes
+  tags:
+    - Products
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/ProductResponse.yaml'
+    '422':
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              attributes:
+                type: array
+                items:
+                  type: string
+  operationId: post-products-product-attributes
+  description: Allows you to sync up the attributes which are directly associated to this product.
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            attributes:
+              type: array
+              description: An array of attribute IDs
+              items:
+                type: string
+          required:
+            - attributes

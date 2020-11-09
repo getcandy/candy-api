@@ -1,0 +1,7 @@
+title: EmailPreview
+type: object
+properties:
+  subject:
+    type: string
+  content:
+    type: string

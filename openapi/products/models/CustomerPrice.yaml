@@ -1,0 +1,11 @@
+title: CustomerPrice
+type: object
+properties:
+  id:
+    type: string
+  price:
+    type: number
+  tax:
+    $ref: '../../taxes/responses/TaxResponse.yaml'
+  group:
+    $ref: '../../customer-groups/responses/CustomerGroupResponse.yaml'

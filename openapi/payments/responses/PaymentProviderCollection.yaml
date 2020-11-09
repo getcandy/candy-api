@@ -1,0 +1,9 @@
+title: PaymentProviderCollection
+allOf:
+  - type: object
+    properties:
+      data:
+        type: array
+        items:
+          $ref: '../models/PaymentProvider.yaml'
+  - $ref: '../../global/models/Pagination.yaml'

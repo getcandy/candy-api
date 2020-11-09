@@ -1,0 +1,38 @@
+put:
+  summary: Update Assets
+  operationId: put-assets
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/AssetResponse.yaml'
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../requests/UpdateAssetBody.yaml'
+    description: ''
+  tags:
+    - Assets
+  description: Update all assets in the given array of ids.
+post:
+  summary: Create Asset
+  tags:
+    - Assets
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/AssetResponse.yaml'
+  operationId: post-assets
+  requestBody:
+    content:
+      multipart/form-data:
+        schema:
+          $ref: '../requests/CreateAssetBody.yaml'
+    description: ''
+  description: Upload an asset to a model

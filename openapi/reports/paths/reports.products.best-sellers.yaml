@@ -1,0 +1,82 @@
+get:
+  summary: Get best selling products
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              date:
+                type: object
+                properties:
+                  products:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        product_count:
+                          type: integer
+                        description:
+                          type: string
+                        sku:
+                          type: string
+                        month:
+                          type: string
+          examples:
+            result-example:
+              value:
+                '2020-02-01T10:53:53.000000Z':
+                  products:
+                    - product_count: 149
+                      description: Bertie botts every flavor beans
+                      sku: bbefb
+                      month: '2020-02-01'
+    '422':
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              errors:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    from:
+                      type: array
+                      items:
+                        type: string
+                    to:
+                      type: array
+                      items:
+                        type: string
+          examples:
+            unprocessable-example:
+              value:
+                message: The given data was invalid.
+                errors:
+                  from:
+                    - The from field is required.
+                  to:
+                    - The to field is required.
+  operationId: get-products-best-sellers
+  description: Gets best selling products grouped by month.
+  tags:
+    - Reports
+  parameters:
+    - schema:
+        type: string
+      in: query
+      name: from
+      description: The from date
+    - schema:
+        type: string
+      in: query
+      name: to
+      description: The to date
+parameters: []

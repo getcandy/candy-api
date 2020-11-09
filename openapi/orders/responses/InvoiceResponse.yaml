@@ -1,0 +1,5 @@
+title: InvoiceResponse
+type: object
+properties:
+  data:
+    $ref: '../models/Invoice.yaml'

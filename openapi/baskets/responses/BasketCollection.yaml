@@ -1,0 +1,9 @@
+title: BasketCollection
+allOf:
+  - type: object
+    properties:
+      data:
+        type: array
+        items:
+          $ref: '../models/Basket.yaml'
+  - $ref: '../../global/models/Pagination.yaml'

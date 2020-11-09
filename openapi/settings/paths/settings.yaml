@@ -1,0 +1,13 @@
+get:
+  summary: Get settings
+  tags:
+    - Settings
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/SettingCollection.yaml'
+  operationId: get-settings
+  description: Retrieves settings that have been defined in the database.

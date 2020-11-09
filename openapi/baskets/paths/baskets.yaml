@@ -1,0 +1,31 @@
+get:
+  summary: Get baskets
+  tags:
+    - Baskets
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/BasketCollection.yaml'
+  operationId: get-baskets
+  description: Get a paginated list of baskets
+post:
+  summary: Create Basket
+  operationId: post-baskets
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/BasketResponse.yaml'
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../requests/CreateBasketBody.yaml'
+  tags:
+    - Baskets
+  description: ''

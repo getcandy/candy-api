@@ -1,0 +1,9 @@
+title: SavedBasketCollection
+allOf:
+  - type: object
+    properties:
+      data:
+        type: array
+        items:
+          $ref: '../models/SavedBasket.yaml'
+  - $ref: '../../global/models/Pagination.yaml'

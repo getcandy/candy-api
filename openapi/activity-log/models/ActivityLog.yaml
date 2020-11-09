@@ -1,0 +1,15 @@
+title: ActivityLog
+type: object
+properties:
+  id:
+    type: string
+  type:
+    type: string
+  description:
+    type: string
+  properties:
+    type: string
+  created_at:
+    type: string
+  user:
+    $ref: '../../users/responses/UserResponse.yaml'

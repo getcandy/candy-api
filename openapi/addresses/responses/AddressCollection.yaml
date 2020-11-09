@@ -1,0 +1,9 @@
+title: AddressCollection
+allOf:
+  - type: object
+    properties:
+      data:
+        type: array
+        items:
+          $ref: '../models/Address.yaml'
+  - $ref: '../../global/models/Pagination.yaml'

@@ -1,0 +1,43 @@
+parameters:
+  - schema:
+      type: string
+    name: status
+    in: path
+    required: true
+get:
+  summary: Get order status preview email
+  tags:
+    - Orders
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/EmailPreviewResponse.yaml'
+    '422':
+      description: |-
+        Unprocessable Entity
+
+        This will happen if the passed order id cannot be found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: array
+                items:
+                  type: string
+  operationId: get-orders-email-preview-status
+  description: |-
+    This endpoint will get a HTML email preview for an order status, this is useful if you want to be able to see what email will be sent out for the corresponding Order status.
+
+    Mailers for each order status should be stored in the getcandy config under `orders.mailers`
+  parameters:
+    - schema:
+        type: string
+      in: query
+      name: id
+      description: An order id to use for the template
+      required: true

@@ -1,0 +1,11 @@
+title: AttachCategoryRoutesBody
+type: object
+properties:
+  redirect:
+    type: boolean
+  description:
+    type: string
+  slug:
+    type: string
+  locale:
+    type: string

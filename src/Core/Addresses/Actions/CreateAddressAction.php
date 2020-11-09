@@ -7,7 +7,7 @@ use GetCandy\Api\Core\Addresses\Models\Address;
 use GetCandy\Api\Core\Addresses\Resources\AddressResource;
 use GetCandy\Api\Core\Countries\Actions\FetchCountry;
 use GetCandy\Api\Core\Countries\Models\Country;
-use GetCandy\Api\Core\Users\Actions\FetchUser;
+use GetCandy\Api\Core\Users\Actions\FetchUserAction;
 use Illuminate\Support\Arr;
 use Lorisleiva\Actions\Action;
 
@@ -69,7 +69,7 @@ class CreateAddressAction extends Action
     {
         $user = $this->user();
         if ($this->user_id) {
-            $user = FetchUser::run([
+            $user = FetchUserAction::run([
                 'encoded_id' => $this->user_id,
             ]);
         }

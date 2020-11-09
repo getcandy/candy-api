@@ -1,0 +1,9 @@
+title: CategoryCollection
+allOf:
+  - type: object
+    properties:
+      data:
+        type: array
+        items:
+          $ref: '../models/Category.yaml'
+  - $ref: '../../global/models/Pagination.yaml'

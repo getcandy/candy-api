@@ -1,0 +1,27 @@
+post:
+  summary: Simple asset upload
+  tags:
+    - Assets
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../models/AssetSimple.yaml'
+          examples:
+            upload-example:
+              value:
+                path: uploads/01/04/WGWVDkB2VXkDKx4UeeLnStBwnEJXGL2Vd6j5Le1P.png
+                filename: the-secret-recipe.png
+                url: 'http://storefront.test/storage/uploads/01/04/WGWVDkB2VXkDKx4UeeLnStBwnEJXGL2Vd6j5Le1P.png'
+                thumbnail: uploads/01/04/thumbnails/WGWVDkB2VXkDKx4UeeLnStBwnEJXGL2Vd6j5Le1P.png
+                thumbnail_url: 'http://storefront.test/storage/uploads/01/04/thumbnails/WGWVDkB2VXkDKx4UeeLnStBwnEJXGL2Vd6j5Le1P.png'
+  operationId: post-assets-simple
+  description: This endpoint allows you to upload an asset without having to attach it to a model. This is good for one time uploads where you just want to get back a URL
+  requestBody:
+    content:
+      multipart/form-data:
+        schema:
+          $ref: '../requests/AssetSimpleUploadBody.yaml'
+    description: ''

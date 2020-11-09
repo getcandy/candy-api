@@ -1,0 +1,9 @@
+title: CreateOrderBody
+type: object
+properties:
+  basket_id:
+    type: string
+  include:
+    type: string
+required:
+  - basket_id

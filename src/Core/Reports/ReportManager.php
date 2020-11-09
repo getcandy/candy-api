@@ -52,7 +52,7 @@ class ReportManager extends Manager implements ReportManagerContract
      */
     public function buildProvider($provider)
     {
-        return $this->app->make($provider);
+        return $this->container->make($provider);
     }
 
     /**

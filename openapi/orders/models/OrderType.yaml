@@ -1,0 +1,5 @@
+title: OrderType
+type: object
+properties:
+  label:
+    type: string

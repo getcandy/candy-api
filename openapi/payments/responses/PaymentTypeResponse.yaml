@@ -1,0 +1,5 @@
+title: PaymentTypeResponse
+type: object
+properties:
+  data:
+    $ref: '../models/PaymentType.yaml'

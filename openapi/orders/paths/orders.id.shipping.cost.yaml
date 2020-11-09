@@ -1,0 +1,50 @@
+parameters:
+  - schema:
+      type: string
+    name: orderId
+    in: path
+    required: true
+put:
+  summary: Add shipping cost
+  tags:
+    - Orders
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/OrderResponse.yaml'
+    '422':
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              price_id:
+                type: array
+                items:
+                  type: string
+          examples:
+            unprocessable-example:
+              value:
+                price_id:
+                  - Please choose a shipping option
+  operationId: put-orders-id-shipping-cost
+  description: Adds a shipping cost to an Order
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            price_id:
+              type: string
+    description: ''
+  parameters:
+    - schema:
+        type: string
+      in: query
+      name: include
+      description: Related resources to include in response

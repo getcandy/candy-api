@@ -35,7 +35,7 @@ class Attribute extends BaseModel
 
     public function group()
     {
-        return $this->belongsTo(AttributeGroup::class);
+        return $this->belongsTo(AttributeGroup::class, 'attribute_group_id');
     }
 
     /**
