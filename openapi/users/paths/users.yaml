@@ -44,6 +44,12 @@ post:
         application/json:
           schema:
             $ref: '../../global/responses/Unprocessable.yaml'
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/Error.yaml'
   operationId: post-users
   requestBody:
     content:

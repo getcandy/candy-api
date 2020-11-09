@@ -2,10 +2,7 @@
 
 namespace Tests\Feature;
 
-use cebe\openapi\Reader;
-use cebe\openapi\ReferenceContext;
 use GetCandy;
-use League\OpenAPIValidation\PSR7\ValidatorBuilder;
 use NeonDigital\OpenApiValidator\ValidatesWithOpenApi;
 use Tests\Stubs\User;
 use Tests\TestCase;

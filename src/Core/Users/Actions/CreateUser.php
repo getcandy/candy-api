@@ -27,8 +27,11 @@ class CreateUser extends Action
     public function authorize()
     {
         if ($this->customer_id) {
-            $this->invite = FetchCustomerInvite::run(['encoded_id' => $this->customer_id]);
-            if (!$this->invite || $this->invite->email !== $this->email) {
+            $this->invite = FetchCustomerInvite::run([
+                'customer_id' => $this->customer_id,
+                'email' => $this->email,
+            ]);
+            if (!$this->invite) {
                 return false;
             }
         }
@@ -75,14 +78,14 @@ class CreateUser extends Action
         $user->language()->associate($language);
         $user->save();
 
-        if ($this->customer_id) {
-            $customerUser = (new $userModel)->where('customer_id', $this->invite->customer_id)->first();
-
-            AttachUserToCustomer::run([
-                'encoded_id' => $this->customer_id,
-                'user_id' => $user->id,
-            ]);
-        }
+//        if ($this->customer_id) {
+//            $customerUser = (new $userModel)->where('customer_id', $this->invite->customer_id)->first();
+//
+//            AttachUserToCustomer::run([
+//                'encoded_id' => $this->customer_id,
+//                'user_id' => $customerUser->encoded_id,
+//            ]);
+//        }
 
         if (! $this->customer_id) {
             $defaultCustomer = FetchDefaultCustomerGroup::run();
