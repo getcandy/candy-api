@@ -119,9 +119,6 @@ $router->group([
     $route->get('{encoded_id}', '\GetCandy\Api\Core\Routes\Actions\FetchRoute');
 });
 
-$router->post('password/reset', 'Auth\ResetPasswordController@reset');
-$router->post('password/reset/request', 'Auth\ForgotPasswordController@sendResetLinkEmail');
-
 $router->get('search', 'Search\SearchController@search');
 $router->get('search/sku', 'Search\SearchController@sku');
 $router->get('search/products', 'Search\SearchController@products');
