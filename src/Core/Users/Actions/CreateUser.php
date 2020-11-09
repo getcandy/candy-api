@@ -4,16 +4,21 @@ namespace GetCandy\Api\Core\Users\Actions;
 
 use GetCandy;
 use GetCandy\Api\Core\Customers\Actions\FetchDefaultCustomerGroup;
-use GetCandy\Api\Core\Customers\Models\Customer;
-use GetCandy\Api\Core\Customers\Models\CustomerGroup;
-use GetCandy\Api\Core\Foundation\Actions\DecodeIds;
 use GetCandy\Api\Core\Languages\Actions\FetchDefaultLanguage;
 use GetCandy\Api\Core\Languages\Actions\FetchEnabledLanguageByCode;
+use GetCandy\Api\Core\Customers\Actions\CreateCustomer;
 use GetCandy\Api\Core\Users\Resources\UserResource;
+use GetCandy\Api\Core\Customers\Actions\AttachUserToCustomer;
+use GetCandy\Api\Core\Customers\Actions\FetchCustomerInvite;
 use Lorisleiva\Actions\Action;
 
 class CreateUser extends Action
 {
+    /**
+     * @var CustomerInvite|null
+     */
+    protected $invite;
+
     /**
      * Determine if the user is authorized to make this action.
      *
@@ -21,6 +26,13 @@ class CreateUser extends Action
      */
     public function authorize()
     {
+        if ($this->customer_id) {
+            $this->invite = FetchCustomerInvite::run(['encoded_id' => $this->customer_id]);
+            if (!$this->invite || $this->invite->email !== $this->email) {
+                return false;
+            }
+        }
+
         return true;
     }
 
@@ -39,6 +51,7 @@ class CreateUser extends Action
             'language' => 'nullable|string',
             'details' => 'nullable|array',
             'customer_groups' => 'nullable|array',
+            'customer_id' => 'nullable|string',
         ];
     }
 
@@ -56,36 +69,32 @@ class CreateUser extends Action
         $user->email = $this->email;
         $user->password = bcrypt($this->password);
 
-        if (! $this->language) {
-            $user->language()->associate(FetchDefaultLanguage::run());
-        } else {
-            $user->language()->associate(FetchEnabledLanguageByCode::run([
-                'code' => $this->language,
-            ]));
-        }
-
+        $language = ! $this->language ? FetchDefaultLanguage::run() : FetchEnabledLanguageByCode::run([
+            'code' => $this->language,
+        ]);
+        $user->language()->associate($language);
         $user->save();
 
-        $details = $this->details;
-        $details['firstname'] = $this->firstname;
-        $details['lastname'] = $this->lastname;
-        $details['fields'] = $this->details['fields'] ?? [];
+        if ($this->customer_id) {
+            $customerUser = (new $userModel)->where('customer_id', $this->invite->customer_id)->first();
 
-        $customer = Customer::create($details);
-        $customer->users()->save($user);
-
-        if ($this->customer_groups) {
-            $customer->customerGroups()->sync(
-                DecodeIds::run([
-                    'model' => CustomerGroup::class,
-                    'encoded_ids' => $this->customer_groups,
-                ])
-            );
-        } else {
-            $customer->customerGroups()->attach(FetchDefaultCustomerGroup::run());
+            AttachUserToCustomer::run([
+                'encoded_id' => $this->customer_id,
+                'user_id' => $user->id,
+            ]);
         }
 
-        $user->save();
+        if (! $this->customer_id) {
+            $defaultCustomer = FetchDefaultCustomerGroup::run();
+
+            CreateCustomer::run([
+                'user_id' => $user->encoded_id,
+                'firstname' => $this->firstname,
+                'lastname' => $this->lastname,
+                'fields' => $this->details['fields'] ?? [],
+                'customer_group_ids' => [$defaultCustomer->encoded_id],
+            ]);
+        }
 
         return $user;
     }

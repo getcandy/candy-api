@@ -3,11 +3,10 @@
 namespace GetCandy\Api\Core\Customers\Actions;
 
 use GetCandy;
-use GetCandy\Api\Core\Customers\Models\Customer;
-use GetCandy\Api\Core\Customers\Resources\CustomerResource;
+use GetCandy\Api\Core\Customers\Resources\CustomerInviteResource;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
 
-class AttachUserToCustomer extends AbstractAction
+class CreateCustomerInvite extends AbstractAction
 {
     /**
      * The address object we want to update.
@@ -29,7 +28,7 @@ class AttachUserToCustomer extends AbstractAction
                 'encoded_id' => $this->encoded_id,
             ]);
 
-        return $this->runningAs('object') || $this->user()->can('update', $this->customer);
+        return $this->user()->can('update', $this->customer);
     }
 
     /**
@@ -40,35 +39,32 @@ class AttachUserToCustomer extends AbstractAction
     public function rules(): array
     {
         return [
-            'user_id' => 'required|string|hashid_is_valid:'.GetCandy::getUserModel().'|required_without_all:id,handle',
+            'email' => 'required|string|unique:customer_invites',
         ];
     }
 
     /**
      * Execute the action and return a result.
      *
-     * @return \GetCandy\Api\Core\Customers\Models\Customer
+     * @return \Illuminate\Database\Eloquent\Model
      */
-    public function handle(): Customer
+    public function handle()
     {
-        $userModel = GetCandy::getUserModel();
-        $realUserId = (new $userModel)->decodeId($this->user_id);
-        $user = (new $userModel)->find($realUserId);
-        $this->customer->users()->save($user);
-
-        return $this->customer;
+        return $this->customer->invites()->create([
+            'email' => $this->email,
+        ]);
     }
 
     /**
      * Returns the response from the action.
      *
-     * @param   \GetCandy\Api\Core\Customers\Models\Customer  $result
+     * @param   \Illuminate\Database\Eloquent\Model  $result
      * @param   \Illuminate\Http\Request  $request
      *
-     * @return  \GetCandy\Api\Core\Customers\Resources\CustomerResource
+     * @return  \GetCandy\Api\Core\Customers\Resources\CustomerInviteResource
      */
-    public function response($result, $request): CustomerResource
+    public function response($result, $request)
     {
-        return new CustomerResource($result);
+        return new CustomerInviteResource($result);
     }
 }

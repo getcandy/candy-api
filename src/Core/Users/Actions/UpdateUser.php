@@ -35,8 +35,6 @@ class UpdateUser extends Action
             'email' => 'email',
             'password' => 'string|min:6',
             'language' => 'string',
-            'details' => 'nullable|array',
-            'customer_groups' => 'nullable|array',
         ];
     }
 
@@ -55,27 +53,6 @@ class UpdateUser extends Action
         if ($this->password) {
             $user->password = bcrypt($this->password);
         }
-
-        if ($this->details) {
-            $details = $this->details;
-            $details['firstname'] = $this->firstname ?? $user->firstname;
-            $details['lastname'] = $this->lastname ?? $user->lastname;
-            $details['fields'] = $this->details['fields'] ?? [];
-
-            $user->customer()->update($details);
-        }
-
-        if ($this->customer_groups) {
-            $user->customer->customerGroups()->sync(
-                DecodeIds::run([
-                    'model' => CustomerGroup::class,
-                    'encoded_ids' => $this->customer_groups,
-                ])
-            );
-        } else {
-            $user->customer->customerGroups()->attach(FetchDefaultCustomerGroup::run());
-        }
-
         $user->save();
 
         return $user;
