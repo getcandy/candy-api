@@ -3,6 +3,7 @@
 namespace GetCandy\Api\Core\Customers\Actions;
 
 use GetCandy;
+use GetCandy\Api\Core\Customers\Models\CustomerInvite;
 use GetCandy\Api\Core\Customers\Resources\CustomerInviteResource;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
 
@@ -39,6 +40,7 @@ class CreateCustomerInvite extends AbstractAction
     public function rules(): array
     {
         return [
+            'encoded_id' => 'required|string|hashid_is_valid:'.CustomerInvite::class,
             'email' => 'required|string|unique:customer_invites',
         ];
     }

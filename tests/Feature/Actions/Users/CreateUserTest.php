@@ -4,6 +4,7 @@ namespace Tests\Feature\Actions\Users;
 
 use GetCandy\Api\Core\Customers\Models\Customer;
 use Tests\Feature\FeatureCase;
+use Tests\Stubs\User;
 
 /**
  * @group channels
@@ -28,6 +29,7 @@ class CreateUserTest extends FeatureCase
     public function test_can_run_action_as_controller_with_customer_id()
     {
         $customer = factory(Customer::class)->create();
+        factory(User::class)->create(['customer_id' => $customer->id]);
         $customer->invites()->create(['email' => 'test@email.com']);
 
         $attributes = [

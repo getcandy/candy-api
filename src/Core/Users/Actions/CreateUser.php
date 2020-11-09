@@ -10,6 +10,7 @@ use GetCandy\Api\Core\Customers\Actions\CreateCustomer;
 use GetCandy\Api\Core\Users\Resources\UserResource;
 use GetCandy\Api\Core\Customers\Actions\AttachUserToCustomer;
 use GetCandy\Api\Core\Customers\Actions\FetchCustomerInvite;
+use GetCandy\Api\Core\Customers\Actions\DeleteCustomerInvite;
 use Lorisleiva\Actions\Action;
 
 class CreateUser extends Action
@@ -31,6 +32,7 @@ class CreateUser extends Action
                 'customer_id' => $this->customer_id,
                 'email' => $this->email,
             ]);
+
             if (!$this->invite) {
                 return false;
             }
@@ -78,14 +80,14 @@ class CreateUser extends Action
         $user->language()->associate($language);
         $user->save();
 
-//        if ($this->customer_id) {
-//            $customerUser = (new $userModel)->where('customer_id', $this->invite->customer_id)->first();
-//
-//            AttachUserToCustomer::run([
-//                'encoded_id' => $this->customer_id,
-//                'user_id' => $customerUser->encoded_id,
-//            ]);
-//        }
+        if ($this->customer_id) {
+            AttachUserToCustomer::run([
+                'encoded_id' => $this->customer_id,
+                'user_id' => $user->encoded_id,
+            ]);
+
+            DeleteCustomerInvite::run(['encoded_id' => $this->invite->encoded_id]);
+        }
 
         if (! $this->customer_id) {
             $defaultCustomer = FetchDefaultCustomerGroup::run();
