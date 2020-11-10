@@ -2,10 +2,11 @@
 
 namespace GetCandy\Api\Providers;
 
-use GetCandy\Api\Core\Shipping\Services\ShippingPriceService;
-use GetCandy\Api\Core\Shipping\Services\ShippingZoneService;
-use GetCandy\Api\Core\Shipping\ShippingCalculator;
 use Illuminate\Support\ServiceProvider;
+use GetCandy\Api\Core\Shipping\ShippingCalculator;
+use GetCandy\Api\Core\Shipping\Services\ShippingZoneService;
+use GetCandy\Api\Core\Shipping\Services\ShippingPriceService;
+use GetCandy\Api\Core\Shipping\Services\ShippingMethodService;
 
 class ShippingServiceProvider extends ServiceProvider
 {
@@ -20,7 +21,7 @@ class ShippingServiceProvider extends ServiceProvider
         });
 
         $this->app->bind('getcandy.shipping_methods', function ($app) {
-            return $app->make(ShippingPriceService::class);
+            return $app->make(ShippingMethodService::class);
         });
 
         $this->app->bind('getcandy.shipping_zones', function ($app) {

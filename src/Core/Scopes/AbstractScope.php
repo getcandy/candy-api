@@ -105,7 +105,7 @@ abstract class AbstractScope implements Scope
         if (($this->canAccessHub() && GetCandy::isHubRequest()) ||
             (! GetCandy::isHubRequest() && ! $this->canAccessHub())
         ) {
-            return $user->groups->pluck('id')->toArray();
+            return $user->customer->customerGroups->pluck('id')->toArray();
         }
 
         return $guestGroups;

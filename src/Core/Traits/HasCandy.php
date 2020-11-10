@@ -2,14 +2,15 @@
 
 namespace GetCandy\Api\Core\Traits;
 
-use GetCandy\Api\Core\Addresses\Models\Address;
+use Spatie\Permission\Traits\HasRoles;
+use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Baskets\Models\Basket;
-use GetCandy\Api\Core\Baskets\Models\SavedBasket;
+use GetCandy\Api\Core\Addresses\Models\Address;
 use GetCandy\Api\Core\Customers\Models\Customer;
 use GetCandy\Api\Core\Languages\Models\Language;
-use GetCandy\Api\Core\Orders\Models\Order;
+use GetCandy\Api\Core\Baskets\Models\SavedBasket;
+use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 use GetCandy\Api\Core\Payments\Models\ReusablePayment;
-use Spatie\Permission\Traits\HasRoles;
 
 trait HasCandy
 {
@@ -23,6 +24,9 @@ trait HasCandy
      */
     protected $hashids = 'user';
 
+    /**
+     * @deprecated 0.11
+     */
     public function inGroup($group)
     {
         return $this->groups()->where('handle', '=', $group)->exists();
@@ -81,6 +85,14 @@ trait HasCandy
             ->withoutGlobalScopes()
             ->whereNotNull('placed_at')
             ->orderBy('placed_at', 'asc');
+    }
+
+    /**
+     * @deprecated 0.11
+     */
+    public function groups()
+    {
+        return $this->belongsToMany(CustomerGroup::class);
     }
 
     public function customer()
