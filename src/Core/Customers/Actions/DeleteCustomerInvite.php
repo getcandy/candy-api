@@ -32,7 +32,7 @@ class DeleteCustomerInvite extends AbstractAction
     /**
      * Execute the action and return a result.
      *
-     * @return boolean
+     * @return bool
      */
     public function handle()
     {

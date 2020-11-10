@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Core\Customers\Actions;
 
-use GetCandy;
 use GetCandy\Api\Core\Customers\Models\CustomerInvite;
 use GetCandy\Api\Core\Customers\Resources\CustomerInviteResource;
 use GetCandy\Api\Core\Scaffold\AbstractAction;

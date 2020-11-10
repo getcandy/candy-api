@@ -37,7 +37,7 @@ class CreateUserTest extends FeatureCase
             'lastname' => 'Unknown',
             'email' => 'test@email.com',
             'password' => 'supersecret',
-            'customer_id' => $customer->encoded_id
+            'customer_id' => $customer->encoded_id,
         ];
 
         $response = $this->json('POST', 'users', $attributes);
@@ -55,7 +55,7 @@ class CreateUserTest extends FeatureCase
             'lastname' => 'Unknown',
             'email' => 'test@email.com',
             'password' => 'supersecret',
-            'customer_id' => $customer->encoded_id
+            'customer_id' => $customer->encoded_id,
         ];
 
         $response = $this->json('POST', 'users', $attributes);
@@ -63,5 +63,4 @@ class CreateUserTest extends FeatureCase
         $response->assertStatus(403);
         $this->assertResponseValid($response, '/users', 'post');
     }
-
 }

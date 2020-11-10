@@ -2,10 +2,7 @@
 
 namespace Tests\Feature;
 
-use cebe\openapi\Reader;
-use cebe\openapi\ReferenceContext;
 use GetCandy;
-use League\OpenAPIValidation\PSR7\ValidatorBuilder;
 use NeonDigital\OpenApiValidator\ValidatesWithOpenApi;
 use Tests\Stubs\User;
 use Tests\TestCase;
@@ -27,7 +24,7 @@ abstract class FeatureCase extends TestCase
         parent::setUp();
         // https://github.com/wework/speccy/issues/360 once this is resolved there isn't the need for this cleanup
         $fullSpec = file_get_contents(__DIR__.'/../../openapi/openapi-full.yaml');
-        $fullSpec = preg_replace("/\\\\(\n\s*)/", "", $fullSpec);
+        $fullSpec = preg_replace("/\\\\(\n\s*)/", '', $fullSpec);
         file_put_contents(__DIR__.'/../../openapi/openapi-full.yaml', $fullSpec);
 
         // https://github.com/cebe/php-openapi/pull/67 once this is resolved we can use the non full again

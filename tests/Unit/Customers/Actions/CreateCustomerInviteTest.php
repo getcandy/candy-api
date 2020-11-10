@@ -19,9 +19,9 @@ class CreateCustomerInviteTest extends TestCase
 
         $invite = (new CreateCustomerInvite)
             ->actingAs($user)->run([
-            'encoded_id' => $customer->encoded_id,
-            'email' => 'test@email.com',
-        ]);
+                'encoded_id' => $customer->encoded_id,
+                'email' => 'test@email.com',
+            ]);
 
         $this->assertEquals('test@email.com', $invite->email);
     }

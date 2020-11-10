@@ -13,7 +13,7 @@ class FetchCurrentUserTest extends FeatureCase
     {
         $user = $this->admin();
 
-        $response = $this->actingAs($user)->json('GET', "users/current");
+        $response = $this->actingAs($user)->json('GET', 'users/current');
 
         $response->assertStatus(200);
 

@@ -3,9 +3,6 @@
 namespace GetCandy\Api\Core\Users\Actions;
 
 use GetCandy;
-use GetCandy\Api\Core\Customers\Actions\FetchDefaultCustomerGroup;
-use GetCandy\Api\Core\Customers\Models\CustomerGroup;
-use GetCandy\Api\Core\Foundation\Actions\DecodeIds;
 use GetCandy\Api\Core\Users\Resources\UserResource;
 use Lorisleiva\Actions\Action;
 

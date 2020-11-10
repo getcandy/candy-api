@@ -2,9 +2,8 @@
 
 namespace GetCandy\Api\Core\Search\Providers\Elastic\Sorts;
 
-use GetCandy;
-use Illuminate\Database\Eloquent\Model;
 use GetCandy\Api\Core\Customers\Actions\FetchDefaultCustomerGroup;
+use Illuminate\Database\Eloquent\Model;
 
 abstract class AbstractSort
 {

@@ -3,14 +3,14 @@
 namespace GetCandy\Api\Core\Users\Actions;
 
 use GetCandy;
+use GetCandy\Api\Core\Customers\Actions\AttachUserToCustomer;
+use GetCandy\Api\Core\Customers\Actions\CreateCustomer;
+use GetCandy\Api\Core\Customers\Actions\DeleteCustomerInvite;
+use GetCandy\Api\Core\Customers\Actions\FetchCustomerInvite;
 use GetCandy\Api\Core\Customers\Actions\FetchDefaultCustomerGroup;
 use GetCandy\Api\Core\Languages\Actions\FetchDefaultLanguage;
 use GetCandy\Api\Core\Languages\Actions\FetchEnabledLanguageByCode;
-use GetCandy\Api\Core\Customers\Actions\CreateCustomer;
 use GetCandy\Api\Core\Users\Resources\UserResource;
-use GetCandy\Api\Core\Customers\Actions\AttachUserToCustomer;
-use GetCandy\Api\Core\Customers\Actions\FetchCustomerInvite;
-use GetCandy\Api\Core\Customers\Actions\DeleteCustomerInvite;
 use Lorisleiva\Actions\Action;
 
 class CreateUser extends Action
@@ -33,7 +33,7 @@ class CreateUser extends Action
                 'email' => $this->email,
             ]);
 
-            if (!$this->invite) {
+            if (! $this->invite) {
                 return false;
             }
         }
