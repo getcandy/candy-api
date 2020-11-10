@@ -1,4 +1,3 @@
-Category:
 title: Category
 type: object
 x-examples:
@@ -100,9 +99,7 @@ x-examples:
           primary_asset: []
     layout: []
     primary_asset: []
-description: |-
-  ### Available includes
-  - children
+description: ''
 properties:
   id:
     type: string

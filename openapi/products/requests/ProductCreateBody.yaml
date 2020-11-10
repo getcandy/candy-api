@@ -1,0 +1,28 @@
+title: ProductCreateBody
+type: object
+properties:
+  name:
+    type: object
+    required:
+      - en
+    properties:
+      en:
+        type: string
+  url:
+    type: string
+  stock:
+    type: integer
+  family_id:
+    type: string
+  price:
+    type: number
+    format: float
+  sku:
+    type: string
+required:
+  - name
+  - url
+  - stock
+  - family_id
+  - price
+  - sku

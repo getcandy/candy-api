@@ -15,7 +15,10 @@ properties:
     type: number
   tax:
     type: number
-  meta:
-    type: object
-  variant:
-    $ref: '../../products/responses/ProductVariantResponse.yaml'
+  # meta:
+  #   type: object
+  # variant:
+  #   type: object
+  #   parameters:
+  #     data:
+  #       $ref: '../../products/models/ProductVariant.yaml'

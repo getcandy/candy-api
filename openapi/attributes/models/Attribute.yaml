@@ -54,4 +54,4 @@ properties:
   system:
     type: boolean
   group:
-    $ref: '#/components/schemas/AttributeGroupResponse'
+    $ref: '../../attribute-groups/responses/AttributeGroupResponse.yaml'

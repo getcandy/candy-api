@@ -11,9 +11,9 @@ properties:
     type: string
   password_confirmation:
     type: string
-  required:
-    - email
-    - firstname
-    - lastname
-    - password
-    - password_confirmation
+required:
+  - email
+  - firstname
+  - lastname
+  - password
+  - password_confirmation

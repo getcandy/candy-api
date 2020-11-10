@@ -19,6 +19,12 @@ properties:
   meta:
     type: object
   lines:
-    $ref: '../../basket-lines/responses/BasketLineCollection.yaml'
+    type: object
+    properties:
+      data:
+        type: array
+        items:
+          $ref: '../../basket-lines/models/BasketLine.yaml'
   order:
     $ref: '../../orders/responses/OrderResponse.yaml'
+
