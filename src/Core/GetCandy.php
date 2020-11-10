@@ -42,7 +42,9 @@ class GetCandy
     public static function version()
     {
         try {
-            $packages = collect(json_decode(File::get(base_path('vendor/composer/installed.json'))));
+            // Composer version 2 support
+            $packageManifest = json_decode(File::get(base_path('vendor/composer/installed.json')));
+            $packages = is_array($packageManifest) ? collect($packageManifest) : collect($packageManifest->packages);
         } catch (FileNotFoundException $e) {
             return 'Unknown';
         }
