@@ -3,10 +3,10 @@
 namespace GetCandy\Api\Core\Shipping\Services;
 
 use GetCandy;
+use GetCandy\Api\Core\Customers\Actions\FetchCustomerGroup;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Shipping\Models\ShippingPrice;
 use GetCandy\Api\Core\Shipping\Models\ShippingRegion;
-use GetCandy\Api\Core\Customers\Actions\FetchCustomerGroup;
 
 class ShippingPriceService extends BaseService
 {

@@ -17,7 +17,7 @@ class CreateCustomer extends AbstractAction
      */
     public function authorize()
     {
-        return $this->user()->can('manage-customers');
+        return true;
     }
 
     /**

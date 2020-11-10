@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Customers\Resources;
 
+use GetCandy\Api\Core\Users\Resources\UserCollection;
 use GetCandy\Api\Http\Resources\AbstractResource;
-use GetCandy\Api\Http\Resources\Users\UserCollection;
 
 class CustomerResource extends AbstractResource
 {

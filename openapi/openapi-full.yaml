@@ -6724,6 +6724,12 @@ paths:
                   email:
                     type: string
                     example: email@test.com
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
         "422":
           description: Unprocessable Entity
           content:
