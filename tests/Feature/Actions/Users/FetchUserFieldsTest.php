@@ -13,7 +13,7 @@ class FetchUserFieldsTest extends FeatureCase
     {
         $user = $this->admin();
 
-        $response = $this->actingAs($user)->json('GET', "users/fields");
+        $response = $this->actingAs($user)->json('GET', 'users/fields');
 
         $response->assertStatus(200);
 

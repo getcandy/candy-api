@@ -54,5 +54,4 @@ class FetchCustomerInvite extends AbstractAction
             ->where('email', $this->email)
             ->first();
     }
-
 }

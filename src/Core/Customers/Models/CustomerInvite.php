@@ -18,7 +18,7 @@ class CustomerInvite extends BaseModel
 
     protected $fillable = [
         'email',
-        'customer_id'
+        'customer_id',
     ];
 
     /**
