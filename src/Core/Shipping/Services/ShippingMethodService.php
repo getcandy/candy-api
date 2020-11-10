@@ -100,7 +100,7 @@ class ShippingMethodService extends BaseService
      */
     public function getPaginatedData($length = 50, $page = null, $relations = null)
     {
-        $query = $this->model->orderBy('created_at', 'desc');
+        $query = $this->model;
 
         if ($relations) {
             $query->with(['zones']);

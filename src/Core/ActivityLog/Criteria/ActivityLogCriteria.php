@@ -18,7 +18,7 @@ class ActivityLogCriteria extends AbstractCriteria implements ActivityLogCriteri
     public function getBuilder()
     {
         return Activity::forSubject($this->model)
-            ->with('causer.details')
+            ->with('causer.customer')
             ->orderBy('created_at', 'desc');
     }
 }

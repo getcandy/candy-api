@@ -12,7 +12,7 @@ class RemapCustomerGroupUsersToCustomers extends Migration
     {
         // Get our users
         $userModel = GetCandy::getUserModel();
-        $users = (new $userModel)->withoutGlobalScopes()->get();
+        $users = (new $userModel)->withoutGlobalScopes()->whereHas('customer')->get();
 
         $customerMapping = $users->map(function ($user) {
             return [
