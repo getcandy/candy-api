@@ -14,6 +14,6 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../../global/responses/Error.yaml'
+            $ref: '../../global/responses/ApiError.yaml'
   operationId: get-baskets-current
   description: This request will get the current active basket for a user

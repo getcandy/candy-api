@@ -20,7 +20,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../../global/responses/Error.yaml'
+            $ref: '../../global/responses/ApiError.yaml'
   operationId: get-shipping-shippingMethodId
   description: "Returns a shipping method by it's ID."
   parameters:
@@ -44,7 +44,7 @@ put:
       content:
         application/json:
           schema:
-            $ref: '../../global/responses/Error.yaml'
+            $ref: '../../global/responses/ApiError.yaml'
     '422':
       description: Unprocessable Entity
       content:

@@ -20,12 +20,12 @@ post:
       content:
         application/json:
           schema:
-            $ref: '../../global/responses/Error.yaml'
+            $ref: '../../global/responses/ApiError.yaml'
     '404':
       description: Not Found
       content:
         application/json:
           schema:
-            $ref: '../../global/responses/Error.yaml'
+            $ref: '../../global/responses/ApiError.yaml'
   operationId: post-payments-transactionId-void
   description: Voids a payment in the system.

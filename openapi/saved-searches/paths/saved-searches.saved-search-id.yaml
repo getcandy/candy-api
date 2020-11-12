@@ -26,7 +26,7 @@ delete:
       content:
         application/json:
           schema:
-            $ref: '../../global/responses/Error.yaml'
+            $ref: '../../global/responses/ApiError.yaml'
   description: Delete a saved search entry by ID.
   tags:
     - Search

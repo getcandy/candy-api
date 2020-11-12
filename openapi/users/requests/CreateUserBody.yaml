@@ -11,6 +11,8 @@ properties:
     type: string
   password_confirmation:
     type: string
+  customer_id:
+    type: string
 required:
   - email
   - firstname

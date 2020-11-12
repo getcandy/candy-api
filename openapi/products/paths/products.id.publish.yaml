@@ -20,6 +20,6 @@ post:
       content:
         application/json:
           schema:
-            $ref: '../../global/responses/Error.yaml'
+            $ref: '../../global/responses/ApiError.yaml'
   operationId: post-products-id-publish
   description: Publish a draft from a Product

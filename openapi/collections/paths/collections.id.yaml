@@ -20,7 +20,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../../global/responses/Error.yaml'
+            $ref: '../../global/responses/ApiError.yaml'
   operationId: get-collections-collectionId
   description: Get a single Collection by its ID
   parameters:

@@ -20,7 +20,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../../global/responses/Error.yaml'
+            $ref: '../../global/responses/ApiError.yaml'
   operationId: get-users-userId
   description: Get a user by their given ID.
 put:
@@ -44,7 +44,7 @@ put:
       content:
         application/json:
           schema:
-            $ref: '../../global/responses/Error.yaml'
+            $ref: '../../global/responses/ApiError.yaml'
     '422':
       description: Unprocessable Entity
       content:
@@ -85,7 +85,7 @@ delete:
       content:
         application/json:
           schema:
-            $ref: '../../global/responses/Error.yaml'
+            $ref: '../../global/responses/ApiError.yaml'
   tags:
     - Users
   description: Delete a user by their given ID.

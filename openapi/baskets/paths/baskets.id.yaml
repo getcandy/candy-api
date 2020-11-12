@@ -29,7 +29,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../../global/responses/Error.yaml'
+            $ref: '../../global/responses/ApiError.yaml'
   operationId: get-baskets-basketId
   description: "Get a basket by it's ID"
 put:
@@ -48,6 +48,6 @@ put:
       content:
         application/json:
           schema:
-            $ref: '../../global/responses/Error.yaml'
+            $ref: '../../global/responses/ApiError.yaml'
   operationId: put-baskets-basketId
   description: Updates a basket

@@ -47,7 +47,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../../global/responses/Error.yaml'
+            $ref: '../../global/responses/ApiError.yaml'
           examples:
             not-found-example:
               value:
@@ -73,6 +73,6 @@ delete:
       content:
         application/json:
           schema:
-            $ref: '../../global/responses/Error.yaml'
+            $ref: '../../global/responses/ApiError.yaml'
   operationId: delete-attribute-groups-attributeGroupId
   description: Deletes an attribute group

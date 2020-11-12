@@ -49,7 +49,7 @@ post:
       content:
         application/json:
           schema:
-            $ref: '../../global/responses/Error.yaml'
+            $ref: '../../global/responses/ApiError.yaml'
   operationId: post-users
   requestBody:
     content:
