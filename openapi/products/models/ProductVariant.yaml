@@ -82,7 +82,12 @@ properties:
   image:
     $ref: '../../assets/responses/AssetResponse.yaml'
   customer_pricing:
-    $ref: '../../products/responses/CustomerPriceCollection.yaml'
+    type: object
+    properties:
+      data:
+        type: array
+        items:
+          $ref: '../../products/models/CustomerPrice.yaml'
   tax:
     $ref: '../../taxes/responses/TaxResponse.yaml'
   tiers:

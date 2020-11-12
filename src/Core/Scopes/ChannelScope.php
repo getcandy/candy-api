@@ -22,8 +22,6 @@ class ChannelScope extends AbstractScope
             $model = $builder->getModel();
             $relation = $model->channels();
 
-            $selectedColumns = $builder->getQuery()->columns;
-
             $columnsToSelect = $this->filterColumns($builder, ["{$model->getTable()}.*"]);
 
             if ($columnsToSelect->count()) {

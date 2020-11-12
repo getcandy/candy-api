@@ -79,7 +79,7 @@ paths:
     $ref: './basket-lines/paths/basket-lines.id.add.yaml'
   '/basket-lines/{basketLineId}/remove':
     $ref: './basket-lines/paths/basket-lines.id.remove.yaml'
-### BELOW: Paths that have had OpenAPI spec moved but not moved to actions
+# ### BELOW: Paths that have had OpenAPI spec moved but not moved to actions
   '/orders':
     $ref: './orders/paths/orders.yaml'
   '/orders/{orderId}':
@@ -238,6 +238,8 @@ paths:
     $ref: './reports/paths/reports.metrics.subject.yaml'
   '/saved-searches/product':
     $ref: './saved-searches/paths/saved-searches.product.yaml'
+  '/saved-searches/{savedSearchId}':
+    $ref: './saved-searches/paths/saved-searches.saved-search-id.yaml'
   '/settings':
     $ref: './settings/paths/settings.yaml'
   '/settings/{handle}':

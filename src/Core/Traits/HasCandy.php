@@ -7,9 +7,9 @@ use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Core\Addresses\Models\Address;
 use GetCandy\Api\Core\Customers\Models\Customer;
+use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 use GetCandy\Api\Core\Languages\Models\Language;
 use GetCandy\Api\Core\Baskets\Models\SavedBasket;
-use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 use GetCandy\Api\Core\Payments\Models\ReusablePayment;
 
 trait HasCandy
@@ -76,7 +76,7 @@ trait HasCandy
 
     public function orders()
     {
-        return $this->hasMany(Order::class)->orderBy('reference', 'desc')->withoutGlobalScope('open')->withoutGlobalScope('not_expired');
+        return $this->hasMany(Order::class)->orderBy('created_at', 'desc')->withoutGlobalScope('open')->withoutGlobalScope('not_expired');
     }
 
     public function firstOrder()

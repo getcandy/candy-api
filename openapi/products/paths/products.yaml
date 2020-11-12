@@ -32,108 +32,27 @@ get:
         type: integer
       in: query
       name: limit
-  post:
-    summary: Create Product
-    tags:
-      - Products
-    responses:
-      '200':
-        description: OK
-        content:
-          application/json:
-            schema:
-              $ref: '../responses/ProductResponse.yaml'
-      '422':
-        description: Unprocessable Entity
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: array
-                  items:
-                    type: string
-                url:
-                  type: array
-                  items:
-                    type: string
-                stock:
-                  type: array
-                  items:
-                    type: string
-                family_id:
-                  type: array
-                  items:
-                    type: string
-                price:
-                  type: array
-                  items:
-                    type: string
-                sku:
-                  type: array
-                  items:
-                    type: string
-            examples:
-              unprocessable-example:
-                value:
-                  name:
-                    - The name field is required
-                  url:
-                    - The url field is required.
-                  stock:
-                    - The stock field is required.
-                  family_id:
-                    - The family id field is required.
-                  price:
-                    - The price field is required.
-                  sku:
-                    - The sku field is required.
-                    - The sku field must be unique
-    operationId: post-products
-    requestBody:
+post:
+  summary: Create Product
+  tags:
+    - Products
+  responses:
+    '200':
+      description: OK
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              name:
-                type: object
-                required:
-                  - en
-                properties:
-                  en:
-                    type: string
-              url:
-                type: string
-              stock:
-                type: integer
-              family_id:
-                type: string
-              price:
-                type: number
-                format: float
-              sku:
-                type: string
-            required:
-              - name
-              - url
-              - stock
-              - family_id
-              - price
-              - sku
-          examples:
-            create-body-example:
-              value:
-                name:
-                  en: New Product
-                url: new-product
-                family_id: 123fw4rfs
-                price: 12.99
-                sku: newp12345
+            $ref: '../responses/ProductResponse.yaml'
+  operationId: post-products
+  requestBody:
+    content:
+      multipart/form-data:
+        schema:
+          $ref: '../requests/ProductCreateBody.yaml'
+        examples: {}
     description: Creates a new product in the system. When creating a new product will also create 1 variant for that product.
-    parameters:
-      - schema:
-          type: string
-        in: query
-        name: include
+parameters:
+  - schema:
+      type: string
+    in: query
+    name: include

@@ -119,9 +119,6 @@ $router->group([
     $route->get('{encoded_id}', '\GetCandy\Api\Core\Routes\Actions\FetchRoute');
 });
 
-$router->post('password/reset', 'Auth\ResetPasswordController@reset');
-$router->post('password/reset/request', 'Auth\ForgotPasswordController@sendResetLinkEmail');
-
 $router->get('search', 'Search\SearchController@search');
 $router->get('search/sku', 'Search\SearchController@sku');
 $router->get('search/products', 'Search\SearchController@products');
@@ -131,7 +128,9 @@ $router->get('search/products', 'Search\SearchController@products');
 $router->get('shipping', 'Shipping\ShippingMethodController@index');
 $router->get('shipping/prices/estimate', 'Shipping\ShippingPriceController@estimate');
 
-$router->post('users', 'Users\UserController@store');
-$router->post('users/{userid}', 'Users\UserController@update');
+/*
+ * Users
+ */
+$router->post('users', '\GetCandy\Api\Core\Users\Actions\CreateUser');
 
 $router->get('plugins', 'Plugins\PluginController@index');

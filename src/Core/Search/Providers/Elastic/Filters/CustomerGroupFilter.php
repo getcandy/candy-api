@@ -2,10 +2,9 @@
 
 namespace GetCandy\Api\Core\Search\Providers\Elastic\Filters;
 
-use GetCandy;
-use Elastica\Query\Term;
-use Elastica\Query\Nested;
 use Elastica\Query\BoolQuery;
+use Elastica\Query\Nested;
+use Elastica\Query\Term;
 use GetCandy\Api\Core\Customers\Actions\FetchDefaultCustomerGroup;
 
 class CustomerGroupFilter extends AbstractFilter

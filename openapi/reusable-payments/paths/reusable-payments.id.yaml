@@ -1,0 +1,21 @@
+parameters:
+  - schema:
+      type: string
+    name: id
+    in: path
+    required: true
+delete:
+  summary: Delete reusable payment
+  tags:
+    - Payments
+  responses:
+    '204':
+      description: No Content
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/Unauthorized.yaml'
+  operationId: delete-users-payments-id
+  description: Removes a users reusable payment method. This can be invoked by any admin user and also the user who the record belongs to.

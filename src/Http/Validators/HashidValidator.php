@@ -25,6 +25,7 @@ class HashidValidator
 
         // Have we passed the class reference through.
 
+
         if (class_exists($method)) {
             $result = (bool) (new $method)->decodeId($value);
         } else {

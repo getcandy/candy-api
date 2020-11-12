@@ -38,4 +38,9 @@ class Customer extends BaseModel
     {
         return $this->hasMany(GetCandy::getUserModel());
     }
+
+    public function invites()
+    {
+        return $this->hasMany(CustomerInvite::class);
+    }
 }

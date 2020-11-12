@@ -8,8 +8,6 @@ use GetCandy\Api\Console\Commands\ScoreProductsCommand;
 use GetCandy\Api\Core\Currencies\CurrencyConverter;
 use GetCandy\Api\Core\Factory;
 use GetCandy\Api\Core\GetCandy;
-use GetCandy\Api\Core\Users\Contracts\UserContract;
-use GetCandy\Api\Core\Users\Services\UserService;
 use GetCandy\Api\Http\Middleware\DetectHubRequestMiddleware;
 use GetCandy\Api\Http\Middleware\SetChannelMiddleware;
 use GetCandy\Api\Http\Middleware\SetCurrencyMiddleware;
@@ -161,10 +159,6 @@ class ApiServiceProvider extends ServiceProvider
      */
     protected function mapBindings()
     {
-        $this->app->singleton(UserContract::class, function ($app) {
-            return $app->make(UserService::class);
-        });
-
         $this->app->singleton('currency_converter', function ($app) {
             return $app->make(CurrencyConverter::class);
         });

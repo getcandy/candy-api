@@ -5,11 +5,6 @@
     */
     $router->post('import', 'Utils\ImportController@process');
 
-    $router->post('account/password', [
-        'as' => 'account.password.reset',
-        'uses' => 'Auth\AccountController@resetPassword',
-    ]);
-
     $router->get('activity-log', [
         'as' => 'activitylog.index',
         'uses' => 'ActivityLog\ActivityLogController@index',
@@ -24,10 +19,7 @@
     $router->put('addresses/{addressId}', '\GetCandy\Api\Core\Addresses\Actions\UpdateAddressAction');
     $router->delete('addresses/{addressId}', '\GetCandy\Api\Core\Addresses\Actions\DeleteAddressAction');
 
-    $router->post('auth/impersonate', [
-        'as' => 'auth.impersonate',
-        'uses' => 'Auth\ImpersonateController@process',
-    ]);
+    $router->post('auth/impersonate', '\GetCandy\Api\Core\Auth\Actions\FetchImpersonationToken');
 
     /*
      * Assets
@@ -316,20 +308,22 @@
     /*
      * Users
      */
-    $router->get('users/fields', 'Users\UserController@fields');
-    $router->get('users/current', 'Users\UserController@getCurrentUser');
-    $router->delete('users/payments/{id}', 'Users\UserController@deleteReusablePayment');
-    $router->resource('users', 'Users\UserController', [
-        'except' => ['create', 'store'],
-    ]);
+    $router->get('users/fields', '\GetCandy\Api\Core\Users\Actions\FetchUserFields');
+    $router->get('users/current', '\GetCandy\Api\Core\Users\Actions\FetchCurrentUser');
+
+    $router->get('users', '\GetCandy\Api\Core\Users\Actions\FetchUsers');
+    $router->get('users/{encoded_id}', '\GetCandy\Api\Core\Users\Actions\FetchUser');
+    $router->put('users/{encoded_id}', '\GetCandy\Api\Core\Users\Actions\UpdateUser');
+
+    /*
+     * Reusable payments
+     */
+    $router->delete('reusable-payments/{encoded_id}', '\GetCandy\Api\Core\ReusablePayments\Actions\DeleteReusablePayment');
 
     /*
      * Account
      */
-    $router->post('account/password', [
-        'as' => 'account.password.reset',
-        'uses' => 'Auth\AccountController@resetPassword',
-    ]);
+    $router->post('account/password', '\GetCandy\Api\Core\Users\Actions\UpdatePassword');
 
     /**
      * Recycle bin.

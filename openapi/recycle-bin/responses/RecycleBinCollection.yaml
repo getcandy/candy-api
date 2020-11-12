@@ -6,4 +6,8 @@ allOf:
         type: array
         items:
           $ref: '../models/RecycleBin.yaml'
-  - $ref: '../../global/models/Pagination.yaml'
+  - type: object
+    properties:
+      meta:
+        type: object
+        $ref: '../../global/models/Pagination.yaml'

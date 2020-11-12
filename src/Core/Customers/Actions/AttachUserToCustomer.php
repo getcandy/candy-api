@@ -29,7 +29,7 @@ class AttachUserToCustomer extends AbstractAction
                 'encoded_id' => $this->encoded_id,
             ]);
 
-        return $this->user()->can('update', $this->customer);
+        return $this->runningAs('object') || $this->user()->can('update', $this->customer);
     }
 
     /**

@@ -16,28 +16,28 @@ get:
         type: string
       in: query
       name: include
-  post:
-    summary: Create Shipping Zone
-    tags:
-      - Shipping
-    responses:
-      '200':
-        description: OK
-        content:
-          application/json:
-            schema:
-              $ref: '../responses/ShippingZoneResponse.yaml'
-      '404':
-        description: Not Found
-    operationId: post-shipping-zones
-    description: Create a new shipping zone
-    requestBody:
+post:
+  summary: Create Shipping Zone
+  tags:
+    - Shipping
+  responses:
+    '200':
+      description: OK
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              name:
-                type: string
-            required:
-              - name
+            $ref: '../responses/ShippingZoneResponse.yaml'
+    '404':
+      description: Not Found
+  operationId: post-shipping-zones
+  description: Create a new shipping zone
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+          required:
+            - name

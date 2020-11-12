@@ -13,12 +13,6 @@ post:
         application/json:
           schema:
             $ref: '../responses/CustomerResponse.yaml'
-    '404':
-      description: Not Found
-      content:
-        application/json:
-          schema:
-            $ref: '../../global/responses/Error.yaml'
   operationId: get-customers-customerId-users
   description: ''
   parameters:

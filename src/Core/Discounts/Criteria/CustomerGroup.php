@@ -3,9 +3,9 @@
 namespace GetCandy\Api\Core\Discounts\Criteria;
 
 use GetCandy;
-use GetCandy\Api\Core\Foundation\Actions\DecodeIds;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 use GetCandy\Api\Core\Discounts\Contracts\DiscountCriteriaContract;
+use GetCandy\Api\Core\Foundation\Actions\DecodeIds;
 
 class CustomerGroup implements DiscountCriteriaContract
 {

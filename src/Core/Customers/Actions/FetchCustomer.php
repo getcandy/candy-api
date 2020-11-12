@@ -40,7 +40,7 @@ class FetchCustomer extends AbstractAction
             }
         }
 
-        return $this->user() && $this->user()->can('view', $this->customer);
+        return $this->runningAs('object') || ($this->user() && $this->user()->can('view', $this->customer));
     }
 
     /**
