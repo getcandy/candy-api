@@ -30,7 +30,7 @@ class FetchUsers extends Action
         return [
             'per_page' => 'numeric|max:200',
             'paginate' => 'boolean',
-            'keywords' => 'string',
+            'keywords' => 'nullable|string',
             'ids' => 'array',
         ];
     }

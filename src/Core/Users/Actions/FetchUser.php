@@ -3,10 +3,10 @@
 namespace GetCandy\Api\Core\Users\Actions;
 
 use GetCandy;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Users\Resources\UserResource;
-use Lorisleiva\Actions\Action;
 
-class FetchUser extends Action
+class FetchUser extends AbstractAction
 {
     /**
      * Determine if the user is authorized to make this action.
@@ -48,7 +48,7 @@ class FetchUser extends Action
             return (new $userModel)->where('email', '=', $this->email)->firstOrFail();
         }
 
-        return (new $userModel)->findOrFail($this->id);
+        return (new $userModel)->with($this->resolveEagerRelations())->findOrFail($this->id);
     }
 
     /**

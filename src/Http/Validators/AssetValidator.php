@@ -23,7 +23,7 @@ class AssetValidator
     protected function validateYoutubeUrl($url)
     {
         $driver = GetCandy::assets()->getDriver('youtube');
-
+        // \Log::debug($driver);
         return (bool) $driver->getInfo($url);
     }
 
