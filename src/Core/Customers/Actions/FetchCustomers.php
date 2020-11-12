@@ -29,6 +29,7 @@ class FetchCustomers extends AbstractAction
     {
         return [
             'per_page' => 'numeric|max:200',
+            'keywords' => 'nullable|string',
             'paginate' => 'boolean',
         ];
     }
@@ -42,12 +43,20 @@ class FetchCustomers extends AbstractAction
     {
         $includes = $this->resolveEagerRelations();
 
-        if (! $this->paginate) {
-            return Customer::with($includes)->get();
+        $query = Customer::with($includes);
+
+        if ($this->keywords) {
+            $query->where(function ($query) {
+                $query->where('firstname', 'LIKE', "%{$this->keywords}%")
+                    ->orWhere('lastname', 'LIKE', "%{$this->keywords}%");
+            })->orWhere('company_name', 'LIKE', "%{$this->keywords}%");
         }
 
-        return Customer::with($includes)
-            ->withCount(
+        if (! $this->paginate) {
+            return $query->get();
+        }
+
+        return $query->withCount(
                 $this->resolveRelationCounts()
             )->paginate($this->per_page ?? 50);
     }

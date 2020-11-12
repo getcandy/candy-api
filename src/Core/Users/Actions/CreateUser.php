@@ -32,8 +32,8 @@ class CreateUser extends Action
                 'customer_id' => $this->customer_id,
                 'email' => $this->email,
             ]);
-
-            if (! $this->invite) {
+            // TODO: Change to permission based auth
+            if (! $this->invite && (! $this->user() || ! $this->user()->hasRole('admin'))) {
                 return false;
             }
         }
@@ -51,8 +51,8 @@ class CreateUser extends Action
         return [
             'firstname' => 'required|string',
             'lastname' => 'required|string',
-            'email' => 'required|email',
-            'password' => 'required|string|min:6',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:6|confirmed',
             'language' => 'nullable|string',
             'details' => 'nullable|array',
             'customer_groups' => 'nullable|array',
@@ -86,7 +86,9 @@ class CreateUser extends Action
                 'user_id' => $user->encoded_id,
             ]);
 
-            DeleteCustomerInvite::run(['encoded_id' => $this->invite->encoded_id]);
+            if ($this->invite) {
+                DeleteCustomerInvite::run(['encoded_id' => $this->invite->encoded_id]);
+            }
         }
 
         if (! $this->customer_id) {
