@@ -22,6 +22,7 @@ class AddAddressableToAddressTable extends Migration
 
         Schema::create('addresses', function (Blueprint $table) {
             $table->increments('id');
+            $table->morphs('addressable');
             $table->string('salutation')->nullable();
             $table->string('firstname')->nullable();
             $table->string('lastname')->nullable();
@@ -43,7 +44,6 @@ class AddAddressableToAddressTable extends Migration
             $table->text('delivery_instructions')->nullable();
             $table->timestamp('last_used_at')->nullable();
             $table->json('meta')->nullable();
-            $table->morphs('addressable');
             $table->timestamps();
         });
 
