@@ -4,6 +4,7 @@ use GetCandy\Api\Core\Addresses\Models\Address;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Arr;
 
 class AddAddressableToAddressTable extends Migration
 {
@@ -17,24 +18,45 @@ class AddAddressableToAddressTable extends Migration
         $userModel = GetCandy::getUserModel();
         $addresses = Address::get();
 
-        Schema::table('addresses', function (Blueprint $table) {
-            Schema::disableForeignKeyConstraints();
-            $table->dropForeign('addresses_user_id_foreign');
-            $table->dropColumn('user_id');
-            Schema::enableForeignKeyConstraints();
-        });
+        Schema::dropIfExists('addresses');
 
-        Schema::table('addresses', function (Blueprint $table) {
-            $table->string("addressable_type")->after('id')->default('');
-            $table->unsignedBigInteger("addressable_id")->after('id')->default('');
-            $table->index(["addressable_type", "addressable_id"]);
+        Schema::create('addresses', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('salutation')->nullable();
+            $table->string('firstname')->nullable();
+            $table->string('lastname')->nullable();
+            $table->string('company_name')->nullable()->index();
+            $table->string('phone')->nullable()->index();
+            $table->string('email')->nullable()->index();
+            $table->string('address')->nullable();
+            $table->string('address_two')->nullable();
+            $table->string('address_three')->nullable();
+            $table->string('city')->nullable();
+            $table->string('state')->nullable();
+            $table->string('country')->nullable();
+            $table->string('postal_code')->nullable();
+            $table->integer('country_id')->unsigned()->nullable();
+            $table->foreign('country_id')->references('id')->on('countries');
+            $table->boolean('shipping')->default(0);
+            $table->boolean('billing')->default(0);
+            $table->boolean('default')->default(false);
+            $table->text('delivery_instructions')->nullable();
+            $table->timestamp('last_used_at')->nullable();
+            $table->json('meta')->nullable();
+            $table->morphs('addressable');
+            $table->timestamps();
         });
 
         foreach ($addresses as $address) {
-            Address::find($address->id)->update([
-                'addressable_type' => $userModel,
-                'addressable_id' => $address->user_id,
-            ]);
+            $addressToCreate = Arr::except(array_merge(
+                $address->toArray(),
+                [
+                    'addressable_type' => $userModel,
+                    'addressable_id' => $address->user_id,
+                ]
+            ), ['user_id']);
+
+            Address::forceCreate($addressToCreate);
         }
     }
 
