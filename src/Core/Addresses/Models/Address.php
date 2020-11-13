@@ -5,11 +5,13 @@ namespace GetCandy\Api\Core\Addresses\Models;
 use GetCandy\Api\Core\Auth\Models\User;
 use GetCandy\Api\Core\Countries\Models\Country;
 use GetCandy\Api\Core\Scaffold\BaseModel;
+use GetCandy\Api\Core\Traits\HasAddresses;
 
 class Address extends BaseModel
 {
+    use HasAddresses;
     /**
-     * The Hashid connection name for enconding the id.
+     * The Hashid connection name for encoding the id.
      *
      * @var string
      */
@@ -66,4 +68,10 @@ class Address extends BaseModel
     {
         return $this->belongsTo(Country::class);
     }
+
+    public function addresses()
+    {
+        return $this->morphTo();
+    }
+
 }

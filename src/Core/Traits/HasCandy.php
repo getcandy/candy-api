@@ -15,7 +15,8 @@ use Spatie\Permission\Traits\HasRoles;
 trait HasCandy
 {
     use Hashids,
-        HasRoles;
+        HasRoles,
+        HasAddresses;
 
     /**
      * The Hashid connection name for enconding the id.
@@ -67,11 +68,6 @@ trait HasCandy
     public function setFieldsAttribute($value)
     {
         $this->attributes['fields'] = json_encode($value);
-    }
-
-    public function addresses()
-    {
-        return $this->hasMany(Address::class);
     }
 
     public function orders()
