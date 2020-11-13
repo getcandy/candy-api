@@ -130,7 +130,7 @@ return [
         'batch_size' => 1000,
         'client_config' => [
             'elastic' => [
-                'host' => null,
+                'host' => '0.0.0.0',
                 'port' => null,
                 'path' => null,
                 'url' => null,
@@ -191,6 +191,18 @@ return [
                             'sku^10',
                         ],
                     ],
+                ],
+            ],
+        ],
+        'highlight' => [
+            'pre_tags' => ['<em class="highlight">'],
+            'post_tags' => ['</em>'],
+            'fields' => [
+                'name' => [
+                    'number_of_fragments' => 0,
+                ],
+                'description' => [
+                    'number_of_fragments' => 0,
                 ],
             ],
         ],

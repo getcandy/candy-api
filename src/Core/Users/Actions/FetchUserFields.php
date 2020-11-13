@@ -2,8 +2,9 @@
 
 namespace GetCandy\Api\Core\Users\Actions;
 
-use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
 use Lorisleiva\Actions\Action;
+use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
+use GetCandy\Api\Core\Customers\Actions\FetchCustomerFields;
 
 class FetchUserFields extends Action
 {
@@ -36,23 +37,6 @@ class FetchUserFields extends Action
      */
     public function handle()
     {
-        return config('getcandy.users.fields', []);
-    }
-
-    /**
-     * Returns the response from the action.
-     *
-     * @param   array  $result
-     * @param   \Illuminate\Http\Request  $request
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function response($result, $request)
-    {
-        return $this->respondWithArray([
-            'data' => [
-                'fields' => $result,
-            ],
-        ]);
+        return $this->delegateTo(FetchCustomerFields::class);
     }
 }

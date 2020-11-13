@@ -4,13 +4,14 @@ namespace GetCandy\Api\Core\Search\Providers\Elastic;
 
 use Carbon\Carbon;
 use Elastica\Client;
-use Elastica\Document;
 use Elastica\Reindex;
+use Elastica\Document;
 use Elastica\Type\Mapping;
-use GetCandy\Api\Core\Languages\Actions\FetchLanguages;
+use Illuminate\Database\Eloquent\Model;
 use GetCandy\Api\Core\Scopes\ChannelScope;
 use GetCandy\Api\Core\Scopes\CustomerGroupScope;
-use Illuminate\Database\Eloquent\Model;
+use GetCandy\Api\Core\Languages\Actions\FetchLanguages;
+use GetCandy\Api\Core\Languages\Services\LanguageService;
 
 class Indexer
 {
@@ -20,6 +21,7 @@ class Indexer
      * @var int
      */
     protected $batch = 0;
+
 
     /**
      * The indice resolver.

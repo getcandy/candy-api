@@ -3,7 +3,7 @@
 namespace GetCandy\Api\Core\Products\Listeners;
 
 use GetCandy\Api\Core\Products\Events\ProductCreatedEvent;
-use GetCandy\Api\Core\Search\SearchContract;
+use GetCandy\Api\Core\Search\Actions\IndexObjects;
 
 class AddToIndexListener
 {
@@ -26,7 +26,9 @@ class AddToIndexListener
     {
         $product = $event->product();
         if (! $product->isDraft()) {
-            app(SearchContract::class)->indexer()->indexObject($product);
+            IndexObjects::run([
+                'documents' => $product,
+            ]);
         }
     }
 }

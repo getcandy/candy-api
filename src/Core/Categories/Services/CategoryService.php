@@ -3,6 +3,7 @@
 namespace GetCandy\Api\Core\Categories\Services;
 
 use GetCandy;
+use GetCandy\Api\Core\Search\Actions\IndexObjects;
 use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
 use GetCandy\Api\Core\Categories\Events\CategoryStoredEvent;
 use GetCandy\Api\Core\Categories\Models\Category;
@@ -12,7 +13,6 @@ use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 use GetCandy\Api\Core\Routes\Models\Route;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Search\Events\IndexableSavedEvent;
-use GetCandy\Api\Core\Search\SearchContract;
 
 class CategoryService extends BaseService
 {
@@ -200,16 +200,14 @@ class CategoryService extends BaseService
         $category->products()->sync($ids);
 
         if ($existingProducts->count()) {
-            app(SearchContract::class)->indexer()->indexObjects(
-                $existingProducts,
-                'categories'
-            );
+            IndexObjects::run([
+                'documents' => $existingProducts,
+            ]);
         }
 
-        app(SearchContract::class)->indexer()->indexObjects(
-            $category->products()->get(),
-            'categories'
-        );
+        IndexObjects::run([
+            'documents' => $category->products()->get(),
+        ]);
 
         event(new CategoryStoredEvent($category));
 
