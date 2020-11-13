@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Customers\Resources;
 
+use GetCandy\Api\Core\Addresses\Resources\AddressCollection;
 use GetCandy\Api\Core\Users\Resources\UserCollection;
 use GetCandy\Api\Http\Resources\AbstractResource;
 
@@ -30,6 +31,7 @@ class CustomerResource extends AbstractResource
         return [
             'customer_groups' => new CustomerGroupCollection($this->whenLoaded('customerGroups')),
             'users' => new UserCollection($this->whenLoaded('users')),
+            'addresses' => new AddressCollection($this->whenLoaded('addresses')),
         ];
     }
 }

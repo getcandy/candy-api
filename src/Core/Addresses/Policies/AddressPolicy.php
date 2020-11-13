@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Addresses\Policies;
 
+use GetCandy;
 use GetCandy\Api\Core\Addresses\Models\Address;
 use Illuminate\Foundation\Auth\User;
 
@@ -20,7 +21,9 @@ class AddressPolicy
 
     public function update(?User $user, Address $address)
     {
-        return $user->can('manage-addresses') || $user->id == $address->user_id;
+        $userModel = GetCandy::getUserModel();
+
+        return $user->can('manage-addresses') || ($address->addressable_type == $userModel && $user->id == $address->addressable_id);
     }
 
     public function view(?User $user, Address $address)
