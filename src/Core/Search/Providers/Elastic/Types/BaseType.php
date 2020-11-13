@@ -2,13 +2,13 @@
 
 namespace GetCandy\Api\Core\Search\Providers\Elastic\Types;
 
-use Carbon\Carbon;
 use GetCandy;
-use GetCandy\Api\Core\Customers\Actions\FetchCustomerGroups;
-use GetCandy\Api\Core\Scopes\ChannelScope;
-use GetCandy\Api\Core\Scopes\CustomerGroupScope;
+use Carbon\Carbon;
 use GetCandy\Api\Core\Search\Indexable;
 use Illuminate\Database\Eloquent\Model;
+use GetCandy\Api\Core\Scopes\ChannelScope;
+use GetCandy\Api\Core\Scopes\CustomerGroupScope;
+use GetCandy\Api\Core\Customers\Actions\FetchCustomerGroups;
 
 abstract class BaseType
 {

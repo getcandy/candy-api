@@ -2,19 +2,13 @@
 
 namespace GetCandy\Api\Core\Search;
 
-class Indexable
+class Document
 {
     protected $data = [];
 
     protected $id;
 
-    protected $index;
-
-    public function __construct($id = null)
-    {
-        $this->id = $id;
-        $this->set('id', $id);
-    }
+    public $lang;
 
     public function __get($attribute)
     {
@@ -26,6 +20,13 @@ class Indexable
     public function setId($id)
     {
         $this->id = $id;
+
+        return $this;
+    }
+
+    public function setLang($lang)
+    {
+        $this->lang = $lang;
 
         return $this;
     }

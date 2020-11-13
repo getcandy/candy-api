@@ -5,7 +5,7 @@ namespace GetCandy\Api\Core\Categories\Drafting;
 use DB;
 use GetCandy\Api\Core\Drafting\BaseDrafter;
 use GetCandy\Api\Core\Events\ModelPublishedEvent;
-use GetCandy\Api\Core\Search\SearchContract;
+use GetCandy\Api\Core\Search\Actions\IndexObjects;
 use Illuminate\Database\Eloquent\Model;
 use NeonDigital\Drafting\Interfaces\DrafterInterface;
 use Versioning;
@@ -56,8 +56,9 @@ class CategoryDrafter extends BaseDrafter implements DrafterInterface
         $category->save();
 
         // Update all products...
-        $search = app(SearchContract::class);
-        $search->indexer()->indexObjects($category->products);
+        IndexObjects::run([
+            'documents' => $category->products,
+        ]);
 
         event(new ModelPublishedEvent($category));
 

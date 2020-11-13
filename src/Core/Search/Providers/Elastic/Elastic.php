@@ -2,8 +2,9 @@
 
 namespace GetCandy\Api\Core\Search\Providers\Elastic;
 
-use GetCandy\Api\Core\Search\Providers\Elastic\Types\ProductType;
 use GetCandy\Api\Core\Search\SearchContract;
+use GetCandy\Api\Core\Search\Providers\Elastic\Types\ProductType;
+use GetCandy\Api\Core\Search\Providers\Elastic\AggregationResolver;
 
 class Elastic implements SearchContract
 {

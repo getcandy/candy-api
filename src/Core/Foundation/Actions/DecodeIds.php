@@ -25,7 +25,7 @@ class DecodeIds extends Action
     {
         return [
             'model' => 'required|string',
-            'encoded_ids' => 'required|array',
+            'encoded_ids' => 'array|min:0',
         ];
     }
 

@@ -101,6 +101,7 @@ abstract class AbstractResource extends JsonResource
     public function toArray($request)
     {
         $attributes = array_merge($this->payload(), $this->custom_attributes ?? []);
+
         if ($request->full_response) {
             $attributes = array_merge($attributes, [
                 'attribute_data' => $this->attribute_data,
@@ -115,7 +116,41 @@ abstract class AbstractResource extends JsonResource
             }
         }
 
-        return array_merge($attributes, $this->includes());
+        $attributes = array_merge($attributes, $this->includes());
+        $attributes = $this->handleOnlyRequestField($attributes);
+        $attributes = $this->handleExceptRequestField($attributes);
+
+        return $attributes;
+    }
+
+    protected function handleOnlyRequestField($attributes)
+    {
+        if (!request()->filled('only')) {
+            return $attributes;
+        }
+
+        $fields = explode(',', request()->get('only'));
+
+        if (empty($fields)) {
+            return $attributes;
+        }
+
+        return collect($attributes)->only($fields)->toArray();
+    }
+
+    protected function handleExceptRequestField($attributes)
+    {
+        if (!request()->filled('except')) {
+            return $attributes;
+        }
+
+        $fields = explode(',', request()->get('except'));
+
+        if (empty($fields)) {
+            return $attributes;
+        }
+
+        return collect($attributes)->except($fields)->toArray();
     }
 
     protected function relationLoaded($relation)
