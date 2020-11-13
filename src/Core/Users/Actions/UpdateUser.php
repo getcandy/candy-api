@@ -49,10 +49,10 @@ class UpdateUser extends Action
      */
     public function handle()
     {
-        $this->userToUpdate->name = $this->name;
-        $this->userToUpdate->email = $this->email ?? $user->email;
+        $this->userToUpdate->name = $this->name ?? $this->userToUpdate->name;
+        $this->userToUpdate->email = $this->email ?? $this->userToUpdate->name;
         if ($this->password) {
-            $user->userToUpdate = bcrypt($this->password);
+            $this->userToUpdate->password = bcrypt($this->password);
         }
         $this->userToUpdate->save();
 

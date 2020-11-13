@@ -3,10 +3,13 @@
 namespace GetCandy\Api\Core\Customers\Models;
 
 use GetCandy;
+use GetCandy\Api\Core\Traits\HasAddresses;
 use GetCandy\Api\Core\Scaffold\BaseModel;
 
 class Customer extends BaseModel
 {
+    use HasAddresses;
+
     /**
      * The attributes that aren't mass assignable.
      *

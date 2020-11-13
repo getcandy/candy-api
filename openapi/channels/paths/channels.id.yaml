@@ -25,6 +25,12 @@ get:
                   published_at: null
                 meta:
                   lang: en
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
   operationId: get-channels-channelId
   description: ''
   parameters:
