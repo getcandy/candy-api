@@ -31,7 +31,7 @@ class Customer extends BaseModel
 
     public function setFieldsAttribute($val)
     {
-        $this->attributes['fields'] = json_encode($val);
+        $this->attributes['fields'] = is_string($val) ? $val : json_encode($val);
     }
 
     public function users()
