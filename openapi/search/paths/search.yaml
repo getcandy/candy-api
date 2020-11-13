@@ -30,15 +30,15 @@ get:
     - schema:
         type: string
         enum:
-          - category
-          - product
-        default: product
+          - categories
+          - products
+        default: products
       in: query
       name: search_type
     - schema:
         type: string
       in: query
-      name: keywords
+      name: term
     - schema:
         type: boolean
       in: query

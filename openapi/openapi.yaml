@@ -11,7 +11,7 @@ info:
     name: MIT
   description: The GetCandy API
 servers:
-  - url: 'http://localhost:3000/api/v1'
+  - url: 'http://localhost:8000/api/v1'
 paths:
   '/addresses':
     $ref: './addresses/paths/addresses.yaml'
@@ -23,6 +23,8 @@ paths:
     $ref: './channels/paths/channels.id.yaml'
   '/customers':
     $ref: './customers/paths/customers.yaml'
+  '/customers/fields':
+    $ref: './customers/paths/customers.fields.yaml'
   '/customers/{customerId}/users':
     $ref: './customers/paths/customers.id.users.yaml'
   '/customers/{customerId}/customer-groups':

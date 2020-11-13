@@ -53,7 +53,7 @@ post:
   operationId: post-users
   requestBody:
     content:
-      multipart/form-data:
+      application/json:
         schema:
           $ref: '../requests/CreateUserBody.yaml'
         examples: {}

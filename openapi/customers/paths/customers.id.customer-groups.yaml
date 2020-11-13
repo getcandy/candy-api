@@ -4,7 +4,7 @@ parameters:
     name: customerId
     in: path
     required: true
-post:
+put:
   summary: Attach customer groups to a customer
   responses:
     '200':
@@ -23,7 +23,7 @@ post:
   description: ''
   requestBody:
     content:
-      multipart/form-data:
+      application/json:
         schema:
           $ref: '../requests/AttachCustomerToGroupBody.yaml'
         examples: {}

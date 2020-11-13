@@ -46,7 +46,7 @@ put:
   operationId: put-customers-customerId
   requestBody:
     content:
-      multipart/form-data:
+      application/json:
         schema:
           $ref: '../requests/UpdateCustomerBody.yaml'
     description: ''
