@@ -32,6 +32,8 @@ properties:
     type: boolean
   user_id:
     type: string
+  customer_id:
+    type: string
   billing:
     type: boolean
   default:
