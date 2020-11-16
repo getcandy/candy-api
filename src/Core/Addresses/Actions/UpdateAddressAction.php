@@ -2,12 +2,11 @@
 
 namespace GetCandy\Api\Core\Addresses\Actions;
 
-use GetCandy;
 use DateTime;
+use GetCandy;
 use GetCandy\Api\Core\Addresses\Models\Address;
 use GetCandy\Api\Core\Addresses\Resources\AddressResource;
 use GetCandy\Api\Core\Countries\Actions\FetchCountry;
-use GetCandy\Api\Core\Customers\Models\Customer;
 use Illuminate\Support\Arr;
 use Lorisleiva\Actions\Action;
 

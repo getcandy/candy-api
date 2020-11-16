@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Core\Search\Drivers\Elasticsearch\Actions\Searching;
 
-use Lorisleiva\Actions\Action;
 use GetCandy\Api\Core\Attributes\Actions\FetchFilterableAttributes;
 use GetCandy\Api\Core\Search\Drivers\Elasticsearch\Aggregators\Attribute;
+use Lorisleiva\Actions\Action;
 
 class FetchAggregations extends Action
 {
@@ -39,9 +39,10 @@ class FetchAggregations extends Action
      */
     public function handle()
     {
-        if (!$this->aggregate) {
+        if (! $this->aggregate) {
             return null;
         }
+
         return FetchFilterableAttributes::run()->map(function ($attribute) {
             return $attribute->handle;
         })->filter(function ($attribute) {
@@ -54,6 +55,7 @@ class FetchAggregations extends Action
             if (class_exists($classname)) {
                 return app()->make($classname);
             }
+
             return new Attribute($attribute);
         })->toArray();
     }

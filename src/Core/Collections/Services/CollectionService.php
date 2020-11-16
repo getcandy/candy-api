@@ -6,8 +6,8 @@ use GetCandy;
 use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
 use GetCandy\Api\Core\Categories\Models\Category;
 use GetCandy\Api\Core\Collections\Models\Collection;
-use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Products\Models\Product;
+use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Search\Actions\FetchSearchedIds;
 use GetCandy\Api\Core\Search\Actions\Search;
 
@@ -112,7 +112,7 @@ class CollectionService extends BaseService
                 'params' =>[
                     'type' => $type,
                     'term' => 'test',
-                ]
+                ],
             ]);
 
             $ids = collect();

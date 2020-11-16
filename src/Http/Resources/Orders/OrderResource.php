@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Http\Resources\Orders;
 
-use GetCandy\Api\Http\Resources\AbstractResource;
 use GetCandy\Api\Core\Users\Resources\UserResource;
-use GetCandy\Api\Http\Resources\Baskets\BasketResource;
+use GetCandy\Api\Http\Resources\AbstractResource;
 use GetCandy\Api\Http\Resources\ActivityLog\ActivityCollection;
+use GetCandy\Api\Http\Resources\Baskets\BasketResource;
 use GetCandy\Api\Http\Resources\Transactions\TransactionCollection;
 
 class OrderResource extends AbstractResource

@@ -3,11 +3,11 @@
 namespace GetCandy\Api\Core\Search\Commands;
 
 use Carbon\Carbon;
-use GetCandy\Api\Core\Search\Actions\IndexObjects;
-use Illuminate\Support\Facades\DB;
 use Elastica\Document;
 use GetCandy\Api\Core\Products\Models\Product;
+use GetCandy\Api\Core\Search\Actions\IndexObjects;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 class ScoreProductsCommand extends Command
 {
