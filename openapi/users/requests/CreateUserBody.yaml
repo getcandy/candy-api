@@ -11,12 +11,12 @@ properties:
     type: string
   password_confirmation:
     type: string
+  customer_id:
+    type: string
+    nullable: false
 required:
   - email
   - firstname
   - lastname
   - password
   - password_confirmation
-  customer_id:
-    type: string
-    nullable: false

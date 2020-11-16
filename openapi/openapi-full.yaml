@@ -32,7 +32,8 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/paths/~1orders~1%7BorderId%7D~1shipping~1address/put/requestBody/content/application~1json/schema"
+                    $ref: "#/paths/~1orders~1%7BorderId%7D~1shipping~1address/put/requestBody/conte\
+                      nt/application~1json/schema"
         "401":
           description: Unauthorized
         "422":
@@ -392,7 +393,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/200/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/200/content/applicatio\
+                  n~1json/schema"
         "422":
           description: Unprocessable Entity
           content:
@@ -457,7 +459,8 @@ paths:
                   - type: object
                     properties:
                       meta:
-                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/allOf/1/properties/meta"
+                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/al\
+                          lOf/1/properties/meta"
                 description: ""
       operationId: get-customers
       parameters:
@@ -662,13 +665,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1customers~1%7BcustomerId%7D~1users/post/responses/200/content/application~1json/schema"
+                $ref: "#/paths/~1customers~1%7BcustomerId%7D~1users/post/responses/200/content/\
+                  application~1json/schema"
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: post-customers-customerId-customer-groups
       description: ""
       requestBody:
@@ -700,13 +705,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1customers~1%7BcustomerId%7D~1users/post/responses/200/content/application~1json/schema"
+                $ref: "#/paths/~1customers~1%7BcustomerId%7D~1users/post/responses/200/content/\
+                  application~1json/schema"
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: get-customers-customerId
       description: ""
       parameters:
@@ -724,7 +731,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1customers~1%7BcustomerId%7D~1users/post/responses/200/content/application~1json/schema"
+                $ref: "#/paths/~1customers~1%7BcustomerId%7D~1users/post/responses/200/content/\
+                  application~1json/schema"
         "422":
           description: Unprocessable Entity
           content:
@@ -822,7 +830,8 @@ paths:
                   - type: object
                     properties:
                       meta:
-                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/allOf/1/properties/meta"
+                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/al\
+                          lOf/1/properties/meta"
                 description: ""
       operationId: get-countries
       parameters:
@@ -858,7 +867,8 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/paths/~1countries/get/responses/200/content/application~1json/schema/allOf/0/properties/data/items"
+                    $ref: "#/paths/~1countries/get/responses/200/content/application~1json/schema/a\
+                      llOf/0/properties/data/items"
                 x-tags:
                   - Countries
         "404":
@@ -866,7 +876,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: get-countries-countryId
       description: ""
       parameters:
@@ -884,7 +895,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1countries~1%7BcountryId%7D/get/responses/200/content/application~1json/schema"
+                $ref: "#/paths/~1countries~1%7BcountryId%7D/get/responses/200/content/applicati\
+                  on~1json/schema"
         "422":
           description: Unprocessable Entity
           content:
@@ -957,7 +969,8 @@ paths:
                   - type: object
                     properties:
                       meta:
-                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/allOf/1/properties/meta"
+                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/al\
+                          lOf/1/properties/meta"
                 description: ""
       operationId: get-customer-groups
       parameters:
@@ -987,7 +1000,8 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/paths/~1customer-groups/get/responses/200/content/application~1json/schema/allOf/0/properties/data/items"
+                    $ref: "#/paths/~1customer-groups/get/responses/200/content/application~1json/sc\
+                      hema/allOf/0/properties/data/items"
         "422":
           description: Unprocessable Entity
           content:
@@ -1031,13 +1045,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1customer-groups/post/responses/201/content/application~1json/schema"
+                $ref: "#/paths/~1customer-groups/post/responses/201/content/application~1json/s\
+                  chema"
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: get-customer-group-customerGroupId
       description: ""
       parameters:
@@ -1055,7 +1071,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1customer-groups/post/responses/201/content/application~1json/schema"
+                $ref: "#/paths/~1customer-groups/post/responses/201/content/application~1json/s\
+                  chema"
         "422":
           description: Unprocessable Entity
           content:
@@ -1118,11 +1135,13 @@ paths:
                       data:
                         type: array
                         items:
-                          $ref: "#/paths/~1languages~1%7BlanguageId%7D/put/requestBody/content/application~1json/schema"
+                          $ref: "#/paths/~1languages~1%7BlanguageId%7D/put/requestBody/content/applicatio\
+                            n~1json/schema"
                   - type: object
                     properties:
                       meta:
-                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/allOf/1/properties/meta"
+                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/al\
+                          lOf/1/properties/meta"
                 description: ""
       operationId: get-languages
       description: Returns a paginated list of Languages
@@ -1140,7 +1159,8 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/paths/~1languages~1%7BlanguageId%7D/put/requestBody/content/application~1json/schema"
+                    $ref: "#/paths/~1languages~1%7BlanguageId%7D/put/requestBody/content/applicatio\
+                      n~1json/schema"
         "422":
           description: Unprocessable Entity
           content:
@@ -1196,7 +1216,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: get-languages-languageId
       description: Get a Language by ID
     put:
@@ -1265,7 +1286,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: delete-languages-languageId
       description: Delete a Language by its ID
   /routes:
@@ -1286,11 +1308,13 @@ paths:
                       data:
                         type: array
                         items:
-                          $ref: "#/paths/~1routes~1%7BrouteId%7D/put/requestBody/content/application~1json/schema"
+                          $ref: "#/paths/~1routes~1%7BrouteId%7D/put/requestBody/content/application~1jso\
+                            n/schema"
                   - type: object
                     properties:
                       meta:
-                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/allOf/1/properties/meta"
+                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/al\
+                          lOf/1/properties/meta"
                 description: ""
       operationId: get-routes
       description: Returns a paginated list of Routes
@@ -1315,13 +1339,15 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/paths/~1routes~1%7BrouteId%7D/put/requestBody/content/application~1json/schema"
+                    $ref: "#/paths/~1routes~1%7BrouteId%7D/put/requestBody/content/application~1jso\
+                      n/schema"
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: get-routes-routeId
       description: Get a Route by ID
     put:
@@ -1334,7 +1360,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1routes~1%7BrouteId%7D/get/responses/200/content/application~1json/schema"
+                $ref: "#/paths/~1routes~1%7BrouteId%7D/get/responses/200/content/application~1j\
+                  son/schema"
       operationId: put-routes-routeId
       description: Update a Route using it's ID
       requestBody:
@@ -1385,7 +1412,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: delete-routes-routeId
       description: Delete a Router by its ID
   /routes/search:
@@ -1399,13 +1427,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1routes~1%7BrouteId%7D/get/responses/200/content/application~1json/schema"
+                $ref: "#/paths/~1routes~1%7BrouteId%7D/get/responses/200/content/application~1j\
+                  son/schema"
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: get-routes-search
       description: Get a Route by searching via slug or path
   /product-families:
@@ -1436,7 +1466,8 @@ paths:
                   - type: object
                     properties:
                       meta:
-                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/allOf/1/properties/meta"
+                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/al\
+                          lOf/1/properties/meta"
                 description: ""
       operationId: get-product-families
       description: Returns a paginated list of all product families.
@@ -1460,7 +1491,8 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/paths/~1product-families/get/responses/200/content/application~1json/schema/allOf/0/properties/data/items"
+                    $ref: "#/paths/~1product-families/get/responses/200/content/application~1json/s\
+                      chema/allOf/0/properties/data/items"
         "422":
           description: Unprocessable Entity
           content:
@@ -1486,13 +1518,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1product-families/post/responses/201/content/application~1json/schema"
+                $ref: "#/paths/~1product-families/post/responses/201/content/application~1json/\
+                  schema"
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: get-product-families-productFamilyId
       description: Returns a single product family based on ID.
       parameters:
@@ -1510,13 +1544,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1product-families/post/responses/201/content/application~1json/schema"
+                $ref: "#/paths/~1product-families/post/responses/201/content/application~1json/\
+                  schema"
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: put-product-families-productFamilyId
       description: Update a product family
       requestBody:
@@ -1539,7 +1575,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: delete-product-families-productFamilyId
       description: Sends a request to delete a product family
   /baskets:
@@ -1606,7 +1643,8 @@ paths:
                   - type: object
                     properties:
                       meta:
-                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/allOf/1/properties/meta"
+                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/al\
+                          lOf/1/properties/meta"
                 description: ""
       operationId: get-baskets
       description: Get a paginated list of baskets
@@ -1633,13 +1671,15 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/paths/~1baskets/get/responses/200/content/application~1json/schema/allOf/0/properties/data/items"
+                    $ref: "#/paths/~1baskets/get/responses/200/content/application~1json/schema/all\
+                      Of/0/properties/data/items"
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: post-baskets-basketId-meta
       description: Allows you to add custom meta information to a basket.
       requestBody:
@@ -1667,7 +1707,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1baskets~1%7BbasketId%7D~1meta/post/responses/200/content/application~1json/schema"
+                $ref: "#/paths/~1baskets~1%7BbasketId%7D~1meta/post/responses/200/content/appli\
+                  cation~1json/schema"
       operationId: post-baskets-resolve
       description: >-
         This endpoint is for when you want to either merge a users basket with a
@@ -1698,13 +1739,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1baskets~1%7BbasketId%7D~1meta/post/responses/200/content/application~1json/schema"
+                $ref: "#/paths/~1baskets~1%7BbasketId%7D~1meta/post/responses/200/content/appli\
+                  cation~1json/schema"
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: get-baskets-current
       description: This request will get the current active basket for a user
   "/baskets/{basketId}/save":
@@ -1724,19 +1767,22 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1baskets~1%7BbasketId%7D~1meta/post/responses/200/content/application~1json/schema"
+                $ref: "#/paths/~1baskets~1%7BbasketId%7D~1meta/post/responses/200/content/appli\
+                  cation~1json/schema"
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: post-baskets-basketId-save
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/paths/~1baskets~1resolve/post/requestBody/content/application~1json/schema"
+              $ref: "#/paths/~1baskets~1resolve/post/requestBody/content/application~1json/sc\
+                hema"
       description: Saves a basket to a users account.
   "/baskets/{basketId}/claim":
     parameters:
@@ -1755,13 +1801,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1baskets~1%7BbasketId%7D~1meta/post/responses/200/content/application~1json/schema"
+                $ref: "#/paths/~1baskets~1%7BbasketId%7D~1meta/post/responses/200/content/appli\
+                  cation~1json/schema"
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: post-baskets-basketId-claim
       description: 'A user is able to "claim" a guest basket. '
   "/baskets/{basketId}":
@@ -1790,13 +1838,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1baskets~1%7BbasketId%7D~1meta/post/responses/200/content/application~1json/schema"
+                $ref: "#/paths/~1baskets~1%7BbasketId%7D~1meta/post/responses/200/content/appli\
+                  cation~1json/schema"
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: get-baskets-basketId
       description: Get a basket by it's ID
     put:
@@ -1809,13 +1859,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1baskets~1%7BbasketId%7D~1meta/post/responses/200/content/application~1json/schema"
+                $ref: "#/paths/~1baskets~1%7BbasketId%7D~1meta/post/responses/200/content/appli\
+                  cation~1json/schema"
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: put-baskets-basketId
       description: Updates a basket
   /baskets/saved:
@@ -1846,11 +1898,13 @@ paths:
                             name:
                               type: string
                             basket:
-                              $ref: "#/paths/~1baskets~1%7BbasketId%7D~1meta/post/responses/200/content/application~1json/schema"
+                              $ref: "#/paths/~1baskets~1%7BbasketId%7D~1meta/post/responses/200/content/appli\
+                                cation~1json/schema"
                   - type: object
                     properties:
                       meta:
-                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/allOf/1/properties/meta"
+                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/al\
+                          lOf/1/properties/meta"
         "401":
           description: Unauthorized
           content:
@@ -1893,19 +1947,22 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/paths/~1baskets~1saved/get/responses/200/content/application~1json/schema/allOf/0/properties/data/items"
+                    $ref: "#/paths/~1baskets~1saved/get/responses/200/content/application~1json/sch\
+                      ema/allOf/0/properties/data/items"
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: put-baskets-saved-basketId
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/paths/~1baskets~1resolve/post/requestBody/content/application~1json/schema"
+              $ref: "#/paths/~1baskets~1resolve/post/requestBody/content/application~1json/sc\
+                hema"
       description: Updates a saved basket on the API
   "/baskets/{basketId}/discounts":
     parameters:
@@ -1936,7 +1993,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1baskets~1%7BbasketId%7D~1meta/post/responses/200/content/application~1json/schema"
+                $ref: "#/paths/~1baskets~1%7BbasketId%7D~1meta/post/responses/200/content/appli\
+                  cation~1json/schema"
       operationId: post-basket-lines
       description: Add lines to a basket
       requestBody:
@@ -1981,7 +2039,8 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/paths/~1baskets~1%7BbasketId%7D~1meta/post/responses/200/content/application~1json/schema"
+                    $ref: "#/paths/~1baskets~1%7BbasketId%7D~1meta/post/responses/200/content/appli\
+                      cation~1json/schema"
       operationId: delete-basket-lines
       description: Removes basket lines from a basket
   "/basket-lines/{basketLineId}":
@@ -2001,13 +2060,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1baskets~1%7BbasketId%7D~1meta/post/responses/200/content/application~1json/schema"
+                $ref: "#/paths/~1baskets~1%7BbasketId%7D~1meta/post/responses/200/content/appli\
+                  cation~1json/schema"
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: put-basket-lines-basketLineId
       description: Update a basket line based on it's ID.
       requestBody:
@@ -2036,14 +2097,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1baskets~1%7BbasketId%7D~1meta/post/responses/200/content/application~1json/schema"
+                $ref: "#/paths/~1baskets~1%7BbasketId%7D~1meta/post/responses/200/content/appli\
+                  cation~1json/schema"
       operationId: put-basket-lines-basketLineId-add
       description: Update basket line quantity
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/paths/~1basket-lines~1%7BbasketLineId%7D/put/requestBody/content/application~1json/schema"
+              $ref: "#/paths/~1basket-lines~1%7BbasketLineId%7D/put/requestBody/content/appli\
+                cation~1json/schema"
   "/basket-lines/{basketLineId}/remove":
     parameters:
       - schema:
@@ -2061,14 +2124,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1baskets~1%7BbasketId%7D~1meta/post/responses/200/content/application~1json/schema"
+                $ref: "#/paths/~1baskets~1%7BbasketId%7D~1meta/post/responses/200/content/appli\
+                  cation~1json/schema"
       operationId: put-basket-lines-basketLineId-remove
       description: Removes quantity from a basket line
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/paths/~1basket-lines~1%7BbasketLineId%7D/put/requestBody/content/application~1json/schema"
+              $ref: "#/paths/~1basket-lines~1%7BbasketLineId%7D/put/requestBody/content/appli\
+                cation~1json/schema"
   /orders:
     get:
       summary: Get orders
@@ -2087,11 +2152,13 @@ paths:
                       data:
                         type: array
                         items:
-                          $ref: "#/paths/~1orders~1%7BorderId%7D/put/responses/404/content/application~1json/schema/properties/data"
+                          $ref: "#/paths/~1orders~1%7BorderId%7D/put/responses/404/content/application~1j\
+                            son/schema/properties/data"
                   - type: object
                     properties:
                       meta:
-                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/allOf/1/properties/meta"
+                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/al\
+                          lOf/1/properties/meta"
       operationId: get-orders
       description: If you're an admin user you will be able to see all orders,
         otherwise only the current users orders will be returned.
@@ -2113,13 +2180,15 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/paths/~1orders~1%7BorderId%7D/put/responses/404/content/application~1json/schema/properties/data"
+                    $ref: "#/paths/~1orders~1%7BorderId%7D/put/responses/404/content/application~1j\
+                      son/schema/properties/data"
         "403":
           description: Forbidden
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
               examples:
                 forbidden-example:
                   value:
@@ -2130,7 +2199,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
               examples:
                 unprocessable-example:
                   value:
@@ -2175,7 +2245,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: get-orders-orderId
       description: >-
         Get an Order by it's ID.
@@ -2322,9 +2393,11 @@ paths:
                             type: string
                             example: example@example.com
                       billing_details:
-                        $ref: "#/paths/~1orders~1%7BorderId%7D~1shipping~1address/put/requestBody/content/application~1json/schema"
+                        $ref: "#/paths/~1orders~1%7BorderId%7D~1shipping~1address/put/requestBody/conte\
+                          nt/application~1json/schema"
                       shipping_details:
-                        $ref: "#/paths/~1orders~1%7BorderId%7D~1shipping~1address/put/requestBody/content/application~1json/schema"
+                        $ref: "#/paths/~1orders~1%7BorderId%7D~1shipping~1address/put/requestBody/conte\
+                          nt/application~1json/schema"
                       status:
                         type: string
                         example: payment-received
@@ -2339,7 +2412,8 @@ paths:
                         items:
                           type: object
                       basket:
-                        $ref: "#/paths/~1baskets~1%7BbasketId%7D~1meta/post/responses/200/content/application~1json/schema"
+                        $ref: "#/paths/~1baskets~1%7BbasketId%7D~1meta/post/responses/200/content/appli\
+                          cation~1json/schema"
                       discounts:
                         type: string
                       transactions:
@@ -2350,12 +2424,14 @@ paths:
                               data:
                                 type: array
                                 items:
-                                  $ref: "#/paths/~1payments~1%7BtransactionId%7D~1refund/post/responses/200/content/application~1json/schema/properties/data"
+                                  $ref: "#/paths/~1payments~1%7BtransactionId%7D~1refund/post/responses/200/conte\
+                                    nt/application~1json/schema/properties/data"
                           - type: object
                             properties:
                               meta:
                                 type: object
-                                $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/allOf/1/properties/meta"
+                                $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/al\
+                                  lOf/1/properties/meta"
                       lines:
                         title: OrderLineCollection
                         type: object
@@ -2401,7 +2477,9 @@ paths:
                         type: object
                         properties:
                           data:
-                            $ref: "#/paths/~1orders~1%7BorderId%7D/put/responses/404/content/application~1json/schema/properties/data/properties/lines/properties/data/items"
+                            $ref: "#/paths/~1orders~1%7BorderId%7D/put/responses/404/content/application~1j\
+                              son/schema/properties/data/properties/lines/prope\
+                              rties/data/items"
                       logs:
                         title: ActivityLogCollection
                         type: object
@@ -2423,9 +2501,11 @@ paths:
                                 created_at:
                                   type: string
                                 user:
-                                  $ref: "#/paths/~1users~1%7BuserId%7D/get/responses/200/content/application~1json/schema"
+                                  $ref: "#/paths/~1users~1%7BuserId%7D/get/responses/200/content/application~1jso\
+                                    n/schema"
                       user:
-                        $ref: "#/paths/~1users~1%7BuserId%7D/get/responses/200/content/application~1json/schema"
+                        $ref: "#/paths/~1users~1%7BuserId%7D/get/responses/200/content/application~1jso\
+                          n/schema"
       tags:
         - Orders
       description: Update an Order
@@ -2498,19 +2578,22 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
         "422":
           description: Unprocessable Entity
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: post-orders-process
       requestBody:
         content:
@@ -2609,7 +2692,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
               examples:
                 bad-request-example:
                   value:
@@ -2734,7 +2818,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       tags:
         - Orders
   "/orders/{orderId}/shipping/address":
@@ -2760,7 +2845,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: put-orders-id-shipping-address
       description: Update an orders shipping address
       requestBody:
@@ -2789,7 +2875,8 @@ paths:
                 state:
                   type: string
                 country:
-                  $ref: "#/paths/~1countries~1%7BcountryId%7D/get/responses/200/content/application~1json/schema"
+                  $ref: "#/paths/~1countries~1%7BcountryId%7D/get/responses/200/content/applicati\
+                    on~1json/schema"
                 postal_code:
                   type: string
                 salutation:
@@ -2908,9 +2995,11 @@ paths:
                         volume_unit:
                           type: string
                         method:
-                          $ref: "#/paths/~1shipping~1%7BshippingMethodId%7D/get/responses/200/content/application~1json/schema"
+                          $ref: "#/paths/~1shipping~1%7BshippingMethodId%7D/get/responses/200/content/app\
+                            lication~1json/schema"
                         zone:
-                          $ref: "#/paths/~1shipping~1zones/post/responses/200/content/application~1json/schema"
+                          $ref: "#/paths/~1shipping~1zones/post/responses/200/content/application~1json/s\
+                            chema"
               examples:
                 full-example:
                   value:
@@ -3110,13 +3199,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: put-orders-orderId-billing-address
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/paths/~1orders~1%7BorderId%7D~1shipping~1address/put/requestBody/content/application~1json/schema"
+              $ref: "#/paths/~1orders~1%7BorderId%7D~1shipping~1address/put/requestBody/conte\
+                nt/application~1json/schema"
         description: All fields are required when an `address_id` is not present.
       description: Update an orders billing address
   "/orders/{orderId}/lines":
@@ -3142,7 +3233,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
         "422":
           description: Unprocessable Entity
           content:
@@ -3298,7 +3390,8 @@ paths:
                   - type: object
                     properties:
                       meta:
-                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/allOf/1/properties/meta"
+                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/al\
+                          lOf/1/properties/meta"
       operationId: get-products
       description: Gets a paginated list of products.
       parameters:
@@ -3336,7 +3429,8 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/paths/~1products/get/responses/200/content/application~1json/schema/allOf/0/properties/data/items"
+                    $ref: "#/paths/~1products/get/responses/200/content/application~1json/schema/al\
+                      lOf/0/properties/data/items"
       operationId: post-products
       requestBody:
         content:
@@ -3406,7 +3500,8 @@ paths:
                   - type: object
                     properties:
                       meta:
-                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/allOf/1/properties/meta"
+                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/al\
+                          lOf/1/properties/meta"
       operationId: get-products-recommended
       parameters:
         - schema:
@@ -3481,13 +3576,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1baskets~1saved/get/responses/401/content/application~1json/schema"
+                $ref: "#/paths/~1baskets~1saved/get/responses/401/content/application~1json/sch\
+                  ema"
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: put-products-productId
       requestBody:
         content:
@@ -3514,7 +3611,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: delete-products-productId
       description: >-
         Deletes a product by it's ID
@@ -3638,7 +3736,8 @@ paths:
                                       tax:
                                         $ref: "#/paths/~1taxes/post/responses/200/content/application~1json/schema"
                                       group:
-                                        $ref: "#/paths/~1customer-groups/post/responses/201/content/application~1json/schema"
+                                        $ref: "#/paths/~1customer-groups/post/responses/201/content/application~1json/s\
+                                          chema"
                             tax:
                               $ref: "#/paths/~1taxes/post/responses/200/content/application~1json/schema"
                             tiers:
@@ -3660,13 +3759,15 @@ paths:
                                       tax:
                                         type: number
                                       group:
-                                        $ref: "#/paths/~1customer-groups/post/responses/201/content/application~1json/schema"
+                                        $ref: "#/paths/~1customer-groups/post/responses/201/content/application~1json/s\
+                                          chema"
                             options:
                               type: object
                   - type: object
                     properties:
                       meta:
-                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/allOf/1/properties/meta"
+                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/al\
+                          lOf/1/properties/meta"
       operationId: get-products-variants
       parameters:
         - schema:
@@ -3695,14 +3796,16 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/paths/~1products~1variants/get/responses/200/content/application~1json/schema/allOf/0/properties/data/items"
+                    $ref: "#/paths/~1products~1variants/get/responses/200/content/application~1json\
+                      /schema/allOf/0/properties/data/items"
         "404":
           description: Not Found
           headers: {}
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: get-products-variants-productVariantId
       description: Get a product variant by it's ID
   "/products/variants/{productVariantId}/inventory":
@@ -3722,13 +3825,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1products~1variants~1%7BproductVariantId%7D/get/responses/200/content/application~1json/schema"
+                $ref: "#/paths/~1products~1variants~1%7BproductVariantId%7D/get/responses/200/c\
+                  ontent/application~1json/schema"
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: put-products-variants-productVariantId-inventory
       description: Request to update a product variants inventory.
       requestBody:
@@ -3762,7 +3867,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: post-products-productId-duplicate
       description: |-
         Duplicates a product, requires you to specify new slugs and SKU's.
@@ -3965,7 +4071,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: post-products-product-categories
       description: Sync product categories
       requestBody:
@@ -4004,7 +4111,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: post-products-product-channels
       description: Sync product Channels
       requestBody:
@@ -4044,7 +4152,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: delete-products-product-categories-category
       description: Detaches a category from a product. Does not delete the category.
   "/products/{productId}/collections/{collectionId}":
@@ -4071,7 +4180,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: delete-products-product-collections-detach
       description: Detaches a collection from a product. Does not delete the collection.
   "/products/{productId}/associations":
@@ -4189,7 +4299,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: post-products-id-drafts
       description: Create a draft product from an existing product.
     get:
@@ -4208,7 +4319,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: get-products-productId-drafts
       description: |-
         Create a draft for a product.
@@ -4237,7 +4349,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: post-products-id-publish
       description: Publish a draft from a Product
   /attributes:
@@ -4314,11 +4427,13 @@ paths:
                             system:
                               type: boolean
                             group:
-                              $ref: "#/paths/~1attribute-groups/post/responses/200/content/application~1json/schema"
+                              $ref: "#/paths/~1attribute-groups/post/responses/200/content/application~1json/\
+                                schema"
                   - type: object
                     properties:
                       meta:
-                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/allOf/1/properties/meta"
+                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/al\
+                          lOf/1/properties/meta"
               examples:
                 paginated-example:
                   value:
@@ -4376,7 +4491,8 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/paths/~1attributes/get/responses/200/content/application~1json/schema/allOf/0/properties/data/items"
+                    $ref: "#/paths/~1attributes/get/responses/200/content/application~1json/schema/\
+                      allOf/0/properties/data/items"
               examples:
                 post-example:
                   value:
@@ -4598,7 +4714,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: get-attributes-attributeId
       parameters:
         - schema:
@@ -4622,7 +4739,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
               examples:
                 not-found-example:
                   value:
@@ -4671,7 +4789,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
               examples:
                 not-found-example:
                   value:
@@ -4700,11 +4819,13 @@ paths:
                       data:
                         type: array
                         items:
-                          $ref: "#/paths/~1attribute-groups~1%7BattributeGroupId%7D/put/requestBody/content/application~1json/schema"
+                          $ref: "#/paths/~1attribute-groups~1%7BattributeGroupId%7D/put/requestBody/conte\
+                            nt/application~1json/schema"
                   - type: object
                     properties:
                       meta:
-                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/allOf/1/properties/meta"
+                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/al\
+                          lOf/1/properties/meta"
               examples:
                 without-pagination-example:
                   value:
@@ -4752,7 +4873,8 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/paths/~1attribute-groups~1%7BattributeGroupId%7D/put/requestBody/content/application~1json/schema"
+                    $ref: "#/paths/~1attribute-groups~1%7BattributeGroupId%7D/put/requestBody/conte\
+                      nt/application~1json/schema"
               examples:
                 created-example:
                   value:
@@ -4853,7 +4975,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1attribute-groups/post/responses/200/content/application~1json/schema"
+                $ref: "#/paths/~1attribute-groups/post/responses/200/content/application~1json/\
+                  schema"
       operationId: put-attribute-groups-attributeGroupId
       description: Updates an attribute group.
       requestBody:
@@ -4894,7 +5017,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1attribute-groups/post/responses/200/content/application~1json/schema"
+                $ref: "#/paths/~1attribute-groups/post/responses/200/content/application~1json/\
+                  schema"
               examples:
                 full-example:
                   value:
@@ -4909,7 +5033,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
               examples:
                 not-found-example:
                   value:
@@ -4935,7 +5060,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: delete-attribute-groups-attributeGroupId
       description: Deletes an attribute group
   /categories:
@@ -5088,7 +5214,8 @@ paths:
                               type: object
                               properties:
                                 data:
-                                  $ref: "#/paths/~1layouts/get/responses/200/content/application~1json/schema/allOf/0/properties/data/items"
+                                  $ref: "#/paths/~1layouts/get/responses/200/content/application~1json/schema/all\
+                                    Of/0/properties/data/items"
                             assets:
                               title: AssetCollection
                               type: object
@@ -5096,19 +5223,22 @@ paths:
                                 data:
                                   type: array
                                   items:
-                                    $ref: "#/paths/~1assets/put/responses/200/content/application~1json/schema/properties/data"
+                                    $ref: "#/paths/~1assets/put/responses/200/content/application~1json/schema/prop\
+                                      erties/data"
                             primary_asset:
                               $ref: "#/paths/~1assets/put/responses/200/content/application~1json/schema"
                             attributes:
                               $ref: "#/paths/~1attributes/get/responses/200/content/application~1json/schema"
                             customer_groups:
-                              $ref: "#/paths/~1customer-groups/get/responses/200/content/application~1json/schema"
+                              $ref: "#/paths/~1customer-groups/get/responses/200/content/application~1json/sc\
+                                hema"
                             products:
                               $ref: "#/paths/~1products/get/responses/200/content/application~1json/schema"
                   - type: object
                     properties:
                       meta:
-                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/allOf/1/properties/meta"
+                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/al\
+                          lOf/1/properties/meta"
       operationId: get-categories
       description: Returns a paginated resource of categories
   "/categories/{categoryId}":
@@ -5133,7 +5263,8 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/paths/~1categories/get/responses/200/content/application~1json/schema/allOf/0/properties/data/items"
+                    $ref: "#/paths/~1categories/get/responses/200/content/application~1json/schema/\
+                      allOf/0/properties/data/items"
               examples: {}
       operationId: get-categories-categoryId
       parameters:
@@ -5151,13 +5282,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1categories~1%7BcategoryId%7D/get/responses/200/content/application~1json/schema"
+                $ref: "#/paths/~1categories~1%7BcategoryId%7D/get/responses/200/content/applica\
+                  tion~1json/schema"
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
         "422":
           description: Unprocessable Entity
       requestBody:
@@ -5203,7 +5336,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1categories~1%7BcategoryId%7D/get/responses/200/content/application~1json/schema"
+                $ref: "#/paths/~1categories~1%7BcategoryId%7D/get/responses/200/content/applica\
+                  tion~1json/schema"
       operationId: post-categories-category-layouts
       requestBody:
         content:
@@ -5232,13 +5366,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1categories~1%7BcategoryId%7D/get/responses/200/content/application~1json/schema"
+                $ref: "#/paths/~1categories~1%7BcategoryId%7D/get/responses/200/content/applica\
+                  tion~1json/schema"
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: post-categories-category-routes
       description: Attaches routes to a category resource.
       requestBody:
@@ -5307,7 +5443,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: post-categories-reorder
       requestBody:
         content:
@@ -5344,7 +5481,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1categories~1%7BcategoryId%7D/get/responses/200/content/application~1json/schema"
+                $ref: "#/paths/~1categories~1%7BcategoryId%7D/get/responses/200/content/applica\
+                  tion~1json/schema"
       tags:
         - Categories
       requestBody:
@@ -5389,13 +5527,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1categories~1%7BcategoryId%7D/get/responses/200/content/application~1json/schema"
+                $ref: "#/paths/~1categories~1%7BcategoryId%7D/get/responses/200/content/applica\
+                  tion~1json/schema"
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: post-categories-categoryId-channels
       requestBody:
         content:
@@ -5437,13 +5577,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1categories~1%7BcategoryId%7D/get/responses/200/content/application~1json/schema"
+                $ref: "#/paths/~1categories~1%7BcategoryId%7D/get/responses/200/content/applica\
+                  tion~1json/schema"
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: post-categories-categoryId-drafts
       description: Create or return the current category draft resource.
       parameters:
@@ -5468,7 +5610,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1categories~1%7BcategoryId%7D/get/responses/200/content/application~1json/schema"
+                $ref: "#/paths/~1categories~1%7BcategoryId%7D/get/responses/200/content/applica\
+                  tion~1json/schema"
         "404":
           description: Not Found
           content:
@@ -5477,7 +5620,8 @@ paths:
                 type: object
                 properties:
                   "":
-                    $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                    $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                      n~1json/schema"
       operationId: post-categories-categoryId-customer-groups
       requestBody:
         content:
@@ -5566,7 +5710,8 @@ paths:
                             properties:
                               meta:
                                 type: object
-                                $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/allOf/1/properties/meta"
+                                $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/al\
+                                  lOf/1/properties/meta"
                       tags:
                         $ref: "#/paths/~1tags/get/responses/200/content/application~1json/schema"
       requestBody:
@@ -5743,13 +5888,15 @@ paths:
                   - type: object
                     properties:
                       meta:
-                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/allOf/1/properties/meta"
+                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/al\
+                          lOf/1/properties/meta"
         "401":
           description: Unauthorized
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1baskets~1saved/get/responses/401/content/application~1json/schema"
+                $ref: "#/paths/~1baskets~1saved/get/responses/401/content/application~1json/sch\
+                  ema"
       operationId: get-taxes
       description: Get a paginated list of taxes
       tags:
@@ -5768,7 +5915,8 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/paths/~1taxes/get/responses/200/content/application~1json/schema/allOf/0/properties/data/items"
+                    $ref: "#/paths/~1taxes/get/responses/200/content/application~1json/schema/allOf\
+                      /0/properties/data/items"
         "422":
           description: Unprocessable Entity
           content:
@@ -5823,7 +5971,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: get-taxes-taxId
       description: Get a tax record by it's ID
     put:
@@ -5842,7 +5991,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
         "422":
           description: Unprocessable Entity
           content:
@@ -5886,13 +6036,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1baskets~1saved/get/responses/401/content/application~1json/schema"
+                $ref: "#/paths/~1baskets~1saved/get/responses/401/content/application~1json/sch\
+                  ema"
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: delete-taxes-taxId
       description: Delete a tax record by it's ID.
   /associations/groups:
@@ -5925,7 +6077,8 @@ paths:
                   - type: object
                     properties:
                       meta:
-                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/allOf/1/properties/meta"
+                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/al\
+                          lOf/1/properties/meta"
               examples:
                 full-response:
                   value:
@@ -5992,23 +6145,27 @@ paths:
                       routes:
                         $ref: "#/paths/~1routes/get/responses/200/content/application~1json/schema"
                       layout:
-                        $ref: "#/paths/~1categories/get/responses/200/content/application~1json/schema/allOf/0/properties/data/items/properties/layout"
+                        $ref: "#/paths/~1categories/get/responses/200/content/application~1json/schema/\
+                          allOf/0/properties/data/items/properties/layout"
                       channels:
                         $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema"
                       assets:
-                        $ref: "#/paths/~1categories/get/responses/200/content/application~1json/schema/allOf/0/properties/data/items/properties/assets"
+                        $ref: "#/paths/~1categories/get/responses/200/content/application~1json/schema/\
+                          allOf/0/properties/data/items/properties/assets"
                       attributes:
                         $ref: "#/paths/~1attributes/get/responses/200/content/application~1json/schema"
                       products:
                         $ref: "#/paths/~1products/get/responses/200/content/application~1json/schema"
                       customer_groups:
-                        $ref: "#/paths/~1customer-groups/get/responses/200/content/application~1json/schema"
+                        $ref: "#/paths/~1customer-groups/get/responses/200/content/application~1json/sc\
+                          hema"
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: post-collections-collection-routes
       description: This request will allow you to attach routes to a collection
       requestBody:
@@ -6042,7 +6199,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1collections~1%7BcollectionId%7D~1routes/post/responses/200/content/application~1json/schema"
+                $ref: "#/paths/~1collections~1%7BcollectionId%7D~1routes/post/responses/200/con\
+                  tent/application~1json/schema"
       operationId: post-collections-collectionId-products
       requestBody:
         content:
@@ -6081,11 +6239,13 @@ paths:
                       data:
                         type: array
                         items:
-                          $ref: "#/paths/~1collections~1%7BcollectionId%7D~1routes/post/responses/200/content/application~1json/schema/properties/data"
+                          $ref: "#/paths/~1collections~1%7BcollectionId%7D~1routes/post/responses/200/con\
+                            tent/application~1json/schema/properties/data"
                   - type: object
                     properties:
                       meta:
-                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/allOf/1/properties/meta"
+                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/al\
+                          lOf/1/properties/meta"
       operationId: get-collections
       parameters:
         - schema:
@@ -6129,7 +6289,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1collections~1%7BcollectionId%7D~1routes/post/responses/200/content/application~1json/schema"
+                $ref: "#/paths/~1collections~1%7BcollectionId%7D~1routes/post/responses/200/con\
+                  tent/application~1json/schema"
       tags:
         - Collections
       description: Create a new collection.
@@ -6170,13 +6331,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1collections~1%7BcollectionId%7D~1routes/post/responses/200/content/application~1json/schema"
+                $ref: "#/paths/~1collections~1%7BcollectionId%7D~1routes/post/responses/200/con\
+                  tent/application~1json/schema"
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: get-collections-collectionId
       description: Get a single Collection by its ID
       parameters:
@@ -6194,7 +6357,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1collections~1%7BcollectionId%7D~1routes/post/responses/200/content/application~1json/schema"
+                $ref: "#/paths/~1collections~1%7BcollectionId%7D~1routes/post/responses/200/con\
+                  tent/application~1json/schema"
         "404":
           description: Not Found
       operationId: put-collections-collectionId
@@ -6287,7 +6451,8 @@ paths:
                   - type: object
                     properties:
                       meta:
-                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/allOf/1/properties/meta"
+                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/al\
+                          lOf/1/properties/meta"
       operationId: get-discounts
       description: Returns a paginated list of Discounts
       tags:
@@ -6306,7 +6471,8 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/paths/~1discounts/get/responses/200/content/application~1json/schema/allOf/0/properties/data/items"
+                    $ref: "#/paths/~1discounts/get/responses/200/content/application~1json/schema/a\
+                      llOf/0/properties/data/items"
       operationId: post-discounts
       description: Create a new Discount.
       requestBody:
@@ -6479,7 +6645,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: delete-discounts-discountId
       description: Deletes a Discount
   /layouts:
@@ -6526,7 +6693,8 @@ paths:
                   - type: object
                     properties:
                       meta:
-                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/allOf/1/properties/meta"
+                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/al\
+                          lOf/1/properties/meta"
       operationId: get-layouts
       description: Get a paginated list of Layouts
   /users:
@@ -6549,7 +6717,8 @@ paths:
                   - type: object
                     properties:
                       meta:
-                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/allOf/1/properties/meta"
+                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/al\
+                          lOf/1/properties/meta"
                 description: ""
         "401":
           description: Unauthorized
@@ -6605,7 +6774,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
         "422":
           description: Unprocessable Entity
           content:
@@ -6633,6 +6803,12 @@ paths:
                 customer_id:
                   type: string
                   nullable: false
+              required:
+                - email
+                - firstname
+                - lastname
+                - password
+                - password_confirmation
             examples: {}
         description: ""
       tags:
@@ -6666,7 +6842,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: get-users-userId
       description: Get a user by their given ID.
     put:
@@ -6678,7 +6855,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1users~1%7BuserId%7D/get/responses/200/content/application~1json/schema"
+                $ref: "#/paths/~1users~1%7BuserId%7D/get/responses/200/content/application~1jso\
+                  n/schema"
         "401":
           description: Unauthorized
           content:
@@ -6690,7 +6868,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
         "422":
           description: Unprocessable Entity
           content:
@@ -6731,7 +6910,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       tags:
         - Users
       description: Delete a user by their given ID.
@@ -6777,7 +6957,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1users~1%7BuserId%7D/get/responses/200/content/application~1json/schema"
+                $ref: "#/paths/~1users~1%7BuserId%7D/get/responses/200/content/application~1jso\
+                  n/schema"
       operationId: get-users-current
       description: Returns the user associated to the access token.
   "/payments/{transactionId}/refund":
@@ -6864,7 +7045,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
               examples:
                 refund-issued-error:
                   value:
@@ -6879,7 +7061,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: post-payments-id-refund
       requestBody:
         content:
@@ -6912,19 +7095,22 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1payments~1%7BtransactionId%7D~1refund/post/responses/200/content/application~1json/schema"
+                $ref: "#/paths/~1payments~1%7BtransactionId%7D~1refund/post/responses/200/conte\
+                  nt/application~1json/schema"
         "400":
           description: Bad Request
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: post-payments-transactionId-void
       description: Voids a payment in the system.
   /payments/3d-secure:
@@ -6944,13 +7130,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: post-payments-3d-secure
       description: Validate a ThreeD secure request and process the transaaction, if
         your payment provider supports it.
@@ -7040,7 +7228,8 @@ paths:
                   - type: object
                     properties:
                       meta:
-                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/allOf/1/properties/meta"
+                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/al\
+                          lOf/1/properties/meta"
       operationId: get-payments-types
       description: Returns a list of available Payment Types in the system
   /reports/sales:
@@ -7647,7 +7836,8 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/paths/~1saved-searches~1product/get/responses/200/content/application~1json/schema/allOf/0/properties/data/items"
+                    $ref: "#/paths/~1saved-searches~1product/get/responses/200/content/application~\
+                      1json/schema/allOf/0/properties/data/items"
     delete:
       summary: Delete saved search
       operationId: delete-saved-searches-savedSearchId
@@ -7659,7 +7849,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       description: Delete a saved search entry by ID.
       tags:
         - Search
@@ -7723,13 +7914,15 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/paths/~1settings/get/responses/200/content/application~1json/schema/properties/data/items"
+                    $ref: "#/paths/~1settings/get/responses/200/content/application~1json/schema/pr\
+                      operties/data/items"
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: get-settings-handle
       description: Get specific settings.
   /shipping:
@@ -7750,11 +7943,13 @@ paths:
                       data:
                         type: array
                         items:
-                          $ref: "#/paths/~1shipping/post/responses/200/content/application~1json/schema/properties/data"
+                          $ref: "#/paths/~1shipping/post/responses/200/content/application~1json/schema/p\
+                            roperties/data"
                   - type: object
                     properties:
                       meta:
-                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/allOf/1/properties/meta"
+                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/al\
+                          lOf/1/properties/meta"
       operationId: get-shipping
       description: Returns a paginated list of shipping methods
       parameters:
@@ -7871,13 +8066,15 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/paths/~1shipping/post/responses/200/content/application~1json/schema/properties/data"
+                    $ref: "#/paths/~1shipping/post/responses/200/content/application~1json/schema/p\
+                      roperties/data"
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: get-shipping-shippingMethodId
       description: Returns a shipping method by it's ID.
       parameters:
@@ -7895,13 +8092,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1shipping~1%7BshippingMethodId%7D/get/responses/200/content/application~1json/schema"
+                $ref: "#/paths/~1shipping~1%7BshippingMethodId%7D/get/responses/200/content/app\
+                  lication~1json/schema"
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
         "422":
           description: Unprocessable Entity
           content:
@@ -7978,7 +8177,8 @@ paths:
                   - type: object
                     properties:
                       meta:
-                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/allOf/1/properties/meta"
+                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/al\
+                          lOf/1/properties/meta"
       operationId: get-shipping-zones
       description: Returns a paginated list of shipping zones.
       parameters:
@@ -8000,7 +8200,8 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/paths/~1shipping~1zones/get/responses/200/content/application~1json/schema/allOf/0/properties/data/items"
+                    $ref: "#/paths/~1shipping~1zones/get/responses/200/content/application~1json/sc\
+                      hema/allOf/0/properties/data/items"
         "404":
           description: Not Found
       operationId: post-shipping-zones
@@ -8032,13 +8233,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1shipping~1zones/post/responses/200/content/application~1json/schema"
+                $ref: "#/paths/~1shipping~1zones/post/responses/200/content/application~1json/s\
+                  chema"
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: get-shipping-zones-shippingZoneId
       description: Get a shipping zone by it's ID.
   "/shipping/{shippingMethodId}/prices":
@@ -8062,7 +8265,8 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/paths/~1orders~1%7BorderId%7D~1shipping~1methods/get/responses/200/content/application~1json/schema/properties/data/items"
+                    $ref: "#/paths/~1orders~1%7BorderId%7D~1shipping~1methods/get/responses/200/con\
+                      tent/application~1json/schema/properties/data/items"
         "422":
           description: Unprocessable Entity
           content:
@@ -8127,13 +8331,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1shipping~1%7BshippingMethodId%7D~1prices/post/responses/200/content/application~1json/schema"
+                $ref: "#/paths/~1shipping~1%7BshippingMethodId%7D~1prices/post/responses/200/co\
+                  ntent/application~1json/schema"
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
         "422":
           description: Unprocessable Entity
           content:
@@ -8188,7 +8394,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1shipping~1%7BshippingMethodId%7D/get/responses/200/content/application~1json/schema"
+                $ref: "#/paths/~1shipping~1%7BshippingMethodId%7D/get/responses/200/content/app\
+                  lication~1json/schema"
       operationId: put-shipping-shippingMethodId-zones
       description: Update a shipping method's zones.
       requestBody:
@@ -8226,13 +8433,15 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1shipping~1%7BshippingMethodId%7D/get/responses/200/content/application~1json/schema"
+                $ref: "#/paths/~1shipping~1%7BshippingMethodId%7D/get/responses/200/content/app\
+                  lication~1json/schema"
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
         "422":
           description: Unprocessable Entity
           content:
@@ -8284,7 +8493,8 @@ paths:
                   - type: object
                     properties:
                       meta:
-                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/allOf/1/properties/meta"
+                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/al\
+                          lOf/1/properties/meta"
       operationId: get-tags
       description: Get paginated list of tags
     post:
@@ -8300,7 +8510,8 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/paths/~1tags/get/responses/200/content/application~1json/schema/allOf/0/properties/data/items"
+                    $ref: "#/paths/~1tags/get/responses/200/content/application~1json/schema/allOf/\
+                      0/properties/data/items"
       requestBody:
         content:
           application/json:
@@ -8337,7 +8548,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: get-tags-tagId
       description: Gets a tag by it's ID
     put:
@@ -8356,7 +8568,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
         "422":
           description: Unprocessable Entity
           content:
@@ -8393,7 +8606,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: delete-tags-tagId
       description: Deletes a tag by it's ID
   /search:
@@ -8417,11 +8631,14 @@ paths:
                     items:
                       title: Search
                       oneOf:
-                        - $ref: "#/paths/~1products/get/responses/200/content/application~1json/schema/allOf/0/properties/data/items"
-                        - $ref: "#/paths/~1categories/get/responses/200/content/application~1json/schema/allOf/0/properties/data/items"
+                        - $ref: "#/paths/~1products/get/responses/200/content/application~1json/schema/al\
+                            lOf/0/properties/data/items"
+                        - $ref: "#/paths/~1categories/get/responses/200/content/application~1json/schema/\
+                            allOf/0/properties/data/items"
                   meta:
                     allOf:
-                      - $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/allOf/1/properties/meta"
+                      - $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/al\
+                          lOf/1/properties/meta"
                       - type: object
                         properties:
                           aggregation:
@@ -8445,9 +8662,12 @@ paths:
                               applied:
                                 type: array
                                 items:
-                                  $ref: "#/paths/~1search/get/responses/200/content/application~1json/schema/properties/meta/allOf/1/properties/aggregation/properties/available/items"
+                                  $ref: "#/paths/~1search/get/responses/200/content/application~1json/schema/prop\
+                                    erties/meta/allOf/1/properties/aggregation/\
+                                    properties/available/items"
                   links:
-                    $ref: "#/paths/~1recycle-bin~1%7BitemId%7D/delete/responses/404/content/application~1json/schema"
+                    $ref: "#/paths/~1recycle-bin~1%7BitemId%7D/delete/responses/404/content/applica\
+                      tion~1json/schema"
                 description: ""
       operationId: get-search
       description: >-
@@ -8514,7 +8734,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1categories~1reorder/post/responses/200/content/application~1json/schema"
+                $ref: "#/paths/~1categories~1reorder/post/responses/200/content/application~1js\
+                  on/schema"
               examples:
                 password-changed-example:
                   value:
@@ -8574,7 +8795,8 @@ paths:
                   - type: object
                     properties:
                       meta:
-                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/allOf/1/properties/meta"
+                        $ref: "#/paths/~1channels/get/responses/200/content/application~1json/schema/al\
+                          lOf/1/properties/meta"
       operationId: get-recycle-bin
       description: Returns a paginated list of all recycle bin items.
   "/recycle-bin/{itemId}":
@@ -8598,13 +8820,15 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: "#/paths/~1recycle-bin/get/responses/200/content/application~1json/schema/allOf/0/properties/data/items"
+                    $ref: "#/paths/~1recycle-bin/get/responses/200/content/application~1json/schema\
+                      /allOf/0/properties/data/items"
         "404":
           description: Not Found
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: get-recycle-bin-itemId
       description: Retrieves a recycle bin item.
     delete:
@@ -8668,7 +8892,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/application~1json/schema"
+                $ref: "#/paths/~1channels~1%7BchannelId%7D/get/responses/404/content/applicatio\
+                  n~1json/schema"
       operationId: post-versions-modelId-restore
       description: Restores a model version
   /:
