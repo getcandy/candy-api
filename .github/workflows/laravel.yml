@@ -23,9 +23,10 @@ jobs:
     - uses: actions/setup-node@v2-beta
       with:
         node-version: '12'
-    - name: Build OpenAPI Spec
-      - run: npm install -g speccy
-      - run: speccy resolve openapi/openapi.yaml -o openapi/openapi-full.yaml
+    - name: 'Install Speccy'
+      run: npm install -g speccy
+    - name: 'Build OpenAPI Spec'
+      run: speccy resolve openapi/openapi.yaml -o openapi/openapi-full.yaml
     - name: Install Dependencies
       run: composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
     - name: Execute tests (Unit and Feature tests) via PHPUnit
