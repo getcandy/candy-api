@@ -1,7 +1,7 @@
 <?php
 
 namespace GetCandy\Api\Core\Search\Drivers\Elasticsearch\Filters;
-          
+
 use Elastica\Query\BoolQuery;
 use Elastica\Query\Match;
 use Elastica\Query\Range;

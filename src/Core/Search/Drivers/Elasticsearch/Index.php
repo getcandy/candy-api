@@ -18,5 +18,4 @@ class Index
         $this->actual = $index;
         $this->language = $language;
     }
-
 }

@@ -39,6 +39,7 @@ class FetchLanguagesAction extends Action
         if ($this->limit) {
             return Language::paginate($this->limit);
         }
+
         return Language::all();
     }
 }

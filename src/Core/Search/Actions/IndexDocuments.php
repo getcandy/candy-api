@@ -16,6 +16,7 @@ class IndexDocuments extends Action
         if (app()->runningInConsole()) {
             return true;
         }
+
         return $this->user()->can('index-products');
     }
 

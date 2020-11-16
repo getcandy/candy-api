@@ -3,8 +3,8 @@
 use GetCandy\Api\Core\Addresses\Models\Address;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Schema;
 
 class AddAddressableToAddressTable extends Migration
 {

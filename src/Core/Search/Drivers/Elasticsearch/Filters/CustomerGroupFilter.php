@@ -2,10 +2,9 @@
 
 namespace GetCandy\Api\Core\Search\Drivers\Elasticsearch\Filters;
 
-use GetCandy;
-use Elastica\Query\Term;
-use Elastica\Query\Nested;
 use Elastica\Query\BoolQuery;
+use Elastica\Query\Nested;
+use Elastica\Query\Term;
 use GetCandy\Api\Core\Customers\Actions\FetchDefaultCustomerGroup;
 
 class CustomerGroupFilter extends AbstractFilter
@@ -24,6 +23,7 @@ class CustomerGroupFilter extends AbstractFilter
     public function process($payload, $type = null)
     {
         $this->user = $payload;
+
         return $this;
     }
 

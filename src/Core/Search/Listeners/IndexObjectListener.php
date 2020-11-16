@@ -16,7 +16,7 @@ class IndexObjectListener
     public function handle(IndexableSavedEvent $event)
     {
         IndexObjects::run([
-            'documents' => $event->indexable()
+            'documents' => $event->indexable(),
         ]);
     }
 }

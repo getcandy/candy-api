@@ -4,14 +4,14 @@ namespace GetCandy\Api\Core\Search\Drivers\Elasticsearch\Actions\Searching;
 
 use Elastica\Query;
 use Elastica\Query\BoolQuery;
-use Lorisleiva\Actions\Action;
 use Elastica\Search as ElasticaSearch;
-use GetCandy\Api\Core\Products\Models\Product;
-use Illuminate\Pagination\LengthAwarePaginator;
 use GetCandy\Api\Core\Categories\Models\Category;
+use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Search\Actions\FetchSearchedIds;
-use GetCandy\Api\Http\Resources\Products\ProductCollection;
 use GetCandy\Api\Http\Resources\Categories\CategoryCollection;
+use GetCandy\Api\Http\Resources\Products\ProductCollection;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Lorisleiva\Actions\Action;
 
 class Search extends Action
 {
@@ -56,7 +56,6 @@ class Search extends Action
 
     /**
      * Execute the action and return a result.
-     *
      */
     public function handle()
     {
@@ -104,11 +103,11 @@ class Search extends Action
             return in_array($filter->handle, $this->topFilters);
         });
 
-         $preFilters->each(function ($filter) use ($boolQuery) {
-             $boolQuery->addFilter(
+        $preFilters->each(function ($filter) use ($boolQuery) {
+            $boolQuery->addFilter(
                  $filter->getQuery()
              );
-         });
+        });
 
         $postFilters = $filters->filter(function ($filter) {
             return ! in_array($filter->handle, $this->topFilters);
@@ -130,16 +129,16 @@ class Search extends Action
         $query->setPostFilter($postFilter);
 
         // // $globalAggregation = new \Elastica\Aggregation\GlobalAggregation('all_products');
-         foreach ($aggregations as $aggregation) {
-             if (method_exists($aggregation, 'get')) {
-                 $query->addAggregation(
+        foreach ($aggregations as $aggregation) {
+            if (method_exists($aggregation, 'get')) {
+                $query->addAggregation(
                      $aggregation->addFilters($postFilters)->get($postFilters)
                  );
-                 // $globalAggregation->addAggregation(
+                // $globalAggregation->addAggregation(
                      // $agg->addFilters($postFilters)->get($postFilters)
                  // );
-             }
-         }
+            }
+        }
 
         $query->setQuery($boolQuery);
 
@@ -189,7 +188,6 @@ class Search extends Action
             }
         }
 
-
         $models = FetchSearchedIds::run([
             'model' => $this->search_type == 'products' ? Product::class : Category::class,
             'encoded_ids' => $ids->toArray(),
@@ -208,6 +206,7 @@ class Search extends Action
             $result->getQuery()->getParam('size'),
             $this->page ?: 1
         );
+
         return (new $resource($paginator))->additional([
             'meta' => [
                 'aggregations' => $result->getAggregations(),
