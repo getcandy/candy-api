@@ -4,8 +4,12 @@ namespace GetCandy\Api\Core\Collections\Services;
 
 use GetCandy;
 use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
+use GetCandy\Api\Core\Categories\Models\Category;
 use GetCandy\Api\Core\Collections\Models\Collection;
 use GetCandy\Api\Core\Scaffold\BaseService;
+use GetCandy\Api\Core\Products\Models\Product;
+use GetCandy\Api\Core\Search\Actions\FetchSearchedIds;
+use GetCandy\Api\Core\Search\Actions\Search;
 
 class CollectionService extends BaseService
 {
@@ -102,8 +106,28 @@ class CollectionService extends BaseService
     public function getPaginatedData($searchTerm = null, $length = 50, $page = null)
     {
         if ($searchTerm) {
-            $ids = app(SearchContract::class)->against(get_class($this->model))->with($searchTerm);
-            $results = $this->model->whereIn('id', $ids);
+            $type = get_class($this->model) == Product::class ? 'products' : 'categories';
+            // set type
+            $search = Search::run([
+                'params' =>[
+                    'type' => $type,
+                    'term' => 'test',
+                ]
+            ]);
+
+            $ids = collect();
+            $results = collect($search->getResults());
+
+            if ($results->count()) {
+                foreach ($results as $r) {
+                    $ids->push($r->getId());
+                }
+            }
+
+            $results = FetchSearchedIds::run([
+                'model' => $type == 'products' ? Product::class : Category::class,
+                'encoded_ids' => $ids->toArray(),
+            ]);
         } else {
             $results = $this->model;
         }

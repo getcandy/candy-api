@@ -20,7 +20,7 @@ put:
       content:
         application/json:
           schema:
-            $ref: '../../global/responses/Error.yaml'
+            $ref: '../../global/responses/ApiError.yaml'
   operationId: put-products-variants-productVariantId-inventory
   description: Request to update a product variants inventory.
   requestBody:

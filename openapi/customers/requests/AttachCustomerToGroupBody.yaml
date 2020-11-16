@@ -5,5 +5,3 @@ properties:
     type: array
     items:
       type: string
-  customer_id:
-    type: string

@@ -65,7 +65,7 @@ put:
       content:
         application/json:
           schema:
-            $ref: '../../global/responses/Error.yaml'
+            $ref: '../../global/responses/ApiError.yaml'
   operationId: put-products-productId
   requestBody:
     content:
@@ -86,7 +86,7 @@ delete:
       content:
         application/json:
           schema:
-            $ref: '../../global/responses/Error.yaml'
+            $ref: '../../global/responses/ApiError.yaml'
   operationId: delete-products-productId
   description: |-
     Deletes a product by it's ID

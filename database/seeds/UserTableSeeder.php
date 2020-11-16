@@ -107,7 +107,8 @@ class UserTableSeeder extends Seeder
     private function addressData(User $customer, array $customerData)
     {
         return [
-            'user_id' => $customer->id,
+            'addressable_type' => get_class($customer),
+            'addressable_id' => $customer->id,
             'firstname' => $customerData['firstname'],
             'lastname' => $customerData['lastname'],
             'address' => '24 Nice Place',

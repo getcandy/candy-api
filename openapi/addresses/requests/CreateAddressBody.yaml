@@ -1,5 +1,6 @@
 title: CreateAddressBody
 type: object
+description: ""
 properties:
   salutation:
     type: string
@@ -30,6 +31,8 @@ properties:
   shipping:
     type: boolean
   user_id:
+    type: string
+  customer_id:
     type: string
   billing:
     type: boolean

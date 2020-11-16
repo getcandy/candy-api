@@ -3,10 +3,13 @@
 namespace GetCandy\Api\Core\Customers\Actions;
 
 use GetCandy;
+use Illuminate\Support\Arr;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Customers\Models\Customer;
 use GetCandy\Api\Core\Customers\Resources\CustomerResource;
-use GetCandy\Api\Core\Scaffold\AbstractAction;
-use Illuminate\Support\Arr;
+use GetCandy\Api\Core\Customers\Actions\AttachUserToCustomer;
+use GetCandy\Api\Core\Customers\Actions\AttachCustomerToGroups;
+use GetCandy\Api\Core\Customers\Actions\FetchDefaultCustomerGroup;
 
 class CreateCustomer extends AbstractAction
 {
@@ -36,7 +39,7 @@ class CreateCustomer extends AbstractAction
             'alt_contact_number' => 'nullable|string',
             'vat_no' => 'nullable|string',
             'company_name' => 'nullable|string',
-            'fields' => 'nullable|array',
+            'fields' => 'nullable',
             'customer_group_ids' => 'nullable|array',
         ];
     }
@@ -58,12 +61,11 @@ class CreateCustomer extends AbstractAction
             ]);
         }
 
-        if ($this->customer_group_ids) {
-            AttachCustomerToGroups::run([
-                'customer_id' => $customer->encoded_id,
-                'customer_group_ids' => $this->customer_group_ids,
-            ]);
-        }
+
+        AttachCustomerToGroups::run([
+            'customer_id' => $customer->encoded_id,
+            'customer_group_ids' => $this->customer_group_ids ?: [FetchDefaultCustomerGroup::run()->encoded_id],
+        ]);
 
         return $customer->load($this->resolveEagerRelations());
     }

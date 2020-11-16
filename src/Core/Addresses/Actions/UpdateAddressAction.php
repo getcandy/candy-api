@@ -2,10 +2,12 @@
 
 namespace GetCandy\Api\Core\Addresses\Actions;
 
+use GetCandy;
 use DateTime;
 use GetCandy\Api\Core\Addresses\Models\Address;
 use GetCandy\Api\Core\Addresses\Resources\AddressResource;
 use GetCandy\Api\Core\Countries\Actions\FetchCountry;
+use GetCandy\Api\Core\Customers\Models\Customer;
 use Illuminate\Support\Arr;
 use Lorisleiva\Actions\Action;
 
@@ -39,6 +41,8 @@ class UpdateAddressAction extends Action
      */
     public function rules()
     {
+        $userModel = GetCandy::getUserModel();
+
         return [
             'salutation' => 'string',
             'firstname' => 'string',
@@ -53,7 +57,6 @@ class UpdateAddressAction extends Action
             'state' => 'string',
             'postal_code' => 'string',
             'country_id' => 'hashid_is_valid:countries',
-            'user_id' => 'hashid_is_valid:users',
             'shipping' => 'boolean',
             'billing' => 'boolean',
             'default' => 'boolean',
@@ -70,7 +73,7 @@ class UpdateAddressAction extends Action
      */
     public function handle()
     {
-        $attributes = Arr::except($this->validated(), ['user_id', 'country_id']);
+        $attributes = Arr::except($this->validated(), ['user_id', 'customer_id', 'country_id']);
 
         if ($this->country_id) {
             $country = FetchCountry::run([

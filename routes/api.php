@@ -123,9 +123,10 @@
         'prefix' => 'customers',
     ], function ($group) {
         $group->get('/', '\GetCandy\Api\Core\Customers\Actions\FetchCustomers');
+        $group->get('fields', '\GetCandy\Api\Core\Customers\Actions\FetchCustomerFields');
         $group->post('{encoded_id}/users', '\GetCandy\Api\Core\Customers\Actions\AttachUserToCustomer');
         $group->delete('{encoded_id}', '\GetCandy\Api\Core\Customers\Actions\DeleteCustomer');
-        $group->put('{encoded_id}/customer-groups', '\GetCandy\Api\Core\Customers\Actions\AttachCustomerToGroups');
+        $group->put('{customer_id}/customer-groups', '\GetCandy\Api\Core\Customers\Actions\AttachCustomerToGroups');
     });
 
     /**
@@ -307,6 +308,9 @@
     ]);
     /*
      * Users
+     */
+    /**
+     * @deprecated 0.11
      */
     $router->get('users/fields', '\GetCandy\Api\Core\Users\Actions\FetchUserFields');
     $router->get('users/current', '\GetCandy\Api\Core\Users\Actions\FetchCurrentUser');

@@ -3,6 +3,7 @@
 namespace GetCandy\Api\Core\Products\Services;
 
 use GetCandy;
+use GetCandy\Api\Core\Search\Actions\IndexObjects;
 use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Search\Events\IndexableSavedEvent;
@@ -38,7 +39,9 @@ class ProductCategoryService extends BaseService
         $category->products()->attach($id);
 
         foreach ($this->getByHashedIds($products) as $product) {
-            app(SearchContract::class)->indexer()->indexObject($product);
+            IndexObjects::run([
+                'documents' => $product,
+            ]);
         }
 
         return $category;

@@ -17,3 +17,6 @@ required:
   - lastname
   - password
   - password_confirmation
+  customer_id:
+    type: string
+    nullable: false

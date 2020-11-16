@@ -1,0 +1,5 @@
+title: CustomerFields
+type: object
+properties:
+  fields:
+    type: object

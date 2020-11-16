@@ -72,4 +72,9 @@ class Attribute extends BaseModel
     {
         return json_decode($value, true);
     }
+
+    public function scopeFilterable($query)
+    {
+        return $query->whereFilterable(true);
+    }
 }

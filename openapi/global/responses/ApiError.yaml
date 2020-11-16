@@ -1,4 +1,4 @@
-title: Error
+title: ApiError
 type: object
 properties:
   error:

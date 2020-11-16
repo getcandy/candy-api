@@ -1,0 +1,5 @@
+title: CustomerFieldsResponse
+type: object
+properties:
+  data:
+    $ref: '../models/CustomerFields.yaml'

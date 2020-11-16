@@ -18,7 +18,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../../global/responses/Error.yaml'
+            $ref: '../../global/responses/ApiError.yaml'
   operationId: get-customers-customerId
   description: ''
   parameters:
@@ -46,7 +46,7 @@ put:
   operationId: put-customers-customerId
   requestBody:
     content:
-      multipart/form-data:
+      application/json:
         schema:
           $ref: '../requests/UpdateCustomerBody.yaml'
     description: ''

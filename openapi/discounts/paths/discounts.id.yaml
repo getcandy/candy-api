@@ -117,6 +117,6 @@ delete:
       content:
         application/json:
           schema:
-            $ref: '../../global/responses/Error.yaml'
+            $ref: '../../global/responses/ApiError.yaml'
   operationId: delete-discounts-discountId
   description: Deletes a Discount

@@ -3,10 +3,13 @@
 namespace GetCandy\Api\Core\Customers\Models;
 
 use GetCandy;
+use GetCandy\Api\Core\Traits\HasAddresses;
 use GetCandy\Api\Core\Scaffold\BaseModel;
 
 class Customer extends BaseModel
 {
+    use HasAddresses;
+
     /**
      * The attributes that aren't mass assignable.
      *
@@ -31,7 +34,7 @@ class Customer extends BaseModel
 
     public function setFieldsAttribute($val)
     {
-        $this->attributes['fields'] = json_encode($val);
+        $this->attributes['fields'] = is_string($val) ? $val : json_encode($val);
     }
 
     public function users()

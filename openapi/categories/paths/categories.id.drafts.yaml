@@ -20,7 +20,7 @@ post:
       content:
         application/json:
           schema:
-            $ref: '../../global/responses/Error.yaml'
+            $ref: '../../global/responses/ApiError.yaml'
   operationId: post-categories-categoryId-drafts
   description: Create or return the current category draft resource.
   parameters:

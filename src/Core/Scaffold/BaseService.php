@@ -439,10 +439,13 @@ abstract class BaseService
         $model = $this->getByHashedId($hashedId, true);
 
         try {
-            return SearchForRoute::run(['slug' => $data['slug']]);
+            $existing = SearchForRoute::run(['slug' => $data['slug']]);
+
+            if ($existing) {
+                return $existing;
+            }
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
         }
-
         $route = $model->routes()->create([
             'locale' => $data['locale'],
             'slug' => $data['slug'],

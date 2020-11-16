@@ -20,7 +20,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../../global/responses/Error.yaml'
+            $ref: '../../global/responses/ApiError.yaml'
   operationId: get-product-families-productFamilyId
   description: Returns a single product family based on ID.
   parameters:
@@ -44,7 +44,7 @@ put:
       content:
         application/json:
           schema:
-            $ref: '../../global/responses/Error.yaml'
+            $ref: '../../global/responses/ApiError.yaml'
   operationId: put-product-families-productFamilyId
   description: Update a product family
   requestBody:
@@ -67,6 +67,6 @@ delete:
       content:
         application/json:
           schema:
-            $ref: '../../global/responses/Error.yaml'
+            $ref: '../../global/responses/ApiError.yaml'
   operationId: delete-product-families-productFamilyId
   description: Sends a request to delete a product family
