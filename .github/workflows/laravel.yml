@@ -1,5 +1,4 @@
 name: Test Runner
-
 on:
   push:
     branches:
@@ -15,14 +14,17 @@ on:
       - release/*
 jobs:
   laravel-tests:
-
     runs-on: ubuntu-latest
-    
     steps:
     - uses: actions/checkout@v2
     - uses: nanasess/setup-php@master
       with:
         php-version: '7.3'
+    - uses: actions/setup-node@v2-beta
+        node-version: '12'
+    - name: Build OpenAPI Spec
+      - run: npm install -g speccy
+      - run: speccy resolve openapi/openapi.yaml -o openapi/openapi-full.yaml
     - name: Install Dependencies
       run: composer install -q --no-ansi --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist
     - name: Execute tests (Unit and Feature tests) via PHPUnit
