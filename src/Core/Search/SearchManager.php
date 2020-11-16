@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Core\Search;
 
-use Illuminate\Support\Manager;
 use GetCandy\Api\Core\Search\Contracts\SearchManagerContract;
 use GetCandy\Api\Core\Search\Drivers\Elasticsearch\Elasticsearch;
+use Illuminate\Support\Manager;
 
 class SearchManager extends Manager implements SearchManagerContract
 {

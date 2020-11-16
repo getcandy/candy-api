@@ -125,7 +125,7 @@ abstract class AbstractResource extends JsonResource
 
     protected function handleOnlyRequestField($attributes)
     {
-        if (!request()->filled('only')) {
+        if (! request()->filled('only')) {
             return $attributes;
         }
 
@@ -140,7 +140,7 @@ abstract class AbstractResource extends JsonResource
 
     protected function handleExceptRequestField($attributes)
     {
-        if (!request()->filled('except')) {
+        if (! request()->filled('except')) {
             return $attributes;
         }
 

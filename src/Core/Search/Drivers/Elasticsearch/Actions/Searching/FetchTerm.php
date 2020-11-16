@@ -3,8 +3,8 @@
 namespace GetCandy\Api\Core\Search\Drivers\Elasticsearch\Actions\Searching;
 
 use Elastica\Query\DisMax;
-use Elastica\Query\Wildcard;
 use Elastica\Query\MultiMatch;
+use Elastica\Query\Wildcard;
 use Lorisleiva\Actions\Action;
 
 class FetchTerm extends Action
@@ -46,7 +46,6 @@ class FetchTerm extends Action
         $disMaxQuery->setTieBreaker(1);
 
         if ($multiMatch = $ranking['multi_match'] ?? null) {
-
             $prev = null;
 
             foreach ($multiMatch['types'] ?? [] as $type => $fields) {

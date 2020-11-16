@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Search\Drivers\Elasticsearch\Actions;
 
-use Lorisleiva\Actions\Action;
 use GetCandy\Api\Core\Search\Drivers\Elasticsearch\Index;
+use Lorisleiva\Actions\Action;
 
 class FetchIndex extends Action
 {
@@ -47,7 +47,7 @@ class FetchIndex extends Action
                 "{$prefix}_{$this->type}_{$language}_{$this->uuid}"
             );
 
-            if (!$index->exists()) {
+            if (! $index->exists()) {
                 $index->create([
                     'settings' => [
                         'analysis' => [

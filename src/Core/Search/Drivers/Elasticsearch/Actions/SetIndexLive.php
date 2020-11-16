@@ -68,11 +68,11 @@ class SetIndexLive extends Action
         });
 
         foreach ($existing as $indexName) {
-            $shouldPreserve = $indexesToPreserve->first(function ($index) use ($indexName, $prefix) {
+            $shouldPreserve = $indexesToPreserve->first(function ($index) use ($indexName) {
                 return $index == $indexName;
             });
 
-            if (!$shouldPreserve) {
+            if (! $shouldPreserve) {
                 $index = $client->getIndex($indexName);
                 $index->delete();
             }

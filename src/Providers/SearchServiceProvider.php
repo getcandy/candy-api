@@ -3,11 +3,11 @@
 namespace GetCandy\Api\Providers;
 
 use GetCandy\Api\Core\Search\Commands\IndexCategoriesCommand;
-use GetCandy\Api\Core\Search\Commands\ScoreProductsCommand;
-use Illuminate\Support\ServiceProvider;
-use GetCandy\Api\Core\Search\SearchManager;
 use GetCandy\Api\Core\Search\Commands\IndexProductsCommand;
+use GetCandy\Api\Core\Search\Commands\ScoreProductsCommand;
 use GetCandy\Api\Core\Search\Contracts\SearchManagerContract;
+use GetCandy\Api\Core\Search\SearchManager;
+use Illuminate\Support\ServiceProvider;
 
 class SearchServiceProvider extends ServiceProvider
 {

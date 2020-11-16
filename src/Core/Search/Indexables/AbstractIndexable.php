@@ -45,6 +45,7 @@ abstract class AbstractIndexable
     public function setIndexName($name)
     {
         $this->indexName = $name;
+
         return $this;
     }
 
@@ -304,6 +305,7 @@ abstract class AbstractIndexable
 
             return $payload;
         })->toArray();
+
         return $attributes;
     }
 

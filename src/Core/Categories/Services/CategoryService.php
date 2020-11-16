@@ -3,7 +3,6 @@
 namespace GetCandy\Api\Core\Categories\Services;
 
 use GetCandy;
-use GetCandy\Api\Core\Search\Actions\IndexObjects;
 use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
 use GetCandy\Api\Core\Categories\Events\CategoryStoredEvent;
 use GetCandy\Api\Core\Categories\Models\Category;
@@ -12,6 +11,7 @@ use GetCandy\Api\Core\Customers\Actions\FetchCustomerGroup;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 use GetCandy\Api\Core\Routes\Models\Route;
 use GetCandy\Api\Core\Scaffold\BaseService;
+use GetCandy\Api\Core\Search\Actions\IndexObjects;
 use GetCandy\Api\Core\Search\Events\IndexableSavedEvent;
 
 class CategoryService extends BaseService

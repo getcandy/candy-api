@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Core\Traits;
 
-use GetCandy\Api\Core\Addresses\Models\Address;
 use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Core\Baskets\Models\SavedBasket;
 use GetCandy\Api\Core\Customers\Models\Customer;

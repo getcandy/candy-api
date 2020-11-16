@@ -2,20 +2,19 @@
 
 namespace GetCandy\Api\Core\Search\Drivers\Elasticsearch;
 
-use Elastica\Client;
 use GetCandy\Api\Core\Categories\Models\Category;
-use GetCandy\Api\Core\Search\Drivers\Elasticsearch\Actions\FetchClient;
-use GetCandy\Api\Core\Search\Drivers\Elasticsearch\Actions\IndexCategories;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\Request;
-use Illuminate\Contracts\Events\Dispatcher;
-use Illuminate\Contracts\Container\Container;
 use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Search\Drivers\AbstractSearchDriver;
-use GetCandy\Api\Core\Search\Drivers\Elasticsearch\Actions\SetIndexLive;
+use GetCandy\Api\Core\Search\Drivers\Elasticsearch\Actions\FetchClient;
+use GetCandy\Api\Core\Search\Drivers\Elasticsearch\Actions\IndexCategories;
 use GetCandy\Api\Core\Search\Drivers\Elasticsearch\Actions\IndexProducts;
 use GetCandy\Api\Core\Search\Drivers\Elasticsearch\Actions\Searching\Search;
+use GetCandy\Api\Core\Search\Drivers\Elasticsearch\Actions\SetIndexLive;
 use GetCandy\Api\Core\Search\Drivers\Elasticsearch\Events\IndexingCompleteEvent;
+use Illuminate\Contracts\Container\Container;
+use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Request;
 
 class Elasticsearch extends AbstractSearchDriver
 {
@@ -94,7 +93,7 @@ class Elasticsearch extends AbstractSearchDriver
             'features' => [
                 'faceting',
                 'aggregates',
-            ]
+            ],
         ];
     }
 }

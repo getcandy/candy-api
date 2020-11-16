@@ -3,11 +3,11 @@
 namespace GetCandy\Api\Core\Search\Commands;
 
 use GetCandy\Api\Core\Categories\Models\Category;
-use Ramsey\Uuid\Uuid;
-use Illuminate\Console\Command;
-use GetCandy\Api\Core\Search\SearchManager;
-use Illuminate\Contracts\Events\Dispatcher;
 use GetCandy\Api\Core\Search\Actions\IndexDocuments;
+use GetCandy\Api\Core\Search\SearchManager;
+use Illuminate\Console\Command;
+use Illuminate\Contracts\Events\Dispatcher;
+use Ramsey\Uuid\Uuid;
 
 class IndexCategoriesCommand extends Command
 {
@@ -45,7 +45,7 @@ class IndexCategoriesCommand extends Command
         $batchsize = (int) $this->argument('batchsize');
         $total = Category::withoutGlobalScopes()->count();
 
-        $this->output->text('Indexing ' . $total . ' categories in ' . ceil($total / $batchsize) . ' batches');
+        $this->output->text('Indexing '.$total.' categories in '.ceil($total / $batchsize).' batches');
 
         $batches = ceil($total / $batchsize);
         $bar = $this->output->createProgressBar($batches);
@@ -56,7 +56,7 @@ class IndexCategoriesCommand extends Command
             'attributes',
             'customerGroups',
             'channels',
-        ])->chunk($batchsize, function ($categories, $index) use ($manager, $uuid, $batches, $bar, $events) {
+        ])->chunk($batchsize, function ($categories, $index) use ($manager, $uuid, $batches, $bar) {
             IndexDocuments::run([
                 'driver' => $manager->with(
                     config('getcandy.search.driver')
