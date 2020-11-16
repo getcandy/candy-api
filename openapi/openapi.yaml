@@ -13,46 +13,34 @@ info:
 servers:
   - url: 'http://localhost:8000/api/v1'
 paths:
+  '/':
+    $ref: './root/paths/root.yaml'
+  '/account/password':
+    $ref: './account/paths/account.password.yaml'
   '/addresses':
     $ref: './addresses/paths/addresses.yaml'
   '/addresses/{addressId}':
     $ref: './addresses/paths/addresses.id.yaml'
-  '/channels':
-    $ref: './channels/paths/channels.yaml'
-  '/channels/{channelId}':
-    $ref: './channels/paths/channels.id.yaml'
-  '/customers':
-    $ref: './customers/paths/customers.yaml'
-  '/customers/fields':
-    $ref: './customers/paths/customers.fields.yaml'
-  '/customers/{customerId}/users':
-    $ref: './customers/paths/customers.id.users.yaml'
-  '/customers/{customerId}/customer-groups':
-    $ref: './customers/paths/customers.id.customer-groups.yaml'
-  '/customers/{customerId}':
-    $ref: './customers/paths/customers.id.yaml'
-  '/countries':
-    $ref: './countries/paths/countries.yaml'
-  '/countries/{countryId}':
-    $ref: './countries/paths/countries.id.yaml'
-  '/customer-groups':
-    $ref: './customer-groups/paths/customer-groups.yaml'
-  '/customer-groups/{customerGroupId}':
-    $ref: './customer-groups/paths/customer-groups.id.yaml'
-  '/languages':
-    $ref: './languages/paths/languages.yaml'
-  '/languages/{languageId}':
-    $ref: './languages/paths/languages.id.yaml'
-  '/routes':
-    $ref: './routes/paths/routes.yaml'
-  '/routes/{routeId}':
-    $ref: './routes/paths/routes.id.yaml'
-  '/routes/search':
-    $ref: './routes/paths/routes.search.yaml'
-  '/product-families':
-    $ref: './product-families/paths/product-families.yaml'
-  '/product-families/{productFamilyId}':
-    $ref: './product-families/paths/product-families.id.yaml'
+  '/assets':
+    $ref: './assets/paths/assets.yaml'
+  '/assets/simple':
+    $ref: './assets/paths/assets.simple.yaml'
+  '/assets/{assetId}/detach/{ownerId}':
+    $ref: './assets/paths/assets.id.detach.id.yaml'
+  '/associations/groups':
+    $ref: './associations/paths/associations.groups.yaml'
+  '/attributes':
+    $ref: './attributes/paths/attributes.yaml'
+  '/attributes/order':
+    $ref: './attributes/paths/attributes.order.yaml'
+  '/attributes/{attributeId}':
+    $ref: './attributes/paths/attributes.id.yaml'
+  '/attribute-groups':
+    $ref: './attribute-groups/paths/attribute-groups.yaml'
+  '/attribute-groups/reorder':
+    $ref: './attribute-groups/paths/attribute-groups.reorder.yaml'
+  '/attribute-groups/{attributeGroupId}':
+    $ref: './attribute-groups/paths/attribute-groups.id.yaml'
   '/baskets':
     $ref: './baskets/paths/baskets.yaml'
   '/baskets/{basketId}/meta':
@@ -81,7 +69,66 @@ paths:
     $ref: './basket-lines/paths/basket-lines.id.add.yaml'
   '/basket-lines/{basketLineId}/remove':
     $ref: './basket-lines/paths/basket-lines.id.remove.yaml'
-# ### BELOW: Paths that have had OpenAPI spec moved but not moved to actions
+  '/categories':
+    $ref: './categories/paths/categories.yaml'
+  '/categories/{categoryId}':
+    $ref: './categories/paths/categories.id.yaml'
+  '/categories/{categoryId}/layouts':
+    $ref: './categories/paths/categories.id.layouts.yaml'
+  '/categories/{categoryId}/routes':
+    $ref: './categories/paths/categories.id.routes.yaml'
+  '/categories/parent/{parentId}':
+    $ref: './categories/paths/categories.parent.id.yaml'
+  '/categories/reorder':
+    $ref: './categories/paths/categories.reorder.yaml'
+  '/categories/{categoryId}/products':
+    $ref: './categories/paths/categories.id.products.yaml'
+  '/categories/{categoryId}/channels':
+    $ref: './categories/paths/categories.id.channels.yaml'
+  '/categories/{categoryId}/drafts':
+    $ref: './categories/paths/categories.id.drafts.yaml'
+  '/categories/{categoryId}/customer-groups':
+    $ref: './categories/paths/categories.id.customer-groups.yaml'
+  '/channels':
+    $ref: './channels/paths/channels.yaml'
+  '/channels/{channelId}':
+    $ref: './channels/paths/channels.id.yaml'
+  '/collections/{collectionId}/routes':
+    $ref: './collections/paths/collections.id.routes.yaml'
+  '/collections/{collectionId}/products':
+    $ref: './collections/paths/collections.id.products.yaml'
+  '/collections':
+    $ref: './collections/paths/collections.yaml'
+  '/collections/{collectionId}':
+    $ref: './collections/paths/collections.id.yaml'
+  '/countries':
+    $ref: './countries/paths/countries.yaml'
+  '/countries/{countryId}':
+    $ref: './countries/paths/countries.id.yaml'
+  '/customer-groups':
+    $ref: './customer-groups/paths/customer-groups.yaml'
+  '/customer-groups/{customerGroupId}':
+    $ref: './customer-groups/paths/customer-groups.id.yaml'
+  '/customers':
+    $ref: './customers/paths/customers.yaml'
+  '/customers/fields':
+    $ref: './customers/paths/customers.fields.yaml'
+  '/customers/{customerId}/users':
+    $ref: './customers/paths/customers.id.users.yaml'
+  '/customers/{customerId}/customer-groups':
+    $ref: './customers/paths/customers.id.customer-groups.yaml'
+  '/customers/{customerId}':
+    $ref: './customers/paths/customers.id.yaml'
+  '/discounts':
+    $ref: './discounts/paths/discounts.yaml'
+  '/discounts/{discountId}':
+    $ref: './discounts/paths/discounts.id.yaml'
+  '/languages':
+    $ref: './languages/paths/languages.yaml'
+  '/languages/{languageId}':
+    $ref: './languages/paths/languages.id.yaml'
+  '/layouts':
+    $ref: './layouts/paths/layouts.yaml'
   '/orders':
     $ref: './orders/paths/orders.yaml'
   '/orders/{orderId}':
@@ -112,6 +159,20 @@ paths:
     $ref: './orders/paths/orders.lines.id.yaml'
   '/orders/{orderId}/invoice':
     $ref: './orders/paths/orders.id.invoice.yaml'
+  '/payments/{transactionId}/refund':
+    $ref: './payments/paths/payments.id.refund.yaml'
+  '/payments/{transactionId}/void':
+    $ref: './payments/paths/payments.id.void.yaml'
+  '/payments/3d-secure':
+    $ref: './payments/paths/payments.3d-secure.yaml'
+  '/payments/provider':
+    $ref: './payments/paths/payments.provider.yaml'
+  '/payments/types':
+    $ref: './payments/paths/payments.types.yaml'
+  '/product-families':
+    $ref: './product-families/paths/product-families.yaml'
+  '/product-families/{productFamilyId}':
+    $ref: './product-families/paths/product-families.id.yaml'
   '/products':
     $ref: './products/paths/products.yaml'
   '/products/recommended':
@@ -150,82 +211,10 @@ paths:
     $ref: './products/paths/products.id.drafts.yaml'
   '/products/{productId}/publish':
     $ref: './products/paths/products.id.publish.yaml'
-  '/attributes':
-    $ref: './attributes/paths/attributes.yaml'
-  '/attributes/order':
-    $ref: './attributes/paths/attributes.order.yaml'
-  '/attributes/{attributeId}':
-    $ref: './attributes/paths/attributes.id.yaml'
-  '/attribute-groups':
-    $ref: './attribute-groups/paths/attribute-groups.yaml'
-  '/attribute-groups/reorder':
-    $ref: './attribute-groups/paths/attribute-groups.reorder.yaml'
-  '/attribute-groups/{attributeGroupId}':
-    $ref: './attribute-groups/paths/attribute-groups.id.yaml'
-  '/categories':
-    $ref: './categories/paths/categories.yaml'
-  '/categories/{categoryId}':
-    $ref: './categories/paths/categories.id.yaml'
-  '/categories/{categoryId}/layouts':
-    $ref: './categories/paths/categories.id.layouts.yaml'
-  '/categories/{categoryId}/routes':
-    $ref: './categories/paths/categories.id.routes.yaml'
-  '/categories/parent/{parentId}':
-    $ref: './categories/paths/categories.parent.id.yaml'
-  '/categories/reorder':
-    $ref: './categories/paths/categories.reorder.yaml'
-  '/categories/{categoryId}/products':
-    $ref: './categories/paths/categories.id.products.yaml'
-  '/categories/{categoryId}/channels':
-    $ref: './categories/paths/categories.id.channels.yaml'
-  '/categories/{categoryId}/drafts':
-    $ref: './categories/paths/categories.id.drafts.yaml'
-  '/categories/{categoryId}/customer-groups':
-    $ref: './categories/paths/categories.id.customer-groups.yaml'
-  '/assets':
-    $ref: './assets/paths/assets.yaml'
-  '/assets/simple':
-    $ref: './assets/paths/assets.simple.yaml'
-  '/assets/{assetId}/detach/{ownerId}':
-    $ref: './assets/paths/assets.id.detach.id.yaml'
-  '/taxes':
-    $ref: './taxes/paths/taxes.yaml'
-  '/taxes/{taxId}':
-    $ref: './taxes/paths/taxes.id.yaml'
-  '/associations/groups':
-    $ref: './associations/paths/associations.groups.yaml'
-  '/collections/{collectionId}/routes':
-    $ref: './collections/paths/collections.id.routes.yaml'
-  '/collections/{collectionId}/products':
-    $ref: './collections/paths/collections.id.products.yaml'
-  '/collections':
-    $ref: './collections/paths/collections.yaml'
-  '/collections/{collectionId}':
-    $ref: './collections/paths/collections.id.yaml'
-  '/discounts':
-    $ref: './discounts/paths/discounts.yaml'
-  '/discounts/{discountId}':
-    $ref: './discounts/paths/discounts.id.yaml'
-  '/layouts':
-    $ref: './layouts/paths/layouts.yaml'
-  '/users':
-    $ref: './users/paths/users.yaml'
-  '/users/{userId}':
-    $ref: './users/paths/users.id.yaml'
-  '/users/fields':
-    $ref: './users/paths/users.fields.yaml'
-  '/users/current':
-    $ref: './users/paths/users.current.yaml'
-  '/payments/{transactionId}/refund':
-    $ref: './payments/paths/payments.id.refund.yaml'
-  '/payments/{transactionId}/void':
-    $ref: './payments/paths/payments.id.void.yaml'
-  '/payments/3d-secure':
-    $ref: './payments/paths/payments.3d-secure.yaml'
-  '/payments/provider':
-    $ref: './payments/paths/payments.provider.yaml'
-  '/payments/types':
-    $ref: './payments/paths/payments.types.yaml'
+  '/recycle-bin':
+    $ref: './recycle-bin/paths/recycle-bin.yaml'
+  '/recycle-bin/{itemId}':
+    $ref: './recycle-bin/paths/recycle-bin.id.yaml'
   '/reports/sales':
     $ref: './reports/paths/reports.sales.yaml'
   '/reports/orders':
@@ -238,6 +227,14 @@ paths:
     $ref: './reports/paths/reports.products.best-sellers.yaml'
   '/reports/metrics/{subject}':
     $ref: './reports/paths/reports.metrics.subject.yaml'
+  '/routes':
+    $ref: './routes/paths/routes.yaml'
+  '/routes/{routeId}':
+    $ref: './routes/paths/routes.id.yaml'
+  '/routes/search':
+    $ref: './routes/paths/routes.search.yaml'
+  '/search':
+    $ref: './search/paths/search.yaml'
   '/saved-searches/product':
     $ref: './saved-searches/paths/saved-searches.product.yaml'
   '/saved-searches/{savedSearchId}':
@@ -266,18 +263,20 @@ paths:
     $ref: './tags/paths/tags.yaml'
   '/tags/{tagId}':
     $ref: './tags/paths/tags.id.yaml'
-  '/search':
-    $ref: './search/paths/search.yaml'
-  '/account/password':
-    $ref: './account/paths/account.password.yaml'
-  '/recycle-bin':
-    $ref: './recycle-bin/paths/recycle-bin.yaml'
-  '/recycle-bin/{itemId}':
-    $ref: './recycle-bin/paths/recycle-bin.id.yaml'
+  '/taxes':
+    $ref: './taxes/paths/taxes.yaml'
+  '/taxes/{taxId}':
+    $ref: './taxes/paths/taxes.id.yaml'
+  '/users':
+    $ref: './users/paths/users.yaml'
+  '/users/{userId}':
+    $ref: './users/paths/users.id.yaml'
+  '/users/fields':
+    $ref: './users/paths/users.fields.yaml'
+  '/users/current':
+    $ref: './users/paths/users.current.yaml'
   '/versions/{modelId}/restore':
     $ref: './versions/paths/versions.id.restore.yaml'
-  '/':
-    $ref: './root/paths/root.yaml'
 components:
   securitySchemes:
     auth:
