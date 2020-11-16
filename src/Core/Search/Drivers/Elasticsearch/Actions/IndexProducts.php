@@ -56,7 +56,7 @@ class IndexProducts extends Action
         ])->pluck('lang');
 
         $customerGroups = FetchCustomerGroups::run([
-            'paginate' => false
+            'paginate' => false,
         ]);
 
         $indexes = FetchIndex::run([
@@ -70,7 +70,7 @@ class IndexProducts extends Action
         foreach ($this->products as $product) {
             $indexables = FetchProductDocument::run([
                 'model' => $product,
-                'customer_groups' => $customerGroups
+                'customer_groups' => $customerGroups,
             ]);
 
             foreach ($indexables as $document) {

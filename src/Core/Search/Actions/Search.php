@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Search\Actions;
 
-use Lorisleiva\Actions\Action;
 use GetCandy\Api\Core\Search\Contracts\SearchManagerContract;
+use Lorisleiva\Actions\Action;
 
 class Search extends Action
 {
@@ -38,6 +38,7 @@ class Search extends Action
     public function handle(SearchManagerContract $search)
     {
         $driver = $search->with($this->driver);
+
         return $driver->search($this->request ?? $this->params);
     }
 }

@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Search\Actions;
 
-use Lorisleiva\Actions\Action;
 use GetCandy\Api\Core\Search\SearchManager;
+use Lorisleiva\Actions\Action;
 
 class IndexObjects extends Action
 {

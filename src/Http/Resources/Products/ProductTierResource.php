@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Http\Resources\Products;
 
-use GetCandy\Api\Http\Resources\AbstractResource;
 use GetCandy\Api\Core\Customers\Resources\CustomerGroupResource;
+use GetCandy\Api\Http\Resources\AbstractResource;
 
 class ProductTierResource extends AbstractResource
 {

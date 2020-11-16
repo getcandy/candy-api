@@ -3,7 +3,6 @@
 namespace GetCandy\Api\Core\Attributes\Actions;
 
 use GetCandy\Api\Core\Attributes\Models\Attribute;
-use GetCandy\Api\Core\Foundation\Actions\DecodeIds;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
 use Illuminate\Http\JsonResponse;
 

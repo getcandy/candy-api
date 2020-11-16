@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Core\Search\Drivers\Elasticsearch\Actions\Searching;
 
-use Lorisleiva\Actions\Action;
 use GetCandy\Api\Core\Attributes\Actions\FetchAttribute;
 use GetCandy\Api\Core\Search\Drivers\Elasticsearch\Filters\CustomerGroupFilter;
+use Lorisleiva\Actions\Action;
 
 class FetchFilters extends Action
 {
@@ -42,7 +42,7 @@ class FetchFilters extends Action
     public function handle()
     {
         $applied = collect([
-           (new CustomerGroupFilter)->process($this->user())
+            (new CustomerGroupFilter)->process($this->user()),
         ]);
 
         foreach ($this->filters ?? [] as $filter => $value) {
@@ -56,7 +56,7 @@ class FetchFilters extends Action
     }
 
     /**
-     * Find and create instance of filter if it exists
+     * Find and create instance of filter if it exists.
      *
      * @param string $type Filter type
      *
@@ -74,7 +74,7 @@ class FetchFilters extends Action
         }
 
         $name = ucfirst(camel_case(str_singular($type))).'Filter';
-        $classname = $this->filterNamespace . "\\{$name}";
+        $classname = $this->filterNamespace."\\{$name}";
 
         if (class_exists($classname)) {
             return app()->make($classname);

@@ -11,7 +11,6 @@ use Lorisleiva\Actions\Action;
 
 class SetSorting extends Action
 {
-
     protected $sorts = [];
 
     /**

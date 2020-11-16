@@ -3,8 +3,8 @@
 namespace GetCandy\Api\Core\Customers\Models;
 
 use GetCandy;
-use GetCandy\Api\Core\Traits\HasAddresses;
 use GetCandy\Api\Core\Scaffold\BaseModel;
+use GetCandy\Api\Core\Traits\HasAddresses;
 
 class Customer extends BaseModel
 {
