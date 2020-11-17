@@ -26,6 +26,7 @@ $router->get('products', 'Products\ProductController@index');
 $router->group([
     'prefix' => 'customers',
 ], function ($group) {
+    $group->get('groups', '\GetCandy\Api\Core\Customers\Actions\FetchCustomerGroups');
     $group->get('{encoded_id}', '\GetCandy\Api\Core\Customers\Actions\FetchCustomer');
     $group->put('{encoded_id}', '\GetCandy\Api\Core\Customers\Actions\UpdateCustomer');
     $group->post('/', '\GetCandy\Api\Core\Customers\Actions\CreateCustomer');
