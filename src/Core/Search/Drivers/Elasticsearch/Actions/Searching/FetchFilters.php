@@ -2,9 +2,10 @@
 
 namespace GetCandy\Api\Core\Search\Drivers\Elasticsearch\Actions\Searching;
 
-use GetCandy\Api\Core\Attributes\Actions\FetchAttribute;
-use GetCandy\Api\Core\Search\Drivers\Elasticsearch\Filters\CustomerGroupFilter;
 use Lorisleiva\Actions\Action;
+use GetCandy\Api\Core\Attributes\Actions\FetchAttribute;
+use GetCandy\Api\Core\Search\Drivers\Elasticsearch\Filters\CategoryFilter;
+use GetCandy\Api\Core\Search\Drivers\Elasticsearch\Filters\CustomerGroupFilter;
 
 class FetchFilters extends Action
 {
@@ -29,6 +30,7 @@ class FetchFilters extends Action
     {
         return [
             'filters' => 'array|min:0',
+            'category' => 'array|min:0'
         ];
     }
 
@@ -41,10 +43,16 @@ class FetchFilters extends Action
      */
     public function handle()
     {
+
         $applied = collect([
             (new CustomerGroupFilter)->process($this->user()),
         ]);
 
+        if (!empty($this->category)) {
+            $applied->push(
+                (new CategoryFilter)->process($this->category)
+            );
+        }
         foreach ($this->filters ?? [] as $filter => $value) {
             $object = $this->findFilter($filter);
             if ($object && $object = $object->process($value, $filter)) {

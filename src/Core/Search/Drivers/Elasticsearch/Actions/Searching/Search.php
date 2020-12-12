@@ -51,6 +51,7 @@ class Search extends Action
             'term' => 'nullable|string',
             'language' => 'nullable|string',
             'page' => 'nullable|numeric|min:1',
+            'category' => 'nullable|string',
         ];
     }
 
@@ -71,11 +72,13 @@ class Search extends Action
         $this->filters = $this->filters ?: [];
         $this->aggregates = $this->aggregates ?: [];
         $this->language = $this->language ?: app()->getLocale();
+        $this->set('category', $this->category ? explode(':', $this->category) : []);
 
         $client = FetchClient::run();
 
         $term = $this->term ? FetchTerm::run($this->attributes) : null;
-        $filters = $this->delegateTo(FetchFilters::class);
+        $filters = FetchFilters::run($this->attributes);
+
 
         $query = new Query();
         $query->setParam('size', $this->limit ?: 100);
@@ -104,6 +107,7 @@ class Search extends Action
         });
 
         $preFilters->each(function ($filter) use ($boolQuery) {
+            // dump($filter->getQuery());
             $boolQuery->addFilter(
                  $filter->getQuery()
              );
@@ -193,6 +197,7 @@ class Search extends Action
             'encoded_ids' => $ids->toArray(),
             'include' => $request->include,
         ]);
+
 
         $resource = ProductCollection::class;
 
