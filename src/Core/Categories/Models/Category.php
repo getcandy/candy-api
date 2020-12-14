@@ -110,11 +110,7 @@ class Category extends BaseModel
             return;
         }
 
-        if ($value) {
-            $this->appendToNode($this->newScopedQuery()->withDrafted()->findOrFail($value));
-        } else {
-            $this->makeRoot();
-        }
+        $this->setParentId($value);
     }
 
     /**
