@@ -31,12 +31,12 @@
     "require-dev": {
         "fzaninotto/faker": "~1.4",
         "mockery/mockery": "~1.0",
-        "phpunit/phpunit": "^9.2",
         "filp/whoops": "~2.0",
-        "orchestra/testbench": "^6.2",
+        "orchestra/testbench": "^6.6",
         "league/openapi-psr7-validator": "^0.7",
         "neondigital/laravel-openapi-validator": "^0.1",
-        "brianium/paratest": "^4.1"
+        "brianium/paratest": "^4.1",
+        "phpunit/phpunit": "^9.5"
     },
     "autoload": {
         "psr-4": {
