@@ -27,7 +27,7 @@ class CreateRequest extends FormRequest
     {
         $rules = [
             'variants' => 'array',
-            'basket_id' => 'hashid_is_valid:baskets',
+            'basket_id' => 'nullable|hashid_is_valid:baskets',
         ];
 
         $variants = GetCandy::productVariants()->getByHashedIds(
