@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Core\Search\Drivers\Elasticsearch\Actions;
 
-use Lorisleiva\Actions\Action;
 use GetCandy\Api\Core\Search\Document;
 use Illuminate\Database\Eloquent\Model;
+use Lorisleiva\Actions\Action;
 
 class AbstractDocumentAction extends Action
 {
@@ -29,7 +29,6 @@ class AbstractDocumentAction extends Action
 
                 $categories = $this->getCategories($model);
                 $indexable->set('id', $model->encoded_id);
-
 
                 $groupPricing = [];
 
@@ -88,6 +87,7 @@ class AbstractDocumentAction extends Action
                 $indexables->push($indexable);
             }
         }
+
         return $indexables;
     }
 
@@ -254,7 +254,6 @@ class AbstractDocumentAction extends Action
 
             return $payload;
         })->toArray();
-
 
         return array_merge($attributes, $this->mapping);
     }

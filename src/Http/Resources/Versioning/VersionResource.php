@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Http\Resources\Versioning;
 
-use Hashids;
-use GetCandy\Api\Http\Resources\AbstractResource;
 use GetCandy\Api\Core\Users\Resources\UserResource;
+use GetCandy\Api\Http\Resources\AbstractResource;
+use Hashids;
 
 class VersionResource extends AbstractResource
 {

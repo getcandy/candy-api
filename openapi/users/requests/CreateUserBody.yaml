@@ -14,3 +14,9 @@ properties:
   customer_id:
     type: string
     nullable: false
+required:
+  - email
+  - firstname
+  - lastname
+  - password
+  - password_confirmation

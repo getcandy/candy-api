@@ -3,8 +3,6 @@
 namespace GetCandy\Api\Installer\Runners;
 
 use DB;
-use Elastica\Client;
-use Elastica\Exception\Connection\HttpException;
 use GetCandy;
 use GetCandy\Api\Installer\Contracts\InstallRunnerContract;
 use GetCandy\Api\Installer\Events\PreflightCompletedEvent;

@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Search\Drivers\Elasticsearch\Actions;
 
-use Lorisleiva\Actions\Action;
 use GetCandy\Api\Core\Search\Indexables\ProductIndexable;
+use Lorisleiva\Actions\Action;
 
 class FetchProductMapping extends Action
 {

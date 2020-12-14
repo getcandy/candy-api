@@ -41,6 +41,7 @@ class ShippingMethodController extends BaseController
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }
+
         return new ShippingMethodResource($shipping);
     }
 

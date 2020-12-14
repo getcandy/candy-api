@@ -36,7 +36,7 @@ class UpdateUser extends Action
         return [
             'encoded_id' => 'required|string|hashid_is_valid:'.GetCandy::getUserModel(),
             'name' => 'string',
-            'email' => 'email|unique:users,email,' . $this->userToUpdate->id,
+            'email' => 'email|unique:users,email,'.$this->userToUpdate->id,
             'password' => 'string|min:6|confirmed',
             'language' => 'string',
         ];

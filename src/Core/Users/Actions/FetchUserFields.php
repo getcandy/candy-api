@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Core\Users\Actions;
 
-use Lorisleiva\Actions\Action;
-use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
 use GetCandy\Api\Core\Customers\Actions\FetchCustomerFields;
+use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
+use Lorisleiva\Actions\Action;
 
 class FetchUserFields extends Action
 {

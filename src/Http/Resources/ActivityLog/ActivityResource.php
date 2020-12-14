@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Http\Resources\ActivityLog;
 
-use GetCandy\Api\Http\Resources\AbstractResource;
 use GetCandy\Api\Core\Users\Resources\UserResource;
+use GetCandy\Api\Http\Resources\AbstractResource;
 
 class ActivityResource extends AbstractResource
 {
