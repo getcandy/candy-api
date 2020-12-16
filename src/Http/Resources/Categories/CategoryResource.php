@@ -26,6 +26,7 @@ class CategoryResource extends AbstractResource
             'depth' => $this->depth,
             'has_draft' => $this->draft()->exists(),
             'left_pos' => $this->_lft,
+            'sort' => $this->sort,
             'right_pos' => $this->_rgt,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
