@@ -37,6 +37,11 @@ class Customer extends BaseModel
         $this->attributes['fields'] = is_string($val) ? $val : json_encode($val);
     }
 
+    public function inGroup($group)
+    {
+        return $this->customerGroups()->where('handle', '=', $group)->exists();
+    }
+
     public function users()
     {
         return $this->hasMany(GetCandy::getUserModel());
