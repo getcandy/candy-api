@@ -4,14 +4,16 @@ namespace GetCandy\Api\Core\Search\Drivers\Elasticsearch\Actions\Searching;
 
 use Elastica\Query;
 use Elastica\Query\BoolQuery;
-use Elastica\Search as ElasticaSearch;
-use GetCandy\Api\Core\Categories\Models\Category;
-use GetCandy\Api\Core\Products\Models\Product;
-use GetCandy\Api\Core\Search\Actions\FetchSearchedIds;
-use GetCandy\Api\Http\Resources\Categories\CategoryCollection;
-use GetCandy\Api\Http\Resources\Products\ProductCollection;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Lorisleiva\Actions\Action;
+use Elastica\Search as ElasticaSearch;
+use GetCandy\Api\Core\Products\Models\Product;
+use Illuminate\Pagination\LengthAwarePaginator;
+use GetCandy\Api\Core\Categories\Models\Category;
+use GetCandy\Api\Core\Search\Actions\FetchSearchedIds;
+use GetCandy\Api\Http\Resources\Products\ProductCollection;
+use GetCandy\Api\Http\Resources\Attributes\AttributeResource;
+use GetCandy\Api\Http\Resources\Categories\CategoryCollection;
+use GetCandy\Api\Core\Attributes\Actions\FetchFilterableAttributes;
 
 class Search extends Action
 {
@@ -46,11 +48,12 @@ class Search extends Action
             'limit' => 'nullable|numeric',
             'offset' => 'nullable|numeric',
             'search_type' => 'nullable|string',
-            'filters' => 'nullable|array',
+            'filters' => 'nullable',
             'aggregate' => 'nullable|array',
             'term' => 'nullable|string',
             'language' => 'nullable|string',
             'page' => 'nullable|numeric|min:1',
+            'category' => 'nullable|string',
         ];
     }
 
@@ -68,14 +71,23 @@ class Search extends Action
             $this->set('index', "{$prefix}_{$this->search_type}_{$language}");
         }
 
-        $this->filters = $this->filters ?: [];
+        $this->filters = $this->filters ? collect(explode(',', $this->filters))->mapWithKeys(function ($filter) {
+            list($label, $value) = explode(':', $filter);
+            return [$label => $value];
+        })->toArray() : [];
+
         $this->aggregates = $this->aggregates ?: [];
         $this->language = $this->language ?: app()->getLocale();
+        $this->set('category', $this->category ? explode(':', $this->category) : []);
+
 
         $client = FetchClient::run();
 
         $term = $this->term ? FetchTerm::run($this->attributes) : null;
-        $filters = $this->delegateTo(FetchFilters::class);
+        $filters = FetchFilters::run([
+            'category' => $this->category,
+            'filters' => $this->filters
+        ]);
 
         $query = new Query();
         $query->setParam('size', $this->limit ?: 100);
@@ -92,18 +104,21 @@ class Search extends Action
             ]);
         }
 
-        $aggregations = $this->delegateTo(FetchAggregations::class) ?? [];
+        $aggregations = FetchAggregations::run();
 
         $query = SetExcludedFields::run(['query' => $query]);
 
         // Set filters as post filters
         $postFilter = new BoolQuery;
 
+
         $preFilters = $filters->filter(function ($filter) {
             return in_array($filter->handle, $this->topFilters);
         });
 
+
         $preFilters->each(function ($filter) use ($boolQuery) {
+            // dump($filter->getQuery());
             $boolQuery->addFilter(
                  $filter->getQuery()
              );
@@ -142,11 +157,13 @@ class Search extends Action
 
         $query->setQuery($boolQuery);
 
+
         $query = SetSorting::run([
             'query' => $query,
             'type' => $this->search_type,
             'sort' => $this->sort,
         ]);
+
 
         $query->setHighlight(config('getcandy.search.highlight') ?? [
             'pre_tags' => ['<em class="highlight">'],
@@ -188,10 +205,15 @@ class Search extends Action
             }
         }
 
+        $aggregations = MapAggregations::run([
+            'aggregations' => $result->getAggregations(),
+        ]);
+
         $models = FetchSearchedIds::run([
             'model' => $this->search_type == 'products' ? Product::class : Category::class,
             'encoded_ids' => $ids->toArray(),
             'include' => $request->include,
+            'counts' => $request->counts,
         ]);
 
         $resource = ProductCollection::class;
@@ -209,7 +231,7 @@ class Search extends Action
 
         return (new $resource($paginator))->additional([
             'meta' => [
-                'aggregations' => $result->getAggregations(),
+                'aggregations' => $aggregations,
                 'highlight' => $result->getQuery()->getParam('highlight'),
             ],
         ]);
