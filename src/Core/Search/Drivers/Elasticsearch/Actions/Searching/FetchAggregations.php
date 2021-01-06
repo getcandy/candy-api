@@ -52,6 +52,7 @@ class FetchAggregations extends Action
             if (class_exists($classname)) {
                 return app()->make($classname);
             }
+
             return new Attribute($attribute);
         })->toArray();
     }

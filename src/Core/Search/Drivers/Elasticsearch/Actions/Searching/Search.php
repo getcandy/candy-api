@@ -4,16 +4,12 @@ namespace GetCandy\Api\Core\Search\Drivers\Elasticsearch\Actions\Searching;
 
 use Elastica\Query;
 use Elastica\Query\BoolQuery;
-use Lorisleiva\Actions\Action;
 use Elastica\Search as ElasticaSearch;
-use GetCandy\Api\Core\Products\Models\Product;
-use Illuminate\Pagination\LengthAwarePaginator;
 use GetCandy\Api\Core\Categories\Models\Category;
+use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Search\Actions\FetchSearchedIds;
 use GetCandy\Api\Http\Resources\Products\ProductCollection;
-use GetCandy\Api\Http\Resources\Attributes\AttributeResource;
 use GetCandy\Api\Http\Resources\Categories\CategoryCollection;
-use GetCandy\Api\Core\Attributes\Actions\FetchFilterableAttributes;
 
 class Search extends Action
 {
@@ -80,7 +76,6 @@ class Search extends Action
         $this->language = $this->language ?: app()->getLocale();
         $this->set('category', $this->category ? explode(':', $this->category) : []);
 
-
         $client = FetchClient::run();
 
         $term = $this->term ? FetchTerm::run($this->attributes) : null;
@@ -115,7 +110,6 @@ class Search extends Action
         $preFilters = $filters->filter(function ($filter) {
             return in_array($filter->handle, $this->topFilters);
         });
-
 
         $preFilters->each(function ($filter) use ($boolQuery) {
             // dump($filter->getQuery());
@@ -215,6 +209,7 @@ class Search extends Action
             'include' => $request->include,
             'counts' => $request->counts,
         ]);
+
 
         $resource = ProductCollection::class;
 
