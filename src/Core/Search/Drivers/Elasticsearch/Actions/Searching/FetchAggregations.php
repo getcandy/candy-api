@@ -39,23 +39,19 @@ class FetchAggregations extends Action
      */
     public function handle()
     {
-        if (! $this->aggregate) {
-            return null;
-        }
+        // if (! $this->aggregate) {
+        //     return [];
+        // }
 
-        return FetchFilterableAttributes::run()->map(function ($attribute) {
+        $results = FetchFilterableAttributes::run()->map(function ($attribute) {
             return $attribute->handle;
-        })->filter(function ($attribute) {
-            return in_array($attribute, $this->aggregate);
-        })->merge(
-            collect(['priceRange', 'category'])
-        )->map(function ($attribute) {
+        });
+        return collect(['priceRange', 'category'])->merge($results)->map(function ($attribute) {
             $name = ucfirst(camel_case(str_singular($attribute)));
             $classname = "GetCandy\Api\Core\Search\Drivers\Elastic\Aggregators\\{$name}";
             if (class_exists($classname)) {
                 return app()->make($classname);
             }
-
             return new Attribute($attribute);
         })->toArray();
     }

@@ -43,7 +43,9 @@ class FetchSearchedIds extends AbstractAction
         $parsedIds = $this->delegateTo(DecodeIds::class);
         $placeholders = implode(',', array_fill(0, count($parsedIds), '?')); // string for the query
 
-        $query = $model->with($this->resolveEagerRelations())->whereIn("{$model->getTable()}.id", $parsedIds);
+        $query = $model->with($this->resolveEagerRelations())
+            ->withCount($this->resolveRelationCounts())
+            ->whereIn("{$model->getTable()}.id", $parsedIds);
 
         if (count($parsedIds)) {
             $query = $query->orderByRaw("field({$model->getTable()}.id,{$placeholders})", $parsedIds);

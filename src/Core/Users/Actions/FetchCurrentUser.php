@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Core\Users\Actions;
 
+use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Users\Resources\UserResource;
-use Lorisleiva\Actions\Action;
 
-class FetchCurrentUser extends Action
+class FetchCurrentUser extends AbstractAction
 {
     /**
      * Determine if the user is authorized to make this action.
@@ -34,9 +34,10 @@ class FetchCurrentUser extends Action
      */
     public function handle()
     {
-        return $this->user()->load([
-            'addresses.country', 'roles.permissions', 'customer',
-        ]);
+        return $this->user()->load(array_merge(
+            $this->resolveEagerRelations(),
+            ['addresses.country', 'roles.permissions', 'customer', 'savedBaskets.basket.lines']
+        ));
     }
 
     /**

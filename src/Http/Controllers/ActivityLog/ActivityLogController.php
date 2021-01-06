@@ -37,7 +37,7 @@ class ActivityLogController extends BaseController
         $service = app()->getInstance()->make($this->types[$request->type]);
         $model = $service->getByHashedId($request->id, true);
 
-        $logs = $criteria->include(['user.details'])->model($model)->get();
+        $logs = $criteria->include(['user.customer'])->model($model)->get();
 
         return new ActivityCollection($logs);
     }

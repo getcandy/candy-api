@@ -46,7 +46,7 @@ class Category extends BaseModel
      * @var array
      */
     protected $fillable = [
-        'attribute_data', 'parent_id',
+        'attribute_data', 'parent_id', 'sort', 'range'
     ];
 
     public function getParentIdAttribute($val)

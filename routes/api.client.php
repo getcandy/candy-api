@@ -17,7 +17,7 @@ $router->get('collections', 'Collections\CollectionController@index');
 $router->get('collections/{id}', 'Collections\CollectionController@show');
 $router->get('categories/{id}', 'Categories\CategoryController@show');
 $router->get('products/recommended', 'Products\ProductController@recommended');
-$router->get('products/{product}', 'Products\ProductController@show');
+$router->get('products/{encoded_id}', '\GetCandy\Api\Core\Products\Actions\FetchProduct');
 $router->get('products', 'Products\ProductController@index');
 
 /*
@@ -49,6 +49,7 @@ $router->resource('baskets', 'Baskets\BasketController', [
     */
 $router->post('basket-lines', 'Baskets\BasketLineController@store');
 $router->put('basket-lines/{id}', 'Baskets\BasketLineController@update');
+$router->delete('basket-lines/{id}', 'Baskets\BasketLineController@destroyLine');
 $router->post('basket-lines/{id}/add', 'Baskets\BasketLineController@addQuantity');
 $router->post('basket-lines/{id}/remove', 'Baskets\BasketLineController@removeQuantity');
 $router->delete('basket-lines', 'Baskets\BasketLineController@destroy');

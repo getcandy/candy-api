@@ -465,12 +465,6 @@ class OrderService extends BaseService implements OrderServiceInterface
             $payload['email'] = $data['email'] ?? null;
             $payload['phone'] = $data['phone'] ?? null;
             $data = $payload;
-        } elseif ($user) {
-            // TODO: Reassess when we refactor order addresses.
-            $addressData = $data;
-            $addressData[$type] = true;
-            $addressData['postal_code'] = $data['zip'];
-            CreateAddressAction::run($addressData);
         }
 
         $this->setFields($order, $data, $type);

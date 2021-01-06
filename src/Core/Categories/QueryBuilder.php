@@ -29,7 +29,7 @@ class QueryBuilder extends KalnoyQueryBuilder
             ->selectRaw('count(1) - 1')
             ->from($this->model->getTable().' as '.$alias)
             ->where(function ($query) use ($table, $lft, $rgt, $wrappedAlias) {
-                $query->whereNull('drafted_at')
+                $query->whereNull($this->model->getTable() . '.drafted_at')
                     ->whereRaw("{$table}.{$lft} between {$wrappedAlias}.{$lft} and {$wrappedAlias}.{$rgt}");
             });
 
