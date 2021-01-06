@@ -1,6 +1,10 @@
 <?php
 
 use Faker\Generator as Faker;
+use GetCandy\Api\Core\Channels\Models\Channel;
+use GetCandy\Api\Core\Products\Models\Product;
+use GetCandy\Api\Core\Products\Models\ProductVariant;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -13,7 +17,8 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(GetCandy\Api\Core\Products\Models\Product::class, function (Faker $faker) {
+
+$factory->define(Product::class, function (Faker $faker) {
     return [
         'attribute_data' => [
             'name' => [
@@ -23,4 +28,13 @@ $factory->define(GetCandy\Api\Core\Products\Models\Product::class, function (Fak
             ],
         ],
     ];
+});
+
+$factory->afterCreating(Product::class, function ($product, $faker) {
+    // Set up initial variant
+    $product->variants()->save(factory(ProductVariant::class)->make());
+
+    $channel = factory(Channel::class)->create();
+
+    dd($channel);
 });
