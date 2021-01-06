@@ -41,7 +41,9 @@ class SearchForRoute extends AbstractAction
      */
     public function handle()
     {
-        $query = Route::whereSlug($this->slug)->with($this->resolveEagerRelations());
+        $query = Route::whereSlug($this->slug)->with(
+            $this->resolveEagerRelations()
+        );
 
         if ($this->path) {
             $query->wherePath($this->path);
