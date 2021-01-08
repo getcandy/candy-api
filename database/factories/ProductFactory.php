@@ -29,12 +29,3 @@ $factory->define(Product::class, function (Faker $faker) {
         ],
     ];
 });
-
-$factory->afterCreating(Product::class, function ($product, $faker) {
-    // Set up initial variant
-    $product->variants()->save(factory(ProductVariant::class)->make());
-
-    $channel = factory(Channel::class)->create();
-
-    dd($channel);
-});

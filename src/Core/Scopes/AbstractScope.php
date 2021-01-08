@@ -3,9 +3,9 @@
 namespace GetCandy\Api\Core\Scopes;
 
 use GetCandy;
-use GetCandy\Api\Core\Customers\Actions\FetchDefaultCustomerGroup;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Scope;
+use Illuminate\Database\Eloquent\Builder;
+use GetCandy\Api\Core\Customers\Actions\FetchDefaultCustomerGroup;
 
 abstract class AbstractScope implements Scope
 {

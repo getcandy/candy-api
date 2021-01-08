@@ -10,11 +10,6 @@ use Tests\Feature\FeatureCase;
  */
 class CategoryControllerTest extends FeatureCase
 {
-    /**
-     * @group fail
-     *
-     * @return  [type]  [return description]
-     */
     public function test_can_list_all_categories()
     {
         Category::create([
@@ -24,7 +19,6 @@ class CategoryControllerTest extends FeatureCase
                 ],
             ],
         ]);
-
         $user = $this->admin();
         $response = $this->actingAs($user)->json('GET', 'categories');
 
@@ -37,7 +31,7 @@ class CategoryControllerTest extends FeatureCase
         $user = $this->admin();
         Category::create([
             'attribute_data' => [
-                'webstore' => [
+                'name' => [
                     'en' => 'Test category',
                 ],
             ],

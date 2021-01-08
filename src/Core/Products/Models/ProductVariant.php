@@ -96,18 +96,18 @@ class ProductVariant extends BaseModel
 
     public function getOptionsAttribute($val)
     {
-        // $values = [];
-        // $option_data = $this->product ? $this->product->option_data : [];
+        $values = [];
+        $option_data = $this->product ? $this->product->option_data : [];
 
-        // foreach (json_decode($val, true) as $option => $value) {
-        //     if (! empty($data = $option_data[$option])) {
-        //         $values[$option] = $data['options'][$value]['values'] ?? [
-        //             'en' => null,
-        //         ];
-        //     }
-        // }
+        foreach (json_decode($val, true) as $option => $value) {
+            if (! empty($data = $option_data[$option])) {
+                $values[$option] = $data['options'][$value]['values'] ?? [
+                    'en' => null,
+                ];
+            }
+        }
 
-        return json_decode($val, true);
+        return $values;
     }
 
     public function setOptionsAttribute($val)
