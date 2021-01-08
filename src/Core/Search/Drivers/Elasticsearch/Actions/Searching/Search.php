@@ -9,7 +9,11 @@ use GetCandy\Api\Core\Categories\Models\Category;
 use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Search\Actions\FetchSearchedIds;
 use GetCandy\Api\Http\Resources\Products\ProductCollection;
+use GetCandy\Api\Http\Resources\Attributes\AttributeResource;
 use GetCandy\Api\Http\Resources\Categories\CategoryCollection;
+use GetCandy\Api\Core\Attributes\Actions\FetchFilterableAttributes;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Lorisleiva\Actions\Action;
 
 class Search extends Action
 {
@@ -43,6 +47,7 @@ class Search extends Action
             'index' => 'nullable|string',
             'limit' => 'nullable|numeric',
             'offset' => 'nullable|numeric',
+            'page'   => 'nullable|numeric',
             'search_type' => 'nullable|string',
             'filters' => 'nullable',
             'aggregate' => 'nullable|array',
@@ -84,9 +89,12 @@ class Search extends Action
             'filters' => $this->filters
         ]);
 
+        $limit = $this->limit ?: 100;
+        $offset = $this->offset ?: (($this->page != 1 ?: 1 - 1) * $limit);
+
         $query = new Query();
-        $query->setParam('size', $this->limit ?: 100);
-        $query->setParam('from', $this->offset ?: 0);
+        $query->setParam('size', $limit);
+        $query->setParam('from', $offset);
 
         $boolQuery = new BoolQuery;
 
