@@ -23,7 +23,8 @@ class ProductResource extends AbstractResource
         return [
             'id' => $this->encoded_id,
             'drafted_at' => $this->drafted_at,
-            'option_data' => $this->option_data,
+            'option_data' => $this->parseOptionData($this->option_data),
+            'variants_count' => $this->variants_count,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
@@ -58,7 +59,20 @@ class ProductResource extends AbstractResource
             'customer_groups' => new CustomerGroupCollection($this->whenLoaded('customerGroups')),
         ];
     }
-    
+
+    protected function parseOptionData($data)
+    {
+        $data = $this->sortOptions($data);
+        foreach ($data as $optionKey => $option) {
+            $data[$optionKey]['options'] = collect($option['options'] ?? [])->mapWithKeys(function ($option, $handle) {
+                $option['handle'] = $handle;
+                return [$handle => $option];
+            })->toArray();
+        }
+
+        return $data;
+    }
+
     protected function sortOptions($options)
     {
         $options = $options ?? [];
