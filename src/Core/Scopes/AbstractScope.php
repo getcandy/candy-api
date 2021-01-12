@@ -3,6 +3,7 @@
 namespace GetCandy\Api\Core\Scopes;
 
 use GetCandy;
+use Illuminate\Support\Facades\App;
 use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use GetCandy\Api\Core\Customers\Actions\FetchDefaultCustomerGroup;
@@ -50,11 +51,8 @@ abstract class AbstractScope implements Scope
      */
     protected function resolve(\Closure $callback)
     {
-        if (
-            ! $this->getUser()
-            || ! $this->canAccessHub()
-            || ($this->canAccessHub() && ! GetCandy::isHubRequest())
-        ) {
+        $check = ! $this->getUser() || ! $this->canAccessHub() || ($this->canAccessHub() && ! GetCandy::isHubRequest());
+        if ($check && !App::runningInConsole()) {
             $callback();
         }
     }
