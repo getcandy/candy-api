@@ -54,6 +54,10 @@ class FetchProduct extends AbstractAction
             ->withCount($this->resolveRelationCounts())
             ->with($this->resolveEagerRelations());
 
+        if ($this->draft) {
+            $query->withDrafted();
+        }
+
         if ($this->sku) {
             return $query->whereHas('variants', function ($query) {
                 $query->whereSku($this->sku);
