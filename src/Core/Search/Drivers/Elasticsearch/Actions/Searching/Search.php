@@ -90,7 +90,8 @@ class Search extends Action
         ]);
 
         $limit = $this->limit ?: 100;
-        $offset = $this->offset ?: (($this->page != 1 ?: 1 - 1) * $limit);
+
+        $offset = (($this->page ?: 1) - 1) * $limit;
 
         $query = new Query();
         $query->setParam('size', $limit);
