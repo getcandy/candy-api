@@ -32,9 +32,6 @@ class CustomerGroupFilter extends AbstractFilter
         $filter = new BoolQuery;
 
         foreach ($this->getCustomerGroups() as $model) {
-//            $term = new Term;
-//            $term->setTerm('customer_groups.id', $model->encodedId());
-//            $filter->addShould($term);
             $cat = new Nested;
             $cat->setPath('customer_groups');
             $term = new Term;
@@ -43,6 +40,7 @@ class CustomerGroupFilter extends AbstractFilter
             $cat->setQuery($term);
 
             $filter->addShould($cat);
+
         }
 
         return $filter;
