@@ -4,6 +4,7 @@ namespace GetCandy\Api\Core\Payments\Providers;
 
 use Braintree_Gateway;
 use Braintree_Transaction;
+use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
 use Braintree_Exception_NotFound;
 use Illuminate\Support\Facades\Auth;
@@ -148,15 +149,16 @@ class Braintree extends AbstractProvider
                     'firstName' => $billing['firstname'],
                     'lastName' => $billing['lastname'],
                     'email' => $user->email,
-                    'billingAddress' => [
-                        'firstName' => $billing['firstname'],
-                        'lastName' => $billing['lastname'],
-                        'locality' => $billing['city'],
-                        'region' =>   $billing['county'] ?: $billing['state'],
-                        'postalCode' =>   $billing['zip'],
-                        'streetAddress' => $billing['address'],
-                    ]
+                    // 'billingAddress' => [
+                    //     'firstName' => $billing['firstname'],
+                    //     'lastName' => $billing['lastname'],
+                    //     'locality' => $billing['city'],
+                    //     'region' =>   $billing['county'] ?: $billing['state'],
+                    //     'postalCode' =>   $billing['zip'],
+                    //     'streetAddress' => $billing['address'],
+                    // ]
                 ]);
+
                 if ($result->success) {
                     $user->providerUsers()->create([
                         'provider' => 'braintree',
@@ -281,7 +283,34 @@ class Braintree extends AbstractProvider
 
     public function refund($token, $amount, $description)
     {
-        $transaction = Braintree_Transaction::refund($token, $amount);
+        $result = $this->gateway->transaction()->refund($token, $amount / 100);
+
+        if (!$result->success) {
+            $error = collect($result->errors->forKey('transaction')->shallowAll())->first();
+            // Trying to refund a transaction that isn't settled.
+            if ($error->code == "91506") {
+                $result = $this->gateway->transaction()->void($token);
+            }
+        }
+
+        $responseT = $result->transaction;
+
+        $transaction = new Transaction;
+        $transaction->success = $result->success;
+        $transaction->order()->associate($this->order);
+        $transaction->merchant = $responseT ? $responseT->merchantAccountId : 'Unknown';
+        $transaction->provider = 'Braintree';
+        $transaction->driver = 'braintree';
+        $transaction->refund = true;
+        $transaction->status = $responseT ? $result->transaction->status : $result->message;
+        $transaction->amount = -abs($amount);
+        $transaction->card_type = $responseT ? ($result->transaction->creditCardDetails->cardType ?? 'Unknown') : 'Unknown';
+        $transaction->last_four = $responseT ? ($result->transaction->creditCardDetails->last4 ?? '') : '';
+        $transaction->transaction_id = $responseT ? $result->transaction->id : Str::random();
+        $transaction->address_matched = false;
+        $transaction->cvc_matched = false;
+        $transaction->postcode_matched = false;
+        $transaction->save();
 
         return $transaction;
     }
