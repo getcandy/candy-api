@@ -79,7 +79,6 @@ class Search extends Action
         $term = $this->term ? FetchTerm::run($this->attributes) : null;
         $filters = FetchFilters::run($this->attributes);
 
-
         $query = new Query();
         $query->setParam('size', $this->limit ?: 100);
         $query->setParam('from', $this->offset ?: 0);
@@ -197,7 +196,6 @@ class Search extends Action
             'encoded_ids' => $ids->toArray(),
             'include' => $request->include,
         ]);
-
 
         $resource = ProductCollection::class;
 
