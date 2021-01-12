@@ -167,7 +167,7 @@ class AbstractDocumentAction extends Action
      */
     protected function getCategories(Model $model, $lang = 'en')
     {
-        $categories = $model->refresh()->categories;
+        $categories = $model->categories;
 
         if (empty($categories)) {
             return collect([]);
