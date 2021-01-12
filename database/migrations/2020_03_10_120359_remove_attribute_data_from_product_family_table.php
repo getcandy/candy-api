@@ -18,6 +18,15 @@ class RemoveAttributeDataFromProductFamilyTable extends Migration
 
         $families = ProductFamily::all();
 
+        if (Schema::hasColumn('product_families', 'name')) {
+            Schema::table('product_families', function (Blueprint $table) {
+                $table->dropColumn('name');
+            });
+            Schema::table('product_families', function (Blueprint $table) {
+                $table->text('name');
+            });
+        }
+
         foreach ($families as $family) {
             $data = json_decode($family->attribute_data, true);
             $name = $data['name'][$channel->handle]['en'];
