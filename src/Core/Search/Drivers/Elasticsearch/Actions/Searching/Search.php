@@ -234,6 +234,7 @@ class Search extends Action
 
         return (new $resource($paginator))->additional([
             'meta' => [
+                'count' => $models->count(),
                 'aggregations' => $aggregations,
                 'highlight' => $result->getQuery()->getParam('highlight'),
             ],
