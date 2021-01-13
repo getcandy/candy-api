@@ -14,7 +14,6 @@ class AddSetNullOnDeleteOnOrderLines extends Migration
     public function up()
     {
         Schema::table('order_lines', function (Blueprint $table) {
-            $table->dropForeign('order_lines_product_variant_id_foreign');
             $table->foreign('product_variant_id')
             ->references('id')->on('product_variants')
             ->onDelete('SET NULL');
