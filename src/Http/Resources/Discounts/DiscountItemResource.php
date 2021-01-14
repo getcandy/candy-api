@@ -3,6 +3,7 @@
 namespace GetCandy\Api\Http\Resources\Discounts;
 
 use GetCandy\Api\Http\Resources\AbstractResource;
+use GetCandy\Api\Core\Users\Resources\UserCollection;
 
 class DiscountItemResource extends AbstractResource
 {
@@ -18,6 +19,7 @@ class DiscountItemResource extends AbstractResource
     public function includes()
     {
         return [
+            'users' => new UserCollection($this->whenLoaded('users')),
         ];
     }
 }

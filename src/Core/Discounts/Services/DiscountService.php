@@ -3,12 +3,13 @@
 namespace GetCandy\Api\Core\Discounts\Services;
 
 use Carbon\Carbon;
-use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
-use GetCandy\Api\Core\Discounts\Discount as DiscountFactory;
-use GetCandy\Api\Core\Discounts\Models\Discount;
-use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaItem;
 use GetCandy\Api\Core\Discounts\RewardSet;
 use GetCandy\Api\Core\Scaffold\BaseService;
+use GetCandy\Api\Core\Discounts\Models\Discount;
+use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaSet;
+use GetCandy\Api\Core\Discounts\Discount as DiscountFactory;
+use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaItem;
+use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
 
 class DiscountService extends BaseService
 {
@@ -42,9 +43,9 @@ class DiscountService extends BaseService
         $discount->status = ! empty($data['status']);
         $discount->save();
 
-        if (! empty($data['channels']['data'])) {
+        if (! empty($data['channels'])) {
             $discount->channels()->sync(
-                $this->getChannelMapping($data['channels']['data'])
+                $this->getChannelMapping($data['channels'])
             );
         }
 
@@ -64,28 +65,28 @@ class DiscountService extends BaseService
     {
         $discount = $this->getByHashedId($id);
         $discount->start_at = Carbon::parse($data['start_at']);
-
         $discount->end_at = Carbon::parse($data['end_at']);
         $discount->priority = $data['priority'];
         $discount->stop_rules = $data['stop_rules'];
         $discount->status = $data['status'];
+        $discount->attribute_data = $data['attribute_data'];
 
         $discount->save();
 
         // event(new AttributableSavedEvent($discount));
-        if (isset($data['rewards']['data'])) {
+        if (isset($data['rewards'])) {
             $discount->rewards()->delete();
-            $this->syncRewards($discount, $data['rewards']['data']);
+            $this->syncRewards($discount, $data['rewards']);
         }
 
-        if (! empty($data['channels']['data'])) {
+        if (! empty($data['channels'])) {
             $discount->channels()->sync(
-                $this->getChannelMapping($data['channels']['data'])
+                $this->getChannelMapping($data['channels'])
             );
         }
 
-        if (! empty($data['sets']['data'])) {
-            $this->syncSets($discount, $data['sets']['data']);
+        if (! empty($data['sets'])) {
+            $this->syncSets($discount, $data['sets']);
         }
 
         return $discount;
@@ -100,26 +101,56 @@ class DiscountService extends BaseService
      */
     public function syncSets($discount, array $sets)
     {
-        //print_r($sets);exit;
-        $discount->sets()->delete();
+        $setIds = [];
 
         foreach ($sets as $set) {
-            $groupModel = $discount->sets()->create([
-                'scope' => $set['scope'],
-                'outcome' => (bool) $set['outcome'],
-            ]);
-            if (! empty($set['items']['data'])) {
-                $set['items'] = $set['items']['data'];
+            if (!empty($set['id'])) {
+                $id = (new DiscountCriteriaSet)->decodeId($set['id']);
+                $setModel = DiscountCriteriaSet::find($id);
+            } else {
+                $setModel = $discount->sets()->create([
+                    'scope' => $set['scope'],
+                    'outcome' => (bool) $set['outcome'],
+                ]);
             }
+            $setIds[] = $setModel->id;
+
+            if (! empty($set['items'])) {
+                $set['items'] = $set['items'];
+            }
+
+            $itemIds = [];
+
             foreach ($set['items'] as $item) {
-                $model = $groupModel->items()->create($item);
+                if (!empty($item['id'])) {
+                    $modelId = (new DiscountCriteriaItem)->decodeId($item['id']);
+                    $model = DiscountCriteriaItem::find($modelId);
+                } else {
+                    $model = $setModel->items()->create($item);
+                }
+                $itemIds[] = $model->id;
                 if (! empty($item['eligibles'])) {
-                    foreach ($item['eligibles'] as $eligible) {
-                        $model->saveEligible($item['type'], $eligible);
-                    }
+                    $model->saveEligibles($item['type'], $item['eligibles']);
                 }
             }
+
+            $setModel->refresh()->items->filter(function ($item) use ($itemIds) {
+                return !in_array($item->id, $itemIds);
+            })->each(function ($item) {
+                $item->eligibles()->delete();
+                $item->delete();
+            });
         }
+
+        $discount->refresh()->sets->filter(function ($set) use ($setIds) {
+            return !in_array($set->id, $setIds);
+        })->each(function ($set) {
+            $set->items->each(function ($item) {
+                $item->eligibles()->delete();
+                $item->delete();
+            });
+            $set->delete();
+        });
 
         return $discount;
     }
