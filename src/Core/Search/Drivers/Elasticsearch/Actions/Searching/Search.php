@@ -3,17 +3,18 @@
 namespace GetCandy\Api\Core\Search\Drivers\Elasticsearch\Actions\Searching;
 
 use Elastica\Query;
+use Illuminate\Support\Str;
 use Elastica\Query\BoolQuery;
+use Lorisleiva\Actions\Action;
 use Elastica\Search as ElasticaSearch;
-use GetCandy\Api\Core\Categories\Models\Category;
 use GetCandy\Api\Core\Products\Models\Product;
+use Illuminate\Pagination\LengthAwarePaginator;
+use GetCandy\Api\Core\Categories\Models\Category;
 use GetCandy\Api\Core\Search\Actions\FetchSearchedIds;
 use GetCandy\Api\Http\Resources\Products\ProductCollection;
 use GetCandy\Api\Http\Resources\Attributes\AttributeResource;
 use GetCandy\Api\Http\Resources\Categories\CategoryCollection;
 use GetCandy\Api\Core\Attributes\Actions\FetchFilterableAttributes;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Lorisleiva\Actions\Action;
 
 class Search extends Action
 {
@@ -69,7 +70,8 @@ class Search extends Action
             $prefix = config('getcandy.search.index_prefix');
             $language = app()->getLocale();
 
-            $this->set('index', "{$prefix}_{$this->search_type}_{$language}");
+            $index = Str::plural($this->search_type);
+            $this->set('index', "{$prefix}_{$index}_{$language}");
         }
 
         $this->filters = $this->filters ? collect(explode(',', $this->filters))->mapWithKeys(function ($filter) {
