@@ -3,15 +3,15 @@
 namespace GetCandy\Api\Http\Controllers\Baskets;
 
 use GetCandy;
-use Illuminate\Http\Request;
+use GetCandy\Api\Core\Baskets\Factories\BasketLineFactory;
 use GetCandy\Api\Core\Baskets\Models\BasketLine;
 use GetCandy\Api\Http\Controllers\BaseController;
-use GetCandy\Api\Http\Resources\Baskets\BasketResource;
-use GetCandy\Api\Http\Requests\Baskets\UpdateLineRequest;
-use GetCandy\Api\Core\Baskets\Factories\BasketLineFactory;
+use GetCandy\Api\Http\Requests\Baskets\ChangeQuantityRequest;
 use GetCandy\Api\Http\Requests\Baskets\CreateLinesRequest;
 use GetCandy\Api\Http\Requests\Baskets\DeleteLinesRequest;
-use GetCandy\Api\Http\Requests\Baskets\ChangeQuantityRequest;
+use GetCandy\Api\Http\Requests\Baskets\UpdateLineRequest;
+use GetCandy\Api\Http\Resources\Baskets\BasketResource;
+use Illuminate\Http\Request;
 
 class BasketLineController extends BaseController
 {
@@ -113,6 +113,7 @@ class BasketLineController extends BaseController
         // TODO: Move this to an action.
         $realId = (new BasketLine)->decodeId($id);
         BasketLine::destroy($realId);
+
         return $this->respondWithNoContent();
     }
 }

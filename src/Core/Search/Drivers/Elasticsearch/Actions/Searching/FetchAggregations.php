@@ -46,6 +46,7 @@ class FetchAggregations extends Action
         $results = FetchFilterableAttributes::run()->map(function ($attribute) {
             return $attribute->handle;
         });
+
         return collect(['priceRange', 'category'])->merge($results)->map(function ($attribute) {
             $name = ucfirst(camel_case(str_singular($attribute)));
             $classname = "GetCandy\Api\Core\Search\Drivers\Elastic\Aggregators\\{$name}";

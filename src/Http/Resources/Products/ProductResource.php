@@ -66,6 +66,7 @@ class ProductResource extends AbstractResource
         foreach ($data as $optionKey => $option) {
             $data[$optionKey]['options'] = collect($option['options'] ?? [])->mapWithKeys(function ($option, $handle) {
                 $option['handle'] = $handle;
+
                 return [$handle => $option];
             })->toArray();
         }

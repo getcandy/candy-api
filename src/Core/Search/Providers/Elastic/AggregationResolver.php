@@ -3,10 +3,6 @@
 namespace GetCandy\Api\Core\Search\Providers\Elastic;
 
 use GetCandy;
-use GetCandy\Api\Http\Resources\Attributes\AttributeResource;
-use GetCandy\Api\Http\Resources\Categories\CategoryResource;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 class AggregationResolver
