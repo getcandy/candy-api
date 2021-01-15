@@ -5,6 +5,7 @@ namespace GetCandy\Api\Core\Discounts\Services;
 use Carbon\Carbon;
 use GetCandy\Api\Core\Discounts\RewardSet;
 use GetCandy\Api\Core\Scaffold\BaseService;
+use GetCandy\Api\Core\Channels\Models\Channel;
 use GetCandy\Api\Core\Discounts\Models\Discount;
 use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaSet;
 use GetCandy\Api\Core\Discounts\Discount as DiscountFactory;
@@ -47,6 +48,12 @@ class DiscountService extends BaseService
             $discount->channels()->sync(
                 $this->getChannelMapping($data['channels'])
             );
+        } else {
+            $discount->channels()->sync(Channel::select('id')->get()->mapWithKeys(function ($c) {
+                return [$c->id => [
+                    'published_at' => null,
+                ]];
+            })->toArray());
         }
 
         event(new AttributableSavedEvent($discount));
