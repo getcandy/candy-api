@@ -3,14 +3,14 @@
 namespace GetCandy\Api\Core\Discounts\Services;
 
 use Carbon\Carbon;
+use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
+use GetCandy\Api\Core\Channels\Models\Channel;
+use GetCandy\Api\Core\Discounts\Discount as DiscountFactory;
+use GetCandy\Api\Core\Discounts\Models\Discount;
+use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaItem;
+use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaSet;
 use GetCandy\Api\Core\Discounts\RewardSet;
 use GetCandy\Api\Core\Scaffold\BaseService;
-use GetCandy\Api\Core\Channels\Models\Channel;
-use GetCandy\Api\Core\Discounts\Models\Discount;
-use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaSet;
-use GetCandy\Api\Core\Discounts\Discount as DiscountFactory;
-use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaItem;
-use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
 
 class DiscountService extends BaseService
 {
@@ -111,7 +111,7 @@ class DiscountService extends BaseService
         $setIds = [];
 
         foreach ($sets as $set) {
-            if (!empty($set['id'])) {
+            if (! empty($set['id'])) {
                 $id = (new DiscountCriteriaSet)->decodeId($set['id']);
                 $setModel = DiscountCriteriaSet::find($id);
             } else {
@@ -129,7 +129,7 @@ class DiscountService extends BaseService
             $itemIds = [];
 
             foreach ($set['items'] as $item) {
-                if (!empty($item['id'])) {
+                if (! empty($item['id'])) {
                     $modelId = (new DiscountCriteriaItem)->decodeId($item['id']);
                     $model = DiscountCriteriaItem::find($modelId);
                 } else {
@@ -142,7 +142,7 @@ class DiscountService extends BaseService
             }
 
             $setModel->refresh()->items->filter(function ($item) use ($itemIds) {
-                return !in_array($item->id, $itemIds);
+                return ! in_array($item->id, $itemIds);
             })->each(function ($item) {
                 $item->eligibles()->delete();
                 $item->delete();
@@ -150,7 +150,7 @@ class DiscountService extends BaseService
         }
 
         $discount->refresh()->sets->filter(function ($set) use ($setIds) {
-            return !in_array($set->id, $setIds);
+            return ! in_array($set->id, $setIds);
         })->each(function ($set) {
             $set->items->each(function ($item) {
                 $item->eligibles()->delete();

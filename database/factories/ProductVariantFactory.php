@@ -16,7 +16,7 @@ use Faker\Generator as Faker;
 $factory->define(GetCandy\Api\Core\Products\Models\ProductVariant::class, function (Faker $faker) {
     return [
         'sku' => $faker->unique()->slug,
-        'stock' => $faker->numberBetween(10,2000),
+        'stock' => $faker->numberBetween(10, 2000),
         'price' => $faker->randomNumber(2),
     ];
 });

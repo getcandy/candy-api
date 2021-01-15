@@ -1,10 +1,7 @@
 <?php
 
 use Faker\Generator as Faker;
-use GetCandy\Api\Core\Channels\Models\Channel;
 use GetCandy\Api\Core\Products\Models\Product;
-use GetCandy\Api\Core\Products\Models\ProductVariant;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -16,7 +13,6 @@ use GetCandy\Api\Core\Products\Models\ProductVariant;
 | model instances for testing / seeding your application's database.
 |
 */
-
 
 $factory->define(Product::class, function (Faker $faker) {
     return [

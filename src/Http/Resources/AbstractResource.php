@@ -2,11 +2,11 @@
 
 namespace GetCandy\Api\Http\Resources;
 
-use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Resources\MissingValue;
-use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Resources\MissingValue;
+use Illuminate\Support\Collection;
 
 abstract class AbstractResource extends JsonResource
 {
@@ -170,6 +170,7 @@ abstract class AbstractResource extends JsonResource
                 'data' => new $resource($relation),
             ];
         }
+
         return $this->when($this->relationLoaded($relation), function () use ($relation, $resource) {
             return ['data' => new $resource($this->whenLoaded($relation))];
         });
