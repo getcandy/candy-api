@@ -23,7 +23,7 @@ class RemoveAttributeDataFromProductFamilyTable extends Migration
                 $table->dropColumn('name');
             });
             Schema::table('product_families', function (Blueprint $table) {
-                $table->text('name');
+                $table->text('name')->nullable();
             });
         }
 
