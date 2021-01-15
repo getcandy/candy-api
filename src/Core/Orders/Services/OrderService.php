@@ -7,7 +7,6 @@ use Carbon\Carbon;
 use DB;
 use GetCandy;
 use GetCandy\Api\Core\ActivityLog\Interfaces\ActivityLogFactoryInterface;
-use GetCandy\Api\Core\Addresses\Actions\CreateAddressAction;
 use GetCandy\Api\Core\Addresses\Actions\FetchAddressAction;
 use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Core\Baskets\Services\BasketService;

@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Core\ReusablePayments\Actions;
 
-use Lorisleiva\Actions\Action;
 use GetCandy\Api\Core\Payments\PaymentContract;
-use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
 use GetCandy\Api\Core\ReusablePayments\Models\ReusablePayment;
+use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
+use Lorisleiva\Actions\Action;
 
 class DeleteReusablePayment extends Action
 {
@@ -65,6 +65,7 @@ class DeleteReusablePayment extends Action
                 $this->reusablePayment
             );
         }
+
         return $this->reusablePayment->delete();
     }
 

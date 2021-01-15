@@ -3,18 +3,16 @@
 namespace GetCandy\Api\Core\Search\Drivers\Elasticsearch\Actions\Searching;
 
 use Elastica\Query;
-use Illuminate\Support\Str;
 use Elastica\Query\BoolQuery;
-use Lorisleiva\Actions\Action;
 use Elastica\Search as ElasticaSearch;
-use GetCandy\Api\Core\Products\Models\Product;
-use Illuminate\Pagination\LengthAwarePaginator;
 use GetCandy\Api\Core\Categories\Models\Category;
+use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Search\Actions\FetchSearchedIds;
-use GetCandy\Api\Http\Resources\Products\ProductCollection;
-use GetCandy\Api\Http\Resources\Attributes\AttributeResource;
 use GetCandy\Api\Http\Resources\Categories\CategoryCollection;
-use GetCandy\Api\Core\Attributes\Actions\FetchFilterableAttributes;
+use GetCandy\Api\Http\Resources\Products\ProductCollection;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Str;
+use Lorisleiva\Actions\Action;
 
 class Search extends Action
 {
@@ -75,7 +73,8 @@ class Search extends Action
         }
 
         $this->filters = $this->filters ? collect(explode(',', $this->filters))->mapWithKeys(function ($filter) {
-            list($label, $value) = explode(':', $filter);
+            [$label, $value] = explode(':', $filter);
+
             return [$label => $value];
         })->toArray() : [];
 
@@ -88,7 +87,7 @@ class Search extends Action
         $term = $this->term ? FetchTerm::run($this->attributes) : null;
         $filters = FetchFilters::run([
             'category' => $this->category,
-            'filters' => $this->filters
+            'filters' => $this->filters,
         ]);
 
         $limit = $this->limit ?: 100;
@@ -116,7 +115,6 @@ class Search extends Action
 
         // Set filters as post filters
         $postFilter = new BoolQuery;
-
 
         $preFilters = $filters->filter(function ($filter) {
             return in_array($filter->handle, $this->topFilters);
@@ -162,13 +160,11 @@ class Search extends Action
 
         $query->setQuery($boolQuery);
 
-
         $query = SetSorting::run([
             'query' => $query,
             'type' => $this->search_type,
             'sort' => $this->sort,
         ]);
-
 
         $query->setHighlight(config('getcandy.search.highlight') ?? [
             'pre_tags' => ['<em class="highlight">'],
@@ -220,7 +216,6 @@ class Search extends Action
             'include' => $request->include,
             'counts' => $request->counts,
         ]);
-
 
         $resource = ProductCollection::class;
 

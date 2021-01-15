@@ -225,7 +225,6 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
         $this->order->meta = array_merge($this->order->meta ?? [], $this->meta ?? []);
         $this->order->company_name = $this->companyName;
 
-
         $this->order->save();
 
         $response = $driver

@@ -30,7 +30,7 @@ class FetchFilters extends Action
     {
         return [
             'filters' => 'array|min:0',
-            'category' => 'array|min:0'
+            'category' => 'array|min:0',
         ];
     }
 
@@ -43,12 +43,11 @@ class FetchFilters extends Action
      */
     public function handle()
     {
-
         $applied = collect([
             (new CustomerGroupFilter)->process($this->user()),
         ]);
 
-        if (!empty($this->category)) {
+        if (! empty($this->category)) {
             $applied->push(
                 (new CategoryFilter)->process($this->category)
             );

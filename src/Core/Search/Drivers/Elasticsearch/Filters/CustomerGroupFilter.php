@@ -40,7 +40,6 @@ class CustomerGroupFilter extends AbstractFilter
             $cat->setQuery($term);
 
             $filter->addShould($cat);
-
         }
 
         return $filter;

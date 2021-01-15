@@ -3,13 +3,13 @@
 namespace GetCandy\Api\Core\Search\Drivers\Elasticsearch\Actions\Searching;
 
 use GetCandy;
+use GetCandy\Api\Core\Attributes\Actions\FetchAttributes;
+use GetCandy\Api\Http\Resources\Attributes\AttributeResource;
+use GetCandy\Api\Http\Resources\Categories\CategoryResource;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Lorisleiva\Actions\Action;
-use Illuminate\Support\Collection;
-use GetCandy\Api\Core\Attributes\Actions\FetchAttributes;
-use GetCandy\Api\Http\Resources\Categories\CategoryResource;
-use GetCandy\Api\Http\Resources\Attributes\AttributeResource;
 
 class MapAggregations extends Action
 {
@@ -72,7 +72,6 @@ class MapAggregations extends Action
             })->toArray()
         );
     }
-
 
     protected function resolveAggregations(Collection $aggregations)
     {

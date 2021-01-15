@@ -7,9 +7,10 @@ use GetCandy;
 use GetCandy\Api\Core\Addresses\Models\Address;
 use GetCandy\Api\Core\Addresses\Resources\AddressResource;
 use GetCandy\Api\Core\Countries\Actions\FetchCountry;
+use GetCandy\Api\Core\Countries\Models\Country;
 use Illuminate\Support\Arr;
 use Lorisleiva\Actions\Action;
-use GetCandy\Api\Core\Countries\Models\Country;
+
 class UpdateAddressAction extends Action
 {
     /**
@@ -55,7 +56,7 @@ class UpdateAddressAction extends Action
             'city' => 'string',
             'state' => 'string',
             'postal_code' => 'string',
-            'country_id' => 'hashid_is_valid:' . Country::class,
+            'country_id' => 'hashid_is_valid:'.Country::class,
             'shipping' => 'boolean',
             'billing' => 'boolean',
             'default' => 'boolean',

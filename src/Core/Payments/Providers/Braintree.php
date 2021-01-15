@@ -2,14 +2,14 @@
 
 namespace GetCandy\Api\Core\Payments\Providers;
 
+use Braintree_Exception_NotFound;
 use Braintree_Gateway;
 use Braintree_Transaction;
-use Illuminate\Support\Str;
-use Illuminate\Support\Carbon;
-use Braintree_Exception_NotFound;
-use Illuminate\Support\Facades\Auth;
-use GetCandy\Api\Core\Payments\PaymentResponse;
 use GetCandy\Api\Core\Payments\Models\Transaction;
+use GetCandy\Api\Core\Payments\PaymentResponse;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class Braintree extends AbstractProvider
 {
@@ -144,7 +144,7 @@ class Braintree extends AbstractProvider
         if ($user) {
             $providerUser = $user->providerUsers()->provider('braintree')->first();
 
-            if (!$providerUser) {
+            if (! $providerUser) {
                 $result = $this->gateway->customer()->create([
                     'firstName' => $billing['firstname'],
                     'lastName' => $billing['lastname'],
@@ -170,11 +170,11 @@ class Braintree extends AbstractProvider
                 $customerId = $providerUser->provider_id;
             }
 
-             // Do we want to save this card?
-             if ($customerId && !empty($this->fields['save'])) {
+            // Do we want to save this card?
+            if ($customerId && ! empty($this->fields['save'])) {
                 $result = $this->gateway->paymentMethod()->create([
                     'customerId' => $customerId,
-                    'paymentMethodNonce' => $this->token
+                    'paymentMethodNonce' => $this->token,
                 ]);
 
                 $paymentMethod = $result->paymentMethod;
@@ -184,7 +184,7 @@ class Braintree extends AbstractProvider
                     'provider' => 'braintree',
                     'last_four' => $paymentMethod->last4,
                     'token' => $paymentMethod->token,
-                    'expires_at' => Carbon::createFromFormat('d-m-Y', "01-{$paymentMethod->expirationMonth}-{$paymentMethod->expirationYear}")
+                    'expires_at' => Carbon::createFromFormat('d-m-Y', "01-{$paymentMethod->expirationMonth}-{$paymentMethod->expirationYear}"),
                 ]);
                 unset($payload['paymentMethodNonce']);
                 $payload['paymentMethodToken'] = $paymentMethod->token;
@@ -285,10 +285,10 @@ class Braintree extends AbstractProvider
     {
         $result = $this->gateway->transaction()->refund($token, $amount / 100);
 
-        if (!$result->success) {
+        if (! $result->success) {
             $error = collect($result->errors->forKey('transaction')->shallowAll())->first();
             // Trying to refund a transaction that isn't settled.
-            if ($error->code == "91506") {
+            if ($error->code == '91506') {
                 $result = $this->gateway->transaction()->void($token);
             }
         }

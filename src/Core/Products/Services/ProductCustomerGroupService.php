@@ -2,10 +2,9 @@
 
 namespace GetCandy\Api\Core\Products\Services;
 
-use GetCandy\Api\Core\Scaffold\BaseService;
-use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Customers\Actions\FetchCustomerGroup;
-use GetCandy\Api\Core\Customers\Services\CustomerGroupService;
+use GetCandy\Api\Core\Products\Models\Product;
+use GetCandy\Api\Core\Scaffold\BaseService;
 
 class ProductCustomerGroupService extends BaseService
 {
