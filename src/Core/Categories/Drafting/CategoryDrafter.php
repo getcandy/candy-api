@@ -56,9 +56,12 @@ class CategoryDrafter extends BaseDrafter implements DrafterInterface
         $category->save();
 
         // Update all products...
-        IndexObjects::run([
-            'documents' => $category->products,
-        ]);
+        if ($category->products->count()) {
+            IndexObjects::run([
+                'documents' => $category->products,
+            ]);
+        }
+
 
         event(new ModelPublishedEvent($category));
 
