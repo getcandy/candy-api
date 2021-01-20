@@ -1,0 +1,35 @@
+<?php
+
+namespace GetCandy\Api\Core\Categories\Observers;
+
+use GetCandy\Api\Core\Search\SearchManager;
+use GetCandy\Api\Core\Categories\Models\Category;
+use GetCandy\Api\Core\Assets\Services\AssetService;
+
+class CategoryObserver
+{
+    /**
+     * @var \GetCandy\Api\Core\Assets\Services\AssetService
+     */
+    protected $assets;
+
+    protected $search;
+
+    public function __construct(AssetService $assets, SearchManager $search)
+    {
+        $this->assets = $assets;
+        $this->search = $search;
+    }
+
+    /**
+     * Handle the User "deleted" event.
+     *
+     * @param  \GetCandy\Api\Core\Categories\Models\Category $category
+     * @return void
+     */
+    public function deleted(Category $category)
+    {
+        $driver = $this->search->with(config('getcandy.search.driver'));
+        $driver->delete($category);
+    }
+}

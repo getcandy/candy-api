@@ -3,11 +3,13 @@
 namespace GetCandy\Api\Providers;
 
 use Drafting;
+use Versioning;
+use Illuminate\Support\ServiceProvider;
+use GetCandy\Api\Core\Categories\Models\Category;
 use GetCandy\Api\Core\Categories\Drafting\CategoryDrafter;
 use GetCandy\Api\Core\Categories\Services\CategoryService;
+use GetCandy\Api\Core\Categories\Observers\CategoryObserver;
 use GetCandy\Api\Core\Categories\Versioning\CategoryVersioner;
-use Illuminate\Support\ServiceProvider;
-use Versioning;
 
 class CategoryServiceProvider extends ServiceProvider
 {
@@ -24,5 +26,7 @@ class CategoryServiceProvider extends ServiceProvider
         $this->app->bind('getcandy.categories', function ($app) {
             return $app->make(CategoryService::class);
         });
+
+        Category::observe(CategoryObserver::class);
     }
 }
