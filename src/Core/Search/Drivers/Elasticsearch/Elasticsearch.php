@@ -72,7 +72,8 @@ class Elasticsearch extends AbstractSearchDriver
         $this->onReference($reference)->index($documents, false);
     }
 
-    public function delete($documents) {
+    public function delete($documents)
+    {
         if (! $documents instanceof Collection) {
             $documents = collect([$documents]);
         }
@@ -86,7 +87,6 @@ class Elasticsearch extends AbstractSearchDriver
         $existing = collect($client->getStatus()->getIndexNames())->filter(function ($indexName) use ($prefix, $type) {
             return strpos($indexName, "{$prefix}_{$type}") !== false;
         })->first();
-
 
         $index = $client->getIndex($existing);
 
