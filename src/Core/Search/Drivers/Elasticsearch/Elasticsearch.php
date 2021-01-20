@@ -76,7 +76,6 @@ class Elasticsearch extends AbstractSearchDriver
         if (! $documents instanceof Collection) {
             $documents = collect([$documents]);
         }
-
         $client = FetchClient::run();
 
         $prefix = config('getcandy.search.index_prefix');
@@ -87,12 +86,13 @@ class Elasticsearch extends AbstractSearchDriver
             return strpos($indexName, "{$prefix}_{$type}") !== false;
         })->first();
 
+        if ($existing) {
+            $index = $client->getIndex($existing);
 
-        $index = $client->getIndex($existing);
-
-        $documents->each(function ($document) use ($index) {
-            $index->deleteById($document->encoded_id);
-        });
+            $documents->each(function ($document) use ($index) {
+                $index->deleteById($document->encoded_id);
+            });
+        }
     }
 
     public function search($data)
