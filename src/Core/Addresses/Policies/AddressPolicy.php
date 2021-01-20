@@ -16,7 +16,7 @@ class AddressPolicy
      */
     public function create(?User $user)
     {
-        return $user->can('create-address');
+        return true;
     }
 
     public function update(?User $user, Address $address)
