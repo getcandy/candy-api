@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Core\Categories\Observers;
 
-use GetCandy\Api\Core\Search\SearchManager;
-use GetCandy\Api\Core\Categories\Models\Category;
 use GetCandy\Api\Core\Assets\Services\AssetService;
+use GetCandy\Api\Core\Categories\Models\Category;
+use GetCandy\Api\Core\Search\SearchManager;
 
 class CategoryObserver
 {

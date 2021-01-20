@@ -3,13 +3,11 @@
 namespace Tests\Stubs;
 
 use Elastica\JSON;
-use Elastica\Request;
 use Elastica\Response;
 use Elastica\Transport\NullTransport;
 
 // Declaration of Tests\Stubs\MockTransport::_getGuzzleClient($baseUrl, $persistent = true) must be compatible with Elastica\Transpo
 //   rt\Guzzle::_getGuzzleClient(bool $persistent = true): GuzzleHttp\Client
-
 
 class MockTransport extends NullTransport
 {

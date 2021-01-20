@@ -58,7 +58,7 @@ class FetchFilters extends Action
             );
         }
 
-        if (!GetCandy::isHubRequest()) {
+        if (! GetCandy::isHubRequest()) {
             $applied->push(
                 (new ChannelFilter)->process($currentChannel)
             );
