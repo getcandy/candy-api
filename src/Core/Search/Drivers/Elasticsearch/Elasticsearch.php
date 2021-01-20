@@ -72,6 +72,29 @@ class Elasticsearch extends AbstractSearchDriver
         $this->onReference($reference)->index($documents, false);
     }
 
+    public function delete($documents) {
+        if (! $documents instanceof Collection) {
+            $documents = collect([$documents]);
+        }
+
+        $client = FetchClient::run();
+
+        $prefix = config('getcandy.search.index_prefix');
+
+        $type = get_class($documents->first()) == Product::class ? 'products' : 'categories';
+
+        $existing = collect($client->getStatus()->getIndexNames())->filter(function ($indexName) use ($prefix, $type) {
+            return strpos($indexName, "{$prefix}_{$type}") !== false;
+        })->first();
+
+
+        $index = $client->getIndex($existing);
+
+        $documents->each(function ($document) use ($index) {
+            $index->deleteById($document->encoded_id);
+        });
+    }
+
     public function search($data)
     {
         if ($data instanceof Request) {
