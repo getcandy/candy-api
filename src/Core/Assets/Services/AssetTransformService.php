@@ -2,15 +2,16 @@
 
 namespace GetCandy\Api\Core\Assets\Services;
 
-use Carbon\Carbon;
-use GetCandy\Api\Core\Assets\Models\Asset;
-use GetCandy\Api\Core\Assets\Models\AssetTransform;
-use GetCandy\Api\Core\Assets\Models\Transform;
-use GetCandy\Api\Core\Scaffold\BaseService;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Image;
-use Intervention\Image\Exception\NotReadableException;
 use Storage;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+use GetCandy\Api\Core\Assets\Models\Asset;
+use GetCandy\Api\Core\Scaffold\BaseService;
+use GetCandy\Api\Core\Assets\Models\Transform;
+use GetCandy\Api\Core\Assets\Models\AssetTransform;
+use Intervention\Image\Exception\NotReadableException;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 
 class AssetTransformService extends BaseService
 {
@@ -88,14 +89,24 @@ class AssetTransformService extends BaseService
         // Determine where to put this puppy...
         $thumbPath = $path.'/'.str_plural($transformer->handle);
 
+
         $assetTransform = new AssetTransform;
         $assetTransform->asset()->associate($asset);
         $assetTransform->transform()->associate($transformer);
 
-        $assetTransform->location = $thumbPath;
-        $assetTransform->filename = $transformer->handle.'_'.($asset->external ? $asset->location.'.jpg' : $asset->filename);
-        $assetTransform->file_exists = true;
+        $filename = $transformer->handle.'_'.($asset->external ? $asset->location.'.jpg' : $asset->filename);
 
+        $i = 1;
+
+        while (DB::table('asset_transforms')->where('filename', '=', $filename)->exists()) {
+            $name = pathinfo($filename, PATHINFO_FILENAME);
+            $ext  = pathinfo($filename, PATHINFO_EXTENSION);
+            $filename = "{$name}_{$i}.{$ext}";
+        }
+
+        $assetTransform->location = $thumbPath;
+        $assetTransform->filename = $filename;
+        $assetTransform->file_exists = true;
         $assetTransform->save();
 
         Storage::disk($source->disk)->put(
