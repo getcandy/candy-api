@@ -99,7 +99,13 @@ class ProductVariantService extends BaseService
             ]);
         }
 
-        return $product->load('variants');
+        return $product->load([
+            'variants.customerPricing.group',
+            'variants.customerPricing.tax',
+            'variants.image.transforms',
+            'variants.tax',
+            'variants.tiers.group',
+        ]);
     }
 
     public function canAddToBasket($variantId, $quantity)
