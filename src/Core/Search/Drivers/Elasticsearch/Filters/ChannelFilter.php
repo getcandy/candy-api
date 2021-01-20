@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Core\Search\Drivers\Elasticsearch\Filters;
 
-use Elastica\Query\Term;
-use Elastica\Query\Range;
-use Elastica\Query\Nested;
 use Elastica\Query\BoolQuery;
+use Elastica\Query\Nested;
+use Elastica\Query\Range;
+use Elastica\Query\Term;
 
 class ChannelFilter extends AbstractFilter
 {
@@ -18,6 +18,7 @@ class ChannelFilter extends AbstractFilter
     public function process($payload, $type = null)
     {
         $this->channel = $payload;
+
         return $this;
     }
 
@@ -38,7 +39,7 @@ class ChannelFilter extends AbstractFilter
 
         $range = new Range;
         $range->addField('channels.published_at', [
-            'lte' => 'now'
+            'lte' => 'now',
         ]);
 
         $dateRange->setQuery($range);

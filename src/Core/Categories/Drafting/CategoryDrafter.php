@@ -60,7 +60,7 @@ class CategoryDrafter extends BaseDrafter implements DrafterInterface
 
         $parent->update([
             '_lft' => null,
-            '_rgt' => null
+            '_rgt' => null,
         ]);
         $parent->refresh()->forceDelete();
         // $parent->refresh()->forceDelete();
@@ -74,7 +74,6 @@ class CategoryDrafter extends BaseDrafter implements DrafterInterface
                 'documents' => $category->products,
             ]);
         }
-
 
         event(new ModelPublishedEvent($category));
 

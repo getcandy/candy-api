@@ -2,10 +2,9 @@
 
 namespace GetCandy\Api\Core\Search\Drivers\Elasticsearch\Filters;
 
-use Elastica\Query\Term;
+use Elastica\Query\BoolQuery;
 use Elastica\Query\Match;
 use Elastica\Query\Nested;
-use Elastica\Query\BoolQuery;
 use GetCandy\Api\Core\Customers\Actions\FetchDefaultCustomerGroup;
 
 class CustomerGroupFilter extends AbstractFilter
@@ -51,7 +50,6 @@ class CustomerGroupFilter extends AbstractFilter
 
             $filter->addShould($nested);
         }
-
 
         return $filter;
     }
