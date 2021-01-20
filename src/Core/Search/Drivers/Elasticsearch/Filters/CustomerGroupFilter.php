@@ -2,9 +2,10 @@
 
 namespace GetCandy\Api\Core\Search\Drivers\Elasticsearch\Filters;
 
-use Elastica\Query\BoolQuery;
-use Elastica\Query\Nested;
 use Elastica\Query\Term;
+use Elastica\Query\Match;
+use Elastica\Query\Nested;
+use Elastica\Query\BoolQuery;
 use GetCandy\Api\Core\Customers\Actions\FetchDefaultCustomerGroup;
 
 class CustomerGroupFilter extends AbstractFilter
@@ -32,15 +33,25 @@ class CustomerGroupFilter extends AbstractFilter
         $filter = new BoolQuery;
 
         foreach ($this->getCustomerGroups() as $model) {
-            $cat = new Nested;
-            $cat->setPath('customer_groups');
-            $term = new Term;
-            $term->setTerm('customer_groups.id', $model->encodedId());
+            $nested = new Nested;
+            $nested->setPath('customer_groups');
 
-            $cat->setQuery($term);
+            $bool = new BoolQuery;
 
-            $filter->addShould($cat);
+            $groupIdMatch = new Match;
+            $groupIdMatch->setField('customer_groups.id', $model->encodedId());
+
+            $visibleMatch = new Match;
+            $visibleMatch->setField('customer_groups.visible', true);
+
+            $bool->addMust($groupIdMatch);
+            $bool->addMust($visibleMatch);
+
+            $nested->setQuery($bool);
+
+            $filter->addShould($nested);
         }
+
 
         return $filter;
     }

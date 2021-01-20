@@ -192,13 +192,13 @@ class AbstractDocumentAction extends Action
 
     protected function getCustomerGroups(Model $model, $lang = 'en')
     {
-        $groups = $model->customerGroups->filter(function ($group) {
-            return $group->pivot->purchasable && $group->pivot->visible;
-        })->map(function ($item) {
+        $groups = $model->customerGroups->map(function ($item) {
             return [
                 'id' => $item->encodedId(),
                 'handle' => $item->handle,
                 'name' => $item->name,
+                'visible' => (bool) $item->pivot->visible,
+                'purchasable' => (bool) $item->pivot->purchasable,
             ];
         })->toArray();
 
@@ -207,13 +207,13 @@ class AbstractDocumentAction extends Action
 
     protected function getChannels(Model $model, $lang = 'en')
     {
-        $channels = $model->channels->filter(function ($channel) {
-            return $channel->published_at <= now();
-        })->map(function ($item) {
+
+        $channels = $model->channels->map(function ($item) {
             return [
                 'id' => $item->encodedId(),
                 'handle' => $item->handle,
                 'name' => $item->name,
+                'published_at' => $item->pivot->published_at
             ];
         })->toArray();
 
