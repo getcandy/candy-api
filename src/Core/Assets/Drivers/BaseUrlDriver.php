@@ -84,7 +84,6 @@ abstract class BaseUrlDriver
             ]);
         }
 
-
         dispatch(new GenerateTransforms($asset));
 
         return $asset;

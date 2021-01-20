@@ -207,13 +207,12 @@ class AbstractDocumentAction extends Action
 
     protected function getChannels(Model $model, $lang = 'en')
     {
-
         $channels = $model->channels->map(function ($item) {
             return [
                 'id' => $item->encodedId(),
                 'handle' => $item->handle,
                 'name' => $item->name,
-                'published_at' => $item->pivot->published_at
+                'published_at' => $item->pivot->published_at,
             ];
         })->toArray();
 

@@ -71,6 +71,7 @@ class ShippingPriceController extends BaseController
     public function estimate(EstimateRequest $request)
     {
         $result = GetCandy::shippingPrices()->estimate($request->amount, $request->zip, $request->limit);
+
         return new ShippingPriceCollection($result);
     }
 

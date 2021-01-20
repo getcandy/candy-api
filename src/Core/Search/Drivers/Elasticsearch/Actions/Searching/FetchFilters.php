@@ -2,12 +2,12 @@
 
 namespace GetCandy\Api\Core\Search\Drivers\Elasticsearch\Actions\Searching;
 
-use Lorisleiva\Actions\Action;
 use GetCandy\Api\Core\Attributes\Actions\FetchAttribute;
 use GetCandy\Api\Core\Channels\Actions\FetchCurrentChannel;
-use GetCandy\Api\Core\Search\Drivers\Elasticsearch\Filters\ChannelFilter;
 use GetCandy\Api\Core\Search\Drivers\Elasticsearch\Filters\CategoryFilter;
+use GetCandy\Api\Core\Search\Drivers\Elasticsearch\Filters\ChannelFilter;
 use GetCandy\Api\Core\Search\Drivers\Elasticsearch\Filters\CustomerGroupFilter;
+use Lorisleiva\Actions\Action;
 
 class FetchFilters extends Action
 {
