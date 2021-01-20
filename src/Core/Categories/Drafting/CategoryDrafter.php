@@ -62,7 +62,6 @@ class CategoryDrafter extends BaseDrafter implements DrafterInterface
             ]);
         }
 
-
         event(new ModelPublishedEvent($category));
 
         return $category;
