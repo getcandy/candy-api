@@ -2,29 +2,31 @@
 
 namespace GetCandy\Api\Core\Orders\Services;
 
-use Auth;
-use Carbon\Carbon;
 use DB;
+use PDF;
+use Auth;
 use GetCandy;
-use GetCandy\Api\Core\ActivityLog\Interfaces\ActivityLogFactoryInterface;
-use GetCandy\Api\Core\Addresses\Actions\FetchAddressAction;
-use GetCandy\Api\Core\Baskets\Models\Basket;
-use GetCandy\Api\Core\Baskets\Services\BasketService;
-use GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface;
-use GetCandy\Api\Core\Orders\Events\OrderBeforeSavedEvent;
-use GetCandy\Api\Core\Orders\Events\OrderProcessedEvent;
-use GetCandy\Api\Core\Orders\Events\OrderSavedEvent;
-use GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException;
-use GetCandy\Api\Core\Orders\Exceptions\IncompleteOrderException;
-use GetCandy\Api\Core\Orders\Interfaces\OrderServiceInterface;
-use GetCandy\Api\Core\Orders\Jobs\OrderNotification;
+use Carbon\Carbon;
 use GetCandy\Api\Core\Orders\Models\Order;
+use GetCandy\Api\Core\Scaffold\BaseService;
+use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Core\Orders\Models\OrderDiscount;
+use GetCandy\Api\Core\Orders\Events\OrderSavedEvent;
+use GetCandy\Api\Core\Orders\Jobs\OrderNotification;
+use GetCandy\Api\Core\Baskets\Services\BasketService;
+use GetCandy\Api\Core\Countries\Actions\FetchCountry;
 use GetCandy\Api\Core\Payments\Services\PaymentService;
 use GetCandy\Api\Core\Pricing\PriceCalculatorInterface;
+use GetCandy\Api\Core\Orders\Events\OrderProcessedEvent;
+use GetCandy\Api\Core\Orders\Events\OrderBeforeSavedEvent;
+use GetCandy\Api\Core\Addresses\Actions\FetchAddressAction;
+use GetCandy\Api\Core\Addresses\Actions\CreateAddressAction;
+use GetCandy\Api\Core\Orders\Interfaces\OrderServiceInterface;
 use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
-use GetCandy\Api\Core\Scaffold\BaseService;
-use PDF;
+use GetCandy\Api\Core\Orders\Exceptions\IncompleteOrderException;
+use GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException;
+use GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface;
+use GetCandy\Api\Core\ActivityLog\Interfaces\ActivityLogFactoryInterface;
 
 class OrderService extends BaseService implements OrderServiceInterface
 {
@@ -464,6 +466,23 @@ class OrderService extends BaseService implements OrderServiceInterface
             $payload['email'] = $data['email'] ?? null;
             $payload['phone'] = $data['phone'] ?? null;
             $data = $payload;
+        } elseif ($user) {
+            // TODO: Reassess when we refactor order addresses.
+            $addressData = $data;
+            $addressData[$type] = true;
+            $addressData['postal_code'] = $data['zip'];
+            $addressData['state'] = $data['county'];
+            // Does this address already exist for the user? Check postcode...
+            $existing = $user->addresses()
+                ->where('postal_code', '=', $addressData['postal_code'])
+                ->where($type, '=', true)
+                ->exists();
+            $addressData['country_id'] = FetchCountry::run([
+                'name' => $addressData['country'],
+            ])->encoded_id;
+            if (!$existing) {
+                CreateAddressAction::run($addressData);
+            }
         }
 
         $this->setFields($order, $data, $type);
