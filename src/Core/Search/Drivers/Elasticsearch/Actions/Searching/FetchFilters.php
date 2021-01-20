@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Search\Drivers\Elasticsearch\Actions\Searching;
 
+use GetCandy;
 use GetCandy\Api\Core\Attributes\Actions\FetchAttribute;
 use GetCandy\Api\Core\Channels\Actions\FetchCurrentChannel;
 use GetCandy\Api\Core\Search\Drivers\Elasticsearch\Filters\CategoryFilter;
@@ -49,12 +50,17 @@ class FetchFilters extends Action
 
         $applied = collect([
             (new CustomerGroupFilter)->process($this->user()),
-            (new ChannelFilter)->process($currentChannel),
         ]);
 
         if (! empty($this->category)) {
             $applied->push(
                 (new CategoryFilter)->process($this->category)
+            );
+        }
+
+        if (!GetCandy::isHubRequest()) {
+            $applied->push(
+                (new ChannelFilter)->process($currentChannel)
             );
         }
         foreach ($this->filters ?? [] as $filter => $value) {
