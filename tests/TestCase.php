@@ -3,30 +3,29 @@
 namespace Tests;
 
 use Closure;
-use Tests\Stubs\User;
-use Illuminate\Support\Fluent;
-use Tests\Stubs\MockTransport;
-use Illuminate\Encryption\Encrypter;
-use Elastica\Transport\NullTransport;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\SQLiteConnection;
-use Vinkla\Hashids\HashidsServiceProvider;
-use GetCandy\Api\Core\Baskets\Models\Basket;
-use GetCandy\Api\Core\Facades\GetCandyFacade;
-use Illuminate\Database\Schema\SQLiteBuilder;
-use GetCandy\Api\Core\Channels\Models\Channel;
-use GetCandy\Api\Providers\ApiServiceProvider;
-use GetCandy\Api\Core\Baskets\Models\BasketLine;
-use Spatie\Permission\PermissionServiceProvider;
-use NeonDigital\Drafting\DraftingServiceProvider;
-use Facades\GetCandy\Api\Core\Taxes\TaxCalculator;
-use Spatie\Activitylog\ActivitylogServiceProvider;
-use GetCandy\Api\Core\Products\Models\ProductVariant;
-use NeonDigital\Versioning\VersioningServiceProvider;
 use Facades\GetCandy\Api\Core\Pricing\PriceCalculator;
+use Facades\GetCandy\Api\Core\Taxes\TaxCalculator;
 use GetCandy\Api\Core\Baskets\Factories\BasketFactory;
-use GetCandy\Api\Core\Currencies\Facades\CurrencyConverter;
+use GetCandy\Api\Core\Baskets\Models\Basket;
+use GetCandy\Api\Core\Baskets\Models\BasketLine;
 use GetCandy\Api\Core\Channels\Interfaces\ChannelFactoryInterface;
+use GetCandy\Api\Core\Channels\Models\Channel;
+use GetCandy\Api\Core\Currencies\Facades\CurrencyConverter;
+use GetCandy\Api\Core\Facades\GetCandyFacade;
+use GetCandy\Api\Core\Products\Models\ProductVariant;
+use GetCandy\Api\Providers\ApiServiceProvider;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Schema\SQLiteBuilder;
+use Illuminate\Database\SQLiteConnection;
+use Illuminate\Encryption\Encrypter;
+use Illuminate\Support\Fluent;
+use NeonDigital\Drafting\DraftingServiceProvider;
+use NeonDigital\Versioning\VersioningServiceProvider;
+use Spatie\Activitylog\ActivitylogServiceProvider;
+use Spatie\Permission\PermissionServiceProvider;
+use Tests\Stubs\MockTransport;
+use Tests\Stubs\User;
+use Vinkla\Hashids\HashidsServiceProvider;
 
 abstract class TestCase extends \Orchestra\Testbench\TestCase
 {
@@ -118,7 +117,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             'services.sagepay.vendor' => 'SagePay',
             'getcandy' => require __DIR__.'/../config/getcandy.php',
             'app.key' => Encrypter::generateKey(null),
-            'getcandy.search.client_config.elastic.transport' => MockTransport::class
+            'getcandy.search.client_config.elastic.transport' => MockTransport::class,
         ];
 
         foreach ($config as $key => $value) {

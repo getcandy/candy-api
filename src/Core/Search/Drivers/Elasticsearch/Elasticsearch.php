@@ -72,7 +72,8 @@ class Elasticsearch extends AbstractSearchDriver
         $this->onReference($reference)->index($documents, false);
     }
 
-    public function delete($documents) {
+    public function delete($documents)
+    {
         if (! $documents instanceof Collection) {
             $documents = collect([$documents]);
         }
