@@ -1,0 +1,24 @@
+parameters:
+  - schema:
+      type: string
+    name: basketLineId
+    in: path
+    required: true
+put:
+  summary: Remove basket line quantity
+  tags:
+    - Baskets
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../../baskets/responses/BasketResponse.yaml'
+  operationId: put-basket-lines-basketLineId-remove
+  description: Removes quantity from a basket line
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../requests/BasketLineUpdateBody.yaml'

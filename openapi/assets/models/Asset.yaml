@@ -1,0 +1,37 @@
+title: Asset
+type: object
+properties:
+  id:
+    type: string
+  title:
+    type: string
+  type:
+    type: string
+  caption:
+    type: string
+  kind:
+    type: string
+  external:
+    type: boolean
+  position:
+    type: integer
+  primary:
+    type: boolean
+  url:
+    type: string
+  sub_kind:
+    type: string
+  extension:
+    type: string
+  original_filename:
+    type: string
+  size:
+    type: string
+  width:
+    type: string
+  height:
+    type: string
+  transforms:
+    $ref: '../responses/AssetTransformCollection.yaml'
+  tags:
+    $ref: '../../tags/responses/TagCollection.yaml'

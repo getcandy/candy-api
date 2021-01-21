@@ -4,6 +4,7 @@ namespace GetCandy\Api\Core\Products\Observers;
 
 use GetCandy\Api\Core\Assets\Services\AssetService;
 use GetCandy\Api\Core\Products\Models\Product;
+use GetCandy\Api\Core\Search\SearchManager;
 
 class ProductObserver
 {
@@ -12,9 +13,12 @@ class ProductObserver
      */
     protected $assets;
 
-    public function __construct(AssetService $assets)
+    protected $search;
+
+    public function __construct(AssetService $assets, SearchManager $search)
     {
         $this->assets = $assets;
+        $this->search = $search;
     }
 
     /**
@@ -33,6 +37,8 @@ class ProductObserver
             $product->categories()->detach();
             $product->routes()->forceDelete();
             $product->recommendations()->forceDelete();
+            $driver = $this->search->with(config('getcandy.search.driver'));
+            $driver->delete($product);
         }
     }
 }

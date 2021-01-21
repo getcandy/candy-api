@@ -1,0 +1,53 @@
+parameters:
+  - schema:
+      type: string
+    name: basketId
+    in: path
+    required: true
+delete:
+  summary: Delete a basket by ID
+  tags:
+    - Baskets
+  responses:
+    '204':
+      description: No Content
+  operationId: delete-baskets-basketId
+  description: Deletes a basket
+get:
+  summary: Get basket
+  tags:
+    - Baskets
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/BasketResponse.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  operationId: get-baskets-basketId
+  description: "Get a basket by it's ID"
+put:
+  summary: Update a basket by ID
+  tags:
+    - Baskets
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/BasketResponse.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  operationId: put-baskets-basketId
+  description: Updates a basket

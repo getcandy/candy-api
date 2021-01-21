@@ -1,0 +1,53 @@
+title: Product
+type: object
+properties:
+  id:
+    type: string
+  drafted_at:
+    type: string
+    format: date-time
+    description: 'If this product is a draft, this will be populated'
+  option_data:
+    description: Displays any variant option data
+    type: object
+  created_at:
+    type: string
+  updated_at:
+    type: string
+  # family:
+  #   $ref: '../../product-families/responses/ProductFamilyResponse.yaml'
+  # draft:
+  #   $ref: '../responses/ProductResponse.yaml'
+  # published_parent:
+  #   $ref: '../responses/ProductResponse.yaml'
+  # assets:
+  #   $ref: '../../assets/responses/AssetCollection.yaml'
+  # routes:
+  #   $ref: '../../routes/responses/RouteCollection.yaml'
+  # channels:
+  #   $ref: '../../channels/responses/ChannelCollection.yaml'
+  # first_variant:
+  #   $ref: '../../products/responses/ProductVariantResponse.yaml'
+  # primary_asset:
+  #   $ref: '../../assets/responses/AssetResponse.yaml'
+  # categories:
+  #   $ref: '../../categories/responses/CategoryCollection.yaml'
+  # variants:
+  #   $ref: '../responses/ProductVariantCollection.yaml'
+  # discounts:
+  #   $ref: '../../discounts/responses/DiscountCollection.yaml'
+  # collections:
+  #   $ref: '../../collections/responses/CollectionCollection.yaml'
+  # associations:
+  #   $ref: '../../associations/responses/ProductAssociationCollection.yaml'
+  # versions:
+  #   $ref: '../../versions/responses/VersionCollection.yaml'
+  # customer_groups:
+  #   $ref: '../../customer-groups/responses/CustomerGroupCollection.yaml'
+  # attributes:
+  #   $ref: '../../attributes/responses/AttributeCollection.yaml'
+  # layout:
+  #   $ref: '../../layouts/responses/LayoutResponse.yaml'
+# - $ref: '../../global/models/LocalisedAttributeData.yaml'
+# - $ref: '../../global/models/AttributeData.yaml'
+description: ''

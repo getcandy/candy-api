@@ -1,0 +1,147 @@
+parameters:
+  - schema:
+      type: string
+    name: attributeId
+    in: path
+    required: true
+get:
+  summary: Get an attribute
+  tags:
+    - Attributes
+  responses:
+    '200':
+      description: OK
+      headers: {}
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/AttributeResponse.yaml'
+          examples:
+            full-example:
+              value:
+                data:
+                  id: dnj4zky5
+                  name:
+                    en: Name
+                    sv: Namn
+                  handle: name
+                  position: '1'
+                  filterable: false
+                  scopeable: true
+                  translatable: true
+                  variant: false
+                  searchable: true
+                  localised: true
+                  type: text
+                  required: true
+                  lookups: null
+                  system: false
+            example-with-group:
+              value:
+                data:
+                  id: dnj4zky5
+                  name:
+                    en: Name
+                    sv: Namn
+                  handle: name
+                  position: '1'
+                  filterable: false
+                  scopeable: true
+                  translatable: true
+                  variant: false
+                  searchable: true
+                  localised: true
+                  type: text
+                  required: true
+                  lookups: null
+                  system: false
+                  group:
+                    data:
+                      id: vokq5kmj
+                      name:
+                        en: General
+                      handle: general
+                      position: '1'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  operationId: get-attributes-attributeId
+  parameters:
+    - schema:
+        type: string
+      in: query
+      name: include
+      description: ''
+  description: Returns an attribute from a given ID.
+put:
+  summary: Update an attribute
+  operationId: put-attributes-attributeId
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/AttributeResponse.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+          examples:
+            not-found-example:
+              value:
+                error:
+                  http_code: 404
+                  message: Resource not found
+    '422':
+      description: Unprocessable Entity (WebDAV)
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: array
+                items:
+                  type: string
+          examples:
+            validation-example:
+              value:
+                name:
+                  - The name field is required.
+  description: Updates an attribute from a given ID.
+  parameters: []
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../requests/UpdateAttributesBody.yaml'
+  tags:
+    - Attributes
+delete:
+  summary: Delete an attribute
+  operationId: delete-attributes-attributeId
+  responses:
+    '204':
+      description: No Content
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+          examples:
+            not-found-example:
+              value:
+                error:
+                  http_code: 404
+                  message: Resource not found
+  tags:
+    - Attributes
+  description: Delete an attribute.
+  parameters: []

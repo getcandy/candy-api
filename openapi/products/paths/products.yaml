@@ -1,0 +1,58 @@
+get:
+  summary: Get Products
+  tags:
+    - Products
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/ProductCollection.yaml'
+  operationId: get-products
+  description: Gets a paginated list of products.
+  parameters:
+    - schema:
+        type: string
+      in: query
+      name: include
+    - schema:
+        type: boolean
+        default: true
+      in: query
+      name: paginated
+      description: ''
+      allowEmptyValue: true
+    - schema:
+        type: string
+      in: query
+      name: ids
+      description: Return only the selected IDs
+    - schema:
+        type: integer
+      in: query
+      name: limit
+post:
+  summary: Create Product
+  tags:
+    - Products
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/ProductResponse.yaml'
+  operationId: post-products
+  requestBody:
+    content:
+      multipart/form-data:
+        schema:
+          $ref: '../requests/ProductCreateBody.yaml'
+        examples: {}
+    description: Creates a new product in the system. When creating a new product will also create 1 variant for that product.
+parameters:
+  - schema:
+      type: string
+    in: query
+    name: include

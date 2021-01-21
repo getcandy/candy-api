@@ -19,13 +19,24 @@ class ChannelScope extends AbstractScope
     {
         $channel = app()->getInstance()->make(ChannelFactoryInterface::class);
         $this->resolve(function () use ($builder, $channel) {
-            $model = $builder->getModel();
-            $relation = $model->channels();
-            $builder->addSelect("{$model->getTable()}.*")->join($relation->getTable(), function ($join) use ($relation, $model, $channel) {
-                $join->on("{$model->getTable()}.id", '=', $relation->getExistenceCompareKey())
-                ->where("{$relation->getTable()}.channel_id", $channel->getChannel()->id)
-                ->whereDate("{$relation->getTable()}.published_at", '<=', now());
-            })->groupBy($relation->getExistenceCompareKey());
+            $builder->whereHas('channels', function ($query) use ($channel) {
+                $query->whereHandle($channel->current())
+                    ->whereDate('published_at', '<=', now());
+            });
+            // $model = $builder->getModel();
+            // $relation = $model->channels();
+
+            // $columnsToSelect = $this->filterColumns($builder, ["{$model->getTable()}.*"]);
+
+            // if ($columnsToSelect->count()) {
+            //     $builder->addSelect($columnsToSelect->toArray());
+            // }
+
+            // $builder->join($relation->getTable(), function ($join) use ($relation, $model, $channel) {
+            //     $join->on("{$model->getTable()}.id", '=', $relation->getExistenceCompareKey())
+            //     ->where("{$relation->getTable()}.channel_id", $channel->getChannel()->id)
+            //     ->whereDate("{$relation->getTable()}.published_at", '<=', now());
+            // })->groupBy($relation->getExistenceCompareKey());
         });
     }
 

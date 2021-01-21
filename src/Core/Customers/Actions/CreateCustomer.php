@@ -17,7 +17,7 @@ class CreateCustomer extends AbstractAction
      */
     public function authorize()
     {
-        return $this->user()->can('manage-customers');
+        return true;
     }
 
     /**
@@ -36,7 +36,7 @@ class CreateCustomer extends AbstractAction
             'alt_contact_number' => 'nullable|string',
             'vat_no' => 'nullable|string',
             'company_name' => 'nullable|string',
-            'fields' => 'nullable|array',
+            'fields' => 'nullable',
             'customer_group_ids' => 'nullable|array',
         ];
     }
@@ -58,12 +58,10 @@ class CreateCustomer extends AbstractAction
             ]);
         }
 
-        if ($this->customer_group_ids) {
-            AttachCustomerToGroups::run([
-                'customer_id' => $customer->encoded_id,
-                'customer_group_ids' => $this->customer_group_ids,
-            ]);
-        }
+        AttachCustomerToGroups::run([
+            'customer_id' => $customer->encoded_id,
+            'customer_group_ids' => $this->customer_group_ids ?: [FetchDefaultCustomerGroup::run()->encoded_id],
+        ]);
 
         return $customer->load($this->resolveEagerRelations());
     }

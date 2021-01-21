@@ -1,0 +1,25 @@
+parameters:
+  - schema:
+      type: string
+    name: shippingZoneId
+    in: path
+    required: true
+get:
+  summary: Get Shipping Zone
+  tags:
+    - Shipping
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/ShippingZoneResponse.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  operationId: get-shipping-zones-shippingZoneId
+  description: "Get a shipping zone by it's ID."

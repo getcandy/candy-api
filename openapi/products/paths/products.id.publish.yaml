@@ -1,0 +1,25 @@
+parameters:
+- schema:
+    type: string
+  name: productId
+  in: path
+  required: true
+post:
+  summary: Publish Draft
+  tags:
+    - Products
+  responses:
+    '200':
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/ProductResponse.yaml'
+      description: ''
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  operationId: post-products-id-publish
+  description: Publish a draft from a Product

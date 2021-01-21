@@ -1,0 +1,11 @@
+title: CreateAssetBody
+type: object
+properties:
+  mime_type:
+    type: string
+    description: Required when passing url
+  url:
+    type: string
+    description: 'External URL to file to upload, required without file'
+  file:
+    type: object

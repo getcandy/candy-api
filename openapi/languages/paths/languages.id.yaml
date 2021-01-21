@@ -1,3 +1,9 @@
+parameters:
+  - schema:
+      type: string
+    name: languageId
+    in: path
+    required: true
 get:
   summary: Get Language
   tags:
@@ -14,7 +20,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../../global/responses/Error.yaml'
+            $ref: '../../global/responses/ApiError.yaml'
   operationId: get-languages-languageId
   description: Get a Language by ID
 put:
@@ -58,6 +64,6 @@ delete:
       content:
         application/json:
           schema:
-            $ref: '../../global/responses/Error.yaml'
+            $ref: '../../global/responses/ApiError.yaml'
   operationId: delete-languages-languageId
   description: Delete a Language by its ID

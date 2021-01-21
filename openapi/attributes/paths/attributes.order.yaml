@@ -1,0 +1,14 @@
+put:
+  summary: Update request to reorder attributes
+  tags:
+    - Attributes
+  responses:
+    '204':
+      description: No Content
+  operationId: put-attributes-order
+  description: Allows you to reorder a target category in relation to another.
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../requests/AttributesReorderBody.yaml'

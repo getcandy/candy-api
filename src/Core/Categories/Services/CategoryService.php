@@ -7,11 +7,12 @@ use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
 use GetCandy\Api\Core\Categories\Events\CategoryStoredEvent;
 use GetCandy\Api\Core\Categories\Models\Category;
 use GetCandy\Api\Core\Channels\Models\Channel;
+use GetCandy\Api\Core\Customers\Actions\FetchCustomerGroup;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 use GetCandy\Api\Core\Routes\Models\Route;
 use GetCandy\Api\Core\Scaffold\BaseService;
+use GetCandy\Api\Core\Search\Actions\IndexObjects;
 use GetCandy\Api\Core\Search\Events\IndexableSavedEvent;
-use GetCandy\Api\Core\Search\SearchContract;
 
 class CategoryService extends BaseService
 {
@@ -168,7 +169,9 @@ class CategoryService extends BaseService
         $category = $this->getByHashedId($id, true);
         $groupData = [];
         foreach ($groups as $group) {
-            $groupModel = GetCandy::customerGroups()->getByHashedId($group['id']);
+            $groupModel = FetchCustomerGroup::run([
+                'encoded_id' => $group['id'],
+            ]);
             $groupData[$groupModel->id] = [
                 'visible' => $group['visible'],
                 'purchasable' => $group['purchasable'],
@@ -197,16 +200,14 @@ class CategoryService extends BaseService
         $category->products()->sync($ids);
 
         if ($existingProducts->count()) {
-            app(SearchContract::class)->indexer()->indexObjects(
-                $existingProducts,
-                'categories'
-            );
+            IndexObjects::run([
+                'documents' => $existingProducts,
+            ]);
         }
 
-        app(SearchContract::class)->indexer()->indexObjects(
-            $category->products()->get(),
-            'categories'
-        );
+        IndexObjects::run([
+            'documents' => $category->products()->get(),
+        ]);
 
         event(new CategoryStoredEvent($category));
 

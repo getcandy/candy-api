@@ -1,0 +1,22 @@
+title: CreateUserBody
+type: object
+properties:
+  email:
+    type: string
+  firstname:
+    type: string
+  lastname:
+    type: string
+  password:
+    type: string
+  password_confirmation:
+    type: string
+  customer_id:
+    type: string
+    nullable: false
+required:
+  - email
+  - firstname
+  - lastname
+  - password
+  - password_confirmation

@@ -1,0 +1,94 @@
+parameters:
+  - schema:
+      type: string
+    name: productId
+    in: path
+    required: true
+get:
+  summary: Get Product
+  tags:
+    - Products
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/ProductResponse.yaml'
+          examples: {}
+  operationId: get-products-productId
+  parameters:
+    - schema:
+        type: string
+      in: query
+      name: include
+    - schema:
+        type: string
+      in: query
+      name: excl_tax
+      description: "Prices shouldn't include tax"
+    - schema:
+        type: string
+      in: query
+      name: full_response
+      description: Returns full `attribute_data` in response
+    - schema:
+        type: string
+      in: query
+      name: option_data
+      description: Include option data
+    - schema:
+        type: string
+      in: query
+      name: draft
+      description: Show draft if exists
+  description: "Returns a product by it's given ID"
+put:
+  summary: Update Product
+  tags:
+    - Products
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/ProductResponse.yaml'
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/Unauthenticated.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  operationId: put-products-productId
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../requests/ProductUpdateBody.yaml'
+    description: ''
+  description: "Updates a product by it's ID"
+delete:
+  summary: Delete Product
+  tags:
+    - Products
+  responses:
+    '204':
+      description: No Content
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  operationId: delete-products-productId
+  description: |-
+    Deletes a product by it's ID
+
+    > This will only soft delete the product. It will then be available to restore at a later time.

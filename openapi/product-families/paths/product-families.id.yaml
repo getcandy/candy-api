@@ -1,0 +1,72 @@
+parameters:
+  - schema:
+      type: string
+    name: productFamilyId
+    in: path
+    required: true
+get:
+  summary: Get a product family
+  tags:
+    - Product Families
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/ProductFamilyResponse.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  operationId: get-product-families-productFamilyId
+  description: Returns a single product family based on ID.
+  parameters:
+    - schema:
+        type: string
+      in: query
+      name: includes
+put:
+  summary: Update product family
+  tags:
+    - Product Families
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/ProductFamilyResponse.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  operationId: put-product-families-productFamilyId
+  description: Update a product family
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+delete:
+  summary: Delete product family
+  tags:
+    - Product Families
+  responses:
+    '204':
+      description: No Content
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  operationId: delete-product-families-productFamilyId
+  description: Sends a request to delete a product family

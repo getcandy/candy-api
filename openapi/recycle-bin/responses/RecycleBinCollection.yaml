@@ -1,0 +1,13 @@
+title: RecycleBinCollection
+allOf:
+  - type: object
+    properties:
+      data:
+        type: array
+        items:
+          $ref: '../models/RecycleBin.yaml'
+  - type: object
+    properties:
+      meta:
+        type: object
+        $ref: '../../global/models/Pagination.yaml'

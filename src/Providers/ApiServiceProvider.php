@@ -2,14 +2,10 @@
 
 namespace GetCandy\Api\Providers;
 
-use GetCandy\Api\Console\Commands\CandySearchIndexCommand;
 use GetCandy\Api\Console\Commands\InstallGetCandyCommand;
-use GetCandy\Api\Console\Commands\ScoreProductsCommand;
 use GetCandy\Api\Core\Currencies\CurrencyConverter;
 use GetCandy\Api\Core\Factory;
 use GetCandy\Api\Core\GetCandy;
-use GetCandy\Api\Core\Users\Contracts\UserContract;
-use GetCandy\Api\Core\Users\Services\UserService;
 use GetCandy\Api\Http\Middleware\DetectHubRequestMiddleware;
 use GetCandy\Api\Http\Middleware\SetChannelMiddleware;
 use GetCandy\Api\Http\Middleware\SetCurrencyMiddleware;
@@ -127,9 +123,9 @@ class ApiServiceProvider extends ServiceProvider
     {
         Validator::extend('unique_name_in_group', 'GetCandy\Api\Http\Validators\AttributeValidator@uniqueNameInGroup');
         Validator::extend('hashid_is_valid', 'GetCandy\Api\Http\Validators\HashidValidator@validForModel');
+        Validator::extend('unique_with', 'GetCandy\Api\Http\Validators\DatabaseValidator@uniqueWith');
         Validator::extend('valid_structure', 'GetCandy\Api\Http\Validators\AttributeValidator@validateData');
         Validator::extend('unique_category_attribute', 'GetCandy\Api\Http\Validators\CategoriesValidator@uniqueCategoryAttributeData');
-        Validator::extend('unique_route', 'GetCandy\Api\Http\Validators\RoutesValidator@uniqueRoute');
         Validator::extend('check_coupon', 'GetCandy\Api\Core\Discounts\Validators\DiscountValidator@checkCoupon');
         Validator::extend('valid_locales', 'GetCandy\Api\Http\Validators\LocaleValidator@validate');
         Validator::extend('enabled', 'GetCandy\Api\Http\Validators\BaseValidator@enabled');
@@ -147,9 +143,7 @@ class ApiServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
-                CandySearchIndexCommand::class,
                 InstallGetCandyCommand::class,
-                ScoreProductsCommand::class,
             ]);
         }
     }
@@ -161,10 +155,6 @@ class ApiServiceProvider extends ServiceProvider
      */
     protected function mapBindings()
     {
-        $this->app->singleton(UserContract::class, function ($app) {
-            return $app->make(UserService::class);
-        });
-
         $this->app->singleton('currency_converter', function ($app) {
             return $app->make(CurrencyConverter::class);
         });

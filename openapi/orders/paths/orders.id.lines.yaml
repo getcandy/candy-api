@@ -1,0 +1,92 @@
+parameters:
+  - schema:
+      type: string
+    name: orderId
+    in: path
+    required: true
+put:
+  summary: Add order line
+  tags:
+    - Orders
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/OrderResponse.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+    '422':
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              quantity:
+                type: array
+                items:
+                  type: string
+              line_total:
+                type: array
+                items:
+                  type: string
+              unit_price:
+                type: array
+                items:
+                  type: string
+              tax_rate:
+                type: array
+                items:
+                  type: string
+              description:
+                type: array
+                items:
+                  type: string
+  operationId: put-orders-id-lines
+  description: Adds an order line to an order
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            quantity:
+              type: integer
+            line_total:
+              type: integer
+            unit_price:
+              type: integer
+            tax_rate:
+              type: number
+              description: The tax rate as a percentage
+              format: double
+              example: 20
+            description:
+              type: string
+              description: Shows publicly on the order line
+            is_manual:
+              type: boolean
+              description: Should this line be treated as a manual one
+            is_shipping:
+              type: boolean
+              default: false
+            option:
+              type: string
+              description: 'If this is a variant, list the option name here'
+            sku:
+              type: string
+            discount_total:
+              type: integer
+          required:
+            - quantity
+            - line_total
+            - unit_price
+            - tax_rate
+            - description
+            - sku

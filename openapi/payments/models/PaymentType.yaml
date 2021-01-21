@@ -1,0 +1,13 @@
+title: PaymentType
+type: object
+properties:
+  id:
+    type: string
+  name:
+    type: string
+  handle:
+    type: string
+  driver:
+    type: string
+  success_status:
+    type: string

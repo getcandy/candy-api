@@ -49,5 +49,15 @@ class CountryRunner extends AbstractRunner implements InstallRunnerContract
         })->chunk(50)->each(function ($rows) {
             DB::table('countries')->insert($rows->toArray());
         });
+
+        $states = json_decode(File::get(__DIR__.'/../../../states.json'));
+
+        foreach ($states as $state) {
+            DB::table('states')->insert([
+                'country_id' => $state->countryId,
+                'name' => $state->name,
+                'code' => $state->abbreviation,
+            ]);
+        }
     }
 }

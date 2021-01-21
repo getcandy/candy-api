@@ -1,0 +1,19 @@
+get:
+  summary: Search for Route
+  tags:
+    - Routes
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/RouteResponse.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  operationId: get-routes-search
+  description: Get a Route by searching via slug or path

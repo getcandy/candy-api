@@ -1,0 +1,94 @@
+parameters:
+  - schema:
+      type: string
+    name: taxId
+    in: path
+    required: true
+get:
+  summary: Get tax record
+  tags:
+    - Taxes
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/TaxResponse.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  operationId: get-taxes-taxId
+  description: "Get a tax record by it's ID"
+put:
+  summary: Update tax record
+  tags:
+    - Taxes
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/TaxResponse.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+    '422':
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: array
+                items:
+                  type: string
+              percentage:
+                type: array
+                items:
+                  type: string
+  operationId: put-taxes-taxId
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Must be unique
+            percentage:
+              type: number
+          required:
+            - name
+            - percentage
+  description: "Update a tax record by it's ID"
+delete:
+  summary: Delete tax record
+  tags:
+    - Taxes
+  responses:
+    '204':
+      description: No Content
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/Unauthenticated.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  operationId: delete-taxes-taxId
+  description: "Delete a tax record by it's ID."

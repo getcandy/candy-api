@@ -30,10 +30,8 @@ class GetCandyTest extends TestCase
             'payment_types',
             'products',
             'productAssociations',
-            'productFamilies',
             'productVariants',
             'associationGroups',
-            'routes',
             'roles',
             'savedBaskets',
             'settings',
@@ -42,7 +40,6 @@ class GetCandyTest extends TestCase
             'shippingZones',
             'tags',
             'taxes',
-            'users',
             'layouts',
         ];
 

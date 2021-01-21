@@ -35,7 +35,7 @@ class Attribute extends BaseModel
 
     public function group()
     {
-        return $this->belongsTo(AttributeGroup::class);
+        return $this->belongsTo(AttributeGroup::class, 'group_id');
     }
 
     /**
@@ -71,5 +71,10 @@ class Attribute extends BaseModel
     public function getLookupsAttribute($value)
     {
         return json_decode($value, true);
+    }
+
+    public function scopeFilterable($query)
+    {
+        return $query->whereFilterable(true);
     }
 }

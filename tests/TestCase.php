@@ -23,6 +23,7 @@ use NeonDigital\Drafting\DraftingServiceProvider;
 use NeonDigital\Versioning\VersioningServiceProvider;
 use Spatie\Activitylog\ActivitylogServiceProvider;
 use Spatie\Permission\PermissionServiceProvider;
+use Tests\Stubs\MockTransport;
 use Tests\Stubs\User;
 use Vinkla\Hashids\HashidsServiceProvider;
 
@@ -116,6 +117,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             'services.sagepay.vendor' => 'SagePay',
             'getcandy' => require __DIR__.'/../config/getcandy.php',
             'app.key' => Encrypter::generateKey(null),
+            'getcandy.search.client_config.elastic.transport' => MockTransport::class,
         ];
 
         foreach ($config as $key => $value) {

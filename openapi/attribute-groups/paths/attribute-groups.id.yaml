@@ -1,0 +1,78 @@
+parameters:
+  - schema:
+      type: string
+    name: attributeGroupId
+    in: path
+    required: true
+put:
+  summary: Update an attribute group
+  tags:
+    - Attributes
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/AttributeGroupResponse.yaml'
+  operationId: put-attribute-groups-attributeGroupId
+  description: Updates an attribute group.
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../models/AttributeGroup.yaml'
+get:
+  summary: Get a single attribute group
+  tags:
+    - Attributes
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/AttributeGroupResponse.yaml'
+          examples:
+            full-example:
+              value:
+                data:
+                  id: vokq5kmj
+                  name:
+                    en: General
+                  handle: general
+                  position: '1'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+          examples:
+            not-found-example:
+              value:
+                error:
+                  http_code: 404
+                  message: Resource not found
+  operationId: get-attribute-groups-attributeGroupId
+  parameters:
+    - schema:
+        type: integer
+      in: query
+      name: include
+  description: Gets a single attribute group
+delete:
+  summary: Delete an attribute group
+  tags:
+    - Attributes
+  responses:
+    '204':
+      description: No Content
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  operationId: delete-attribute-groups-attributeGroupId
+  description: Deletes an attribute group

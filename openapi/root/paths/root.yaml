@@ -1,0 +1,33 @@
+get:
+  summary: Get root
+  tags:
+    - Root
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/RootResponse.yaml'
+          examples:
+            root-example:
+              value:
+                version: 0.9.0_beta
+                locale: en
+                channel:
+                  id: 92weawd23
+                  name: Webstore
+                  handle: webstore
+                  url: 'http://storefront.test'
+                  default: true
+                currency:
+                  id: q3e33wede
+                  name: British Pound
+                  code: GBP
+                  enabled: true
+                  format: '£{price}'
+                  decimal_point: .
+                  thousand_point: ','
+                  default: true
+  operationId: get
+  description: Returns information about the API

@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Core\Shipping\Models;
 
-use GetCandy\Api\Core\Auth\Models\User;
 use GetCandy\Api\Core\Channels\Models\Channel;
 use GetCandy\Api\Core\Scaffold\BaseModel;
 use GetCandy\Api\Core\Scopes\ChannelScope;
@@ -49,7 +48,7 @@ class ShippingMethod extends BaseModel
 
     public function users()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(config('auth.providers.users.model'));
     }
 
     public function prices()

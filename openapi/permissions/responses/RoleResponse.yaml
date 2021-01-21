@@ -1,0 +1,5 @@
+title: RoleResponse
+type: object
+properties:
+  data:
+    $ref: '../models/Role.yaml'

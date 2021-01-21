@@ -1,0 +1,41 @@
+post:
+  summary: Threed Secure Payment
+  tags:
+    - Payments
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../../orders/responses/OrderResponse.yaml'
+    '400':
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  operationId: post-payments-3d-secure
+  description: 'Validate a ThreeD secure request and process the transaaction, if your payment provider supports it.'
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            paRes:
+              type: string
+            transaction:
+              type: string
+            order_id:
+              type: string
+          required:
+            - paRes
+            - transaction
+            - order_id

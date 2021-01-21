@@ -1,0 +1,25 @@
+parameters:
+  - schema:
+      type: string
+    name: basketId
+    in: path
+    required: true
+post:
+  summary: Allow a user to claim a basket
+  tags:
+    - Baskets
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/BasketResponse.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  operationId: post-baskets-basketId-claim
+  description: 'A user is able to "claim" a guest basket. '

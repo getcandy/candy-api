@@ -1,0 +1,10 @@
+title: ApiError
+type: object
+properties:
+  error:
+    type: object
+    properties:
+      http_code:
+        type: number
+      message:
+        type: string

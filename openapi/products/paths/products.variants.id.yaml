@@ -1,0 +1,26 @@
+parameters:
+  - schema:
+      type: string
+    name: productVariantId
+    in: path
+    required: true
+get:
+  summary: Get Product Variant
+  tags:
+    - Product Variants
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/ProductVariantResponse.yaml'
+    '404':
+      description: Not Found
+      headers: {}
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  operationId: get-products-variants-productVariantId
+  description: "Get a product variant by it's ID"

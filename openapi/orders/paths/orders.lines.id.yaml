@@ -1,0 +1,15 @@
+parameters:
+  - schema:
+      type: string
+    name: orderLineId
+    in: path
+    required: true
+delete:
+  summary: Delete an order line
+  tags:
+    - Orders
+  responses:
+    '204':
+      description: No Content
+  operationId: delete-orders-lines-orderId
+  description: Deletes an order line from an order

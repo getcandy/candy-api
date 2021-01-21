@@ -1,0 +1,57 @@
+get:
+  summary: Get Categories
+  tags:
+    - Categories
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/CategoryCollection.yaml'
+  operationId: get-categories
+  # parameters:
+  #   - schema:
+  #       type: boolean
+  #     in: query
+  #     name: full_response
+  #     description: ''
+  #   - schema:
+  #       type: string
+  #     in: query
+  #     name: include
+  #   - schema:
+  #       type: boolean
+  #     in: query
+  #     name: tree
+  #     description: Whether response should be a node tree
+  description: Returns a paginated resource of categories
+# post:
+#   summary: Create a new category
+#   tags:
+#     - Categories
+#   operationId: post-categories
+#   requestBody:
+#     content:
+#       application/json:
+#         schema:
+#           $ref: '../requests/CreateCategoryBody.yaml'
+#   responses:
+#     '200':
+#       description: OK
+#       content:
+#         application/json:
+#           schema:
+#             $ref: '../responses/CategoryResponse.yaml'
+#     '422':
+#       description: Unprocessable Entity
+#       content:
+#         application/json:
+#           schema:
+#             $ref: '../../global/responses/ApiError.yaml'
+#           examples:
+#             Unprocessable:
+#               value:
+#                 url:
+#                   - The url field is required.
+#   description: "Creates a new category and returns it's resource."

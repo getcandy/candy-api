@@ -1,0 +1,53 @@
+parameters:
+  - schema:
+      type: string
+    name: categoryId
+    in: path
+    required: true
+    description: ''
+get:
+  summary: Return a single category
+  tags:
+    - Categories
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/CategoryResponse.yaml'
+          examples: {}
+  operationId: get-categories-categoryId
+  parameters:
+    - schema:
+        type: string
+      in: query
+      name: includes
+  description: Returns a single category from a given ID
+put:
+  summary: Update a category
+  operationId: put-categories-categoryId
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/CategoryResponse.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+    '422':
+      description: Unprocessable Entity
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../requests/CreateCategoryBody.yaml'
+    description: ''
+  tags:
+    - Categories
+  description: Update a category using a given ID.

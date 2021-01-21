@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Discounts\Models;
 
+use GetCandy;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Scaffold\BaseModel;
@@ -31,9 +32,22 @@ class DiscountCriteriaItem extends BaseModel
     {
         $relation = camel_case(str_plural($type));
 
+        $typeModel = GetCandy::getUserModel();
+
         if (method_exists($this, $relation)) {
-            $realId = (new $type)->decodedId($id);
-            $this->{$relation}()->attach($realId);
+            $realId = (new $typeModel)->decodeId($id);
+            $this->{$relation}()->sync($realId);
+        }
+    }
+
+    public function saveEligibles($type, array $ids)
+    {
+        $relation = camel_case(str_plural($type));
+        $userModel = GetCandy::getUserModel();
+        if (method_exists($this, $relation)) {
+            $this->{$relation}()->sync(
+                (new $userModel)->decodeIds($ids)
+            );
         }
     }
 

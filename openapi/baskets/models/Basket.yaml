@@ -1,0 +1,30 @@
+title: Basket
+type: object
+properties:
+  id:
+    type: string
+  total:
+    type: number
+  sub_total:
+    type: number
+  tax_total:
+    type: number
+  discount_total:
+    type: number
+    format: float
+  changed:
+    type: boolean
+  has_exclusions:
+    type: boolean
+  meta:
+    type: object
+  lines:
+    type: object
+    properties:
+      data:
+        type: array
+        items:
+          $ref: '../../basket-lines/models/BasketLine.yaml'
+  order:
+    $ref: '../../orders/responses/OrderResponse.yaml'
+

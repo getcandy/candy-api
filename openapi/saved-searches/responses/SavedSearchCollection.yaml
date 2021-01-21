@@ -1,0 +1,8 @@
+title: SavedSearchCollection
+allOf:
+  - properties:
+      data:
+        type: array
+        items:
+          $ref: '../models/SavedSearch.yaml'
+type: object

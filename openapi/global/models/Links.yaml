@@ -1,0 +1,13 @@
+title: Links
+type: object
+properties:
+  first:
+    type: string
+  last:
+    type: string
+  prev:
+    type: string
+    nullable: true
+  next:
+    type: string
+    nullable: true

@@ -1,0 +1,32 @@
+parameters:
+  - schema:
+      type: string
+    name: savedSearchId
+    in: path
+    required: true
+get:
+  summary: Get saved search
+  tags:
+    - Search
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/SavedSearchResponse.yaml'
+delete:
+  summary: Delete saved search
+  operationId: delete-saved-searches-savedSearchId
+  responses:
+    '204':
+      description: No Content
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  description: Delete a saved search entry by ID.
+  tags:
+    - Search

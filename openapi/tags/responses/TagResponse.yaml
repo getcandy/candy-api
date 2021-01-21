@@ -1,0 +1,5 @@
+title: TagResponse
+type: object
+properties:
+  data:
+    $ref: '../models/Tag.yaml'

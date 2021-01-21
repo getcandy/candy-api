@@ -1,6 +1,7 @@
 <?php
 
 use Faker\Generator as Faker;
+use GetCandy\Api\Core\Products\Models\Product;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,7 +14,7 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(GetCandy\Api\Core\Products\Models\Product::class, function (Faker $faker) {
+$factory->define(Product::class, function (Faker $faker) {
     return [
         'attribute_data' => [
             'name' => [

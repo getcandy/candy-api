@@ -1,0 +1,21 @@
+post:
+  summary: Resolve a basket
+  tags:
+    - Baskets
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/BasketResponse.yaml'
+  operationId: post-baskets-resolve
+  description: |-
+    This endpoint is for when you want to either merge a users basket with a guest basket and then assign that new basket or associate a user to a guest basket.
+
+    If you choose not to merge a basket, their current one will be overwritten with the guest basket.
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../requests/SaveBasketBody.yaml'

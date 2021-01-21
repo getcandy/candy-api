@@ -1,0 +1,7 @@
+title: ShippingPriceCollection
+type: object
+properties:
+  data:
+    type: array
+    items:
+      $ref: '../models/ShippingPrice.yaml'

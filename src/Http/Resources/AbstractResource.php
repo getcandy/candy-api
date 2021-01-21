@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Resources;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\MissingValue;
@@ -101,6 +102,7 @@ abstract class AbstractResource extends JsonResource
     public function toArray($request)
     {
         $attributes = array_merge($this->payload(), $this->custom_attributes ?? []);
+
         if ($request->full_response) {
             $attributes = array_merge($attributes, [
                 'attribute_data' => $this->attribute_data,
@@ -115,7 +117,41 @@ abstract class AbstractResource extends JsonResource
             }
         }
 
-        return array_merge($attributes, $this->includes());
+        $attributes = array_merge($attributes, $this->includes());
+        $attributes = $this->handleOnlyRequestField($attributes);
+        $attributes = $this->handleExceptRequestField($attributes);
+
+        return $attributes;
+    }
+
+    protected function handleOnlyRequestField($attributes)
+    {
+        if (! request()->filled('only')) {
+            return $attributes;
+        }
+
+        $fields = explode(',', request()->get('only'));
+
+        if (empty($fields)) {
+            return $attributes;
+        }
+
+        return collect($attributes)->only($fields)->toArray();
+    }
+
+    protected function handleExceptRequestField($attributes)
+    {
+        if (! request()->filled('except')) {
+            return $attributes;
+        }
+
+        $fields = explode(',', request()->get('except'));
+
+        if (empty($fields)) {
+            return $attributes;
+        }
+
+        return collect($attributes)->except($fields)->toArray();
     }
 
     protected function relationLoaded($relation)
@@ -129,6 +165,12 @@ abstract class AbstractResource extends JsonResource
 
     protected function include($relation, $resource)
     {
+        if ($relation instanceof Model) {
+            return [
+                'data' => new $resource($relation),
+            ];
+        }
+
         return $this->when($this->relationLoaded($relation), function () use ($relation, $resource) {
             return ['data' => new $resource($this->whenLoaded($relation))];
         });

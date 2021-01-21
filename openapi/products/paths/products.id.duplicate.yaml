@@ -1,0 +1,56 @@
+parameters:
+  - schema:
+      type: string
+    name: productId
+    in: path
+    required: true
+post:
+  summary: Duplicate Product
+  tags:
+    - Products
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/ProductResponse.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  operationId: post-products-productId-duplicate
+  description: |-
+    Duplicates a product, requires you to specify new slugs and SKU's.
+
+    > Duplicated product will not immediately be active.
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            routes:
+              type: array
+              items:
+                type: object
+                properties:
+                  old:
+                    type: string
+                  new:
+                    type: string
+            skus:
+              type: array
+              items:
+                type: object
+                properties:
+                  old:
+                    type: string
+                  new:
+                    type: string
+          required:
+            - routes
+            - skus
+    description: 'We use old, new values on routes and skus for matching.'

@@ -169,7 +169,7 @@ class ProductController extends BaseController
             return $this->errorUnprocessable($e->getMessage());
         }
 
-        return new ProductResouce($product);
+        return new ProductResource($product);
     }
 
     public function duplicate($product, DuplicateRequest $request, ProductDuplicateFactory $factory)

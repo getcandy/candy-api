@@ -1,0 +1,58 @@
+parameters:
+  - schema:
+      type: string
+    name: routeId
+    in: path
+    required: true
+get:
+  summary: Get Route
+  tags:
+    - Routes
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/RouteResponse.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  operationId: get-routes-routeId
+  description: Get a Route by ID
+put:
+  summary: Update Route
+  tags:
+    - Routes
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/RouteResponse.yaml'
+  operationId: put-routes-routeId
+  description: "Update a Route using it's ID"
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../models/Route.yaml'
+delete:
+  summary: Delete Route
+  tags:
+    - Routes
+  responses:
+    '204':
+      description: No Content
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  operationId: delete-routes-routeId
+  description: Delete a Router by its ID

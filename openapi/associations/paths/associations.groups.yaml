@@ -1,0 +1,35 @@
+get:
+  summary: Paginated array of association groups
+  tags:
+    - Associations
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/AssociationGroupCollection.yaml'
+          examples:
+            full-response:
+              value:
+                data:
+                  - id: v8l4pl01
+                    name: Upsell
+                    handle: upsell
+                  - id: p09prlrn
+                    name: Cross-sell
+                    handle: cross-sell
+                  - id: wz6d39dj
+                    name: Alternate
+                    handle: alternate
+                meta:
+                  lang: en
+                  pagination:
+                    total: 3
+                    count: 3
+                    per_page: 50
+                    current_page: 1
+                    total_pages: 1
+                    links: []
+  operationId: get-associations-groups
+  description: Returns a paginated response of association groups available in the system

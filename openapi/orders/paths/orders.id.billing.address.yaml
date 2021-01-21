@@ -1,0 +1,31 @@
+parameters:
+  - schema:
+      type: string
+    name: orderId
+    in: path
+    required: true
+put:
+  summary: Update billing address
+  tags:
+    - Orders
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/OrderResponse.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  operationId: put-orders-orderId-billing-address
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../../addresses/models/Address.yaml'
+    description: All fields are required when an `address_id` is not present.
+  description: Update an orders billing address

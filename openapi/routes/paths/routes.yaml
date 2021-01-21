@@ -1,0 +1,13 @@
+get:
+  summary: Get Routes
+  tags:
+    - Routes
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/RouteCollection.yaml'
+  operationId: get-routes
+  description: Returns a paginated list of Routes

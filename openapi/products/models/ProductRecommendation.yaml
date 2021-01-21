@@ -1,0 +1,7 @@
+title: ProductRecommendation
+type: object
+properties:
+  id:
+    type: string
+  product:
+    $ref: '../responses/ProductResponse.yaml'

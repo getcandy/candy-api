@@ -1,0 +1,13 @@
+get:
+  summary: Get the current user
+  tags:
+    - Users
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/UserResponse.yaml'
+  operationId: get-users-current
+  description: Returns the user associated to the access token.

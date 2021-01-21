@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Http\Resources\Baskets;
 
+use GetCandy\Api\Core\Users\Resources\UserResource;
 use GetCandy\Api\Http\Resources\AbstractResource;
 use GetCandy\Api\Http\Resources\Discounts\DiscountCollection;
 use GetCandy\Api\Http\Resources\Orders\OrderResource;
-use GetCandy\Api\Http\Resources\Users\UserResource;
 
 class BasketResource extends AbstractResource
 {
@@ -15,6 +15,7 @@ class BasketResource extends AbstractResource
             'id' => $this->encoded_id,
             'total' => $this->total_cost,
             'sub_total' => $this->sub_total,
+            'currency' => $this->currency,
             'tax_total' => $this->total_tax,
             'discount_total' => round($this->discount_total, 2),
             'changed' => $this->changed,

@@ -1,0 +1,37 @@
+parameters:
+  - schema:
+      type: string
+    name: shippingMethodId
+    in: path
+    required: true
+put:
+  summary: Update shipping method zones
+  tags:
+    - Shipping
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/ShippingMethodResponse.yaml'
+  operationId: put-shipping-shippingMethodId-zones
+  description: "Update a shipping method's zones."
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            zones:
+              type: array
+              items:
+                type: string
+          required:
+            - zones
+        examples:
+          update-body-example:
+            value:
+              zones:
+                - 1rdf4sdfs
+                - 567yhg2s3

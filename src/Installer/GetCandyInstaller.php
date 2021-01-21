@@ -14,6 +14,7 @@ use GetCandy\Api\Installer\Runners\PaymentTypeRunner;
 use GetCandy\Api\Installer\Runners\PreflightRunner;
 use GetCandy\Api\Installer\Runners\ProductFamilyRunner;
 use GetCandy\Api\Installer\Runners\SettingsRunner;
+use GetCandy\Api\Installer\Runners\StarRunner;
 use GetCandy\Api\Installer\Runners\TaxRunner;
 use GetCandy\Api\Installer\Runners\UserRunner;
 use Illuminate\Console\Command;
@@ -47,6 +48,7 @@ class GetCandyInstaller
         'channels' => ChannelRunner::class,
         'product_families' => ProductFamilyRunner::class,
         'payment_types' => PaymentTypeRunner::class,
+        'star_runner' => StarRunner::class,
     ];
 
     /**

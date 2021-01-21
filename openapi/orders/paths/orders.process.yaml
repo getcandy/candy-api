@@ -1,0 +1,57 @@
+post:
+  summary: Processes an order on the API
+  tags:
+    - Orders
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/OrderResponse.yaml'
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+    '422':
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  operationId: post-orders-process
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            payment_type_id:
+              type: string
+            payment_type:
+              type: string
+            order_id:
+              type: string
+            payment_token:
+              type: string
+            customer_reference:
+              type: string
+            meta:
+              type: array
+              items:
+                type: object
+            notes:
+              type: string
+            company_name:
+              type: string
+          required:
+            - order_id
+            - payment_token

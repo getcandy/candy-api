@@ -1,0 +1,25 @@
+parameters:
+  - schema:
+      type: string
+    name: modelId
+    in: path
+    required: true
+post:
+  summary: Restore model
+  tags:
+    - Versioning
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/VersionResponse.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  operationId: post-versions-modelId-restore
+  description: Restores a model version

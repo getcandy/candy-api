@@ -1,0 +1,53 @@
+parameters:
+  - schema:
+      type: string
+    name: transactionId
+    in: path
+    required: true
+post:
+  summary: Refund a payment
+  tags:
+    - Payments
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/TransactionResponse.yaml'
+    '400':
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+          examples:
+            refund-issued-error:
+              value:
+                http_code: 400
+                message: Refund already issued
+            invalid-balance-error:
+              value:
+                http_code: 400
+                message: Amount exceeds remaining balance
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  operationId: post-payments-id-refund
+  requestBody:
+    content:
+      multipart/form-data:
+        schema:
+          type: object
+          properties:
+            amount:
+              type: integer
+              format: int32
+              description: 'If left blank, the full amount will be refunded'
+            notes:
+              type: string
+    description: ''
+  description: Refund a transaction

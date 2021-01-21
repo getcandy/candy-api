@@ -1,0 +1,12 @@
+title: Aggregation
+type: object
+properties:
+  handle:
+    type: string
+  doc_count:
+    type: integer
+  data:
+    type: object
+  buckets:
+    type: array
+    items: {}

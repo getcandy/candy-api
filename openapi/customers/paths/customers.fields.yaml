@@ -1,0 +1,21 @@
+get:
+  summary: Get custom customer fields
+  tags:
+    - Customers
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/CustomerFieldsResponse.yaml'
+          examples:
+            basic-example:
+              value:
+                data:
+                  fields:
+                    account_number:
+                      label: Account Number
+                      type: text
+  operationId: get-customer-fields
+  description: This endpoint returns any available customer fields which have been defined in the getcandy config.

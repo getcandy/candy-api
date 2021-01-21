@@ -1,0 +1,39 @@
+parameters:
+  - schema:
+      type: string
+    name: collectionId
+    in: path
+    required: true
+post:
+  summary: "Update a collection's routes"
+  tags:
+    - Collections
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/CollectionResponse.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  operationId: post-collections-collection-routes
+  description: This request will allow you to attach routes to a collection
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            redirect:
+              type: boolean
+            description:
+              type: string
+            slug:
+              type: string
+            locale:
+              type: string

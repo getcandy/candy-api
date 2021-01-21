@@ -37,7 +37,7 @@ class ShippingMethodController extends BaseController
     public function show($id, Request $request)
     {
         try {
-            $shipping = GetCandy::shippingMethods()->getByHashedId($id, explode(',', $request->includes));
+            $shipping = GetCandy::shippingMethods()->getByHashedId($id, explode(',', $request->include));
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }

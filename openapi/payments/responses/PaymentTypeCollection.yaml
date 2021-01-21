@@ -1,0 +1,13 @@
+title: PaymentTypeCollection
+allOf:
+  - type: object
+    properties:
+      data:
+        type: array
+        items:
+          $ref: '../models/PaymentType.yaml'
+  - type: object
+    properties:
+      meta:
+        type: object
+        $ref: '../../global/models/Pagination.yaml'

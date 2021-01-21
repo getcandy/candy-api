@@ -27,4 +27,15 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * Create token.
+     *
+     * @param $string
+     * @return string
+     */
+    public function createToken($string)
+    {
+        return $string;
+    }
 }

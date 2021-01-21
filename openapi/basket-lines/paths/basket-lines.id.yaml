@@ -1,0 +1,30 @@
+parameters:
+  - schema:
+      type: string
+    name: basketLineId
+    in: path
+    required: true
+put:
+  summary: Update basket line
+  tags:
+    - Baskets
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../../baskets/responses/BasketResponse.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  operationId: put-basket-lines-basketLineId
+  description: "Update a basket line based on it's ID."
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../requests/BasketLineUpdateBody.yaml'

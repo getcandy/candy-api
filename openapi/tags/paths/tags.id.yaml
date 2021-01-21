@@ -1,0 +1,81 @@
+parameters:
+  - schema:
+      type: string
+    name: tagId
+    in: path
+    required: true
+get:
+  summary: Get a tag
+  tags:
+    - Tags
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/TagResponse.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  operationId: get-tags-tagId
+  description: "Gets a tag by it's ID"
+put:
+  summary: Update a tag
+  tags:
+    - Tags
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/TagResponse.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+    '422':
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: array
+                items:
+                  type: string
+  operationId: put-tags-tagId
+  description: "Updates a tag by it's ID"
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+          required:
+            - name
+    description: ''
+delete:
+  summary: Delete a tag
+  tags:
+    - Tags
+  responses:
+    '204':
+      description: No Content
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  operationId: delete-tags-tagId
+  description: "Deletes a tag by it's ID"

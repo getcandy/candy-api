@@ -1,0 +1,60 @@
+parameters:
+  - schema:
+      type: string
+    name: shippingPriceId
+    in: path
+    required: true
+put:
+  summary: Update shipping price
+  tags:
+    - Shipping
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/ShippingPriceResponse.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+    '422':
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              rate:
+                type: array
+                items:
+                  type: string
+              zone_id:
+                type: array
+                items:
+                  type: string
+              currency_id:
+                type: array
+                items:
+                  type: string
+  operationId: put-shipping-prices-shippingPriceId
+  description: Update a shipping price
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            rate:
+              type: integer
+            zone_id:
+              type: string
+            currency_id:
+              type: string
+          required:
+            - rate
+            - zone_id
+            - currency_id

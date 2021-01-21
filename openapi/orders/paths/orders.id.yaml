@@ -1,0 +1,71 @@
+parameters:
+  - schema:
+      type: string
+    name: orderId
+    in: path
+    required: true
+get:
+  summary: Get Order
+  tags:
+    - Orders
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/OrderResponse.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  operationId: get-orders-orderId
+  description: |-
+    Get an Order by it's ID.
+
+    You must be an admin or owner to retrieve the order, otherwise you'll get a 404.
+put:
+  summary: Update Order
+  operationId: put-orders-orderId
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/OrderResponse.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '../models/Order.yaml'
+  tags:
+    - Orders
+  description: Update an Order
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            tracking_no:
+              type: string
+            status:
+              type: string
+              description: Corresponds to status set in config
+            send_emails:
+              type: boolean
+              default: false
+              example: true
+    description: ''
+  parameters:
+    - schema:
+        type: string
+      in: query
+      name: include

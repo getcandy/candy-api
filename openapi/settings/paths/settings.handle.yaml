@@ -1,0 +1,25 @@
+parameters:
+  - schema:
+      type: string
+    name: handle
+    in: path
+    required: true
+get:
+  summary: Get setting
+  tags:
+    - Settings
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/SettingResponse.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  operationId: get-settings-handle
+  description: Get specific settings.

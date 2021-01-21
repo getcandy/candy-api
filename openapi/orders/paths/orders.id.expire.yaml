@@ -1,0 +1,21 @@
+parameters:
+  - schema:
+      type: string
+    name: orderId
+    in: path
+    required: true
+post:
+  summary: Expire an Order
+  operationId: post-orders-orderId-expire
+  description: 'Sets an order to be expired. You must have the correct priviledges to perform this action. Once an order is expired, it will no longer appear in results unless performed by an admin or in the hub.'
+  responses:
+    '204':
+      description: No Content
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  tags:
+    - Orders

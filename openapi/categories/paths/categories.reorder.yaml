@@ -1,0 +1,27 @@
+post:
+  summary: Reorder a category
+  tags:
+    - Categories
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/Message.yaml'
+          examples:
+            success-response:
+              value:
+                status: success
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  operationId: post-categories-reorder
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../requests/ReorderCategoryBody.yaml'

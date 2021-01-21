@@ -1,0 +1,65 @@
+parameters:
+  - schema:
+      type: string
+    name: collectionId
+    in: path
+    required: true
+get:
+  summary: Single Collection
+  tags:
+    - Collections
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/CollectionResponse.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  operationId: get-collections-collectionId
+  description: Get a single Collection by its ID
+  parameters:
+    - schema:
+        type: string
+      in: query
+      name: include
+put:
+  summary: Update Collection
+  tags:
+    - Collections
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/CollectionResponse.yaml'
+    '404':
+      description: Not Found
+  operationId: put-collections-collectionId
+  description: Update a Collection by its ID.
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            name:
+              type: object
+              properties:
+                en:
+                  type: string
+delete:
+  summary: Delete Collection
+  tags:
+    - Collections
+  responses:
+    '204':
+      description: No Content
+  operationId: delete-collections-collectionId
+  description: Delete a Collection by its ID

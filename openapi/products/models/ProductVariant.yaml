@@ -1,0 +1,96 @@
+title: ProductVariant
+type: object
+description: |-
+  ### Available includes
+
+  - products
+  - basketLines
+  - image
+  - tax
+  - customerPricing
+  - tiers
+properties:
+  id:
+    type: string
+  sku:
+    type: string
+  backorder:
+    type: string
+  requires_shipping:
+    type: boolean
+  price:
+    type: number
+  factor_tax:
+    type: number
+  unit_price:
+    type: number
+  total_tax:
+    type: number
+  unit_tax:
+    type: number
+  unit_qty:
+    type: integer
+  min_qty:
+    type: integer
+  max_qty:
+    type: integer
+  min_batch:
+    type: integer
+  inventory:
+    type: integer
+  incoming:
+    type: integer
+  group_pricing:
+    type: boolean
+  weight:
+    type: object
+    properties:
+      value:
+        type: string
+      unit:
+        type: string
+  height:
+    type: object
+    properties:
+      value:
+        type: string
+      unit:
+        type: string
+  width:
+    type: object
+    properties:
+      value:
+        type: string
+      unit:
+        type: string
+  depth:
+    type: object
+    properties:
+      value:
+        type: string
+      unit:
+        type: string
+  volume:
+    type: object
+    properties:
+      value:
+        type: string
+      unit:
+        type: string
+  product:
+    $ref: '../responses/ProductResponse.yaml'
+  image:
+    $ref: '../../assets/responses/AssetResponse.yaml'
+  customer_pricing:
+    type: object
+    properties:
+      data:
+        type: array
+        items:
+          $ref: '../../products/models/CustomerPrice.yaml'
+  tax:
+    $ref: '../../taxes/responses/TaxResponse.yaml'
+  tiers:
+    $ref: '../responses/ProductTierPriceCollection.yaml'
+  options:
+    type: object

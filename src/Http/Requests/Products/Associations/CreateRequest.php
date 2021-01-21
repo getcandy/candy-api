@@ -26,7 +26,7 @@ class CreateRequest extends FormRequest
         return [
             'relations.*.association_id' => 'required|hashid_is_valid:products',
             'relations.*.type' => 'required|hashid_is_valid:association_groups',
-            'relations' => 'required|array',
+            'relations' => 'array|min:0',
         ];
     }
 }

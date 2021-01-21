@@ -1,0 +1,11 @@
+title: ShippingZone
+type: object
+properties:
+  id:
+    type: string
+  name:
+    type: string
+x-examples:
+  basic-example:
+    id: v8l4pl01
+    name: Van Delivery Area

@@ -1,0 +1,11 @@
+title: SavedBasket
+type: object
+x-tags:
+  - Baskets
+properties:
+  id:
+    type: string
+  name:
+    type: string
+  basket:
+    $ref: '../responses/BasketResponse.yaml'

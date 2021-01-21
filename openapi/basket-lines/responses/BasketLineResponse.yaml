@@ -1,0 +1,5 @@
+title: BasketLineResponse
+type: object
+properties:
+  data:
+    $ref: '../models/BasketLine.yaml'

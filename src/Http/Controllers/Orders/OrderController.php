@@ -355,7 +355,7 @@ class OrderController extends BaseController
     public function billingAddress($id, StoreAddressRequest $request)
     {
         try {
-            $order = GetCandy::orders()->setBilling($id, $request->all());
+            $order = GetCandy::orders()->setBilling($id, $request->all(), $request->user());
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();
         }

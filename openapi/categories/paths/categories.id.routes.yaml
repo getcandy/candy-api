@@ -1,0 +1,30 @@
+parameters:
+  - schema:
+      type: string
+    name: categoryId
+    in: path
+    required: true
+post:
+  summary: "Update a category's routes"
+  tags:
+    - Categories
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/CategoryResponse.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  operationId: post-categories-category-routes
+  description: Attaches routes to a category resource.
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../requests/AttachCategoryRoutesBody.yaml'

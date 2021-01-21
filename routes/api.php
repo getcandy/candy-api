@@ -5,11 +5,6 @@
     */
     $router->post('import', 'Utils\ImportController@process');
 
-    $router->post('account/password', [
-        'as' => 'account.password.reset',
-        'uses' => 'Auth\AccountController@resetPassword',
-    ]);
-
     $router->get('activity-log', [
         'as' => 'activitylog.index',
         'uses' => 'ActivityLog\ActivityLogController@index',
@@ -24,10 +19,7 @@
     $router->put('addresses/{addressId}', '\GetCandy\Api\Core\Addresses\Actions\UpdateAddressAction');
     $router->delete('addresses/{addressId}', '\GetCandy\Api\Core\Addresses\Actions\DeleteAddressAction');
 
-    $router->post('auth/impersonate', [
-        'as' => 'auth.impersonate',
-        'uses' => 'Auth\ImpersonateController@process',
-    ]);
+    $router->post('auth/impersonate', '\GetCandy\Api\Core\Auth\Actions\FetchImpersonationToken');
 
     /*
      * Assets
@@ -139,9 +131,10 @@
         'prefix' => 'customers',
     ], function ($group) {
         $group->get('/', '\GetCandy\Api\Core\Customers\Actions\FetchCustomers');
+        $group->get('fields', '\GetCandy\Api\Core\Customers\Actions\FetchCustomerFields');
         $group->post('{encoded_id}/users', '\GetCandy\Api\Core\Customers\Actions\AttachUserToCustomer');
         $group->delete('{encoded_id}', '\GetCandy\Api\Core\Customers\Actions\DeleteCustomer');
-        $group->put('{encoded_id}/customer-groups', '\GetCandy\Api\Core\Customers\Actions\AttachCustomerToGroups');
+        $group->put('{customer_id}/customer-groups', '\GetCandy\Api\Core\Customers\Actions\AttachCustomerToGroups');
     });
 
     /**
@@ -258,16 +251,26 @@
     /*
      * Product families
      */
-    $router->resource('product-families', 'Products\ProductFamilyController', [
-        'except' => ['edit', 'create'],
-    ]);
+    $router->group([
+        'prefix' => 'product-families',
+    ], function ($group) {
+        $group->get('/', '\GetCandy\Api\Core\Products\Actions\FetchProductFamilies');
+        $group->get('{encoded_id}', '\GetCandy\Api\Core\Products\Actions\FetchProductFamily');
+        $group->put('{encoded_id}', '\GetCandy\Api\Core\Products\Actions\UpdateProductFamily');
+        $group->delete('{encoded_id}', '\GetCandy\Api\Core\Products\Actions\DeleteProductFamily');
+        $group->post('/', '\GetCandy\Api\Core\Products\Actions\CreateProductFamily');
+    });
 
     /*
      * Routes
      */
-    $router->resource('routes', 'Routes\RouteController', [
-        'except' => ['index', 'show', 'edit', 'create'],
-    ]);
+    $router->group([
+        'prefix' => 'routes',
+    ], function ($route) {
+        $route->get('/', '\GetCandy\Api\Core\Routes\Actions\FetchRoutes');
+        $route->delete('{encoded_id}', '\GetCandy\Api\Core\Routes\Actions\DeleteRoute');
+        $route->put('{encoded_id}', '\GetCandy\Api\Core\Routes\Actions\UpdateRoute');
+    });
 
     /*
      * Saved search
@@ -314,20 +317,25 @@
     /*
      * Users
      */
-    $router->get('users/fields', 'Users\UserController@fields');
-    $router->get('users/current', 'Users\UserController@getCurrentUser');
-    $router->delete('users/payments/{id}', 'Users\UserController@deleteReusablePayment');
-    $router->resource('users', 'Users\UserController', [
-        'except' => ['create', 'store'],
-    ]);
+    /**
+     * @deprecated 0.11
+     */
+    $router->get('users/fields', '\GetCandy\Api\Core\Users\Actions\FetchUserFields');
+    $router->get('users/current', '\GetCandy\Api\Core\Users\Actions\FetchCurrentUser');
+
+    $router->get('users', '\GetCandy\Api\Core\Users\Actions\FetchUsers');
+    $router->get('users/{encoded_id}', '\GetCandy\Api\Core\Users\Actions\FetchUser');
+    $router->put('users/{encoded_id}', '\GetCandy\Api\Core\Users\Actions\UpdateUser');
+
+    /*
+     * Reusable payments
+     */
+    $router->delete('reusable-payments/{encoded_id}', '\GetCandy\Api\Core\ReusablePayments\Actions\DeleteReusablePayment');
 
     /*
      * Account
      */
-    $router->post('account/password', [
-        'as' => 'account.password.reset',
-        'uses' => 'Auth\AccountController@resetPassword',
-    ]);
+    $router->post('account/password', '\GetCandy\Api\Core\Users\Actions\UpdatePassword');
 
     /**
      * Recycle bin.

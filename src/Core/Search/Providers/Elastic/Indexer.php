@@ -7,7 +7,7 @@ use Elastica\Client;
 use Elastica\Document;
 use Elastica\Reindex;
 use Elastica\Type\Mapping;
-use GetCandy\Api\Core\Languages\Services\LanguageService;
+use GetCandy\Api\Core\Languages\Actions\FetchLanguages;
 use GetCandy\Api\Core\Scopes\ChannelScope;
 use GetCandy\Api\Core\Scopes\CustomerGroupScope;
 use Illuminate\Database\Eloquent\Model;
@@ -22,23 +22,15 @@ class Indexer
     protected $batch = 0;
 
     /**
-     * The language service instance.
-     *
-     * @var \GetCandy\Api\Core\Languages\Services\LanguageService
-     */
-    protected $lang;
-
-    /**
      * The indice resolver.
      *
      * @var \GetCandy\Api\Core\Search\Providers\Elastic\IndiceResolver
      */
     protected $resolver;
 
-    public function __construct(LanguageService $lang, IndiceResolver $resolver)
+    public function __construct(IndiceResolver $resolver)
     {
         $this->client = new Client(config('getcandy.search.client_config.elastic', []));
-        $this->lang = $lang;
         $this->resolver = $resolver;
     }
 
@@ -54,7 +46,9 @@ class Indexer
 
         $this->batch = 0;
 
-        $languages = $this->lang->all();
+        $languages = FetchLanguages::run([
+            'paginate' => false,
+        ]);
 
         $index = $this->getIndexName($type);
 
@@ -194,7 +188,9 @@ class Indexer
 
         $index = $this->getIndexName($type);
 
-        $langs = $this->lang->all();
+        $langs = FetchLanguages::run([
+            'paginate' => false,
+        ]);
 
         $indexables = $type->getIndexDocument($model);
 
@@ -226,7 +222,9 @@ class Indexer
     public function indexObjects($models)
     {
         $status = $this->client->getStatus();
-        $langs = $this->lang->all();
+        $langs = FetchLanguages::run([
+            'paginate' => false,
+        ]);
 
         $pending = [];
 

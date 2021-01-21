@@ -1,0 +1,13 @@
+title: AssociationGroupCollection
+allOf:
+  - type: object
+    properties:
+      data:
+        type: array
+        items:
+          $ref: '../models/AssociationGroup.yaml'
+  - type: object
+    properties:
+      meta:
+        type: object
+        $ref: '../../global/models/Pagination.yaml'

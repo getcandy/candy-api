@@ -1,0 +1,30 @@
+parameters:
+  - schema:
+      type: string
+    name: basketId
+    in: path
+    required: true
+put:
+  summary: Update a saved basket
+  tags:
+    - Baskets
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/SavedBasketResponse.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  operationId: put-baskets-saved-basketId
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../requests/SaveBasketBody.yaml'
+  description: Updates a saved basket on the API

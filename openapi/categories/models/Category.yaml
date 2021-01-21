@@ -1,0 +1,139 @@
+title: Category
+type: object
+x-examples:
+  Standard with mapped attributes:
+    id: v8l4pl01
+    sort: 'min_price:asc'
+    products_count: 0
+    children_count: 1
+    left_pos: 1
+    right_pos: 938
+    description: Category description
+    meta_keywords: null
+    name: Fasteners
+    page_title: Seo page title
+    short_description: Short Description
+    meta_description: Page meta description
+    layout: []
+    primary_asset: []
+  Full response:
+    id: v8l4pl01
+    sort: 'min_price:asc'
+    products_count: 0
+    children_count: 1
+    left_pos: 1
+    right_pos: 938
+    attribute_data:
+      description:
+        webstore:
+          en: Category description
+      meta_keywords:
+        webstore:
+          en: ""
+      name:
+        webstore:
+          en: Category name
+      page_title:
+        webstore:
+          en: Page title
+      short_description:
+        webstore:
+          en: Short description
+      meta_description:
+        webstore:
+          en: Meta description
+    layout: []
+    primary_asset: []
+  Full response with child:
+    id: v8l4pl01
+    sort: 'min_price:asc'
+    products_count: 0
+    children_count: 1
+    left_pos: 1
+    right_pos: 938
+    attribute_data:
+      description:
+        webstore:
+          en: Category description
+      meta_keywords:
+        webstore:
+          en: ""
+      name:
+        webstore:
+          en: Category name
+      page_title:
+        webstore:
+          en: Page title
+      short_description:
+        webstore:
+          en: Short description
+      meta_description:
+        webstore:
+          en: Meta description
+    children:
+      data:
+        - id: p09prlrn
+          sort: 'min_price:asc'
+          left_pos: 2
+          right_pos: 937
+          attribute_data:
+            description:
+              webstore:
+                en: ''
+            meta_keywords:
+              webstore:
+                en: ''
+            name:
+              webstore:
+                en: Child Category
+            page_title:
+              webstore:
+                en: Child category SEO title
+            short_description:
+              webstore:
+                en: ''
+            meta_description:
+              webstore:
+                en: Child Category meta description
+          layout: []
+          primary_asset: []
+    layout: []
+    primary_asset: []
+description: ''
+properties:
+  id:
+    type: string
+  sort:
+    type: string
+  products_count:
+    type: integer
+  children_count:
+    type: integer
+  left_pos:
+    type: integer
+  right_pos:
+    type: integer
+  name:
+    type: string
+  attribute_data:
+    type: object
+  children:
+    $ref: '../responses/CategoryCollection.yaml'
+  channels:
+    $ref: '../../channels/responses/ChannelCollection.yaml'
+  ancestors:
+    $ref: '../responses/CategoryCollection.yaml'
+  routes:
+    $ref: '../../routes/responses/RouteCollection.yaml'
+  layout:
+    $ref: '../../layouts/responses/LayoutResponse.yaml'
+  assets:
+    $ref: '../../assets/responses/AssetCollection.yaml'
+  primary_asset:
+    $ref: '../../assets/responses/AssetResponse.yaml'
+  attributes:
+    $ref: '../../attributes/responses/AttributeCollection.yaml'
+  customer_groups:
+    $ref: '../../customer-groups/responses/CustomerGroupCollection.yaml'
+  products:
+    $ref: '../../products/responses/ProductCollection.yaml'

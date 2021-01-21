@@ -1,0 +1,122 @@
+parameters:
+  - schema:
+      type: string
+    name: discountId
+    in: path
+    required: true
+get:
+  summary: Get a Discount
+  tags:
+    - Discounts
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/DiscountResponse.yaml'
+  operationId: get-discounts-discountId
+  description: "Returns a Discount by it's ID."
+  parameters:
+    - schema:
+        type: string
+      in: query
+      name: include
+put:
+  summary: Update Discount
+  tags:
+    - Discounts
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/DiscountResponse.yaml'
+  operationId: put-discounts-discountId
+  description: Updates a Discount
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            start_at:
+              type: string
+              format: date-time
+            end_at:
+              type: string
+            priority:
+              type: integer
+            stop_rules:
+              type: boolean
+            status:
+              type: boolean
+            channels:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    published_at:
+                      type: string
+            rewards:
+              type: object
+              properties:
+                data:
+                  type: object
+                  properties:
+                    products:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          product_id:
+                            type: string
+                          quantity:
+                            type: integer
+            sets:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      scope:
+                        type: string
+                      outcome:
+                        type: boolean
+                      items:
+                        type: object
+                        properties:
+                          data:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                eligibles:
+                                  type: array
+                                  items:
+                                    type: string
+                                type:
+                                  type: string
+          required:
+            - start_at
+delete:
+  summary: Delete Discount
+  tags:
+    - Discounts
+  responses:
+    '204':
+      description: No Content
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  operationId: delete-discounts-discountId
+  description: Deletes a Discount

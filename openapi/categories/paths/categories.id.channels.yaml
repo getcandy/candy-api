@@ -1,0 +1,31 @@
+parameters:
+  - schema:
+      type: string
+    name: categoryId
+    in: path
+    required: true
+post:
+  summary: Attach channels to a category
+  tags:
+    - Categories
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/CategoryResponse.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  operationId: post-categories-categoryId-channels
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../requests/AttachCategoryChannelsBody.yaml'
+    description: ''
+  description: Attaches channels to a catagory

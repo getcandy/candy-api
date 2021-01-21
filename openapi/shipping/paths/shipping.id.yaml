@@ -1,0 +1,91 @@
+parameters:
+  - schema:
+      type: string
+    name: shippingMethodId
+    in: path
+    required: true
+get:
+  summary: Get shipping methods
+  tags:
+    - Shipping
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/ShippingMethodResponse.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  operationId: get-shipping-shippingMethodId
+  description: "Returns a shipping method by it's ID."
+  parameters:
+    - schema:
+        type: string
+      in: query
+      name: include
+put:
+  summary: Update shipping method
+  tags:
+    - Shipping
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/ShippingMethodResponse.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+    '422':
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: array
+                items:
+                  type: string
+              type:
+                type: array
+                items:
+                  type: string
+  operationId: put-shipping-shippingMethodId
+  description: "Update shipping method by it's ID"
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            name:
+              type: object
+              required:
+                - en
+              properties:
+                en:
+                  type: string
+            type:
+              type: string
+          required:
+            - name
+            - type
+delete:
+  summary: Delete shipping method
+  tags:
+    - Shipping
+  responses:
+    '204':
+      description: No Content
+  operationId: delete-shipping-shippingMethodId
+  description: Deletes a shipping method.

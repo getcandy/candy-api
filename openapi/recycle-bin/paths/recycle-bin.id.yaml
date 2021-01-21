@@ -1,0 +1,49 @@
+parameters:
+  - schema:
+      type: string
+    name: itemId
+    in: path
+    required: true
+get:
+  summary: Get item
+  tags:
+    - Recycle Bin
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/RecycleBinResponse.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  operationId: get-recycle-bin-itemId
+  description: Retrieves a recycle bin item.
+delete:
+  summary: Delete item
+  tags:
+    - Recycle Bin
+  responses:
+    '204':
+      description: No Content
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/Unauthorized.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/models/Links.yaml'
+  operationId: delete-recycle-bin-itemId
+  description: |-
+    Remove a recycle bin item
+
+    > This will also hard delete the model associated with the recycle bin item, this action is not reversable and will cause loss of data.

@@ -1,0 +1,10 @@
+title: ResolveBasketBody
+type: object
+properties:
+  merge:
+    type: boolean
+    default: false
+  basket_id:
+    type: string
+required:
+  - basket_id

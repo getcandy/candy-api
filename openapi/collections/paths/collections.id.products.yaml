@@ -1,0 +1,37 @@
+parameters:
+  - schema:
+      type: string
+    name: collectionId
+    in: path
+    required: true
+post:
+  summary: "Update a collection's products"
+  tags:
+    - Collections
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/CollectionResponse.yaml'
+  operationId: post-collections-collectionId-products
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            products:
+              type: array
+              description: Pass all products you wish to be associated.
+              items:
+                type: string
+        examples:
+          example-with-products:
+            value:
+              products:
+                - 4r221sfef
+                - 534fw3r3s
+                - 58823sese
+  description: Syncs products with a collection.

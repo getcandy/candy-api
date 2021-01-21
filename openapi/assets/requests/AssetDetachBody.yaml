@@ -1,0 +1,8 @@
+title: AssetDetachBody
+type: object
+properties:
+  attributes:
+    type: array
+    description: 'attributeId => position'
+    items:
+      type: object

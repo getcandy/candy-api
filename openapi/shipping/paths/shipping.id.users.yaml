@@ -1,0 +1,46 @@
+parameters:
+  - schema:
+      type: string
+    name: id
+    in: path
+    required: true
+put:
+  summary: Update shipping method users
+  tags:
+    - Shipping
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/ShippingMethodResponse.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+    '422':
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              users:
+                type: array
+                items:
+                  type: string
+  operationId: put-shipping-id-users
+  description: Update shipping method users
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            users:
+              type: array
+              items:
+                type: string

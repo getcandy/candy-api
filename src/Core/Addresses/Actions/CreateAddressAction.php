@@ -3,10 +3,13 @@
 namespace GetCandy\Api\Core\Addresses\Actions;
 
 use DateTime;
+use GetCandy;
 use GetCandy\Api\Core\Addresses\Models\Address;
 use GetCandy\Api\Core\Addresses\Resources\AddressResource;
 use GetCandy\Api\Core\Countries\Actions\FetchCountry;
 use GetCandy\Api\Core\Countries\Models\Country;
+use GetCandy\Api\Core\Customers\Actions\FetchCustomer;
+use GetCandy\Api\Core\Customers\Models\Customer;
 use GetCandy\Api\Core\Users\Actions\FetchUserAction;
 use Illuminate\Support\Arr;
 use Lorisleiva\Actions\Action;
@@ -34,7 +37,7 @@ class CreateAddressAction extends Action
      */
     public function rules()
     {
-        $userModel = config('auth.providers.users.model', User::class);
+        $userModel = GetCandy::getUserModel();
 
         return [
             'salutation' => 'string',
@@ -51,6 +54,7 @@ class CreateAddressAction extends Action
             'postal_code' => 'required|string',
             'country_id' => 'required|hashid_is_valid:'.Country::class,
             'user_id' => 'string|hashid_is_valid:'.$userModel,
+            'customer_id' => 'string|hashid_is_valid:'.Customer::class,
             'shipping' => 'boolean',
             'billing' => 'boolean',
             'default' => 'boolean',
@@ -68,14 +72,28 @@ class CreateAddressAction extends Action
     public function handle()
     {
         $user = $this->user();
+        $model = GetCandy::getUserModel();
         if ($this->user_id) {
             $user = FetchUserAction::run([
                 'encoded_id' => $this->user_id,
             ]);
         }
 
+        if ($this->customer_id) {
+            $customer = FetchCustomer::run([
+                'encoded_id' => $this->customer_id,
+            ]);
+            $model = get_class($customer);
+        }
+
         $address = new Address;
-        $attributes = Arr::except($this->validated(), ['user_id', 'country_id']);
+        $attributes = array_merge(
+            Arr::except($this->validated(), ['user_id', 'customer_id', 'country_id']),
+            [
+                'addressable_id' => $this->customer_id ? $customer->id : $user->id,
+                'addressable_type' => $model,
+            ]
+        );
 
         $country = FetchCountry::run([
             'encoded_id' => $this->country_id,
@@ -83,7 +101,6 @@ class CreateAddressAction extends Action
 
         $address->fill($attributes);
         $address->country()->associate($country);
-        $address->user()->associate($user);
         $address->save();
 
         return $address;

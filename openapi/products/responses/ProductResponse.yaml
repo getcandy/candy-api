@@ -1,0 +1,5 @@
+title: ProductResponse
+type: object
+properties:
+  data:
+    $ref: '../models/Product.yaml'

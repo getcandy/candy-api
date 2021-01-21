@@ -1,0 +1,30 @@
+parameters:
+  - schema:
+      type: string
+    name: basketId
+    in: path
+    required: true
+post:
+  summary: Add meta information
+  tags:
+    - Baskets
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/BasketResponse.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  operationId: post-baskets-basketId-meta
+  description: Allows you to add custom meta information to a basket.
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../requests/AddBasketMetaBody.yaml'

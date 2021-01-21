@@ -1,0 +1,24 @@
+title: BasketLine
+type: object
+properties:
+  id:
+    type: string
+  quantity:
+    type: integer
+  line_total:
+    type: number
+  unit_price:
+    type: number
+  unit_tax:
+    type: number
+  line_discount:
+    type: number
+  tax:
+    type: number
+  # meta:
+  #   type: object
+  # variant:
+  #   type: object
+  #   parameters:
+  #     data:
+  #       $ref: '../../products/models/ProductVariant.yaml'

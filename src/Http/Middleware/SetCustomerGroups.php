@@ -18,6 +18,8 @@ class SetCustomerGroups
      */
     public function handle($request, Closure $next)
     {
+        $groups = collect([FetchDefaultCustomerGroup::run()]);
+
         if (($user = $request->user()) && ! count(GetCandy::getGroups())) {
             // Are we an admin?
             if ($user->hasRole('admin')) {
@@ -26,8 +28,6 @@ class SetCustomerGroups
                 ]);
             } elseif ($request->user()->customer) {
                 $groups = $request->user()->customer->customerGroups;
-            } else {
-                $groups = collect([FetchDefaultCustomerGroup::run()]);
             }
         }
         GetCandy::setGroups($groups);

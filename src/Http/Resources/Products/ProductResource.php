@@ -4,6 +4,7 @@ namespace GetCandy\Api\Http\Resources\Products;
 
 use GetCandy\Api\Core\Channels\Resources\ChannelCollection;
 use GetCandy\Api\Core\Customers\Resources\CustomerGroupCollection;
+use GetCandy\Api\Core\Products\Resources\ProductFamilyResource;
 use GetCandy\Api\Http\Resources\AbstractResource;
 use GetCandy\Api\Http\Resources\Assets\AssetCollection;
 use GetCandy\Api\Http\Resources\Assets\AssetResource;
@@ -23,6 +24,7 @@ class ProductResource extends AbstractResource
             'id' => $this->encoded_id,
             'drafted_at' => $this->drafted_at,
             'option_data' => $this->parseOptionData($this->option_data),
+            'variants_count' => $this->variants_count,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
@@ -62,8 +64,11 @@ class ProductResource extends AbstractResource
     {
         $data = $this->sortOptions($data);
         foreach ($data as $optionKey => $option) {
-            $sorted = $this->sortOptions($option['options']);
-            $data[$optionKey]['options'] = $sorted;
+            $data[$optionKey]['options'] = collect($option['options'] ?? [])->mapWithKeys(function ($option, $handle) {
+                $option['handle'] = $handle;
+
+                return [$handle => $option];
+            })->toArray();
         }
 
         return $data;

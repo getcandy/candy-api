@@ -1,0 +1,15 @@
+title: CreateAttributeGroupBody
+type: object
+properties:
+  name:
+    type: object
+    required:
+      - en
+    properties:
+      en:
+        type: object
+        required:
+          - name
+        properties:
+          name:
+            type: string

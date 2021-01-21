@@ -6,6 +6,8 @@ use Carbon\Carbon;
 use GetCandy;
 use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
 use GetCandy\Api\Core\Channels\Actions\FetchChannel;
+use GetCandy\Api\Core\Customers\Actions\FetchCustomerGroup;
+use GetCandy\Api\Core\Routes\Actions\SearchForRoute;
 use Illuminate\Database\Eloquent\Model;
 
 abstract class BaseService
@@ -301,7 +303,7 @@ abstract class BaseService
             $previousUrl = null;
             foreach ($urls as $locale => $url) {
                 $i = 1;
-                while (GetCandy::routes()->slugExists($url, $path) || $previousUrl == $url) {
+                while (SearchForRoute::run(['slug' => $url, 'path' => $path]) || $previousUrl == $url) {
                     $url = $url.'-'.$i;
                     $i++;
                 }
@@ -316,7 +318,7 @@ abstract class BaseService
         } else {
             $i = 1;
             $url = $urls;
-            while (GetCandy::routes()->slugExists($url)) {
+            while (SearchForRoute::run(['slug' => $url])) {
                 $url = $url.'-'.$i;
                 $i++;
             }
@@ -383,7 +385,9 @@ abstract class BaseService
     {
         $groupData = [];
         foreach ($groups as $group) {
-            $groupModel = GetCandy::customerGroups()->getByHashedId($group['id']);
+            $groupModel = FetchCustomerGroup::run([
+                'encoded_id' => $group['id'],
+            ]);
             $groupData[$groupModel->id] = [
                 'visible' => $group['visible'],
                 'purchasable' => $group['purchasable'],
@@ -435,10 +439,13 @@ abstract class BaseService
         $model = $this->getByHashedId($hashedId, true);
 
         try {
-            return GetCandy::routes()->getBySlug($data['slug']);
+            $existing = SearchForRoute::run(['slug' => $data['slug']]);
+
+            if ($existing) {
+                return $existing;
+            }
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
         }
-
         $route = $model->routes()->create([
             'locale' => $data['locale'],
             'slug' => $data['slug'],

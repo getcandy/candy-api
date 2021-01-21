@@ -1,0 +1,58 @@
+get:
+  summary: Get orders
+  tags:
+    - Orders
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/OrderCollection.yaml'
+  operationId: get-orders
+  description: "If you're an admin user you will be able to see all orders, otherwise only the current users orders will be returned."
+  parameters:
+    - schema:
+        type: string
+      in: query
+      name: include
+post:
+  summary: Create Order
+  operationId: post-orders
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/OrderResponse.yaml'
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+          examples:
+            forbidden-example:
+              value:
+                http_code: 403
+                message: This basket already has an order that has been placed
+    '422':
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+          examples:
+            unprocessable-example:
+              value:
+                basket_id:
+                  - The basket id field is required.
+  description: Create an Order from a Basket instance
+  tags:
+    - Orders
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../requests/CreateOrderBody.yaml'

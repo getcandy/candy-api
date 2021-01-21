@@ -1,0 +1,33 @@
+parameters:
+  - schema:
+      type: string
+    name: productVariantId
+    in: path
+    required: true
+put:
+  summary: Update ProductVariant Inventory
+  tags:
+    - Product Variants
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/ProductVariantResponse.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  operationId: put-products-variants-productVariantId-inventory
+  description: Request to update a product variants inventory.
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            inventory:
+              type: integer

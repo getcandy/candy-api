@@ -3,7 +3,9 @@
 namespace GetCandy\Api\Core\Discounts\Criteria;
 
 use GetCandy;
+use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 use GetCandy\Api\Core\Discounts\Contracts\DiscountCriteriaContract;
+use GetCandy\Api\Core\Foundation\Actions\DecodeIds;
 
 class CustomerGroup implements DiscountCriteriaContract
 {
@@ -36,7 +38,12 @@ class CustomerGroup implements DiscountCriteriaContract
 
     protected function getRealIds()
     {
-        return collect(GetCandy::customerGroups()->getDecodedIds($this->criteria['value']));
+        return collect(
+            DecodeIds::run([
+                'model' => CustomerGroup::class,
+                'encoded_ids' => $this->criteria['value'],
+            ])
+        );
     }
 
     public function check($user)

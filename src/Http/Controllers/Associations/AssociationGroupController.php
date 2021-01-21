@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Http\Controllers\Associations;
 
+use GetCandy;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Resources\Associations\AssociationGroupCollection;
 use Illuminate\Http\Request;

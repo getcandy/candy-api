@@ -1,0 +1,36 @@
+get:
+  summary: Get saved searches
+  tags:
+    - Search
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/SavedSearchCollection.yaml'
+  operationId: get-saved-searches
+  description: Returns a list of current saved searches for products
+  parameters: []
+  # '/saved-searches/{savedSearchId}':
+  #   parameters:
+  #     - schema:
+  #         type: string
+  #       name: savedSearchId
+  #       in: path
+  #       required: true
+  #   delete:
+  #     summary: Delete saved search
+  #     operationId: delete-saved-searches-savedSearchId
+  #     responses:
+  #       '204':
+  #         description: No Content
+  #       '404':
+  #         description: Not Found
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '../../global/responses/ApiError.yaml'
+  #     description: Delete a saved search entry by ID.
+  #     tags:
+  #       - Search

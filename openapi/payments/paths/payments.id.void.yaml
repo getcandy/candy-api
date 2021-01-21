@@ -1,0 +1,31 @@
+parameters:
+  - schema:
+      type: string
+    name: transactionId
+    in: path
+    required: true
+post:
+  summary: Void a payment
+  tags:
+    - Payments
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/TransactionResponse.yaml'
+    '400':
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  operationId: post-payments-transactionId-void
+  description: Voids a payment in the system.

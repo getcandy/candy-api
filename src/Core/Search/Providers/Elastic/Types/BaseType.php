@@ -4,6 +4,7 @@ namespace GetCandy\Api\Core\Search\Providers\Elastic\Types;
 
 use Carbon\Carbon;
 use GetCandy;
+use GetCandy\Api\Core\Customers\Actions\FetchCustomerGroups;
 use GetCandy\Api\Core\Scopes\ChannelScope;
 use GetCandy\Api\Core\Scopes\CustomerGroupScope;
 use GetCandy\Api\Core\Search\Indexable;
@@ -45,7 +46,9 @@ abstract class BaseType
     {
         $attributes = $this->attributeMapping($model);
 
-        $customerGroups = GetCandy::customerGroups()->all();
+        $customerGroups = FetchCustomerGroups::run([
+            'paginate' => false,
+        ]);
 
         $indexables = collect();
 

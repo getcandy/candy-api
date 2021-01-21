@@ -1,0 +1,33 @@
+parameters:
+  - schema:
+      type: string
+    name: categoryId
+    in: path
+    required: true
+post:
+  summary: Attach customer groups to a category
+  tags:
+    - Categories
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/CategoryResponse.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              '':
+                $ref: '../../global/responses/ApiError.yaml'
+  operationId: post-categories-categoryId-customer-groups
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../requests/AttachCategoryCustomerGroupsBody.yaml'
+  description: Attaches customer groups to a category resource.

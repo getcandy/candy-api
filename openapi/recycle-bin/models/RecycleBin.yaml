@@ -1,0 +1,15 @@
+title: Recycle Bin
+type: object
+properties:
+  id:
+    type: string
+  type:
+    type: string
+  name:
+    type: string
+  thumbnail:
+    type: string
+  deleted_at:
+    type: string
+  recyclable:
+    type: object

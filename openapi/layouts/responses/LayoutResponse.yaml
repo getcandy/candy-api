@@ -1,0 +1,5 @@
+title: LayoutResponse
+type: object
+properties:
+  data:
+    $ref: '../models/Layout.yaml'

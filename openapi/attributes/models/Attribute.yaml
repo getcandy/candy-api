@@ -1,0 +1,57 @@
+title: Attribute
+type: object
+x-examples:
+  attribute-example:
+    id: dnj4zky5
+    name:
+      en: Name
+      sv: Namn
+    handle: name
+    position: '1'
+    filterable: false
+    scopeable: true
+    translatable: true
+    variant: false
+    searchable: true
+    localised: true
+    type: text
+    required: true
+    lookups: null
+    system: false
+description: |-
+  ### Available includes
+  - group
+properties:
+  id:
+    type: string
+    example: dnj4zky5
+  name:
+    type: object
+  handle:
+    type: string
+  position:
+    type: integer
+  filterable:
+    type: boolean
+  scopeable:
+    type: boolean
+  translatable:
+    type: boolean
+  variant:
+    type: boolean
+  searchable:
+    type: boolean
+  localised:
+    type: boolean
+  type:
+    type: string
+  required:
+    type: boolean
+  lookups:
+    type: array
+    items:
+      type: object
+  system:
+    type: boolean
+  group:
+    $ref: '../../attribute-groups/responses/AttributeGroupResponse.yaml'

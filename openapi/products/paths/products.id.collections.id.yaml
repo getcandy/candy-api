@@ -1,0 +1,26 @@
+parameters:
+  - schema:
+      type: string
+    name: productId
+    in: path
+    required: true
+  - schema:
+      type: string
+    name: collectionId
+    in: path
+    required: true
+delete:
+  summary: Detach collection
+  tags:
+    - Products
+  responses:
+    '204':
+      description: No Content
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  operationId: delete-products-product-collections-detach
+  description: Detaches a collection from a product. Does not delete the collection.

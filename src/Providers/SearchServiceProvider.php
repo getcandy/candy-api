@@ -2,20 +2,27 @@
 
 namespace GetCandy\Api\Providers;
 
-use GetCandy\Api\Core\Search\SearchContract;
-use GetCandy\Api\Core\Search\Services\SavedSearchService;
+use GetCandy\Api\Core\Search\Commands\IndexCategoriesCommand;
+use GetCandy\Api\Core\Search\Commands\IndexProductsCommand;
+use GetCandy\Api\Core\Search\Commands\ScoreProductsCommand;
+use GetCandy\Api\Core\Search\Contracts\SearchManagerContract;
+use GetCandy\Api\Core\Search\SearchManager;
 use Illuminate\Support\ServiceProvider;
 
 class SearchServiceProvider extends ServiceProvider
 {
     public function register()
     {
-        $this->app->singleton(SearchContract::class, function ($app) {
-            return $app->make(config('getcandy.search.client'));
+        $this->app->singleton(SearchManagerContract::class, function ($app) {
+            return new SearchManager($app);
         });
 
-        $this->app->bind('getcandy.saved_search', function ($app) {
-            return $app->make(SavedSearchService::class);
-        });
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                IndexProductsCommand::class,
+                IndexCategoriesCommand::class,
+                ScoreProductsCommand::class,
+            ]);
+        }
     }
 }

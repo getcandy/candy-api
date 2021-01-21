@@ -18,7 +18,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../../global/responses/Error.yaml'
+            $ref: '../../global/responses/ApiError.yaml'
   operationId: get-countries-countryId
   description: ''
   parameters:

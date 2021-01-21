@@ -4,6 +4,7 @@ namespace GetCandy\Api\Core\Orders\Listeners;
 
 use GetCandy\Api\Core\Baskets\Events\BasketStoredEvent;
 use GetCandy\Api\Core\Discounts\Factory;
+use GetCandy\Api\Core\Orders\Interfaces\OrderFactoryInterface;
 
 class SyncWithBasketListener
 {

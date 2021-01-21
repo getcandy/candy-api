@@ -1,0 +1,64 @@
+get:
+  summary: Search GetCandy
+  tags:
+    - Search
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/SearchResponse.yaml'
+  operationId: get-search
+  description: |-
+    Search across products or categories
+
+    You can filter across attributes by adding key=value to the search query, for filtering multiple values use key=value1:value2
+  parameters:
+    - schema:
+        type: string
+      in: query
+      name: channel
+    - schema:
+        type: string
+      in: query
+      name: category
+    - schema:
+        type: integer
+      in: query
+      name: page
+    - schema:
+        type: string
+        enum:
+          - categories
+          - products
+        default: products
+      in: query
+      name: search_type
+    - schema:
+        type: string
+      in: query
+      name: term
+    - schema:
+        type: boolean
+      in: query
+      name: rank
+      description: Whether to rank results based on config
+    - schema:
+        type: boolean
+        default: false
+      in: query
+      name: ids_only
+      description: "Will only return result ID's, good for performance"
+    - schema:
+        type: string
+      in: query
+      name: include
+    - schema:
+        type: string
+      in: query
+      name: sort
+    - schema:
+        type: boolean
+      in: query
+      name: full_response

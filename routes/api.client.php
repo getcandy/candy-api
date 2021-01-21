@@ -10,23 +10,14 @@
 |
 */
 
-$router->get('/', function () {
-    $currency = app()->make(GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface::class);
-
-    return response()->json([
-        'version' => GetCandy::version(),
-        'locale' => app()->getLocale(),
-        'channel' => GetCandy\Api\Core\Channels\Actions\FetchCurrentChannel::run(),
-        'currency' => new GetCandy\Api\Http\Resources\Currencies\CurrencyResource($currency->get()),
-    ]);
-});
+$router->get('/', '\GetCandy\Api\Core\Root\Actions\FetchRoot');
 
 $router->get('channels/{encoded_id}', '\GetCandy\Api\Core\Channels\Actions\FetchChannel');
 $router->get('collections', 'Collections\CollectionController@index');
 $router->get('collections/{id}', 'Collections\CollectionController@show');
 $router->get('categories/{id}', 'Categories\CategoryController@show');
 $router->get('products/recommended', 'Products\ProductController@recommended');
-$router->get('products/{product}', 'Products\ProductController@show');
+$router->get('products/{encoded_id}', '\GetCandy\Api\Core\Products\Actions\FetchProduct');
 $router->get('products', 'Products\ProductController@index');
 
 /*
@@ -58,8 +49,9 @@ $router->resource('baskets', 'Baskets\BasketController', [
     */
 $router->post('basket-lines', 'Baskets\BasketLineController@store');
 $router->put('basket-lines/{id}', 'Baskets\BasketLineController@update');
+$router->delete('basket-lines/{id}', 'Baskets\BasketLineController@destroyLine');
 $router->post('basket-lines/{id}/add', 'Baskets\BasketLineController@addQuantity');
-$router->post('basket-lines/{id}/remove', 'Baskets\BasketLineController@removeQuantity');
+$router->put('basket-lines/{id}/remove', 'Baskets\BasketLineController@removeQuantity');
 $router->delete('basket-lines', 'Baskets\BasketLineController@destroy');
 
 /*
@@ -118,24 +110,30 @@ $router->get('payments/provider', 'Payments\PaymentController@provider');
 $router->get('payments/providers', 'Payments\PaymentController@providers');
 $router->get('payments/types', 'Payments\PaymentTypeController@index');
 
-$router->get('routes', 'Routes\RouteController@index');
-$router->get('routes/{slug}', [
-    'uses' => 'Routes\RouteController@show',
-])->where(['slug' => '.*']);
+/*
+* Routes
+*/
+$router->group([
+    'prefix' => 'routes',
+], function ($route) {
+    $route->get('search', '\GetCandy\Api\Core\Routes\Actions\SearchForRoute');
+    $route->get('{encoded_id}', '\GetCandy\Api\Core\Routes\Actions\FetchRoute');
+});
 
-$router->post('password/reset', 'Auth\ResetPasswordController@reset');
-$router->post('password/reset/request', 'Auth\ForgotPasswordController@sendResetLinkEmail');
+$router->get('search', '\GetCandy\Api\Core\Search\Actions\Search');
 
-$router->get('search', 'Search\SearchController@search');
-$router->get('search/sku', 'Search\SearchController@sku');
-$router->get('search/products', 'Search\SearchController@products');
+// $router->get('search', 'Search\SearchController@search');
+// $router->get('search/sku', 'Search\SearchController@sku');
+// $router->get('search/products', 'Search\SearchController@products');
 /*
     * Shipping
     */
 $router->get('shipping', 'Shipping\ShippingMethodController@index');
 $router->get('shipping/prices/estimate', 'Shipping\ShippingPriceController@estimate');
 
-$router->post('users', 'Users\UserController@store');
-$router->post('users/{userid}', 'Users\UserController@update');
+/*
+ * Users
+ */
+$router->post('users', '\GetCandy\Api\Core\Users\Actions\CreateUser');
 
 $router->get('plugins', 'Plugins\PluginController@index');

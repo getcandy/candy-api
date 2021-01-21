@@ -23,10 +23,8 @@ use GetCandy\Api\Core\Payments\Services\PaymentTypeService;
 use GetCandy\Api\Core\Products\Services\ProductAssociationService;
 use GetCandy\Api\Core\Products\Services\ProductCategoryService;
 use GetCandy\Api\Core\Products\Services\ProductCollectionService;
-use GetCandy\Api\Core\Products\Services\ProductFamilyService;
 use GetCandy\Api\Core\Products\Services\ProductService;
 use GetCandy\Api\Core\Products\Services\ProductVariantService;
-use GetCandy\Api\Core\Routes\Services\RouteService;
 use GetCandy\Api\Core\Search\Services\SavedSearchService;
 use GetCandy\Api\Core\Settings\Services\SettingService;
 use GetCandy\Api\Core\Shipping\Services\ShippingMethodService;
@@ -34,7 +32,6 @@ use GetCandy\Api\Core\Shipping\Services\ShippingPriceService;
 use GetCandy\Api\Core\Shipping\Services\ShippingZoneService;
 use GetCandy\Api\Core\Tags\Services\TagService;
 use GetCandy\Api\Core\Taxes\Services\TaxService;
-use GetCandy\Api\Core\Users\Services\UserService;
 
 class Factory
 {
@@ -129,19 +126,9 @@ class Factory
     protected $productCollections;
 
     /**
-     * @var \GetCandy\Api\Core\Products\Services\ProductFamilyService
-     */
-    protected $productFamilies;
-
-    /**
      * @var \GetCandy\Api\Core\Products\Services\ProductVariantService
      */
     protected $productVariants;
-
-    /**
-     * @var \GetCandy\Api\Core\Routes\Services\RouteService
-     */
-    protected $routes;
 
     /**
      * @var \GetCandy\Api\Core\Auth\Services\RoleService
@@ -187,11 +174,6 @@ class Factory
      */
     protected $transforms;
 
-    /**
-     * @var \GetCandy\Api\Core\Users\Services\UserService
-     */
-    protected $users;
-
     public function __construct(
         AssetService $assets,
         AssetSourceService $assetSources,
@@ -212,11 +194,9 @@ class Factory
         ProductAssociationService $productAssociations,
         ProductCategoryService $productCategories,
         ProductCollectionService $productCollections,
-        ProductFamilyService $productFamilies,
         ProductService $products,
         ProductVariantService $productVariants,
         RoleService $roles,
-        RouteService $routes,
         SavedSearchService $savedSearch,
         SettingService $settings,
         SavedBasketService $savedBaskets,
@@ -224,8 +204,7 @@ class Factory
         ShippingZoneService $shippingZones,
         ShippingPriceService $shippingPrices,
         TagService $tags,
-        TaxService $taxes,
-        UserService $users
+        TaxService $taxes
     ) {
         $this->assetSources = $assetSources;
         $this->assets = $assets;
@@ -245,11 +224,9 @@ class Factory
         $this->productAssociations = $productAssociations;
         $this->productCategories = $productCategories;
         $this->productCollections = $productCollections;
-        $this->productFamilies = $productFamilies;
         $this->productVariants = $productVariants;
         $this->products = $products;
         $this->roles = $roles;
-        $this->routes = $routes;
         $this->savedBaskets = $savedBaskets;
         $this->savedSearch = $savedSearch;
         $this->settings = $settings;
@@ -259,7 +236,6 @@ class Factory
         $this->tags = $tags;
         $this->taxes = $taxes;
         $this->transforms = $transforms;
-        $this->users = $users;
     }
 
     public function __call($name, $arguments)

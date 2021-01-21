@@ -1,0 +1,106 @@
+post:
+  summary: Bulk update orders
+  tags:
+    - Orders
+  responses:
+    '204':
+      description: No Content
+    '400':
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+          examples:
+            bad-request-example:
+              value:
+                http_code: 400
+                message: Unable to update field
+    '422':
+      description: Unprocessable Entity
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              orders:
+                type: array
+                items:
+                  type: string
+              field:
+                type: array
+                items:
+                  type: string
+              value:
+                type: array
+                items:
+                  type: string
+  operationId: post-orders-bulk
+  description: |-
+    Allows you to bulk update a field across multiple Orders.
+
+    You must have the correct priviledges to perform this action.
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            orders:
+              type: array
+              items:
+                type: string
+            field:
+              type: string
+            value:
+              type: string
+            send_emails:
+              type: boolean
+              description: Whether to send any mailers when changing status
+          required:
+            - orders
+            - field
+        examples:
+          bulk-update-example-body:
+            value:
+              orders:
+                - 1236ygsd3
+                - 9etfxvj2q
+                - 75672fsfs
+              field: status
+              value: in-progress
+              send_emails: true
+get:
+  summary: Get Order export
+  tags:
+    - Orders
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/OrderExportResponse.yaml'
+          examples:
+            export-example:
+              value:
+                data:
+                  format: csv
+                  content: ZW1haWwsZG...
+  operationId: get-orders-bulk
+  description: Export orders into a base64 encoded string
+  parameters:
+    - schema:
+        type: string
+        enum:
+          - '1sfe534r4ref:934redfk'
+      in: query
+      name: orders
+      description: Colon seperated order IDs
+      required: true
+    - schema:
+        type: string
+      in: query
+      description: 'The export format, must be present in config'
+      name: format
+      required: true

@@ -1,0 +1,30 @@
+parameters:
+  - schema:
+      type: string
+    name: categoryId
+    in: path
+    required: true
+post:
+  summary: Create or retrieve the current category draft
+  tags:
+    - Categories
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/CategoryResponse.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  operationId: post-categories-categoryId-drafts
+  description: Create or return the current category draft resource.
+  parameters:
+    - schema:
+        type: string
+      in: query
+      name: include

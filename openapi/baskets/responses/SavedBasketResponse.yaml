@@ -1,0 +1,5 @@
+title: SavedBasketResponse
+type: object
+properties:
+  data:
+    $ref: '../models/SavedBasket.yaml'

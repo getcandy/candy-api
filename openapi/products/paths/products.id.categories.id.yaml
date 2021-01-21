@@ -1,0 +1,26 @@
+parameters:
+  - schema:
+      type: string
+    name: productId
+    in: path
+    required: true
+  - schema:
+      type: string
+    name: categoryId
+    in: path
+    required: true
+delete:
+  summary: Detach category
+  tags:
+    - Products
+  responses:
+    '204':
+      description: No Content
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  operationId: delete-products-product-categories-category
+  description: Detaches a category from a product. Does not delete the category.

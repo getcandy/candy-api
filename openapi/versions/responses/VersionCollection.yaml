@@ -1,0 +1,6 @@
+VersionCollection:
+  title: VersionCollection
+  type: object
+  properties:
+    data:
+      $ref: 'VersionResponse.yaml'

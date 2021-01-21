@@ -1,0 +1,5 @@
+title: CustomerPriceResponse
+type: object
+properties:
+  data:
+    $ref: '../models/CustomerPrice.yaml'

@@ -3,5 +3,5 @@ type: object
 properties:
   customer_group_ids:
     type: array
-  customer_id:
-    type: string
+    items:
+      type: string

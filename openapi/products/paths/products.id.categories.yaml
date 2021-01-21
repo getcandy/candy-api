@@ -1,0 +1,38 @@
+parameters:
+  - schema:
+      type: string
+    name: productId
+    in: path
+    required: true
+post:
+  summary: Update Product categories
+  tags:
+    - Products
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/ProductResponse.yaml'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '../../global/responses/ApiError.yaml'
+  operationId: post-products-product-categories
+  description: Sync product categories
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            categories:
+              type: array
+              description: "Array of category ID's"
+              items:
+                type: string
+          required:
+            - categories
