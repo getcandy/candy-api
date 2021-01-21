@@ -21,34 +21,10 @@ paths:
     $ref: './addresses/paths/addresses.yaml'
   '/addresses/{addressId}':
     $ref: './addresses/paths/addresses.id.yaml'
-  /channels:
-    $ref: './channels/paths/channels.yaml'
-  '/channels/{channelId}':
-    $ref: './channels/paths/channels.id.yaml'
-  /customers:
-    $ref: './customers/paths/customers.yaml'
-  '/customers/{customerId}/users':
-    $ref: './customers/paths/customers.id.users.yaml'
-  '/customers/{customerId}/customer-groups':
-    $ref: './customers/paths/customers.id.customer-groups.yaml'
-  '/customers/{customerId}':
-    $ref: './customers/paths/customers.id.yaml'
-  /currencies:
-    $ref: './currencies/paths/currencies.yaml'
-  '/currencies/{currencyId}':
-    $ref: './currencies/paths/currencies.id.yaml'
-  '/countries':
-    $ref: './countries/paths/countries.yaml'
-  '/countries/{countryId}':
-    $ref: './countries/paths/countries.id.yaml'
-  '/customer-groups':
-    $ref: './customer-groups/paths/customer-groups.yaml'
-  '/customer-groups/{customerGroupId}':
-    $ref: './customer-groups/paths/customer-groups.id.yaml'
-  /languages:
-    $ref: './languages/paths/languages.yaml'
-  '/languages/{languageId}':
-    $ref: './languages/paths/languages.id.yaml'
+  '/assets':
+    $ref: './assets/paths/assets.yaml'
+  '/assets/simple':
+    $ref: './assets/paths/assets.simple.yaml'
   '/assets/{assetId}/detach/{ownerId}':
     $ref: './assets/paths/assets.id.detach.id.yaml'
   '/associations/groups':
@@ -113,6 +89,14 @@ paths:
     $ref: './categories/paths/categories.id.drafts.yaml'
   '/categories/{categoryId}/customer-groups':
     $ref: './categories/paths/categories.id.customer-groups.yaml'
+  '/currencies':
+    $ref: './currencies/paths/currencies.yaml'
+  '/currencies/{currencyId}':
+    $ref: './currencies/paths/currencies.id.yaml'
+  '/channels':
+    $ref: './channels/paths/channels.yaml'
+  '/channels/{channelId}':
+    $ref: './channels/paths/channels.id.yaml'
   '/collections/{collectionId}/routes':
     $ref: './collections/paths/collections.id.routes.yaml'
   '/collections/{collectionId}/products':
@@ -121,12 +105,32 @@ paths:
     $ref: './collections/paths/collections.yaml'
   '/collections/{collectionId}':
     $ref: './collections/paths/collections.id.yaml'
+  '/countries':
+    $ref: './countries/paths/countries.yaml'
+  '/countries/{countryId}':
+    $ref: './countries/paths/countries.id.yaml'
+  '/customer-groups':
+    $ref: './customer-groups/paths/customer-groups.yaml'
+  '/customer-groups/{customerGroupId}':
+    $ref: './customer-groups/paths/customer-groups.id.yaml'
+  '/customers':
+    $ref: './customers/paths/customers.yaml'
   '/customers/fields':
     $ref: './customers/paths/customers.fields.yaml'
+  '/customers/{customerId}/users':
+    $ref: './customers/paths/customers.id.users.yaml'
+  '/customers/{customerId}/customer-groups':
+    $ref: './customers/paths/customers.id.customer-groups.yaml'
+  '/customers/{customerId}':
+    $ref: './customers/paths/customers.id.yaml'
   '/discounts':
     $ref: './discounts/paths/discounts.yaml'
   '/discounts/{discountId}':
     $ref: './discounts/paths/discounts.id.yaml'
+  '/languages':
+    $ref: './languages/paths/languages.yaml'
+  '/languages/{languageId}':
+    $ref: './languages/paths/languages.id.yaml'
   '/layouts':
     $ref: './layouts/paths/layouts.yaml'
   '/orders':
