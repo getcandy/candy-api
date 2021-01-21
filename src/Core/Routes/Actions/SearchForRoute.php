@@ -43,7 +43,7 @@ class SearchForRoute extends AbstractAction
     {
         $query = Route::whereSlug($this->slug)->with(
             $this->resolveEagerRelations()
-        );
+        )->withCount($this->resolveRelationCounts());
 
         if ($this->path) {
             $query->wherePath($this->path);

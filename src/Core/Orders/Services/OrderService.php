@@ -460,9 +460,10 @@ class OrderService extends BaseService implements OrderServiceInterface
                 'city',
                 'county',
                 'state',
-                'country',
-                'zip',
             ]);
+            $payload['country'] = $shipping->country->name;
+            $payload['zip'] = $shipping->postal_code;
+            $payload['county'] = $shipping->state;
             $payload['email'] = $data['email'] ?? null;
             $payload['phone'] = $data['phone'] ?? null;
             $data = $payload;
