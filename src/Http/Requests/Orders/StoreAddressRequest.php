@@ -34,7 +34,7 @@ class StoreAddressRequest extends FormRequest
         return [
             'firstname' => 'required_without:address_id|max:20',
             'lastname' => 'required_without:address_id|max:20',
-            'address_id' => 'hashid_is_valid:' . Address::class,
+            'address_id' => 'hashid_is_valid:'.Address::class,
             'address' => 'required_without:address_id|max:40',
             'city' => 'required_without:address_id|max:40',
             'county' => 'required_without_all:address_id,state|max:40',
