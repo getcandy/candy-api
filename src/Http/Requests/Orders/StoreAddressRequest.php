@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Http\Requests\Orders;
 
-use GetCandy\Api\Http\Requests\FormRequest;
 use GetCandy\Api\Core\Addresses\Models\Address;
+use GetCandy\Api\Http\Requests\FormRequest;
 
 class StoreAddressRequest extends FormRequest
 {
