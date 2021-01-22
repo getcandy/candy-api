@@ -3,10 +3,6 @@
 namespace GetCandy\Api\Core\Search\Providers\Elastic;
 
 use GetCandy;
-use GetCandy\Api\Http\Resources\Attributes\AttributeResource;
-use GetCandy\Api\Http\Resources\Categories\CategoryResource;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 class AggregationResolver
@@ -59,55 +55,5 @@ class AggregationResolver
             'available' => $this->resolveAggregations($preAggs),
             'applied' => $this->resolveAggregations($postAggs),
         ];
-    }
-
-    protected function resolveAggregations(Collection $aggregations)
-    {
-        // Get our attributes here so they're only fetched once
-        $attributes = $this->getAggregatedAttributes(
-            $aggregations->mapWithKeys(function ($agg, $key) {
-                return [str_replace('_after', '', $key) => null];
-            })->keys()->all()
-        );
-
-        $categories = collect();
-
-        if ($categoryBuckets = Arr::get($aggregations, 'categories.categories.buckets')) {
-            // Get the categories here so they're only fetched once
-            $categories = $this->getAggregatedCategories($categoryBuckets);
-        }
-
-        return $aggregations->mapWithKeys(function ($agg, $key) use ($attributes, $categories) {
-            $key = str_replace('_after', '', $key);
-
-            $extra = [
-                'handle' => $key,
-            ];
-
-            $data = $agg[$key] ?? $agg;
-
-            if ($key == 'categories') {
-                foreach ($data['buckets'] as $bucketIndex => $bucket) {
-                    $category = $categories->first(function ($cat) use ($bucket) {
-                        return $cat->encodedId() == $bucket['key'];
-                    });
-
-                    if ($category) {
-                        $data['buckets'][$bucketIndex]['data'] = new CategoryResource($category);
-                    } else {
-                        unset($data['buckets'][$bucketIndex]);
-                    }
-                }
-            } else {
-                $attribute = $attributes->first(function ($att) use ($key) {
-                    return $att->handle == $key;
-                });
-                $extra['data'] = new AttributeResource($attribute);
-            }
-
-            return [$key =>  array_merge($extra, $data)];
-        })->sortBy(function ($agg) {
-            return ! empty($agg['data']) ? $agg['data']->resource->position : 0;
-        });
     }
 }

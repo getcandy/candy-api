@@ -72,7 +72,7 @@ class ShippingPriceController extends BaseController
     {
         $result = GetCandy::shippingPrices()->estimate($request->amount, $request->zip, $request->limit);
 
-        return new ShippingPriceResource($result);
+        return new ShippingPriceCollection($result);
     }
 
     /**

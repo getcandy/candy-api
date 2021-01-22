@@ -17,7 +17,7 @@ class DiscountController extends BaseController
         $paginator = GetCandy::discounts()->getPaginatedData(
             $request->per_page,
             $request->current_page,
-            $request->includes ? explode(',', $request->includes) : null
+            $request->include ? explode(',', $request->include) : null
         );
 
         return new DiscountCollection($paginator);
@@ -50,7 +50,7 @@ class DiscountController extends BaseController
         try {
             $discount = GetCandy::discounts()->getByHashedId(
                 $id,
-                $request->includes ? explode(',', $request->includes) : null
+                $request->include ? explode(',', $request->include) : null
             );
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();

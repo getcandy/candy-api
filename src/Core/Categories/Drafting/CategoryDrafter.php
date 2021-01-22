@@ -50,7 +50,20 @@ class CategoryDrafter extends BaseDrafter implements DrafterInterface
 
         // Delete routes
         $parent->routes()->delete();
-        $parent->forceDelete();
+
+        // Move any direct children on to the published category
+        DB::transaction(function ($query) use ($parent, $category) {
+            $parent->children->each(function ($node) use ($category) {
+                $node->parent()->associate($category)->save();
+            });
+        });
+
+        $parent->update([
+            '_lft' => null,
+            '_rgt' => null,
+        ]);
+        $parent->refresh()->forceDelete();
+        // $parent->refresh()->forceDelete();
 
         $category->drafted_at = null;
         $category->save();
@@ -61,7 +74,6 @@ class CategoryDrafter extends BaseDrafter implements DrafterInterface
                 'documents' => $category->products,
             ]);
         }
-
 
         event(new ModelPublishedEvent($category));
 

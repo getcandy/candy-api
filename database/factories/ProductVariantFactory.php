@@ -1,7 +1,6 @@
 <?php
 
 use Faker\Generator as Faker;
-use GetCandy\Api\Core\Products\Models\Product;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,14 +13,10 @@ use GetCandy\Api\Core\Products\Models\Product;
 |
 */
 
-$factory->define(Product::class, function (Faker $faker) {
+$factory->define(GetCandy\Api\Core\Products\Models\ProductVariant::class, function (Faker $faker) {
     return [
-        'attribute_data' => [
-            'name' => [
-                'webstore' => [
-                    'en' => $faker->name,
-                ],
-            ],
-        ],
+        'sku' => $faker->unique()->slug,
+        'stock' => $faker->numberBetween(10, 2000),
+        'price' => $faker->randomNumber(2),
     ];
 });

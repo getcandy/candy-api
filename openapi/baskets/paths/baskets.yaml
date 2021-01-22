@@ -11,21 +11,21 @@ get:
   description: Get a paginated list of baskets
   tags:
     - Baskets
-# post:
-#   summary: Create Basket
-#   operationId: post-baskets
-#   responses:
-#     '200':
-#       description: OK
-#       content:
-#         application/json:
-#           schema:
-#             $ref: '../responses/BasketResponse.yaml'
-#   requestBody:
-#     content:
-#       application/json:
-#         schema:
-#           $ref: '../requests/CreateBasketBody.yaml'
-#   tags:
-#     - Baskets
-#   description: ''
+post:
+  summary: Create Basket
+  operationId: post-baskets
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/BasketResponse.yaml'
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../requests/CreateBasketBody.yaml'
+  tags:
+    - Baskets
+  description: ''

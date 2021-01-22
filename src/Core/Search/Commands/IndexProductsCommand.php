@@ -43,7 +43,7 @@ class IndexProductsCommand extends Command
     public function handle(Dispatcher $events, SearchManager $manager)
     {
         $batchsize = (int) $this->argument('batchsize');
-        $total = Product::withoutGlobalScopes()->count();
+        $total = Product::count();
 
         $this->output->text('Indexing '.$total.' products in '.ceil($total / $batchsize).' batches');
 
@@ -52,7 +52,7 @@ class IndexProductsCommand extends Command
 
         $uuid = Uuid::uuid4()->toString();
 
-        Product::withoutGlobalScopes()->with([
+        Product::with([
             'attributes',
             'customerGroups',
             'channels',

@@ -93,7 +93,20 @@ class ProductDrafter implements DrafterInterface
                 $new->product_id = $newProduct->id;
                 $new->drafted_at = now();
                 $new->draft_parent_id = $v->id;
+
                 $new->save();
+
+                // Copy customer group pricing...
+                $groupPricing = $v->customerPricing->map(function ($groupPrice) {
+                    return $groupPrice->only([
+                        'customer_group_id',
+                        'tax_id',
+                        'price',
+                        'compare_at_price',
+                    ]);
+                });
+
+                $new->customerPricing()->createMany($groupPricing);
             });
 
             $product->routes->each(function ($r) use ($newProduct) {

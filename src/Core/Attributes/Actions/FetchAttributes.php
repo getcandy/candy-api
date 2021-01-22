@@ -24,7 +24,9 @@ class FetchAttributes extends AbstractAction
      */
     public function rules()
     {
-        return [];
+        return [
+            'handles' => 'nullable|array|min:0',
+        ];
     }
 
     /**
@@ -34,6 +36,10 @@ class FetchAttributes extends AbstractAction
      */
     public function handle()
     {
+        if ($this->handles) {
+            return Attribute::whereIn('handle', $this->handles)->get();
+        }
+
         return Attribute::get();
     }
 }

@@ -46,7 +46,9 @@ class UpdateProductFamily extends AbstractAction
     public function handle()
     {
         $productFamily = $this->delegateTo(FetchProductFamily::class);
-        $productFamily->update($this->validated());
+        $productFamily->update([
+            'name' => $this->name,
+        ]);
 
         if ($this->attribute_ids) {
             AttachModelToAttributes::run([

@@ -2,8 +2,11 @@
 
 namespace GetCandy\Api\Core\Search\Drivers\Elasticsearch\Actions\Searching;
 
+use GetCandy;
 use GetCandy\Api\Core\Attributes\Actions\FetchAttribute;
+use GetCandy\Api\Core\Channels\Actions\FetchCurrentChannel;
 use GetCandy\Api\Core\Search\Drivers\Elasticsearch\Filters\CategoryFilter;
+use GetCandy\Api\Core\Search\Drivers\Elasticsearch\Filters\ChannelFilter;
 use GetCandy\Api\Core\Search\Drivers\Elasticsearch\Filters\CustomerGroupFilter;
 use Lorisleiva\Actions\Action;
 
@@ -43,6 +46,8 @@ class FetchFilters extends Action
      */
     public function handle()
     {
+        $currentChannel = FetchCurrentChannel::run();
+
         $applied = collect([
             (new CustomerGroupFilter)->process($this->user()),
         ]);
@@ -50,6 +55,12 @@ class FetchFilters extends Action
         if (! empty($this->category)) {
             $applied->push(
                 (new CategoryFilter)->process($this->category)
+            );
+        }
+
+        if (! GetCandy::isHubRequest()) {
+            $applied->push(
+                (new ChannelFilter)->process($currentChannel)
             );
         }
         foreach ($this->filters ?? [] as $filter => $value) {

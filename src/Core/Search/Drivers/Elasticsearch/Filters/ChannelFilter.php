@@ -4,6 +4,7 @@ namespace GetCandy\Api\Core\Search\Drivers\Elasticsearch\Filters;
 
 use Elastica\Query\BoolQuery;
 use Elastica\Query\Nested;
+use Elastica\Query\Range;
 use Elastica\Query\Term;
 
 class ChannelFilter extends AbstractFilter
@@ -17,6 +18,8 @@ class ChannelFilter extends AbstractFilter
     public function process($payload, $type = null)
     {
         $this->channel = $payload;
+
+        return $this;
     }
 
     public function getQuery()
@@ -27,10 +30,21 @@ class ChannelFilter extends AbstractFilter
         $cat->setPath('channels');
 
         $term = new Term;
-        $term->setTerm('channels.handle', $this->channel);
+        $term->setTerm('channels.handle', $this->channel->handle);
 
         $cat->setQuery($term);
 
+        $dateRange = new Nested;
+        $dateRange->setPath('channels');
+
+        $range = new Range;
+        $range->addField('channels.published_at', [
+            'lte' => 'now',
+        ]);
+
+        $dateRange->setQuery($range);
+
+        $filter->addMust($dateRange);
         $filter->addMust($cat);
 
         return $filter;

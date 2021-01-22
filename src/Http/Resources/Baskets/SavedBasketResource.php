@@ -18,7 +18,7 @@ class SavedBasketResource extends AbstractResource
     public function includes()
     {
         return [
-            'basket' => $this->include(BasketResource::class, $this->getBasket()),
+            'basket' => $this->include($this->getBasket(), BasketResource::class),
         ];
     }
 

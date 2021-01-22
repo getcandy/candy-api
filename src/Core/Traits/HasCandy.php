@@ -8,6 +8,7 @@ use GetCandy\Api\Core\Customers\Models\Customer;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 use GetCandy\Api\Core\Languages\Models\Language;
 use GetCandy\Api\Core\Orders\Models\Order;
+use GetCandy\Api\Core\Payments\Models\PaymentProviderUser;
 use GetCandy\Api\Core\ReusablePayments\Models\ReusablePayment;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -52,6 +53,11 @@ trait HasCandy
         return $this->hasOne(Basket::class)
             ->doesntHave('savedBasket')
             ->orderBy('created_at', 'DESC');
+    }
+
+    public function providerUsers()
+    {
+        return $this->hasMany(PaymentProviderUser::class);
     }
 
     public function savedBaskets()

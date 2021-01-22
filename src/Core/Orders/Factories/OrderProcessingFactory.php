@@ -279,7 +279,14 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
 
         event(new OrderProcessedEvent($this->order));
 
-        return $this->order;
+        return $this->order->load([
+            'lines',
+            'lines.variant',
+            'shipping',
+            'discounts',
+            'user.customer',
+            'basket.lines.variant.product.assets',
+        ]);
     }
 
     /**

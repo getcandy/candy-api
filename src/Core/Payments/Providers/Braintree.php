@@ -7,6 +7,9 @@ use Braintree_Gateway;
 use Braintree_Transaction;
 use GetCandy\Api\Core\Payments\Models\Transaction;
 use GetCandy\Api\Core\Payments\PaymentResponse;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class Braintree extends AbstractProvider
 {
@@ -43,6 +46,19 @@ class Braintree extends AbstractProvider
 
     public function getClientToken()
     {
+        $user = Auth::user();
+
+        if ($user) {
+            // Does the user have a provider id?
+            $provider = $user->providerUsers()->provider('braintree')->first();
+
+            if ($provider) {
+                return $this->gateway->clientToken()->generate([
+                    'customerId' => $provider->provider_id,
+                ]);
+            }
+        }
+
         return $this->gateway->clientToken()->generate();
     }
 
@@ -90,13 +106,19 @@ class Braintree extends AbstractProvider
         $billing = $this->order->billingDetails;
         $shipping = $this->order->shippingDetails;
 
-        $sale = $this->gateway->transaction()->sale([
+        $user = $this->order->user;
+        $customerId = null;
+        $paymentToken = $this->token;
+
+        $payload = [
             'amount' => $this->order->order_total / 100,
-            'paymentMethodNonce' => $this->token,
+            'paymentMethodNonce' => $paymentToken,
             'merchantAccountId' => $merchant,
+            'customerId' => $customerId,
             'customer' => [
                 'firstName' => $billing['firstname'],
                 'lastName' => $billing['lastname'],
+                'email' => $user ? $user->email : null,
             ],
             'billing' => [
                 'firstName' => $billing['firstname'],
@@ -117,7 +139,59 @@ class Braintree extends AbstractProvider
             'options' => [
                 'submitForSettlement' => true,
             ],
-        ]);
+        ];
+        // If we have a user, then create a customer in the Vault...
+        if ($user) {
+            $providerUser = $user->providerUsers()->provider('braintree')->first();
+
+            if (! $providerUser) {
+                $result = $this->gateway->customer()->create([
+                    'firstName' => $billing['firstname'],
+                    'lastName' => $billing['lastname'],
+                    'email' => $user->email,
+                    // 'billingAddress' => [
+                    //     'firstName' => $billing['firstname'],
+                    //     'lastName' => $billing['lastname'],
+                    //     'locality' => $billing['city'],
+                    //     'region' =>   $billing['county'] ?: $billing['state'],
+                    //     'postalCode' =>   $billing['zip'],
+                    //     'streetAddress' => $billing['address'],
+                    // ]
+                ]);
+
+                if ($result->success) {
+                    $user->providerUsers()->create([
+                        'provider' => 'braintree',
+                        'provider_id' => $result->customer->id,
+                    ]);
+                }
+                $customerId = $result->customer->id;
+            } else {
+                $customerId = $providerUser->provider_id;
+            }
+
+            // Do we want to save this card?
+            if ($customerId && ! empty($this->fields['save'])) {
+                $result = $this->gateway->paymentMethod()->create([
+                    'customerId' => $customerId,
+                    'paymentMethodNonce' => $this->token,
+                ]);
+
+                $paymentMethod = $result->paymentMethod;
+
+                $user->reusablePayments()->create([
+                    'type' => $paymentMethod->cardType,
+                    'provider' => 'braintree',
+                    'last_four' => $paymentMethod->last4,
+                    'token' => $paymentMethod->token,
+                    'expires_at' => Carbon::createFromFormat('d-m-Y', "01-{$paymentMethod->expirationMonth}-{$paymentMethod->expirationYear}"),
+                ]);
+                unset($payload['paymentMethodNonce']);
+                $payload['paymentMethodToken'] = $paymentMethod->token;
+            }
+        }
+
+        $sale = $this->gateway->transaction()->sale($payload);
 
         if ($sale->success) {
             $response = new PaymentResponse(true, 'Payment Pending');
@@ -209,7 +283,34 @@ class Braintree extends AbstractProvider
 
     public function refund($token, $amount, $description)
     {
-        $transaction = Braintree_Transaction::refund($token, $amount);
+        $result = $this->gateway->transaction()->refund($token, $amount / 100);
+
+        if (! $result->success) {
+            $error = collect($result->errors->forKey('transaction')->shallowAll())->first();
+            // Trying to refund a transaction that isn't settled.
+            if ($error->code == '91506') {
+                $result = $this->gateway->transaction()->void($token);
+            }
+        }
+
+        $responseT = $result->transaction;
+
+        $transaction = new Transaction;
+        $transaction->success = $result->success;
+        $transaction->order()->associate($this->order);
+        $transaction->merchant = $responseT ? $responseT->merchantAccountId : 'Unknown';
+        $transaction->provider = 'Braintree';
+        $transaction->driver = 'braintree';
+        $transaction->refund = true;
+        $transaction->status = $responseT ? $result->transaction->status : $result->message;
+        $transaction->amount = -abs($amount);
+        $transaction->card_type = $responseT ? ($result->transaction->creditCardDetails->cardType ?? 'Unknown') : 'Unknown';
+        $transaction->last_four = $responseT ? ($result->transaction->creditCardDetails->last4 ?? '') : '';
+        $transaction->transaction_id = $responseT ? $result->transaction->id : Str::random();
+        $transaction->address_matched = false;
+        $transaction->cvc_matched = false;
+        $transaction->postcode_matched = false;
+        $transaction->save();
 
         return $transaction;
     }
@@ -219,5 +320,13 @@ class Braintree extends AbstractProvider
         $result = Braintree_Transaction::void($token);
 
         return $result;
+    }
+
+    public function deleteReusablePayment($payment)
+    {
+        try {
+            $this->gateway->paymentMethod()->delete($payment->token);
+        } catch (\Braintree\Exception\NotFound $e) {
+        }
     }
 }

@@ -2,21 +2,15 @@
 
 namespace GetCandy\Api\Core\Products\Services;
 
-use GetCandy\Api\Core\Customers\Services\CustomerGroupService;
+use GetCandy\Api\Core\Customers\Actions\FetchCustomerGroup;
 use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Scaffold\BaseService;
 
 class ProductCustomerGroupService extends BaseService
 {
-    /**
-     * @var \GetCandy\Api\Core\Customers\Services\CustomerGroupService
-     */
-    protected $groupService;
-
-    public function __construct(CustomerGroupService $groups)
+    public function __construct()
     {
         $this->model = new Product;
-        $this->groupService = $groups;
     }
 
     /**
@@ -31,7 +25,9 @@ class ProductCustomerGroupService extends BaseService
         $product = $this->getByHashedId($product);
         $groupData = [];
         foreach ($groups as $group) {
-            $groupModel = $this->groupService->getByHashedId($group['id']);
+            $groupModel = FetchCustomerGroup::run([
+                'encoded_id' => $group['id'],
+            ]);
             $groupData[$groupModel->id] = [
                 'visible' => $group['visible'],
                 'purchasable' => $group['purchasable'],

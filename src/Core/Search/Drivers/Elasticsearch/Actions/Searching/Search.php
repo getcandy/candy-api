@@ -11,6 +11,7 @@ use GetCandy\Api\Core\Search\Actions\FetchSearchedIds;
 use GetCandy\Api\Http\Resources\Categories\CategoryCollection;
 use GetCandy\Api\Http\Resources\Products\ProductCollection;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Str;
 use Lorisleiva\Actions\Action;
 
 class Search extends Action
@@ -45,8 +46,9 @@ class Search extends Action
             'index' => 'nullable|string',
             'limit' => 'nullable|numeric',
             'offset' => 'nullable|numeric',
+            'page'   => 'nullable|numeric',
             'search_type' => 'nullable|string',
-            'filters' => 'nullable|array',
+            'filters' => 'nullable',
             'aggregate' => 'nullable|array',
             'term' => 'nullable|string',
             'language' => 'nullable|string',
@@ -66,10 +68,16 @@ class Search extends Action
             $prefix = config('getcandy.search.index_prefix');
             $language = app()->getLocale();
 
-            $this->set('index', "{$prefix}_{$this->search_type}_{$language}");
+            $index = Str::plural($this->search_type);
+            $this->set('index', "{$prefix}_{$index}_{$language}");
         }
 
-        $this->filters = $this->filters ?: [];
+        $this->filters = $this->filters ? collect(explode(',', $this->filters))->mapWithKeys(function ($filter) {
+            [$label, $value] = explode(':', $filter);
+
+            return [$label => $value];
+        })->toArray() : [];
+
         $this->aggregates = $this->aggregates ?: [];
         $this->language = $this->language ?: app()->getLocale();
         $this->set('category', $this->category ? explode(':', $this->category) : []);
@@ -77,11 +85,18 @@ class Search extends Action
         $client = FetchClient::run();
 
         $term = $this->term ? FetchTerm::run($this->attributes) : null;
-        $filters = FetchFilters::run($this->attributes);
+        $filters = FetchFilters::run([
+            'category' => $this->category,
+            'filters' => $this->filters,
+        ]);
+
+        $limit = $this->limit ?: 100;
+
+        $offset = (($this->page ?: 1) - 1) * $limit;
 
         $query = new Query();
-        $query->setParam('size', $this->limit ?: 100);
-        $query->setParam('from', $this->offset ?: 0);
+        $query->setParam('size', $limit);
+        $query->setParam('from', $offset);
 
         $boolQuery = new BoolQuery;
 
@@ -94,7 +109,7 @@ class Search extends Action
             ]);
         }
 
-        $aggregations = $this->delegateTo(FetchAggregations::class) ?? [];
+        $aggregations = FetchAggregations::run();
 
         $query = SetExcludedFields::run(['query' => $query]);
 
@@ -191,10 +206,15 @@ class Search extends Action
             }
         }
 
+        $aggregations = MapAggregations::run([
+            'aggregations' => $result->getAggregations(),
+        ]);
+
         $models = FetchSearchedIds::run([
             'model' => $this->search_type == 'products' ? Product::class : Category::class,
             'encoded_ids' => $ids->toArray(),
             'include' => $request->include,
+            'counts' => $request->counts,
         ]);
 
         $resource = ProductCollection::class;
@@ -212,7 +232,8 @@ class Search extends Action
 
         return (new $resource($paginator))->additional([
             'meta' => [
-                'aggregations' => $result->getAggregations(),
+                'count' => $models->count(),
+                'aggregations' => $aggregations,
                 'highlight' => $result->getQuery()->getParam('highlight'),
             ],
         ]);

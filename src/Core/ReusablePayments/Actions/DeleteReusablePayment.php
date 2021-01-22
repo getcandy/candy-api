@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\ReusablePayments\Actions;
 
+use GetCandy\Api\Core\Payments\PaymentContract;
 use GetCandy\Api\Core\ReusablePayments\Models\ReusablePayment;
 use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
 use Lorisleiva\Actions\Action;
@@ -49,13 +50,23 @@ class DeleteReusablePayment extends Action
      *
      * @return mixed
      */
-    public function handle()
+    public function handle(PaymentContract $payments)
     {
         if (! $this->reusablePayment) {
             return false;
         }
 
-        return true;
+        $driver = $payments->with(
+            $this->reusablePayment->provider
+        );
+
+        if (method_exists($driver, 'deleteReusablePayment')) {
+            $driver->deleteReusablePayment(
+                $this->reusablePayment
+            );
+        }
+
+        return $this->reusablePayment->delete();
     }
 
     /**

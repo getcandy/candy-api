@@ -16,10 +16,9 @@ class TextFilter extends AbstractFilter
     public function getQuery()
     {
         $filter = new BoolQuery;
-
         foreach ($this->value as $value) {
-            if (strpos($value, '-') && preg_match('/^[0-9-*]+$/', $value)) {
-                $value = explode('-', $value);
+            if (strpos($value, '|')) {
+                $value = explode('|', $value);
             }
             if (is_array($value)) {
                 $range = new Range($this->field.'.filter', [

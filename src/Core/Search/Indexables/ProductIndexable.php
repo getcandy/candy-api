@@ -62,6 +62,14 @@ class ProductIndexable extends AbstractIndexable
                         'type' => 'keyword',
                         'index' => true,
                     ],
+                    'purchasable' => [
+                        'type' => 'boolean',
+                        'index' => true,
+                    ],
+                    'visible' => [
+                        'type' => 'boolean',
+                        'index' => true,
+                    ],
                 ],
             ],
             'channels' => [
@@ -76,6 +84,11 @@ class ProductIndexable extends AbstractIndexable
                     ],
                     'handle' => [
                         'type' => 'keyword',
+                        'index' => true,
+                    ],
+                    'published_at' => [
+                        'type' => 'date',
+                        'format' => 'yyyy-MM-dd HH:mm:ss',
                         'index' => true,
                     ],
                 ],

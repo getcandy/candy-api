@@ -11,6 +11,7 @@ use GetCandy\Api\Core\Addresses\Actions\CreateAddressAction;
 use GetCandy\Api\Core\Addresses\Actions\FetchAddressAction;
 use GetCandy\Api\Core\Baskets\Models\Basket;
 use GetCandy\Api\Core\Baskets\Services\BasketService;
+use GetCandy\Api\Core\Countries\Actions\FetchCountry;
 use GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface;
 use GetCandy\Api\Core\Orders\Events\OrderBeforeSavedEvent;
 use GetCandy\Api\Core\Orders\Events\OrderProcessedEvent;
@@ -459,9 +460,10 @@ class OrderService extends BaseService implements OrderServiceInterface
                 'city',
                 'county',
                 'state',
-                'country',
-                'zip',
             ]);
+            $payload['country'] = $shipping->country->name;
+            $payload['zip'] = $shipping->postal_code;
+            $payload['county'] = $shipping->state;
             $payload['email'] = $data['email'] ?? null;
             $payload['phone'] = $data['phone'] ?? null;
             $data = $payload;
@@ -470,7 +472,18 @@ class OrderService extends BaseService implements OrderServiceInterface
             $addressData = $data;
             $addressData[$type] = true;
             $addressData['postal_code'] = $data['zip'];
-            CreateAddressAction::run($addressData);
+            $addressData['state'] = $data['county'];
+            // Does this address already exist for the user? Check postcode...
+            $existing = $user->addresses()
+                ->where('postal_code', '=', $addressData['postal_code'])
+                ->where($type, '=', true)
+                ->exists();
+            $addressData['country_id'] = FetchCountry::run([
+                'name' => $addressData['country'],
+            ])->encoded_id;
+            if (! $existing) {
+                CreateAddressAction::run($addressData);
+            }
         }
 
         $this->setFields($order, $data, $type);

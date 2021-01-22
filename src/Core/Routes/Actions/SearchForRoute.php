@@ -30,7 +30,7 @@ class SearchForRoute extends AbstractAction
     {
         return [
             'slug' => 'required|string',
-            'path' => 'string',
+            'path' => 'nullable|string',
         ];
     }
 
@@ -41,7 +41,9 @@ class SearchForRoute extends AbstractAction
      */
     public function handle()
     {
-        $query = Route::whereSlug($this->slug);
+        $query = Route::whereSlug($this->slug)->with(
+            $this->resolveEagerRelations()
+        )->withCount($this->resolveRelationCounts());
 
         if ($this->path) {
             $query->wherePath($this->path);

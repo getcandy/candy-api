@@ -17,6 +17,7 @@ use GetCandy\Api\Http\Requests\Products\DeleteRequest;
 use GetCandy\Api\Http\Requests\Products\DuplicateRequest;
 use GetCandy\Api\Http\Requests\Products\UpdateRequest;
 use GetCandy\Api\Http\Resources\Products\ProductCollection;
+use GetCandy\Api\Http\Resources\Products\ProductRecommendationCollection;
 use GetCandy\Api\Http\Resources\Products\ProductResource;
 use Hashids;
 use Illuminate\Database\Eloquent\ModelNotFoundException;

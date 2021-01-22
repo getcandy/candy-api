@@ -1,6 +1,6 @@
 <?php
 
-namespace GetCandy\Api\Http\Resources\Payments;
+namespace GetCandy\Api\Http\Resources\Plugins;
 
 use GetCandy\Api\Http\Resources\AbstractCollection;
 
