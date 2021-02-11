@@ -233,7 +233,7 @@ class Order extends BaseModel
     public function getDetails($type)
     {
         return collect($this->attributes)->filter(function ($value, $key) use ($type) {
-            return strpos($key, $type.'_') === 0;
+            return strpos($key, $type.'_') === 0 && $key != 'shipping_method';
         })->mapWithKeys(function ($item, $key) use ($type) {
             $newkey = str_replace($type.'_', '', $key);
 
