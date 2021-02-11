@@ -34,10 +34,7 @@ class FetchCurrentUser extends AbstractAction
      */
     public function handle()
     {
-        return $this->user()->load(array_merge(
-            $this->resolveEagerRelations(),
-            ['addresses.country', 'roles.permissions', 'customer', 'savedBaskets.basket.lines']
-        ));
+        return $this->user()->load($this->resolveEagerRelations());
     }
 
     /**
