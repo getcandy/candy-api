@@ -3,13 +3,14 @@
 namespace GetCandy\Api\Providers;
 
 use Drafting;
-use GetCandy\Api\Core\Categories\Drafting\CategoryDrafter;
-use GetCandy\Api\Core\Categories\Models\Category;
-use GetCandy\Api\Core\Categories\Observers\CategoryObserver;
-use GetCandy\Api\Core\Categories\Services\CategoryService;
-use GetCandy\Api\Core\Categories\Versioning\CategoryVersioner;
-use Illuminate\Support\ServiceProvider;
 use Versioning;
+use Illuminate\Support\ServiceProvider;
+use GetCandy\Api\Core\Categories\Models\Category;
+use GetCandy\Api\Core\Categories\Commands\RebuildTreeCommand;
+use GetCandy\Api\Core\Categories\Drafting\CategoryDrafter;
+use GetCandy\Api\Core\Categories\Services\CategoryService;
+use GetCandy\Api\Core\Categories\Observers\CategoryObserver;
+use GetCandy\Api\Core\Categories\Versioning\CategoryVersioner;
 
 class CategoryServiceProvider extends ServiceProvider
 {
@@ -28,5 +29,11 @@ class CategoryServiceProvider extends ServiceProvider
         });
 
         Category::observe(CategoryObserver::class);
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                RebuildTreeCommand::class,
+            ]);
+        }
     }
 }
