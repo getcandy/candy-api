@@ -2,11 +2,12 @@
 
 namespace GetCandy\Api\Core\Payments;
 
-use GetCandy\Api\Core\Payments\Providers\Braintree;
-use GetCandy\Api\Core\Payments\Providers\Offline;
-use GetCandy\Api\Core\Payments\Providers\PayPal;
-use GetCandy\Api\Core\Payments\Providers\SagePay;
 use Illuminate\Support\Manager;
+use GetCandy\Api\Core\Payments\Providers\PayPal;
+use GetCandy\Api\Core\Payments\Providers\Offline;
+use GetCandy\Api\Core\Payments\Providers\SagePay;
+use GetCandy\Api\Core\Payments\Providers\Braintree;
+use GetCandy\Api\Core\Payments\Providers\StripeIntents;
 
 class PaymentManager extends Manager implements PaymentContract
 {
@@ -42,6 +43,18 @@ class PaymentManager extends Manager implements PaymentContract
     {
         return $this->buildProvider(
             SagePay::class
+        );
+    }
+
+    /**
+     * Create the sagepay driver.
+     *
+     * @return \GetCandy\Api\Core\Payments\Providers\SagePay
+     */
+    public function createStripeIntentsDriver()
+    {
+        return $this->buildProvider(
+            StripeIntents::class
         );
     }
 
