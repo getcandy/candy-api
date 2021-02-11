@@ -107,8 +107,9 @@ $router->resource('orders', 'Orders\OrderController', [
     */
 $router->post('payments/3d-secure', 'Payments\PaymentController@validateThreeD');
 $router->get('payments/provider', 'Payments\PaymentController@provider');
-$router->get('payments/providers', 'Payments\PaymentController@providers');
-$router->get('payments/types', 'Payments\PaymentTypeController@index');
+$router->get('payments/providers', '\GetCandy\Api\Core\Payments\Actions\FetchProviders');
+$router->get('payments/providers/{handle}', '\GetCandy\Api\Core\Payments\Actions\FetchPaymentProvider');
+$router->get('payments/types', '\GetCandy\Api\Core\Payments\Actions\FetchPaymentTypes');
 
 /*
 * Routes
