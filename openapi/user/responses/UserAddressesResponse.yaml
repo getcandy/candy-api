@@ -1,0 +1,8 @@
+title: UserAddressesResponse
+type: object
+properties:
+  data:
+    type: array
+    items:
+      $ref: '../../addresses/models/Address.yaml'
+description: ''

@@ -315,9 +315,12 @@
     $router->get('users/fields', '\GetCandy\Api\Core\Users\Actions\FetchUserFields');
     $router->get('users/current', '\GetCandy\Api\Core\Users\Actions\FetchCurrentUser');
 
+    $router->get('user/addresses', '\GetCandy\Api\Core\Users\Actions\FetchUserAddresses');
+
     $router->get('users', '\GetCandy\Api\Core\Users\Actions\FetchUsers');
     $router->get('users/{encoded_id}', '\GetCandy\Api\Core\Users\Actions\FetchUser');
     $router->put('users/{encoded_id}', '\GetCandy\Api\Core\Users\Actions\UpdateUser');
+
 
     /*
      * Reusable payments
