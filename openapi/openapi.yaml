@@ -273,6 +273,8 @@ paths:
     $ref: './users/paths/users.id.yaml'
   '/users/fields':
     $ref: './users/paths/users.fields.yaml'
+  '/user/addresses':
+    $ref: './user/paths/user.addresses.yaml'
   '/users/current':
     $ref: './users/paths/users.current.yaml'
   '/versions/{modelId}/restore':
