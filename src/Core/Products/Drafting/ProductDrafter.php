@@ -3,11 +3,16 @@
 namespace GetCandy\Api\Core\Products\Drafting;
 
 use DB;
-use GetCandy\Api\Core\Products\Events\ProductCreatedEvent;
-use GetCandy\Api\Core\Products\Models\Product;
-use Illuminate\Database\Eloquent\Model;
-use NeonDigital\Drafting\Interfaces\DrafterInterface;
 use Versioning;
+use Illuminate\Database\Eloquent\Model;
+use GetCandy\Api\Core\Products\Models\Product;
+use NeonDigital\Drafting\Interfaces\DrafterInterface;
+use GetCandy\Api\Core\Products\Actions\Drafting\UpdateAssets;
+use GetCandy\Api\Core\Products\Actions\Drafting\UpdateRoutes;
+use GetCandy\Api\Core\Products\Actions\Drafting\UpdateChannels;
+use GetCandy\Api\Core\Products\Actions\Drafting\UpdateCustomerGroups;
+use GetCandy\Api\Core\Products\Actions\Drafting\UpdateProductVariants;
+use GetCandy\Api\Core\Products\Actions\Drafting\UpdateProductAssociations;
 
 class ProductDrafter implements DrafterInterface
 {
@@ -20,50 +25,80 @@ class ProductDrafter implements DrafterInterface
     {
         // Publish this product and remove the parent.
         $parent = $product->publishedParent;
+
         // Get any current versions and assign them to this new product.
 
-        foreach ($parent->versions as $version) {
-            $version->update([
-                'versionable_id' => $product->id,
-            ]);
-        }
-
         // Create a version of the parent before we publish these changes
-        Versioning::with('products')->create($parent, null, $product->id);
+        Versioning::with('products')->create($parent, null, $parent->id);
 
-        // Move the activities onto the draft
-        $parent->activities->each(function ($a) use ($product) {
-            $a->update(['subject_id' => $product->id]);
-        });
+        // Update any attributes etc
+        $parent->attribute_data = $product->attribute_data;
+        $parent->option_data = $product->option_data;
+        $parent->product_family_id = $product->product_family_id;
+        $parent->layout_id = $product->layout_id;
+        $parent->group_pricing = $product->group_pricing;
+
+        $parent->save();
 
         // Activate any product variants
-        $variantIds = $product->variants->pluck('id')->toArray();
+        UpdateProductVariants::run([
+            'draft' => $product,
+            'product' => $parent,
+        ]);
 
-        DB::table('product_variants')
-            ->whereIn('id', $variantIds)
-            ->update([
-                'drafted_at' => null,
-            ]);
+        /**
+         * Go through the draft channels and update our parent.
+         */
+        UpdateChannels::run([
+            'draft' => $product,
+            'parent' => $parent,
+        ]);
+        UpdateCustomerGroups::run([
+            'draft' => $product,
+            'parent' => $parent,
+        ]);
 
-        // Activate any routes
-        $routeIds = $product->routes()->onlyDrafted()->get()->pluck('id')->toArray();
+        /**
+         * Here we go through any routes the draft has and if they have a published
+         * parent counterpart. We update it and then remove the draft route.
+         *
+         * If the parent doesn't exist then we reassign the new route to the published record.
+         */
+        UpdateRoutes::run([
+            'draft' => $product,
+            'parent' => $parent,
+        ]);
 
-        DB::table('routes')
-            ->whereIn('id', $routeIds)
-            ->update([
-                'drafted_at' => null,
-            ]);
+        /**
+         * Go through any assets and sync with the parent.
+         */
+        UpdateAssets::run([
+            'draft' => $product,
+            'parent' => $parent,
+        ]);
 
-        // Delete routes
-        // $parent->routes()->delete();
+        // Product Associations
+        // Delete any associations we don't have anymore...
+        UpdateProductAssociations::run([
+            'draft' => $product,
+            'product' => $parent
+        ]);
 
-        $parent->forceDelete();
+        // Categories
+        $existingCategories = $parent->categories;
 
-        $product->drafted_at = null;
-        $product->save();
+        // Sync product categories to the parent.
+        $parent->categories()->sync(
+            $product->categories->pluck('id')
+        );
+        // Collections
+        $parent->collections()->sync(
+            $product->collections->pluck('id')
+        );
+        // Delete the draft we had.
+        $product->forceDelete();
 
-        event(new ProductCreatedEvent($product));
-
+        dd('End');
         return $product;
     }
 

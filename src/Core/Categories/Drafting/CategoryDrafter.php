@@ -21,63 +21,73 @@ class CategoryDrafter extends BaseDrafter implements DrafterInterface
         // Publish this category and remove the parent.
         $parent = $category->publishedParent;
 
-        // Get any current versions and assign them to this new category.
-
-        foreach ($parent->versions as $version) {
-            $version->update([
-                'versionable_id' => $category->id,
-            ]);
-        }
-
         // Create a version of the parent before we publish these changes
-        Versioning::with('categories')->create($parent, null, $category->id);
+        Versioning::with('categories')->create($parent, null, $parent->id);
 
-        // Move the activities onto the draft
-        if ($parent->activities) {
-            $parent->activities->each(function ($a) use ($category) {
-                $a->update(['subject_id' => $category->id]);
-            });
+        $parent->attribute_data = $category->attribute_data;
+        $parent->sort = $category->sort;
+        $parent->layout_id = $category->layout_id;
+        $parent->save();
+
+        /**
+         * Here we go through any routes the draft has and if they have a published
+         * parent counterpart. We update it and then remove the draft route.
+         *
+         * If the parent doesn't exist then we reassign the new route to the published record.
+         */
+        foreach ($category->routes as $route) {
+            if ($route->publishedParent) {
+                $route->publishedParent->update($route->toArray());
+                $route->forceDelete();
+            } else {
+                $route->update([
+                    'element_id' => $parent->id
+                ]);
+            }
         }
 
-        // Activate any routes
-        $routeIds = $category->routes()->onlyDrafted()->get()->pluck('id')->toArray();
+        /**
+         * Go through the draft channels and update our parent.
+         */
+        $channels = $category->channels->mapWithKeys(function ($channel) {
+            return [$channel->id => [
+                'published_at' => $channel->pivot->published_at
+            ]];
+        })->toArray();
+        $parent->channels()->sync($channels);
 
-        DB::table('routes')
-            ->whereIn('id', $routeIds)
-            ->update([
-                'drafted_at' => null,
-            ]);
+        $customerGroups = $category->customerGroups->mapWithKeys(function ($group) {
+            return [$group->id => [
+                'purchasable' => $group->pivot->purchasable,
+                'visible' => $group->pivot->visible,
+            ]];
+        })->toArray();
 
-        // Delete routes
-        $parent->routes()->delete();
+        $parent->customerGroups()->sync($customerGroups);
 
-        // Move any direct children on to the published category
-        DB::transaction(function ($query) use ($parent, $category) {
-            $parent->children->each(function ($node) use ($category) {
-                $node->parent()->associate($category)->save();
-            });
-        });
-
-        $parent->update([
-            '_lft' => null,
-            '_rgt' => null,
+        /**
+         * Go through and assign any products that are for the draft to the parent.
+         */
+        $category->products()->update([
+            'category_id' => $parent->id
         ]);
-        $parent->refresh()->forceDelete();
-        // $parent->refresh()->forceDelete();
 
-        $category->drafted_at = null;
-        $category->save();
+        // Fire off an event so plugins can update anything their side too.
+        event(new ModelPublishedEvent($category, $parent));
 
-        // Update all products...
-        if ($category->products->count()) {
+        // // Update all products...
+        $parent = $parent->refresh();
+
+        if ($parent->products->count()) {
             IndexObjects::run([
-                'documents' => $category->products,
+                'documents' => $parent->products,
             ]);
         }
 
-        event(new ModelPublishedEvent($category));
+        $category->forceDelete();
+        // event(new ModelPublishedEvent($category));
 
-        return $category;
+        return $parent;
     }
 
     /**
