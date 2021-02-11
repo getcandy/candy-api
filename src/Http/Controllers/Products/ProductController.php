@@ -2,28 +2,29 @@
 
 namespace GetCandy\Api\Http\Controllers\Products;
 
+use Hashids;
 use Drafting;
 use GetCandy;
-use GetCandy\Api\Core\Baskets\Interfaces\BasketCriteriaInterface;
-use GetCandy\Api\Core\Products\Factories\ProductDuplicateFactory;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Products\ProductCriteria;
-use GetCandy\Api\Core\Products\Services\ProductService;
-use GetCandy\Api\Exceptions\InvalidLanguageException;
-use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
 use GetCandy\Api\Http\Controllers\BaseController;
+use GetCandy\Api\Exceptions\InvalidLanguageException;
 use GetCandy\Api\Http\Requests\Products\CreateRequest;
 use GetCandy\Api\Http\Requests\Products\DeleteRequest;
-use GetCandy\Api\Http\Requests\Products\DuplicateRequest;
 use GetCandy\Api\Http\Requests\Products\UpdateRequest;
-use GetCandy\Api\Http\Resources\Products\ProductCollection;
-use GetCandy\Api\Http\Resources\Products\ProductRecommendationCollection;
-use GetCandy\Api\Http\Resources\Products\ProductResource;
-use Hashids;
+use GetCandy\Api\Core\Products\Services\ProductService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
+use GetCandy\Api\Http\Requests\Products\DuplicateRequest;
+use GetCandy\Api\Http\Resources\Products\ProductResource;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
+use GetCandy\Api\Http\Resources\Products\ProductCollection;
+use GetCandy\Api\Core\Baskets\Interfaces\BasketCriteriaInterface;
+use GetCandy\Api\Core\Products\Factories\ProductDuplicateFactory;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use GetCandy\Api\Http\Resources\Products\ProductRecommendationCollection;
 
 class ProductController extends BaseController
 {
@@ -109,7 +110,9 @@ class ProductController extends BaseController
         }
         $product = $this->service->findById($id[0], [], true);
 
-        Drafting::with('products')->publish($product);
+        DB::transaction(function () use ($product) {
+            Drafting::with('products')->publish($product);
+        });
 
         return new ProductResource($product->load($this->parseIncludes($request->include)));
     }
