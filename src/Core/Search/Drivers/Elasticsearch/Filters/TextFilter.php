@@ -21,11 +21,22 @@ class TextFilter extends AbstractFilter
                 $value = explode('|', $value);
             }
             if (is_array($value)) {
-                $range = new Range($this->field.'.filter', [
-                    'gte' => (int) $value[0],
-                    'lte' => $value[1] == '*' ? null : (int) $value[1],
-                ]);
-                $filter->addShould($range);
+                // If the first value is not numeric, then we assume we are
+                // matching across multiple text values for a field, not a range.
+                if (!is_numeric($value[0])) {
+                    foreach  ($value as $val) {
+                        $match = new Match;
+                        $match->setFieldAnalyzer($this->field.'.filter', 'keyword');
+                        $match->setFieldQuery($this->field.'.filter', $val);
+                        $filter->addShould($match);
+                    }
+                } else {
+                    $range = new Range($this->field.'.filter', [
+                        'gte' => (int) $value[0],
+                        'lte' => $value[1] == '*' ? null : (int) $value[1],
+                    ]);
+                    $filter->addShould($range);
+                }
             } else {
                 $match = new Match;
                 $match->setFieldAnalyzer($this->field.'.filter', 'keyword');
