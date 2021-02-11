@@ -2,13 +2,17 @@
 
 namespace GetCandy\Api\Core\Routes\Actions;
 
-use GetCandy\Api\Core\Foundation\Actions\DecodeId;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\DB;
 use GetCandy\Api\Core\Routes\Models\Route;
-use GetCandy\Api\Core\Routes\Resources\RouteResource;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
+use GetCandy\Api\Core\Foundation\Actions\DecodeId;
+use GetCandy\Api\Core\Routes\Resources\RouteResource;
 
 class UpdateRoute extends AbstractAction
 {
+    protected $route;
+
     /**
      * Determine if the user is authorized to make this action.
      *
@@ -26,14 +30,27 @@ class UpdateRoute extends AbstractAction
      */
     public function rules(): array
     {
-        $routeId = DecodeId::run([
+        $this->route = FetchRoute::run([
             'encoded_id' => $this->encoded_id,
-            'model' => Route::class,
+            'draft' => true,
         ]);
 
         return [
-            'slug' => 'required|unique_with:routes,path,'.$this->path.','.$routeId,
-            'path' => 'unique_with:routes,slug,'.$this->slug.','.$routeId,
+            'slug' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    $ids = [
+                        $this->route->id,
+                    ];
+                    if ($this->route->publishedParent) {
+                        $ids[] = $this->route->publishedParent->id;
+                    }
+                    $result = DB::table('routes')->wherePath($this->path)->whereSlug($value)->whereNotIn('id', $ids)->exists();
+                    if ($result) {
+                        $fail();
+                    }
+                },
+            ],
             'lang' => 'nullable|string',
             'description' => 'nullable|string',
             'default' => 'boolean',
@@ -48,10 +65,7 @@ class UpdateRoute extends AbstractAction
      */
     public function handle()
     {
-        $route = $this->delegateTo(FetchRoute::class);
-        $route->update($this->validated());
-
-        return $route;
+        return $this->route->update($this->validated());
     }
 
     /**

@@ -32,7 +32,7 @@ class CreateRoute extends AbstractAction
             'slug' => 'required|unique_with:routes,path,'.$this->path,
             'path' => 'unique_with:routes,slug,'.$this->slug,
             'element' => 'required',
-            'lang' => 'required|string',
+            'locale' => 'required|string',
             'default' => 'boolean',
             'redirect' => 'boolean',
         ];
