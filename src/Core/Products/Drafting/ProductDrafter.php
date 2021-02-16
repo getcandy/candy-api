@@ -33,7 +33,7 @@ class ProductDrafter extends BaseDrafter implements DrafterInterface
                 'channels',
                 'customerGroups',
             ]);
-          
+
             $draft = $parent->replicate();
             $draft->drafted_at = now();
             $draft->draft_parent_id = $parent->id;
