@@ -2,10 +2,7 @@
 
 namespace GetCandy\Api\Core\Drafting\Actions;
 
-use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
-use GetCandy\Api\Core\Drafting\Actions\DraftProductVariantTiers;
-use GetCandy\Api\Core\Drafting\Actions\DraftProductVariantCustomerPricing;
 
 class DraftProductVariants extends AbstractAction
 {

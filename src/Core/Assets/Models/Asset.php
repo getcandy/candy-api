@@ -36,7 +36,7 @@ class Asset extends BaseModel
         'kind',
         'external',
     ];
-    
+
     public function scopeImages($query)
     {
         return $query->where('kind', '!=', 'application');

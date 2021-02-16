@@ -46,9 +46,10 @@ class PublishProductVariantTiers extends AbstractAction
                 continue;
             }
             $incoming->update([
-                'product_variant_id' => $this->parent->id
+                'product_variant_id' => $this->parent->id,
             ]);
         }
+
         return $this->parent;
     }
 }

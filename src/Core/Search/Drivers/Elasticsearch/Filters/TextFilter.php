@@ -23,8 +23,8 @@ class TextFilter extends AbstractFilter
             if (is_array($value)) {
                 // If the first value is not numeric, then we assume we are
                 // matching across multiple text values for a field, not a range.
-                if (!is_numeric($value[0])) {
-                    foreach  ($value as $val) {
+                if (! is_numeric($value[0])) {
+                    foreach ($value as $val) {
                         $match = new Match;
                         $match->setFieldAnalyzer($this->field.'.filter', 'keyword');
                         $match->setFieldQuery($this->field.'.filter', $val);

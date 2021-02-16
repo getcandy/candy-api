@@ -2,13 +2,13 @@
 
 namespace Tests\Unit\Drafting\Actions;
 
-use Tests\TestCase;
-use GetCandy\Api\Core\Taxes\Models\Tax;
-use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
-use GetCandy\Api\Core\Products\Models\ProductVariant;
-use GetCandy\Api\Core\Products\Models\ProductCustomerPrice;
 use GetCandy\Api\Core\Drafting\Actions\PublishProductVariantCustomerPricing;
+use GetCandy\Api\Core\Products\Models\Product;
+use GetCandy\Api\Core\Products\Models\ProductCustomerPrice;
+use GetCandy\Api\Core\Products\Models\ProductVariant;
+use GetCandy\Api\Core\Taxes\Models\Tax;
+use Tests\TestCase;
 
 /**
  * @group drafting
@@ -24,15 +24,14 @@ class PublishProductVariantCustomerPricingTest extends TestCase
         $product = factory(Product::class)->create();
 
         $parent = factory(ProductVariant::class)->create([
-            'product_id' => $product->id
+            'product_id' => $product->id,
         ]);
-
 
         $draft = $parent->replicate();
         $draft->save();
         $draft->update([
             'draft_parent_id' => $parent->id,
-            'drafted_at' => now()
+            'drafted_at' => now(),
         ]);
 
         $pricing = new ProductCustomerPrice;

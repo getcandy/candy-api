@@ -102,7 +102,7 @@ class ProductVariant extends BaseModel
         $values = [];
         $option_data = $this->product ? $this->product->option_data : [];
 
-        if (!is_array($val)) {
+        if (! is_array($val)) {
             $val = json_decode($val, true);
         }
         foreach ($val as $option => $value) {

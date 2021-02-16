@@ -3,20 +3,20 @@
 namespace GetCandy\Api\Core\Categories\Drafting;
 
 use DB;
-use Versioning;
-use Illuminate\Database\Eloquent\Model;
+use GetCandy\Api\Core\Drafting\Actions\DraftAssets;
+use GetCandy\Api\Core\Drafting\Actions\DraftChannels;
+use GetCandy\Api\Core\Drafting\Actions\DraftCustomerGroups;
+use GetCandy\Api\Core\Drafting\Actions\DraftRoutes;
+use GetCandy\Api\Core\Drafting\Actions\PublishAssets;
+use GetCandy\Api\Core\Drafting\Actions\PublishChannels;
+use GetCandy\Api\Core\Drafting\Actions\PublishCustomerGroups;
+use GetCandy\Api\Core\Drafting\Actions\PublishRoutes;
 use GetCandy\Api\Core\Drafting\BaseDrafter;
 use GetCandy\Api\Core\Events\ModelPublishedEvent;
 use GetCandy\Api\Core\Search\Actions\IndexObjects;
-use GetCandy\Api\Core\Drafting\Actions\DraftAssets;
-use GetCandy\Api\Core\Drafting\Actions\DraftRoutes;
-use GetCandy\Api\Core\Drafting\Actions\DraftChannels;
-use GetCandy\Api\Core\Drafting\Actions\PublishAssets;
-use GetCandy\Api\Core\Drafting\Actions\PublishRoutes;
+use Illuminate\Database\Eloquent\Model;
 use NeonDigital\Drafting\Interfaces\DrafterInterface;
-use GetCandy\Api\Core\Drafting\Actions\PublishChannels;
-use GetCandy\Api\Core\Drafting\Actions\DraftCustomerGroups;
-use GetCandy\Api\Core\Drafting\Actions\PublishCustomerGroups;
+use Versioning;
 
 class CategoryDrafter extends BaseDrafter implements DrafterInterface
 {
@@ -52,7 +52,7 @@ class CategoryDrafter extends BaseDrafter implements DrafterInterface
              * Go through and assign any products that are for the draft to the parent.
              */
             $draft->products()->update([
-                'category_id' => $parent->id
+                'category_id' => $parent->id,
             ]);
 
             // Fire off an event so plugins can update anything their side too.
@@ -71,13 +71,11 @@ class CategoryDrafter extends BaseDrafter implements DrafterInterface
 
             return $parent;
         });
-
     }
 
     public function create(Model $parent)
     {
         return DB::transaction(function () use ($parent) {
-
             $parent = $parent->load([
                 'children',
                 'products',

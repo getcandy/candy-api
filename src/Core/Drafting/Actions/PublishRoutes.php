@@ -42,7 +42,7 @@ class PublishRoutes extends AbstractAction
                 $route->forceDelete();
             } else {
                 $route->update([
-                    'element_id' => $this->parent->id
+                    'element_id' => $this->parent->id,
                 ]);
             }
         }

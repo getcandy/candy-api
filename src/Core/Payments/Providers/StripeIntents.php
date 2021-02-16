@@ -2,10 +2,9 @@
 
 namespace GetCandy\Api\Core\Payments\Providers;
 
-use Stripe\StripeClient;
-use Stripe\PaymentIntent;
-use GetCandy\Api\Core\Payments\PaymentResponse;
 use GetCandy\Api\Core\Payments\Models\Transaction;
+use GetCandy\Api\Core\Payments\PaymentResponse;
+use Stripe\StripeClient;
 
 class StripeIntents extends AbstractProvider
 {
@@ -40,7 +39,7 @@ class StripeIntents extends AbstractProvider
 
         $paymentIntentToken = $meta['stripe_payment_intent'] ?? null;
 
-        if (!$paymentIntentToken) {
+        if (! $paymentIntentToken) {
             $intent = $client->paymentIntents->create([
                 'amount' => $this->order->order_total,
                 'currency' => $this->order->currency,
@@ -49,8 +48,9 @@ class StripeIntents extends AbstractProvider
             ]);
             $meta['stripe_payment_intent'] = $intent->id;
             $this->order->update([
-                'meta' => $meta
+                'meta' => $meta,
             ]);
+
             return $intent->client_secret;
         } else {
             $intent = $client->paymentIntents->retrieve(
@@ -61,7 +61,7 @@ class StripeIntents extends AbstractProvider
                 $client->paymentIntents->update(
                     $intent->id,
                     [
-                        'amount' => $this->order->order_total
+                        'amount' => $this->order->order_total,
                     ]
                 );
             }
@@ -86,7 +86,7 @@ class StripeIntents extends AbstractProvider
         $meta = $this->order->meta;
         $paymentIntentToken = $meta['stripe_payment_intent'] ?? null;
 
-        if (!$paymentIntentToken) {
+        if (! $paymentIntentToken) {
             return new PaymentResponse(false);
         }
 
@@ -118,6 +118,7 @@ class StripeIntents extends AbstractProvider
         // Get the payment method
 
         $response = new PaymentResponse(true, 'Payment Success', []);
+
         return $response->transaction($transaction);
     }
 

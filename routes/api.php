@@ -321,7 +321,6 @@
     $router->get('users/{encoded_id}', '\GetCandy\Api\Core\Users\Actions\FetchUser');
     $router->put('users/{encoded_id}', '\GetCandy\Api\Core\Users\Actions\UpdateUser');
 
-
     /*
      * Reusable payments
      */

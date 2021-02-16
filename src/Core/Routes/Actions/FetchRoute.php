@@ -50,6 +50,7 @@ class FetchRoute extends AbstractAction
 
         if (! $this->id) {
             $query = Route::getQuery();
+
             return $this->compileSearchQuery($query, $this->search)->first();
         }
 

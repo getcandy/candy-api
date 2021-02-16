@@ -177,10 +177,9 @@ class CategoryController extends BaseController
         }
         $category = $this->service->findById($id[0], [], true);
 
-        if (!$category) {
+        if (! $category) {
             return $this->errorNotFound();
         }
-
 
         $category = Drafting::with('categories')->publish($category);
 

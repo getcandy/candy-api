@@ -46,6 +46,7 @@ class DraftAssets extends AbstractAction
                 ]
             );
         }
+
         return $this->draft;
     }
 }

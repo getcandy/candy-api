@@ -62,7 +62,7 @@ class Search extends Action
      */
     public function handle()
     {
-        $this->set('search_type', $this->search_type ?  Str::plural($this->search_type) : 'products');
+        $this->set('search_type', $this->search_type ? Str::plural($this->search_type) : 'products');
 
         if (! $this->index) {
             $prefix = config('getcandy.search.index_prefix');
@@ -72,6 +72,7 @@ class Search extends Action
 
         $this->filters = $this->filters ? collect(explode(',', $this->filters))->mapWithKeys(function ($filter) {
             [$label, $value] = explode(':', $filter);
+
             return [$label => $value];
         })->toArray() : [];
 
@@ -215,7 +216,6 @@ class Search extends Action
             'include' => $request->include,
             'counts' => $request->counts,
         ]);
-
 
         $resource = ProductCollection::class;
 

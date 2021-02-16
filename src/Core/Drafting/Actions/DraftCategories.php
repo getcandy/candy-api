@@ -39,6 +39,7 @@ class DraftCategories extends AbstractAction
         foreach ($this->parent->categories as $category) {
             $this->draft->categories()->attach($category);
         }
+
         return $this->draft;
     }
 }

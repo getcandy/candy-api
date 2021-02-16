@@ -44,6 +44,7 @@ class DraftRoutes extends AbstractAction
             $draftRoute->draft_parent_id = $parentRoute->id;
             $draftRoute->save();
         });
+
         return $this->draft;
     }
 }
