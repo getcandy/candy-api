@@ -2,8 +2,43 @@
 
 namespace GetCandy\Api\Core\Drafting;
 
+use Illuminate\Support\Facades\Log;
+
 abstract class BaseDrafter
 {
+    protected $extendedDraftActions = [];
+    protected $extendedPublishActions = [];
+
+    public function addDraftAction($action)
+    {
+        return $this->addAction('extendedDraftActions', $action);
+    }
+
+    public function addPublishAction($action)
+    {
+        return $this->addAction('extendedPublishActions', $action);
+    }
+
+    protected function addAction($target, $incoming)
+    {
+        if (is_array($incoming)) {
+            $this->{$target} = array_merge($this->{$target}, $incoming);
+            return;
+        }
+        array_push($this->{$target}, $incoming);
+    }
+
+    protected function callActions(array $actions, array $params = [])
+    {
+        foreach ($actions as $action) {
+            if (!class_exists($action)) {
+                Log::error("Tried to call action ${action} but it doesn't exist");
+                continue;
+            }
+            call_user_func("{$action}::run", $params);
+        }
+    }
+
     /**
      * Process the assets for a duplicated product.
      *

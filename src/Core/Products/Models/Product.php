@@ -125,7 +125,7 @@ class Product extends BaseModel
             $value = json_decode($value, true);
         }
 
-        foreach ($value as $option) {
+        foreach ($value ?? [] as $option) {
             $label = reset($option['label']);
             $options[str_slug($label)] = $option;
             $childOptions = [];
@@ -186,12 +186,12 @@ class Product extends BaseModel
 
     public function variants()
     {
-        return $this->hasMany(ProductVariant::class);
+        return $this->hasMany(ProductVariant::class)->withDrafted();
     }
 
     public function firstVariant()
     {
-        return $this->hasOne(ProductVariant::class);
+        return $this->hasOne(ProductVariant::class)->withDrafted();
     }
 
     public function categories()

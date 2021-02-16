@@ -1,10 +1,10 @@
 <?php
 
-namespace GetCandy\Api\Core\Products\Actions\Drafting;
+namespace GetCandy\Api\Core\Drafting\Actions;
 
 use GetCandy\Api\Core\Scaffold\AbstractAction;
 
-class UpdateChannels extends AbstractAction
+class DraftProductVariantTiers extends AbstractAction
 {
     /**
      * Determine if the user is authorized to make this action.
@@ -13,7 +13,7 @@ class UpdateChannels extends AbstractAction
      */
     public function authorize()
     {
-        return $this->user()->can('manage-drafts');
+        return $this->user()->can('manage-products');
     }
 
     /**
@@ -32,17 +32,19 @@ class UpdateChannels extends AbstractAction
     /**
      * Execute the action and return a result.
      *
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return \GetCandy\Api\Core\Products\Models\ProductVariant
      */
     public function handle()
     {
-        $channels = $this->draft->channels->mapWithKeys(function ($channel) {
-            return [$channel->id => [
-                'published_at' => $channel->pivot->published_at
-            ]];
-        })->toArray();
-        $this->parent->channels()->sync($channels);
-
-        return $this->parent;
+        $this->draft->tiers()->createMany(
+            $this->parent->tiers->map(function ($tierPrice) {
+                return $tierPrice->only([
+                    'customer_group_id',
+                    'lower_limit',
+                    'price'
+                ]);
+            })
+        );
+        return $this->draft;
     }
 }

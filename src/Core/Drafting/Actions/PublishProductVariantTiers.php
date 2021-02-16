@@ -1,11 +1,10 @@
 <?php
 
-namespace GetCandy\Api\Core\Products\Actions\Drafting;
+namespace GetCandy\Api\Core\Drafting\Actions;
 
-use GetCandy\Api\Core\Products\Models\ProductFamily;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
 
-class UpdateProductVariantCustomerPricing extends AbstractAction
+class PublishProductVariantTiers extends AbstractAction
 {
     /**
      * Determine if the user is authorized to make this action.
@@ -37,12 +36,12 @@ class UpdateProductVariantCustomerPricing extends AbstractAction
      */
     public function handle()
     {
-        foreach ($this->draft->customerPricing as $incoming) {
-            $existing = $this->parent->customerPricing->first(function ($existing) use ($incoming) {
+        foreach ($this->draft->tiers as $incoming) {
+            $existing = $this->parent->tiers->first(function ($existing) use ($incoming) {
                 return $existing->customer_group_id === $incoming->customer_group_id;
             });
             if ($existing) {
-                $existing->update($price->toArray());
+                $existing->update($incoming->toArray());
                 $incoming->forceDelete();
                 continue;
             }

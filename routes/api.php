@@ -78,7 +78,7 @@
     $router->get('categories/parent/{parentID?}', 'Categories\CategoryController@getByParent');
     $router->post('categories/reorder', 'Categories\CategoryController@reorder');
     $router->post('categories/{category}/products/attach', 'Products\ProductCategoryController@attach');
-    $router->post('categories/{category}/drafts', 'Categories\CategoryController@createDraft');
+    $router->post('categories/{category}/drafts', '\GetCandy\Api\Core\Categories\Actions\CreateDraftCategory');
     $router->put('categories/{category}/products', 'Categories\CategoryController@putProducts');
     $router->post('categories/{category}/channels', 'Categories\CategoryController@putChannels');
     $router->post('categories/{category}/customer-groups', 'Categories\CategoryController@putCustomerGroups');

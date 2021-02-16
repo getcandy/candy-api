@@ -1,10 +1,10 @@
 <?php
 
-namespace GetCandy\Api\Core\Products\Actions\Drafting;
+namespace GetCandy\Api\Core\Drafting\Actions;
 
 use GetCandy\Api\Core\Scaffold\AbstractAction;
 
-class UpdateCustomerGroups extends AbstractAction
+class DraftAssets extends AbstractAction
 {
     /**
      * Determine if the user is authorized to make this action.
@@ -36,15 +36,15 @@ class UpdateCustomerGroups extends AbstractAction
      */
     public function handle()
     {
-        $customerGroups = $this->draft->customerGroups->mapWithKeys(function ($group) {
-            return [$group->id => [
-                'purchasable' => $group->pivot->purchasable,
-                'visible' => $group->pivot->visible,
-            ]];
-        })->toArray();
-
-        $this->parent->customerGroups()->sync($customerGroups);
-
-        return $this->parent;
+        foreach ($this->parent->assets as $asset) {
+            $this->draft->assets()->attach(
+                $asset->id,
+                [
+                    'primary' => $asset->pivot->primary,
+                    'assetable_type' => $asset->pivot->assetable_type,
+                ]
+            );
+        }
+        return $this->draft;
     }
 }

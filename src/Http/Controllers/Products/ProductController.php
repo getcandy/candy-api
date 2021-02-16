@@ -93,6 +93,7 @@ class ProductController extends BaseController
     public function createDraft($id, Request $request)
     {
         $id = Hashids::connection('product')->decode($id);
+
         if (empty($id[0])) {
             return $this->errorNotFound();
         }
@@ -110,9 +111,11 @@ class ProductController extends BaseController
         }
         $product = $this->service->findById($id[0], [], true);
 
-        DB::transaction(function () use ($product) {
-            Drafting::with('products')->publish($product);
-        });
+        if (!$product) {
+            return $this->errorNotFound();
+        }
+
+        $product = Drafting::with('products')->publish($product);
 
         return new ProductResource($product->load($this->parseIncludes($request->include)));
     }

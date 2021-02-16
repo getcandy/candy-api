@@ -1,10 +1,10 @@
 <?php
 
-namespace GetCandy\Api\Core\Products\Actions\Drafting;
+namespace GetCandy\Api\Core\Drafting\Actions;
 
 use GetCandy\Api\Core\Scaffold\AbstractAction;
 
-class UpdateAssets extends AbstractAction
+class PublishCustomerGroups extends AbstractAction
 {
     /**
      * Determine if the user is authorized to make this action.
@@ -36,11 +36,14 @@ class UpdateAssets extends AbstractAction
      */
     public function handle()
     {
-        // Get the asset ids we want to sync up
-        $incomingAssetIds = $this->draft->assets->pluck('id')->toArray();
-        $this->parent->assets()->sync($incomingAssetIds);
-        // Clean up on Aisle 4
-        $this->draft->assets()->detach();
+        $customerGroups = $this->draft->customerGroups->mapWithKeys(function ($group) {
+            return [$group->id => [
+                'purchasable' => $group->pivot->purchasable,
+                'visible' => $group->pivot->visible,
+            ]];
+        })->toArray();
+
+        $this->parent->customerGroups()->sync($customerGroups);
 
         return $this->parent;
     }

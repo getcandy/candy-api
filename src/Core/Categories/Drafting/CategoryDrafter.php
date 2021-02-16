@@ -3,101 +3,82 @@
 namespace GetCandy\Api\Core\Categories\Drafting;
 
 use DB;
+use Versioning;
+use Illuminate\Database\Eloquent\Model;
 use GetCandy\Api\Core\Drafting\BaseDrafter;
 use GetCandy\Api\Core\Events\ModelPublishedEvent;
 use GetCandy\Api\Core\Search\Actions\IndexObjects;
-use Illuminate\Database\Eloquent\Model;
+use GetCandy\Api\Core\Drafting\Actions\DraftAssets;
+use GetCandy\Api\Core\Drafting\Actions\DraftRoutes;
+use GetCandy\Api\Core\Drafting\Actions\DraftChannels;
+use GetCandy\Api\Core\Drafting\Actions\PublishAssets;
+use GetCandy\Api\Core\Drafting\Actions\PublishRoutes;
 use NeonDigital\Drafting\Interfaces\DrafterInterface;
-use Versioning;
+use GetCandy\Api\Core\Drafting\Actions\PublishChannels;
+use GetCandy\Api\Core\Drafting\Actions\DraftCustomerGroups;
+use GetCandy\Api\Core\Drafting\Actions\PublishCustomerGroups;
 
 class CategoryDrafter extends BaseDrafter implements DrafterInterface
 {
-    public function create(Model $model)
+    public function publish(Model $draft)
     {
-    }
+        return DB::transaction(function () use ($draft) {
+            // Publish this category and remove the parent.
+            $parent = $draft->publishedParent;
 
-    public function publish(Model $category)
-    {
-        // Publish this category and remove the parent.
-        $parent = $category->publishedParent;
+            // Create a version of the parent before we publish these changes
+            Versioning::with('categories')->create($parent, null, $parent->id);
 
-        // Create a version of the parent before we publish these changes
-        Versioning::with('categories')->create($parent, null, $parent->id);
+            $parent->attribute_data = $draft->attribute_data;
+            $parent->sort = $draft->sort;
+            $parent->layout_id = $draft->layout_id;
+            $parent->save();
 
-        $parent->attribute_data = $category->attribute_data;
-        $parent->sort = $category->sort;
-        $parent->layout_id = $category->layout_id;
-        $parent->save();
-
-        /**
-         * Here we go through any routes the draft has and if they have a published
-         * parent counterpart. We update it and then remove the draft route.
-         *
-         * If the parent doesn't exist then we reassign the new route to the published record.
-         */
-        foreach ($category->routes as $route) {
-            if ($route->publishedParent) {
-                $route->publishedParent->update($route->toArray());
-                $route->forceDelete();
-            } else {
-                $route->update([
-                    'element_id' => $parent->id
-                ]);
-            }
-        }
-
-        /**
-         * Go through the draft channels and update our parent.
-         */
-        $channels = $category->channels->mapWithKeys(function ($channel) {
-            return [$channel->id => [
-                'published_at' => $channel->pivot->published_at
-            ]];
-        })->toArray();
-        $parent->channels()->sync($channels);
-
-        $customerGroups = $category->customerGroups->mapWithKeys(function ($group) {
-            return [$group->id => [
-                'purchasable' => $group->pivot->purchasable,
-                'visible' => $group->pivot->visible,
-            ]];
-        })->toArray();
-
-        $parent->customerGroups()->sync($customerGroups);
-
-        /**
-         * Go through and assign any products that are for the draft to the parent.
-         */
-        $category->products()->update([
-            'category_id' => $parent->id
-        ]);
-
-        // Fire off an event so plugins can update anything their side too.
-        event(new ModelPublishedEvent($category, $parent));
-
-        // // Update all products...
-        $parent = $parent->refresh();
-
-        if ($parent->products->count()) {
-            IndexObjects::run([
-                'documents' => $parent->products,
+            $this->callActions(array_merge([
+                PublishRoutes::class,
+                PublishChannels::class,
+                PublishCustomerGroups::class,
+                PublishAssets::class,
+            ], $this->extendedPublishActions), [
+                'draft' => $draft,
+                'parent' => $parent,
             ]);
-        }
 
-        $category->forceDelete();
-        // event(new ModelPublishedEvent($category));
+            $parent->products()->sync([]);
 
-        return $parent;
+            $parent->products()->sync($draft->products()->groupBy('product_id')->pluck('product_id'), true);
+
+            /**
+             * Go through and assign any products that are for the draft to the parent.
+             */
+            $draft->products()->update([
+                'category_id' => $parent->id
+            ]);
+
+            // Fire off an event so plugins can update anything their side too.
+            event(new ModelPublishedEvent($draft, $parent));
+
+            // // Update all products...
+            $parent = $parent->refresh();
+
+            // if ($parent->products->count()) {
+            //     IndexObjects::dispatch([
+            //         'documents' => $parent->products,
+            //     ]);
+            // }
+
+            $draft->forceDelete();
+
+            return $parent;
+        });
+
     }
 
-    /**
-     * @param  \Illuminate\Database\Eloquent\Model  $category
-     * @return \Illuminate\Database\Eloquent\Model
-     */
-    public function firstOrCreate(Model $category)
+    public function create(Model $parent)
     {
-        return $category->draft ?: DB::transaction(function () use ($category) {
-            $category = $category->load([
+        return DB::transaction(function () use ($parent) {
+
+            $parent = $parent->load([
                 'children',
                 'products',
                 'channels',
@@ -107,35 +88,31 @@ class CategoryDrafter extends BaseDrafter implements DrafterInterface
                 'attributes',
             ]);
 
-            $newCategory = $category->replicate();
-            $newCategory->drafted_at = now();
-            $newCategory->draft_parent_id = $category->id;
-            $newCategory->_lft = $category->_lft;
-            $newCategory->_rgt = $category->_rgt;
-            $newCategory->parent_id = $category->parent_id;
-            $newCategory->save();
+            $draft = $parent->replicate();
+            $draft->drafted_at = now();
+            $draft->draft_parent_id = $parent->id;
+            $draft->_lft = $parent->_lft;
+            $draft->_rgt = $parent->_rgt;
+            $draft->parent_id = $parent->parent_id;
+            $draft->save();
 
-            $newCategory->products()->attach($category->products->pluck('id'));
+            $this->callActions(array_merge([
+                DraftRoutes::class,
+                DraftAssets::class,
+                DraftChannels::class,
+                DraftCustomerGroups::class,
+            ], $this->extendedDraftActions), [
+                'draft' => $draft,
+                'parent' => $parent,
+            ]);
 
-            $category->routes->each(function ($r) use ($newCategory) {
-                $new = $r->replicate();
-                $new->element_id = $newCategory->id;
-                $new->element_type = get_class($newCategory);
-                $new->drafted_at = now();
-                $new->draft_parent_id = $r->id;
-                $new->save();
+            $draft->products()->sync($parent->products()->groupBy('product_id')->pluck('product_id'));
+
+            $parent->attributes->each(function ($model) use ($draft) {
+                $draft->attributes()->attach($model);
             });
 
-            $category->attributes->each(function ($model) use ($newCategory) {
-                $newCategory->attributes()->attach($model);
-            });
-
-            $this->processAssets($category, $newCategory);
-            $this->processChannels($category, $newCategory);
-            $this->processCustomerGroups($category, $newCategory);
-            $newCategory->refresh();
-
-            return $newCategory->load([
+            return $draft->refresh()->load([
                 'children',
                 'products',
                 'channels',
@@ -145,5 +122,10 @@ class CategoryDrafter extends BaseDrafter implements DrafterInterface
                 'attributes',
             ]);
         });
+    }
+
+    public function firstOrCreate(Model $parent)
+    {
+        return $parent->draft ?: $this->create($parent);
     }
 }

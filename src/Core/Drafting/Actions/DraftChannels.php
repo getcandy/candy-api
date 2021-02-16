@@ -1,10 +1,10 @@
 <?php
 
-namespace GetCandy\Api\Core\Products\Actions\Drafting;
+namespace GetCandy\Api\Core\Drafting\Actions;
 
 use GetCandy\Api\Core\Scaffold\AbstractAction;
 
-class UpdateRoutes extends AbstractAction
+class DraftChannels extends AbstractAction
 {
     /**
      * Determine if the user is authorized to make this action.
@@ -36,17 +36,14 @@ class UpdateRoutes extends AbstractAction
      */
     public function handle()
     {
-        foreach ($this->draft->routes as $route) {
-            if ($route->publishedParent) {
-                $route->publishedParent->update($route->toArray());
-                $route->forceDelete();
-            } else {
-                $route->update([
-                    'element_id' => $this->parent->id
-                ]);
-            }
-        }
+        $channels = $this->parent->channels->mapWithKeys(function ($channel) {
+            return [$channel->id => [
+                'published_at' => $channel->pivot->published_at
+            ]];
+        })->toArray();
 
-        return $this->parent;
+        $this->draft->channels()->sync($channels);
+
+        return $this->draft;
     }
 }

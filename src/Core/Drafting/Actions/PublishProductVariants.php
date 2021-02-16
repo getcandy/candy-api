@@ -1,14 +1,11 @@
 <?php
 
-namespace GetCandy\Api\Core\Products\Actions\Drafting;
+namespace GetCandy\Api\Core\Drafting\Actions;
 
+use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
-use GetCandy\Api\Core\Products\Models\ProductFamily;
-use GetCandy\Api\Core\Products\Resources\ProductFamilyResource;
-use GetCandy\Api\Core\Attributes\Actions\AttachModelToAttributes;
-use GetCandy\Api\Core\Products\Actions\Drafting\UpdateProductVariantCustomerPricing;
 
-class UpdateProductVariants extends AbstractAction
+class PublishProductVariants extends AbstractAction
 {
     /**
      * Determine if the user is authorized to make this action.
@@ -29,14 +26,14 @@ class UpdateProductVariants extends AbstractAction
     {
         return [
             'draft' => 'required',
-            'product' => 'required',
+            'parent' => 'required',
         ];
     }
 
     /**
      * Execute the action and return a result.
      *
-     * @return \GetCandy\Api\Core\Products\Models\ProductFamily
+     * @return \GetCandy\Api\Core\Products\Models\Product
      */
     public function handle()
     {
@@ -47,24 +44,22 @@ class UpdateProductVariants extends AbstractAction
                 $parent = $incoming->publishedParent;
                 $parent->update($incoming->toArray());
 
-                UpdateProductVariantCustomerPricing::run([
+                PublishProductVariantCustomerPricing::run([
                     'draft' => $incoming,
                     'parent' => $parent,
                 ]);
 
-                UpdateProductVariantTiers::run([
+                PublishProductVariantTiers::run([
                     'draft' => $incoming,
                     'parent' => $parent,
                 ]);
-
-                dd(1);
             } else {
                 $incoming->update([
-                    'product_id' => $this->product->id,
+                    'product_id' => $this->parent->id,
                 ]);
             }
         }
 
-        return $this->product->refresh();
+        return $this->parent->refresh();
     }
 }

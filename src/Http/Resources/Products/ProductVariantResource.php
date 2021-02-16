@@ -22,6 +22,7 @@ class ProductVariantResource extends AbstractResource
 
         return [
             'id' => $this->encodedId(),
+            'drafted_at' => $this->drafted_at,
             'sku' => $this->sku,
             'backorder' => $this->backorder,
             'requires_shipping' => (bool) $this->requires_shipping,
@@ -69,6 +70,8 @@ class ProductVariantResource extends AbstractResource
             'tiers' => new ProductTierCollection($this->whenLoaded('tiers')),
             'customer_pricing' => new ProductCustomerPriceCollection($this->whenLoaded('customerPricing')),
             'tax' => $this->include('tax', TaxResource::class),
+            'draft' => $this->include('draft', self::class),
+            'published_parent' => $this->include('publishedParent', self::class),
         ];
     }
 }
