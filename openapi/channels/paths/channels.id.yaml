@@ -6,6 +6,10 @@ parameters:
     required: true
 get:
   summary: Get the channel resource
+  x-code-samples:
+    - lang: PHP
+      source:
+        $ref: ../examples/code/fetch-channel/laravel.php
   responses:
     '200':
       description: OK
@@ -13,18 +17,6 @@ get:
         application/json:
           schema:
             $ref: '../responses/ChannelResponse.yaml'
-          examples:
-            example-1:
-              value:
-                data:
-                  id: y3g6v91o
-                  name: Webstore
-                  handle: webstore
-                  url: 'http://webstore.test'
-                  default: true
-                  published_at: null
-                meta:
-                  lang: en
     '404':
       description: Not Found
       content:

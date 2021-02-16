@@ -87,6 +87,8 @@ paths:
     $ref: './categories/paths/categories.id.channels.yaml'
   '/categories/{categoryId}/drafts':
     $ref: './categories/paths/categories.id.drafts.yaml'
+  '/categories/{categoryId}/publish':
+    $ref: './categories/paths/categories.id.publish.yaml'
   '/categories/{categoryId}/customer-groups':
     $ref: './categories/paths/categories.id.customer-groups.yaml'
   '/channels':
@@ -119,6 +121,8 @@ paths:
     $ref: './customers/paths/customers.id.customer-groups.yaml'
   '/customers/{customerId}':
     $ref: './customers/paths/customers.id.yaml'
+  '/currencies':
+    $ref: './currencies/paths/currencies.yaml'
   '/discounts':
     $ref: './discounts/paths/discounts.yaml'
   '/discounts/{discountId}':
@@ -167,6 +171,8 @@ paths:
     $ref: './payments/paths/payments.3d-secure.yaml'
   '/payments/provider':
     $ref: './payments/paths/payments.provider.yaml'
+  '/payments/providers/{handle}':
+    $ref: './payments/paths/payments.providers.handle.yaml'
   '/payments/types':
     $ref: './payments/paths/payments.types.yaml'
   '/product-families':
@@ -279,32 +285,18 @@ paths:
     $ref: './users/paths/users.current.yaml'
   '/versions/{modelId}/restore':
     $ref: './versions/paths/versions.id.restore.yaml'
-components:
-  securitySchemes:
-    auth:
-      type: oauth2
-      flows:
-        password:
-          tokenUrl: 'http://localhost:3000/api/v1/oauth/token'
-          refreshUrl: 'http://localhost:3000/api/v1/oauth/refresh'
-          scopes: {}
-        clientCredentials:
-          tokenUrl: 'http://localhost:3000/api/v1/oauth/token'
-          scopes: {}
-          refreshUrl: 'http://localhost:3000/api/v1/oauth/refresh'
-      description: ''
 tags:
+  - name: Account
+    description: Account management
+  - name: Assets
+    description: Catalogue Management
   - name: Channels
     description: Store channels
   - name: Categories
     description: Catalogue Management
-  - name: Authentication
-    description: Everything to authenticate requests
   - name: Orders
     description: Order Processing
   - name: Attributes
-    description: Catalogue Management
-  - name: Assets
     description: Catalogue Management
   - name: Associations
     description: Catalogue Management

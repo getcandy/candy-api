@@ -1,0 +1,19 @@
+get:
+  summary: Get all currencies
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/CurrencyCollection.yaml'
+  operationId: get-currencies
+  parameters:
+    - schema:
+        type: string
+      in: query
+      name: include
+      description: Comma separated includes for the resource
+  description: Gets a paginated list of all currencies
+  tags:
+    - Currencies

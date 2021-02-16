@@ -1,0 +1,24 @@
+parameters:
+  - schema:
+      type: string
+    name: handle
+    in: path
+    required: true
+get:
+  summary: Get Payment Provider by it's handle
+  tags:
+    - Payments
+  operationId: get-payment-provider
+  description: 'Gets a payment provider from the given handle'
+  parameters:
+    - schema:
+        type: string
+      in: query
+      name: order_id
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/PaymentProviderResponse.yaml'

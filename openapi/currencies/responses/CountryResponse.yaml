@@ -1,0 +1,7 @@
+title: CurrencyResponse
+type: object
+properties:
+  data:
+    $ref: '../models/Currency.yaml'
+x-tags:
+  - Currencies

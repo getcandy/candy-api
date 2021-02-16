@@ -20,10 +20,7 @@ post:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              '':
-                $ref: '../../global/responses/ApiError.yaml'
+            $ref: '../../global/responses/ApiError.yaml'
   operationId: post-categories-categoryId-customer-groups
   requestBody:
     content:
