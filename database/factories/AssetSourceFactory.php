@@ -20,6 +20,6 @@ $factory->define(AssetSource::class, function (Faker $faker) {
         'handle' => $faker->word,
         'disk' => 'public',
         'default' => $faker->boolean,
-        'path' => $faker->word
+        'path' => $faker->word,
     ];
 });

@@ -2,11 +2,10 @@
 
 namespace Tests\Unit\Drafting\Actions;
 
-use Tests\TestCase;
-use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
-use GetCandy\Api\Core\Drafting\Actions\DraftCustomerGroups;
 use GetCandy\Api\Core\Drafting\Actions\PublishCustomerGroups;
+use GetCandy\Api\Core\Products\Models\Product;
+use Tests\TestCase;
 
 /**
  * @group drafting

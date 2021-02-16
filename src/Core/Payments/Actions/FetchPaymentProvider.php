@@ -2,12 +2,11 @@
 
 namespace GetCandy\Api\Core\Payments\Actions;
 
-use Lorisleiva\Actions\Action;
-use GetCandy\Api\Core\Addresses\Models\Address;
-use GetCandy\Api\Core\Payments\PaymentContract;
-use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
 use GetCandy\Api\Core\Orders\Interfaces\OrderCriteriaInterface;
+use GetCandy\Api\Core\Payments\PaymentContract;
 use GetCandy\Api\Core\Payments\Resources\PaymentProviderResource;
+use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
+use Lorisleiva\Actions\Action;
 
 class FetchPaymentProvider extends Action
 {
@@ -61,9 +60,10 @@ class FetchPaymentProvider extends Action
      */
     public function response($result, $request)
     {
-        if (!$result) {
+        if (! $result) {
             return $this->errorNotFound();
         }
+
         return new PaymentProviderResource($result);
     }
 }

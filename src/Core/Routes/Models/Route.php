@@ -24,7 +24,7 @@ class Route extends BaseModel
      * @var array
      */
     protected $fillable = [
-        'slug', 'default', 'redirect', 'description', 'locale', 'path', 'element_type', 'element_id'
+        'slug', 'default', 'redirect', 'description', 'locale', 'path', 'element_type', 'element_id',
     ];
 
     /**

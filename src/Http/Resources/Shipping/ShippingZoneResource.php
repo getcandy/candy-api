@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Http\Resources\Shipping;
 
-use GetCandy\Api\Http\Resources\AbstractResource;
 use GetCandy\Api\Core\Countries\Resources\CountryCollection;
+use GetCandy\Api\Http\Resources\AbstractResource;
 
 class ShippingZoneResource extends AbstractResource
 {

@@ -41,10 +41,11 @@ class DraftProductVariantTiers extends AbstractAction
                 return $tierPrice->only([
                     'customer_group_id',
                     'lower_limit',
-                    'price'
+                    'price',
                 ]);
             })
         );
+
         return $this->draft;
     }
 }

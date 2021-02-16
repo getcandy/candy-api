@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Drafting\Actions;
 
-use Tests\TestCase;
-use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
-use GetCandy\Api\Core\Products\Models\ProductVariant;
 use GetCandy\Api\Core\Drafting\Actions\DraftProductVariants;
+use GetCandy\Api\Core\Products\Models\Product;
+use GetCandy\Api\Core\Products\Models\ProductVariant;
+use Tests\TestCase;
 
 /**
  * @group drafting
@@ -27,7 +27,7 @@ class DraftProductVariantsTest extends TestCase
         ]);
 
         factory(ProductVariant::class)->create([
-            'product_id' => $product->id
+            'product_id' => $product->id,
         ]);
 
         $this->assertCount(1, $product->variants);

@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Drafting\Actions;
 
-use Tests\TestCase;
-use GetCandy\Api\Core\Routes\Models\Route;
-use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Drafting\Actions\DraftRoutes;
+use GetCandy\Api\Core\Products\Models\Product;
+use GetCandy\Api\Core\Routes\Models\Route;
+use Tests\TestCase;
 
 /**
  * @group drafting

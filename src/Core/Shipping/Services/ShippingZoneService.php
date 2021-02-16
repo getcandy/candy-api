@@ -3,9 +3,9 @@
 namespace GetCandy\Api\Core\Shipping\Services;
 
 use GetCandy;
-use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Countries\Models\Country;
 use GetCandy\Api\Core\Foundation\Actions\DecodeIds;
+use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Shipping\Models\ShippingZone;
 
 class ShippingZoneService extends BaseService
@@ -75,7 +75,7 @@ class ShippingZoneService extends BaseService
         if (! empty($data['countries'])) {
             $countryIds = DecodeIds::run([
                 'encoded_ids' => $data['countries'],
-                'model' => Country::class
+                'model' => Country::class,
             ]);
             $shipping->countries()->sync($countryIds);
         }

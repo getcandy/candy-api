@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Categories\Actions;
 
-use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Categories\Models\Category;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
 
 class RebuildTree extends AbstractAction
 {
@@ -49,7 +49,7 @@ class RebuildTree extends AbstractAction
             'id' => $category->id,
             'children' => $category->children->map(function ($category) {
                 return $this->map($category);
-            })->toArray()
+            })->toArray(),
         ];
     }
 }

@@ -19,7 +19,7 @@ class ProductCustomerPrice extends BaseModel
         'tax_id',
         'price',
         'compare_at_price',
-        'product_variant_id'
+        'product_variant_id',
     ];
 
     /**

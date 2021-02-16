@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Core\Payments\Actions;
 
-use GetCandy\Api\Core\Addresses\Models\Address;
 use Lorisleiva\Actions\Action;
 
 class FetchProviders extends Action

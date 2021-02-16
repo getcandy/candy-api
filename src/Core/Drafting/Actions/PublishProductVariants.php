@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Core\Drafting\Actions;
 
-use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
 
 class PublishProductVariants extends AbstractAction

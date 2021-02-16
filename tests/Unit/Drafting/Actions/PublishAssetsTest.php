@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Drafting\Actions;
 
-use Tests\TestCase;
 use GetCandy\Api\Core\Assets\Models\Asset;
-use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Assets\Models\AssetSource;
 use GetCandy\Api\Core\Drafting\Actions\PublishAssets;
+use GetCandy\Api\Core\Products\Models\Product;
+use Tests\TestCase;
 
 /**
  * @group drafting

@@ -38,7 +38,7 @@ class DraftChannels extends AbstractAction
     {
         $channels = $this->parent->channels->mapWithKeys(function ($channel) {
             return [$channel->id => [
-                'published_at' => $channel->pivot->published_at
+                'published_at' => $channel->pivot->published_at,
             ]];
         })->toArray();
 

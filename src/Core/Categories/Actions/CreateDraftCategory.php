@@ -3,8 +3,8 @@
 namespace GetCandy\Api\Core\Categories\Actions;
 
 use Drafting;
-use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Categories\Models\Category;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
 use GetCandy\Api\Http\Resources\Categories\CategoryResource;
 
@@ -51,9 +51,9 @@ class CreateDraftCategory extends AbstractAction
         return $draft->load($this->resolveEagerRelations());
     }
 
-    public function response ($response, $request)
+    public function response($response, $request)
     {
-        if (!$response) {
+        if (! $response) {
             return $this->errorNotFound();
         }
 

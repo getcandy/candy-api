@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Drafting\Actions;
 
-use Tests\TestCase;
-use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Categories\Models\Category;
 use GetCandy\Api\Core\Drafting\Actions\DraftCategories;
+use GetCandy\Api\Core\Products\Models\Product;
+use Tests\TestCase;
 
 /**
  * @group drafting
@@ -26,7 +26,6 @@ class DraftCategoriesTest extends TestCase
         factory(Category::class, 2)->create()->each(function ($category) use ($product) {
             $product->categories()->attach($category);
         });
-
 
         $this->assertCount(2, $product->categories);
         $this->assertCount(0, $draft->categories);

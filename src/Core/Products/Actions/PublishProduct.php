@@ -5,11 +5,7 @@
 namespace GetCandy\Api\Core\Products\Actions;
 
 use GetCandy\Api\Core\Scaffold\AbstractAction;
-use GetCandy\Api\Core\Foundation\Actions\DecodeId;
-use GetCandy\Api\Core\Products\Models\ProductFamily;
 use GetCandy\Api\Http\Resources\Products\ProductResource;
-use GetCandy\Api\Core\Products\Resources\ProductFamilyResource;
-use GetCandy\Api\Core\Attributes\Actions\AttachModelToAttributes;
 
 class PublishProduct extends AbstractAction
 {
@@ -40,7 +36,6 @@ class PublishProduct extends AbstractAction
      */
     public function handle()
     {
-
     }
 
     /**

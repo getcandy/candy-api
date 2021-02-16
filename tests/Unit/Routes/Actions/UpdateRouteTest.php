@@ -69,7 +69,6 @@ class UpdateRouteTest extends TestCase
         $this->assertEquals('bar', $route->slug);
     }
 
-
     public function test_cant_update_route_to_another_resources_values()
     {
         $user = $this->admin();

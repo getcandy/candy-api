@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Core\Users\Actions;
 
-use Lorisleiva\Actions\Action;
-use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
 use GetCandy\Api\Core\Addresses\Resources\AddressCollection;
+use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
+use Lorisleiva\Actions\Action;
 
 class FetchUserAddresses extends Action
 {
@@ -20,6 +20,7 @@ class FetchUserAddresses extends Action
         if ($this->user_id) {
             return $this->user()->can('manage-users');
         }
+
         return $this->user();
     }
 
@@ -48,6 +49,7 @@ class FetchUserAddresses extends Action
                 'include' => 'addresses.country',
             ])->addresses;
         }
+
         return $this->user()->load('addresses.country')->addresses;
     }
 

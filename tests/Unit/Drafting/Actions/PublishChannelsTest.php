@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Drafting\Actions;
 
-use Tests\TestCase;
 use GetCandy\Api\Core\Channels\Models\Channel;
-use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Drafting\Actions\PublishChannels;
+use GetCandy\Api\Core\Products\Models\Product;
+use Tests\TestCase;
 
 /**
  * @group drafting
@@ -25,7 +25,7 @@ class PublishChannelsTest extends TestCase
 
         factory(Channel::class, 2)->create()->each(function ($channel) use ($draft) {
             $draft->channels()->attach($channel->id, [
-                'published_at' => now()
+                'published_at' => now(),
             ]);
         });
 

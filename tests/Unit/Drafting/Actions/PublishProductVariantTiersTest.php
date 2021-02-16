@@ -2,12 +2,11 @@
 
 namespace Tests\Unit\Drafting\Actions;
 
-use Tests\TestCase;
-use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
-use GetCandy\Api\Core\Products\Models\ProductVariant;
-use GetCandy\Api\Core\Drafting\Actions\DraftProductVariantTiers;
 use GetCandy\Api\Core\Drafting\Actions\PublishProductVariantTiers;
+use GetCandy\Api\Core\Products\Models\Product;
+use GetCandy\Api\Core\Products\Models\ProductVariant;
+use Tests\TestCase;
 
 /**
  * @group drafting
@@ -22,7 +21,7 @@ class PublishProductVariantTiersTest extends TestCase
         $product = factory(Product::class)->create();
 
         $parent = factory(ProductVariant::class)->create([
-            'product_id' => $product->id
+            'product_id' => $product->id,
         ]);
         $draft = $parent->replicate();
 
@@ -35,12 +34,10 @@ class PublishProductVariantTiersTest extends TestCase
         $draft->save();
         $draft->update([
             'draft_parent_id' => $parent->id,
-            'drafted_at' => now()
+            'drafted_at' => now(),
         ]);
 
         $draft->tiers()->createMany($tiers);
-
-
 
         $this->assertCount(count($tiers), $draft->tiers);
         $this->assertCount(0, $parent->tiers);

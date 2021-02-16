@@ -128,7 +128,7 @@ class CategoryService extends BaseService
     {
         $model = $this->getByHashedId($hashedId, true);
 
-        if (!empty($data['attribute_data'])) {
+        if (! empty($data['attribute_data'])) {
             $model->attribute_data = $data['attribute_data'];
         }
 

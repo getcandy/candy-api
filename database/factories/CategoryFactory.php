@@ -18,8 +18,8 @@ $factory->define(Category::class, function (Faker $faker) {
     return [
         'attribute_data' => [
             'name' => [
-                'en' => $faker->word
-            ]
-        ]
+                'en' => $faker->word,
+            ],
+        ],
     ];
 });

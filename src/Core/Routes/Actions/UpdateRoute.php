@@ -2,12 +2,9 @@
 
 namespace GetCandy\Api\Core\Routes\Actions;
 
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\DB;
-use GetCandy\Api\Core\Routes\Models\Route;
-use GetCandy\Api\Core\Scaffold\AbstractAction;
-use GetCandy\Api\Core\Foundation\Actions\DecodeId;
 use GetCandy\Api\Core\Routes\Resources\RouteResource;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
+use Illuminate\Support\Facades\DB;
 
 class UpdateRoute extends AbstractAction
 {

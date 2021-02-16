@@ -2,13 +2,11 @@
 
 namespace Tests\Unit\Drafting\Actions;
 
-use Tests\TestCase;
 use GetCandy\Api\Core\Assets\Models\Asset;
-use GetCandy\Api\Core\Products\Models\Product;
-use Illuminate\Validation\ValidationException;
 use GetCandy\Api\Core\Assets\Models\AssetSource;
-use GetCandy\Api\Core\Routes\Actions\CreateRoute;
 use GetCandy\Api\Core\Drafting\Actions\DraftAssets;
+use GetCandy\Api\Core\Products\Models\Product;
+use Tests\TestCase;
 
 /**
  * @group drafting

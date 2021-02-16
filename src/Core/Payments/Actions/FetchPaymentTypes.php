@@ -2,10 +2,9 @@
 
 namespace GetCandy\Api\Core\Payments\Actions;
 
-use Lorisleiva\Actions\Action;
-use GetCandy\Api\Core\Addresses\Models\Address;
 use GetCandy\Api\Core\Payments\Models\PaymentType;
 use GetCandy\Api\Core\Payments\Resources\PaymentTypeCollection;
+use Lorisleiva\Actions\Action;
 
 class FetchPaymentTypes extends Action
 {

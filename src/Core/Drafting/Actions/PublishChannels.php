@@ -38,7 +38,7 @@ class PublishChannels extends AbstractAction
     {
         $channels = $this->draft->channels->mapWithKeys(function ($channel) {
             return [$channel->id => [
-                'published_at' => $channel->pivot->published_at
+                'published_at' => $channel->pivot->published_at,
             ]];
         })->toArray();
         $this->parent->channels()->sync($channels);
