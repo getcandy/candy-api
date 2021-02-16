@@ -61,11 +61,12 @@ class CategoryDrafter extends BaseDrafter implements DrafterInterface
             // // Update all products...
             $parent = $parent->refresh();
 
-            // if ($parent->products->count()) {
-            //     IndexObjects::dispatch([
-            //         'documents' => $parent->products,
-            //     ]);
-            // }
+            // Update all products...
+            if ($parent->products->count()) {
+                IndexObjects::dispatch([
+                    'documents' => $parent->products,
+                ]);
+            }
 
             $draft->forceDelete();
 

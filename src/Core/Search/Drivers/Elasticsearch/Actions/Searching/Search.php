@@ -67,7 +67,8 @@ class Search extends Action
         if (! $this->index) {
             $prefix = config('getcandy.search.index_prefix');
             $language = app()->getLocale();
-            $this->set('index', "{$prefix}_{$this->search_type}_{$language}");
+            $index = Str::plural($this->search_type);
+            $this->set('index', "{$prefix}_{$index}_{$language}");
         }
 
         $this->filters = $this->filters ? collect(explode(',', $this->filters))->mapWithKeys(function ($filter) {
