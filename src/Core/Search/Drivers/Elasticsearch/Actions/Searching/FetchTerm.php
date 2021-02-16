@@ -64,7 +64,7 @@ class FetchTerm extends Action
             }
         }
 
-        $skuTerm = strtolower($this->text);
+        $skuTerm = strtolower($this->term);
         $wildcard = new Wildcard('sku.lowercase', "*{$skuTerm}*");
         $disMaxQuery->addQuery($wildcard);
 
