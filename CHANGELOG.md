@@ -1,3 +1,60 @@
+
+## 0.12.0
+### Upgrading
+
+Update the composer package
+
+```bash
+$ composer update @getcandy/candy-api
+```
+
+### High Impact Changes
+
+#### Maintenance Migrations
+
+Some columns have been added/removed from the database. The tables/columns affected are:
+
+- `orders`
+    - Removed `company_name` column as it wasn't being used and we have other columns for that now
+    - Added `billing_company_name` and `shipping_company_name` columns.
+- `countries`
+    - Remove `country` column in favour of a `country_id` relationship
+
+#### Eager loading relations for the current user
+
+Previously when returning the current user via `users/current` there was some hard coded includes, this has been replaced to allow the `include` query parameter.
+You should update any calls to this endpoint if you rely on included resources. The previous default includes were:
+
+```php
+['addresses.country', 'roles.permissions', 'customer', 'savedBaskets.basket.lines']
+```
+
+### Drafting has changed
+
+The way drafting previously worked has now been refactored to be less destructive. You should reindex your products before going back into the hub to get everything in sync.
+
+You can do this by running `php artisan candy:products:reindex` and `php artisan candy:categories:reindex`
+
+### 🐞 Fixes
+- Fixed an issue that was causing a indefinite wildcard search on products
+- Allow certain fields to be nullable on a customer address (`company_name`, `address_two`, `address_three`)
+- Fixed some issues on route creation
+- Fixed issue where shipping method relationships were not having their timestamps updated
+
+### ⭐ Improvements
+
+- Slight optimisation for Elasticsearch and the fields it returns
+- Drafting and Publishing of a draft will now run in a transaction, you can also extend the drafting functionality in your plugins.
+
+### 🏗️ Additions
+
+- Added endpoint to get a payment provider via it's given ID
+- Added Stripe Payment Intents provider
+- Added a `RebuildTree` action and command for categories, so if your category tree is messed up you can run `candy:categories:rebuild`
+- Added `user/addresses` endpoint to get the current users saved addresses
+
+---
+
 # 0.3.8
 
 - [added] Added CategoryStoredEvent when editing categories
