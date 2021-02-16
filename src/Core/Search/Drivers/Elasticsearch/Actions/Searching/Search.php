@@ -62,19 +62,16 @@ class Search extends Action
      */
     public function handle()
     {
-        $this->set('search_type', $this->search_type ?: 'products');
+        $this->set('search_type', $this->search_type ?  Str::plural($this->search_type) : 'products');
 
         if (! $this->index) {
             $prefix = config('getcandy.search.index_prefix');
             $language = app()->getLocale();
-
-            $index = Str::plural($this->search_type);
-            $this->set('index', "{$prefix}_{$index}_{$language}");
+            $this->set('index', "{$prefix}_{$this->search_type}_{$language}");
         }
 
         $this->filters = $this->filters ? collect(explode(',', $this->filters))->mapWithKeys(function ($filter) {
             [$label, $value] = explode(':', $filter);
-
             return [$label => $value];
         })->toArray() : [];
 
@@ -177,6 +174,8 @@ class Search extends Action
             ],
         ]);
 
+        $query = $query->setSource(false)->setStoredFields([]);
+
         $search = new ElasticaSearch($client);
 
         return $search
@@ -216,6 +215,7 @@ class Search extends Action
             'include' => $request->include,
             'counts' => $request->counts,
         ]);
+
 
         $resource = ProductCollection::class;
 
