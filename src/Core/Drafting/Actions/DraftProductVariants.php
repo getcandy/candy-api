@@ -48,12 +48,12 @@ class DraftProductVariants extends AbstractAction
 
             $draftVariant->save();
 
-            DraftProductVariantCustomerPricing::run([
+            (new DraftProductVariantCustomerPricing)->actingAs($this->user())->run([
                 'draft' => $draftVariant,
                 'parent' => $parentVariant,
             ]);
 
-            DraftProductVariantTiers::run([
+            (new DraftProductVariantTiers)->actingAs($this->user())->run([
                 'draft' => $draftVariant,
                 'parent' => $parentVariant,
             ]);

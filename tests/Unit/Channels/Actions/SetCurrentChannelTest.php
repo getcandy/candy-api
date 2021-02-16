@@ -8,7 +8,7 @@ use GetCandy\Api\Core\Channels\Models\Channel;
 use Tests\Feature\FeatureCase;
 
 /**
- * @group foo
+ * @group channels
  */
 class SetCurrentChannelTest extends FeatureCase
 {

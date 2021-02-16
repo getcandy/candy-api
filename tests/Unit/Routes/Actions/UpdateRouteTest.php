@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Languages\Actions;
+namespace Tests\Unit\Routes\Actions;
 
 use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Routes\Actions\UpdateRoute;
@@ -69,9 +69,7 @@ class UpdateRouteTest extends TestCase
         $this->assertEquals('bar', $route->slug);
     }
 
-    /**
-     * @group bah
-     */
+
     public function test_cant_update_route_to_another_resources_values()
     {
         $user = $this->admin();
@@ -94,7 +92,7 @@ class UpdateRouteTest extends TestCase
             'encoded_id' => $route->encoded_id,
             'slug' => 'foo',
             'element' => $product,
-            'lang' => 'en',
+            'locale' => 'en',
             'default' => true,
         ]);
     }

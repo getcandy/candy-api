@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Actions\Languages;
+namespace Tests\Feature\Actions\Routes;
 
 use GetCandy\Api\Core\Routes\Models\Route;
 use Tests\Feature\FeatureCase;

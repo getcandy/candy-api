@@ -41,6 +41,7 @@ class DraftAssets extends AbstractAction
                 $asset->id,
                 [
                     'primary' => $asset->pivot->primary,
+                    'position' => $asset->pivot->position,
                     'assetable_type' => $asset->pivot->assetable_type,
                 ]
             );

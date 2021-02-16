@@ -47,7 +47,7 @@ class UpdateRoute extends AbstractAction
                     }
                     $result = DB::table('routes')->wherePath($this->path)->whereSlug($value)->whereNotIn('id', $ids)->exists();
                     if ($result) {
-                        $fail();
+                        $fail('The path and slug have already been taken');
                     }
                 },
             ],
@@ -65,7 +65,9 @@ class UpdateRoute extends AbstractAction
      */
     public function handle()
     {
-        return $this->route->update($this->validated());
+        $this->route->update($this->validated());
+
+        return $this->route;
     }
 
     /**

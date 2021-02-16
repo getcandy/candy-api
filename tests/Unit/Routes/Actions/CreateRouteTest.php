@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Languages\Actions;
+namespace Tests\Unit\Routes\Actions;
 
 use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Routes\Actions\CreateRoute;
@@ -21,7 +21,7 @@ class CreateRouteTest extends TestCase
         $route = (new CreateRoute)->actingAs($user)->run([
             'slug' => 'foo-bar',
             'element' => $product,
-            'lang' => 'en',
+            'locale' => 'en',
             'default' => true,
         ]);
 
@@ -37,7 +37,7 @@ class CreateRouteTest extends TestCase
         (new CreateRoute)->actingAs($user)->run([
             'slug' => 'foo-bar',
             'element' => $product,
-            'lang' => 'en',
+            'locale' => 'en',
             'default' => true,
         ]);
 
@@ -46,7 +46,7 @@ class CreateRouteTest extends TestCase
         (new CreateRoute)->actingAs($user)->run([
             'slug' => 'foo-bar',
             'element' => $product,
-            'lang' => 'en',
+            'locale' => 'en',
             'default' => true,
         ]);
 
@@ -54,7 +54,7 @@ class CreateRouteTest extends TestCase
             'slug' => 'foo-bar',
             'path' => 'bar-baz',
             'element' => $product,
-            'lang' => 'en',
+            'locale' => 'en',
             'default' => true,
         ]);
 
@@ -64,7 +64,7 @@ class CreateRouteTest extends TestCase
             'slug' => 'foo-bar',
             'path' => 'bar-baz',
             'element' => $product,
-            'lang' => 'en',
+            'locale' => 'en',
             'default' => true,
         ]);
     }

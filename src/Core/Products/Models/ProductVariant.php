@@ -28,6 +28,7 @@ class ProductVariant extends BaseModel
      */
     protected $fillable = [
         'asset_id',
+        'product_id',
         'options',
         'price',
         'incoming',

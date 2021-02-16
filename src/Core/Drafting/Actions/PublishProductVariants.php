@@ -37,19 +37,19 @@ class PublishProductVariants extends AbstractAction
      */
     public function handle()
     {
-        $variants = $this->draft->variants()->onlyDrafted()->get();
+        $variants = $this->draft->variants()->withDrafted()->get();
 
         foreach ($variants as $incoming) {
             if ($incoming->publishedParent) {
                 $parent = $incoming->publishedParent;
                 $parent->update($incoming->toArray());
 
-                PublishProductVariantCustomerPricing::run([
+                (new PublishProductVariantCustomerPricing)->actingAs($this->user())->run([
                     'draft' => $incoming,
                     'parent' => $parent,
                 ]);
 
-                PublishProductVariantTiers::run([
+                (new PublishProductVariantTiers)->actingAs($this->user())->run([
                     'draft' => $incoming,
                     'parent' => $parent,
                 ]);

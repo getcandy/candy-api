@@ -26,7 +26,7 @@ class AssetResource extends AbstractResource
             'thumbnail' => $this->getThumbnail($this->resource),
             'position' => (int) ($pivot ? $pivot->position : 1),
             'primary' => (bool) ($pivot ? $pivot->primary : false),
-            'url' => $this->url,
+            'url' => Storage::disk($this->source->disk)->url($this->location.'/'.$this->filename),
         ];
 
         if (! $this->external) {
