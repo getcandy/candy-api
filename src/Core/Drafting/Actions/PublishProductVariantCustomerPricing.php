@@ -41,7 +41,9 @@ class PublishProductVariantCustomerPricing extends AbstractAction
                 return $existing->customer_group_id === $incoming->customer_group_id;
             });
             if ($existing) {
-                $existing->update($price->toArray());
+                $existing->update(
+                    collect($incoming->toArray())->except(['id', 'product_variant_id'])->toArray()
+                );
                 $incoming->forceDelete();
                 continue;
             }

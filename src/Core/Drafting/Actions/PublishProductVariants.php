@@ -41,7 +41,9 @@ class PublishProductVariants extends AbstractAction
         foreach ($variants as $incoming) {
             if ($incoming->publishedParent) {
                 $parent = $incoming->publishedParent;
-                $parent->update($incoming->toArray());
+                $parent->update(
+                    collect($incoming->toArray())->except(['id', 'product_id'])->toArray()
+                );
 
                 (new PublishProductVariantCustomerPricing)->actingAs($this->user())->run([
                     'draft' => $incoming,
