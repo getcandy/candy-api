@@ -34,6 +34,7 @@ class UpdateRoute extends AbstractAction
         ]);
 
         return [
+            'path' => 'nullable',
             'slug' => [
                 'required',
                 function ($attribute, $value, $fail) {
