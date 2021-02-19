@@ -37,9 +37,13 @@ class PublishRoutes extends AbstractAction
     public function handle()
     {
         foreach ($this->draft->routes as $route) {
+            // dd($route->publishedParent);
             if ($route->publishedParent) {
-                $route->publishedParent->update($route->toArray());
+                $route->publishedParent->update(
+                    $route->only(['default', 'redirect', 'slug', 'locale', 'description', 'path'])
+                );
                 $route->forceDelete();
+                // dd($route);
             } else {
                 $route->update([
                     'element_id' => $this->parent->id,

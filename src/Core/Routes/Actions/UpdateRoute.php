@@ -2,9 +2,10 @@
 
 namespace GetCandy\Api\Core\Routes\Actions;
 
-use GetCandy\Api\Core\Routes\Resources\RouteResource;
-use GetCandy\Api\Core\Scaffold\AbstractAction;
 use Illuminate\Support\Facades\DB;
+use GetCandy\Api\Core\Routes\Models\Route;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
+use GetCandy\Api\Core\Routes\Resources\RouteResource;
 
 class UpdateRoute extends AbstractAction
 {
@@ -63,6 +64,18 @@ class UpdateRoute extends AbstractAction
     public function handle()
     {
         $this->route->update($this->validated());
+
+        if ($this->route->default) {
+            // Need to make sure we unset any defaults of any siblings
+            // as we can only have one
+            Route::whereElementType($this->route->element_type)
+                ->whereElementId($this->route->element_id)
+                ->where('id', '!=', $this->route->id)
+                ->update([
+                    'default' => false,
+                ]);
+        }
+
 
         return $this->route;
     }

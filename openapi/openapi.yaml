@@ -25,6 +25,8 @@ paths:
     $ref: './assets/paths/assets.yaml'
   '/assets/simple':
     $ref: './assets/paths/assets.simple.yaml'
+  '/assets/reorder':
+    $ref: './assets/paths/assets.reorder.yaml'
   '/assets/{assetId}/detach/{ownerId}':
     $ref: './assets/paths/assets.id.detach.id.yaml'
   '/associations/groups':

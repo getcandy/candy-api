@@ -63,8 +63,9 @@ class ProductVersioner extends AbstractVersioner implements VersionerInterface
             $this->createFromObject($group, $version->id, $data);
         }
 
+        // dd($product->routes);
         // Routes
-        foreach ($product->routes()->get() as $route) {
+        foreach ($product->routes as $route) {
             $this->createFromObject($route, $version->id);
         }
 
@@ -78,6 +79,7 @@ class ProductVersioner extends AbstractVersioner implements VersionerInterface
 
     public function restore($version)
     {
+
         $current = $version->versionable;
 
         // Do we already have a draft??
@@ -86,6 +88,7 @@ class ProductVersioner extends AbstractVersioner implements VersionerInterface
         if ($draft) {
             $draft->forceDelete();
         }
+
         // Okay so, hydrate this draft...
         $data = $version->model_data;
         unset($data['id']);
@@ -95,7 +98,6 @@ class ProductVersioner extends AbstractVersioner implements VersionerInterface
         // Make it a draft
         $product->drafted_at = now();
         $product->draft_parent_id = $version->versionable_id;
-        $product->save();
         $product->attribute_data = $data['attribute_data'];
         $product->save();
 
@@ -133,7 +135,6 @@ class ProductVersioner extends AbstractVersioner implements VersionerInterface
                     $route->drafted_at = now();
                     $route->draft_parent_id = $relation->versionable_id;
                     $route->save();
-
                     break;
                 case Asset::class:
                     $data = $relation->model_data;

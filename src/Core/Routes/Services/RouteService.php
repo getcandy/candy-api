@@ -34,7 +34,16 @@ class RouteService extends BaseService
         $model = $this->getByHashedId($hashedId);
         $model->slug = $data['slug'];
         $model->default = $data['default'];
+
+        // Cannot be a default route and a redirect.
+        if (!empty($data['default'])) {
+            $model->redirect = false;
+        }
+
         $model->save();
+
+
+            \Log::debug('hit');
 
         return $model;
     }
