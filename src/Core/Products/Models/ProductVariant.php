@@ -101,11 +101,10 @@ class ProductVariant extends BaseModel
     {
         $values = [];
         $option_data = $this->product ? $this->product->option_data : [];
-
         if (! is_array($val)) {
             $val = json_decode($val, true);
         }
-        foreach ($val as $option => $value) {
+        foreach ($val ?? [] as $option => $value) {
             if (! empty($data = $option_data[$option])) {
                 $values[$option] = $data['options'][$value]['values'] ?? [
                     'en' => null,
@@ -120,6 +119,9 @@ class ProductVariant extends BaseModel
     {
         $options = [];
 
+        if (! is_array($val)) {
+            $val = json_decode($val, true);
+        }
         if (! $this->id) {
             foreach ($val as $option => $value) {
                 if (is_array($value)) {

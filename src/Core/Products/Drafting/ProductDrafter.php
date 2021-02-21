@@ -94,7 +94,7 @@ class ProductDrafter extends BaseDrafter implements DrafterInterface
             // Get any current versions and assign them to this new product.
 
             // Create a version of the parent before we publish these changes
-            Versioning::with('products')->create($parent, null, $parent->id);
+            Versioning::with('products')->create($parent);
 
             // Publish any attributes etc
             $parent->attribute_data = $draft->attribute_data;
