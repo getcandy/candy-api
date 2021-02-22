@@ -3,11 +3,13 @@
 namespace GetCandy\Api\Core\Assets\Services;
 
 use GetCandy;
-use GetCandy\Api\Core\Assets\Jobs\CleanUpAssetFiles;
-use GetCandy\Api\Core\Assets\Models\Asset;
-use GetCandy\Api\Core\Scaffold\BaseService;
 use Illuminate\Database\Eloquent\Model;
 use Symfony\Component\Finder\SplFileInfo;
+use GetCandy\Api\Core\Assets\Models\Asset;
+use GetCandy\Api\Core\Scaffold\BaseService;
+use GetCandy\Api\Core\Products\Models\Product;
+use GetCandy\Api\Core\Categories\Models\Category;
+use GetCandy\Api\Core\Assets\Jobs\CleanUpAssetFiles;
 
 class AssetService extends BaseService
 {
@@ -130,6 +132,11 @@ class AssetService extends BaseService
      */
     public function detach($assetId, $ownerId, $ownerType)
     {
+        if ($ownerType == 'product') {
+            $ownerType = Product::class;
+        } else if ($ownerType == 'category') {
+            $ownerType = Category::class;
+        }
         $ownerId = (new $ownerType)->decodeId($ownerId);
 
         $ownerModel = (new $ownerType)->withoutGlobalScopes()->find($ownerId);
