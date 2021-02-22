@@ -25,7 +25,6 @@ class CategoryDrafter extends BaseDrafter implements DrafterInterface
         return DB::transaction(function () use ($draft) {
             // Publish this category and remove the parent.
             $parent = $draft->publishedParent;
-
             // Create a version of the parent before we publish these changes
             Versioning::with('categories')->create($parent, null, $parent->id);
 
