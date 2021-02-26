@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\QueryException;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class AddSetNullOnDeleteOnOrderLines extends Migration
 {
@@ -13,11 +14,17 @@ class AddSetNullOnDeleteOnOrderLines extends Migration
      */
     public function up()
     {
+        try {
+            Schema::table('order_lines', function (Blueprint $table) {
+                $table->dropForeign('order_lines_product_variant_id_foreign');
+            });
+        } catch (QueryException $e) {
+            //
+        }
         Schema::table('order_lines', function (Blueprint $table) {
-            $table->dropForeign('order_lines_product_variant_id_foreign');
             $table->foreign('product_variant_id')
-            ->references('id')->on('product_variants')
-            ->onDelete('SET NULL');
+                ->references('id')->on('product_variants')
+                ->onDelete('SET NULL');
         });
     }
 
