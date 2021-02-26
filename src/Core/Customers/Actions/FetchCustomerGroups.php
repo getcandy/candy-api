@@ -29,6 +29,7 @@ class FetchCustomerGroups extends AbstractAction
     {
         return [
             'per_page' => 'numeric|max:200',
+            'exclude' => 'nullable|array|min:0',
             'paginate' => 'boolean',
         ];
     }
@@ -42,12 +43,18 @@ class FetchCustomerGroups extends AbstractAction
     {
         $includes = $this->resolveEagerRelations();
 
-        if (! $this->paginate) {
-            return CustomerGroup::with($includes)->get();
+        $query = CustomerGroup::with($includes);
+
+        if ($this->exclude && count($this->exclude)) {
+            $query->whereNotIn('handle', $this->exclude);
         }
 
-        return CustomerGroup::with($includes)
-            ->withCount(
+        if (! $this->paginate) {
+            return $query->get();
+        }
+
+
+        return $query->withCount(
                 $this->resolveRelationCounts()
             )->paginate($this->per_page ?? 50);
     }

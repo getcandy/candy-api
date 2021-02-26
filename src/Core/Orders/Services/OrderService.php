@@ -452,6 +452,7 @@ class OrderService extends BaseService implements OrderServiceInterface
                 'encoded_id' => $data['address_id'],
             ]);
             $payload = $shipping->only([
+                'company_name',
                 'firstname',
                 'lastname',
                 'address',

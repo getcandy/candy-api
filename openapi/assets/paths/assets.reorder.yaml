@@ -8,7 +8,7 @@ post:
   operationId: reorder-assets
   requestBody:
     content:
-      multipart/form-data:
+      application/json:
         schema:
           $ref: '../requests/ReorderAssetsBody.yaml'
     description: ''

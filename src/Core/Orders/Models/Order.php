@@ -194,6 +194,8 @@ class Order extends BaseModel
 
         $qb->orWhereIn('id', $matches)
             ->orWhereIn('contact_email', $matches)
+            ->orWhere('billing_company_name', '=', $keywords)
+            ->orWhere('shipping_company_name', '=', $keywords)
             ->orWhereIn('reference', $matches);
 
         return $qb;

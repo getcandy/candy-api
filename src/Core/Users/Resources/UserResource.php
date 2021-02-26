@@ -21,6 +21,7 @@ class UserResource extends AbstractResource
             'id' => $this->encoded_id,
             'email' => $this->email,
             'name' => $this->name,
+            'created_at' => $this->created_at,
         ];
     }
 

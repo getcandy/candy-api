@@ -227,8 +227,11 @@
         $router->get('/sales', 'ReportController@sales');
         $router->get('/orders', 'ReportController@orders');
         $router->get('/orders/customers', 'ReportController@orderCustomers');
-        $router->get('/orders/averages', 'ReportController@orderAverages');
-        $router->get('/products/best-sellers', 'ReportController@bestSellers');
+        $router->get('/customers/spending', '\GetCandy\Api\Core\Reports\Actions\GetCustomerSpendingReport');
+        $router->get('/customer-groups', '\GetCandy\Api\Core\Reports\Actions\GetCustomerGroupReport');
+        $router->get('/orders/averages', '\GetCandy\Api\Core\Reports\Actions\GetOrderAveragesReport');
+        $router->get('/products/best-sellers', '\GetCandy\Api\Core\Reports\Actions\GetProductBestSellers');
+        $router->get('/users/{userId}', '\GetCandy\Api\Core\Reports\Actions\GetUserReport');
         $router->get('/metrics/{subject}', 'ReportController@metrics');
     });
 
