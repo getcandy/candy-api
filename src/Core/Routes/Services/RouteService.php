@@ -36,14 +36,13 @@ class RouteService extends BaseService
         $model->default = $data['default'];
 
         // Cannot be a default route and a redirect.
-        if (!empty($data['default'])) {
+        if (! empty($data['default'])) {
             $model->redirect = false;
         }
 
         $model->save();
 
-
-            \Log::debug('hit');
+        \Log::debug('hit');
 
         return $model;
     }

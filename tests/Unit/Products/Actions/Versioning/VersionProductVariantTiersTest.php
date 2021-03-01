@@ -2,13 +2,12 @@
 
 namespace Tests\Unit\Products\Actions\Versioning;
 
-use Tests\TestCase;
-use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
+use GetCandy\Api\Core\Products\Actions\Versioning\VersionProductVariantTiers;
+use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Products\Models\ProductVariant;
 use GetCandy\Api\Core\Versioning\Actions\CreateVersion;
-use GetCandy\Api\Core\Products\Actions\Versioning\VersionProductVariants;
-use GetCandy\Api\Core\Products\Actions\Versioning\VersionProductVariantTiers;
+use Tests\TestCase;
 
 /**
  * @group versioning
@@ -35,7 +34,7 @@ class VersionProductVariantTiersTest extends TestCase
         $variant->tiers()->createMany($tiers);
 
         $version = (new CreateVersion)->actingAs($user)->run([
-            'model' => $variant
+            'model' => $variant,
         ]);
 
         (new VersionProductVariantTiers)->actingAs($user)->run([

@@ -43,6 +43,7 @@ class VersionProductVariantTiers extends AbstractAction
                 'relation' => $this->version,
             ]);
         }
+
         return $this->version;
     }
 }

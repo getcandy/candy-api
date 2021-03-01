@@ -3,10 +3,9 @@
 namespace GetCandy\Api\Core\Reports\Actions;
 
 use GetCandy;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
 use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
+use Illuminate\Support\Facades\DB;
 
 class GetCustomerSpendingReport extends AbstractAction
 {
@@ -61,21 +60,20 @@ class GetCustomerSpendingReport extends AbstractAction
 
         $items = $result->getCollection()->map(function ($row) {
             $userModel = GetCandy::getUserModel();
+
             return array_merge($row->toArray(), [
                 'user_id' => $row->user_id ? (new $userModel)->encode($row->user_id) : null,
             ]);
         });
-;
 
         $result->setCollection($items);
-
 
         return [
             'period' => [
                 'from' => $this->from,
                 'to' => $this->to,
             ],
-            'data' => $result
+            'data' => $result,
         ];
     }
 }

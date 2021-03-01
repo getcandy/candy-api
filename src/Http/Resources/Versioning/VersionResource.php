@@ -2,10 +2,9 @@
 
 namespace GetCandy\Api\Http\Resources\Versioning;
 
-use Hashids;
-use GetCandy\Api\Http\Resources\AbstractResource;
 use GetCandy\Api\Core\Users\Resources\UserResource;
-use GetCandy\Api\Http\Resources\Versioning\VersionCollection;
+use GetCandy\Api\Http\Resources\AbstractResource;
+use Hashids;
 
 class VersionResource extends AbstractResource
 {
@@ -24,7 +23,7 @@ class VersionResource extends AbstractResource
     {
         return [
             'user' => $this->include('user', UserResource::class),
-            'relations' => new VersionCollection($this->whenLoaded('relations'))
+            'relations' => new VersionCollection($this->whenLoaded('relations')),
         ];
     }
 }

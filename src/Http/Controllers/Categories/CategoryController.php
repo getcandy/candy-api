@@ -181,7 +181,7 @@ class CategoryController extends BaseController
             return $this->errorNotFound();
         }
 
-        if (!$category->drafted_at) {
+        if (! $category->drafted_at) {
             return $this->errorUnprocessable('Category is not a draft');
         }
 

@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Reports\Actions;
 
-use Illuminate\Support\Facades\DB;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
+use Illuminate\Support\Facades\DB;
 
 class GetProductBestSellers extends AbstractAction
 {
@@ -50,7 +50,7 @@ class GetProductBestSellers extends AbstractAction
             ->whereNotNull('placed_at')
             ->whereBetween('placed_at', [
                 $this->from,
-                $this->to
+                $this->to,
             ])->whereIsManual(0)
             ->whereIsShipping(0)
             ->groupBy('sku')
@@ -61,6 +61,7 @@ class GetProductBestSellers extends AbstractAction
         if ($this->term) {
             $query->where('sku', 'LIKE', "%{$this->term}%");
         }
+
         return $query->paginate(50);
     }
 }

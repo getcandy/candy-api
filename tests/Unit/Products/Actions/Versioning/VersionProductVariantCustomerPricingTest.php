@@ -2,14 +2,14 @@
 
 namespace Tests\Unit\Products\Actions\Versioning;
 
-use Tests\TestCase;
-use GetCandy\Api\Core\Taxes\Models\Tax;
-use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
-use GetCandy\Api\Core\Products\Models\ProductVariant;
-use GetCandy\Api\Core\Versioning\Actions\CreateVersion;
-use GetCandy\Api\Core\Products\Models\ProductCustomerPrice;
 use GetCandy\Api\Core\Products\Actions\Versioning\VersionProductVariantCustomerPricing;
+use GetCandy\Api\Core\Products\Models\Product;
+use GetCandy\Api\Core\Products\Models\ProductCustomerPrice;
+use GetCandy\Api\Core\Products\Models\ProductVariant;
+use GetCandy\Api\Core\Taxes\Models\Tax;
+use GetCandy\Api\Core\Versioning\Actions\CreateVersion;
+use Tests\TestCase;
 
 /**
  * @group versioning
@@ -28,7 +28,7 @@ class VersionProductVariantCustomerPricingTest extends TestCase
             'product_id' => $product->id,
         ]);
 
-        for ($i=0; $i < 2; $i++) {
+        for ($i = 0; $i < 2; $i++) {
             $pricing = new ProductCustomerPrice;
             $pricing->product_variant_id = $variant->id;
             $pricing->customer_group_id = $customerGroup->id;
@@ -38,7 +38,7 @@ class VersionProductVariantCustomerPricingTest extends TestCase
         }
 
         $version = (new CreateVersion)->actingAs($user)->run([
-            'model' => $variant
+            'model' => $variant,
         ]);
 
         (new VersionProductVariantCustomerPricing)->actingAs($user)->run([

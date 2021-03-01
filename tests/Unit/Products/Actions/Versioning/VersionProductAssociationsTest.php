@@ -2,13 +2,12 @@
 
 namespace Tests\Unit\Products\Actions\Versioning;
 
-use Tests\TestCase;
-use GetCandy\Api\Core\Taxes\Models\Tax;
-use GetCandy\Api\Core\Products\Models\Product;
-use GetCandy\Api\Core\Versioning\Actions\CreateVersion;
-use GetCandy\Api\Core\Products\Models\ProductAssociation;
 use GetCandy\Api\Core\Associations\Models\AssociationGroup;
 use GetCandy\Api\Core\Products\Actions\Versioning\VersionProductAssociations;
+use GetCandy\Api\Core\Products\Models\Product;
+use GetCandy\Api\Core\Products\Models\ProductAssociation;
+use GetCandy\Api\Core\Versioning\Actions\CreateVersion;
+use Tests\TestCase;
 
 /**
  * @group versionings
@@ -32,7 +31,7 @@ class VersionProductAssociationsTest extends TestCase
         });
 
         $version = (new CreateVersion)->actingAs($user)->run([
-            'model' => $product
+            'model' => $product,
         ]);
 
         (new VersionProductAssociations)->actingAs($user)->run([

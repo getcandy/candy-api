@@ -96,6 +96,7 @@ abstract class BaseUploadDriver
                 'position' => $model->assets()->count() + 1,
             ]);
         }
+
         return $asset;
     }
 }

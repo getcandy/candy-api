@@ -4,22 +4,22 @@ namespace GetCandy\Api\Core\Categories\Versioning;
 
 use Auth;
 use Drafting;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Database\Eloquent\Model;
 use GetCandy\Api\Core\Assets\Models\Asset;
-use GetCandy\Api\Core\Routes\Models\Route;
 use GetCandy\Api\Core\Channels\Models\Channel;
-use GetCandy\Api\Core\Versioning\BaseVersioner;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
+use GetCandy\Api\Core\Routes\Models\Route;
 use GetCandy\Api\Core\Versioning\Actions\CreateVersion;
 use GetCandy\Api\Core\Versioning\Actions\RestoreAssets;
+use GetCandy\Api\Core\Versioning\Actions\RestoreChannels;
+use GetCandy\Api\Core\Versioning\Actions\RestoreCustomerGroups;
 use GetCandy\Api\Core\Versioning\Actions\RestoreRoutes;
 use GetCandy\Api\Core\Versioning\Actions\VersionAssets;
-use GetCandy\Api\Core\Versioning\Actions\VersionRoutes;
-use GetCandy\Api\Core\Versioning\Actions\RestoreChannels;
 use GetCandy\Api\Core\Versioning\Actions\VersionChannels;
-use GetCandy\Api\Core\Versioning\Actions\RestoreCustomerGroups;
 use GetCandy\Api\Core\Versioning\Actions\VersionCustomerGroups;
+use GetCandy\Api\Core\Versioning\Actions\VersionRoutes;
+use GetCandy\Api\Core\Versioning\BaseVersioner;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Log;
 
 class CategoryVersioner extends BaseVersioner
 {
@@ -36,11 +36,12 @@ class CategoryVersioner extends BaseVersioner
             VersionChannels::class,
             VersionCustomerGroups::class,
             VersionRoutes::class,
-            VersionAssets::class
+            VersionAssets::class,
         ], [
             'model' => $category,
             'version' => $version,
         ]);
+
         return $version;
     }
 
@@ -83,8 +84,9 @@ class CategoryVersioner extends BaseVersioner
                         $action = RestoreAssets::class;
                         break;
                 }
-                if (!$action) {
+                if (! $action) {
                     Log::error("Unable to restore for {$type}");
+
                     return;
                 }
                 (new $action)->run([

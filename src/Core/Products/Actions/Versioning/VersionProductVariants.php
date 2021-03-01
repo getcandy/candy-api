@@ -4,8 +4,6 @@ namespace GetCandy\Api\Core\Products\Actions\Versioning;
 
 use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Versioning\Actions\CreateVersion;
-use GetCandy\Api\Core\Products\Actions\Versioning\VersionProductVariantTiers;
-use GetCandy\Api\Core\Products\Actions\Versioning\VersionProductVariantCustomerPricing;
 
 class VersionProductVariants extends AbstractAction
 {
@@ -40,7 +38,7 @@ class VersionProductVariants extends AbstractAction
     public function handle()
     {
         // Create our base version.
-        foreach  ($this->product->variants as $variant) {
+        foreach ($this->product->variants as $variant) {
             $variantVersion = (new CreateVersion)->actingAs($this->user())->run([
                 'model' => $variant,
                 'relation' => $this->version,

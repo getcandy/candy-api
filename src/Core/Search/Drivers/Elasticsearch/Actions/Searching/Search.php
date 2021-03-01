@@ -25,7 +25,6 @@ class Search extends Action
         'category-filter',
     ];
 
-
     protected $start;
 
     /**

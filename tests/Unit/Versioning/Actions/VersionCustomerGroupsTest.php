@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Versioning\Actions;
 
-use Tests\TestCase;
-use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
+use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Versioning\Actions\CreateVersion;
 use GetCandy\Api\Core\Versioning\Actions\VersionCustomerGroups;
+use Tests\TestCase;
 
 /**
  * @group versioning
@@ -29,7 +29,7 @@ class VersionCustomerGroupsTest extends TestCase
         $this->assertCount(2, $product->customerGroups);
 
         $version = (new CreateVersion)->actingAs($user)->run([
-            'model' => $product
+            'model' => $product,
         ]);
 
         (new VersionCustomerGroups)->actingAs($user)->run([

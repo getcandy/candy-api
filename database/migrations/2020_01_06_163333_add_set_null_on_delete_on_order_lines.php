@@ -1,9 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\QueryException;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\Schema;
 
 class AddSetNullOnDeleteOnOrderLines extends Migration
 {

@@ -4,7 +4,6 @@ namespace GetCandy\Api\Core\Versioning\Actions;
 
 use GetCandy\Api\Core\Assets\Models\Asset;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
-use GetCandy\Api\Core\Channels\Actions\FetchChannels;
 
 class RestoreAssets extends AbstractAction
 {
@@ -42,12 +41,14 @@ class RestoreAssets extends AbstractAction
             return Asset::whereId($version->versionable_id)->exists();
         })->mapWithKeys(function ($version) {
             $data = collect($version->model_data);
+
             return [
-                $version->versionable_id => $data->only(['position', 'primary'])
+                $version->versionable_id => $data->only(['position', 'primary']),
             ];
         });
 
         $this->draft->assets()->sync($assets->toArray());
+
         return $this->draft;
     }
 }

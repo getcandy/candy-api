@@ -3,11 +3,10 @@
 namespace GetCandy\Api\Core\Reports\Actions;
 
 use Carbon\CarbonPeriod;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
+use GetCandy\Api\Core\Customers\Actions\FetchCustomerGroups;
 use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
-use GetCandy\Api\Core\Customers\Actions\FetchCustomerGroups;
+use Illuminate\Support\Facades\DB;
 
 class GetCustomerGroupReport extends AbstractAction
 {
@@ -54,7 +53,6 @@ class GetCustomerGroupReport extends AbstractAction
         $period = CarbonPeriod::create($this->from, '1 month', $this->to);
 
         $report = $groups->mapWithKeys(function ($group) use ($period) {
-
             $guestOrders = null;
 
             if ($group->default) {
@@ -75,7 +73,7 @@ class GetCustomerGroupReport extends AbstractAction
                     DB::RAW("DATE_FORMAT(placed_at, '%Y%m')"),
                     'customer_customer_group.customer_group_id'
                 )->orderBy($this->getOrderByClause(), 'desc')->get()->map(function ($row) use ($guestOrders) {
-                    if (!$guestOrders) {
+                    if (! $guestOrders) {
                         return $row;
                     }
                     // Find the guest orders that match our monthstamp
@@ -83,7 +81,7 @@ class GetCustomerGroupReport extends AbstractAction
                         return $guestRow->monthstamp == $row->monthstamp;
                     });
 
-                    if (!$match) {
+                    if (! $match) {
                         return $row;
                     }
 
@@ -99,13 +97,12 @@ class GetCustomerGroupReport extends AbstractAction
 
             $dates = collect();
 
-
             foreach ($period as $date) {
                 $report = $result->first(function ($month) use ($date) {
                     return $month->monthstamp == $date->format('Ym');
                 });
 
-                if (!$report) {
+                if (! $report) {
                     $report = (object) [
                         'order_total' => 0,
                         'delivery_total' => 0,
@@ -149,7 +146,7 @@ class GetCustomerGroupReport extends AbstractAction
             DB::RAW('SUM(tax_total) as tax_total'),
             DB::RAW("DATE_FORMAT(placed_at, '%M') as month"),
             DB::RAW("DATE_FORMAT(placed_at, '%Y') as year"),
-            DB::RAW("DATE_FORMAT(placed_at, '%Y%m') as monthstamp")
+            DB::RAW("DATE_FORMAT(placed_at, '%Y%m') as monthstamp"),
         ];
     }
 
