@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Versioning\Actions;
 
-use Tests\TestCase;
-use GetCandy\Api\Core\Routes\Models\Route;
 use GetCandy\Api\Core\Products\Models\Product;
+use GetCandy\Api\Core\Routes\Models\Route;
 use GetCandy\Api\Core\Versioning\Actions\CreateVersion;
 use GetCandy\Api\Core\Versioning\Actions\VersionRoutes;
+use Tests\TestCase;
 
 /**
  * @group versioning
@@ -27,7 +27,7 @@ class VersionRoutesTest extends TestCase
         $this->assertCount(2, $product->routes);
 
         $version = (new CreateVersion)->actingAs($user)->run([
-            'model' => $product
+            'model' => $product,
         ]);
 
         (new VersionRoutes)->actingAs($user)->run([

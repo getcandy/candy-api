@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Versioning\Actions;
 
-use Tests\TestCase;
 use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Versioning\Actions\CreateVersion;
+use Tests\TestCase;
 
 /**
  * @group versioning
@@ -18,7 +18,7 @@ class CreateVersionTest extends TestCase
         $model = factory(Product::class)->create();
 
         $version = (new CreateVersion)->actingAs($user)->run([
-            'model' => $model
+            'model' => $model,
         ]);
 
         $this->assertEquals($model->id, $version->versionable_id);

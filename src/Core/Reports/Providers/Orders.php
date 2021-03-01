@@ -2,9 +2,9 @@
 
 namespace GetCandy\Api\Core\Reports\Providers;
 
-use DB;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
+use DB;
 use GetCandy\Api\Core\Customers\Actions\FetchCustomerGroups;
 
 class Orders extends AbstractProvider
@@ -36,7 +36,7 @@ class Orders extends AbstractProvider
             $report = $results->first(function ($month) use ($date) {
                 return $month->monthstamp == $date->format('Ym');
             });
-            if (!$report) {
+            if (! $report) {
                 $report = (object) [
                     'order_total' => 0,
                     'delivery_total' => 0,
@@ -72,7 +72,7 @@ class Orders extends AbstractProvider
             $report = $results->first(function ($month) use ($date) {
                 return $month->monthstamp == $date->format('Ym');
             });
-            if (!$report) {
+            if (! $report) {
                 $report = (object) [
                     'order_total' => 0,
                     'delivery_total' => 0,
@@ -85,6 +85,7 @@ class Orders extends AbstractProvider
             }
             $previousPeriod->push($report);
         }
+
         return [
             'currentPeriod' => $currentPeriod,
             'previousPeriod' => $previousPeriod,
@@ -207,7 +208,7 @@ class Orders extends AbstractProvider
                     }
 
                     return $data;
-                })
+                }),
             ]];
         });
         // $orders = $this->getOrderQuery()
@@ -233,7 +234,6 @@ class Orders extends AbstractProvider
         //     ];
         // });
     }
-
 
     public function metrics()
     {

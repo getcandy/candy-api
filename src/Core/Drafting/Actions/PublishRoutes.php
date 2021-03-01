@@ -43,7 +43,7 @@ class PublishRoutes extends AbstractAction
                     $route->only(['default', 'redirect', 'slug', 'locale', 'description', 'path'])
                 );
                 $route->forceDelete();
-                // dd($route);
+            // dd($route);
             } else {
                 $route->update([
                     'element_id' => $this->parent->id,

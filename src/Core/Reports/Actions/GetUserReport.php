@@ -3,12 +3,11 @@
 namespace GetCandy\Api\Core\Reports\Actions;
 
 use Carbon\CarbonPeriod;
-use Illuminate\Support\Carbon;
 use GetCandy;
-use Illuminate\Support\Facades\DB;
 use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
-use GetCandy\Api\Core\Customers\Actions\FetchCustomerGroups;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class GetUserReport extends AbstractAction
 {
@@ -37,7 +36,6 @@ class GetUserReport extends AbstractAction
         ];
     }
 
-
     /**
      * Execute the action and return a result.
      *
@@ -58,7 +56,6 @@ class GetUserReport extends AbstractAction
         $productLines = $this->getProductOrderLines();
         $userSpending = $this->getUserSpending();
 
-
         return [
             'period' => collect($period->toArray())->map(function ($date) {
                 return [
@@ -68,7 +65,7 @@ class GetUserReport extends AbstractAction
             }),
             'metrics' => ['data' => $this->getMetrics()],
             'purchasing_report' => ['data' => $productLines],
-            'spending' => ['data' => $userSpending]
+            'spending' => ['data' => $userSpending],
         ];
         // Order totals over time period.
     }
@@ -89,7 +86,7 @@ class GetUserReport extends AbstractAction
         ->where('billing_email', '=', $this->user->email)
         ->first();
 
-        if (!$result) {
+        if (! $result) {
             return (object) [
                 'order_total' => 0,
                 'discount_total' => 0,
@@ -118,10 +115,11 @@ class GetUserReport extends AbstractAction
         ->whereNotNull('placed_at')
         ->whereBetween('placed_at', [
             $from,
-            $to
+            $to,
         ])->groupBy(DB::RAW("DATE_FORMAT(placed_at, '%Y%m')"))
         ->where('billing_email', '=', $this->user->email);
     }
+
     protected function getUserSpending()
     {
         $currentPeriodRows = $this->getUserSpendingQuery($this->from, $this->to)->get();
@@ -133,7 +131,7 @@ class GetUserReport extends AbstractAction
             $report = $currentPeriodRows->first(function ($month) use ($date) {
                 return $month->monthstamp == $date->format('Ym');
             });
-            if (!$report) {
+            if (! $report) {
                 $report = (object) [
                     'order_total' => 0,
                     'delivery_total' => 0,
@@ -155,7 +153,7 @@ class GetUserReport extends AbstractAction
             $report = $previousPeriodRows->first(function ($month) use ($date) {
                 return $month->monthstamp == $date->format('Ym');
             });
-            if (!$report) {
+            if (! $report) {
                 $report = (object) [
                     'order_total' => 0,
                     'delivery_total' => 0,
@@ -171,7 +169,7 @@ class GetUserReport extends AbstractAction
 
         return [
             'current_period' => ['data' => $currentPeriod],
-            'previous_period' => ['data' => $previousPeriod]
+            'previous_period' => ['data' => $previousPeriod],
         ];
     }
 
@@ -192,7 +190,7 @@ class GetUserReport extends AbstractAction
         ->whereNotNull('placed_at')
         ->whereBetween('placed_at', [
             $this->from,
-            $this->to
+            $this->to,
         ])->whereIsManual(0)
         ->whereIsShipping(0)
         ->where('billing_email', '=', $this->user->email)

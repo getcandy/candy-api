@@ -2,9 +2,8 @@
 
 namespace GetCandy\Api\Core\Products\Actions\Versioning;
 
-use GetCandy\Api\Core\Taxes\Models\Tax;
-use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Customers\Actions\FetchCustomerGroups;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
 
 class RestoreProductVariantCustomerPricing extends AbstractAction
 {

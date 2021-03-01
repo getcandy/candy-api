@@ -3,7 +3,6 @@
 namespace GetCandy\Api\Core\Versioning\Actions;
 
 use GetCandy\Api\Core\Scaffold\AbstractAction;
-use GetCandy\Api\Core\Versioning\Actions\CreateVersion;
 
 class VersionChannels extends AbstractAction
 {
@@ -44,6 +43,7 @@ class VersionChannels extends AbstractAction
                 'relation' => $this->version,
             ]);
         }
+
         return $this->version;
     }
 }

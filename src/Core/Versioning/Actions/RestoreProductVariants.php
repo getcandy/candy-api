@@ -2,13 +2,13 @@
 
 namespace GetCandy\Api\Core\Versioning\Actions;
 
-use Illuminate\Support\Facades\Log;
-use GetCandy\Api\Core\Taxes\Models\Tax;
-use GetCandy\Api\Core\Scaffold\AbstractAction;
-use GetCandy\Api\Core\Products\Models\ProductPricingTier;
-use GetCandy\Api\Core\Products\Models\ProductCustomerPrice;
-use GetCandy\Api\Core\Products\Actions\Versioning\RestoreProductVariantTiers;
 use GetCandy\Api\Core\Products\Actions\Versioning\RestoreProductVariantCustomerPricing;
+use GetCandy\Api\Core\Products\Actions\Versioning\RestoreProductVariantTiers;
+use GetCandy\Api\Core\Products\Models\ProductCustomerPrice;
+use GetCandy\Api\Core\Products\Models\ProductPricingTier;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
+use GetCandy\Api\Core\Taxes\Models\Tax;
+use Illuminate\Support\Facades\Log;
 
 class RestoreProductVariants extends AbstractAction
 {
@@ -53,8 +53,8 @@ class RestoreProductVariants extends AbstractAction
             // Do we have the tax record that exists?
             $taxRecordExists = $taxes->contains('id', $data['tax_id']);
 
-            if (!$taxRecordExists) {
-                $data['tax_id'] = $taxes->first(function($tax) {
+            if (! $taxRecordExists) {
+                $data['tax_id'] = $taxes->first(function ($tax) {
                     return $tax->default;
                 })->id;
             }
@@ -75,8 +75,9 @@ class RestoreProductVariants extends AbstractAction
                         $action = RestoreProductVariantCustomerPricing::class;
                         break;
                 }
-                if (!$action) {
+                if (! $action) {
                     Log::error("Unable to restore for {$type}");
+
                     return;
                 }
                 (new $action)->run([
@@ -84,8 +85,6 @@ class RestoreProductVariants extends AbstractAction
                     'draft' => $variant,
                 ]);
             });
-
-            return;
         });
 
         return $this->draft;

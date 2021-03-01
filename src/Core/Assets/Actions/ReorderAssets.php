@@ -2,13 +2,10 @@
 
 namespace GetCandy\Api\Core\Assets\Actions;
 
-use Illuminate\Support\Facades\DB;
 use GetCandy\Api\Core\Assets\Models\Asset;
-use GetCandy\Api\Core\Assets\Models\Assetable;
+use GetCandy\Api\Core\Categories\Models\Category;
 use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
-use GetCandy\Api\Core\Categories\Models\Category;
-use GetCandy\Api\Core\Foundation\Actions\DecodeId;
 use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
 
 class ReorderAssets extends AbstractAction
@@ -38,7 +35,7 @@ class ReorderAssets extends AbstractAction
             'assets.*.position' => 'required',
             'assets.*.primary' => 'nullable',
             'assetable_type' => 'required',
-            'assetable_id' => 'required'
+            'assetable_id' => 'required',
         ];
     }
 
@@ -63,8 +60,9 @@ class ReorderAssets extends AbstractAction
         $assets = collect($this->assets)->mapWithKeys(function ($asset) {
             $assetId = (new Asset)->decodeId($asset['id']);
             unset($asset['id']);
+
             return [
-                $assetId => $asset
+                $assetId => $asset,
             ];
         });
 

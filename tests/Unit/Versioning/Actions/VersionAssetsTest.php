@@ -2,13 +2,12 @@
 
 namespace Tests\Unit\Versioning\Actions;
 
-use Tests\TestCase;
 use GetCandy\Api\Core\Assets\Models\Asset;
-use GetCandy\Api\Core\Routes\Models\Route;
-use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Assets\Models\AssetSource;
+use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Versioning\Actions\CreateVersion;
 use GetCandy\Api\Core\Versioning\Actions\VersionAssets;
+use Tests\TestCase;
 
 /**
  * @group versionings
@@ -36,7 +35,7 @@ class VersionAssetsTest extends TestCase
         });
 
         $version = (new CreateVersion)->actingAs($user)->run([
-            'model' => $product
+            'model' => $product,
         ]);
 
         (new VersionAssets)->actingAs($user)->run([

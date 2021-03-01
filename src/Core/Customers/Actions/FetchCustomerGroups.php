@@ -53,7 +53,6 @@ class FetchCustomerGroups extends AbstractAction
             return $query->get();
         }
 
-
         return $query->withCount(
                 $this->resolveRelationCounts()
             )->paginate($this->per_page ?? 50);

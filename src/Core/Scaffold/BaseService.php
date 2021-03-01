@@ -451,7 +451,7 @@ abstract class BaseService
             return $route->default;
         });
 
-        if ($existingDefault && !empty($data['default'])) {
+        if ($existingDefault && ! empty($data['default'])) {
             $existingDefault->update([
                 'default' => false,
             ]);

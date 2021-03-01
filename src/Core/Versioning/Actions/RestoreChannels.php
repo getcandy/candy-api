@@ -2,9 +2,8 @@
 
 namespace GetCandy\Api\Core\Versioning\Actions;
 
-use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Channels\Actions\FetchChannels;
-use GetCandy\Api\Core\Versioning\Actions\CreateVersion;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
 
 class RestoreChannels extends AbstractAction
 {
@@ -40,7 +39,7 @@ class RestoreChannels extends AbstractAction
     {
         // Get all the channels that exist in the database.
         $channels = FetchChannels::run([
-            'paginate' => false
+            'paginate' => false,
         ])->pluck('id');
 
         // Only try and restore channels that exist in the database.

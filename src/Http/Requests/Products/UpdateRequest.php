@@ -3,10 +3,10 @@
 namespace GetCandy\Api\Http\Requests\Products;
 
 use GetCandy;
-use GetCandy\Api\Http\Requests\FormRequest;
-use GetCandy\Api\Core\Products\Models\ProductFamily;
 use GetCandy\Api\Core\Channels\Actions\FetchDefaultChannel;
 use GetCandy\Api\Core\Languages\Actions\FetchDefaultLanguage;
+use GetCandy\Api\Core\Products\Models\ProductFamily;
+use GetCandy\Api\Http\Requests\FormRequest;
 
 class UpdateRequest extends FormRequest
 {
@@ -28,7 +28,7 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         $ruleset = [
-            'family_id' => 'hashid_is_valid:' . ProductFamily::class,
+            'family_id' => 'hashid_is_valid:'.ProductFamily::class,
             'layout_id' => 'hashid_is_valid:layouts',
             'attribute_data' => 'array',
         ];

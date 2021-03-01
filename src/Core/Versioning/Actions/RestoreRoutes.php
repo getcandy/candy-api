@@ -3,8 +3,6 @@
 namespace GetCandy\Api\Core\Versioning\Actions;
 
 use GetCandy\Api\Core\Scaffold\AbstractAction;
-use GetCandy\Api\Core\Channels\Actions\FetchChannels;
-use GetCandy\Api\Core\Versioning\Actions\CreateVersion;
 
 class RestoreRoutes extends AbstractAction
 {

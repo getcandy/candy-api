@@ -37,8 +37,6 @@ class FetchRoot extends AbstractAction
      */
     public function handle(CurrencyConverterInterface $currency)
     {
-
-
         return [
             'version' => GetCandy::version(),
             'max_upload_size' => GetCandy::maxUploadSize(),

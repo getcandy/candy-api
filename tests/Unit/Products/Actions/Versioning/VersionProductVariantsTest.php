@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Products\Actions\Versioning;
 
-use Tests\TestCase;
+use GetCandy\Api\Core\Products\Actions\Versioning\VersionProductVariants;
 use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Products\Models\ProductVariant;
 use GetCandy\Api\Core\Versioning\Actions\CreateVersion;
-use GetCandy\Api\Core\Products\Actions\Versioning\VersionProductVariants;
+use Tests\TestCase;
 
 /**
  * @group versioning
@@ -26,7 +26,7 @@ class VersionChannelsTest extends TestCase
         $this->assertCount(2, $product->variants);
 
         $version = (new CreateVersion)->actingAs($user)->run([
-            'model' => $product
+            'model' => $product,
         ]);
 
         (new VersionProductVariants)->actingAs($user)->run([

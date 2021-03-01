@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Versioning\Actions;
 
-use NeonDigital\Versioning\Version;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
+use NeonDigital\Versioning\Version;
 
 class CreateVersion extends AbstractAction
 {
@@ -50,7 +50,7 @@ class CreateVersion extends AbstractAction
 
         $attributes = $this->model_data ?: $this->model->getAttributes();
 
-        if (!empty($attributes['attribute_data']) && is_string($attributes['attribute_data'])) {
+        if (! empty($attributes['attribute_data']) && is_string($attributes['attribute_data'])) {
             $attributes['attribute_data'] = json_decode($attributes['attribute_data'], true);
         }
 

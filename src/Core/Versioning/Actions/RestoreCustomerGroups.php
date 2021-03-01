@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Versioning\Actions;
 
-use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Customers\Actions\FetchCustomerGroups;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
 
 class RestoreCustomerGroups extends AbstractAction
 {
@@ -39,7 +39,7 @@ class RestoreCustomerGroups extends AbstractAction
     {
         // Get all the channels that exist in the database.
         $groups = FetchCustomerGroups::run([
-            'paginate' => false
+            'paginate' => false,
         ])->pluck('id');
 
         // Only try and restore channels that exist in the database.

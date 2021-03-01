@@ -2,11 +2,10 @@
 
 namespace GetCandy\Api\Core\Versioning\Actions;
 
+use GetCandy\Api\Core\Scaffold\AbstractAction;
 use Illuminate\Support\Facades\Storage;
 use League\Flysystem\FileExistsException;
 use League\Flysystem\FileNotFoundException;
-use GetCandy\Api\Core\Scaffold\AbstractAction;
-use GetCandy\Api\Core\Versioning\Actions\CreateVersion;
 
 class VersionAssets extends AbstractAction
 {

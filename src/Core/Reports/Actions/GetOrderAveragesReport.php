@@ -3,9 +3,9 @@
 namespace GetCandy\Api\Core\Reports\Actions;
 
 use Carbon\CarbonPeriod;
-use Illuminate\Support\Facades\DB;
-use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Customers\Actions\FetchCustomerGroups;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
+use Illuminate\Support\Facades\DB;
 
 class GetOrderAveragesReport extends AbstractAction
 {
@@ -28,7 +28,7 @@ class GetOrderAveragesReport extends AbstractAction
     {
         return [
             'from' => 'nullable|date',
-            'to' => 'nullable|date|after:from'
+            'to' => 'nullable|date|after:from',
         ];
     }
 
@@ -56,7 +56,7 @@ class GetOrderAveragesReport extends AbstractAction
             }),
             'data' => $groups->mapWithKeys(function ($group) use ($period) {
                 $guestOrders = null;
-    
+
                 if ($group->default) {
                     $guestOrders = $this->getInitialQuery()->whereNull('user_id')->select(
                         DB::RAW('ROUND(AVG(order_total), 0) as order_total'),
@@ -69,7 +69,7 @@ class GetOrderAveragesReport extends AbstractAction
                         DB::RAW("DATE_FORMAT(placed_at, '%Y%m')")
                     )->orderBy(DB::RAW("DATE_FORMAT(placed_at, '%Y-%m')"), 'desc')->get();
                 }
-    
+
                 $result = $this->getInitialQuery()->join('users', 'users.id', '=', 'orders.user_id')
                     ->join('customers', 'customers.id', '=', 'users.customer_id')
                     ->join('customer_customer_group', function ($join) use ($group) {
@@ -87,14 +87,14 @@ class GetOrderAveragesReport extends AbstractAction
                         DB::RAW("DATE_FORMAT(placed_at, '%Y%m')"),
                         'customer_customer_group.customer_group_id'
                     )->orderBy(DB::RAW("DATE_FORMAT(placed_at, '%Y-%m')"), 'desc')->get();
-    
+
                 $months = collect();
-    
+
                 foreach ($period as $date) {
                     $record = $result->first(function ($row) use ($date) {
                         return $date->format('Ym') === $row->date;
                     });
-                    if (!$record) {
+                    if (! $record) {
                         $record = (object) [
                             'order_total' => 0,
                             'delivery_total' => 0,
@@ -106,7 +106,7 @@ class GetOrderAveragesReport extends AbstractAction
                     }
                     $months->push($record);
                 }
-    
+
                 return [
                     $group->handle => [
                         'label' => $group->name,
@@ -121,7 +121,7 @@ class GetOrderAveragesReport extends AbstractAction
                                 'order_total' => (int) $order->order_total,
                                 'discount_total' => (int) $order->discount_total,
                             ];
-    
+
                             if ($guestOrders) {
                                 $period = $guestOrders->first(function ($orders) use ($order) {
                                     return $order->date == $orders->date;
@@ -134,12 +134,12 @@ class GetOrderAveragesReport extends AbstractAction
                                     $data['discount_total'] += $period->discount_total;
                                 }
                             }
-    
+
                             return $data;
-                        })
-                    ]
+                        }),
+                    ],
                 ];
-            })
+            }),
         ];
     }
 
