@@ -27,6 +27,7 @@ class UpdateRequest extends FormRequest
     {
         return [
             'sku' => 'required',
+            'price' => 'numeric',
             'pricing' => 'array',
             'pricing.*.customer_group_id' => 'required|hashid_is_valid:'.CustomerGroup::class,
             'tiers' => 'nullable|array',
