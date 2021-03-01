@@ -99,8 +99,6 @@ class Elasticsearch extends AbstractSearchDriver
     public function search($data)
     {
         if ($data instanceof Request) {
-        \Log::debug("Running search as a controller action: " . now()->format('v'));
-
             return (new Search)->runAsController($data);
         }
 

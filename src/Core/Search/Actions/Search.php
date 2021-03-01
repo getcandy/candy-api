@@ -37,7 +37,6 @@ class Search extends Action
      */
     public function handle(SearchManagerContract $search)
     {
-        \Log::debug("Fetching search driver: " . now()->format('v'));
         $driver = $search->with($this->driver);
 
         return $driver->search($this->request ?? $this->params);
