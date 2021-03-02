@@ -409,7 +409,7 @@ class OrderController extends BaseController
         }
         $pdf = GetCandy::orders()->getPdf($order);
 
-        return new PdfResource($pdf);
+        return $pdf->download();
     }
 
     /**

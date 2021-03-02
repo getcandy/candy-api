@@ -58,6 +58,12 @@ return [
         'table_columns' => [
             'name', 'reference', 'account_no', 'contact_email', 'type', 'account', 'order_total', 'delivery_total', 'zone', 'date',
         ],
+        'invoicing' => [
+            'pdf' => [
+                'pipelines' => [
+                ]
+            ]
+        ],
         'statuses' => [
 
             /*
