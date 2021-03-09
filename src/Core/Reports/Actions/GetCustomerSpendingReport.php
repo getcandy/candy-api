@@ -29,6 +29,7 @@ class GetCustomerSpendingReport extends AbstractAction
         return [
             'from' => 'nullable|date',
             'to' => 'nullable|date',
+            'export' => 'nullable|boolean'
         ];
     }
 
@@ -55,25 +56,26 @@ class GetCustomerSpendingReport extends AbstractAction
             $join->on('users.id', '=', 'orders.user_id')->whereNotNull('orders.user_id');
         })
         ->groupBy('billing_email')->orderBy('sub_total', 'desc')
-        ->orderBy(DB::RAW("DATE_FORMAT(placed_at, '%Y-%m')"), 'asc')
-        ->paginate(50);
+        ->orderBy(DB::RAW("DATE_FORMAT(placed_at, '%Y-%m')"), 'asc');
 
-        $items = $result->getCollection()->map(function ($row) {
-            $userModel = GetCandy::getUserModel();
-
-            return array_merge($row->toArray(), [
-                'user_id' => $row->user_id ? (new $userModel)->encode($row->user_id) : null,
-            ]);
-        });
-
-        $result->setCollection($items);
+        if (!$this->export) {
+            $result = $result->paginate(50);
+            $items = $result->getCollection()->map(function ($row) {
+                $userModel = GetCandy::getUserModel();
+    
+                return array_merge($row->toArray(), [
+                    'user_id' => $row->user_id ? (new $userModel)->encode($row->user_id) : null,
+                ]);
+            });
+            $result->setCollection($items);
+        }
 
         return [
             'period' => [
                 'from' => $this->from,
                 'to' => $this->to,
             ],
-            'data' => $result,
+            'data' => $this->export ? $result->get() : $result,
         ];
     }
 }

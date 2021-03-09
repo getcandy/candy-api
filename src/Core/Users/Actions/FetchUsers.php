@@ -30,6 +30,7 @@ class FetchUsers extends Action
         return [
             'per_page' => 'numeric|max:200',
             'paginate' => 'boolean',
+            'sort' => 'nullable|string',
             'keywords' => 'nullable|string',
             'ids' => 'array',
         ];
@@ -44,7 +45,9 @@ class FetchUsers extends Action
     {
         $userModel = GetCandy::getUserModel();
 
-        $query = (new $userModel)->with(['customer']);
+        $sorting = $this->sort ? explode(':', $this->sort) : null;
+
+        $query = (new $userModel)->select('users.*')->with(['customer'])->leftJoin('customers', 'customers.id', '=', 'users.customer_id');
         if ($this->keywords) {
             $keywords = explode(' ', $this->keywords);
             foreach ($keywords as $keyword) {
@@ -64,9 +67,15 @@ class FetchUsers extends Action
             $query = $query->whereIn('id', $realIds);
         }
 
+
+        if ($sorting) {
+            $query->orderBy($sorting[0], $sorting[1]);
+        }
+
         if (! $this->paginate) {
             return $query->get();
         }
+
 
         return $query->paginate($this->per_page ?? 50);
     }
