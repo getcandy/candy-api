@@ -5,5 +5,3 @@ properties:
     type: object
   sub_total:
     type: string
-  data:
-    type: array
