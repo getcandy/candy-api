@@ -1,0 +1,24 @@
+get:
+  summary: Get customer group report
+  tags:
+    - Reports
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/CustomerGroupReportResponse.yaml'
+  operationId: customer-group-report
+  parameters:
+    - schema:
+        type: string
+      in: query
+      name: from
+      description: The from date
+    - schema:
+        type: string
+      in: query
+      name: to
+      description: The to date
+  description: Get customer group report

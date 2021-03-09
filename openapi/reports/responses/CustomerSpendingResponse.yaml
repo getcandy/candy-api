@@ -7,4 +7,3 @@ properties:
     type: string
   data:
     type: array
-

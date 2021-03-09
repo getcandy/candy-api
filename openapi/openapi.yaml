@@ -220,6 +220,8 @@ paths:
     $ref: './products/paths/products.id.drafts.yaml'
   '/products/{productId}/publish':
     $ref: './products/paths/products.id.publish.yaml'
+  '/products/{productId}/variants':
+    $ref: './products/paths/products.id.variants.yaml'
   '/recycle-bin':
     $ref: './recycle-bin/paths/recycle-bin.yaml'
   '/recycle-bin/{itemId}':
@@ -228,6 +230,10 @@ paths:
     $ref: './reports/paths/reports.sales.yaml'
   '/reports/customers/spending':
     $ref: './reports/paths/reports.customers.spending.yaml'
+  '/reports/users/{userId}':
+    $ref: './reports/paths/reports.users.id.yaml'
+  '/reports/customer-groups':
+    $ref: './reports/paths/reports.customer-groups.yaml'
   '/reports/orders':
     $ref: './reports/paths/reports.orders.yaml'
   '/reports/orders/customers':
