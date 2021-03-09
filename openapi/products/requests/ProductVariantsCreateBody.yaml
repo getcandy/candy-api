@@ -1,0 +1,40 @@
+title: ProductVariantsCreateBody
+type: object
+properties:
+  options:
+    type: array
+    items:
+      type: object
+      properties:
+        position:
+          type: integer
+        label:
+          type: object
+          properties:
+            en:
+              type: string
+        options:
+          type: array
+          items:
+            type: object
+            properties:
+              position:
+                type: integer
+              label:
+                type: object
+                properties:
+                  en:
+                    type: string
+  variants:
+    type: array
+    items:
+      type: object
+      properties:
+        label:
+          type: string
+        price:
+          type: string
+        sku:
+          type: string
+        inventory:
+          type: integer
