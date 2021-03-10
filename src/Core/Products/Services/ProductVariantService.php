@@ -65,7 +65,7 @@ class ProductVariantService extends BaseService
 
             $variant = $product->variants()->create([
                 'price' => $newVariant['price'],
-                'sku' => $sku,
+                'sku' => trim($sku),
                 'stock' => $newVariant['inventory'],
                 'options' => $newVariant['options'],
             ]);

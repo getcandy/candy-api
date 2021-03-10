@@ -226,7 +226,7 @@ class ProductService extends BaseService
             'options' => [],
             'stock' => $data['stock'] ?? 0,
             'incoming' => $data['incoming'] ?? 0,
-            'sku' => $sku,
+            'sku' => trim($sku),
             'price' => $data['price'],
             'pricing' => $this->getPriceMapping($data['price']),
             'min_qty' => $data['min_qty'] ?? 1,
