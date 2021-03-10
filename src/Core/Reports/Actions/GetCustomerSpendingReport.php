@@ -3,9 +3,10 @@
 namespace GetCandy\Api\Core\Reports\Actions;
 
 use GetCandy;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
-use Illuminate\Support\Facades\DB;
 
 class GetCustomerSpendingReport extends AbstractAction
 {
@@ -51,7 +52,7 @@ class GetCustomerSpendingReport extends AbstractAction
         )->whereNotNull('billing_email')->whereBetween('placed_at', [
             $this->from,
             $this->to,
-        ])->where('sub_total', '>', 10000)
+        ])->where('sub_total', '>', 100)
         ->leftJoin('users', function ($join) {
             $join->on('users.id', '=', 'orders.user_id')->whereNotNull('orders.user_id');
         })
