@@ -3,23 +3,24 @@
 namespace GetCandy\Api\Core\Products\Drafting;
 
 use DB;
-use GetCandy\Api\Core\Drafting\Actions\DraftAssets;
-use GetCandy\Api\Core\Drafting\Actions\DraftCategories;
-use GetCandy\Api\Core\Drafting\Actions\DraftChannels;
-use GetCandy\Api\Core\Drafting\Actions\DraftCustomerGroups;
-use GetCandy\Api\Core\Drafting\Actions\DraftProductAssociations;
-use GetCandy\Api\Core\Drafting\Actions\DraftProductVariants;
-use GetCandy\Api\Core\Drafting\Actions\DraftRoutes;
-use GetCandy\Api\Core\Drafting\Actions\PublishAssets;
-use GetCandy\Api\Core\Drafting\Actions\PublishChannels;
-use GetCandy\Api\Core\Drafting\Actions\PublishCustomerGroups;
-use GetCandy\Api\Core\Drafting\Actions\PublishProductAssociations;
-use GetCandy\Api\Core\Drafting\Actions\PublishProductVariants;
-use GetCandy\Api\Core\Drafting\Actions\PublishRoutes;
-use GetCandy\Api\Core\Drafting\BaseDrafter;
-use Illuminate\Database\Eloquent\Model;
-use NeonDigital\Drafting\Interfaces\DrafterInterface;
 use Versioning;
+use Illuminate\Database\Eloquent\Model;
+use GetCandy\Api\Core\Drafting\BaseDrafter;
+use GetCandy\Api\Core\Drafting\Actions\DraftAssets;
+use GetCandy\Api\Core\Drafting\Actions\DraftRoutes;
+use GetCandy\Api\Core\Drafting\Actions\DraftChannels;
+use GetCandy\Api\Core\Drafting\Actions\PublishAssets;
+use GetCandy\Api\Core\Drafting\Actions\PublishRoutes;
+use NeonDigital\Drafting\Interfaces\DrafterInterface;
+use GetCandy\Api\Core\Drafting\Actions\DraftCategories;
+use GetCandy\Api\Core\Drafting\Actions\PublishChannels;
+use GetCandy\Api\Core\Search\Events\IndexableSavedEvent;
+use GetCandy\Api\Core\Drafting\Actions\DraftCustomerGroups;
+use GetCandy\Api\Core\Drafting\Actions\DraftProductVariants;
+use GetCandy\Api\Core\Drafting\Actions\PublishCustomerGroups;
+use GetCandy\Api\Core\Drafting\Actions\PublishProductVariants;
+use GetCandy\Api\Core\Drafting\Actions\DraftProductAssociations;
+use GetCandy\Api\Core\Drafting\Actions\PublishProductAssociations;
 
 class ProductDrafter extends BaseDrafter implements DrafterInterface
 {
@@ -131,6 +132,8 @@ class ProductDrafter extends BaseDrafter implements DrafterInterface
 
             // Delete the draft we had.
             $draft->forceDelete();
+
+            IndexableSavedEvent::dispatch($parent);
 
             return $parent;
         });
