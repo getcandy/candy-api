@@ -12,7 +12,9 @@ class AddBillingShippingCompanyNameToOrders extends Migration
     public function up()
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->dropColumn('company_name');
+            if (Schema::hasColumn('orders', 'company_name')) {
+                $table->dropColumn('company_name');
+            }
             if (! Schema::hasColumn('orders', 'billing_company_name')) {
                 $table->string('billing_company_name')->after('billing_email')->nullable()->index();
             }
