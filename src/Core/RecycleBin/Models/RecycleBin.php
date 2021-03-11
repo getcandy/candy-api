@@ -24,6 +24,6 @@ class RecycleBin extends BaseModel
      */
     public function recyclable()
     {
-        return $this->morphTo()->onlyTrashed();
+        return $this->morphTo()->onlyTrashed()->withoutGlobalScopes();
     }
 }
