@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Http\Request;
+
+
     /*
     * Imports
     */
@@ -224,15 +227,18 @@
      */
 
     $router->prefix('reports')->namespace('Reports')->group(function ($router) {
-        $router->get('/sales', 'ReportController@sales');
-        $router->get('/orders', 'ReportController@orders');
-        $router->get('/orders/customers', 'ReportController@orderCustomers');
+        $router->get('exports', '\GetCandy\Api\Core\Reports\Actions\GetReportExports');
+        $router->get('/sales', '\GetCandy\Api\Core\Reports\Actions\GetSalesReport');
+        $router->get('/orders', '\GetCandy\Api\Core\Reports\Actions\GetOrderTotalsReport');
+        $router->get('/orders/customers', '\GetCandy\Api\Core\Reports\Actions\GetNewVsReturningReport');
         $router->get('/customers/spending', '\GetCandy\Api\Core\Reports\Actions\GetCustomerSpendingReport');
         $router->get('/customer-groups', '\GetCandy\Api\Core\Reports\Actions\GetCustomerGroupReport');
         $router->get('/orders/averages', '\GetCandy\Api\Core\Reports\Actions\GetOrderAveragesReport');
         $router->get('/products/best-sellers', '\GetCandy\Api\Core\Reports\Actions\GetProductBestSellers');
         $router->get('/users/{userId}', '\GetCandy\Api\Core\Reports\Actions\GetUserReport');
         $router->get('/metrics/{subject}', 'ReportController@metrics');
+        $router->get('exports/download/{id}', '\GetCandy\Api\Core\Reports\Actions\DownloadReportExport')
+            ->withoutMiddleware(['auth:api', 'auth:sanctum'])->name('export.download');
     });
 
     /*

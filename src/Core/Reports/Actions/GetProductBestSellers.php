@@ -2,8 +2,11 @@
 
 namespace GetCandy\Api\Core\Reports\Actions;
 
-use GetCandy\Api\Core\Scaffold\AbstractAction;
 use Illuminate\Support\Facades\DB;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
+use GetCandy\Api\Core\Reports\Models\ReportExport;
+use GetCandy\Api\Core\Reports\Actions\ExportReport;
+use GetCandy\Api\Core\Reports\Resources\ReportExportResource;
 
 class GetProductBestSellers extends AbstractAction
 {
@@ -28,6 +31,33 @@ class GetProductBestSellers extends AbstractAction
             'from' => 'nullable|date',
             'to' => 'nullable|date|after:from',
             'term' => 'nullable|string',
+            'export' => 'nullable',
+            'paginate' => 'nullable',
+        ];
+    }
+
+    public function getCsvHeaders ()
+    {
+        return [
+            'product',
+            'sku',
+            'quantity',
+            'sub_total',
+        ];
+    }
+
+    public function getExportFilename()
+    {
+        return 'product-best-sellers_' . $this->from . '_' . $this->to;
+    }
+
+    public function getCsvRow($row)
+    {
+        return [
+            $row->description,
+            $row->sku,
+            $row->quantity,
+            $row->sub_total / 100
         ];
     }
 
@@ -38,6 +68,21 @@ class GetProductBestSellers extends AbstractAction
      */
     public function handle()
     {
+        if ($this->export) {
+            // Create the export
+            $export = ReportExport::create([
+                'user_id' => $this->user()->id,
+                'report' => 'product-best-sellers',
+                'started_at' => now(),
+            ]);
+            ExportReport::dispatch([
+                'report' => self::class,
+                'export' => $export,
+                'args' => $this->validated(),
+            ]);
+            return new ReportExportResource($export);
+        }
+
         $query = DB::table('order_lines')
             ->select(
                 DB::RAW('SUM(quantity) as quantity'),
@@ -62,6 +107,8 @@ class GetProductBestSellers extends AbstractAction
             $query->where('sku', 'LIKE', "%{$this->term}%");
         }
 
-        return $query->paginate(50);
+        $paginate = $this->get('paginate', true);
+
+        return $paginate ? $query->paginate(50) : $query->get();
     }
 }

@@ -7,6 +7,8 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
+use GetCandy\Api\Core\Reports\Models\ReportExport;
+use GetCandy\Api\Core\Reports\Resources\ReportExportResource;
 
 class GetCustomerSpendingReport extends AbstractAction
 {
@@ -30,7 +32,33 @@ class GetCustomerSpendingReport extends AbstractAction
         return [
             'from' => 'nullable|date',
             'to' => 'nullable|date',
-            'export' => 'nullable|boolean'
+            'export' => 'nullable|boolean',
+            'paginate' => 'nullable',
+        ];
+    }
+
+    public function getCsvHeaders ()
+    {
+        return [
+            'has_account',
+            'name',
+            'email',
+            'total_spent',
+        ];
+    }
+
+    public function getExportFilename()
+    {
+        return 'customer-spending_' . $this->from . '-' . $this->to;
+    }
+
+    public function getCsvRow($row)
+    {
+        return [
+            !!$row->user_id,
+            "{$row->firstname} {$row->lastname}",
+            $row->email,
+            $row->sub_total / 100
         ];
     }
 
@@ -41,6 +69,23 @@ class GetCustomerSpendingReport extends AbstractAction
      */
     public function handle()
     {
+        if ($this->export) {
+            // Create the export
+            $export = ReportExport::create([
+                'user_id' => $this->user()->id,
+                'report' => 'customer-spending',
+                'started_at' => now(),
+            ]);
+            ExportReport::dispatch([
+                'report' => self::class,
+                'export' => $export,
+                'args' => $this->validated(),
+            ]);
+            return new ReportExportResource($export);
+        }
+
+        $paginate = $this->get('paginate', true);
+
         $result = Order::whereNotNull('placed_at')
         ->select(
             DB::RAW('SUM(sub_total) as sub_total'),
@@ -59,7 +104,7 @@ class GetCustomerSpendingReport extends AbstractAction
         ->groupBy('billing_email')->orderBy('sub_total', 'desc')
         ->orderBy(DB::RAW("DATE_FORMAT(placed_at, '%Y-%m')"), 'asc');
 
-        if (!$this->export) {
+        if ($paginate) {
             $result = $result->paginate(50);
             $items = $result->getCollection()->map(function ($row) {
                 $userModel = GetCandy::getUserModel();
@@ -76,7 +121,7 @@ class GetCustomerSpendingReport extends AbstractAction
                 'from' => $this->from,
                 'to' => $this->to,
             ],
-            'data' => $this->export ? $result->get() : $result,
+            'data' => $paginate ? $result : $result->get(),
         ];
     }
 }

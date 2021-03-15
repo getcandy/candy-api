@@ -3,10 +3,13 @@
 namespace GetCandy\Api\Core\Reports\Actions;
 
 use Carbon\CarbonPeriod;
-use GetCandy\Api\Core\Customers\Actions\FetchCustomerGroups;
+use Illuminate\Support\Facades\DB;
 use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
-use Illuminate\Support\Facades\DB;
+use GetCandy\Api\Core\Reports\Models\ReportExport;
+use GetCandy\Api\Core\Reports\Actions\ExportReport;
+use GetCandy\Api\Core\Customers\Actions\FetchCustomerGroups;
+use GetCandy\Api\Core\Reports\Resources\ReportExportResource;
 
 class GetCustomerGroupReport extends AbstractAction
 {
@@ -30,7 +33,34 @@ class GetCustomerGroupReport extends AbstractAction
         return [
             'from' => 'nullable|date',
             'to' => 'nullable|date',
+            'paginate' => 'nullable'
         ];
+    }
+
+    public function getCsvHeaders()
+    {
+        $period = CarbonPeriod::create($this->from, '1 month', $this->to);
+        $headers = ['Customer Group'];
+        foreach ($period as $date) {
+            $headers[] = $date->format('F Y');
+        }
+        return $headers;
+    }
+
+    public function getExportFilename()
+    {
+        return 'customer-group-report' . $this->from . '-' . $this->to;
+    }
+
+    public function getCsvRow($row)
+    {
+        $data = [$row['label']];
+
+        foreach($row['data'] as $item) {
+            $data[] = $item->sub_total / 100;
+        }
+
+        return $data;
     }
 
     /**
@@ -40,6 +70,21 @@ class GetCustomerGroupReport extends AbstractAction
      */
     public function handle()
     {
+        if ($this->export) {
+            // Create the export
+            $export = ReportExport::create([
+                'user_id' => $this->user()->id,
+                'report' => 'customer-group',
+                'started_at' => now(),
+            ]);
+            ExportReport::dispatch([
+                'report' => self::class,
+                'export' => $export,
+                'args' => $this->validated(),
+            ]);
+            return new ReportExportResource($export);
+        }
+
         $query = Order::whereNotNull('placed_at');
 
         // $displayFormat = $formats['display'];
