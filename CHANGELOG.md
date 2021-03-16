@@ -8,6 +8,10 @@ Update the composer package
 $ composer update @getcandy/candy-api
 ```
 
+```bash
+$ php artisan migrate
+```
+
 ### High Impact Changes
 
 #### Maintenance Migrations
