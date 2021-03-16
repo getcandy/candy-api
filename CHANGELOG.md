@@ -40,11 +40,17 @@ You can do this by running `php artisan candy:products:reindex` and `php artisan
 - Allow certain fields to be nullable on a customer address (`company_name`, `address_two`, `address_three`)
 - Fixed some issues on route creation
 - Fixed issue where shipping method relationships were not having their timestamps updated
+- Fixes to some migrations
+- Fixed an issue where the recycle bin item wasn't returned on the relationship
+- Fixed and issue where the indexable event wasn't being triggered when publishing a resource
+- Fixes to drafting and publishing of resources
+- Fixed an issue where `path` wasn't updating when updating a route
 
 ### ⭐ Improvements
 
 - Slight optimisation for Elasticsearch and the fields it returns
 - Drafting and Publishing of a draft will now run in a transaction, you can also extend the drafting functionality in your plugins.
+- SKU uses `trim` when being saved
 
 ### 🏗️ Additions
 
@@ -52,6 +58,10 @@ You can do this by running `php artisan candy:products:reindex` and `php artisan
 - Added Stripe Payment Intents provider
 - Added a `RebuildTree` action and command for categories, so if your category tree is messed up you can run `candy:categories:rebuild`
 - Added `user/addresses` endpoint to get the current users saved addresses
+- Added initial report exporting logic, this will now run and exporter in the background and email you when ready to download.
+- Add some additional reports
+    - Average spending across customer groups
+    - Total spending across customer groups
 
 ---
 
