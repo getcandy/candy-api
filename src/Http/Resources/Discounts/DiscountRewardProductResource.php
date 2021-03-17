@@ -3,23 +3,22 @@
 namespace GetCandy\Api\Http\Resources\Discounts;
 
 use GetCandy\Api\Http\Resources\AbstractResource;
-use GetCandy\Api\Http\Resources\Products\ProductCollection;
+use GetCandy\Api\Http\Resources\Products\ProductResource;
 
-class DiscountRewardResource extends AbstractResource
+class DiscountRewardProductResource extends AbstractResource
 {
     public function payload()
     {
         return [
             'id' => $this->encoded_id,
-            'type' => $this->type,
-            'value' => $this->value,
+            'quantity' => $this->quantity,
         ];
     }
 
     public function includes()
     {
         return [
-            'products' => new DiscountRewardProductCollection($this->whenLoaded('products')),
+            'product' => $this->include('product', ProductResource::class),
         ];
     }
 }
