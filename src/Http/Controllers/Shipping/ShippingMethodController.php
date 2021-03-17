@@ -15,19 +15,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class ShippingMethodController extends BaseController
 {
     /**
-     * Returns a listing of shipping methods.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \GetCandy\Api\Http\Resources\Shipping\ShippingMethodCollection
-     */
-    public function index(Request $request)
-    {
-        $methods = GetCandy::shippingMethods()->getPaginatedData($request->per_page, $request->current_page);
-
-        return new ShippingMethodCollection($methods);
-    }
-
-    /**
      * Handles the request to show a shipping method based on it's hashed ID.
      *
      * @param  string  $id
