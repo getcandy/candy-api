@@ -2,12 +2,11 @@
 
 namespace GetCandy\Api\Core\Reports\Actions;
 
-use Illuminate\Support\Carbon;
-use GetCandy\Api\Core\Scaffold\AbstractAction;
-use GetCandy\Api\Core\Reports\Models\ReportExport;
-use GetCandy\Api\Core\Reports\Actions\ExportReport;
-use GetCandy\Api\Core\Reports\Resources\ReportExportResource;
 use GetCandy\Api\Core\Reports\Contracts\ReportManagerContract;
+use GetCandy\Api\Core\Reports\Models\ReportExport;
+use GetCandy\Api\Core\Reports\Resources\ReportExportResource;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
+use Illuminate\Support\Carbon;
 
 class GetNewVsReturningReport extends AbstractAction
 {
@@ -32,7 +31,7 @@ class GetNewVsReturningReport extends AbstractAction
             'from' => 'nullable|date',
             'to' => 'nullable|date',
             'paginate' => 'nullable',
-            'mode' => 'nullable'
+            'mode' => 'nullable',
         ];
     }
 
@@ -48,7 +47,7 @@ class GetNewVsReturningReport extends AbstractAction
 
     public function getExportFilename()
     {
-        return 'new_vs_returning_customers_' . $this->from . '-' . $this->to;
+        return 'new_vs_returning_customers_'.$this->from.'-'.$this->to;
     }
 
     public function getCsvRow($row)
@@ -80,6 +79,7 @@ class GetNewVsReturningReport extends AbstractAction
                 'export' => $export,
                 'args' => $this->validated(),
             ]);
+
             return new ReportExportResource($export);
         }
 

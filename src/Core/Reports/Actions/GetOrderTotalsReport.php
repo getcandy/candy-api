@@ -2,12 +2,11 @@
 
 namespace GetCandy\Api\Core\Reports\Actions;
 
-use Illuminate\Support\Carbon;
-use GetCandy\Api\Core\Scaffold\AbstractAction;
-use GetCandy\Api\Core\Reports\Models\ReportExport;
-use GetCandy\Api\Core\Reports\Actions\ExportReport;
-use GetCandy\Api\Core\Reports\Resources\ReportExportResource;
 use GetCandy\Api\Core\Reports\Contracts\ReportManagerContract;
+use GetCandy\Api\Core\Reports\Models\ReportExport;
+use GetCandy\Api\Core\Reports\Resources\ReportExportResource;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
+use Illuminate\Support\Carbon;
 
 class GetOrderTotalsReport extends AbstractAction
 {
@@ -32,7 +31,7 @@ class GetOrderTotalsReport extends AbstractAction
             'from' => 'nullable|date',
             'to' => 'nullable|date',
             'paginate' => 'nullable',
-            'mode' => 'nullable'
+            'mode' => 'nullable',
         ];
     }
 
@@ -41,13 +40,13 @@ class GetOrderTotalsReport extends AbstractAction
         return [
             'Month',
             'Current Period',
-            'Previous Period'
+            'Previous Period',
         ];
     }
 
     public function getExportFilename()
     {
-        return 'order-totals_' . $this->from . '-' . $this->to;
+        return 'order-totals_'.$this->from.'-'.$this->to;
     }
 
     public function getExportData($args)
@@ -59,8 +58,7 @@ class GetOrderTotalsReport extends AbstractAction
 
         $data = [];
 
-        foreach  ($currentPeriod as $index => $totals) {
-
+        foreach ($currentPeriod as $index => $totals) {
             $previous = collect($previousPeriod)->first(function ($t) use ($totals) {
                 return $t->month === $totals->month && $t->year == $totals->year - 1;
             });
@@ -68,7 +66,7 @@ class GetOrderTotalsReport extends AbstractAction
             $data[] = [
                 'month' => "{$totals->month} {$totals->year}",
                 'sub_total' => $totals->sub_total / 100,
-                'previous_sub_total' => ($previous->sub_total ?? 0) / 100
+                'previous_sub_total' => ($previous->sub_total ?? 0) / 100,
             ];
         }
 
@@ -103,6 +101,7 @@ class GetOrderTotalsReport extends AbstractAction
                 'export' => $export,
                 'args' => $this->validated(),
             ]);
+
             return new ReportExportResource($export);
         }
 

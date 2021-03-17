@@ -2,11 +2,11 @@
 
 namespace GetCandy\Api\Core\Reports\Actions;
 
-use Illuminate\Support\Facades\URL;
+use GetCandy\Api\Core\Reports\Mail\ReportExported;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
-use GetCandy\Api\Core\Scaffold\AbstractAction;
-use GetCandy\Api\Core\Reports\Mail\ReportExported;
+use Illuminate\Support\Facades\URL;
 
 class ExportReport extends AbstractAction
 {
@@ -37,8 +37,8 @@ class ExportReport extends AbstractAction
         $result = $result['data'] ?? $result;
 
         // Create our export file...
-        $filename = $report->getExportFilename() . '.csv';
-        $location = 'reporting/exports/' . now()->format('Y/m/d');
+        $filename = $report->getExportFilename().'.csv';
+        $location = 'reporting/exports/'.now()->format('Y/m/d');
 
         Storage::put("{$location}/{$filename}", null);
 
@@ -46,7 +46,7 @@ class ExportReport extends AbstractAction
 
         fputcsv($fp, $report->getCsvHeaders());
 
-        foreach ( $result as $row ) {
+        foreach ($result as $row) {
             $val = $report->getCsvRow($row);
             fputcsv($fp, $val);
         }

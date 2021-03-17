@@ -3,12 +3,11 @@
 namespace GetCandy\Api\Core\Reports\Actions;
 
 use Carbon\CarbonPeriod;
-use Illuminate\Support\Facades\DB;
-use GetCandy\Api\Core\Scaffold\AbstractAction;
-use GetCandy\Api\Core\Reports\Models\ReportExport;
-use GetCandy\Api\Core\Reports\Actions\ExportReport;
 use GetCandy\Api\Core\Customers\Actions\FetchCustomerGroups;
+use GetCandy\Api\Core\Reports\Models\ReportExport;
 use GetCandy\Api\Core\Reports\Resources\ReportExportResource;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
+use Illuminate\Support\Facades\DB;
 
 class GetOrderAveragesReport extends AbstractAction
 {
@@ -32,7 +31,7 @@ class GetOrderAveragesReport extends AbstractAction
         return [
             'from' => 'nullable|date',
             'to' => 'nullable|date|after:from',
-            'export' => 'nullable|boolean'
+            'export' => 'nullable|boolean',
         ];
     }
 
@@ -43,19 +42,20 @@ class GetOrderAveragesReport extends AbstractAction
         foreach ($period as $date) {
             $headers[] = $date->format('F Y');
         }
+
         return $headers;
     }
 
     public function getExportFilename()
     {
-        return 'order-averages_' . $this->from . '-' . $this->to;
+        return 'order-averages_'.$this->from.'-'.$this->to;
     }
 
     public function getCsvRow($row)
     {
         $data = [$row['label']];
 
-        foreach($row['data'] as $item) {
+        foreach ($row['data'] as $item) {
             $data[] = $item['sub_total'] / 100;
         }
 
@@ -81,6 +81,7 @@ class GetOrderAveragesReport extends AbstractAction
                 'export' => $export,
                 'args' => $this->validated(),
             ]);
+
             return new ReportExportResource($export);
         }
 

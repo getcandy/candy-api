@@ -3,12 +3,11 @@
 namespace GetCandy\Api\Core\Reports\Actions;
 
 use GetCandy;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
 use GetCandy\Api\Core\Orders\Models\Order;
-use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Reports\Models\ReportExport;
 use GetCandy\Api\Core\Reports\Resources\ReportExportResource;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
+use Illuminate\Support\Facades\DB;
 
 class GetCustomerSpendingReport extends AbstractAction
 {
@@ -37,7 +36,7 @@ class GetCustomerSpendingReport extends AbstractAction
         ];
     }
 
-    public function getCsvHeaders ()
+    public function getCsvHeaders()
     {
         return [
             'has_account',
@@ -49,16 +48,16 @@ class GetCustomerSpendingReport extends AbstractAction
 
     public function getExportFilename()
     {
-        return 'customer-spending_' . $this->from . '-' . $this->to;
+        return 'customer-spending_'.$this->from.'-'.$this->to;
     }
 
     public function getCsvRow($row)
     {
         return [
-            !!$row->user_id,
+            (bool) $row->user_id,
             "{$row->firstname} {$row->lastname}",
             $row->email,
-            $row->sub_total / 100
+            $row->sub_total / 100,
         ];
     }
 
@@ -81,6 +80,7 @@ class GetCustomerSpendingReport extends AbstractAction
                 'export' => $export,
                 'args' => $this->validated(),
             ]);
+
             return new ReportExportResource($export);
         }
 
@@ -108,7 +108,7 @@ class GetCustomerSpendingReport extends AbstractAction
             $result = $result->paginate(50);
             $items = $result->getCollection()->map(function ($row) {
                 $userModel = GetCandy::getUserModel();
-    
+
                 return array_merge($row->toArray(), [
                     'user_id' => $row->user_id ? (new $userModel)->encode($row->user_id) : null,
                 ]);

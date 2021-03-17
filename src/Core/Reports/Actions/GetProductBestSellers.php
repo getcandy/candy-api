@@ -2,11 +2,10 @@
 
 namespace GetCandy\Api\Core\Reports\Actions;
 
-use Illuminate\Support\Facades\DB;
-use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Reports\Models\ReportExport;
-use GetCandy\Api\Core\Reports\Actions\ExportReport;
 use GetCandy\Api\Core\Reports\Resources\ReportExportResource;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
+use Illuminate\Support\Facades\DB;
 
 class GetProductBestSellers extends AbstractAction
 {
@@ -36,7 +35,7 @@ class GetProductBestSellers extends AbstractAction
         ];
     }
 
-    public function getCsvHeaders ()
+    public function getCsvHeaders()
     {
         return [
             'product',
@@ -48,7 +47,7 @@ class GetProductBestSellers extends AbstractAction
 
     public function getExportFilename()
     {
-        return 'product-best-sellers_' . $this->from . '_' . $this->to;
+        return 'product-best-sellers_'.$this->from.'_'.$this->to;
     }
 
     public function getCsvRow($row)
@@ -57,7 +56,7 @@ class GetProductBestSellers extends AbstractAction
             $row->description,
             $row->sku,
             $row->quantity,
-            $row->sub_total / 100
+            $row->sub_total / 100,
         ];
     }
 
@@ -80,6 +79,7 @@ class GetProductBestSellers extends AbstractAction
                 'export' => $export,
                 'args' => $this->validated(),
             ]);
+
             return new ReportExportResource($export);
         }
 

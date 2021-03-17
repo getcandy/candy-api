@@ -67,7 +67,6 @@ class FetchUsers extends Action
             $query = $query->whereIn('id', $realIds);
         }
 
-
         if ($sorting) {
             $query->orderBy($sorting[0], $sorting[1]);
         }
@@ -75,7 +74,6 @@ class FetchUsers extends Action
         if (! $this->paginate) {
             return $query->get();
         }
-
 
         return $query->paginate($this->per_page ?? 50);
     }

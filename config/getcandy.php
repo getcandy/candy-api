@@ -61,8 +61,8 @@ return [
         'invoicing' => [
             'pdf' => [
                 'pipelines' => [
-                ]
-            ]
+                ],
+            ],
         ],
         'statuses' => [
 
