@@ -43,7 +43,7 @@ class OrderNotification implements ShouldQueue
         $emails = [$contactEmail];
 
         if ($this->order->shipping_email != $this->order->billing_email) {
-            $emails[$this->order->shipping_email];
+            $emails[] = $this->order->shipping_email;
         }
 
         $mailer = new $mailer($this->order);
