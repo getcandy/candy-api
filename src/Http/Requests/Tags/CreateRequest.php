@@ -25,7 +25,7 @@ class CreateRequest extends FormRequest
     public function rules(Tag $tag)
     {
         return [
-            'name' => 'array|required|valid_locales',
+            'name' => 'array|required|valid_language',
         ];
     }
 }

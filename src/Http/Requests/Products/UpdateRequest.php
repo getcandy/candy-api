@@ -39,7 +39,7 @@ class UpdateRequest extends FormRequest
 
         foreach ($attributes as $attribute) {
             if ($attribute->required) {
-                $rulestring = 'attribute_data.'.$attribute->handle.'.'.$defaultChannel->handle.'.'.$defaultLanguage->lang;
+                $rulestring = 'attribute_data.'.$attribute->handle.'.'.$defaultChannel->handle.'.'.$defaultLanguage->code;
                 // $ruleset[$rulestring] = 'required';
             }
         }

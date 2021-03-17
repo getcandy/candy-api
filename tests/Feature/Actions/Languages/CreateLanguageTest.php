@@ -14,8 +14,7 @@ class CreateLanguageTest extends FeatureCase
         $user = $this->admin();
 
         $response = $this->actingAs($user)->json('POST', 'languages', [
-            'lang' => 'en',
-            'iso' => 'gba',
+            'code' => 'gbr',
             'name' => 'English',
             'default' => 1,
             'enabled' => 1,
@@ -24,5 +23,55 @@ class CreateLanguageTest extends FeatureCase
         $response->assertStatus(201);
 
         $this->assertResponseValid($response, '/languages', 'post');
+    }
+
+    public function test_validation_works_on_code_field()
+    {
+        $user = $this->admin();
+
+        $codes = [
+            '{}tg12}',
+            '={}2ed]',
+            '1234}',
+            '1{@3{5}'
+        ];
+
+        foreach ($codes as $code) {
+            $response = $this->actingAs($user)->json('POST', 'languages', [
+                'code' => $code,
+                'name' => 'English',
+                'default' => 1,
+                'enabled' => 1,
+            ]);
+
+            $response->assertStatus(422);
+
+            $this->assertResponseValid($response, '/languages', 'post');
+        }
+    }
+
+    public function test_validation_allows_code_pattern()
+    {
+        $user = $this->admin();
+
+        $codes = [
+            'DE-DE-12',
+            '=2dw3e-',
+            'DE GB',
+            '*DE =RF'
+        ];
+
+        foreach ($codes as $code) {
+            $response = $this->actingAs($user)->json('POST', 'languages', [
+                'code' => $code,
+                'name' => 'English',
+                'default' => 1,
+                'enabled' => 1,
+            ]);
+
+            $response->assertStatus(201);
+
+            $this->assertResponseValid($response, '/languages', 'post');
+        }
     }
 }

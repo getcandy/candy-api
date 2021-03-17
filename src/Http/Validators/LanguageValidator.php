@@ -4,7 +4,7 @@ namespace GetCandy\Api\Http\Validators;
 
 use GetCandy\Api\Core\Languages\Actions\FetchLanguages;
 
-class LocaleValidator
+class LanguageValidator
 {
     /**
      * Validates the name for an attribute doesn't exist in the same group.
@@ -20,15 +20,14 @@ class LocaleValidator
         if (! is_array($value)) {
             return false;
         }
-        $locales = array_keys($value);
+        $codes = array_keys($value);
 
         $languages = FetchLanguages::run([
             'paginate' => false,
             'search' => [
-                'lang' => $locales,
+                'code' => $codes,
             ],
         ]);
-
-        return $languages->count() === count($locales);
+        return $languages->count() === count($codes);
     }
 }

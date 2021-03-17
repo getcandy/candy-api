@@ -19,7 +19,7 @@ class Language extends BaseModel
      * @var array
      */
     protected $fillable = [
-        'lang', 'iso', 'name', 'default', 'enabled',
+        'code', 'name', 'default', 'enabled',
     ];
 
     public function scopeDefault($query)
@@ -48,6 +48,9 @@ class Language extends BaseModel
 
     public function scopeCode($query, $code)
     {
-        return $query->whereIso($code);
+        if (! is_array($code)) {
+            $code = [$code];
+        }
+        return $query->whereIn('code', $code);
     }
 }

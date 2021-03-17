@@ -59,7 +59,7 @@ class Indexer
         $aliases = [];
 
         foreach ($languages as $language) {
-            $alias = $index.'_'.$language->lang;
+            $alias = $index.'_'.$language->code;
             $newIndex = $alias."_{$suffix}";
             $this->createIndex($alias."_{$suffix}", $type);
             $aliases[$alias] = $alias."_{$suffix}";
@@ -195,7 +195,7 @@ class Indexer
         $indexables = $type->getIndexDocument($model);
 
         foreach ($langs as $lang) {
-            $alias = $index.'_'.$lang->lang;
+            $alias = $index.'_'.$lang->code;
 
             $indices = $status->getIndicesWithAlias($alias);
 
@@ -235,7 +235,7 @@ class Indexer
             $indexables = $type->getIndexDocument($model);
 
             foreach ($langs as $lang) {
-                $alias = $index.'_'.$lang->lang;
+                $alias = $index.'_'.$lang->code;
 
                 $indices = $status->getIndicesWithAlias($alias);
 

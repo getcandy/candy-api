@@ -20,8 +20,7 @@ $factory->define(Language::class, function (Faker $faker) {
 
     return [
         'name' => $name,
-        'lang' => ucfirst($name),
-        'iso' => Str::slug($name),
+        'code' => Str::slug($name),
         'default' => $faker->boolean,
         'enabled' => $faker->boolean,
     ];

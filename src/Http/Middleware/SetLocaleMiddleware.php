@@ -2,10 +2,11 @@
 
 namespace GetCandy\Api\Http\Middleware;
 
+use Locale;
 use Closure;
+use SupportPal\AcceptLanguageParser\Parser;
 use GetCandy\Api\Core\Languages\Actions\FetchDefaultLanguage;
 use GetCandy\Api\Core\Languages\Actions\FetchEnabledLanguageByCode;
-use Locale;
 
 class SetLocaleMiddleware
 {
@@ -18,29 +19,25 @@ class SetLocaleMiddleware
      */
     public function handle($request, Closure $next)
     {
-        $locale = $request->header('accept-language');
+        $defaultLanguage = FetchDefaultLanguage::run();
+        $parser = new Parser($request->header('accept-language'));
 
-        $defaultLanguage = FetchDefaultLanguage::run()->lang;
+        $locale = collect($parser->parse())->first();
 
-        if (! $locale) {
-            $locale = $defaultLanguage;
-        } else {
-            if (extension_loaded('intl')) {
-                $languages = explode(',', Locale::getPrimaryLanguage($locale));
-            } else {
-                $languages = explode(',', $locale);
-            }
-            $requestedLocale = FetchEnabledLanguageByCode::run([
-                'code' => $languages[0] ?? $languages,
-            ]);
-            if (! $requestedLocale) {
-                $locale = $defaultLanguage;
-            } else {
-                $locale = $requestedLocale->lang;
-            }
+        $code = $defaultLanguage->code;
+        if ($locale) {
+            $code = $locale->code();
         }
 
-        app()->setLocale($locale);
+        $language = FetchEnabledLanguageByCode::run([
+            'code' => $code,
+        ]);
+
+        if (!$language) {
+            $code = $defaultLanguage->code;
+        }
+
+        app()->setLocale($code);
 
         return $next($request);
     }

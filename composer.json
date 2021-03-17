@@ -19,6 +19,7 @@
         "doctrine/dbal": "2.9.2",
         "ruflin/elastica": "^7.0",
         "spatie/laravel-permission": "^3.17",
+        "supportpal/accept-language-parser": "^0.1",
         "vinkla/hashids": "^9.0",
         "paypal/rest-api-sdk-php": "*",
         "laravel/helpers": "1.3.0",

@@ -15,15 +15,13 @@ class LanguageTableSeeder extends Seeder
     public function run()
     {
         Language::forceCreate([
-            'lang' => 'en',
-            'iso' => 'gb',
+            'code' => 'en',
             'name' => 'English',
             'default' => true,
         ]);
 
         Language::forceCreate([
-            'lang' => 'fr',
-            'iso' => 'fr',
+            'code' => 'fr',
             'name' => 'Français',
             'default' => false,
         ]);
