@@ -2,11 +2,9 @@
 
 namespace GetCandy\Api\Core\Reports\Actions;
 
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Storage;
-use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Reports\Models\ReportExport;
 use GetCandy\Api\Core\Reports\Resources\ReportExportCollection;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
 
 class GetReportExports extends AbstractAction
 {

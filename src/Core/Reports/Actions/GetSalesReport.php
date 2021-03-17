@@ -2,12 +2,11 @@
 
 namespace GetCandy\Api\Core\Reports\Actions;
 
-use Illuminate\Support\Carbon;
-use GetCandy\Api\Core\Scaffold\AbstractAction;
-use GetCandy\Api\Core\Reports\Models\ReportExport;
-use GetCandy\Api\Core\Reports\Actions\ExportReport;
-use GetCandy\Api\Core\Reports\Resources\ReportExportResource;
 use GetCandy\Api\Core\Reports\Contracts\ReportManagerContract;
+use GetCandy\Api\Core\Reports\Models\ReportExport;
+use GetCandy\Api\Core\Reports\Resources\ReportExportResource;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
+use Illuminate\Support\Carbon;
 
 class GetSalesReport extends AbstractAction
 {
@@ -32,7 +31,7 @@ class GetSalesReport extends AbstractAction
             'from' => 'nullable|date',
             'to' => 'nullable|date',
             'paginate' => 'nullable',
-            'mode' => 'nullable'
+            'mode' => 'nullable',
         ];
     }
 
@@ -41,13 +40,13 @@ class GetSalesReport extends AbstractAction
         return [
             'Month',
             'Orders',
-            'Revenue'
+            'Revenue',
         ];
     }
 
     public function getExportFilename()
     {
-        return 'order-sales_' . $this->from . '-' . $this->to;
+        return 'order-sales_'.$this->from.'-'.$this->to;
     }
 
     public function getExportData($args)
@@ -59,13 +58,14 @@ class GetSalesReport extends AbstractAction
 
         $data = [];
 
-        foreach  ($orders as $index => $orderValue) {
+        foreach ($orders as $index => $orderValue) {
             $data[] = [
                 'month' => $result['labels'][$index],
                 'orders' => $orderValue,
-                'revenue' => $revenue[$index] / 100
+                'revenue' => $revenue[$index] / 100,
             ];
         }
+
         return $data;
     }
 
@@ -97,6 +97,7 @@ class GetSalesReport extends AbstractAction
                 'export' => $export,
                 'args' => $this->validated(),
             ]);
+
             return new ReportExportResource($export);
         }
 

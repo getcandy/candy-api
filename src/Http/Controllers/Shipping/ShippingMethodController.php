@@ -6,7 +6,6 @@ use GetCandy;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Shipping\CreateRequest;
 use GetCandy\Api\Http\Requests\Shipping\UpdateRequest;
-use GetCandy\Api\Http\Resources\Shipping\ShippingMethodCollection;
 use GetCandy\Api\Http\Resources\Shipping\ShippingMethodResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;

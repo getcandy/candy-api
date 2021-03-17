@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Core\Shipping\Actions;
 
-use GetCandy\Api\Core\Routes\Models\Route;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Shipping\Models\ShippingMethod;
 use GetCandy\Api\Http\Resources\Shipping\ShippingMethodCollection;
