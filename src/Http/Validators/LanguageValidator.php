@@ -28,6 +28,7 @@ class LanguageValidator
                 'code' => $codes,
             ],
         ]);
+
         return $languages->count() === count($codes);
     }
 }

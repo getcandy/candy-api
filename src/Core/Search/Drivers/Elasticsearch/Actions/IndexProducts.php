@@ -92,7 +92,7 @@ class IndexProducts extends Action
                 return new Document($document->getId(), $document->getData());
             });
 
-            if (!$docs->count()) {
+            if (! $docs->count()) {
                 continue;
             }
 

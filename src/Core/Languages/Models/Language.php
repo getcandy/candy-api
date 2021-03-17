@@ -51,6 +51,7 @@ class Language extends BaseModel
         if (! is_array($code)) {
             $code = [$code];
         }
+
         return $query->whereIn('code', $code);
     }
 }
