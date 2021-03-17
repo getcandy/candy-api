@@ -55,7 +55,8 @@ You can do this by running `php artisan candy:products:reindex` and `php artisan
 - Slight optimisation for Elasticsearch and the fields it returns
 - Drafting and Publishing of a draft will now run in a transaction, you can also extend the drafting functionality in your plugins.
 - SKU uses `trim` when being saved
-
+- Languages have been refactored and simplified so now we only rely on `code` and have removed `lang` and `iso` columns.
+- When detecting the language to use for API responses, we now parse the `accept-language` header properly.
 ### 🏗️ Additions
 
 - Added endpoint to get a payment provider via it's given ID
