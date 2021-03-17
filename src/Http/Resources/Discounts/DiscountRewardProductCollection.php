@@ -3,7 +3,6 @@
 namespace GetCandy\Api\Http\Resources\Discounts;
 
 use GetCandy\Api\Http\Resources\AbstractCollection;
-use GetCandy\Api\Http\Resources\Discounts\DiscountRewardProductResource;
 
 class DiscountRewardProductCollection extends AbstractCollection
 {

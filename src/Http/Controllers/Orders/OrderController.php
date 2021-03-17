@@ -25,7 +25,6 @@ use GetCandy\Api\Http\Requests\Orders\ProcessRequest;
 use GetCandy\Api\Http\Requests\Orders\Shipping\AddShippingRequest;
 use GetCandy\Api\Http\Requests\Orders\StoreAddressRequest;
 use GetCandy\Api\Http\Requests\Orders\UpdateRequest;
-use GetCandy\Api\Http\Resources\Files\PdfResource;
 use GetCandy\Api\Http\Resources\Orders\OrderCollection;
 use GetCandy\Api\Http\Resources\Orders\OrderExportResource;
 use GetCandy\Api\Http\Resources\Orders\OrderResource;

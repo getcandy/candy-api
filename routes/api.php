@@ -1,8 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-
-
     /*
     * Imports
     */

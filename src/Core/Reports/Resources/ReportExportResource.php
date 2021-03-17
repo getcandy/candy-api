@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Reports\Resources;
 
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class ReportExportResource extends JsonResource
 {
@@ -21,9 +21,9 @@ class ReportExportResource extends JsonResource
             try {
                 $content = base64_encode(Storage::get("{$this->path}/{$this->filename}"));
             } catch (\Exception $e) {
-
             }
         }
+
         return [
             'id' => $this->encodedId(),
             'filename' => $this->filename,

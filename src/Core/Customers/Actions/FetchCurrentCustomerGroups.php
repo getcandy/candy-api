@@ -4,9 +4,6 @@ namespace GetCandy\Api\Core\Customers\Actions;
 
 use GetCandy;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
-use GetCandy\Api\Core\Customers\Models\CustomerGroup;
-use GetCandy\Api\Core\Customers\Actions\FetchDefaultCustomerGroup;
-use GetCandy\Api\Core\Customers\Resources\CustomerGroupCollection;
 
 class FetchCurrentCustomerGroups extends AbstractAction
 {
@@ -45,7 +42,7 @@ class FetchCurrentCustomerGroups extends AbstractAction
         }
 
         $hubAccess = $user->hasAnyRole(['admin']);
-        
+
         if (($hubAccess && GetCandy::isHubRequest()) ||
             (! GetCandy::isHubRequest() && ! $hubAccess)
         ) {

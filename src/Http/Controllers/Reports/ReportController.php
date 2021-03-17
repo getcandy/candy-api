@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Http\Controllers\Reports;
 
-use Carbon\Carbon;
 use GetCandy\Api\Core\Reports\Contracts\ReportManagerContract;
 use GetCandy\Api\Http\Controllers\BaseController;
 use Illuminate\Http\Request;
