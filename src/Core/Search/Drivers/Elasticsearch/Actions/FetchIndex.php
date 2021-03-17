@@ -43,6 +43,7 @@ class FetchIndex extends Action
         $indexes = [];
         $prefix = config('getcandy.search.index_prefix', 'getcandy');
         foreach ($this->languages as $language) {
+            $language = strtolower($language);
             $index = $client->getIndex(
                 "{$prefix}_{$this->type}_{$language}_{$this->uuid}"
             );
