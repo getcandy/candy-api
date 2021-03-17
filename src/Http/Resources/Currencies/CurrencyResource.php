@@ -16,6 +16,7 @@ class CurrencyResource extends AbstractResource
             'format' => $this->format,
             'decimal_point' => $this->decimal_point,
             'thousand_point' => $this->thousand_point,
+            'exchange_rate' => $this->exchange_rate,
             'default' => (bool) $this->default,
         ];
     }
