@@ -31,7 +31,7 @@ class CreateLanguage extends AbstractAction
                 'string',
                 'unique:languages,code',
                 // See https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Language
-                'regex:/^[a-zA-Z0-9 *,-.;=]*$/'
+                'regex:/^[a-zA-Z0-9 *,-.;=]*$/',
             ],
             'name' => 'required|string',
             'default' => 'boolean',

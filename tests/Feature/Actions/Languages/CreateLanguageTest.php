@@ -33,7 +33,7 @@ class CreateLanguageTest extends FeatureCase
             '{}tg12}',
             '={}2ed]',
             '1234}',
-            '1{@3{5}'
+            '1{@3{5}',
         ];
 
         foreach ($codes as $code) {
@@ -58,7 +58,7 @@ class CreateLanguageTest extends FeatureCase
             'DE-DE-12',
             '=2dw3e-',
             'DE GB',
-            '*DE =RF'
+            '*DE =RF',
         ];
 
         foreach ($codes as $code) {
