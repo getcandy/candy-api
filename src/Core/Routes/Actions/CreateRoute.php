@@ -2,13 +2,12 @@
 
 namespace GetCandy\Api\Core\Routes\Actions;
 
-use Illuminate\Support\Arr;
+use GetCandy\Api\Core\Languages\Models\Language;
 use GetCandy\Api\Core\Routes\Models\Route;
+use GetCandy\Api\Core\Routes\Resources\RouteResource;
 use GetCandy\Api\Core\Routes\RouteResolver;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
-use GetCandy\Api\Core\Languages\Models\Language;
 use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
-use GetCandy\Api\Core\Routes\Resources\RouteResource;
 
 class CreateRoute extends AbstractAction
 {
@@ -40,14 +39,14 @@ class CreateRoute extends AbstractAction
                 'string',
                 function () {
                     return class_exists($this->element_type);
-                }
+                },
             ],
             'element_id' => [
                 'required',
                 'string',
                 function () {
                     return (new $this->element_type)->decodeId($this->element_id);
-                }
+                },
             ],
             'language_id' => 'required|string|hashid_is_valid:'.Language::class,
             'default' => 'boolean',

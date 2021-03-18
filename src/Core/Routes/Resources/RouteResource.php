@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Routes\Resources;
 
-use GetCandy\Api\Http\Resources\AbstractResource;
 use GetCandy\Api\Core\Languages\Resources\LanguageResource;
+use GetCandy\Api\Http\Resources\AbstractResource;
 
 class RouteResource extends AbstractResource
 {
@@ -45,12 +45,11 @@ class RouteResource extends AbstractResource
                 array_push($classSegments, 'Resources');
                 array_push($classSegments, $class.'Resource');
 
-
                 $resourceClass = implode('\\', $classSegments);
 
                 if (class_exists($resourceClass)) {
                     return [
-                        'data' => new $resourceClass($this->element)
+                        'data' => new $resourceClass($this->element),
                     ];
                 }
             }),

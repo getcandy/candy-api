@@ -2,10 +2,10 @@
 
 namespace GetCandy\Api\Core\Routes\Models;
 
-use NeonDigital\Drafting\Draftable;
+use GetCandy\Api\Core\Languages\Models\Language;
 use GetCandy\Api\Core\Scaffold\BaseModel;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use GetCandy\Api\Core\Languages\Models\Language;
+use NeonDigital\Drafting\Draftable;
 
 class Route extends BaseModel
 {
