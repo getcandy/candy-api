@@ -7,7 +7,7 @@ properties:
   code:
     type: string
     example: en
-    pattern: '^[a-zA-Z0-9 *,-.;=]*$'
+    pattern: '^[a-zA-Z0-9-]*$'
   name:
     type: string
     example: English
