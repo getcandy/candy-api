@@ -3,6 +3,7 @@
 namespace GetCandy\Api\Core\Routes\Resources;
 
 use GetCandy\Api\Http\Resources\AbstractResource;
+use GetCandy\Api\Core\Languages\Resources\LanguageResource;
 
 class RouteResource extends AbstractResource
 {
@@ -12,18 +13,18 @@ class RouteResource extends AbstractResource
             'id' => $this->encodedId(),
             'default' => (bool) $this->default,
             'redirect' => (bool) $this->redirect,
-            'locale' => $this->locale,
-            'path' => $this->path,
             'slug' => $this->slug,
             'description' => $this->description,
             'type' => str_slug(class_basename($this->element_type)),
+            'drafted_at' => $this->drafted_at,
         ];
     }
 
     public function includes()
     {
         return [
-            'element' => ['data' => $this->whenLoaded('element', function () {
+            'language' => $this->include('language', LanguageResource::class),
+            'element' => $this->whenLoaded('element', function () {
                 // Need to guess the element
                 $class = class_basename(get_class($this->element));
                 $resource = 'GetCandy\Api\Http\Resources\\'.str_plural($class).'\\'.$class.'Resource';
@@ -44,12 +45,15 @@ class RouteResource extends AbstractResource
                 array_push($classSegments, 'Resources');
                 array_push($classSegments, $class.'Resource');
 
+
                 $resourceClass = implode('\\', $classSegments);
 
                 if (class_exists($resourceClass)) {
-                    return new $resourceClass($this->element);
+                    return [
+                        'data' => new $resourceClass($this->element)
+                    ];
                 }
-            })],
+            }),
         ];
     }
 }

@@ -2,9 +2,10 @@
 
 namespace GetCandy\Api\Core\Routes\Models;
 
+use NeonDigital\Drafting\Draftable;
 use GetCandy\Api\Core\Scaffold\BaseModel;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use NeonDigital\Drafting\Draftable;
+use GetCandy\Api\Core\Languages\Models\Language;
 
 class Route extends BaseModel
 {
@@ -24,7 +25,7 @@ class Route extends BaseModel
      * @var array
      */
     protected $fillable = [
-        'slug', 'default', 'redirect', 'description', 'locale', 'path', 'element_type', 'element_id',
+        'slug', 'default', 'redirect', 'description', 'element_type', 'element_id', 'language_id',
     ];
 
     /**
@@ -35,5 +36,10 @@ class Route extends BaseModel
     public function element()
     {
         return $this->morphTo();
+    }
+
+    public function language()
+    {
+        return $this->belongsTo(Language::class);
     }
 }

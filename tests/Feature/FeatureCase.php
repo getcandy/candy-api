@@ -29,7 +29,7 @@ abstract class FeatureCase extends TestCase
 
         // https://github.com/cebe/php-openapi/pull/67 once this is resolved we can use the non full again
         $this->buildOpenApiValidator(
-            realpath(__DIR__.'/../../openapi/openapi-full.yaml')
+            realpath(__DIR__.'/../../openapi/openapi.yaml')
         );
         GetCandy::router();
     }

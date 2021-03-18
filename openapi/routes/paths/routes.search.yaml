@@ -16,4 +16,15 @@ get:
           schema:
             $ref: '../../global/responses/ApiError.yaml'
   operationId: get-routes-search
-  description: Get a Route by searching via slug or path
+  parameters:
+    - schema:
+        type: string
+      in: query
+      name: slug
+      required: true
+    - schema:
+        type: string
+      in: query
+      name: element_type
+      required: true
+  description: Get a Route by searching via the slug and element_type
