@@ -52,7 +52,7 @@ class IndexCategories extends Action
 
         $languages = FetchLanguages::run([
             'paginate' => false,
-        ])->pluck('lang');
+        ])->pluck('code');
 
         $customerGroups = FetchCustomerGroups::run([
             'paginate' => false,
