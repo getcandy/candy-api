@@ -40,8 +40,7 @@ put:
                 data:
                   id: 6z8m9gmj
                   name: English
-                  lang: en
-                  iso: gb
+                  code: en
                   default: true
                   enabled: true
                   current: false

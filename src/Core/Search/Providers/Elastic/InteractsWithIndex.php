@@ -53,7 +53,7 @@ trait InteractsWithIndex
     {
         $defaultLang = FetchDefaultLanguage::run();
 
-        return $this->getBaseIndexName()."_{$defaultLang->lang}";
+        return $this->getBaseIndexName()."_{$defaultLang->code}";
     }
 
     /**

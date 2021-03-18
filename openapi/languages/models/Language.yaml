@@ -4,12 +4,10 @@ properties:
   id:
     type: string
     example: y3g6v91o
-  iso:
-    type: string
-    example: gb
-  lang:
+  code:
     type: string
     example: en
+    pattern: '^[a-zA-Z0-9-]*$'
   name:
     type: string
     example: English

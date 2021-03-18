@@ -2,7 +2,6 @@
 
 use Faker\Generator as Faker;
 use GetCandy\Api\Core\Languages\Models\Language;
-use Illuminate\Support\Str;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,12 +15,9 @@ use Illuminate\Support\Str;
 */
 
 $factory->define(Language::class, function (Faker $faker) {
-    $name = $faker->unique()->company;
-
     return [
-        'name' => $name,
-        'lang' => ucfirst($name),
-        'iso' => Str::slug($name),
+        'name' => $faker->unique()->country,
+        'code' => $faker->languageCode,
         'default' => $faker->boolean,
         'enabled' => $faker->boolean,
     ];

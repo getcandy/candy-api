@@ -10,9 +10,7 @@ class UserRunner extends AbstractRunner implements InstallRunnerContract
 {
     public function run()
     {
-        if (! DB::table('roles')->count()) {
-            $this->installRoles();
-        }
+        $this->installRoles();
 
         $model = config('auth.providers.users.model');
 

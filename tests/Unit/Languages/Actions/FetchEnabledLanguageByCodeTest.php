@@ -11,21 +11,21 @@ use Tests\TestCase;
  */
 class FetchEnabledLanguageByCodeTest extends TestCase
 {
-    public function test_can_attach_user_to_customer_record()
+    public function test_can_fetch_languages()
     {
         $user = $this->admin();
 
         $languageA = factory(Language::class)->create([
             'enabled' => false,
-            'iso' => 'gba',
+            'code' => 'gba',
         ]);
         $languageB = factory(Language::class)->create([
             'enabled' => true,
-            'iso' => 'sk',
+            'code' => 'sk',
         ]);
         $languageC = factory(Language::class)->create([
             'enabled' => false,
-            'iso' => 'dk',
+            'code' => 'dk',
         ]);
 
         $this->assertFalse($languageA->enabled);
@@ -33,13 +33,13 @@ class FetchEnabledLanguageByCodeTest extends TestCase
         $this->assertFalse($languageC->enabled);
 
         $language = FetchEnabledLanguageByCode::run([
-            'code' => $languageB->iso,
+            'code' => $languageB->code,
         ]);
 
         $this->assertEquals($languageB->id, $language->id);
 
         $language = FetchEnabledLanguageByCode::run([
-            'code' => $languageC->iso,
+            'code' => $languageC->code,
         ]);
 
         $this->assertNull($language);
