@@ -64,11 +64,6 @@ class AttributeControllerTest extends FeatureCase
         $this->assertResponseValid($response, '/attributes/{attributeId}');
     }
 
-    /**
-     * @group fail
-     *
-     * @return  [type]  [return description]
-     */
     public function test_can_update_an_attribute()
     {
         $user = $this->admin();
