@@ -21,18 +21,18 @@ class SetLocaleMiddleware
         $defaultLanguage = FetchDefaultLanguage::run();
         $parser = new Parser($request->header('accept-language'));
 
-        $locale = collect($parser->parse())->first();
+        $language = collect($parser->parse())->first();
 
         $code = $defaultLanguage->code;
-        if ($locale) {
-            $code = $locale->code();
+        if ($language) {
+            $code = $language->code();
         }
 
-        $language = FetchEnabledLanguageByCode::run([
+        $languageModel = FetchEnabledLanguageByCode::run([
             'code' => $code,
         ]);
 
-        if (! $language) {
+        if (! $languageModel) {
             $code = $defaultLanguage->code;
         }
 
