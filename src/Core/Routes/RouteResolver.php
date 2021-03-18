@@ -2,13 +2,13 @@
 
 namespace GetCandy\Api\Core\Routes;
 
-use InvalidArgumentException;
-use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Categories\Models\Category;
+use GetCandy\Api\Core\Products\Models\Product;
+use InvalidArgumentException;
 
 class RouteResolver
 {
-    static $elementTypes = [
+    public static $elementTypes = [
         'product' => Product::class,
         'category' => Category::class,
     ];
@@ -26,6 +26,7 @@ class RouteResolver
         if (class_exists($elementType)) {
             return $elementType;
         }
+
         return self::$elementTypes[$elementType] ?? $elementType;
     }
 }

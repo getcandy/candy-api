@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Routes\Actions;
 
-use Tests\TestCase;
-use GetCandy\Api\Core\Products\Models\Product;
-use Illuminate\Validation\ValidationException;
 use GetCandy\Api\Core\Languages\Models\Language;
+use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Routes\Actions\CreateRoute;
+use Illuminate\Validation\ValidationException;
+use Tests\TestCase;
 
 /**
  * @group routes

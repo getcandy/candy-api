@@ -1,16 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\DB;
-use Spatie\Permission\Models\Role;
-use Illuminate\Support\Facades\Schema;
-use Spatie\Permission\Models\Permission;
-use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Database\Migrations\Migration;
-use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Languages\Models\Language;
-use GetCandy\Api\Core\Categories\Models\Category;
-use GetCandy\Api\Core\Collections\Models\Collection;
-use GetCandy\Api\Core\Languages\Actions\FetchLanguage;
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class RefactorRoutesTable extends Migration
 {
