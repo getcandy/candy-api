@@ -3,9 +3,11 @@
 namespace GetCandy\Api\Core\RecycleBin\Services;
 
 use GetCandy\Api\Core\Products\Models\Product;
-use GetCandy\Api\Core\RecycleBin\Interfaces\RecycleBinServiceInterface;
 use GetCandy\Api\Core\RecycleBin\Models\RecycleBin;
 use GetCandy\Api\Core\Search\Events\IndexableSavedEvent;
+use GetCandy\Api\Core\Channels\Actions\FetchCurrentChannel;
+use GetCandy\Api\Core\Languages\Actions\FetchDefaultLanguage;
+use GetCandy\Api\Core\RecycleBin\Interfaces\RecycleBinServiceInterface;
 
 class RecycleBinService implements RecycleBinServiceInterface
 {
@@ -20,19 +22,22 @@ class RecycleBinService implements RecycleBinServiceInterface
      */
     public function getItems($paginated = true, $perPage = 25, $term = null, $includes = [])
     {
+        $channel = FetchCurrentChannel::run();
+        $language = FetchDefaultLanguage::run();
         $query = RecycleBin::whereHasMorph('recyclable', [
             Product::class
-        ], function ($query, $type) use ($term) {
+        ], function ($query, $type) use ($term, $channel, $language) {
             if (!$term) {
                 return;
             }
             if ($type == Product::class) {
-                dd($term);
+                $query->leftJoin('product_variants', 'product_variants.product_id', '=', 'products.id')
+                ->where(function ($queryTwo) use ($channel, $term, $language) {
+                    $queryTwo->orWhere("attribute_data->name->{$channel->handle}->{$language->code}", 'LIKE', "%{$term}%")
+                        ->orWhere('sku', 'LIKE', "%{$term}%");
+                });
             }
         });
-
-        // dd($products->get());
-
 
         if (! $paginated) {
             return $query->get();
