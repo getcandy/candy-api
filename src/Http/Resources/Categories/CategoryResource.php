@@ -2,16 +2,16 @@
 
 namespace GetCandy\Api\Http\Resources\Categories;
 
-use GetCandy\Api\Core\Channels\Resources\ChannelCollection;
-use GetCandy\Api\Core\Customers\Resources\CustomerGroupCollection;
 use GetCandy\Api\Http\Resources\AbstractResource;
-use GetCandy\Api\Http\Resources\Assets\AssetCollection;
 use GetCandy\Api\Http\Resources\Assets\AssetResource;
-use GetCandy\Api\Http\Resources\Attributes\AttributeCollection;
+use GetCandy\Api\Core\Routes\Resources\RouteCollection;
+use GetCandy\Api\Http\Resources\Assets\AssetCollection;
 use GetCandy\Api\Http\Resources\Layouts\LayoutResource;
+use GetCandy\Api\Core\Channels\Resources\ChannelCollection;
 use GetCandy\Api\Http\Resources\Products\ProductCollection;
-use GetCandy\Api\Http\Resources\Routes\RouteCollection;
 use GetCandy\Api\Http\Resources\Versioning\VersionCollection;
+use GetCandy\Api\Http\Resources\Attributes\AttributeCollection;
+use GetCandy\Api\Core\Customers\Resources\CustomerGroupCollection;
 
 class CategoryResource extends AbstractResource
 {
