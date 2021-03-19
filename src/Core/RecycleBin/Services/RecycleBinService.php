@@ -18,11 +18,21 @@ class RecycleBinService implements RecycleBinServiceInterface
      * @param  array  $includes
      * @return \Illuminate\Pagination\LengthAwarePaginator
      */
-    public function getItems($paginated = true, $perPage = 25, $terms = null, $includes = [])
+    public function getItems($paginated = true, $perPage = 25, $term = null, $includes = [])
     {
-        $query = RecycleBin::whereDoesntHaveMorph('recyclable', [
-            Product::class,
-        ]);
+        $query = RecycleBin::whereHasMorph('recyclable', [
+            Product::class
+        ], function ($query, $type) use ($term) {
+            if (!$term) {
+                return;
+            }
+            if ($type == Product::class) {
+                dd($term);
+            }
+        });
+
+        // dd($products->get());
+
 
         if (! $paginated) {
             return $query->get();

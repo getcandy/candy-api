@@ -3,6 +3,7 @@
 namespace GetCandy\Api\Core\RecycleBin\Models;
 
 use GetCandy\Api\Core\Scaffold\BaseModel;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class RecycleBin extends BaseModel
 {
@@ -24,6 +25,6 @@ class RecycleBin extends BaseModel
      */
     public function recyclable()
     {
-        return $this->morphTo()->onlyTrashed()->withoutGlobalScopes();
+        return $this->morphTo()->withoutGlobalScope(SoftDeletingScope::class);
     }
 }
