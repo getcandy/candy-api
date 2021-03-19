@@ -3,9 +3,10 @@
 namespace GetCandy\Api\Core\RecycleBin\Services;
 
 use GetCandy\Api\Core\Products\Models\Product;
-use GetCandy\Api\Core\RecycleBin\Interfaces\RecycleBinServiceInterface;
 use GetCandy\Api\Core\RecycleBin\Models\RecycleBin;
 use GetCandy\Api\Core\Search\Events\IndexableSavedEvent;
+
+use GetCandy\Api\Core\RecycleBin\Interfaces\RecycleBinServiceInterface;
 
 class RecycleBinService implements RecycleBinServiceInterface
 {
