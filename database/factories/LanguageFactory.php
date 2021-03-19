@@ -17,7 +17,7 @@ use GetCandy\Api\Core\Languages\Models\Language;
 $factory->define(Language::class, function (Faker $faker) {
     return [
         'name' => $faker->unique()->country,
-        'code' => $faker->languageCode,
+        'code' => $faker->unique()->languageCode,
         'default' => $faker->boolean,
         'enabled' => $faker->boolean,
     ];
