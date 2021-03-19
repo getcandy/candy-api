@@ -24,8 +24,8 @@ class SearchRouteTest extends FeatureCase
         $response->assertStatus(422);
 
         $this->assertResponseValid($response, '/routes/search', 'get');
-
     }
+
     public function test_can_run_action_as_controller()
     {
         $user = $this->admin();
