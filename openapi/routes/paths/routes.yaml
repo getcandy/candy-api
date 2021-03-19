@@ -11,3 +11,23 @@ get:
             $ref: '../responses/RouteCollection.yaml'
   operationId: get-routes
   description: Returns a paginated list of Routes
+post:
+  summary: Create Route
+  tags:
+    - Routes
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/RouteResponse.yaml'
+  operationId: create-route
+  requestBody:
+    content:
+      multipart/form-data:
+        schema:
+          $ref: '../requests/CreateRouteBody.yaml'
+        examples: {}
+    description: ''
+  description: Creates a route

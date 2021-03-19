@@ -84,8 +84,6 @@
     $router->post('categories/{category}/channels', 'Categories\CategoryController@putChannels');
     $router->post('categories/{category}/customer-groups', 'Categories\CategoryController@putCustomerGroups');
     $router->put('categories/{category}/layouts', 'Categories\LayoutController@store');
-
-    $router->post('categories/{category}/routes', 'Categories\CategoryRouteController@store');
     $router->post('categories/{id}/publish', 'Categories\CategoryController@publishDraft');
     $router->resource('categories', 'Categories\CategoryController', [
         'except' => ['index', 'edit', 'create', 'show'],
@@ -205,7 +203,6 @@
         $router->post('/{product}/redirects', 'ProductRedirectController@store');
         $router->post('/{product}/attributes', 'ProductAttributeController@update');
         $router->post('/{product}/collections', 'ProductCollectionController@update');
-        $router->post('/{product}/routes', 'ProductRouteController@store');
         $router->post('/{product}/categories', 'ProductCategoryController@update');
         $router->post('/{product}/channels', 'ProductChannelController@store');
         $router->delete('/{product}/categories/{category}', 'ProductCategoryController@destroy');
@@ -267,6 +264,7 @@
         'prefix' => 'routes',
     ], function ($route) {
         $route->get('/', '\GetCandy\Api\Core\Routes\Actions\FetchRoutes');
+        $route->post('/', '\GetCandy\Api\Core\Routes\Actions\CreateRoute');
         $route->delete('{encoded_id}', '\GetCandy\Api\Core\Routes\Actions\DeleteRoute');
         $route->put('{encoded_id}', '\GetCandy\Api\Core\Routes\Actions\UpdateRoute');
     });

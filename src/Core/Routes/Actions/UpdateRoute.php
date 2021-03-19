@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Routes\Actions;
 
+use GetCandy\Api\Core\Languages\Models\Language;
 use GetCandy\Api\Core\Routes\Models\Route;
 use GetCandy\Api\Core\Routes\Resources\RouteResource;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
@@ -44,13 +45,13 @@ class UpdateRoute extends AbstractAction
                     if ($this->route->publishedParent) {
                         $ids[] = $this->route->publishedParent->id;
                     }
-                    $result = DB::table('routes')->wherePath($this->path)->whereSlug($value)->whereNotIn('id', $ids)->exists();
+                    $result = DB::table('routes')->whereElementType($this->route->element_type)->whereSlug($value)->whereNotIn('id', $ids)->exists();
                     if ($result) {
-                        $fail('The path and slug have already been taken');
+                        $fail('This slug has already been taken for this element type');
                     }
                 },
             ],
-            'lang' => 'nullable|string',
+            'language_id' => 'nullable|string|hashid_is_valid:'.Language::class,
             'description' => 'nullable|string',
             'default' => 'boolean',
             'redirect' => 'boolean',
@@ -64,7 +65,9 @@ class UpdateRoute extends AbstractAction
      */
     public function handle()
     {
-        $this->route->update($this->validated());
+        $attributes = $this->validated();
+        $attributes['language_id'] = (new Language)->decodeId($this->language_id);
+        $this->route->update($attributes);
 
         if ($this->route->default) {
             // Need to make sure we unset any defaults of any siblings

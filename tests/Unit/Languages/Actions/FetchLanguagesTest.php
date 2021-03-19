@@ -17,12 +17,15 @@ class FetchLangugesTest extends TestCase
 
         $languageA = factory(Language::class)->create([
             'default' => false,
+            'code' => 'en-a',
         ]);
         $languageB = factory(Language::class)->create([
             'default' => true,
+            'code' => 'en-b',
         ]);
         $languageC = factory(Language::class)->create([
             'default' => false,
+            'code' => 'en-c',
         ]);
 
         $languages = FetchLanguages::run([

@@ -11,13 +11,12 @@ properties:
     type: boolean
   slug:
     type: string
-  path:
-    type: string
-  locale:
+  language_id:
     type: string
   description:
     type: string
 required:
-  - name
-  - lang
-  - iso
+  - slug
+  - element_id
+  - element_type
+  - language_id

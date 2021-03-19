@@ -37,7 +37,33 @@ You should update any calls to this endpoint if you rely on included resources. 
 
 The way drafting previously worked has now been refactored to be less destructive. You should reindex your products before going back into the hub to get everything in sync.
 
-You can do this by running `php artisan candy:products:reindex` and `php artisan candy:categories:reindex`
+You can do this by running `php artisan candy:products:reindex` and `php artisan candy:categories:reindex`H
+
+### Route searching
+
+The way you search for routes has changed on the API. We have removed the `path` column and also the `locale` column in favour of a `language_id` relation.
+
+When you search for a route, previously you would do something like:
+```javascript
+const { data } = await axios('routes/search', {
+    params: {
+        slug: 'slug-for-the-product',
+        path: null,
+        include: 'element'
+    }
+})
+```
+This should now be changed to:
+```javascript
+const { data } = await axios('routes/search', {
+    params: {
+        slug: 'slug-for-the-product',
+        language_code: 'en',
+        element_type: 'product',
+        include: 'element'
+    }
+})
+```
 
 ### 🐞 Fixes
 - Fixed an issue that was causing a indefinite wildcard search on products
