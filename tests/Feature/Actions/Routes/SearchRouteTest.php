@@ -35,7 +35,7 @@ class SearchRouteTest extends FeatureCase
         $response = $this->actingAs($user)->json('GET', 'routes/search', [
             'slug' => $route->slug,
             'element_type' => $route->element_type,
-            'language_id' => $route->language->encoded_id,
+            'language_code' => $route->language->code,
         ]);
 
         $response->assertStatus(200);

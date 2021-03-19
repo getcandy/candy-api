@@ -33,7 +33,7 @@ class SearchForRoute extends AbstractAction
         return [
             'slug' => 'required|string',
             'element_type' => 'required|string',
-            'language_id' => 'required|string|hashid_is_valid:'.Language::class,
+            'language_code' => 'required|exists:languages,code',
         ];
     }
 
@@ -50,8 +50,9 @@ class SearchForRoute extends AbstractAction
         $query = Route::whereSlug($this->slug)->with(
             $this->resolveEagerRelations()
         )->whereElementType($elementType)
-        ->whereLanguageId($languageId)
-        ->withCount(
+        ->whereHas('language', function ($query) {
+            $query->whereCode($this->language_code);
+        })->withCount(
             $this->resolveRelationCounts()
         );
 

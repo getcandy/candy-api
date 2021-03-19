@@ -58,7 +58,7 @@ This should now be changed to:
 const { data } = await axios('routes/search', {
     params: {
         slug: 'slug-for-the-product',
-        language_id: '6z8m9gmj',
+        language_code: 'en',
         element_type: 'product',
         include: 'element'
     }

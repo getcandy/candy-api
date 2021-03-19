@@ -29,4 +29,9 @@ get:
       in: query
       name: element_type
       required: true
+    - schema:
+        type: string
+      in: query
+      name: language_code
+      required: true
   description: Get a Route by searching via the slug and element_type
