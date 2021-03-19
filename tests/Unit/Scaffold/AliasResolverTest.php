@@ -2,13 +2,12 @@
 
 namespace Tests\Unit\Shipping\Factories;
 
-
-use Tests\TestCase;
-use GetCandy\Api\Core\Scaffold\AliasResolver;
-use GetCandy\Api\Core\Products\Models\Product;
-use GetCandy\Api\Core\Languages\Models\Language;
 use GetCandy\Api\Core\Categories\Models\Category;
 use GetCandy\Api\Core\Exceptions\AliasResolutionException;
+use GetCandy\Api\Core\Languages\Models\Language;
+use GetCandy\Api\Core\Products\Models\Product;
+use GetCandy\Api\Core\Scaffold\AliasResolver;
+use Tests\TestCase;
 
 /**
  * @group scaffold
