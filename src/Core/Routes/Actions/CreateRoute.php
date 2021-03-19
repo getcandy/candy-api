@@ -2,12 +2,12 @@
 
 namespace GetCandy\Api\Core\Routes\Actions;
 
-use GetCandy\Api\Core\Languages\Models\Language;
 use GetCandy\Api\Core\Routes\Models\Route;
-use GetCandy\Api\Core\Routes\Resources\RouteResource;
-use GetCandy\Api\Core\Routes\RouteResolver;
+use GetCandy\Api\Core\Scaffold\AliasResolver;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
+use GetCandy\Api\Core\Languages\Models\Language;
 use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
+use GetCandy\Api\Core\Routes\Resources\RouteResource;
 
 class CreateRoute extends AbstractAction
 {
@@ -30,7 +30,7 @@ class CreateRoute extends AbstractAction
      */
     public function rules()
     {
-        $this->set('element_type', RouteResolver::resolve($this->element_type));
+        $this->set('element_type', AliasResolver::resolve($this->element_type));
 
         return [
             'slug' => 'required|unique_with:routes,element_type,'.$this->element_type,
