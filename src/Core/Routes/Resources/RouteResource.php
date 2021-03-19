@@ -29,7 +29,7 @@ class RouteResource extends AbstractResource
                 $class = class_basename(get_class($this->element));
                 $resource = 'GetCandy\Api\Http\Resources\\'.str_plural($class).'\\'.$class.'Resource';
                 if (class_exists($resource)) {
-                    return new $resource($this->element);
+                    return ['data' => new $resource($this->element)];
                 }
 
                 // Try and guess relative to the actual class

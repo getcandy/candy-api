@@ -98,6 +98,6 @@ class CreateRoute extends AbstractAction
      */
     public function response($result, $request)
     {
-        return new RouteResource($result);
+        return new RouteResource($result->load($this->resolveEagerRelations()));
     }
 }

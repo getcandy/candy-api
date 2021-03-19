@@ -66,7 +66,9 @@ class UpdateRoute extends AbstractAction
     public function handle()
     {
         $attributes = $this->validated();
-        $attributes['language_id'] = (new Language)->decodeId($this->language_id);
+        if ($this->language_id) {
+            $attributes['language_id'] = (new Language)->decodeId($this->language_id);
+        }
         $this->route->update($attributes);
 
         if ($this->route->default) {

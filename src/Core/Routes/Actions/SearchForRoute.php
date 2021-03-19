@@ -45,7 +45,6 @@ class SearchForRoute extends AbstractAction
     public function handle()
     {
         $elementType = AliasResolver::resolve($this->element_type);
-        $languageId = (new Language)->decodeId($this->language_id);
 
         $query = Route::whereSlug($this->slug)->with(
             $this->resolveEagerRelations()
