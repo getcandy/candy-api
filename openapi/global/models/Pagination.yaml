@@ -31,7 +31,10 @@ properties:
       properties:
         url:
           type: string
+          nullable: true
         label:
           type: string
+          nullable: true
         active:
           type: boolean
+          nullable: true
