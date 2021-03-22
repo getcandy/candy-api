@@ -2,6 +2,10 @@ get:
   summary: Get records
   tags:
     - Recycle Bin
+  parameters:
+    - $ref: '../../openapi.yaml#/components/parameters/perPageParam'
+    - $ref: '../../openapi.yaml#/components/parameters/pageParam'
+    - $ref: '../../openapi.yaml#/components/parameters/includeParam'
   responses:
     '200':
       description: OK

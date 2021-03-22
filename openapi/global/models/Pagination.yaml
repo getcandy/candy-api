@@ -24,3 +24,14 @@ properties:
     nullable: true
   total:
     type: integer
+  links:
+    type: array
+    items:
+      type: object
+      properties:
+        url:
+          type: string
+        label:
+          type: string
+        active:
+          type: boolean

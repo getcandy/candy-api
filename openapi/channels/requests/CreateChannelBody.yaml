@@ -11,3 +11,6 @@ properties:
   default:
     type: boolean
     nullable: true
+required:
+  - name
+  - handle

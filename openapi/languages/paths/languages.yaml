@@ -11,6 +11,9 @@ get:
             $ref: '../responses/LanguageCollection.yaml'
   operationId: get-languages
   description: Returns a paginated list of Languages
+  parameters:
+    - $ref: '../../openapi.yaml#/components/parameters/perPageParam'
+    - $ref: '../../openapi.yaml#/components/parameters/pageParam'
 post:
   summary: Create Language
   tags:
@@ -32,6 +35,6 @@ post:
   description: Create a new language
   requestBody:
     content:
-      multipart/form-data:
+      application/json:
         schema:
           $ref: '../requests/CreateLanguageBody.yaml'

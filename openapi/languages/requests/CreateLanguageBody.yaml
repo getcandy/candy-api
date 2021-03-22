@@ -3,18 +3,20 @@ type: object
 properties:
   name:
     type: string
-  lang:
+    example: 'English'
+  code:
     type: string
-  iso:
-    type: string
-    description: Unique
+    example: 'en-gb'
+    pattern: '^[a-zA-Z0-9-]*$'
   enabled:
     type: boolean
+    default: false
   default:
     type: boolean
+    default: false
   current:
     type: boolean
+    default: false
 required:
   - name
-  - lang
-  - iso
+  - code
