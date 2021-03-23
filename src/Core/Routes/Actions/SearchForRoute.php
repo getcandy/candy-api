@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Core\Routes\Actions;
 
-use GetCandy\Api\Core\Languages\Models\Language;
 use GetCandy\Api\Core\Routes\Models\Route;
 use GetCandy\Api\Core\Routes\Resources\RouteResource;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
