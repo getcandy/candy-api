@@ -28,7 +28,7 @@ class UpdateRequest extends FormRequest
         $decodedId = GetCandy::attributes()->getDecodedId($this->attribute);
 
         return [
-            'name' => 'required|array|valid_locales',
+            'name' => 'required|array|valid_language',
             'filterable' => 'boolean',
             'searchable' => 'boolean',
             'position' => 'integer',

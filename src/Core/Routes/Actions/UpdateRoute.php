@@ -2,13 +2,16 @@
 
 namespace GetCandy\Api\Core\Routes\Actions;
 
-use GetCandy\Api\Core\Foundation\Actions\DecodeId;
+use GetCandy\Api\Core\Languages\Models\Language;
 use GetCandy\Api\Core\Routes\Models\Route;
 use GetCandy\Api\Core\Routes\Resources\RouteResource;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
+use Illuminate\Support\Facades\DB;
 
 class UpdateRoute extends AbstractAction
 {
+    protected $route;
+
     /**
      * Determine if the user is authorized to make this action.
      *
@@ -26,15 +29,29 @@ class UpdateRoute extends AbstractAction
      */
     public function rules(): array
     {
-        $routeId = DecodeId::run([
+        $this->route = FetchRoute::run([
             'encoded_id' => $this->encoded_id,
-            'model' => Route::class,
+            'draft' => true,
         ]);
 
         return [
-            'slug' => 'required|unique_with:routes,path,'.$this->path.','.$routeId,
-            'path' => 'unique_with:routes,slug,'.$this->slug.','.$routeId,
-            'lang' => 'nullable|string',
+            'path' => 'nullable',
+            'slug' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    $ids = [
+                        $this->route->id,
+                    ];
+                    if ($this->route->publishedParent) {
+                        $ids[] = $this->route->publishedParent->id;
+                    }
+                    $result = DB::table('routes')->whereElementType($this->route->element_type)->whereSlug($value)->whereNotIn('id', $ids)->exists();
+                    if ($result) {
+                        $fail('This slug has already been taken for this element type');
+                    }
+                },
+            ],
+            'language_id' => 'nullable|string|hashid_is_valid:'.Language::class,
             'description' => 'nullable|string',
             'default' => 'boolean',
             'redirect' => 'boolean',
@@ -48,10 +65,24 @@ class UpdateRoute extends AbstractAction
      */
     public function handle()
     {
-        $route = $this->delegateTo(FetchRoute::class);
-        $route->update($this->validated());
+        $attributes = $this->validated();
+        if ($this->language_id) {
+            $attributes['language_id'] = (new Language)->decodeId($this->language_id);
+        }
+        $this->route->update($attributes);
 
-        return $route;
+        if ($this->route->default) {
+            // Need to make sure we unset any defaults of any siblings
+            // as we can only have one
+            Route::whereElementType($this->route->element_type)
+                ->whereElementId($this->route->element_id)
+                ->where('id', '!=', $this->route->id)
+                ->update([
+                    'default' => false,
+                ]);
+        }
+
+        return $this->route;
     }
 
     /**

@@ -28,7 +28,7 @@ class RecycleBinController extends BaseController
         $items = $this->service->getItems(
             $request->page ?: 1,
             $request->per_page ?: 25,
-            $request->terms
+            $request->term
         );
 
         return new RecycleBinCollection($items);

@@ -18,6 +18,7 @@ class DiscountRewardResource extends AbstractResource
     public function includes()
     {
         return [
+            'products' => new DiscountRewardProductCollection($this->whenLoaded('products')),
         ];
     }
 }

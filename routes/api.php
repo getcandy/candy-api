@@ -27,6 +27,7 @@
 
     $router->put('assets', 'Assets\AssetController@updateAll');
     $router->post('assets/simple', 'Assets\AssetController@storeSimple');
+    $router->post('assets/reorder', '\GetCandy\Api\Core\Assets\Actions\ReorderAssets');
     $router->post('assets/{assetId}/detach/{ownerId}', 'Assets\AssetController@detach');
     $router->resource('assets', 'Assets\AssetController', [
         'except' => ['index', 'edit', 'create', 'show'],
@@ -78,13 +79,11 @@
     $router->get('categories/parent/{parentID?}', 'Categories\CategoryController@getByParent');
     $router->post('categories/reorder', 'Categories\CategoryController@reorder');
     $router->post('categories/{category}/products/attach', 'Products\ProductCategoryController@attach');
-    $router->post('categories/{category}/drafts', 'Categories\CategoryController@createDraft');
+    $router->post('categories/{category}/drafts', '\GetCandy\Api\Core\Categories\Actions\CreateDraftCategory');
     $router->put('categories/{category}/products', 'Categories\CategoryController@putProducts');
     $router->post('categories/{category}/channels', 'Categories\CategoryController@putChannels');
     $router->post('categories/{category}/customer-groups', 'Categories\CategoryController@putCustomerGroups');
     $router->put('categories/{category}/layouts', 'Categories\LayoutController@store');
-
-    $router->post('categories/{category}/routes', 'Categories\CategoryRouteController@store');
     $router->post('categories/{id}/publish', 'Categories\CategoryController@publishDraft');
     $router->resource('categories', 'Categories\CategoryController', [
         'except' => ['index', 'edit', 'create', 'show'],
@@ -204,7 +203,6 @@
         $router->post('/{product}/redirects', 'ProductRedirectController@store');
         $router->post('/{product}/attributes', 'ProductAttributeController@update');
         $router->post('/{product}/collections', 'ProductCollectionController@update');
-        $router->post('/{product}/routes', 'ProductRouteController@store');
         $router->post('/{product}/categories', 'ProductCategoryController@update');
         $router->post('/{product}/channels', 'ProductChannelController@store');
         $router->delete('/{product}/categories/{category}', 'ProductCategoryController@destroy');
@@ -223,12 +221,18 @@
      */
 
     $router->prefix('reports')->namespace('Reports')->group(function ($router) {
-        $router->get('/sales', 'ReportController@sales');
-        $router->get('/orders', 'ReportController@orders');
-        $router->get('/orders/customers', 'ReportController@orderCustomers');
-        $router->get('/orders/averages', 'ReportController@orderAverages');
-        $router->get('/products/best-sellers', 'ReportController@bestSellers');
+        $router->get('exports', '\GetCandy\Api\Core\Reports\Actions\GetReportExports');
+        $router->get('/sales', '\GetCandy\Api\Core\Reports\Actions\GetSalesReport');
+        $router->get('/orders', '\GetCandy\Api\Core\Reports\Actions\GetOrderTotalsReport');
+        $router->get('/orders/customers', '\GetCandy\Api\Core\Reports\Actions\GetNewVsReturningReport');
+        $router->get('/customers/spending', '\GetCandy\Api\Core\Reports\Actions\GetCustomerSpendingReport');
+        $router->get('/customer-groups', '\GetCandy\Api\Core\Reports\Actions\GetCustomerGroupReport');
+        $router->get('/orders/averages', '\GetCandy\Api\Core\Reports\Actions\GetOrderAveragesReport');
+        $router->get('/products/best-sellers', '\GetCandy\Api\Core\Reports\Actions\GetProductBestSellers');
+        $router->get('/users/{userId}', '\GetCandy\Api\Core\Reports\Actions\GetUserReport');
         $router->get('/metrics/{subject}', 'ReportController@metrics');
+        $router->get('exports/download/{id}', '\GetCandy\Api\Core\Reports\Actions\DownloadReportExport')
+            ->withoutMiddleware(['auth:api', 'auth:sanctum'])->name('export.download');
     });
 
     /*
@@ -260,6 +264,7 @@
         'prefix' => 'routes',
     ], function ($route) {
         $route->get('/', '\GetCandy\Api\Core\Routes\Actions\FetchRoutes');
+        $route->post('/', '\GetCandy\Api\Core\Routes\Actions\CreateRoute');
         $route->delete('{encoded_id}', '\GetCandy\Api\Core\Routes\Actions\DeleteRoute');
         $route->put('{encoded_id}', '\GetCandy\Api\Core\Routes\Actions\UpdateRoute');
     });
@@ -314,6 +319,8 @@
      */
     $router->get('users/fields', '\GetCandy\Api\Core\Users\Actions\FetchUserFields');
     $router->get('users/current', '\GetCandy\Api\Core\Users\Actions\FetchCurrentUser');
+
+    $router->get('user/addresses', '\GetCandy\Api\Core\Users\Actions\FetchUserAddresses');
 
     $router->get('users', '\GetCandy\Api\Core\Users\Actions\FetchUsers');
     $router->get('users/{encoded_id}', '\GetCandy\Api\Core\Users\Actions\FetchUser');

@@ -2,9 +2,12 @@
 
 namespace GetCandy\Api\Core\RecycleBin\Services;
 
+use GetCandy\Api\Core\Channels\Actions\FetchCurrentChannel;
+use GetCandy\Api\Core\Languages\Actions\FetchDefaultLanguage;
 use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\RecycleBin\Interfaces\RecycleBinServiceInterface;
 use GetCandy\Api\Core\RecycleBin\Models\RecycleBin;
+use GetCandy\Api\Core\Search\Events\IndexableSavedEvent;
 
 class RecycleBinService implements RecycleBinServiceInterface
 {
@@ -17,11 +20,24 @@ class RecycleBinService implements RecycleBinServiceInterface
      * @param  array  $includes
      * @return \Illuminate\Pagination\LengthAwarePaginator
      */
-    public function getItems($paginated = true, $perPage = 25, $terms = null, $includes = [])
+    public function getItems($paginated = true, $perPage = 25, $term = null, $includes = [])
     {
-        $query = RecycleBin::whereDoesntHaveMorph('recyclable', [
+        $channel = FetchCurrentChannel::run();
+        $language = FetchDefaultLanguage::run();
+        $query = RecycleBin::whereHasMorph('recyclable', [
             Product::class,
-        ]);
+        ], function ($query, $type) use ($term, $channel, $language) {
+            if (! $term) {
+                return;
+            }
+            if ($type == Product::class) {
+                $query->leftJoin('product_variants', 'product_variants.product_id', '=', 'products.id')
+                ->where(function ($queryTwo) use ($channel, $term, $language) {
+                    $queryTwo->orWhere("attribute_data->name->{$channel->handle}->{$language->code}", 'LIKE', "%{$term}%")
+                        ->orWhere('sku', 'LIKE', "%{$term}%");
+                });
+            }
+        });
 
         if (! $paginated) {
             return $query->get();
@@ -40,6 +56,7 @@ class RecycleBinService implements RecycleBinServiceInterface
         $item = $this->findById($id);
         if ($item->recyclable) {
             $item->recyclable->restore();
+            IndexableSavedEvent::dispatch($item->recyclable);
             $item->delete();
         }
     }

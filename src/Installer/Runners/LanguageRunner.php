@@ -16,8 +16,7 @@ class LanguageRunner extends AbstractRunner implements InstallRunnerContract
     {
         $this->availableLanguages = collect([
             'gb' => [
-                'lang' => 'en',
-                'iso' => 'gb',
+                'code' => 'en',
                 'name' => 'English',
                 'default' => true,
             ],

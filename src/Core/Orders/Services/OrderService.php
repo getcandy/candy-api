@@ -26,6 +26,7 @@ use GetCandy\Api\Core\Payments\Services\PaymentService;
 use GetCandy\Api\Core\Pricing\PriceCalculatorInterface;
 use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
 use GetCandy\Api\Core\Scaffold\BaseService;
+use Illuminate\Pipeline\Pipeline;
 use PDF;
 
 class OrderService extends BaseService implements OrderServiceInterface
@@ -452,6 +453,7 @@ class OrderService extends BaseService implements OrderServiceInterface
                 'encoded_id' => $data['address_id'],
             ]);
             $payload = $shipping->only([
+                'company_name',
                 'firstname',
                 'lastname',
                 'address',
@@ -837,6 +839,12 @@ class OrderService extends BaseService implements OrderServiceInterface
             }
             $discount->total = $total;
         }
+
+        $pipes = config('getcandy.orders.invoicing.pdf.pipelines', []);
+
+        $data = app(Pipeline::class)->send($data)->through($pipes)->then(function ($data) {
+            return $data;
+        });
 
         $pdf = PDF::loadView(config('getcandy.invoicing.pdf', 'hub::pdf.order-invoice'), $data);
 

@@ -25,6 +25,8 @@ class Search extends Action
         'category-filter',
     ];
 
+    protected $start;
+
     /**
      * Determine if the user is authorized to make this action.
      *
@@ -62,12 +64,12 @@ class Search extends Action
      */
     public function handle()
     {
-        $this->set('search_type', $this->search_type ?: 'products');
+        $this->start = now();
+        $this->set('search_type', $this->search_type ? Str::plural($this->search_type) : 'products');
 
         if (! $this->index) {
             $prefix = config('getcandy.search.index_prefix');
             $language = app()->getLocale();
-
             $index = Str::plural($this->search_type);
             $this->set('index', "{$prefix}_{$index}_{$language}");
         }
@@ -85,6 +87,7 @@ class Search extends Action
         $client = FetchClient::run();
 
         $term = $this->term ? FetchTerm::run($this->attributes) : null;
+
         $filters = FetchFilters::run([
             'category' => $this->category,
             'filters' => $this->filters,
@@ -177,6 +180,8 @@ class Search extends Action
             ],
         ]);
 
+        $query = $query->setSource(false)->setStoredFields([]);
+
         $search = new ElasticaSearch($client);
 
         return $search
@@ -230,12 +235,14 @@ class Search extends Action
             $this->page ?: 1
         );
 
-        return (new $resource($paginator))->additional([
+        $response = (new $resource($paginator))->additional([
             'meta' => [
                 'count' => $models->count(),
                 'aggregations' => $aggregations,
                 'highlight' => $result->getQuery()->getParam('highlight'),
             ],
         ]);
+
+        return $response;
     }
 }

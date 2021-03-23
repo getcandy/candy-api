@@ -9,7 +9,9 @@ class ModelPublishedEvent
 {
     use SerializesModels;
 
-    public $model;
+    public $draft;
+
+    public $parent;
 
     /**
      * Create a new event instance.
@@ -17,8 +19,9 @@ class ModelPublishedEvent
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return void
      */
-    public function __construct(Model $model)
+    public function __construct(Model $draft, Model $parent)
     {
-        $this->model = $model;
+        $this->draft = $draft;
+        $this->parent = $parent;
     }
 }

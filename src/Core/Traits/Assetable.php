@@ -18,7 +18,7 @@ trait Assetable
                 'position',
                 'primary',
                 'assetable_type',
-            ])->orderBy('position', 'asc');
+            ])->withTimestamps()->orderBy('position', 'asc');
     }
 
     public function primaryAsset()

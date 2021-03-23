@@ -14,10 +14,11 @@ use GetCandy\Api\Http\Resources\Orders\OrderResource;
 use GetCandy\Api\Http\Resources\Payments\PaymentProviderResource;
 use GetCandy\Api\Http\Resources\Transactions\TransactionResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
 
 class PaymentController extends BaseController
 {
-    public function provider()
+    public function provider(Request $request)
     {
         return new PaymentProviderResource(
             GetCandy::payments()->getProvider()

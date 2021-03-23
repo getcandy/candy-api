@@ -3,68 +3,70 @@
 namespace GetCandy\Api\Core\Products\Drafting;
 
 use DB;
-use GetCandy\Api\Core\Products\Events\ProductCreatedEvent;
-use GetCandy\Api\Core\Products\Models\Product;
+use GetCandy\Api\Core\Drafting\Actions\DraftAssets;
+use GetCandy\Api\Core\Drafting\Actions\DraftCategories;
+use GetCandy\Api\Core\Drafting\Actions\DraftChannels;
+use GetCandy\Api\Core\Drafting\Actions\DraftCustomerGroups;
+use GetCandy\Api\Core\Drafting\Actions\DraftProductAssociations;
+use GetCandy\Api\Core\Drafting\Actions\DraftProductVariants;
+use GetCandy\Api\Core\Drafting\Actions\DraftRoutes;
+use GetCandy\Api\Core\Drafting\Actions\PublishAssets;
+use GetCandy\Api\Core\Drafting\Actions\PublishChannels;
+use GetCandy\Api\Core\Drafting\Actions\PublishCustomerGroups;
+use GetCandy\Api\Core\Drafting\Actions\PublishProductAssociations;
+use GetCandy\Api\Core\Drafting\Actions\PublishProductVariants;
+use GetCandy\Api\Core\Drafting\Actions\PublishRoutes;
+use GetCandy\Api\Core\Drafting\BaseDrafter;
+use GetCandy\Api\Core\Search\Events\IndexableSavedEvent;
 use Illuminate\Database\Eloquent\Model;
 use NeonDigital\Drafting\Interfaces\DrafterInterface;
 use Versioning;
 
-class ProductDrafter implements DrafterInterface
+class ProductDrafter extends BaseDrafter implements DrafterInterface
 {
-    public function create(Model $product)
+    public function create(Model $parent)
     {
-        dd('Hello!');
-    }
-
-    public function publish(Model $product)
-    {
-        // Publish this product and remove the parent.
-        $parent = $product->publishedParent;
-        // Get any current versions and assign them to this new product.
-
-        foreach ($parent->versions as $version) {
-            $version->update([
-                'versionable_id' => $product->id,
+        return DB::transaction(function () use ($parent) {
+            $parent = $parent->load([
+                'variants',
+                'categories',
+                'routes',
+                'channels',
+                'customerGroups',
             ]);
-        }
 
-        // Create a version of the parent before we publish these changes
-        Versioning::with('products')->create($parent, null, $product->id);
+            $draft = $parent->replicate();
+            $draft->drafted_at = now();
+            $draft->draft_parent_id = $parent->id;
+            $draft->save();
 
-        // Move the activities onto the draft
-        $parent->activities->each(function ($a) use ($product) {
-            $a->update(['subject_id' => $product->id]);
+            $this->callActions(array_merge([
+                DraftProductVariants::class,
+                DraftRoutes::class,
+                DraftProductAssociations::class,
+                DraftAssets::class,
+                DraftCategories::class,
+                DraftChannels::class,
+                DraftCustomerGroups::class,
+            ], $this->extendedDraftActions), [
+                'draft' => $draft,
+                'parent' => $parent,
+            ]);
+
+            // Not sure if this is something we need to worry about now as drafting has changed.
+            // Potentially deprecated in a later release...
+            $parent->attributes->each(function ($model) use ($draft) {
+                $draft->attributes()->attach($model);
+            });
+
+            return $draft->refresh()->load([
+                'variants.publishedParent',
+                'categories',
+                'routes',
+                'channels',
+                'customerGroups',
+            ]);
         });
-
-        // Activate any product variants
-        $variantIds = $product->variants->pluck('id')->toArray();
-
-        DB::table('product_variants')
-            ->whereIn('id', $variantIds)
-            ->update([
-                'drafted_at' => null,
-            ]);
-
-        // Activate any routes
-        $routeIds = $product->routes()->onlyDrafted()->get()->pluck('id')->toArray();
-
-        DB::table('routes')
-            ->whereIn('id', $routeIds)
-            ->update([
-                'drafted_at' => null,
-            ]);
-
-        // Delete routes
-        // $parent->routes()->delete();
-
-        $parent->forceDelete();
-
-        $product->drafted_at = null;
-        $product->save();
-
-        event(new ProductCreatedEvent($product));
-
-        return $product;
     }
 
     /**
@@ -73,159 +75,67 @@ class ProductDrafter implements DrafterInterface
      * @param  \Illuminate\Database\Eloquent\Model  $product
      * @return \Illuminate\Database\Eloquent\Model
      */
-    public function firstOrCreate(Model $product)
+    public function firstOrCreate(Model $parent)
     {
-        return $product->draft ?: DB::transaction(function () use ($product) {
-            $product = $product->load([
+        return $parent->draft ?: $this->create($parent);
+    }
+
+    public function publish(Model $draft)
+    {
+        return DB::transaction(function () use ($draft) {
+            // Publish this product and remove the parent.
+            $parent = $draft->publishedParent->load(
                 'variants',
                 'categories',
                 'routes',
                 'channels',
                 'customerGroups',
-            ]);
-            $newProduct = $product->replicate();
-            $newProduct->drafted_at = now();
-            $newProduct->draft_parent_id = $product->id;
-            $newProduct->save();
-
-            $product->variants->each(function ($v) use ($newProduct) {
-                $new = $v->replicate();
-                $new->product_id = $newProduct->id;
-                $new->drafted_at = now();
-                $new->draft_parent_id = $v->id;
-
-                $new->save();
-
-                // Copy customer group pricing...
-                $groupPricing = $v->customerPricing->map(function ($groupPrice) {
-                    return $groupPrice->only([
-                        'customer_group_id',
-                        'tax_id',
-                        'price',
-                        'compare_at_price',
-                    ]);
-                });
-
-                $new->customerPricing()->createMany($groupPricing);
-            });
-
-            $product->routes->each(function ($r) use ($newProduct) {
-                $new = $r->replicate();
-                $new->element_id = $newProduct->id;
-                $new->element_type = get_class($newProduct);
-                $new->drafted_at = now();
-                $new->draft_parent_id = $r->id;
-                $new->save();
-            });
-
-            $product->attributes->each(function ($model) use ($newProduct) {
-                $newProduct->attributes()->attach($model);
-            });
-
-            $product->associations->each(function ($model) use ($newProduct) {
-                $assoc = $model->replicate();
-                $assoc->product_id = $newProduct->id;
-                $assoc->save();
-            });
-            $newProduct->refresh();
-
-            $this->processAssets($product, $newProduct);
-            $this->processCategories($product, $newProduct);
-            $this->processChannels($product, $newProduct);
-            $this->processCustomerGroups($product, $newProduct);
-            $newProduct->refresh();
-
-            return $newProduct->load([
-                'variants',
-                'channels',
-                'routes',
-                'customerGroups',
-            ]);
-        });
-    }
-
-    /**
-     * Process the assets for a duplicated product.
-     *
-     * @param  \GetCandy\Api\Core\Products\Models\Product  $oldProduct
-     * @param  \GetCandy\Api\Core\Products\Models\Product  $newProduct
-     * @return void
-     */
-    protected function processAssets($oldProduct, &$newProduct)
-    {
-        foreach ($oldProduct->assets as $asset) {
-            $newProduct->assets()->attach(
-                $asset->id,
-                [
-                    'primary' => $asset->pivot->primary,
-                    'assetable_type' => $asset->pivot->assetable_type,
-                ]
             );
-        }
-    }
 
-    /**
-     * Process the duplicated product categories.
-     *
-     * @param  \GetCandy\Api\Core\Products\Models\Product  $oldProduct
-     * @param  \GetCandy\Api\Core\Products\Models\Product  $newProduct
-     * @return void
-     */
-    protected function processCategories($oldProduct, &$newProduct)
-    {
-        $currentCategories = $oldProduct->categories;
-        foreach ($currentCategories as $category) {
-            $newProduct->categories()->attach($category);
-        }
-    }
+            // Get any current versions and assign them to this new product.
 
-    /**
-     * Process the customer groups for the duplicated product.
-     *
-     * @param  \GetCandy\Api\Core\Products\Models\Product  $oldProduct
-     * @param  \GetCandy\Api\Core\Products\Models\Product  $newProduct
-     * @return void
-     */
-    protected function processCustomerGroups($oldProduct, &$newProduct)
-    {
-        // Need to associate all the channels the current product has
-        // but make sure they are not active to start with.
-        $groups = $oldProduct->customerGroups;
+            // Create a version of the parent before we publish these changes
+            Versioning::with('products')->create($parent);
 
-        $newGroups = collect();
+            // Publish any attributes etc
+            $parent->attribute_data = $draft->attribute_data;
+            $parent->option_data = $draft->option_data;
+            $parent->product_family_id = $draft->product_family_id;
+            $parent->layout_id = $draft->layout_id;
+            $parent->group_pricing = $draft->group_pricing;
 
-        foreach ($groups as $group) {
-            // \DB::table()
-            $newGroups->put($group->id, [
-                'visible' => $group->pivot->visible,
-                'purchasable' => $group->pivot->purchasable,
+            $parent->save();
+
+            $this->callActions(array_merge([
+                PublishProductVariants::class,
+                PublishChannels::class,
+                PublishCustomerGroups::class,
+                PublishRoutes::class,
+                PublishAssets::class,
+                PublishProductAssociations::class,
+            ], $this->extendedPublishActions), [
+                'draft' => $draft,
+                'parent' => $parent,
             ]);
-        }
 
-        $newProduct->customerGroups()->sync($newGroups->toArray());
-    }
+            // Categories
+            $existingCategories = $parent->categories;
 
-    /**
-     * Process channels for a duplicated product.
-     *
-     * @param  \GetCandy\Api\Core\Products\Models\Product  $oldProduct
-     * @param  \GetCandy\Api\Core\Products\Models\Product  $newProduct
-     * @return void
-     */
-    protected function processChannels($oldProduct, &$newProduct)
-    {
-        // Need to associate all the channels the current product has
-        // but make sure they are not active to start with.
-        $channels = $oldProduct->channels;
+            // Sync product categories to the parent.
+            $parent->categories()->sync(
+                $draft->categories->pluck('id')
+            );
+            // Collections
+            $parent->collections()->sync(
+                $draft->collections->pluck('id')
+            );
 
-        $newChannels = collect();
+            // Delete the draft we had.
+            $draft->forceDelete();
 
-        foreach ($channels as $channel) {
-            $newChannels->put($channel->id, [
-                'published_at' => now(),
-            ]);
-        }
+            IndexableSavedEvent::dispatch($parent);
 
-        $newProduct->channels()->sync($newChannels->toArray());
+            return $parent;
+        });
     }
 }

@@ -3,10 +3,6 @@ description: |-
 properties:
   id:
     type: string
-  element_type:
-    type: string
-  element_id:
-    type: integer
   default:
     type: boolean
     default: false
@@ -15,18 +11,14 @@ properties:
     default: false
   slug:
     type: string
-  path:
-    type: string
-    nullable: true
-  locale:
-    type: string
   description:
     type: string
     nullable: true
+  type:
+    type: string
   drafted_at:
     type: string
-  draft_parent_id:
-    type: integer
+    nullable: true
 x-tags:
   - Routes
 type: object

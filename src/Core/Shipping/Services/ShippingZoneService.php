@@ -3,6 +3,8 @@
 namespace GetCandy\Api\Core\Shipping\Services;
 
 use GetCandy;
+use GetCandy\Api\Core\Countries\Models\Country;
+use GetCandy\Api\Core\Foundation\Actions\DecodeIds;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Shipping\Models\ShippingZone;
 
@@ -50,7 +52,7 @@ class ShippingZoneService extends BaseService
         $query = $this->model;
 
         if ($includes) {
-            $query->with($includes);
+            $query = $query->with($includes);
         }
 
         return $query->findOrFail($id);
@@ -71,9 +73,11 @@ class ShippingZoneService extends BaseService
         $shipping->countries()->detach();
 
         if (! empty($data['countries'])) {
-            $shipping->countries()->attach(
-                GetCandy::countries()->getDecodedIds($data['countries'])
-            );
+            $countryIds = DecodeIds::run([
+                'encoded_ids' => $data['countries'],
+                'model' => Country::class,
+            ]);
+            $shipping->countries()->sync($countryIds);
         }
 
         $shipping->save();

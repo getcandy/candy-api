@@ -1,0 +1,24 @@
+get:
+  summary: Get customer spending report
+  tags:
+    - Reports
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/CustomerSpendingResponse.yaml'
+  operationId: customer-spending-report
+  parameters:
+    - schema:
+        type: string
+      in: query
+      name: from
+      description: The from date
+    - schema:
+        type: string
+      in: query
+      name: to
+      description: The to date
+  description: Get customer spending report

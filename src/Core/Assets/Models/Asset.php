@@ -37,13 +37,6 @@ class Asset extends BaseModel
         'external',
     ];
 
-    public function toArray()
-    {
-        return array_merge(parent::toArray(), [
-            'url' => Storage::disk($this->source->disk)->url($this->location.'/'.$this->filename),
-        ]);
-    }
-
     public function scopeImages($query)
     {
         return $query->where('kind', '!=', 'application');

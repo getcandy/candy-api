@@ -43,7 +43,7 @@ class ShippingMethod extends BaseModel
 
     public function zones()
     {
-        return $this->belongsToMany(ShippingZone::class, 'shipping_method_zones');
+        return $this->belongsToMany(ShippingZone::class, 'shipping_method_zones')->withTimestamps();
     }
 
     public function users()

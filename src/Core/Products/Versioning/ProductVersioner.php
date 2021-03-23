@@ -3,156 +3,116 @@
 namespace GetCandy\Api\Core\Products\Versioning;
 
 use Auth;
+use Drafting;
 use GetCandy\Api\Core\Assets\Models\Asset;
-use GetCandy\Api\Core\Categories\Models\Category;
 use GetCandy\Api\Core\Channels\Models\Channel;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
+use GetCandy\Api\Core\Products\Actions\Versioning\VersionProductAssociations;
+use GetCandy\Api\Core\Products\Actions\Versioning\VersionProductVariants;
 use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Products\Models\ProductVariant;
 use GetCandy\Api\Core\Routes\Models\Route;
+use GetCandy\Api\Core\Versioning\Actions\CreateVersion;
+use GetCandy\Api\Core\Versioning\Actions\RestoreAssets;
+use GetCandy\Api\Core\Versioning\Actions\RestoreChannels;
+use GetCandy\Api\Core\Versioning\Actions\RestoreCustomerGroups;
+use GetCandy\Api\Core\Versioning\Actions\RestoreProductVariants;
+use GetCandy\Api\Core\Versioning\Actions\RestoreRoutes;
+use GetCandy\Api\Core\Versioning\Actions\VersionAssets;
+use GetCandy\Api\Core\Versioning\Actions\VersionCategories;
+use GetCandy\Api\Core\Versioning\Actions\VersionChannels;
+use GetCandy\Api\Core\Versioning\Actions\VersionCollections;
+use GetCandy\Api\Core\Versioning\Actions\VersionCustomerGroups;
+use GetCandy\Api\Core\Versioning\Actions\VersionRoutes;
+use GetCandy\Api\Core\Versioning\BaseVersioner;
 use Illuminate\Database\Eloquent\Model;
-use NeonDigital\Versioning\Interfaces\VersionerInterface;
-use NeonDigital\Versioning\Version;
-use NeonDigital\Versioning\Versioners\AbstractVersioner;
-use Versioning;
+use Illuminate\Support\Facades\Log;
 
-class ProductVersioner extends AbstractVersioner implements VersionerInterface
+class ProductVersioner extends BaseVersioner
 {
-    public function create(Model $product, $relationId = null, $originatorId = null)
+    public function create(Model $model, Model $originator = null)
     {
         $userId = Auth::user() ? Auth::user()->id : null;
 
-        $attributes = $product->getAttributes();
+        $version = CreateVersion::run([
+            'originator' => $originator,
+            'model' => $model,
+        ]);
 
-        if (is_string($attributes['attribute_data'])) {
-            $attributes['attribute_data'] = json_decode($attributes['attribute_data'], true);
-        }
-        // Base model
-        $version = new Version;
-        $version->user_id = $userId;
-        $version->versionable_type = get_class($product);
-        $version->versionable_id = $originatorId ?: $product->id;
-        $version->model_data = json_encode($attributes);
-        $version->save();
+        $this->callActions([
+            VersionChannels::class,
+            VersionCategories::class,
+            VersionCustomerGroups::class,
+            VersionProductAssociations::class,
+            VersionRoutes::class,
+            VersionAssets::class,
+            VersionCollections::class,
+        ], [
+            'model' => $model,
+            'version' => $version,
+        ]);
 
-        // Channels
-        foreach ($product->channels as $channel) {
-            $data = array_merge($channel->getAttributes(), [
-                'pivot' => $channel->pivot->getAttributes(),
-            ]);
-            $this->createFromObject($channel, $version->id, $data);
-        }
-
-        // Variants
-        foreach ($product->variants as $variant) {
-            Versioning::with('product_variants')->create($variant, $version->id);
-        }
-
-        // Categories
-        foreach ($product->categories as $category) {
-            $data = array_merge($category->getAttributes(), [
-                'pivot' => $category->pivot->getAttributes(),
-            ]);
-            $this->createFromObject($category, $version->id, $data);
-        }
-
-        foreach ($product->customerGroups as $group) {
-            $data = array_merge($group->getAttributes(), [
-                'pivot' => $group->pivot->getAttributes(),
-            ]);
-            $this->createFromObject($group, $version->id, $data);
-        }
-
-        // Routes
-        foreach ($product->routes()->get() as $route) {
-            $this->createFromObject($route, $version->id);
-        }
-
-        // Assets
-        foreach ($product->assets as $asset) {
-            Versioning::with('assets')->create($asset, $version->id);
-        }
+        VersionProductVariants::run([
+            'product' => $model,
+            'version' => $version,
+        ]);
 
         return $version;
     }
 
     public function restore($version)
     {
-        $current = $version->versionable;
+        $product = $version->versionable;
 
         // Do we already have a draft??
-        $draft = $current->draft;
+        $draft = $product->draft;
+
         // This is the new draft so...remove it.
         if ($draft) {
             $draft->forceDelete();
         }
-        // Okay so, hydrate this draft...
-        $data = $version->model_data;
-        unset($data['id']);
-        $product = new Product;
-        $product->forceFill($data);
 
-        // Make it a draft
-        $product->drafted_at = now();
-        $product->draft_parent_id = $version->versionable_id;
-        $product->save();
-        $product->attribute_data = $data['attribute_data'];
-        $product->save();
+        // Create a new draft for the product
+        $draft = Drafting::with('products')->firstOrCreate($product->refresh());
+        $draft->save();
 
-        foreach ($version->relations as $relation) {
-            $type = $relation->versionable_type;
-            $data = $relation->model_data;
+        $attributes = collect($version->model_data)->except(['id', 'drafted_at', 'draft_parent_id']);
+        $draft->update($attributes->toArray());
 
-            switch ($type) {
-                case ProductVariant::class:
-                    Versioning::with('product_variants')->restore($relation, $product);
-                    break;
-                case Channel::class:
-                    $product->channels()->sync([
-                        $data['id'] => [
-                            'published_at' => $data['pivot']['published_at'] ?? now(),
-                        ],
-                    ]);
-                    break;
-                case CustomerGroup::class:
-                    $product->customerGroups()->sync([
-                        $data['id'] => [
-                            'purchasable' => $data['pivot']['purchasable'] ?? 1,
-                            'visible' => $data['pivot']['visible'] ?? 1,
-                        ],
-                    ]);
-                    break;
-                case Category::class:
-                    $product->categories()->sync($data['id']);
-                    break;
-                case Route::class:
-                    $route = new Route;
-                    $route->fill($relation->model_data);
-                    $route->element_type = get_class($product);
-                    $route->element_id = $product->id;
-                    $route->drafted_at = now();
-                    $route->draft_parent_id = $relation->versionable_id;
-                    $route->save();
-
-                    break;
-                case Asset::class:
-                    $data = $relation->model_data;
-
-                    if (! Asset::find($data['asset_id'])) {
+        // Group our relations by versionable type so we can send them all
+        // through in bulk to a single action. Makes it easier so we don't have
+        // to worry about continuously overriding ourselves.
+        $groupedRelations = $version->relations->groupBy('versionable_type')
+            ->each(function ($versions, $type) use ($draft) {
+                $action = null;
+                switch ($type) {
+                    case Channel::class:
+                        $action = RestoreChannels::class;
                         break;
-                    }
+                    case ProductVariant::class:
+                        $action = RestoreProductVariants::class;
+                        break;
+                    case CustomerGroup::class:
+                        $action = RestoreCustomerGroups::class;
+                        break;
+                    case Route::class:
+                        $action = RestoreRoutes::class;
+                        break;
+                    case Asset::class:
+                        $action = RestoreAssets::class;
+                        break;
+                }
+                if (! $action) {
+                    Log::error("Unable to restore for {$type}");
 
-                    $product->assets()->attach($data['asset_id'], [
-                        'position' => $data['position'] ?? 1,
-                        'primary' => $data['primary'] ?? true,
-                    ]);
+                    return;
+                }
+                (new $action)->run([
+                    'versions' => $versions,
+                    'draft' => $draft,
+                ]);
+            });
 
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        return $product;
+        return $draft;
     }
 }

@@ -285,7 +285,11 @@ class Braintree extends AbstractProvider
     {
         $result = $this->gateway->transaction()->refund($token, $amount / 100);
 
-        if (! $result->success) {
+        $transactionModel = Transaction::where('transaction_id', '=', $token)->first();
+
+        $fullRefund = $amount == $transactionModel->amount;
+
+        if (! $result->success && $fullRefund) {
             $error = collect($result->errors->forKey('transaction')->shallowAll())->first();
             // Trying to refund a transaction that isn't settled.
             if ($error->code == '91506') {

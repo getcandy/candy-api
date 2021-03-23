@@ -25,7 +25,6 @@ use GetCandy\Api\Http\Requests\Orders\ProcessRequest;
 use GetCandy\Api\Http\Requests\Orders\Shipping\AddShippingRequest;
 use GetCandy\Api\Http\Requests\Orders\StoreAddressRequest;
 use GetCandy\Api\Http\Requests\Orders\UpdateRequest;
-use GetCandy\Api\Http\Resources\Files\PdfResource;
 use GetCandy\Api\Http\Resources\Orders\OrderCollection;
 use GetCandy\Api\Http\Resources\Orders\OrderExportResource;
 use GetCandy\Api\Http\Resources\Orders\OrderResource;
@@ -213,7 +212,6 @@ class OrderController extends BaseController
                 ->customerReference($request->customer_reference)
                 ->meta($request->meta ?? [])
                 ->notes($request->notes)
-                ->companyName($request->company_name)
                 ->payload($request->data ?: [])
                 ->resolve();
 
@@ -410,7 +408,7 @@ class OrderController extends BaseController
         }
         $pdf = GetCandy::orders()->getPdf($order);
 
-        return new PdfResource($pdf);
+        return $pdf->download();
     }
 
     /**

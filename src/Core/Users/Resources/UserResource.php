@@ -20,7 +20,8 @@ class UserResource extends AbstractResource
         return [
             'id' => $this->encoded_id,
             'email' => $this->email,
-            'name' => $this->name,
+            'name' => $this->name ?: "{$this->firstname} {$this->lastname}",
+            'created_at' => $this->created_at,
         ];
     }
 

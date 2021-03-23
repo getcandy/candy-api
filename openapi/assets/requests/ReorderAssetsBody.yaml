@@ -1,0 +1,18 @@
+title: ReorderAssetsBody
+type: object
+properties:
+  assets:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: string
+        position:
+          type: integer
+        primary:
+          type: integer
+  assetable_id:
+    type: string
+  assetable_type:
+    type: string

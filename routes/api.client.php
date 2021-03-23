@@ -107,8 +107,9 @@ $router->resource('orders', 'Orders\OrderController', [
     */
 $router->post('payments/3d-secure', 'Payments\PaymentController@validateThreeD');
 $router->get('payments/provider', 'Payments\PaymentController@provider');
-$router->get('payments/providers', 'Payments\PaymentController@providers');
-$router->get('payments/types', 'Payments\PaymentTypeController@index');
+$router->get('payments/providers', '\GetCandy\Api\Core\Payments\Actions\FetchProviders');
+$router->get('payments/providers/{handle}', '\GetCandy\Api\Core\Payments\Actions\FetchPaymentProvider');
+$router->get('payments/types', '\GetCandy\Api\Core\Payments\Actions\FetchPaymentTypes');
 
 /*
 * Routes
@@ -128,7 +129,7 @@ $router->get('search', '\GetCandy\Api\Core\Search\Actions\Search');
 /*
     * Shipping
     */
-$router->get('shipping', 'Shipping\ShippingMethodController@index');
+$router->get('shipping', '\GetCandy\Api\Core\Shipping\Actions\FetchShippingMethods');
 $router->get('shipping/prices/estimate', 'Shipping\ShippingPriceController@estimate');
 
 /*

@@ -7,13 +7,6 @@ description: |-
   - collections
   - discounts
   - shippingMethods
-x-examples:
-  webstore:
-    id: y3g6v91o
-    name: Webstore
-    handle: webstore
-    url: 'localhost:8080'
-    default: true
 properties:
   id:
     type: string

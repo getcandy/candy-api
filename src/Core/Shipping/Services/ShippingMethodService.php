@@ -5,8 +5,10 @@ namespace GetCandy\Api\Core\Shipping\Services;
 use GetCandy;
 use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
 use GetCandy\Api\Core\Baskets\Services\BasketService;
+use GetCandy\Api\Core\Channels\Models\Channel;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Shipping\Models\ShippingMethod;
+use GetCandy\Api\Core\Shipping\Models\ShippingZone;
 use GetCandy\Api\Core\Shipping\ShippingCalculator;
 use Illuminate\Pipeline\Pipeline;
 
@@ -49,6 +51,12 @@ class ShippingMethodService extends BaseService
             $shipping->channels()->sync(
                 $this->getChannelMapping($data['channels']['data'])
             );
+        } else {
+            $shipping->channels()->sync(Channel::select('id')->get()->mapWithKeys(function ($c) {
+                return [$c->id => [
+                    'published_at' => null,
+                ]];
+            })->toArray());
         }
 
         event(new AttributableSavedEvent($shipping));
@@ -69,11 +77,17 @@ class ShippingMethodService extends BaseService
         $shipping->attribute_data = $data['attribute_data'];
         $shipping->type = $data['type'];
 
-        if (! empty($data['channels']['data'])) {
+        if (! empty($data['channels'])) {
             $shipping->channels()->sync(
-                $this->getChannelMapping($data['channels']['data'])
+                $this->getChannelMapping($data['channels'])
             );
         }
+
+        $shipping->zones()->sync(
+            collect($data['zones'] ?? [])->map(function ($zone) {
+                return (new ShippingZone)->decodeId($zone['id']);
+            })
+        );
 
         $shipping->save();
 

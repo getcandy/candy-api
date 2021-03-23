@@ -39,10 +39,6 @@ class FetchAggregations extends Action
      */
     public function handle()
     {
-        if (! $this->aggregate) {
-            return [];
-        }
-
         $results = FetchFilterableAttributes::run()->map(function ($attribute) {
             return $attribute->handle;
         });

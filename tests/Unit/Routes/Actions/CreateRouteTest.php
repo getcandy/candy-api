@@ -1,7 +1,8 @@
 <?php
 
-namespace Tests\Unit\Languages\Actions;
+namespace Tests\Unit\Routes\Actions;
 
+use GetCandy\Api\Core\Languages\Models\Language;
 use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Routes\Actions\CreateRoute;
 use Illuminate\Validation\ValidationException;
@@ -17,12 +18,15 @@ class CreateRouteTest extends TestCase
         $user = $this->admin();
 
         $product = factory(Product::class)->create();
+        $language = factory(Language::class)->create();
 
         $route = (new CreateRoute)->actingAs($user)->run([
             'slug' => 'foo-bar',
-            'element' => $product,
-            'lang' => 'en',
+            'element_id' => $product->encoded_id,
+            'element_type' => get_class($product),
+            'language_id' => $language->encoded_id,
             'default' => true,
+            'redirect' => false,
         ]);
 
         $this->assertCount(1, $product->load('routes')->routes);
@@ -33,39 +37,26 @@ class CreateRouteTest extends TestCase
         $user = $this->admin();
 
         $product = factory(Product::class)->create();
+        $language = factory(Language::class)->create();
 
         (new CreateRoute)->actingAs($user)->run([
             'slug' => 'foo-bar',
-            'element' => $product,
-            'lang' => 'en',
+            'element_id' => $product->encoded_id,
+            'element_type' => get_class($product),
+            'language_id' => $language->encoded_id,
             'default' => true,
+            'redirect' => false,
         ]);
 
         $this->expectException(ValidationException::class);
 
         (new CreateRoute)->actingAs($user)->run([
             'slug' => 'foo-bar',
-            'element' => $product,
-            'lang' => 'en',
+            'element_id' => $product->encoded_id,
+            'element_type' => get_class($product),
+            'language_id' => $language->encoded_id,
             'default' => true,
-        ]);
-
-        (new CreateRoute)->actingAs($user)->run([
-            'slug' => 'foo-bar',
-            'path' => 'bar-baz',
-            'element' => $product,
-            'lang' => 'en',
-            'default' => true,
-        ]);
-
-        $this->expectException(ValidationException::class);
-
-        (new CreateRoute)->actingAs($user)->run([
-            'slug' => 'foo-bar',
-            'path' => 'bar-baz',
-            'element' => $product,
-            'lang' => 'en',
-            'default' => true,
+            'redirect' => false,
         ]);
     }
 }

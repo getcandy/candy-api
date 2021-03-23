@@ -3,6 +3,7 @@
 namespace GetCandy\Api\Core\Products\Services;
 
 use GetCandy;
+use GetCandy\Api\Core\Assets\Models\Asset;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 use GetCandy\Api\Core\Foundation\Actions\DecodeId;
 use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
@@ -65,7 +66,7 @@ class ProductVariantService extends BaseService
 
             $variant = $product->variants()->create([
                 'price' => $newVariant['price'],
-                'sku' => $sku,
+                'sku' => trim($sku),
                 'stock' => $newVariant['inventory'],
                 'options' => $newVariant['options'],
             ]);
@@ -161,20 +162,24 @@ class ProductVariantService extends BaseService
         // Get the product variants
         $variants = $variant->product->variants;
 
+        if (! empty($data['asset_id'])) {
+            $data['asset_id'] = (new Asset)->decodeId($data['asset_id']);
+        }
+
         $variant->fill($data);
 
         $thumbnailId = null;
 
-        if (! empty($data['image'])) {
-            $imageId = $data['image']['id'];
-        } elseif (! empty($data['image_id'])) {
-            $imageId = $data['image_id'];
-        }
+        // if (! empty($data['image'])) {
+        //     $imageId = $data['image']['id'];
+        // } elseif (! empty($data['image_id'])) {
+        //     $imageId = $data['image_id'];
+        // }
 
-        if (! empty($imageId)) {
-            $asset = GetCandy::assets()->getByHashedId($imageId);
-            $variant->image()->associate($asset);
-        }
+        // if (! empty($imageId)) {
+        //     $asset = GetCandy::assets()->getByHashedId($imageId);
+        //     $variant->image()->associate($asset);
+        // }
 
         if (! empty($data['tax_id'])) {
             $variant->tax()->associate(

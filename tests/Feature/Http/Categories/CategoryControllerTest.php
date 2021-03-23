@@ -93,7 +93,9 @@ class CategoryControllerTest extends FeatureCase
         ]);
         $category = Category::withoutGlobalScopes()->first();
         $categoryId = $category->encodedId();
-        $response = $this->actingAs($user)->json('PUT', "categories/{$categoryId}");
+        $response = $this->actingAs($user)->json('PUT', "categories/{$categoryId}", [
+            'attribute_data' => 'TESTSSTRING',
+        ]);
         $response->assertStatus(422);
         $this->assertResponseValid($response, '/categories/{categoryId}', 'put');
     }

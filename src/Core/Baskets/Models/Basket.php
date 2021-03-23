@@ -112,7 +112,7 @@ class Basket extends BaseModel
 
     public function activeOrder()
     {
-        return $this->hasOne(Order::class, 'basket_id');
+        return $this->hasOne(Order::class, 'basket_id')->whereNull('placed_at');
     }
 
     public function placedOrder()

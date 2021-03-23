@@ -3,6 +3,7 @@
 namespace GetCandy\Api\Providers;
 
 use Drafting;
+use GetCandy\Api\Core\Categories\Commands\RebuildTreeCommand;
 use GetCandy\Api\Core\Categories\Drafting\CategoryDrafter;
 use GetCandy\Api\Core\Categories\Models\Category;
 use GetCandy\Api\Core\Categories\Observers\CategoryObserver;
@@ -28,5 +29,11 @@ class CategoryServiceProvider extends ServiceProvider
         });
 
         Category::observe(CategoryObserver::class);
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                RebuildTreeCommand::class,
+            ]);
+        }
     }
 }

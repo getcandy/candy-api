@@ -21,7 +21,7 @@ class Image extends BaseUploadDriver implements AssetDriverContract
     {
         $assetSources = GetCandy::assetSources();
 
-        if ($model) {
+        if ($model && ! empty($model->settings['asset_source'])) {
             $source = GetCandy::assetSources()->getByHandle($model->settings['asset_source']);
         } else {
             $source = $assetSources->getDefaultRecord();

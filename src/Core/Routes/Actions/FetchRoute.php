@@ -3,9 +3,9 @@
 namespace GetCandy\Api\Core\Routes\Actions;
 
 use GetCandy\Api\Core\Routes\Models\Route;
+use GetCandy\Api\Core\Routes\Resources\RouteResource;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
-use GetCandy\Api\Http\Resources\Routes\RouteResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class FetchRoute extends AbstractAction
@@ -32,6 +32,7 @@ class FetchRoute extends AbstractAction
         return [
             'id' => 'integer|required_without_all:encoded_id,search',
             'encoded_id' => 'string|hashid_is_valid:'.Route::class.'|required_without_all:id,search',
+            'draft' => 'nullable',
             'search' => 'required_without_all:encoded_id,id',
         ];
     }
@@ -53,10 +54,15 @@ class FetchRoute extends AbstractAction
             return $this->compileSearchQuery($query, $this->search)->first();
         }
 
+        $route = Route::with($this->resolveEagerRelations())
+        ->withCount($this->resolveRelationCounts());
+
+        if ($this->draft) {
+            $route = $route->withDrafted();
+        }
+
         try {
-            return Route::with($this->resolveEagerRelations())
-                ->withCount($this->resolveRelationCounts())
-                ->findOrFail($this->id);
+            return $route->findOrFail($this->id);
         } catch (ModelNotFoundException $e) {
             if (! $this->runningAs('controller')) {
                 throw $e;

@@ -1,0 +1,21 @@
+title: Country
+type: object
+properties:
+  id:
+    type: string
+  code:
+    type: string
+  name:
+    type: string
+  enabled:
+    type: boolean
+  format:
+    type: string
+  exchange_rate:
+    type: string
+  decimal_point:
+    type: string
+  thousand_point:
+    type: string
+  default:
+    type: boolean

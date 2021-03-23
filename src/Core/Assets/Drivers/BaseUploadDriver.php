@@ -88,7 +88,14 @@ abstract class BaseUploadDriver
         $source = GetCandy::assetSources()->getByHandle($model->settings['asset_source']);
         $asset = $this->prepare($data, $source);
         $data['file']->storeAs($asset->location, $asset->filename, $source->disk);
-        $model->assets()->save($asset);
+        $asset->save();
+        if ($model) {
+            $model->assets()->attach($asset, [
+                'primary' => ! $model->assets()->images()->exists(),
+                'assetable_type' => get_class($model),
+                'position' => $model->assets()->count() + 1,
+            ]);
+        }
 
         return $asset;
     }

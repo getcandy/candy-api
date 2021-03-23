@@ -6,7 +6,6 @@ use GetCandy;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Shipping\CreateRequest;
 use GetCandy\Api\Http\Requests\Shipping\UpdateRequest;
-use GetCandy\Api\Http\Resources\Shipping\ShippingMethodCollection;
 use GetCandy\Api\Http\Resources\Shipping\ShippingMethodResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
@@ -14,19 +13,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ShippingMethodController extends BaseController
 {
-    /**
-     * Returns a listing of shipping methods.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \GetCandy\Api\Http\Resources\Shipping\ShippingMethodCollection
-     */
-    public function index(Request $request)
-    {
-        $methods = GetCandy::shippingMethods()->getPaginatedData($request->per_page, $request->current_page);
-
-        return new ShippingMethodCollection($methods);
-    }
-
     /**
      * Handles the request to show a shipping method based on it's hashed ID.
      *

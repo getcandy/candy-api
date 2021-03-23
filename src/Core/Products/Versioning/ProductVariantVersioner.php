@@ -12,16 +12,6 @@ class ProductVariantVersioner extends AbstractVersioner implements VersionerInte
     public function create(Model $variant, $relationId = null)
     {
         $version = $this->createFromObject($variant, $relationId);
-
-        // Tiers
-        foreach ($variant->tiers ?? [] as $tier) {
-            $this->createFromObject($tier, $version->id);
-        }
-
-        // Prices
-        foreach ($variant->customerPricing as $price) {
-            $this->createFromObject($price, $version->id);
-        }
     }
 
     public function restore($version, $parent = null)

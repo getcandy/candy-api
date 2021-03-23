@@ -1,0 +1,13 @@
+get:
+  summary: Get user addresses
+  tags:
+    - User
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/UserAddressesResponse.yaml'
+  operationId: get-user-addresses
+  description: This will return any addresses associated to the current user

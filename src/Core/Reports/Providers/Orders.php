@@ -3,7 +3,9 @@
 namespace GetCandy\Api\Core\Reports\Providers;
 
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use DB;
+use GetCandy\Api\Core\Customers\Actions\FetchCustomerGroups;
 
 class Orders extends AbstractProvider
 {
@@ -13,28 +15,81 @@ class Orders extends AbstractProvider
         $labels = [];
 
         // Get all orders for the last six months.
-        $orders = $this->getOrderQuery()
+        $results = $this->getOrderQuery($this->from, $this->to)
             ->select(
                 DB::RAW('SUM(order_total) as order_total'),
                 DB::RAW('SUM(delivery_total) as delivery_total'),
                 DB::RAW('SUM(discount_total) as discount_total'),
                 DB::RAW('SUM(sub_total) as sub_total'),
                 DB::RAW('SUM(tax_total) as tax_total'),
-                DB::RAW("DATE_FORMAT(placed_at, '%M %Y') as month")
+                DB::RAW("DATE_FORMAT(placed_at, '%M') as month"),
+                DB::RAW("DATE_FORMAT(placed_at, '%Y') as year"),
+                DB::RAW("DATE_FORMAT(placed_at, '%Y%m') as monthstamp")
             )->groupBy(
                 DB::RAW("DATE_FORMAT(placed_at, '%Y-%m')")
             )->orderBy(DB::RAW("DATE_FORMAT(placed_at, '%Y-%m')"), 'desc')->get();
 
-        return $orders->map(function ($order) {
-            return [
-                'month' => $order->month,
-                'sub_total' => $order->sub_total,
-                'delivery_total' => $order->delivery_total,
-                'tax_total' => $order->tax_total,
-                'order_total' => $order->order_total,
-                'discount_total' => $order->discount_total,
-            ];
-        });
+        $currentPeriod = collect();
+        $period = CarbonPeriod::create($this->from, '1 month', $this->to);
+        foreach ($period as $date) {
+            // Find our records for this period.
+            $report = $results->first(function ($month) use ($date) {
+                return $month->monthstamp == $date->format('Ym');
+            });
+            if (! $report) {
+                $report = (object) [
+                    'order_total' => 0,
+                    'delivery_total' => 0,
+                    'discount_total' => 0,
+                    'sub_total' => 0,
+                    'month' => $date->format('F'),
+                    'year' => $date->format('Y'),
+                    'tax_total' => 0,
+                ];
+            }
+            $currentPeriod->push($report);
+        }
+
+        $results = $this->getOrderQuery($this->from->subYear(), $this->to->subYear())
+            ->select(
+                DB::RAW('SUM(order_total) as order_total'),
+                DB::RAW('SUM(delivery_total) as delivery_total'),
+                DB::RAW('SUM(discount_total) as discount_total'),
+                DB::RAW('SUM(sub_total) as sub_total'),
+                DB::RAW('SUM(tax_total) as tax_total'),
+                DB::RAW("DATE_FORMAT(placed_at, '%M') as month"),
+                DB::RAW("DATE_FORMAT(placed_at, '%Y') as year"),
+                DB::RAW("DATE_FORMAT(placed_at, '%Y%m') as monthstamp")
+            )->groupBy(
+                DB::RAW("DATE_FORMAT(placed_at, '%Y-%m')")
+            )->orderBy(DB::RAW("DATE_FORMAT(placed_at, '%Y-%m')"), 'desc')->get();
+
+        $previousPeriod = collect();
+        $period = CarbonPeriod::create($this->from, '1 month', $this->to);
+
+        foreach ($period as $date) {
+            // Find our records for this period.
+            $report = $results->first(function ($month) use ($date) {
+                return $month->monthstamp == $date->format('Ym');
+            });
+            if (! $report) {
+                $report = (object) [
+                    'order_total' => 0,
+                    'delivery_total' => 0,
+                    'discount_total' => 0,
+                    'sub_total' => 0,
+                    'month' => $date->format('F'),
+                    'year' => $date->format('Y'),
+                    'tax_total' => 0,
+                ];
+            }
+            $previousPeriod->push($report);
+        }
+
+        return [
+            'currentPeriod' => $currentPeriod,
+            'previousPeriod' => $previousPeriod,
+        ];
     }
 
     public function customers()
@@ -82,91 +137,102 @@ class Orders extends AbstractProvider
         $formats = $this->getDateFormat();
         $displayFormat = $formats['display'];
         $queryFormat = $formats['format'];
-        $orders = $this->getOrderQuery()
-            ->select(
-                DB::RAW('ROUND(AVG(order_total), 0) as order_total'),
-                DB::RAW('ROUND(AVG(delivery_total), 0) as delivery_total'),
-                DB::RAW('ROUND(AVG(discount_total), 0) as discount_total'),
-                DB::RAW('ROUND(AVG(sub_total), 0) as sub_total'),
-                DB::RAW('ROUND(AVG(tax_total), 0) as tax_total'),
-                DB::RAW("DATE_FORMAT(placed_at, '{$displayFormat}') as date")
-            )->groupBy(
-                DB::RAW("DATE_FORMAT(placed_at, '{$queryFormat}')")
-            )->orderBy(DB::RAW("DATE_FORMAT(placed_at, '%Y-%m')"), 'desc')->get();
 
-        return $orders->map(function ($order) {
-            return [
-                'date' => $order->date,
-                'sub_total' => $order->sub_total,
-                'delivery_total' => $order->delivery_total,
-                'tax_total' => $order->tax_total,
-                'order_total' => $order->order_total,
-                'discount_total' => $order->discount_total,
-            ];
+        // Get our customer groups.
+        $groups = FetchCustomerGroups::run([
+            'paginate' => false,
+        ]);
+
+        return $groups->mapWithKeys(function ($group) use ($queryFormat, $displayFormat) {
+            $query = $this->getOrderQuery();
+
+            $guestOrders = null;
+
+            if ($group->default) {
+                $guestOrders = $this->getOrderQuery()->whereNull('user_id')->select(
+                    DB::RAW('ROUND(AVG(order_total), 0) as order_total'),
+                    DB::RAW('ROUND(AVG(delivery_total), 0) as delivery_total'),
+                    DB::RAW('ROUND(AVG(discount_total), 0) as discount_total'),
+                    DB::RAW('ROUND(AVG(sub_total), 0) as sub_total'),
+                    DB::RAW('ROUND(AVG(tax_total), 0) as tax_total'),
+                    DB::RAW("DATE_FORMAT(placed_at, '{$displayFormat}') as date")
+                )->groupBy(
+                    DB::RAW("DATE_FORMAT(placed_at, '{$queryFormat}')")
+                )->orderBy(DB::RAW("DATE_FORMAT(placed_at, '%Y-%m')"), 'desc')->get();
+            }
+
+            $result = $this->getOrderQuery()->
+                join('users', 'users.id', '=', 'orders.user_id')
+                ->join('customers', 'customers.id', '=', 'users.customer_id')
+                ->join('customer_customer_group', function ($join) use ($group) {
+                    $join->on('customer_customer_group.customer_id', '=', 'customers.id')
+                        ->where('customer_customer_group.customer_group_id', '=', $group->id);
+                })
+                ->select(
+                    DB::RAW('ROUND(AVG(order_total), 0) as order_total'),
+                    DB::RAW('ROUND(AVG(delivery_total), 0) as delivery_total'),
+                    DB::RAW('ROUND(AVG(discount_total), 0) as discount_total'),
+                    DB::RAW('ROUND(AVG(sub_total), 0) as sub_total'),
+                    DB::RAW('ROUND(AVG(tax_total), 0) as tax_total'),
+                    DB::RAW("DATE_FORMAT(placed_at, '{$displayFormat}') as date")
+                )->groupBy(
+                    DB::RAW("DATE_FORMAT(placed_at, '{$queryFormat}')"),
+                    'customer_customer_group.customer_group_id'
+                )->orderBy(DB::RAW("DATE_FORMAT(placed_at, '%Y-%m')"), 'desc')->get();
+
+            return [$group->handle => [
+                'label' => $group->name,
+                'handle' => $group->handle,
+                'default' => $group->default,
+                'data' => $result->map(function ($order) use ($guestOrders) {
+                    $data = [
+                        'date' => $order->date,
+                        'sub_total' => (int) $order->sub_total,
+                        'delivery_total' => (int) $order->delivery_total,
+                        'tax_total' => (int) $order->tax_total,
+                        'order_total' => (int) $order->order_total,
+                        'discount_total' => (int) $order->discount_total,
+                    ];
+
+                    if ($guestOrders) {
+                        $period = $guestOrders->first(function ($orders) use ($order) {
+                            return $order->date == $orders->date;
+                        });
+                        if ($period) {
+                            $data['sub_total'] += $period->sub_total;
+                            $data['delivery_total'] += $period->delivery_total;
+                            $data['tax_total'] += $period->tax_total;
+                            $data['order_total'] += $period->order_total;
+                            $data['discount_total'] += $period->discount_total;
+                        }
+                    }
+
+                    return $data;
+                }),
+            ]];
         });
-    }
+        // $orders = $this->getOrderQuery()
+        //     ->select(
+        //         DB::RAW('ROUND(AVG(order_total), 0) as order_total'),
+        //         DB::RAW('ROUND(AVG(delivery_total), 0) as delivery_total'),
+        //         DB::RAW('ROUND(AVG(discount_total), 0) as discount_total'),
+        //         DB::RAW('ROUND(AVG(sub_total), 0) as sub_total'),
+        //         DB::RAW('ROUND(AVG(tax_total), 0) as tax_total'),
+        //         DB::RAW("DATE_FORMAT(placed_at, '{$displayFormat}') as date")
+        //     )->groupBy(
+        //         DB::RAW("DATE_FORMAT(placed_at, '{$queryFormat}')")
+        //     )->orderBy(DB::RAW("DATE_FORMAT(placed_at, '%Y-%m')"), 'desc')->get();
 
-    public function bestSellers($limit = 50)
-    {
-        $stats = DB::table('order_lines')
-            ->select(
-                DB::RAW('COUNT(*) as product_count'),
-                'description',
-                'sku',
-                DB::RAW("DATE_FORMAT(placed_at, '%Y-%m-01') as month")
-            )
-            ->join('orders', 'orders.id', '=', 'order_lines.order_id')
-            ->whereIsManual(0)
-            ->whereIsShipping(0)
-            ->whereNotNull('placed_at')
-            ->whereBetween('placed_at', [
-                $this->from,
-                $this->to,
-            ])->orderBy(
-                DB::RAW('COUNT(*)'), 'desc'
-            )->groupBy(
-                'sku',
-                DB::RAW("DATE_FORMAT(placed_at, '%Y-%m')")
-            );
-
-        $result = $stats->get()
-            ->groupBy('month')
-            ->sortKeysDesc()
-            ->mapWithKeys(function ($rows, $month) {
-                return [
-                    Carbon::createFromFormat('Y-m-d', $month)->toIsoString() => [
-                        'products' => $rows->slice(0, 10),
-                    ],
-                ];
-            });
-
-        // $products = collect();
-
-        // /**
-        //  *  [
-        //  *   product => 'Screw',
-        //  *   sku => 1231234
-        //  *   months => []
-        //  * ]
-        //  *
-        //  */
-        // foreach ($result as $month) {
-        //    foreach ($month['products'] as $product) {
-        //        if (empty($products[$product->sku])) {
-        //            $products[$product->sku] = [
-        //                'product' => $product->description,
-        //                'sku' => $product->sku,
-        //                'months' => collect(),
-        //            ];
-        //        }
-        //        $products[$product->sku]['months']->push([
-        //            'month' => Carbon::createFromFormat('Y-m-d', $product->month)->toIsoString(),
-        //            'count' => $product->product_count,
-        //        ]);
-        //    }
-        // }
-
-        return $result;
+        // return $orders->map(function ($order) {
+        //     return [
+        //         'date' => $order->date,
+        //         'sub_total' => $order->sub_total,
+        //         'delivery_total' => $order->delivery_total,
+        //         'tax_total' => $order->tax_total,
+        //         'order_total' => $order->order_total,
+        //         'discount_total' => $order->discount_total,
+        //     ];
+        // });
     }
 
     public function metrics()

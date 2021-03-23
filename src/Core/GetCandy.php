@@ -54,6 +54,13 @@ class GetCandy
         })->version;
     }
 
+    public static function maxUploadSize()
+    {
+        $max_upload = min((int) ini_get('post_max_size'), (int) ini_get('upload_max_filesize'));
+
+        return $max_upload * 1024;
+    }
+
     /**
      * Sets whether it's a Hub request or not.
      *

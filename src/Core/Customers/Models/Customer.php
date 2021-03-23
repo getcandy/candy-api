@@ -24,7 +24,7 @@ class Customer extends BaseModel
 
     public function customerGroups()
     {
-        return $this->belongsToMany(CustomerGroup::class);
+        return $this->belongsToMany(CustomerGroup::class)->withTimestamps();
     }
 
     public function getFullNameAttribute()

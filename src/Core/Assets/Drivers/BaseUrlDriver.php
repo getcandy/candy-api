@@ -66,24 +66,6 @@ abstract class BaseUrlDriver
 
         $asset->save();
 
-        if ($model) {
-            if ($model->assets()->count()) {
-                // Get anything that isn't an "application";
-                $image = $model->assets()->where('kind', '!=', 'application')->first();
-                if (! $image) {
-                    $asset->primary = true;
-                }
-            } else {
-                $asset->primary = true;
-            }
-            $asset->save();
-            $model->assets()->attach($asset, [
-                'primary' => ! $model->assets()->images()->exists(),
-                'assetable_type' => get_class($model),
-                'position' => $model->assets()->count() + 1,
-            ]);
-        }
-
         dispatch(new GenerateTransforms($asset));
 
         return $asset;

@@ -17,12 +17,15 @@ class FetchLangugesTest extends TestCase
 
         $languageA = factory(Language::class)->create([
             'default' => false,
+            'code' => 'en-a',
         ]);
         $languageB = factory(Language::class)->create([
             'default' => true,
+            'code' => 'en-b',
         ]);
         $languageC = factory(Language::class)->create([
             'default' => false,
+            'code' => 'en-c',
         ]);
 
         $languages = FetchLanguages::run([
@@ -56,29 +59,25 @@ class FetchLangugesTest extends TestCase
         $user = $this->admin();
 
         $languageA = factory(Language::class)->create([
-            'lang' => 'en',
-            'iso' => 'gba',
+            'code' => 'gba',
             'enabled' => true,
         ]);
         $languageB = factory(Language::class)->create([
-            'lang' => 'sk',
-            'iso' => 'sk',
+            'code' => 'sk',
             'enabled' => true,
         ]);
         $languageC = factory(Language::class)->create([
-            'lang' => 'dk',
-            'iso' => 'dk',
+            'code' => 'dk',
             'enabled' => true,
         ]);
-
         $languages = FetchLanguages::run([
             'paginate' => false,
             'search' => [
-                'lang' => ['en', 'sk'],
+                'code' => ['en', 'sk'],
             ],
         ]);
 
-        $test = Language::whereIn('lang', ['en', 'sk'])->count();
+        $test = Language::whereIn('code', ['en', 'sk'])->count();
 
         $this->assertEquals($test, $languages->count());
     }

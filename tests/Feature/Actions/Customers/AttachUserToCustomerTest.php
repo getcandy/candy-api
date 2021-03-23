@@ -7,7 +7,7 @@ use Tests\Feature\FeatureCase;
 use Tests\Stubs\User;
 
 /**
- * @group foo
+ * @group customers
  */
 class AttachUserToCustomerTest extends FeatureCase
 {

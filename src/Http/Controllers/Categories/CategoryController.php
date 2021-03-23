@@ -61,23 +61,6 @@ class CategoryController extends BaseController
         return new CategoryCollection($query->get());
     }
 
-    public function createDraft($id, Request $request)
-    {
-        $id = Hashids::connection('main')->decode($id);
-        if (empty($id[0])) {
-            return $this->errorNotFound();
-        }
-        $category = $this->service->findById($id[0], [], false);
-
-        if (! $category) {
-            return $this->errorNotFound();
-        }
-
-        $draft = \Drafting::with('categories')->firstOrCreate($category);
-
-        return new CategoryResource($draft->load($this->parseIncludes($request->include)));
-    }
-
     public function show($id, Request $request)
     {
         $id = (new Category)->decodeId($id);
@@ -194,9 +177,15 @@ class CategoryController extends BaseController
         }
         $category = $this->service->findById($id[0], [], true);
 
-        \DB::transaction(function () use ($category) {
-            Drafting::with('categories')->publish($category);
-        });
+        if (! $category) {
+            return $this->errorNotFound();
+        }
+
+        if (! $category->drafted_at) {
+            return $this->errorUnprocessable('Category is not a draft');
+        }
+
+        $category = Drafting::with('categories')->publish($category);
 
         return new CategoryResource($category->load($this->parseIncludes($request->include)));
     }
