@@ -2,12 +2,12 @@
 
 namespace GetCandy\Api\Core\RecycleBin\Services;
 
-use GetCandy\Api\Core\Products\Models\Product;
-use GetCandy\Api\Core\RecycleBin\Models\RecycleBin;
-use GetCandy\Api\Core\Search\Events\IndexableSavedEvent;
 use GetCandy\Api\Core\Channels\Actions\FetchCurrentChannel;
 use GetCandy\Api\Core\Languages\Actions\FetchDefaultLanguage;
+use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\RecycleBin\Interfaces\RecycleBinServiceInterface;
+use GetCandy\Api\Core\RecycleBin\Models\RecycleBin;
+use GetCandy\Api\Core\Search\Events\IndexableSavedEvent;
 
 class RecycleBinService implements RecycleBinServiceInterface
 {
@@ -25,9 +25,9 @@ class RecycleBinService implements RecycleBinServiceInterface
         $channel = FetchCurrentChannel::run();
         $language = FetchDefaultLanguage::run();
         $query = RecycleBin::whereHasMorph('recyclable', [
-            Product::class
+            Product::class,
         ], function ($query, $type) use ($term, $channel, $language) {
-            if (!$term) {
+            if (! $term) {
                 return;
             }
             if ($type == Product::class) {

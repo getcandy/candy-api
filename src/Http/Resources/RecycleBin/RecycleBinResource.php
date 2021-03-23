@@ -16,7 +16,7 @@ class RecycleBinResource extends JsonResource
             'thumbnail' => $this->recyclable->getRecycleThumbnail(),
             'deleted_at' => $this->recyclable->deleted_at,
             'recyclable' => $this->whenLoaded('recyclable', [
-                'data' => new DynamicResource($this->recyclable)
+                'data' => new DynamicResource($this->recyclable),
             ]),
         ];
     }

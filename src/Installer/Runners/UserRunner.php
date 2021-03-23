@@ -3,10 +3,10 @@
 namespace GetCandy\Api\Installer\Runners;
 
 use DB;
-use Spatie\Permission\Models\Role;
 use GetCandy\Api\Core\Customers\Models\Customer;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 use GetCandy\Api\Installer\Contracts\InstallRunnerContract;
+use Spatie\Permission\Models\Role;
 
 class UserRunner extends AbstractRunner implements InstallRunnerContract
 {
