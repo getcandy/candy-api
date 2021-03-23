@@ -3,18 +3,18 @@
 namespace GetCandy\Api\Core\Categories\Services;
 
 use GetCandy;
+use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
+use GetCandy\Api\Core\Categories\Events\CategoryStoredEvent;
+use GetCandy\Api\Core\Categories\Models\Category;
+use GetCandy\Api\Core\Channels\Models\Channel;
+use GetCandy\Api\Core\Customers\Actions\FetchCustomerGroup;
+use GetCandy\Api\Core\Customers\Models\CustomerGroup;
+use GetCandy\Api\Core\Languages\Actions\FetchDefaultLanguage;
+use GetCandy\Api\Core\Routes\Actions\CreateRoute;
 use GetCandy\Api\Core\Routes\Models\Route;
 use GetCandy\Api\Core\Scaffold\BaseService;
-use GetCandy\Api\Core\Channels\Models\Channel;
-use GetCandy\Api\Core\Categories\Models\Category;
-use GetCandy\Api\Core\Routes\Actions\CreateRoute;
 use GetCandy\Api\Core\Search\Actions\IndexObjects;
-use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 use GetCandy\Api\Core\Search\Events\IndexableSavedEvent;
-use GetCandy\Api\Core\Customers\Actions\FetchCustomerGroup;
-use GetCandy\Api\Core\Categories\Events\CategoryStoredEvent;
-use GetCandy\Api\Core\Languages\Actions\FetchDefaultLanguage;
-use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
 
 class CategoryService extends BaseService
 {
