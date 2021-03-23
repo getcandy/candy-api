@@ -5,6 +5,7 @@ namespace GetCandy\Api\Installer\Runners;
 use DB;
 use Spatie\Permission\Models\Role;
 use GetCandy\Api\Core\Customers\Models\Customer;
+use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 use GetCandy\Api\Installer\Contracts\InstallRunnerContract;
 
 class UserRunner extends AbstractRunner implements InstallRunnerContract
@@ -61,11 +62,15 @@ class UserRunner extends AbstractRunner implements InstallRunnerContract
             'name' => $name,
             'email' => $email,
         ]);
-        
+
+        $defaultCustomerGroup = CustomerGroup::whereDefault(true)->first();
+
         $customer = Customer::create([
             'firstname' => $nameParts[0],
             'lastname' => $nameParts[1] ?? null,
         ]);
+
+        $customer->customerGroups()->attach($defaultCustomerGroup);
 
         $user->customer_id = $customer->id;
         $user->save();
