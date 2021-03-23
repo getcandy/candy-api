@@ -2,68 +2,7 @@
 ## 0.12.0
 ### Upgrading
 
-Update the composer package
-
-```bash
-$ composer update @getcandy/candy-api
-```
-
-```bash
-$ php artisan migrate
-```
-
-### High Impact Changes
-
-#### Maintenance Migrations
-
-Some columns have been added/removed from the database. The tables/columns affected are:
-
-- `orders`
-    - Removed `company_name` column as it wasn't being used and we have other columns for that now
-    - Added `billing_company_name` and `shipping_company_name` columns.
-- `countries`
-    - Remove `country` column in favour of a `country_id` relationship
-
-#### Eager loading relations for the current user
-
-Previously when returning the current user via `users/current` there was some hard coded includes, this has been replaced to allow the `include` query parameter.
-You should update any calls to this endpoint if you rely on included resources. The previous default includes were:
-
-```php
-['addresses.country', 'roles.permissions', 'customer', 'savedBaskets.basket.lines']
-```
-
-### Drafting has changed
-
-The way drafting previously worked has now been refactored to be less destructive. You should reindex your products before going back into the hub to get everything in sync.
-
-You can do this by running `php artisan candy:products:reindex` and `php artisan candy:categories:reindex`
-
-### Route searching
-
-The way you search for routes has changed on the API. We have removed the `path` column and also the `locale` column in favour of a `language_id` relation.
-
-When you search for a route, previously you would do something like:
-```javascript
-const { data } = await axios('routes/search', {
-    params: {
-        slug: 'slug-for-the-product',
-        path: null,
-        include: 'element'
-    }
-})
-```
-This should now be changed to:
-```javascript
-const { data } = await axios('routes/search', {
-    params: {
-        slug: 'slug-for-the-product',
-        language_code: 'en',
-        element_type: 'product',
-        include: 'element'
-    }
-})
-```
+For a full guide on how to upgrade, see the [full documentation](https://docs.getcandy.io/api/prologue/upgrading.html#v0-12).
 
 ### 🐞 Fixes
 - Fixed an issue that was causing a indefinite wildcard search on products
@@ -75,6 +14,7 @@ const { data } = await axios('routes/search', {
 - Fixed and issue where the indexable event wasn't being triggered when publishing a resource
 - Fixes to drafting and publishing of resources
 - Fixed an issue where `path` wasn't updating when updating a route
+- Fixed an issue where the customer was not attached to the initial user on install
 
 ### ⭐ Improvements
 
