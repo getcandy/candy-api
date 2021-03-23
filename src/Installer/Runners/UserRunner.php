@@ -3,8 +3,9 @@
 namespace GetCandy\Api\Installer\Runners;
 
 use DB;
-use GetCandy\Api\Installer\Contracts\InstallRunnerContract;
 use Spatie\Permission\Models\Role;
+use GetCandy\Api\Core\Customers\Models\Customer;
+use GetCandy\Api\Installer\Contracts\InstallRunnerContract;
 
 class UserRunner extends AbstractRunner implements InstallRunnerContract
 {
@@ -60,12 +61,14 @@ class UserRunner extends AbstractRunner implements InstallRunnerContract
             'name' => $name,
             'email' => $email,
         ]);
-
-        $user->save();
-        $user->customer()->updateOrCreate([
+        
+        $customer = Customer::create([
             'firstname' => $nameParts[0],
             'lastname' => $nameParts[1] ?? null,
         ]);
+
+        $user->customer_id = $customer->id;
+        $user->save();
 
         return $user;
     }
