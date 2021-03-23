@@ -37,7 +37,7 @@ You should update any calls to this endpoint if you rely on included resources. 
 
 The way drafting previously worked has now been refactored to be less destructive. You should reindex your products before going back into the hub to get everything in sync.
 
-You can do this by running `php artisan candy:products:reindex` and `php artisan candy:categories:reindex`H
+You can do this by running `php artisan candy:products:reindex` and `php artisan candy:categories:reindex`
 
 ### Route searching
 
