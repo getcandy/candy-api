@@ -251,6 +251,8 @@ paths:
     $ref: './recycle-bin/paths/recycle-bin.yaml'
   '/recycle-bin/{itemId}':
     $ref: './recycle-bin/paths/recycle-bin.id.yaml'
+  '/recycle-bin/{itemId}/restore':
+    $ref: './recycle-bin/paths/recycle-bin.id.restore.yaml'
   '/reports/sales':
     $ref: './reports/paths/reports.sales.yaml'
   '/reports/customers/spending':
