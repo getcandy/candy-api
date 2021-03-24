@@ -30,7 +30,8 @@ class ProductDrafter extends BaseDrafter implements DrafterInterface
             $parent = $parent->load([
                 'variants',
                 'categories',
-                'routes',
+                'routes.publishedParent',
+                'routes.draft',
                 'channels',
                 'customerGroups',
             ]);
@@ -62,7 +63,8 @@ class ProductDrafter extends BaseDrafter implements DrafterInterface
             return $draft->refresh()->load([
                 'variants.publishedParent',
                 'categories',
-                'routes',
+                'routes.publishedParent',
+                'routes.draft',
                 'channels',
                 'customerGroups',
             ]);
