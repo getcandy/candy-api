@@ -36,6 +36,15 @@ class PublishRoutes extends AbstractAction
      */
     public function handle()
     {
+        /**
+         * We need to determine if we have removed any routes during the draft period
+         * and if we have, we need to remove them from the parent.
+         */
+        $draftIds = $this->draft->routes->pluck('draft_parent_id');
+        $existing = $this->parent->routes->pluck('id');
+
+        $this->parent->routes()->whereIn('id', $existing->diff($draftIds))->delete();
+
         foreach ($this->draft->routes as $route) {
             // dd($route->publishedParent);
             if ($route->publishedParent) {
