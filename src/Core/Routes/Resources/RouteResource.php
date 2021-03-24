@@ -24,6 +24,8 @@ class RouteResource extends AbstractResource
     {
         return [
             'language' => $this->include('language', LanguageResource::class),
+            'draft' => $this->include('draft', self::class),
+            'published_parent' => $this->include('publishedParent', self::class),
             'element' => $this->whenLoaded('element', function () {
                 // Need to guess the element
                 $class = class_basename(get_class($this->element));
