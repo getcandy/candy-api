@@ -14,7 +14,15 @@ class RefactorRoutesTable extends Migration
     public function up()
     {
         $languages = DB::table('routes')->groupBy('locale')->pluck('locale')->mapWithKeys(function ($locale) {
-            return [$locale => Language::whereCode($locale)->first()];
+            $language = Language::whereCode($locale)->first();
+
+            // If we can't find a language, then we use the first one we can get hold of.
+            // Routes will need a language id.
+            if (!$language) {
+                $language = Language::whereDefault(true)->first();
+            }
+
+            return [$locale => $language];
         });
 
         Schema::table('routes', function (Blueprint $table) {

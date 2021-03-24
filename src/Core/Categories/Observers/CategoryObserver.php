@@ -29,6 +29,9 @@ class CategoryObserver
      */
     public function deleted(Category $category)
     {
+        $category->channels()->detach();
+        $category->assets()->detach();
+        $category->routes()->forceDelete();
         $driver = $this->search->with(config('getcandy.search.driver'));
         $driver->delete($category);
     }

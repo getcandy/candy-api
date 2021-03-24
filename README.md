@@ -10,7 +10,7 @@ Build amazing online stores with full control over functionality and user experi
 
 ## 📖 Documentation
 
-For installation instructions and usage details, please take a look at the **[official guides](https://guides.getcandy.io/)**.
+For installation instructions and usage details, please take a look at the **[official guides](https://docs.getcandy.io/)**.
 
 ## 📄 License
 GetCandy API is open-sourced software licensed under the [Apache License 2.0](LICENSE)
