@@ -1,0 +1,14 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Feature Request
+    url: https://github.com/getcandy/candy-api/discussions/categories/ideas
+    about: 'Suggest any ideas you have using our discussion forums.'
+  - name: Help
+    url: https://github.com/getcandy/candy-api/discussions/categories/help
+    about: 'If you have a question or need help, ask a question on the discussion forums.'
+  - name: Documentation Issue
+    url: https://github.com/getcandy/docs
+    about: 'For documentation issues, suggest changes on our documentation repository.'
+  - name: Kind Words
+    url: https://github.com/getcandy/candy-api/discussions/categories/kind-words
+    about: "Have something nice to say about GetCandy? We'd love to hear it!"
