@@ -18,7 +18,7 @@ class RefactorRoutesTable extends Migration
 
             // If we can't find a language, then we use the first one we can get hold of.
             // Routes will need a language id.
-            if (!$language) {
+            if (! $language) {
                 $language = Language::whereDefault(true)->first();
             }
 
