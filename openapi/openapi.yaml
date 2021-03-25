@@ -324,6 +324,43 @@ paths:
   '/versions/{modelId}/restore':
     $ref: './versions/paths/versions.id.restore.yaml'
 tags:
+  - name: Assets
+    description: |-
+      ### Available Includes
+      | Include | Description |
+      | ----- | --- |
+      | `transforms` | Any asset transforms, such as thumbnails |
+      | `tags` | Any associated tags |
+  - name: Categories
+    description: |-
+      ### Available Includes
+      | Include | Description |
+      | ----- | --- |
+      | `attributes` | The attributes related to the product |
+      | `assets` | The assets related to the category |
+      | `children` | Any child categories |
+      | `draft` | The draft resource for the category (if it exists) |
+      | `layout` | The associated layout resource |
+      | `publishedParent` | If this category is a draft, this will be the published (live) version |
+      | `assets` | Any assets related to the product |
+      | `routes` | The category's routes |
+      | `channels` | The channels related to the category |
+      | `primaryAsset` | Returns the primary asset if it exists |
+      | `versions` | The past versions of this category |
+      | `customerGroups` | The associated customer groups |
+  - name: Collections
+    description: |-
+      ### Available Includes
+      | Include | Description |
+      | ----- | --- |
+      | `attributes` | The attributes related to the collection |
+      | `assets` | The assets related to the collection |
+      | `routes` | The collection's routes |
+      | `layout` | The layout assigned to the collection |
+      | `channels` | The channels related to the collection |
+      | `assets` | The channels related to the collection |
+      | `customerGroups` | The associated customer groups |
+      | `products` | The products that belong to the collection |
   - name: Routes
     description: |-
       ### Available Includes
@@ -339,6 +376,7 @@ tags:
       | Include | Description |
       | ----- | --- |
       | `attributes` | The attributes related to the product |
+      | `assets` | The assets related to the product |
       | `draft` | The draft resource for the product (if it exists) |
       | `layout` | The associated layout resource |
       | `publishedParent` | If this product is a draft, this will be the published (live) version |
