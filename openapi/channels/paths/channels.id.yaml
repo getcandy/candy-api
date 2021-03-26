@@ -6,10 +6,6 @@ parameters:
     required: true
 get:
   summary: Get the channel resource
-  x-code-samples:
-    - lang: PHP
-      source:
-        $ref: ../examples/code/fetch-channel/laravel.php
   responses:
     '200':
       description: OK
@@ -45,7 +41,7 @@ put:
   operationId: put-channels-channelId
   requestBody:
     content:
-      multipart/form-data:
+      application/json:
         schema:
           $ref: '../requests/UpdateChannelBody.yaml'
     description: ''

@@ -36,7 +36,6 @@ post:
       application/json:
         schema:
           $ref: '../requests/CreateChannelBody.yaml'
-        examples: {}
     description: ''
   tags:
     - Channels

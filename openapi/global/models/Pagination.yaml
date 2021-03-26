@@ -16,6 +16,7 @@ properties:
     example: 15
   path:
     type: string
+    example: http:\/\/api.test\/api\/v1\/channels
   per_page:
     type: integer
     example: 1
@@ -26,6 +27,23 @@ properties:
     type: integer
   links:
     type: array
+    example: [
+      {
+        "url": null,
+        "label": "&laquo; Previous",
+        "active": false
+      },
+      {
+        "url": "http:\/\/api.test\/api\/v1\/channels?page=1",
+        "label": "1",
+        "active": true
+      },
+      {
+        "url": null,
+        "label": "Next &raquo;",
+        "active": false
+      }
+    ]
     items:
       type: object
       properties:
