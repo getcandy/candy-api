@@ -12,10 +12,10 @@ properties:
     example: 'status-update'
   properties:
     type: object
-    example: '{
+    example: {
       "previous": "payment-received",
       "new": "refunded"
-    }'
+    }
   created_at:
     type: string
     example: '2020-03-24T10:11:12.000000Z'
