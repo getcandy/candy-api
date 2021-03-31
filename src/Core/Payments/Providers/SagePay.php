@@ -2,19 +2,19 @@
 
 namespace GetCandy\Api\Core\Payments\Providers;
 
-use Carbon\Carbon;
+use Log;
 use GetCandy;
-use GetCandy\Api\Core\Payments\Events\PaymentAttemptedEvent;
-use GetCandy\Api\Core\Payments\Events\PaymentFailedEvent;
-use GetCandy\Api\Core\Payments\Events\ThreeDSecureAttemptEvent;
-use GetCandy\Api\Core\Payments\Events\TransactionFetchedEvent;
-use GetCandy\Api\Core\Payments\Models\ReusablePayment;
-use GetCandy\Api\Core\Payments\Models\Transaction;
-use GetCandy\Api\Core\Payments\PaymentResponse;
-use GetCandy\Api\Core\Payments\ThreeDSecureResponse;
+use Carbon\Carbon;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
-use Log;
+use GetCandy\Api\Core\Payments\PaymentResponse;
+use GetCandy\Api\Core\Payments\Models\Transaction;
+use GetCandy\Api\Core\Payments\ThreeDSecureResponse;
+use GetCandy\Api\Core\Payments\Events\PaymentFailedEvent;
+use GetCandy\Api\Core\Payments\Events\PaymentAttemptedEvent;
+use GetCandy\Api\Core\Payments\Events\TransactionFetchedEvent;
+use GetCandy\Api\Core\ReusablePayments\Models\ReusablePayment;
+use GetCandy\Api\Core\Payments\Events\ThreeDSecureAttemptEvent;
 
 class SagePay extends AbstractProvider
 {
