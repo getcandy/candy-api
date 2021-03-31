@@ -42,7 +42,7 @@ class OrderNotification implements ShouldQueue
 
         $emails = [$contactEmail];
 
-        if ($this->order->shipping_email != $this->order->billing_email) {
+        if ($this->order->shipping_email && ($this->order->shipping_email != $this->order->billing_email)) {
             $emails[] = $this->order->shipping_email;
         }
 
@@ -51,6 +51,7 @@ class OrderNotification implements ShouldQueue
         foreach ($this->content as $key => $value) {
             $mailer->with($key, $value);
         }
+
         if ($mailQueue = config('getcandy.mail.queue', null)) {
             Mail::to($emails)->queue($mailer->onQueue($mailQueue));
         } else {
