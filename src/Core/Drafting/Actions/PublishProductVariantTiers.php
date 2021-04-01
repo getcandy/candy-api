@@ -36,21 +36,15 @@ class PublishProductVariantTiers extends AbstractAction
      */
     public function handle()
     {
-        foreach ($this->draft->tiers as $incoming) {
-            $existing = $this->parent->tiers->first(function ($existing) use ($incoming) {
-                return $existing->customer_group_id === $incoming->customer_group_id;
-            });
-            if ($existing) {
-                $existing->update(
-                    collect($incoming->toArray())->except(['id', 'product_variant_id'])->toArray()
-                );
-                $incoming->forceDelete();
-                continue;
-            }
-            $incoming->update([
+        $skus = collect([]);
+
+        $this->parent->tiers()->delete();
+
+        $this->draft->tiers->each(function ($tier) {
+            $tier->update([
                 'product_variant_id' => $this->parent->id,
             ]);
-        }
+        });
 
         return $this->parent;
     }
