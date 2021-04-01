@@ -21,19 +21,19 @@ class AssetController extends BaseController
 
         $directory = 'uploads/'.Carbon::now()->format('d/m');
 
-        $path = $file->store($directory, 'public');
+        $path = $file->store($directory, $request->disk ?: 'public');
         $thumbnail = null;
 
         // You can't transform a PDF so...
         try {
-            $image = Image::make(Storage::disk('public')->get($path));
+            $image = Image::make(Storage::disk($request->disk ?: 'public')->get($path));
             $type = pathinfo($path, PATHINFO_EXTENSION);
             $filename = basename($path, ".{$type}");
             $image->resize(null, 300, function ($constraint) {
                 $constraint->aspectRatio();
             });
             $thumbnail = "{$directory}/thumbnails/{$filename}.{$type}";
-            Storage::disk('public')->put(
+            Storage::disk($request->disk ?: 'public')->put(
                 $thumbnail,
                 $image->stream($type, 100)->getContents()
             );
