@@ -19,7 +19,7 @@ class AssetController extends BaseController
     {
         $file = $request->file('file');
 
-        $directory = 'uploads/'.Carbon::now()->format('d/m');
+        $directory = ($request->path ?: 'uploads').'/'.Carbon::now()->format('d/m');
 
         $path = $file->store($directory, $request->disk ?: 'public');
         $thumbnail = null;
