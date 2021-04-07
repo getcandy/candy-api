@@ -150,7 +150,7 @@ class ShippingMethodService extends BaseService
         // Get the zones for this order...
         $order = GetCandy::orders()->getByHashedId($orderId);
         $zones = GetCandy::shippingZones()->getByCountryName($order->shipping_details['country']);
-        $basket = $order->basket;
+        $basket = $this->baskets->getForOrder($order);
         $calculator = new ShippingCalculator(app());
 
         $options = [];
