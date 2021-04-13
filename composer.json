@@ -5,7 +5,7 @@
     "license": "MIT",
     "type": "project",
     "require": {
-        "php": "^7.3",
+        "php": "^7.3|^8.0",
         "alaouy/youtube": "^2.2",
         "barryvdh/laravel-dompdf": "^0.8.7",
         "spatie/laravel-activitylog": "3.16.*",
@@ -16,7 +16,7 @@
         "laravel/framework": "^8.0",
         "ralphschindler/basic-query-filter": "0.1.0",
         "laravel/ui": "^3.0",
-        "doctrine/dbal": "2.9.2",
+        "doctrine/dbal": "^3.0",
         "ruflin/elastica": "^7.0",
         "spatie/laravel-permission": "^3.17",
         "supportpal/accept-language-parser": "^0.1",
@@ -30,13 +30,13 @@
         "guzzlehttp/guzzle": "^7.2.0"
     },
     "require-dev": {
-        "fzaninotto/faker": "~1.4",
+        "fakerphp/faker": "^1.9.1",
         "mockery/mockery": "~1.0",
         "filp/whoops": "~2.0",
         "orchestra/testbench": "^6.6",
-        "league/openapi-psr7-validator": "^0.7",
+        "league/openapi-psr7-validator": "^0.15",
         "neondigital/laravel-openapi-validator": "^0.1",
-        "brianium/paratest": "^4.1",
+        "brianium/paratest": "^6.2",
         "phpunit/phpunit": "^9.5"
     },
     "autoload": {
