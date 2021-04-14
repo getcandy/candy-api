@@ -38,7 +38,7 @@ class AttributeControllerTest extends FeatureCase
         $this->createAttribute();
 
         $response = $this->actingAs($user)->json('GET', 'attributes');
-        
+
         $response->assertStatus(200);
         $this->assertResponseValid($response, '/attributes');
     }
