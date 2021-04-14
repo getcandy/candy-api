@@ -31,28 +31,28 @@ class AttributeControllerTest extends FeatureCase
         ]);
     }
 
-    // public function test_can_list_all_attributes()
-    // {
-    //     $user = $this->admin();
+    public function test_can_list_all_attributes()
+    {
+        $user = $this->admin();
 
-    //     $this->createAttribute();
+        $this->createAttribute();
 
-    //     $response = $this->actingAs($user)->json('GET', 'attributes');
+        $response = $this->actingAs($user)->json('GET', 'attributes');
 
-    //     $response->assertStatus(200);
-    //     $this->assertResponseValid($response, '/attributes');
-    // }
+        $response->assertStatus(200);
+        $this->assertResponseValid($response, '/attributes');
+    }
 
-    // public function test_can_show_a_attribute_by_id()
-    // {
-    //     $user = $this->admin();
-    //     $this->createAttribute();
-    //     $attributeId = Attribute::first()->encodedId();
-    //     $response = $this->actingAs($user)->json('GET', "attributes/{$attributeId}");
-    //     $response->assertStatus(200);
+    public function test_can_show_a_attribute_by_id()
+    {
+        $user = $this->admin();
+        $this->createAttribute();
+        $attributeId = Attribute::first()->encodedId();
+        $response = $this->actingAs($user)->json('GET', "attributes/{$attributeId}");
+        $response->assertStatus(200);
 
-    //     $this->assertResponseValid($response, '/attributes/{attributeId}');
-    // }
+        $this->assertResponseValid($response, '/attributes/{attributeId}');
+    }
 
     public function test_missing_shows_appropriate_response()
     {
@@ -64,24 +64,24 @@ class AttributeControllerTest extends FeatureCase
         $this->assertResponseValid($response, '/attributes/{attributeId}');
     }
 
-    // public function test_can_update_an_attribute()
-    // {
-    //     $user = $this->admin();
-    //     $this->createAttribute();
-    //     $attribute = Attribute::first();
-    //     $attributeId = $attribute->encodedId();
-    //     $response = $this->actingAs($user)->json('PUT', "attributes/{$attributeId}", [
-    //         'name' => [
-    //             'en' => 'Updated test attribute',
-    //         ],
-    //     ]);
-    //     $response->assertStatus(200);
+    public function test_can_update_an_attribute()
+    {
+        $user = $this->admin();
+        $this->createAttribute();
+        $attribute = Attribute::first();
+        $attributeId = $attribute->encodedId();
+        $response = $this->actingAs($user)->json('PUT', "attributes/{$attributeId}", [
+            'name' => [
+                'en' => 'Updated test attribute',
+            ],
+        ]);
+        $response->assertStatus(200);
 
-    //     $name = $attribute->refresh()->name;
-    //     $this->assertEquals('Updated test attribute', $name['en']);
+        $name = $attribute->refresh()->name;
+        $this->assertEquals('Updated test attribute', $name['en']);
 
-    //     $this->assertResponseValid($response, '/attributes/{attributeId}', 'put');
-    // }
+        $this->assertResponseValid($response, '/attributes/{attributeId}', 'put');
+    }
 
     public function test_validation_works_on_update()
     {
@@ -122,27 +122,27 @@ class AttributeControllerTest extends FeatureCase
         ]);
     }
 
-    // public function test_can_create_attribute()
-    // {
-    //     $user = $this->admin();
-    //     $group = AttributeGroup::forceCreate([
-    //         'name' => [
-    //             'en' => 'Test attribute group',
-    //         ],
-    //         'handle' => 'test-attribute-group',
-    //         'position' => 1,
-    //     ]);
+    public function test_can_create_attribute()
+    {
+        $user = $this->admin();
+        $group = AttributeGroup::forceCreate([
+            'name' => [
+                'en' => 'Test attribute group',
+            ],
+            'handle' => 'test-attribute-group',
+            'position' => 1,
+        ]);
 
-    //     $groupId = AttributeGroup::first()->encodedId();
-    //     $response = $this->actingAs($user)->json('POST', 'attributes', [
-    //         'name' => [
-    //             'en' => 'Another attribute',
-    //         ],
-    //         'handle' => 'another-attribute',
-    //         'group_id' => $groupId,
-    //     ]);
+        $groupId = AttributeGroup::first()->encodedId();
+        $response = $this->actingAs($user)->json('POST', 'attributes', [
+            'name' => [
+                'en' => 'Another attribute',
+            ],
+            'handle' => 'another-attribute',
+            'group_id' => $groupId,
+        ]);
 
-    //     $response->assertStatus(201);
-    //     $this->assertResponseValid($response, '/attributes', 'post');
-    // }
+        $response->assertStatus(201);
+        $this->assertResponseValid($response, '/attributes', 'post');
+    }
 }
