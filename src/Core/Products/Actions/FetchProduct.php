@@ -29,8 +29,8 @@ class FetchProduct extends AbstractAction
     public function rules(): array
     {
         return [
-            'id' => 'integer|required_without:encoded_id',
-            'encoded_id' => 'string|hashid_is_valid:'.Product::class.'|required_without:id',
+            'id' => 'integer|required_without_all:encoded_id,sku',
+            'encoded_id' => 'string|hashid_is_valid:'.Product::class.'|required_without_all:id,sku',
             'sku' => 'nullable|string',
             'draft' => 'nullable|boolean',
         ];
@@ -60,7 +60,6 @@ class FetchProduct extends AbstractAction
                 $query->whereSku($this->sku);
             })->first();
         }
-
         return $query->find($this->id);
     }
 
