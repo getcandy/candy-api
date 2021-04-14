@@ -9,7 +9,7 @@ use Tests\TestCase;
 /**
  * @group languages
  */
-class FetchLangugesTest extends TestCase
+class FetchLanguagesTest extends TestCase
 {
     public function test_can_fetch_all_langauges()
     {
