@@ -28,6 +28,7 @@ class FetchLanguages extends AbstractAction
     public function rules()
     {
         return [
+            'only_enabled' => 'nullable|boolean',
             'per_page' => 'numeric|max:200',
             'paginate' => 'boolean',
             'search' => 'nullable|array',
@@ -44,6 +45,10 @@ class FetchLanguages extends AbstractAction
         $includes = $this->resolveEagerRelations();
 
         $query = Language::with($includes);
+
+        if ($this->only_enabled) {
+            $query->enabled();
+        }
 
         if ($this->search) {
             $query = $this->compileSearchQuery($query, $this->search);
