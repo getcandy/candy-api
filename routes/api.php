@@ -337,10 +337,10 @@
     $router->post('account/password', '\GetCandy\Api\Core\Users\Actions\UpdatePassword');
 
     /**
-     * Transactions
+     * Transactions.
      */
     $router->post('transactions', '\GetCandy\Api\Core\Payments\Actions\CreateTransaction');
-    
+
     /**
      * Recycle bin.
      */
