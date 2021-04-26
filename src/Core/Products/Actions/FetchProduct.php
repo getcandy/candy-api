@@ -60,6 +60,7 @@ class FetchProduct extends AbstractAction
                 $query->whereSku($this->sku);
             })->first();
         }
+
         return $query->find($this->id);
     }
 

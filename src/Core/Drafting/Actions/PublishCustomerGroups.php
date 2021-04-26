@@ -43,6 +43,7 @@ class PublishCustomerGroups extends AbstractAction
             if (isset($group->pivot->toArray()['purchasable'])) {
                 $groupData['purchasable'] = $group->pivot->purchasable;
             }
+
             return [$group->id => $groupData];
         })->toArray();
 

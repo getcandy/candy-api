@@ -2,15 +2,11 @@
 
 namespace GetCandy\Api\Core\Payments\Actions;
 
-use Lorisleiva\Actions\Action;
 use GetCandy\Api\Core\Orders\Models\Order;
-use Illuminate\Validation\ValidationException;
-use GetCandy\Api\Core\Payments\PaymentContract;
 use GetCandy\Api\Core\Payments\Models\Transaction;
 use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
-use GetCandy\Api\Core\Orders\Interfaces\OrderCriteriaInterface;
-use GetCandy\Api\Core\Payments\Resources\PaymentProviderResource;
 use GetCandy\Api\Http\Resources\Transactions\TransactionResource;
+use Lorisleiva\Actions\Action;
 
 class CreateTransaction extends Action
 {
@@ -53,15 +49,15 @@ class CreateTransaction extends Action
         $orderId = (new Order)->decodeId($this->order_id);
         $order = Order::withoutGlobalScopes()->with('transactions')->find($orderId);
 
-        if (!$this->order_id || !$order) {
+        if (! $this->order_id || ! $order) {
             return;
         }
 
         $transactionTotal = $order->transactions()->whereSuccess(true)->whereRefund(false)->sum('amount');
         $remaining = $order->order_total - $transactionTotal;
 
-        if (!$this->refund && $this->amount > $remaining) {
-            $validator->errors()->add('field', 'Amount cannot be more than ' . $remaining);
+        if (! $this->refund && $this->amount > $remaining) {
+            $validator->errors()->add('field', 'Amount cannot be more than '.$remaining);
         }
     }
 
@@ -83,6 +79,7 @@ class CreateTransaction extends Action
         }
         $transaction->order_id = $orderId;
         $transaction->save();
+
         return $transaction;
     }
 
