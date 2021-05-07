@@ -60,7 +60,6 @@ class Braintree extends AbstractProvider
                 } catch (\Exception $e) {
                     // Fall through to guest
                 }
-
             }
         }
 
