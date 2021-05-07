@@ -2,32 +2,33 @@
 
 namespace GetCandy\Api\Core\Orders\Services;
 
-use Auth;
-use Carbon\Carbon;
 use DB;
+use PDF;
+use Auth;
 use GetCandy;
-use GetCandy\Api\Core\ActivityLog\Interfaces\ActivityLogFactoryInterface;
-use GetCandy\Api\Core\Addresses\Actions\CreateAddressAction;
-use GetCandy\Api\Core\Addresses\Actions\FetchAddressAction;
+use Carbon\Carbon;
+use Illuminate\Pipeline\Pipeline;
+use GetCandy\Api\Core\Orders\Models\Order;
+use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Baskets\Models\Basket;
+use GetCandy\Api\Core\Orders\Models\OrderDiscount;
+use GetCandy\Api\Core\Orders\Events\OrderSavedEvent;
+use GetCandy\Api\Core\Orders\Jobs\OrderNotification;
 use GetCandy\Api\Core\Baskets\Services\BasketService;
 use GetCandy\Api\Core\Countries\Actions\FetchCountry;
-use GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface;
-use GetCandy\Api\Core\Orders\Events\OrderBeforeSavedEvent;
-use GetCandy\Api\Core\Orders\Events\OrderProcessedEvent;
-use GetCandy\Api\Core\Orders\Events\OrderSavedEvent;
-use GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException;
-use GetCandy\Api\Core\Orders\Exceptions\IncompleteOrderException;
-use GetCandy\Api\Core\Orders\Interfaces\OrderServiceInterface;
-use GetCandy\Api\Core\Orders\Jobs\OrderNotification;
-use GetCandy\Api\Core\Orders\Models\Order;
-use GetCandy\Api\Core\Orders\Models\OrderDiscount;
 use GetCandy\Api\Core\Payments\Services\PaymentService;
 use GetCandy\Api\Core\Pricing\PriceCalculatorInterface;
+use GetCandy\Api\Core\Orders\Events\OrderProcessedEvent;
+use GetCandy\Api\Core\Orders\Events\OrderBeforeSavedEvent;
+use GetCandy\Api\Core\Addresses\Actions\FetchAddressAction;
+use GetCandy\Api\Core\Addresses\Actions\CreateAddressAction;
+use GetCandy\Api\Core\Orders\Events\OrderStatusUpdatedEvent;
+use GetCandy\Api\Core\Orders\Interfaces\OrderServiceInterface;
 use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
-use GetCandy\Api\Core\Scaffold\BaseService;
-use Illuminate\Pipeline\Pipeline;
-use PDF;
+use GetCandy\Api\Core\Orders\Exceptions\IncompleteOrderException;
+use GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException;
+use GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface;
+use GetCandy\Api\Core\ActivityLog\Interfaces\ActivityLogFactoryInterface;
 
 class OrderService extends BaseService implements OrderServiceInterface
 {
@@ -261,6 +262,7 @@ class OrderService extends BaseService implements OrderServiceInterface
 
             if ($sendEmails) {
                 $orders->each(function ($order) use ($value, $data) {
+                    event(new OrderStatusUpdatedEvent($order));
                     OrderNotification::dispatch(
                         $order,
                         $value,
@@ -304,6 +306,8 @@ class OrderService extends BaseService implements OrderServiceInterface
             if ($dispatchedStatus == $order->status) {
                 $order->dispatched_at = Carbon::now();
             }
+
+            event(new OrderStatusUpdatedEvent($order));
 
             if ($sendEmails) {
                 OrderNotification::dispatch(
