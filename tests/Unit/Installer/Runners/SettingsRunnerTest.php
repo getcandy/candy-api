@@ -17,12 +17,11 @@ class SettingsRunnerTest extends TestCase
     {
         $runner = app()->make(SettingsRunner::class);
 
-        $this->assertEquals(0, DB::table('settings')->count());
+        $this->assertEquals(1, DB::table('settings')->count());
 
         $runner->run();
 
         $settings = ['products', 'categories', 'orders', 'users'];
-
         foreach ($settings as $setting) {
             $this->assertDatabaseHas('settings', [
                 'handle' => $setting,

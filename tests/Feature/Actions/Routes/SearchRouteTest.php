@@ -6,7 +6,7 @@ use GetCandy\Api\Core\Routes\Models\Route;
 use Tests\Feature\FeatureCase;
 
 /**
- * @group fail
+ * @group search
  */
 class SearchRouteTest extends FeatureCase
 {

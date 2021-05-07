@@ -9,10 +9,7 @@ class SettingsRunner extends AbstractRunner implements InstallRunnerContract
 {
     public function run()
     {
-        if (DB::table('settings')->count()) {
-            return;
-        }
-        DB::table('settings')->insert([
+        $settings = [
             [
                 'name' => 'Products',
                 'handle' => 'products',
@@ -46,7 +43,14 @@ class SettingsRunner extends AbstractRunner implements InstallRunnerContract
                 'content' => json_encode([]),
                 'created_at' => now(),
                 'updated_at' => now(),
-            ],
-        ]);
+            ]
+        ];
+
+        foreach ($settings as $setting) {
+            if (DB::table('settings')->whereHandle($setting['handle'])->exists()) {
+                continue;
+            }
+            DB::table('settings')->insert($setting);
+        }
     }
 }
