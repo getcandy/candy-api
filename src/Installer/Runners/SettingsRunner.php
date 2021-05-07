@@ -43,7 +43,7 @@ class SettingsRunner extends AbstractRunner implements InstallRunnerContract
                 'content' => json_encode([]),
                 'created_at' => now(),
                 'updated_at' => now(),
-            ]
+            ],
         ];
 
         foreach ($settings as $setting) {
