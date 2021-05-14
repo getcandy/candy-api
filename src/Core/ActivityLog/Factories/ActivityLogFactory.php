@@ -95,7 +95,7 @@ class ActivityLogFactory implements ActivityLogFactoryInterface
      */
     public function log($type = 'default')
     {
-        activity($type)
+        return activity($type)
             ->causedBy($this->user)
             ->performedOn($this->model)
             ->withProperties($this->properties)
