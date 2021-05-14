@@ -2,14 +2,14 @@
 
 namespace GetCandy\Api\Http\Controllers\ActivityLog;
 
-use Illuminate\Http\Request;
-use GetCandy\Api\Http\Controllers\BaseController;
+use GetCandy\Api\Core\ActivityLog\Interfaces\ActivityLogCriteriaInterface;
+use GetCandy\Api\Core\ActivityLog\Interfaces\ActivityLogFactoryInterface;
 use GetCandy\Api\Core\Orders\Services\OrderService;
 use GetCandy\Api\Core\Products\Services\ProductService;
-use GetCandy\Api\Http\Resources\ActivityLog\ActivityResource;
+use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Resources\ActivityLog\ActivityCollection;
-use GetCandy\Api\Core\ActivityLog\Interfaces\ActivityLogFactoryInterface;
-use GetCandy\Api\Core\ActivityLog\Interfaces\ActivityLogCriteriaInterface;
+use GetCandy\Api\Http\Resources\ActivityLog\ActivityResource;
+use Illuminate\Http\Request;
 
 class ActivityLogController extends BaseController
 {

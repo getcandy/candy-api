@@ -92,6 +92,7 @@ class GetOrderAveragesReport extends AbstractAction
         ]);
 
         $period = CarbonPeriod::create($this->from, '1 month', $this->to);
+
         return [
             'period' => collect($period->toArray())->map(function ($date) {
                 return [
