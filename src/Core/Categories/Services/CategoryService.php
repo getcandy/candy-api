@@ -77,7 +77,7 @@ class CategoryService extends BaseService
             $query->with($includes);
         }
 
-        return $query->get();
+        return $query->withCount(['products', 'children'])->get();
     }
 
     public function create(array $data)
