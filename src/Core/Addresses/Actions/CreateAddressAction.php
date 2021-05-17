@@ -45,7 +45,7 @@ class CreateAddressAction extends Action
             'lastname' => 'required|string',
             'company_name' => 'nullable|string',
             'email' => 'email',
-            'phone' => 'numeric',
+            'phone' => 'nullable',
             'address' => 'required|string',
             'address_two' => 'nullable|string',
             'address_three' => 'nullable|string',
@@ -73,6 +73,7 @@ class CreateAddressAction extends Action
     {
         $user = $this->user();
         $model = GetCandy::getUserModel();
+
         if ($this->user_id) {
             $user = FetchUserAction::run([
                 'encoded_id' => $this->user_id,

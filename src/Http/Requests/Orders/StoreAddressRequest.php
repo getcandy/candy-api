@@ -38,6 +38,7 @@ class StoreAddressRequest extends FormRequest
             'address' => 'required_without:address_id|max:40',
             'city' => 'required_without:address_id|max:40',
             'county' => 'required_without_all:address_id,state|max:40',
+            'phone' => 'nullable',
             'email' => 'email',
             'state' => 'required_without_all:address_id,county|max:40',
             'zip' => 'max:8',
