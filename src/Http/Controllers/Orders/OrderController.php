@@ -3,35 +3,37 @@
 namespace GetCandy\Api\Http\Controllers\Orders;
 
 use GetCandy;
-use GetCandy\Api\Core\Baskets\Interfaces\BasketCriteriaInterface;
-use GetCandy\Api\Core\Baskets\Interfaces\BasketFactoryInterface;
-use GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException;
-use GetCandy\Api\Core\Orders\Exceptions\IncompleteOrderException;
-use GetCandy\Api\Core\Orders\Exceptions\OrderAlreadyProcessedException;
-use GetCandy\Api\Core\Orders\Interfaces\OrderCriteriaInterface;
-use GetCandy\Api\Core\Orders\Interfaces\OrderFactoryInterface;
-use GetCandy\Api\Core\Orders\Interfaces\OrderProcessingFactoryInterface;
-use GetCandy\Api\Core\Orders\Interfaces\OrderServiceInterface;
-use GetCandy\Api\Core\Orders\Models\Order;
-use GetCandy\Api\Core\Orders\OrderExport;
-use GetCandy\Api\Core\Payments\Exceptions\ThreeDSecureRequiredException;
-use GetCandy\Api\Core\Payments\Services\PaymentTypeService;
-use GetCandy\Api\Core\Shipping\Services\ShippingMethodService;
-use GetCandy\Api\Core\Shipping\Services\ShippingPriceService;
-use GetCandy\Api\Http\Controllers\BaseController;
-use GetCandy\Api\Http\Requests\Orders\BulkUpdateRequest;
-use GetCandy\Api\Http\Requests\Orders\CreateRequest;
-use GetCandy\Api\Http\Requests\Orders\ProcessRequest;
-use GetCandy\Api\Http\Requests\Orders\Shipping\AddShippingRequest;
-use GetCandy\Api\Http\Requests\Orders\StoreAddressRequest;
-use GetCandy\Api\Http\Requests\Orders\UpdateRequest;
-use GetCandy\Api\Http\Resources\Orders\OrderCollection;
-use GetCandy\Api\Http\Resources\Orders\OrderExportResource;
-use GetCandy\Api\Http\Resources\Orders\OrderResource;
-use GetCandy\Api\Http\Resources\Payments\ThreeDSecureResource;
-use GetCandy\Api\Http\Resources\Shipping\ShippingPriceCollection;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use GetCandy\Api\Core\Orders\OrderExport;
+use GetCandy\Api\Core\Orders\Models\Order;
+use GetCandy\Api\Http\Controllers\BaseController;
+use GetCandy\Api\Core\Products\Actions\CheckStock;
+use GetCandy\Api\Http\Requests\Orders\CreateRequest;
+use GetCandy\Api\Http\Requests\Orders\UpdateRequest;
+use GetCandy\Api\Http\Requests\Orders\ProcessRequest;
+use GetCandy\Api\Http\Resources\Orders\OrderResource;
+use GetCandy\Api\Http\Resources\Orders\OrderCollection;
+use GetCandy\Api\Http\Requests\Orders\BulkUpdateRequest;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use GetCandy\Api\Http\Requests\Orders\StoreAddressRequest;
+use GetCandy\Api\Core\Payments\Services\PaymentTypeService;
+use GetCandy\Api\Http\Resources\Orders\OrderExportResource;
+use GetCandy\Api\Core\Shipping\Services\ShippingPriceService;
+use GetCandy\Api\Core\Orders\Interfaces\OrderFactoryInterface;
+use GetCandy\Api\Core\Orders\Interfaces\OrderServiceInterface;
+use GetCandy\Api\Core\Shipping\Services\ShippingMethodService;
+use GetCandy\Api\Http\Resources\Payments\ThreeDSecureResource;
+use GetCandy\Api\Core\Orders\Interfaces\OrderCriteriaInterface;
+use GetCandy\Api\Core\Baskets\Interfaces\BasketFactoryInterface;
+use GetCandy\Api\Core\Baskets\Interfaces\BasketCriteriaInterface;
+use GetCandy\Api\Core\Orders\Exceptions\IncompleteOrderException;
+use GetCandy\Api\Http\Resources\Shipping\ShippingPriceCollection;
+use GetCandy\Api\Http\Requests\Orders\Shipping\AddShippingRequest;
+use GetCandy\Api\Core\Orders\Exceptions\InsufficientStockException;
+use GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException;
+use GetCandy\Api\Core\Orders\Exceptions\OrderAlreadyProcessedException;
+use GetCandy\Api\Core\Orders\Interfaces\OrderProcessingFactoryInterface;
+use GetCandy\Api\Core\Payments\Exceptions\ThreeDSecureRequiredException;
 
 class OrderController extends BaseController
 {
@@ -155,9 +157,13 @@ class OrderController extends BaseController
     {
         $basket = $this->baskets->id($request->basket_id)->first();
         $basket = $basketFactory->init($basket)->get();
-
         try {
             $order = $factory->basket($basket)->type($request->type)->user($request->user())->resolve();
+        } catch (InsufficientStockException $e) {
+            // $variant = $e->getProductVariant();
+            return $this->errorUnprocessable([
+                'lines' => $e->getBasketLines(),
+            ]);
         } catch (BasketHasPlacedOrderException $e) {
             return $this->errorForbidden(trans('getcandy::exceptions.basket_already_has_placed_order'));
         }
@@ -204,6 +210,25 @@ class OrderController extends BaseController
                 }
             }
 
+            // Make sure that we have the stock for this order.
+            $outOfStockItems = [];
+
+            foreach($order->basketLines as $line) {
+                $hasStock = CheckStock::run([
+                    'sku' => $line->sku,
+                    'order_id' => $order->encoded_id,
+                    'quantity' => $line->quantity,
+                ]);
+                if (!$hasStock) {
+                    $outOfStockItems[] = $line;
+                }
+            }
+
+
+            if (count($outOfStockItems)) {
+                throw new InsufficientStockException($outOfStockItems);
+            }
+
             $order = $factory
                 ->order($order)
                 ->provider($type)
@@ -226,6 +251,10 @@ class OrderController extends BaseController
             return $this->errorNotFound();
         } catch (OrderAlreadyProcessedException $e) {
             return $this->errorUnprocessable('This order has already been processed');
+        } catch(InsufficientStockException $e) {
+            return $this->errorUnprocessable([
+                'lines' => $e->getBasketLines(),
+            ]);
         } catch (ThreeDSecureRequiredException $e) {
             return new ThreeDSecureResource($e->getResponse());
         }
