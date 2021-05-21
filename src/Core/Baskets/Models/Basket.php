@@ -117,7 +117,7 @@ class Basket extends BaseModel
 
     public function placedOrder()
     {
-        return $this->hasOne(Order::class)->withoutGlobalScope('open')->where('placed_at', '!=', null);
+        return $this->hasOne(Order::class)->withoutGlobalScope('open')->whereNotNull('placed_at');
     }
 
     /**
