@@ -3,6 +3,8 @@
 namespace GetCandy\Api\Core\Baskets\Validators;
 
 use GetCandy;
+use GetCandy\Api\Core\Baskets\Models\Basket;
+use GetCandy\Api\Core\Products\Actions\CheckStock;
 
 class BasketValidator
 {
@@ -15,7 +17,11 @@ class BasketValidator
 
     public function inStock($attribute, $value, $parameters, $validator)
     {
-        return GetCandy::productVariants()->canAddToBasket($parameters[0] ?? null, $value);
+        return CheckStock::run([
+            'basket_id' => $parameters[1] ?? null,
+            'quantity' => $value,
+            'variant_id' => $parameters[0] ?? null
+        ]);
     }
 
     public function minQuantity($attribute, $value, $parameters, $validator)
