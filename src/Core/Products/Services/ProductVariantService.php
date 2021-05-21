@@ -109,23 +109,6 @@ class ProductVariantService extends BaseService
         ]);
     }
 
-    public function canAddToBasket($variantId, $quantity)
-    {
-        $variant = $this->getByHashedId($variantId);
-
-        $backorder = $variant->backorder;
-
-        if ($backorder == 'always') {
-            return true;
-        }
-
-        if ($backorder == 'expected') {
-            return ($variant->incoming + $variant->stock) >= $quantity;
-        }
-
-        return $quantity <= $variant->stock;
-    }
-
     /**
      * Checks whether a variant exists by its SKU.
      *
