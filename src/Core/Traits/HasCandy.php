@@ -52,6 +52,7 @@ trait HasCandy
     {
         return $this->hasOne(Basket::class)
             ->doesntHave('savedBasket')
+            ->doesntHave('placedOrder')
             ->orderBy('created_at', 'DESC');
     }
 
