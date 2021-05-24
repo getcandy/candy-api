@@ -158,7 +158,7 @@ class OrderController extends BaseController
         $basket = $this->baskets->id($request->basket_id)->first();
         $basket = $basketFactory->init($basket)->get();
         try {
-            $order = $factory->basket($basket)->type($request->type)->user($request->user())->resolve();
+            $order = $factory->basket($basket)->type($request->type)->user($request->user())->resolve(true);
         } catch (InsufficientStockException $e) {
             // $variant = $e->getProductVariant();
             return $this->errorUnprocessable([
