@@ -205,7 +205,7 @@ class OrderFactory implements OrderFactoryInterface
      *
      * @return \GetCandy\Api\Core\Orders\Models\Order
      */
-    public function resolve()
+    public function resolve($extendExpiry = false)
     {
         $config = config('getcandy.orders.pending_orders', [
             'timeout' => 1,
@@ -214,13 +214,20 @@ class OrderFactory implements OrderFactoryInterface
 
         $expiry = now()->addMinutes($config['timeout']);
 
+        $shouldExtend = $extendExpiry && $config['timeout_auto_extend'];
+
         if (! $this->order) {
             $order = $this->getActiveOrder();
-            if ($config['timeout_auto_extend']) {
-                $order->expires_at = $expiry;
-            }
         } else {
             $order = $this->order;
+            $order->expires_at = $expiry;
+        }
+
+        if (!$order->expires_at) {
+            $shouldExtend = true;
+        }
+
+        if ($shouldExtend) {
             $order->expires_at = $expiry;
         }
 
