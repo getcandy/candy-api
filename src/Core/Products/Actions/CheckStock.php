@@ -8,6 +8,7 @@ use GetCandy\Api\Core\Orders\Models\OrderLine;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
 use GetCandy\Api\Core\Products\Models\ProductFamily;
 use GetCandy\Api\Core\Products\Models\ProductVariant;
+use GetCandy\Api\Core\Products\Actions\FetchReservedStock;
 
 class CheckStock extends AbstractAction
 {
@@ -62,10 +63,10 @@ class CheckStock extends AbstractAction
         }
 
         // Get reserved stock.
-        $reserved = OrderLine::whereSku($variant->sku)->whereHas('order', function ($query) {
-            $query->whereNull('placed_at')
-            ->where('expires_at', '>', now());
-        })->sum('quantity');
+        $reserved = FetchReservedStock::run([
+            'sku' => $variant->sku,
+        ]);
+
 
         $backorder = $variant->backorder;
 
@@ -101,7 +102,6 @@ class CheckStock extends AbstractAction
         if ($backorder == 'expected') {
             return ($variant->incoming + $stock) >= $this->quantity;
         }
-
         return $this->quantity <= $stock;
     }
 }
