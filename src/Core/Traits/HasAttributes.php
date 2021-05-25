@@ -75,7 +75,7 @@ trait HasAttributes
 
     public function setAttributeDataAttribute($val)
     {
-        if (! $this->requiresMapping($val)) {
+        if ($this->requiresMapping($val)) {
             $this->attributes['attribute_data'] = json_encode($this->mapAttributes($val));
         } else {
             // dd(json_encode($val));
