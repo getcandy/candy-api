@@ -78,7 +78,6 @@ trait HasAttributes
         if ($this->requiresMapping($val)) {
             $this->attributes['attribute_data'] = json_encode($this->mapAttributes($val));
         } else {
-            // dd(json_encode($val));
             $this->attributes['attribute_data'] = json_encode($val);
         }
     }
