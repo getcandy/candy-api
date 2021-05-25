@@ -75,7 +75,7 @@ trait HasAttributes
 
     public function setAttributeDataAttribute($val)
     {
-        if (! $this->id) {
+        if (! $this->requiresMapping($val)) {
             $this->attributes['attribute_data'] = json_encode($this->mapAttributes($val));
         } else {
             // dd(json_encode($val));
@@ -161,10 +161,8 @@ trait HasAttributes
         return $attributeData;
     }
 
-    // public function getAttributes()
-    // {
-    //     $attributes = $this->attributes;
-    //     $attributes['attribute_data'] = $this->getAttributeDataAttribute($attributes['attribute_data']);
-    //     return $attributes;
-    // }
+    protected function requiresMapping($data)
+    {
+        return ! is_array(array_shift(array_shift($data)));
+    }
 }
