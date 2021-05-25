@@ -162,6 +162,8 @@ trait HasAttributes
 
     protected function requiresMapping($data)
     {
-        return ! is_array(array_shift(array_shift($data)));
+        $attrData = array_shift($data);
+        $channelData  = array_shift($attrData)
+        return ! is_array($channelData);
     }
 }
