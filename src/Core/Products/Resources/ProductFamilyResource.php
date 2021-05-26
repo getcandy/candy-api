@@ -12,6 +12,8 @@ class ProductFamilyResource extends AbstractResource
         return [
             'id' => $this->encoded_id,
             'name' => $this->name,
+            'products_count' => (int) $this->products_count ?: 0,
+            'attributes_count' => (int) $this->attributes_count ?: 0,
         ];
     }
 
