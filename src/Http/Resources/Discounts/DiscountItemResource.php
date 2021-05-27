@@ -2,8 +2,9 @@
 
 namespace GetCandy\Api\Http\Resources\Discounts;
 
-use GetCandy\Api\Core\Users\Resources\UserCollection;
 use GetCandy\Api\Http\Resources\AbstractResource;
+use GetCandy\Api\Core\Users\Resources\UserCollection;
+use GetCandy\Api\Http\Resources\Products\ProductCollection;
 
 class DiscountItemResource extends AbstractResource
 {
@@ -20,6 +21,7 @@ class DiscountItemResource extends AbstractResource
     {
         return [
             'users' => new UserCollection($this->whenLoaded('users')),
+            'products' => new ProductCollection($this->whenLoaded('products')),
         ];
     }
 }
