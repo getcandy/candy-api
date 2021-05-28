@@ -2,15 +2,17 @@
 
 namespace GetCandy\Api\Core\Discounts\Services;
 
+use GetCandy;
 use Carbon\Carbon;
-use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
-use GetCandy\Api\Core\Channels\Models\Channel;
-use GetCandy\Api\Core\Discounts\Discount as DiscountFactory;
-use GetCandy\Api\Core\Discounts\Models\Discount;
-use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaItem;
-use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaSet;
 use GetCandy\Api\Core\Discounts\RewardSet;
 use GetCandy\Api\Core\Scaffold\BaseService;
+use GetCandy\Api\Core\Channels\Models\Channel;
+use GetCandy\Api\Core\Products\Models\Product;
+use GetCandy\Api\Core\Discounts\Models\Discount;
+use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaSet;
+use GetCandy\Api\Core\Discounts\Discount as DiscountFactory;
+use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaItem;
+use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
 
 class DiscountService extends BaseService
 {
@@ -77,12 +79,13 @@ class DiscountService extends BaseService
         $discount->stop_rules = $data['stop_rules'];
         $discount->status = $data['status'];
         $discount->attribute_data = $data['attribute_data'];
-
         $discount->save();
-
         // event(new AttributableSavedEvent($discount));
         if (isset($data['rewards'])) {
-            $discount->rewards()->delete();
+            $discount->rewards->each(function ($reward) {
+                $reward->products()->delete();
+                $reward->delete();
+            });
             $this->syncRewards($discount, $data['rewards']);
         }
 
@@ -120,6 +123,7 @@ class DiscountService extends BaseService
                     'outcome' => (bool) $set['outcome'],
                 ]);
             }
+
             $setIds[] = $setModel->id;
 
             if (! empty($set['items'])) {
@@ -132,19 +136,31 @@ class DiscountService extends BaseService
                 if (! empty($item['id'])) {
                     $modelId = (new DiscountCriteriaItem)->decodeId($item['id']);
                     $model = DiscountCriteriaItem::find($modelId);
+                    $model->fill($item);
+                    $model->save();
                 } else {
                     $model = $setModel->items()->create($item);
                 }
                 $itemIds[] = $model->id;
                 if (! empty($item['eligibles'])) {
-                    $model->saveEligibles($item['type'], $item['eligibles']);
+                    switch($item['type']):
+                        case 'product':
+                            $realIds = (new Product)->decodeIds($item['eligibles']);
+                        break;
+                        default:
+                            $userModel = GetCandy::getUserModel();
+                            $realIds = (new $userModel)->decodeIds($item['eligibles']);
+                        break;
+                    endswitch;
+                    $model->saveEligibles($item['type'], $realIds);
                 }
             }
-
             $setModel->refresh()->items->filter(function ($item) use ($itemIds) {
                 return ! in_array($item->id, $itemIds);
             })->each(function ($item) {
-                $item->eligibles()->delete();
+                $item->products()->delete();
+                $item->customerGroups()->delete();
+                $item->users()->delete();
                 $item->delete();
             });
         }
@@ -153,7 +169,9 @@ class DiscountService extends BaseService
             return ! in_array($set->id, $setIds);
         })->each(function ($set) {
             $set->items->each(function ($item) {
-                $item->eligibles()->delete();
+                $item->products()->delete();
+                $item->customerGroups()->delete();
+                $item->users()->delete();
                 $item->delete();
             });
             $set->delete();
@@ -175,11 +193,11 @@ class DiscountService extends BaseService
             $model = $discount->rewards()->create($reward);
             if (! empty($reward['products'])) {
                 foreach ($reward['products'] as $productReward) {
+                    $productReward['product_id'] = (new Product)->decodeId($productReward['product_id']);
                     $model->products()->create($productReward);
                 }
             }
         }
-
         return $discount;
     }
 

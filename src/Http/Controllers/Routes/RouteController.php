@@ -3,12 +3,12 @@
 namespace GetCandy\Api\Http\Controllers\Routes;
 
 use GetCandy;
+use GetCandy\Api\Core\Routes\Resources\RouteCollection;
+use GetCandy\Api\Core\Routes\Resources\RouteResource;
 use GetCandy\Api\Core\Routes\RouteCriteria;
 use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Routes\UpdateRequest;
-use GetCandy\Api\Http\Resources\Routes\RouteCollection;
-use GetCandy\Api\Http\Resources\Routes\RouteResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;

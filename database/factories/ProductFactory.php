@@ -18,9 +18,7 @@ $factory->define(Product::class, function (Faker $faker) {
     return [
         'attribute_data' => [
             'name' => [
-                'webstore' => [
-                    'en' => $faker->name,
-                ],
+                'en' => $faker->name,
             ],
         ],
     ];

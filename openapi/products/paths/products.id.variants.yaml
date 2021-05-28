@@ -1,0 +1,29 @@
+parameters:
+  - schema:
+      type: string
+    name: productId
+    in: path
+    required: true
+post:
+  summary: Post Product Variants
+  tags:
+    - Product Variants
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '../responses/ProductVariantCollection.yaml'
+  operationId: post-product-variants
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../requests/ProductVariantsCreateBody.yaml'
+  parameters:
+    - schema:
+        type: string
+      in: query
+      name: include
+  description: Create product variants

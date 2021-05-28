@@ -1,0 +1,15 @@
+post:
+  summary: Reorder Assets
+  tags:
+    - Assets
+  responses:
+    '204':
+      description: No Content
+  operationId: reorder-assets
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: '../requests/ReorderAssetsBody.yaml'
+    description: ''
+  description: Reorder assets for a model

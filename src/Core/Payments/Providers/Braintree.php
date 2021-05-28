@@ -53,9 +53,13 @@ class Braintree extends AbstractProvider
             $provider = $user->providerUsers()->provider('braintree')->first();
 
             if ($provider) {
-                return $this->gateway->clientToken()->generate([
-                    'customerId' => $provider->provider_id,
-                ]);
+                try {
+                    return $this->gateway->clientToken()->generate([
+                        'customerId' => $provider->provider_id,
+                    ]);
+                } catch (\Exception $e) {
+                    // Fall through to guest
+                }
             }
         }
 

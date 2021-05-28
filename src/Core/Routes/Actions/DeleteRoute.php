@@ -36,9 +36,14 @@ class DeleteRoute extends AbstractAction
      */
     public function handle()
     {
-        $route = $this->delegateTo(FetchRoute::class);
+        $route = (new FetchRoute)->actingAs(
+            $this->user()
+        )->run([
+            'encoded_id' => $this->encoded_id,
+            'draft' => true,
+        ]);
 
-        return $route->delete();
+        return $route->forceDelete();
     }
 
     /**

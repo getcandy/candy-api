@@ -1,0 +1,7 @@
+title: CustomerSpendingResponse
+type: object
+properties:
+  period:
+    type: object
+  sub_total:
+    type: string

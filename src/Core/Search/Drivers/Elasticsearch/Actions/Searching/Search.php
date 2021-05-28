@@ -25,6 +25,8 @@ class Search extends Action
         'category-filter',
     ];
 
+    protected $start;
+
     /**
      * Determine if the user is authorized to make this action.
      *
@@ -62,12 +64,14 @@ class Search extends Action
      */
     public function handle()
     {
+        $this->start = now();
         $this->set('search_type', $this->search_type ? Str::plural($this->search_type) : 'products');
 
         if (! $this->index) {
             $prefix = config('getcandy.search.index_prefix');
             $language = app()->getLocale();
-            $this->set('index', "{$prefix}_{$this->search_type}_{$language}");
+            $index = Str::plural($this->search_type);
+            $this->set('index', "{$prefix}_{$index}_{$language}");
         }
 
         $this->filters = $this->filters ? collect(explode(',', $this->filters))->mapWithKeys(function ($filter) {
@@ -83,6 +87,7 @@ class Search extends Action
         $client = FetchClient::run();
 
         $term = $this->term ? FetchTerm::run($this->attributes) : null;
+
         $filters = FetchFilters::run([
             'category' => $this->category,
             'filters' => $this->filters,
@@ -223,19 +228,27 @@ class Search extends Action
             $resource = CategoryCollection::class;
         }
 
+        /**
+         * If we return a lot of records Elasticsearch won't like paginating
+         * so if it's over 10000 returned, set a hard limit.
+         */
+        $totalHits = $result->getTotalHits();
         $paginator = new LengthAwarePaginator(
             $models,
-            $result->getTotalHits(),
+            $totalHits >= 1000 ? 1000 : $totalHits,
             $result->getQuery()->getParam('size'),
             $this->page ?: 1
         );
 
-        return (new $resource($paginator))->additional([
+        $response = (new $resource($paginator))->additional([
             'meta' => [
                 'count' => $models->count(),
+                'large_dataset' => $totalHits >= 1000,
                 'aggregations' => $aggregations,
                 'highlight' => $result->getQuery()->getParam('highlight'),
             ],
         ]);
+
+        return $response;
     }
 }

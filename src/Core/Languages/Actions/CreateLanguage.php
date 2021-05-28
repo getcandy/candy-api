@@ -26,8 +26,13 @@ class CreateLanguage extends AbstractAction
     public function rules()
     {
         return [
-            'lang' => 'required|string',
-            'iso' => 'required|string|unique:languages,iso',
+            'code' => [
+                'required',
+                'string',
+                'unique:languages,code',
+                // See https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept-Language
+                'regex:/^[a-zA-Z0-9-]*$/',
+            ],
             'name' => 'required|string',
             'default' => 'boolean',
             'enabled' => 'boolean',

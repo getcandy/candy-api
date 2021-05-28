@@ -12,7 +12,7 @@ class AttributeGroupResource extends AbstractResource
             'id' => $this->encoded_id,
             'name' => $this->name,
             'handle' => $this->handle,
-            'position' => (string) $this->position,
+            'position' => (int) $this->position,
         ];
     }
 

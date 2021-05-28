@@ -15,5 +15,23 @@ get:
         application/json:
           schema:
             $ref: '../../global/responses/ApiError.yaml'
+    '422':
+      description: Unprocessable Entity
   operationId: get-routes-search
-  description: Get a Route by searching via slug or path
+  parameters:
+    - schema:
+        type: string
+      in: query
+      name: slug
+      required: true
+    - schema:
+        type: string
+      in: query
+      name: element_type
+      required: true
+    - schema:
+        type: string
+      in: query
+      name: language_code
+      required: true
+  description: Get a Route by searching via the slug and element_type

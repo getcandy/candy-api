@@ -53,7 +53,8 @@ class IndexProducts extends Action
 
         $languages = FetchLanguages::run([
             'paginate' => false,
-        ])->pluck('lang');
+            'only_enabled' => true,
+        ])->pluck('code');
 
         $customerGroups = FetchCustomerGroups::run([
             'paginate' => false,
@@ -91,6 +92,10 @@ class IndexProducts extends Action
             $docs = collect($documents[$index->language] ?? [])->map(function ($document) {
                 return new Document($document->getId(), $document->getData());
             });
+
+            if (! $docs->count()) {
+                continue;
+            }
 
             $bulk = new Bulk($client);
             $bulk->setIndex($index->actual);

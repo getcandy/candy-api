@@ -1,15 +1,16 @@
 openapi: 3.0.0
-x-samples-languages: ['curl', 'node', 'php', 'javascript', 'python']
 info:
   title: GetCandy
   contact:
     name: GetCandy
     url: 'https://getcandy.io'
-    email: support@getcandy.io
-  version: 1.0.0
+  version: 0.12.0
   license:
     name: MIT
   description: The GetCandy API
+  x-logo:
+    url: "https://getcandy-docs.vercel.app/getcandy_logo.svg"
+    altText: "GetCandy API"
 servers:
   - url: 'http://localhost:8000/api/v1'
 paths:
@@ -25,6 +26,8 @@ paths:
     $ref: './assets/paths/assets.yaml'
   '/assets/simple':
     $ref: './assets/paths/assets.simple.yaml'
+  '/assets/reorder':
+    $ref: './assets/paths/assets.reorder.yaml'
   '/assets/{assetId}/detach/{ownerId}':
     $ref: './assets/paths/assets.id.detach.id.yaml'
   '/associations/groups':
@@ -217,12 +220,20 @@ paths:
     $ref: './products/paths/products.id.drafts.yaml'
   '/products/{productId}/publish':
     $ref: './products/paths/products.id.publish.yaml'
+  '/products/{productId}/variants':
+    $ref: './products/paths/products.id.variants.yaml'
   '/recycle-bin':
     $ref: './recycle-bin/paths/recycle-bin.yaml'
   '/recycle-bin/{itemId}':
     $ref: './recycle-bin/paths/recycle-bin.id.yaml'
   '/reports/sales':
     $ref: './reports/paths/reports.sales.yaml'
+  '/reports/customers/spending':
+    $ref: './reports/paths/reports.customers.spending.yaml'
+  '/reports/users/{userId}':
+    $ref: './reports/paths/reports.users.id.yaml'
+  '/reports/customer-groups':
+    $ref: './reports/paths/reports.customer-groups.yaml'
   '/reports/orders':
     $ref: './reports/paths/reports.orders.yaml'
   '/reports/orders/customers':
@@ -285,38 +296,47 @@ paths:
     $ref: './users/paths/users.current.yaml'
   '/versions/{modelId}/restore':
     $ref: './versions/paths/versions.id.restore.yaml'
-tags:
-  - name: Account
-    description: Account management
-  - name: Assets
-    description: Catalogue Management
-  - name: Channels
-    description: Store channels
-  - name: Categories
-    description: Catalogue Management
-  - name: Orders
-    description: Order Processing
-  - name: Attributes
-    description: Catalogue Management
-  - name: Associations
-    description: Catalogue Management
-  - name: Baskets
-    description: Order Processing
-  - name: Payments
-    description: Order Processing
-  - name: Collections
-    description: Catalogue Management
-  - name: Customers
-    description: Order Processing
-  - name: Discounts
-    description: Order Processing
-  - name: Languages
-    description: System Settings
-  - name: Layouts
-    description: Catalogue Management
-  - name: Products
-    description: Catalogue Management
-  - name: Product Variants
-    description: Catalogue Management
-  - name: Taxes
-    description: System Settings
+x-tagGroups:
+  - name: General
+    tags:
+      - Root
+      - Countries
+      - Currencies
+      - Channels
+      - Languages
+      - Recycle Bin
+      - Settings
+      - Tags
+  - name: Catalogue Management
+    tags:
+      - Assets
+      - Associations
+      - Attributes
+      - Categories
+      - Collections
+      - Layouts
+      - Product Families
+      - Product Variants
+      - Products
+      - Routes
+      - Search
+      - Taxes
+      - Versioning
+  - name: User Management
+    tags:
+      - Account
+      - Addresses
+      - Customer Groups
+      - Customers
+      - User
+      - Users
+  - name: Order Processing
+    tags:
+      - Baskets
+      - Discounts
+      - Orders
+      - Payments
+      - Shipping
+  - name: Reports
+    tags:
+      - Reports

@@ -11,8 +11,7 @@ class LanguageResource extends AbstractResource
         return [
             'id' => $this->encoded_id,
             'name' => $this->name,
-            'lang' => $this->lang,
-            'iso' => $this->iso,
+            'code' => $this->code,
             'default' => (bool) $this->default,
             'enabled' => (bool) $this->enabled,
             'current' => (bool) $this->current,

@@ -49,7 +49,9 @@ class PublishProductAssociations extends AbstractAction
                 return $assoc->association_id = $incoming->association_id;
             });
             if ($existing) {
-                $existing->update($incoming->toArray());
+                $existing->update(
+                    collect($incoming->toArray())->except(['id', 'product_id'])->toArray()
+                );
                 continue;
             }
             // If it doesn't exist, reassign the product_id

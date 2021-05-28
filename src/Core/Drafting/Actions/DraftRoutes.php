@@ -38,6 +38,7 @@ class DraftRoutes extends AbstractAction
     {
         $this->parent->routes->each(function ($parentRoute) {
             $draftRoute = $parentRoute->replicate();
+            $draftRoute->id = null;
             $draftRoute->element_id = $this->draft->id;
             $draftRoute->element_type = get_class($this->draft);
             $draftRoute->drafted_at = now();

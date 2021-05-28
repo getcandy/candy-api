@@ -25,7 +25,6 @@ class CategoryDrafter extends BaseDrafter implements DrafterInterface
         return DB::transaction(function () use ($draft) {
             // Publish this category and remove the parent.
             $parent = $draft->publishedParent;
-
             // Create a version of the parent before we publish these changes
             Versioning::with('categories')->create($parent, null, $parent->id);
 
@@ -61,11 +60,12 @@ class CategoryDrafter extends BaseDrafter implements DrafterInterface
             // // Update all products...
             $parent = $parent->refresh();
 
-            // if ($parent->products->count()) {
-            //     IndexObjects::dispatch([
-            //         'documents' => $parent->products,
-            //     ]);
-            // }
+            // Update all products...
+            if ($parent->products->count()) {
+                IndexObjects::dispatch([
+                    'documents' => $parent->products,
+                ]);
+            }
 
             $draft->forceDelete();
 
@@ -80,7 +80,8 @@ class CategoryDrafter extends BaseDrafter implements DrafterInterface
                 'children',
                 'products',
                 'channels',
-                'routes',
+                'routes.publishedParent',
+                'routes.draft',
                 'assets',
                 'customerGroups',
                 'attributes',
@@ -114,7 +115,8 @@ class CategoryDrafter extends BaseDrafter implements DrafterInterface
                 'children',
                 'products',
                 'channels',
-                'routes',
+                'routes.publishedParent',
+                'routes.draft',
                 'assets',
                 'customerGroups',
                 'attributes',

@@ -9,6 +9,8 @@ use GetCandy\Api\Core\Categories\Models\Category;
 use GetCandy\Api\Core\Channels\Models\Channel;
 use GetCandy\Api\Core\Customers\Actions\FetchCustomerGroup;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
+use GetCandy\Api\Core\Languages\Actions\FetchDefaultLanguage;
+use GetCandy\Api\Core\Routes\Actions\CreateRoute;
 use GetCandy\Api\Core\Routes\Models\Route;
 use GetCandy\Api\Core\Scaffold\BaseService;
 use GetCandy\Api\Core\Search\Actions\IndexObjects;
@@ -75,7 +77,7 @@ class CategoryService extends BaseService
             $query->with($includes);
         }
 
-        return $query->get();
+        return $query->withCount(['products', 'children'])->get();
     }
 
     public function create(array $data)
@@ -107,9 +109,15 @@ class CategoryService extends BaseService
             ]);
         }
 
-        $urls = $this->getUniqueUrl($data['url'], $data['path'] ?? null);
-
-        $category->routes()->createMany($urls);
+        $language = FetchDefaultLanguage::run();
+        CreateRoute::run([
+            'element_type' => Category::class,
+            'element_id' => $category->encoded_id,
+            'language_id' => $language->encoded_id,
+            'slug' => $data['url'],
+            'default' => true,
+            'redirect' => false,
+        ]);
 
         // If a parent id exists then add the category to the parent
         if (! empty($data['parent']['id'])) {

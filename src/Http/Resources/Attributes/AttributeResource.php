@@ -12,7 +12,7 @@ class AttributeResource extends AbstractResource
             'id' => $this->encoded_id,
             'name' => $this->name,
             'handle' => $this->handle,
-            'position' => (string) $this->position,
+            'position' => (int) $this->position,
             'filterable' => (bool) $this->filterable,
             'scopeable' => (bool) $this->scopeable,
             'translatable' => (bool) $this->translatable,

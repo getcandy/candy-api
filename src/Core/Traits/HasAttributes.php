@@ -59,7 +59,7 @@ trait HasAttributes
             return;
         } elseif (is_null($this->attribute_data[$handle][$channel][$userLocale])) {
             $channel = 'webstore';
-            $locale = $locale->lang;
+            $locale = $locale->code;
         }
     }
 
@@ -126,7 +126,7 @@ trait HasAttributes
             'paginate' => false,
         ]);
         foreach ($languages as $lang) {
-            $languagesArray[$lang->lang] = null;
+            $languagesArray[$lang->code] = null;
         }
         // Get our channels
         $channels = FetchChannels::run([

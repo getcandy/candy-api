@@ -22,8 +22,7 @@ class LanguageRunnerTest extends TestCase
         $runner->run();
 
         $this->assertDatabaseHas('languages', [
-            'lang' => 'en',
-            'iso' => 'gb',
+            'code' => 'en',
             'name' => 'English',
             'default' => 1,
             'enabled' => 1,

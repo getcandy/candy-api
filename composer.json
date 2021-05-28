@@ -19,6 +19,7 @@
         "doctrine/dbal": "2.9.2",
         "ruflin/elastica": "^7.0",
         "spatie/laravel-permission": "^3.17",
+        "supportpal/accept-language-parser": "^0.1",
         "vinkla/hashids": "^9.0",
         "paypal/rest-api-sdk-php": "*",
         "laravel/helpers": "1.3.0",
@@ -26,7 +27,7 @@
         "neondigital/laravel-versioning": "dev-master",
         "staudenmeir/eloquent-has-many-deep": "^1.13",
         "laravel/legacy-factories": "^1.0.4",
-        "guzzlehttp/guzzle": "^7.1.0"
+        "guzzlehttp/guzzle": "^7.2.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

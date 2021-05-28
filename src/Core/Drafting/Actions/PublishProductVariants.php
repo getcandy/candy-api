@@ -38,10 +38,16 @@ class PublishProductVariants extends AbstractAction
     {
         $variants = $this->draft->variants()->withDrafted()->get();
 
+        $skus = collect([]);
+
         foreach ($variants as $incoming) {
             if ($incoming->publishedParent) {
                 $parent = $incoming->publishedParent;
-                $parent->update($incoming->toArray());
+                $modelData = collect($incoming->toArray())->except(['id', 'product_id', 'options'])->toArray();
+                // We don't want to interact with the accessor so we have to do this.
+                // TODO: Remove the options accessor junk
+                $modelData['options'] = $incoming->getAttributes()['options'];
+                $parent->update($modelData);
 
                 (new PublishProductVariantCustomerPricing)->actingAs($this->user())->run([
                     'draft' => $incoming,
@@ -57,7 +63,11 @@ class PublishProductVariants extends AbstractAction
                     'product_id' => $this->parent->id,
                 ]);
             }
+            $skus->push($incoming->sku);
         }
+
+        // Any skus we dont have, remove from the parent.
+        $this->parent->variants()->whereNotIn('sku', $skus->toArray())->delete();
 
         return $this->parent->refresh();
     }

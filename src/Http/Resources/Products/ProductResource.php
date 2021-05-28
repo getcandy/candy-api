@@ -5,6 +5,7 @@ namespace GetCandy\Api\Http\Resources\Products;
 use GetCandy\Api\Core\Channels\Resources\ChannelCollection;
 use GetCandy\Api\Core\Customers\Resources\CustomerGroupCollection;
 use GetCandy\Api\Core\Products\Resources\ProductFamilyResource;
+use GetCandy\Api\Core\Routes\Resources\RouteCollection;
 use GetCandy\Api\Http\Resources\AbstractResource;
 use GetCandy\Api\Http\Resources\Assets\AssetCollection;
 use GetCandy\Api\Http\Resources\Assets\AssetResource;
@@ -13,7 +14,6 @@ use GetCandy\Api\Http\Resources\Categories\CategoryCollection;
 use GetCandy\Api\Http\Resources\Collections\CollectionCollection;
 use GetCandy\Api\Http\Resources\Discounts\DiscountModelCollection;
 use GetCandy\Api\Http\Resources\Layouts\LayoutResource;
-use GetCandy\Api\Http\Resources\Routes\RouteCollection;
 use GetCandy\Api\Http\Resources\Versioning\VersionCollection;
 
 class ProductResource extends AbstractResource

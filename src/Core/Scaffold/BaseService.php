@@ -446,12 +446,24 @@ abstract class BaseService
             }
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
         }
+
+        $existingDefault = $model->routes->first(function ($route) {
+            return $route->default;
+        });
+
+        if ($existingDefault && ! empty($data['default'])) {
+            $existingDefault->update([
+                'default' => false,
+            ]);
+        }
+
         $route = $model->routes()->create([
             'locale' => $data['locale'],
+            'path' => $data['path'] ?? null,
             'slug' => $data['slug'],
             'description' => ! empty($data['description']) ? $data['description'] : null,
             'redirect' => ! empty($data['redirect']) ? true : false,
-            'default' => false,
+            'default' => $data['default'] ?? false,
         ]);
 
         return $route;

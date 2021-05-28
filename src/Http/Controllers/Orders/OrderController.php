@@ -25,7 +25,6 @@ use GetCandy\Api\Http\Requests\Orders\ProcessRequest;
 use GetCandy\Api\Http\Requests\Orders\Shipping\AddShippingRequest;
 use GetCandy\Api\Http\Requests\Orders\StoreAddressRequest;
 use GetCandy\Api\Http\Requests\Orders\UpdateRequest;
-use GetCandy\Api\Http\Resources\Files\PdfResource;
 use GetCandy\Api\Http\Resources\Orders\OrderCollection;
 use GetCandy\Api\Http\Resources\Orders\OrderExportResource;
 use GetCandy\Api\Http\Resources\Orders\OrderResource;
@@ -163,7 +162,7 @@ class OrderController extends BaseController
             return $this->errorForbidden(trans('getcandy::exceptions.basket_already_has_placed_order'));
         }
 
-        return new OrderResource($order->load($request->include ?: []));
+        return new OrderResource($order->refresh()->load($request->include ?: []));
     }
 
     /**
@@ -409,7 +408,7 @@ class OrderController extends BaseController
         }
         $pdf = GetCandy::orders()->getPdf($order);
 
-        return new PdfResource($pdf);
+        return $pdf->download();
     }
 
     /**

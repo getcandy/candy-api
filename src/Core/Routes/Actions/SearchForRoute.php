@@ -3,9 +3,10 @@
 namespace GetCandy\Api\Core\Routes\Actions;
 
 use GetCandy\Api\Core\Routes\Models\Route;
+use GetCandy\Api\Core\Routes\Resources\RouteResource;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
+use GetCandy\Api\Core\Scaffold\AliasResolver;
 use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
-use GetCandy\Api\Http\Resources\Routes\RouteResource;
 
 class SearchForRoute extends AbstractAction
 {
@@ -30,7 +31,8 @@ class SearchForRoute extends AbstractAction
     {
         return [
             'slug' => 'required|string',
-            'path' => 'nullable|string',
+            'element_type' => 'required|string',
+            'language_code' => 'required|exists:languages,code',
         ];
     }
 
@@ -41,13 +43,16 @@ class SearchForRoute extends AbstractAction
      */
     public function handle()
     {
+        $elementType = AliasResolver::resolve($this->element_type);
+
         $query = Route::whereSlug($this->slug)->with(
             $this->resolveEagerRelations()
-        )->withCount($this->resolveRelationCounts());
-
-        if ($this->path) {
-            $query->wherePath($this->path);
-        }
+        )->whereElementType($elementType)
+        ->whereHas('language', function ($query) {
+            $query->whereCode($this->language_code);
+        })->withCount(
+            $this->resolveRelationCounts()
+        );
 
         return $query->first();
     }

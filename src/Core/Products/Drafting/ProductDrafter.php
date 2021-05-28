@@ -17,6 +17,7 @@ use GetCandy\Api\Core\Drafting\Actions\PublishProductAssociations;
 use GetCandy\Api\Core\Drafting\Actions\PublishProductVariants;
 use GetCandy\Api\Core\Drafting\Actions\PublishRoutes;
 use GetCandy\Api\Core\Drafting\BaseDrafter;
+use GetCandy\Api\Core\Search\Events\IndexableSavedEvent;
 use Illuminate\Database\Eloquent\Model;
 use NeonDigital\Drafting\Interfaces\DrafterInterface;
 use Versioning;
@@ -29,10 +30,12 @@ class ProductDrafter extends BaseDrafter implements DrafterInterface
             $parent = $parent->load([
                 'variants',
                 'categories',
-                'routes',
+                'routes.publishedParent',
+                'routes.draft',
                 'channels',
                 'customerGroups',
             ]);
+
             $draft = $parent->replicate();
             $draft->drafted_at = now();
             $draft->draft_parent_id = $parent->id;
@@ -60,7 +63,8 @@ class ProductDrafter extends BaseDrafter implements DrafterInterface
             return $draft->refresh()->load([
                 'variants.publishedParent',
                 'categories',
-                'routes',
+                'routes.publishedParent',
+                'routes.draft',
                 'channels',
                 'customerGroups',
             ]);
@@ -93,7 +97,7 @@ class ProductDrafter extends BaseDrafter implements DrafterInterface
             // Get any current versions and assign them to this new product.
 
             // Create a version of the parent before we publish these changes
-            Versioning::with('products')->create($parent, null, $parent->id);
+            Versioning::with('products')->create($parent);
 
             // Publish any attributes etc
             $parent->attribute_data = $draft->attribute_data;
@@ -130,6 +134,8 @@ class ProductDrafter extends BaseDrafter implements DrafterInterface
 
             // Delete the draft we had.
             $draft->forceDelete();
+
+            IndexableSavedEvent::dispatch($parent);
 
             return $parent;
         });

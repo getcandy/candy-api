@@ -127,7 +127,7 @@ class ApiServiceProvider extends ServiceProvider
         Validator::extend('valid_structure', 'GetCandy\Api\Http\Validators\AttributeValidator@validateData');
         Validator::extend('unique_category_attribute', 'GetCandy\Api\Http\Validators\CategoriesValidator@uniqueCategoryAttributeData');
         Validator::extend('check_coupon', 'GetCandy\Api\Core\Discounts\Validators\DiscountValidator@checkCoupon');
-        Validator::extend('valid_locales', 'GetCandy\Api\Http\Validators\LocaleValidator@validate');
+        Validator::extend('valid_language', 'GetCandy\Api\Http\Validators\LanguageValidator@validate');
         Validator::extend('enabled', 'GetCandy\Api\Http\Validators\BaseValidator@enabled');
         Validator::extend('asset_url', 'GetCandy\Api\Http\Validators\AssetValidator@validAssetUrl');
         Validator::extend('valid_discount', 'GetCandy\Api\Core\Discounts\Validators\DiscountValidator@validate');

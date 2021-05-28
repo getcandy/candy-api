@@ -70,16 +70,7 @@ class ProductVariantFactory extends AbstractFactory implements ProductVariantInt
      */
     public function getTieredPrice($qty = 1, $factor = 1, $user = null)
     {
-        $groups = \GetCandy::getGroups();
-
-        $ids = [];
-
-        foreach ($groups as $group) {
-            $ids[] = $group->id;
-        }
-
-        $price = $this->variant->tiers->whereIn('customer_group_id', $ids)
-            ->where('lower_limit', '<=', $qty)
+        $price = $this->variant->tiers->where('lower_limit', '<=', $qty)
             ->sortBy('price')
             ->first();
 
@@ -110,14 +101,6 @@ class ProductVariantFactory extends AbstractFactory implements ProductVariantInt
      */
     public function getVariantPrice($qty = 1, $user = null)
     {
-        $groups = \GetCandy::getGroups();
-
-        $ids = [];
-
-        foreach ($groups as $group) {
-            $ids[] = $group->id;
-        }
-
         $pricing = null;
 
         if (! $user || ($user && ! $user->hasRole('admin')) || ! $this->api->isHubRequest()) {

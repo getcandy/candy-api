@@ -129,7 +129,7 @@ $router->get('search', '\GetCandy\Api\Core\Search\Actions\Search');
 /*
     * Shipping
     */
-$router->get('shipping', 'Shipping\ShippingMethodController@index');
+$router->get('shipping', '\GetCandy\Api\Core\Shipping\Actions\FetchShippingMethods');
 $router->get('shipping/prices/estimate', 'Shipping\ShippingPriceController@estimate');
 
 /*

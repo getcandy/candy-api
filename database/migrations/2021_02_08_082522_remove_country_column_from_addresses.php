@@ -11,9 +11,11 @@ class RemoveCountryColumnFromAddresses extends Migration
      */
     public function up()
     {
-        Schema::table('addresses', function (Blueprint $table) {
-            $table->dropColumn('country');
-        });
+        if (Schema::hasColumn('addresses', 'country')) {
+            Schema::table('addresses', function (Blueprint $table) {
+                $table->dropColumn('country');
+            });
+        }
     }
 
     /**

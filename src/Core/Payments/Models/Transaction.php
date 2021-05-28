@@ -24,9 +24,7 @@ class Transaction extends BaseModel
      *
      * @var array
      */
-    protected $fillable = [
-        'merchant', 'success', 'status',
-    ];
+    protected $guarded = [];
 
     public function order()
     {

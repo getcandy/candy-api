@@ -30,6 +30,7 @@ class FetchProductFamilies extends AbstractAction
         return [
             'per_page' => 'numeric|max:200',
             'paginate' => 'boolean',
+            'keywords' => 'nullable',
         ];
     }
 
@@ -46,6 +47,10 @@ class FetchProductFamilies extends AbstractAction
 
         if (! $this->paginate) {
             return $query->get();
+        }
+
+        if ($this->keywords) {
+            $query->where('name', 'LIKE', "%{$this->keywords}%");
         }
 
         return $query->withCount(

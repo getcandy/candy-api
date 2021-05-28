@@ -16,6 +16,7 @@ use GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface;
 use GetCandy\Api\Core\Orders\Events\OrderBeforeSavedEvent;
 use GetCandy\Api\Core\Orders\Events\OrderProcessedEvent;
 use GetCandy\Api\Core\Orders\Events\OrderSavedEvent;
+use GetCandy\Api\Core\Orders\Events\OrderStatusUpdatedEvent;
 use GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException;
 use GetCandy\Api\Core\Orders\Exceptions\IncompleteOrderException;
 use GetCandy\Api\Core\Orders\Interfaces\OrderServiceInterface;
@@ -26,6 +27,7 @@ use GetCandy\Api\Core\Payments\Services\PaymentService;
 use GetCandy\Api\Core\Pricing\PriceCalculatorInterface;
 use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
 use GetCandy\Api\Core\Scaffold\BaseService;
+use Illuminate\Pipeline\Pipeline;
 use PDF;
 
 class OrderService extends BaseService implements OrderServiceInterface
@@ -260,6 +262,7 @@ class OrderService extends BaseService implements OrderServiceInterface
 
             if ($sendEmails) {
                 $orders->each(function ($order) use ($value, $data) {
+                    event(new OrderStatusUpdatedEvent($order));
                     OrderNotification::dispatch(
                         $order,
                         $value,
@@ -303,6 +306,8 @@ class OrderService extends BaseService implements OrderServiceInterface
             if ($dispatchedStatus == $order->status) {
                 $order->dispatched_at = Carbon::now();
             }
+
+            event(new OrderStatusUpdatedEvent($order));
 
             if ($sendEmails) {
                 OrderNotification::dispatch(
@@ -452,6 +457,7 @@ class OrderService extends BaseService implements OrderServiceInterface
                 'encoded_id' => $data['address_id'],
             ]);
             $payload = $shipping->only([
+                'company_name',
                 'firstname',
                 'lastname',
                 'address',
@@ -837,6 +843,12 @@ class OrderService extends BaseService implements OrderServiceInterface
             }
             $discount->total = $total;
         }
+
+        $pipes = config('getcandy.orders.invoicing.pdf.pipelines', []);
+
+        $data = app(Pipeline::class)->send($data)->through($pipes)->then(function ($data) {
+            return $data;
+        });
 
         $pdf = PDF::loadView(config('getcandy.invoicing.pdf', 'hub::pdf.order-invoice'), $data);
 

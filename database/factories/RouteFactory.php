@@ -20,8 +20,8 @@ $factory->define(Route::class, function (Faker $faker) {
     return [
         'element_type' => Product::class,
         'element_id' => 1,
+        'language_id' => 1,
         'slug' => Str::slug($faker->word),
-        'path' => Str::slug($faker->word),
         'default' => $faker->boolean,
     ];
 });

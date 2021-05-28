@@ -68,6 +68,11 @@ class Attribute extends BaseModel
         return $query->where('handle', 'LIKE', '%'.$handle.'%');
     }
 
+    public function scopeSystem($query, $check = true)
+    {
+        return $query->whereSystem($check);
+    }
+
     public function getLookupsAttribute($value)
     {
         return json_decode($value, true);

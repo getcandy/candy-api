@@ -181,6 +181,10 @@ class CategoryController extends BaseController
             return $this->errorNotFound();
         }
 
+        if (! $category->drafted_at) {
+            return $this->errorUnprocessable('Category is not a draft');
+        }
+
         $category = Drafting::with('categories')->publish($category);
 
         return new CategoryResource($category->load($this->parseIncludes($request->include)));

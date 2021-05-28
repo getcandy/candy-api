@@ -4,13 +4,13 @@ namespace GetCandy\Api\Http\Resources\Categories;
 
 use GetCandy\Api\Core\Channels\Resources\ChannelCollection;
 use GetCandy\Api\Core\Customers\Resources\CustomerGroupCollection;
+use GetCandy\Api\Core\Routes\Resources\RouteCollection;
 use GetCandy\Api\Http\Resources\AbstractResource;
 use GetCandy\Api\Http\Resources\Assets\AssetCollection;
 use GetCandy\Api\Http\Resources\Assets\AssetResource;
 use GetCandy\Api\Http\Resources\Attributes\AttributeCollection;
 use GetCandy\Api\Http\Resources\Layouts\LayoutResource;
 use GetCandy\Api\Http\Resources\Products\ProductCollection;
-use GetCandy\Api\Http\Resources\Routes\RouteCollection;
 use GetCandy\Api\Http\Resources\Versioning\VersionCollection;
 
 class CategoryResource extends AbstractResource
@@ -21,13 +21,13 @@ class CategoryResource extends AbstractResource
             'id' => $this->encodedId(),
             'sort' => $this->sort,
             'drafted_at' => $this->drafted_at,
-            'products_count' => $this->products_count ?: 0,
-            'children_count' => $this->children_count ?: 0,
-            'depth' => $this->depth ?: 0,
+            'products_count' => (int) $this->products_count ?: 0,
+            'children_count' => (int) $this->children_count ?: 0,
+            'depth' => (int) $this->depth ?: 0,
             'has_draft' => $this->draft()->exists(),
-            'left_pos' => $this->_lft,
+            'left_pos' => (int) $this->_lft,
             'sort' => $this->sort,
-            'right_pos' => $this->_rgt,
+            'right_pos' => (int) $this->_rgt,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
