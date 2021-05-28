@@ -228,9 +228,14 @@ class Search extends Action
             $resource = CategoryCollection::class;
         }
 
+        /**
+         * If we return a lot of records Elasticsearch won't like paginating
+         * so if it's over 10000 returned, set a hard limit.
+         */
+        $totalHits = $result->getTotalHits();
         $paginator = new LengthAwarePaginator(
             $models,
-            $result->getTotalHits(),
+            $totalHits >= 1000 ? 1000 : $totalHits,
             $result->getQuery()->getParam('size'),
             $this->page ?: 1
         );
@@ -238,6 +243,7 @@ class Search extends Action
         $response = (new $resource($paginator))->additional([
             'meta' => [
                 'count' => $models->count(),
+                'large_dataset' => $totalHits >= 1000,
                 'aggregations' => $aggregations,
                 'highlight' => $result->getQuery()->getParam('highlight'),
             ],
