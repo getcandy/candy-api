@@ -208,7 +208,7 @@ class OrderFactory implements OrderFactoryInterface
     public function resolve($extendExpiry = false)
     {
         $config = config('getcandy.orders.pending_orders', [
-            'timeout' => 1,
+            'timeout' => 30,
             'timeout_auto_extend' => false
         ]);
 
