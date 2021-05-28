@@ -8,7 +8,6 @@ use GetCandy\Api\Http\Resources\Baskets\BasketLineResource;
 class InsufficientStockException extends Exception
 {
     protected $basketLines;
-    protected $quantity;
 
     public function __construct($basketLines)
     {
