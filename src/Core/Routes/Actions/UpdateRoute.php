@@ -76,6 +76,7 @@ class UpdateRoute extends AbstractAction
             // as we can only have one
             Route::whereElementType($this->route->element_type)
                 ->whereElementId($this->route->element_id)
+                ->withDrafted()
                 ->where('id', '!=', $this->route->id)
                 ->update([
                     'default' => false,
