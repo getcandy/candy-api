@@ -29,7 +29,7 @@ class CreateProductFamily extends AbstractAction
     {
         return [
             'name' => 'required|unique:product_families,name',
-            'attribute_ids' => 'array',
+            'attribute_ids' => 'array|nullable',
         ];
     }
 
@@ -46,10 +46,12 @@ class CreateProductFamily extends AbstractAction
             return $attribute->encoded_id;
         })->merge($this->attribute_ids ?? []);
 
-        AttachModelToAttributes::run([
-            'model' => $productFamily,
-            'attribute_ids' => $attributes->toArray(),
-        ]);
+        if ($attributes->count()) {
+            AttachModelToAttributes::run([
+                'model' => $productFamily,
+                'attribute_ids' => $attributes->toArray(),
+            ]);
+        }
 
         return $productFamily->load($this->resolveEagerRelations());
     }
