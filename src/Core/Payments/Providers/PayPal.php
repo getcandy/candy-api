@@ -160,7 +160,7 @@ class PayPal extends AbstractProvider
             $transaction->merchant = 'N/A';
             $transaction->provider = 'PayPal';
             $transaction->driver = 'paypal';
-            $transaction->amount = $captureRefund->amount->total;
+            $transaction->amount = -abs($captureRefund->amount->total * 100);
             $transaction->notes = null;
             $transaction->status = $captureRefund->state;
             $transaction->card_type = '-';
