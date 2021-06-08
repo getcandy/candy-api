@@ -168,10 +168,8 @@ class ProductVariantService extends BaseService
             $variant->tax()->associate(
                 GetCandy::taxes()->getByHashedId($data['tax_id'])
             );
-        } else {
-            $variant->tax()->dissociate();
         }
-
+        
         $this->setMeasurements($variant, $data);
 
         if (isset($data['group_pricing']) && ! $data['group_pricing']) {
