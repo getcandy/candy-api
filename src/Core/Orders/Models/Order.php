@@ -27,6 +27,7 @@ class Order extends BaseModel
 
     protected $dates = [
         'placed_at',
+        'expires_at',
     ];
 
     protected $required = [

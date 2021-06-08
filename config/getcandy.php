@@ -43,6 +43,10 @@ return [
     |
     */
     'orders' => [
+        'pending_orders' => [
+            'timeout' => 30, // 30 minutes
+            'timeout_auto_extend' => true,
+        ],
         /*
          * The invoice reference prefix for an order
          * e.g {prefix}2019-04-15

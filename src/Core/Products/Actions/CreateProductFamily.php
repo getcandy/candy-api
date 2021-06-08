@@ -29,7 +29,7 @@ class CreateProductFamily extends AbstractAction
     {
         return [
             'name' => 'required|unique:product_families,name',
-            'attribute_ids' => 'array',
+            'attribute_ids' => 'array|nullable',
         ];
     }
 
