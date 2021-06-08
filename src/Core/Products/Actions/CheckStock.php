@@ -4,11 +4,10 @@ namespace GetCandy\Api\Core\Products\Actions;
 
 use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Baskets\Models\Basket;
-use GetCandy\Api\Core\Orders\Models\OrderLine;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
+use GetCandy\Api\Core\Products\Actions\FetchStock;
 use GetCandy\Api\Core\Products\Models\ProductFamily;
 use GetCandy\Api\Core\Products\Models\ProductVariant;
-use GetCandy\Api\Core\Products\Actions\FetchReservedStock;
 
 class CheckStock extends AbstractAction
 {
@@ -62,15 +61,11 @@ class CheckStock extends AbstractAction
             return false;
         }
 
-        // Get reserved stock.
-        $reserved = FetchReservedStock::run([
-            'sku' => $variant->sku,
-        ]);
-
-
         $backorder = $variant->backorder;
 
-        $stock = $variant->stock - $reserved;
+        $stock = FetchStock::run([
+            'sku' => $variant->sku,
+        ]);
 
         if ($backorder == 'always') {
             return true;
