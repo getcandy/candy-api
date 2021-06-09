@@ -3,8 +3,8 @@
 namespace GetCandy\Api\Core\Auth\Actions;
 
 use GetCandy;
-use Lorisleiva\Actions\Action;
 use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
+use Lorisleiva\Actions\Action;
 
 class FetchImpersonationToken extends Action
 {

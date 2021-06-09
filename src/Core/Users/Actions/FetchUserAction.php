@@ -2,8 +2,8 @@
 
 namespace GetCandy\Api\Core\Users\Actions;
 
-use GetCandy;
 use App\User;
+use GetCandy;
 use Lorisleiva\Actions\Action;
 
 class FetchUserAction extends Action
