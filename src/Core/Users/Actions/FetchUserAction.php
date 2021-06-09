@@ -2,6 +2,7 @@
 
 namespace GetCandy\Api\Core\Users\Actions;
 
+use GetCandy;
 use App\User;
 use Lorisleiva\Actions\Action;
 
@@ -24,9 +25,11 @@ class FetchUserAction extends Action
      */
     public function rules()
     {
+        $userModel = GetCandy::getUserModel();
+
         return [
             'id' => 'integer|exists:users|required_without:encoded_id',
-            'encoded_id' => 'string|hashid_is_valid:users|required_without:id',
+            'encoded_id' => 'string|hashid_is_valid:'.$userModel.'|required_without:id',
         ];
     }
 
