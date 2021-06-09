@@ -4,9 +4,12 @@ namespace GetCandy\Api\Core\Auth\Actions;
 
 use GetCandy;
 use Lorisleiva\Actions\Action;
+use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
 
 class FetchImpersonationToken extends Action
 {
+    use ReturnsJsonResponses;
+
     /**
      * Determine if the user is authorized to make this action.
      *
