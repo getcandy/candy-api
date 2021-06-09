@@ -2,17 +2,17 @@
 
 namespace GetCandy\Api\Core\Discounts\Services;
 
-use GetCandy;
 use Carbon\Carbon;
-use GetCandy\Api\Core\Discounts\RewardSet;
-use GetCandy\Api\Core\Scaffold\BaseService;
-use GetCandy\Api\Core\Channels\Models\Channel;
-use GetCandy\Api\Core\Products\Models\Product;
-use GetCandy\Api\Core\Discounts\Models\Discount;
-use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaSet;
-use GetCandy\Api\Core\Discounts\Discount as DiscountFactory;
-use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaItem;
+use GetCandy;
 use GetCandy\Api\Core\Attributes\Events\AttributableSavedEvent;
+use GetCandy\Api\Core\Channels\Models\Channel;
+use GetCandy\Api\Core\Discounts\Discount as DiscountFactory;
+use GetCandy\Api\Core\Discounts\Models\Discount;
+use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaItem;
+use GetCandy\Api\Core\Discounts\Models\DiscountCriteriaSet;
+use GetCandy\Api\Core\Discounts\RewardSet;
+use GetCandy\Api\Core\Products\Models\Product;
+use GetCandy\Api\Core\Scaffold\BaseService;
 
 class DiscountService extends BaseService
 {
@@ -143,7 +143,7 @@ class DiscountService extends BaseService
                 }
                 $itemIds[] = $model->id;
                 if (! empty($item['eligibles'])) {
-                    switch($item['type']):
+                    switch ($item['type']) {
                         case 'product':
                             $realIds = (new Product)->decodeIds($item['eligibles']);
                         break;
@@ -151,7 +151,7 @@ class DiscountService extends BaseService
                             $userModel = GetCandy::getUserModel();
                             $realIds = (new $userModel)->decodeIds($item['eligibles']);
                         break;
-                    endswitch;
+                    }
                     $model->saveEligibles($item['type'], $realIds);
                 }
             }
@@ -198,6 +198,7 @@ class DiscountService extends BaseService
                 }
             }
         }
+
         return $discount;
     }
 

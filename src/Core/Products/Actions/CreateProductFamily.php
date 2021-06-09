@@ -2,11 +2,11 @@
 
 namespace GetCandy\Api\Core\Products\Actions;
 
-use GetCandy\Api\Core\Scaffold\AbstractAction;
+use GetCandy\Api\Core\Attributes\Actions\AttachModelToAttributes;
 use GetCandy\Api\Core\Attributes\Models\Attribute;
 use GetCandy\Api\Core\Products\Models\ProductFamily;
 use GetCandy\Api\Core\Products\Resources\ProductFamilyResource;
-use GetCandy\Api\Core\Attributes\Actions\AttachModelToAttributes;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
 
 class CreateProductFamily extends AbstractAction
 {
