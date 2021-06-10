@@ -3,34 +3,50 @@ type: object
 properties:
   id:
     type: string
+    example: 1w2ndkgo
   title:
     type: string
+    example: Olive clog boots
   type:
     type: string
+    nullable: true
+    example: product
   caption:
     type: string
+    example: Olive clog boots
   kind:
     type: string
+    example: image
   external:
     type: boolean
+    example: false
   position:
     type: integer
+    example: 1
   primary:
     type: boolean
+    example: true
   url:
     type: string
+    example: http:\/\/cdn.test\/storage\/products\/2020\/01\/SBBsDXmM8pg.jpg
   sub_kind:
     type: string
+    example: jpeg
   extension:
     type: string
+    example: 'jpg'
   original_filename:
     type: string
+    example: 'B15Z31__58612_std.jpg'
   size:
     type: string
+    example: 88408
   width:
     type: string
+    example: 601
   height:
     type: string
+    example: 1000
   transforms:
     $ref: '../responses/AssetTransformCollection.yaml'
   tags:

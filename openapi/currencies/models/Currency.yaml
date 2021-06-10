@@ -3,19 +3,28 @@ type: object
 properties:
   id:
     type: string
-  code:
-    type: string
+    example: kdj58jom
   name:
     type: string
+    example: British Pound
+  code:
+    type: string
+    example: GBP
   enabled:
     type: boolean
+    example: true
   format:
     type: string
+    example: £{price}
   exchange_rate:
     type: string
+    example: 1
   decimal_point:
     type: string
+    example: '.'
   thousand_point:
     type: string
+    example: ','
   default:
     type: boolean
+    example: true

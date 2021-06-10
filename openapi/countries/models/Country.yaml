@@ -3,17 +3,25 @@ type: object
 properties:
   id:
     type: string
+    example: v8l4q190
   name:
     type: string
+    example: United Kingdom
   region:
     type: string
+    example: Europe
   iso_a_2:
     type: string
+    example: GB
   iso_a_3:
     type: string
+    example: GBR
   iso_numeric:
     type: string
+    example: 826
   preferred:
     type: boolean
+    example: true
   enabled:
     type: boolean
+    example: true

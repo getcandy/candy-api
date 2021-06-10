@@ -3,5 +3,7 @@ type: object
 properties:
   id:
     type: string
+    example: 1w2ndkgo
   name:
     type: string
+    example: download

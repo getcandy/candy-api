@@ -3,13 +3,17 @@ type: object
 properties:
   id:
     type: string
+    example: gy6wjdwp1q
   type:
     type: string
   name:
     type: string
+    example: Marathon Bar
   thumbnail:
     type: string
+    example: "http:\/\/cdn.test/products\/1990\/11\/12\/thumbnails\/thumbnail_8exmokdn4wb79l51.jpg"
   deleted_at:
     type: string
+    example: "1990-07-19T14:24:37.000000Z"
   recyclable:
     type: object

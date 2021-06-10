@@ -1,120 +1,37 @@
 title: Category
 type: object
-x-examples:
-  Standard with mapped attributes:
-    id: v8l4pl01
-    sort: 'min_price:asc'
-    products_count: 0
-    children_count: 1
-    left_pos: 1
-    right_pos: 938
-    description: Category description
-    meta_keywords: null
-    name: Fasteners
-    page_title: Seo page title
-    short_description: Short Description
-    meta_description: Page meta description
-    layout: []
-    primary_asset: []
-  Full response:
-    id: v8l4pl01
-    sort: 'min_price:asc'
-    products_count: 0
-    children_count: 1
-    left_pos: 1
-    right_pos: 938
-    attribute_data:
-      description:
-        webstore:
-          en: Category description
-      meta_keywords:
-        webstore:
-          en: ""
-      name:
-        webstore:
-          en: Category name
-      page_title:
-        webstore:
-          en: Page title
-      short_description:
-        webstore:
-          en: Short description
-      meta_description:
-        webstore:
-          en: Meta description
-    layout: []
-    primary_asset: []
-  Full response with child:
-    id: v8l4pl01
-    sort: 'min_price:asc'
-    products_count: 0
-    children_count: 1
-    left_pos: 1
-    right_pos: 938
-    attribute_data:
-      description:
-        webstore:
-          en: Category description
-      meta_keywords:
-        webstore:
-          en: ""
-      name:
-        webstore:
-          en: Category name
-      page_title:
-        webstore:
-          en: Page title
-      short_description:
-        webstore:
-          en: Short description
-      meta_description:
-        webstore:
-          en: Meta description
-    children:
-      data:
-        - id: p09prlrn
-          sort: 'min_price:asc'
-          left_pos: 2
-          right_pos: 937
-          attribute_data:
-            description:
-              webstore:
-                en: ''
-            meta_keywords:
-              webstore:
-                en: ''
-            name:
-              webstore:
-                en: Child Category
-            page_title:
-              webstore:
-                en: Child category SEO title
-            short_description:
-              webstore:
-                en: ''
-            meta_description:
-              webstore:
-                en: Child Category meta description
-          layout: []
-          primary_asset: []
-    layout: []
-    primary_asset: []
 description: ''
 properties:
   id:
     type: string
+    example: v8l4pl01
   sort:
     type: string
+    example: min_price:asc
   products_count:
     type: integer
+    example: 778
   children_count:
     type: integer
+    example: 15
+  depth:
+    type: integer
+    example: 0
   left_pos:
     type: integer
+    example: 1
   right_pos:
     type: integer
+    example: 2
+  created_at:
+    type: string
+    example: "2020-11-19T10:28:56.000000Z"
   name:
     type: string
+    example: Fashion
+  description:
+    type: string
+    example: "<p>Discover early autumn fashion. Cotton silk leopard smock dresses. Deep v-neck knitted tank tops. Black contrast stitch denim jeans. Khaki quilted jackets with tortoiseshell toggle buttons. Tobacco gingham cotton dresses.&nbsp;Shop all of fashion below.<\/p>"
   attribute_data:
     type: object
   children:

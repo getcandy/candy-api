@@ -3,6 +3,7 @@ description: |-
 properties:
   id:
     type: string
+    example: v8l4pl01
   default:
     type: boolean
     default: false
@@ -11,14 +12,41 @@ properties:
     default: false
   slug:
     type: string
+    example: fashion
   description:
     type: string
     nullable: true
+    example: "Fashion clothes"
   type:
     type: string
+    example: category
   drafted_at:
     type: string
     nullable: true
+    example: "2020-11-19T10:28:56.000000Z"
+  element:
+    type: object
+    example: {
+      "data": {
+        "id": "v8l4pl01",
+        "sort": "min_price:asc",
+        "drafted_at": null,
+        "products_count": 0,
+        "children_count": 0,
+        "depth": 0,
+        "has_draft": false,
+        "left_pos": 1,
+        "right_pos": 2,
+        "created_at": "2020-11-19T10:28:56.000000Z",
+        "updated_at": "2021-02-15T10:15:12.000000Z",
+        "name": "Fashion",
+        "description": "<p>Discover early autumn fashion. Cotton silk leopard smock dresses. Deep v-neck knitted tank tops. Black contrast stitch denim jeans. Khaki quilted jackets with tortoiseshell toggle buttons. Tobacco gingham cotton dresses.&nbsp;Shop all of fashion below.<\/p>",
+        "draft": [],
+        "published_parent": [],
+        "layout": [],
+        "primary_asset": []
+      }
+    }
 x-tags:
   - Routes
 type: object

@@ -9,16 +9,8 @@ get:
             $ref: '../responses/ChannelCollection.yaml'
   operationId: get-channels
   parameters:
-    - schema:
-        type: string
-      in: query
-      name: includes
-      description: Comma separated includes for the resource
-    - schema:
-        type: number
-      in: query
-      name: per_page
-      description: How many results per page
+    - $ref: '../../openapi.yaml#/components/parameters/perPageParam'
+    - $ref: '../../openapi.yaml#/components/parameters/pageParam'
   description: Gets a paginated list of all channel
   tags:
     - Channels
@@ -41,10 +33,9 @@ post:
   operationId: post-channels
   requestBody:
     content:
-      multipart/form-data:
+      application/json:
         schema:
           $ref: '../requests/CreateChannelBody.yaml'
-        examples: {}
     description: ''
   tags:
     - Channels
