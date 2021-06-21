@@ -2,6 +2,7 @@ parameters:
   - schema:
       type: string
     name: itemId
+    description: The ID representing the row in the `recycle_bin` table.
     in: path
     required: true
 get:

@@ -4,12 +4,16 @@ properties:
   handle:
     type: string
     nullable: true
+    example: "webstore"
   name:
     type: string
     nullable: true
+    example: "Webstore"
   url:
     type: string
     nullable: true
+    example: "localhost:8080"
   default:
     type: boolean
     nullable: true
+    example: true

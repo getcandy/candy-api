@@ -1,0 +1,16 @@
+parameters:
+  - schema:
+      type: string
+    name: itemId
+    description: The ID representing the row in the `recycle_bin` table.
+    in: path
+    required: true
+post:
+  summary: Restore an item from the recyle bin
+  tags:
+    - Recycle Bin
+  responses:
+    '200':
+      description: No Content
+  operationId: restore-item
+  description: Restore an item from the recyle bin
