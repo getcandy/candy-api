@@ -5,7 +5,7 @@
     "license": "MIT",
     "type": "project",
     "require": {
-        "php": "^7.3|^8.0",
+        "php": "^7.4|^8.0",
         "alaouy/youtube": "^2.2",
         "barryvdh/laravel-dompdf": "^0.8.7",
         "spatie/laravel-activitylog": "3.16.*",

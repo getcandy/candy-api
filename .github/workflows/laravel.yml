@@ -4,13 +4,13 @@ on:
     branches:
     - develop
     - master
-    - feat/*
+    - feature/*
     - release/*
   pull_request:
     branches:
       - develop
       - master
-      - feat/*
+      - feature/*
       - release/*
 jobs:
   laravel-tests7-3:
@@ -19,7 +19,7 @@ jobs:
     - uses: actions/checkout@v2
     - uses: nanasess/setup-php@master
       with:
-        php-version: '7.3'
+        php-version: '7.4'
     - uses: actions/setup-node@v2-beta
       with:
         node-version: '12'
