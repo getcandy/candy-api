@@ -40,18 +40,17 @@ class ExtendOrderExpiry extends AbstractAction
      */
     public function handle()
     {
-
         $orderId = (new Order)->decodeId($this->id);
 
         $order = Order::find($orderId);
 
         $config = config('getcandy.orders.pending_orders', [
             'timeout' => 30,
-            'timeout_auto_extend' => false
+            'timeout_auto_extend' => false,
         ]);
 
         $order->update([
-            'expires_at' => now()->addMinutes($config['timeout'])
+            'expires_at' => now()->addMinutes($config['timeout']),
         ]);
 
         return $order->refresh();
@@ -71,6 +70,6 @@ class ExtendOrderExpiry extends AbstractAction
             return $this->errorNotFound();
         }
 
-        return (new OrderResource($result));
+        return new OrderResource($result);
     }
 }

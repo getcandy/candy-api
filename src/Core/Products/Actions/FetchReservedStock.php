@@ -4,7 +4,6 @@ namespace GetCandy\Api\Core\Products\Actions;
 
 use GetCandy\Api\Core\Orders\Models\OrderLine;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
-use GetCandy\Api\Core\Products\Models\ProductFamily;
 
 class FetchReservedStock extends AbstractAction
 {
@@ -26,7 +25,7 @@ class FetchReservedStock extends AbstractAction
     public function rules()
     {
         return [
-            'sku' => 'required'
+            'sku' => 'required',
         ];
     }
 

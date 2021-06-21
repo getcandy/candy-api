@@ -2,12 +2,12 @@
 
 namespace Tests\Unit\Products\Actions\Versioning;
 
-use Tests\TestCase;
 use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Orders\Models\OrderLine;
+use GetCandy\Api\Core\Products\Actions\FetchReservedStock;
 use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Products\Models\ProductVariant;
-use GetCandy\Api\Core\Products\Actions\FetchReservedStock;
+use Tests\TestCase;
 
 /**
  * @group stock

@@ -44,7 +44,7 @@ class CreateRequest extends FormRequest
                     'min:1',
                     'min_quantity:'.$variant->min_qty,
                     'min_batch:'.$variant->min_batch,
-                    'in_stock:'.($v['id'] ?? '0').','.$this->basket_id
+                    'in_stock:'.($v['id'] ?? '0').','.$this->basket_id,
                 ];
             }
             $rules["variants.{$i}.id"] = 'required|hashid_is_valid:product_variants|available';

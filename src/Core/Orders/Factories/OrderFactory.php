@@ -4,22 +4,22 @@ namespace GetCandy\Api\Core\Orders\Factories;
 
 use DB;
 use GetCandy;
-use Illuminate\Foundation\Auth\User;
-use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Baskets\Models\Basket;
-use GetCandy\Api\Core\Orders\Models\OrderLine;
-use GetCandy\Api\Core\Orders\Models\OrderDiscount;
-use GetCandy\Api\Core\Products\Actions\CheckStock;
-use GetCandy\Api\Core\Orders\Events\OrderSavedEvent;
-use GetCandy\Api\Core\Shipping\Models\ShippingPrice;
-use GetCandy\Api\Core\Pricing\PriceCalculatorInterface;
-use GetCandy\Api\Core\Settings\Services\SettingService;
-use GetCandy\Api\Core\Orders\Interfaces\OrderFactoryInterface;
-use GetCandy\Api\Core\Taxes\Interfaces\TaxCalculatorInterface;
-use GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface;
-use GetCandy\Api\Core\Orders\Exceptions\InsufficientStockException;
-use GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException;
 use GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface;
+use GetCandy\Api\Core\Orders\Events\OrderSavedEvent;
+use GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException;
+use GetCandy\Api\Core\Orders\Exceptions\InsufficientStockException;
+use GetCandy\Api\Core\Orders\Interfaces\OrderFactoryInterface;
+use GetCandy\Api\Core\Orders\Models\Order;
+use GetCandy\Api\Core\Orders\Models\OrderDiscount;
+use GetCandy\Api\Core\Orders\Models\OrderLine;
+use GetCandy\Api\Core\Pricing\PriceCalculatorInterface;
+use GetCandy\Api\Core\Products\Actions\CheckStock;
+use GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface;
+use GetCandy\Api\Core\Settings\Services\SettingService;
+use GetCandy\Api\Core\Shipping\Models\ShippingPrice;
+use GetCandy\Api\Core\Taxes\Interfaces\TaxCalculatorInterface;
+use Illuminate\Foundation\Auth\User;
 
 class OrderFactory implements OrderFactoryInterface
 {
@@ -209,7 +209,7 @@ class OrderFactory implements OrderFactoryInterface
     {
         $config = config('getcandy.orders.pending_orders', [
             'timeout' => 30,
-            'timeout_auto_extend' => false
+            'timeout_auto_extend' => false,
         ]);
 
         $expiry = now()->addMinutes($config['timeout']);
@@ -223,7 +223,7 @@ class OrderFactory implements OrderFactoryInterface
             $order->expires_at = $expiry;
         }
 
-        if (!$order->expires_at) {
+        if (! $order->expires_at) {
             $shouldExtend = true;
         }
 
@@ -291,7 +291,7 @@ class OrderFactory implements OrderFactoryInterface
                 'quantity' => $basketLine->quantity,
                 'order_id' => $order->encoded_id,
             ]);
-            if (!$hasStock) {
+            if (! $hasStock) {
                 $outOfStockItems[] = $basketLine;
                 continue;
             }
