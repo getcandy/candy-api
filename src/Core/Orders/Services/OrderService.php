@@ -19,6 +19,7 @@ use GetCandy\Api\Core\Orders\Events\OrderSavedEvent;
 use GetCandy\Api\Core\Orders\Events\OrderStatusUpdatedEvent;
 use GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException;
 use GetCandy\Api\Core\Orders\Exceptions\IncompleteOrderException;
+use GetCandy\Api\Core\Orders\Exceptions\OrderExpiredException;
 use GetCandy\Api\Core\Orders\Interfaces\OrderServiceInterface;
 use GetCandy\Api\Core\Orders\Jobs\OrderNotification;
 use GetCandy\Api\Core\Orders\Models\Order;
@@ -443,6 +444,12 @@ class OrderService extends BaseService implements OrderServiceInterface
     protected function addAddress($id, $data, $type, $user = null)
     {
         $order = $this->getByHashedId($id);
+
+        if ($order->expires_at->isPast()) {
+            throw new OrderExpiredException(
+                "This order expired at {$order->expires_at}"
+            );
+        }
 
         $order->vat_no = $data['vat_no'] ?? null;
 

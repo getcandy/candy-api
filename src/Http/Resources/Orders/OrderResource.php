@@ -42,6 +42,7 @@ class OrderResource extends AbstractResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'placed_at' => $this->placed_at,
+            'expires_at' => $this->expires_at,
             'notes' => $this->notes,
             'meta' => $this->meta,
         ];

@@ -6,6 +6,7 @@ use GetCandy;
 use GetCandy\Api\Core\Baskets\Factories\BasketFactory;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketCriteriaInterface;
 use GetCandy\Api\Core\Discounts\Services\DiscountService;
+use GetCandy\Api\Core\Orders\Exceptions\InsufficientStockException;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Requests\Baskets\AddDiscountRequest;
 use GetCandy\Api\Http\Requests\Baskets\AddMetaRequest;
@@ -132,11 +133,13 @@ class BasketController extends BaseController
      */
     public function store(CreateRequest $request)
     {
-        // try {
-        $basket = GetCandy::baskets()->store($request->all(), $request->user());
-        // } catch (\Illuminate\Database\QueryException $e) {
-        //     return $this->errorUnprocessable(trans('getcandy::validation.max_qty'));
-        // }
+        try {
+            $basket = GetCandy::baskets()->store($request->all(), $request->user());
+        } catch (InsufficientStockException $e) {
+            return $this->errorUnprocessable([
+                'lines' => $e->getBasketLines(),
+            ]);
+        }
 
         return new BasketResource($basket);
     }

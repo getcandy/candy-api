@@ -9,7 +9,7 @@ use Tests\TestCase;
 /**
  * @group foundation
  */
-class DecodeIdsTest extends TestCase
+class DecodedIdsTest extends TestCase
 {
     public function test_can_decode_model_ids()
     {

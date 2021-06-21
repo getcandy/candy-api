@@ -11,7 +11,7 @@ use Tests\TestCase;
 /**
  * @group versioning
  */
-class VersionChannelsTest extends TestCase
+class VersionProductVariantsTest extends TestCase
 {
     public function test_can_version_variants()
     {

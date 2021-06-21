@@ -89,6 +89,7 @@ $router->resource('currencies', 'Currencies\CurrencyController', [
 $router->post('orders/process', 'Orders\OrderController@process');
 $router->post('orders/{id}/expire', 'Orders\OrderController@expire');
 $router->put('orders/{id}/shipping/address', 'Orders\OrderController@shippingAddress');
+$router->put('orders/{id}/extend-expiry', '\GetCandy\Api\Core\Orders\Actions\ExtendOrderExpiry');
 // $router->put('orders/{id}/shipping/methods', 'Orders\OrderController@shippingMethod');
 $router->get('orders/{id}/shipping/methods', 'Orders\OrderController@shippingMethods');
 $router->put('orders/{id}/shipping/cost', 'Orders\OrderController@shippingCost');
