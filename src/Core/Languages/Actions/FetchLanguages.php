@@ -4,10 +4,13 @@ namespace GetCandy\Api\Core\Languages\Actions;
 
 use GetCandy\Api\Core\Languages\Models\Language;
 use GetCandy\Api\Core\Languages\Resources\LanguageCollection;
-use GetCandy\Api\Core\Scaffold\AbstractAction;
+use GetCandy\Api\Core\Traits\Actions\AsAction;
+use Lorisleiva\Actions\ActionRequest;
 
-class FetchLanguages extends AbstractAction
+class FetchLanguages
 {
+    use AsAction;
+
     /**
      * Determine if the user is authorized to make this action.
      *
@@ -40,8 +43,10 @@ class FetchLanguages extends AbstractAction
      *
      * @return mixed
      */
-    public function handle()
+    public function handle($attributes = [])
     {
+        $this->fill($attributes);
+
         $includes = $this->resolveEagerRelations();
 
         $query = Language::with($includes);
@@ -66,13 +71,15 @@ class FetchLanguages extends AbstractAction
     /**
      * Returns the response from the action.
      *
-     * @param   \GetCandy\Api\Core\Languages\Models\Language|Illuminate\Pagination\LengthAwarePaginator  $result
-     * @param   \Illuminate\Http\Request  $request
+     * @param   \Lorisleiva\Actions\ActionRequest  $request
      *
      * @return  \GetCandy\Api\Core\Languages\Resources\LanguageCollection
      */
-    public function response($result, $request)
+    public function asController(ActionRequest $request) : LanguageCollection
     {
+        $this->fillFromRequest($request);
+        $result = $this->handle();
+
         return new LanguageCollection($result);
     }
 }

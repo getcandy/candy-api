@@ -2,10 +2,12 @@
 
 namespace GetCandy\Api\Core\Foundation\Actions;
 
-use Lorisleiva\Actions\Action;
+use GetCandy\Api\Core\Traits\Actions\AsAction;
 
-class DecodeId extends Action
+class DecodeId
 {
+    use AsAction;
+
     /**
      * Determine if the user is authorized to make this action.
      *
@@ -24,8 +26,8 @@ class DecodeId extends Action
     public function rules()
     {
         return [
-            'model' => 'required|string',
-            'encoded_id' => 'required|string',
+            // 'model' => 'required|string',
+            // 'encoded_id' => 'required|string',
         ];
     }
 
@@ -34,8 +36,9 @@ class DecodeId extends Action
      *
      * @return string
      */
-    public function handle()
+    public function handle($attributes = [])
     {
+        $this->fill($attributes);
         return (new $this->model)->decodeId($this->encoded_id);
     }
 }

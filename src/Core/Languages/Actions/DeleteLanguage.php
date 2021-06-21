@@ -2,11 +2,14 @@
 
 namespace GetCandy\Api\Core\Languages\Actions;
 
-use GetCandy\Api\Core\Scaffold\AbstractAction;
+use GetCandy\Api\Core\Traits\Actions\AsAction;
 use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
+use Lorisleiva\Actions\ActionRequest;
+use Illuminate\Http\JsonResponse;
 
-class DeleteLanguage extends AbstractAction
+class DeleteLanguage
 {
+    use AsAction;
     use ReturnsJsonResponses;
 
     /**
@@ -16,7 +19,7 @@ class DeleteLanguage extends AbstractAction
      */
     public function authorize()
     {
-        return $this->user()->can('manage-languages');
+        return $this->user->can('manage-languages');
     }
 
     /**
@@ -34,9 +37,12 @@ class DeleteLanguage extends AbstractAction
      *
      * @return bool
      */
-    public function handle()
+    public function handle($user, array $attributes = [])
     {
-        $language = $this->delegateTo(FetchLanguage::class);
+        $this->set('user', $user)->fill($attributes);
+        $validatedData = $this->validateAttributes();
+
+        $language = FetchLanguage::run($this->all());
 
         return $language->delete();
     }
@@ -44,13 +50,15 @@ class DeleteLanguage extends AbstractAction
     /**
      * Returns the response from the action.
      *
-     * @param   bool
-     * @param   \Illuminate\Http\Request  $request
+     * @param   \Lorisleiva\Actions\ActionRequest  $request
      *
      * @return  \Illuminate\Http\JsonResponse
      */
-    public function response($result, $request)
+    public function asController(ActionRequest $request) : JsonResponse
     {
+        $this->fillFromRequest($request);
+        $result = $this->handle($request->user());
+
         return $this->respondWithNoContent();
     }
 }

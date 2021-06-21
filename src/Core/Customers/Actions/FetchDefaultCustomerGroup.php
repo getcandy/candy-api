@@ -5,9 +5,12 @@ namespace GetCandy\Api\Core\Customers\Actions;
 use GetCandy\Api\Core\Customers\Models\CustomerGroup;
 use GetCandy\Api\Core\Customers\Resources\CustomerGroupResource;
 use GetCandy\Api\Core\Scaffold\AbstractAction;
+use GetCandy\Api\Core\Traits\Actions\AsAction;
 
-class FetchDefaultCustomerGroup extends AbstractAction
+class FetchDefaultCustomerGroup
 {
+    use AsAction;
+
     /**
      * Determine if the user is authorized to make this action.
      *
