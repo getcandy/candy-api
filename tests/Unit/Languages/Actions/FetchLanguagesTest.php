@@ -52,7 +52,7 @@ class FetchLanguagesTest extends TestCase
             'code' => 'en-c',
         ]);
 
-        $languages = FetchLanguages::run();
+        $languages = FetchLanguages::run(['paginate' => true]);
 
         $this->assertInstanceOf(\Illuminate\Pagination\LengthAwarePaginator::class, $languages);
     }

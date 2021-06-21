@@ -5,10 +5,13 @@ namespace GetCandy\Api\Core\Languages\Actions;
 use GetCandy\Api\Core\Foundation\Actions\DecodeId;
 use GetCandy\Api\Core\Languages\Models\Language;
 use GetCandy\Api\Core\Languages\Resources\LanguageResource;
-use GetCandy\Api\Core\Scaffold\AbstractAction;
+use GetCandy\Api\Core\Traits\Actions\AsAction;
+use Lorisleiva\Actions\ActionRequest;
 
-class UpdateLanguage extends AbstractAction
+class UpdateLanguage
 {
+    use AsAction;
+
     /**
      * Determine if the user is authorized to make this action.
      *
@@ -16,7 +19,7 @@ class UpdateLanguage extends AbstractAction
      */
     public function authorize()
     {
-        return $this->user()->can('manage-languages');
+        return $this->user->can('manage-languages');
     }
 
     /**
@@ -45,10 +48,13 @@ class UpdateLanguage extends AbstractAction
      *
      * @return \GetCandy\Api\Core\Languages\Models\Language
      */
-    public function handle()
+    public function handle($user, array $attributes = []) : Language
     {
-        $language = $this->delegateTo(FetchLanguage::class);
-        $language->update($this->validated());
+        $this->set('user', $user)->fill($attributes);
+        $validatedData = $this->validateAttributes();
+
+        $language = FetchLanguage::run($this->only('id', 'encoded_id'));
+        $language->update($validatedData);
 
         return $language;
     }
@@ -56,13 +62,15 @@ class UpdateLanguage extends AbstractAction
     /**
      * Returns the response from the action.
      *
-     * @param   \GetCandy\Api\Core\Customers\Models\Customer  $result
-     * @param   \Illuminate\Http\Request  $request
+     * @param   \Lorisleiva\Actions\ActionRequest  $request
      *
      * @return  \GetCandy\Api\Core\Languages\Resources\LanguageResource
      */
-    public function response($result, $request)
+    public function asController(ActionRequest $request) : LanguageResource
     {
+        $this->fillFromRequest($request);
+        $result = $this->handle($request->user());
+
         return new LanguageResource($result);
     }
 }

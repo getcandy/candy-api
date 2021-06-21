@@ -4,11 +4,12 @@ namespace GetCandy\Api\Core\Languages\Actions;
 
 use GetCandy\Api\Core\Languages\Models\Language;
 use GetCandy\Api\Core\Languages\Resources\LanguageResource;
-use GetCandy\Api\Core\Scaffold\AbstractAction;
+use GetCandy\Api\Core\Traits\Actions\AsAction;
 use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
 
-class FetchDefaultLanguage extends AbstractAction
+class FetchDefaultLanguage
 {
+    use AsAction;
     use ReturnsJsonResponses;
 
     /**
@@ -39,22 +40,5 @@ class FetchDefaultLanguage extends AbstractAction
     public function handle()
     {
         return Language::default()->first();
-    }
-
-    /**
-     * Returns the response from the action.
-     *
-     * @param   \GetCandy\Api\Core\Languages\Models\Language  $result
-     * @param   \Illuminate\Http\Request  $request
-     *
-     * @return  \GetCandy\Api\Core\Languages\Resources\LanguageResource|\Illuminate\Http\JsonResponse
-     */
-    public function response($result, $request)
-    {
-        if (! $result) {
-            return $this->errorNotFound();
-        }
-
-        return new LanguageResource($result);
     }
 }

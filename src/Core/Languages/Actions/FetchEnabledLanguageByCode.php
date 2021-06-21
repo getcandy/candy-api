@@ -4,11 +4,12 @@ namespace GetCandy\Api\Core\Languages\Actions;
 
 use GetCandy\Api\Core\Languages\Models\Language;
 use GetCandy\Api\Core\Languages\Resources\LanguageResource;
-use GetCandy\Api\Core\Scaffold\AbstractAction;
+use GetCandy\Api\Core\Traits\Actions\AsAction;
 use GetCandy\Api\Core\Traits\ReturnsJsonResponses;
 
-class FetchEnabledLanguageByCode extends AbstractAction
+class FetchEnabledLanguageByCode
 {
+    use AsAction;
     use ReturnsJsonResponses;
 
     /**
@@ -38,21 +39,25 @@ class FetchEnabledLanguageByCode extends AbstractAction
      *
      * @return \GetCandy\Api\Core\Languages\Models\Language|null
      */
-    public function handle()
+    public function handle($attributes = [])
     {
+        $this->fill($attributes);
+
         return Language::enabled()->code($this->code)->first();
     }
 
     /**
      * Returns the response from the action.
      *
-     * @param   \GetCandy\Api\Core\Languages\Models\Language  $result
-     * @param   \Illuminate\Http\Request  $request
+     * @param   \Lorisleiva\Actions\ActionRequest  $request
      *
      * @return  \GetCandy\Api\Core\Languages\Resources\LanguageResource|\Illuminate\Http\JsonResponse
      */
-    public function response($result, $request)
+    public function asController(ActionRequest $request)
     {
+        $this->fillFromRequest($request);
+        $result = $this->handle();
+
         if (! $result) {
             return $this->errorNotFound();
         }

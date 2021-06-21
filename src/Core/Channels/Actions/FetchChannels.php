@@ -4,10 +4,12 @@ namespace GetCandy\Api\Core\Channels\Actions;
 
 use GetCandy\Api\Core\Channels\Models\Channel;
 use GetCandy\Api\Core\Channels\Resources\ChannelCollection;
-use GetCandy\Api\Core\Scaffold\AbstractAction;
+use GetCandy\Api\Core\Traits\Actions\AsAction;
 
-class FetchChannels extends AbstractAction
+class FetchChannels
 {
+    use AsAction;
+
     /**
      * Determine if the user is authorized to make this action.
      *

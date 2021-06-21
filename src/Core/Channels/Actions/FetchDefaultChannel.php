@@ -4,10 +4,12 @@ namespace GetCandy\Api\Core\Channels\Actions;
 
 use GetCandy\Api\Core\Channels\Models\Channel;
 use GetCandy\Api\Core\Channels\Resources\ChannelResource;
-use GetCandy\Api\Core\Scaffold\AbstractAction;
+use GetCandy\Api\Core\Traits\Actions\AsAction;
 
-class FetchDefaultChannel extends AbstractAction
+class FetchDefaultChannel
 {
+    use AsAction;
+
     /**
      * The fetched address model.
      *

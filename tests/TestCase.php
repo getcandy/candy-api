@@ -120,6 +120,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             'services.sagepay.vendor' => 'SagePay',
             'getcandy' => require __DIR__.'/../config/getcandy.php',
             'app.key' => Encrypter::generateKey(null),
+            'app.debug' => true,
             'getcandy.search.client_config.elastic.transport' => MockTransport::class,
         ];
 
@@ -137,6 +138,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             HashidsServiceProvider::class,
             VersioningServiceProvider::class,
             DraftingServiceProvider::class,
+            \Lorisleiva\Actions\ActionServiceProvider::class,
         ];
     }
 

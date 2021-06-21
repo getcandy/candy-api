@@ -3,10 +3,19 @@
 namespace GetCandy\Api\Core\Channels\Actions;
 
 use GetCandy\Api\Core\Channels\Interfaces\ChannelFactoryInterface;
-use GetCandy\Api\Core\Scaffold\AbstractAction;
+use GetCandy\Api\Core\Traits\Actions\AsAction;
 
-class SetCurrentChannel extends AbstractAction
+class SetCurrentChannel
 {
+    use AsAction;
+
+    protected $factory;
+
+    public function __construct(ChannelFactoryInterface $factory)
+    {
+        $this->factory = $factory;
+    }
+
     /**
      * Determine if the user is authorized to make this action.
      *
@@ -34,8 +43,10 @@ class SetCurrentChannel extends AbstractAction
      *
      * @return void
      */
-    public function handle(ChannelFactoryInterface $factory)
+    public function handle(array $attributes = [])
     {
-        $factory->set($this->handle);
+        $this->fill($attributes);
+
+        $this->factory->set($this->handle);
     }
 }
