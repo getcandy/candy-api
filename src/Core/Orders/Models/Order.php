@@ -27,6 +27,7 @@ class Order extends BaseModel
 
     protected $dates = [
         'placed_at',
+        'expires_at',
     ];
 
     protected $required = [
@@ -190,13 +191,13 @@ class Order extends BaseModel
             if (is_numeric($match)) {
                 $qb->orWhere('order_total', '=', $match * 100);
             }
+            $qb->orWhere('contact_email', 'LIKE', "%{$match}%")
+                ->orWhere('billing_company_name', 'LIKE', "%{$match}%")
+            ->orWhere('shipping_company_name', 'LIKE', "%{$match}%")
+            ->orWhere('reference', 'LIKE', "%{$match}%");
         }
 
-        $qb->orWhereIn('id', $matches)
-            ->orWhereIn('contact_email', $matches)
-            ->orWhere('billing_company_name', '=', $keywords)
-            ->orWhere('shipping_company_name', '=', $keywords)
-            ->orWhereIn('reference', $matches);
+        $qb->orWhereIn('id', $matches);
 
         return $qb;
     }

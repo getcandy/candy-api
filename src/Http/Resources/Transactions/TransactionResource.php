@@ -19,6 +19,7 @@ class TransactionResource extends AbstractResource
             'driver' => $this->driver,
             'success' => (bool) $this->success,
             'refund' => (bool) $this->refund,
+            'manual' => (bool) $this->manual,
             'address_matched' => (bool) $this->address_matched,
             'cvc_matched' => (bool) $this->cvc_matched,
             'threed_secure' => (bool) $this->threed_secure,

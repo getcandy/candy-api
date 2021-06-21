@@ -2,10 +2,11 @@
 
 namespace GetCandy\Api\Http\Resources\Products;
 
-use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
+use GetCandy\Api\Core\Orders\Models\OrderLine;
 use GetCandy\Api\Http\Resources\AbstractResource;
-use GetCandy\Api\Http\Resources\Assets\AssetResource;
 use GetCandy\Api\Http\Resources\Taxes\TaxResource;
+use GetCandy\Api\Http\Resources\Assets\AssetResource;
+use GetCandy\Api\Core\Products\Factories\ProductVariantFactory;
 
 class ProductVariantResource extends AbstractResource
 {
@@ -36,6 +37,9 @@ class ProductVariantResource extends AbstractResource
             'max_qty' => $this->max_qty,
             'min_batch' => $this->min_batch,
             'inventory' => $this->stock,
+            'reserved_stock' => (int) OrderLine::whereSku($this->sku)->whereHas('order', function ($query) {
+                $query->whereNull('placed_at')->where('expires_at', '>', now());
+            })->sum('quantity'),
             'incoming' => $this->incoming,
             'group_pricing' => (bool) $this->group_pricing,
             'weight' => [

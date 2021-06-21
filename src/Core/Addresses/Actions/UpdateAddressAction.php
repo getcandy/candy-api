@@ -49,7 +49,7 @@ class UpdateAddressAction extends Action
             'lastname' => 'string',
             'company_name' => 'string',
             'email' => 'email',
-            'phone' => 'numeric',
+            'phone' => 'nullable',
             'address' => 'string',
             'address_two' => 'string',
             'address_three' => 'string',

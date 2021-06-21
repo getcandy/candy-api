@@ -4,20 +4,22 @@ namespace GetCandy\Api\Core\Orders\Factories;
 
 use DB;
 use GetCandy;
-use GetCandy\Api\Core\Baskets\Models\Basket;
-use GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface;
-use GetCandy\Api\Core\Orders\Events\OrderSavedEvent;
-use GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException;
-use GetCandy\Api\Core\Orders\Interfaces\OrderFactoryInterface;
-use GetCandy\Api\Core\Orders\Models\Order;
-use GetCandy\Api\Core\Orders\Models\OrderDiscount;
-use GetCandy\Api\Core\Orders\Models\OrderLine;
-use GetCandy\Api\Core\Pricing\PriceCalculatorInterface;
-use GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface;
-use GetCandy\Api\Core\Settings\Services\SettingService;
-use GetCandy\Api\Core\Shipping\Models\ShippingPrice;
-use GetCandy\Api\Core\Taxes\Interfaces\TaxCalculatorInterface;
 use Illuminate\Foundation\Auth\User;
+use GetCandy\Api\Core\Orders\Models\Order;
+use GetCandy\Api\Core\Baskets\Models\Basket;
+use GetCandy\Api\Core\Orders\Models\OrderLine;
+use GetCandy\Api\Core\Orders\Models\OrderDiscount;
+use GetCandy\Api\Core\Products\Actions\CheckStock;
+use GetCandy\Api\Core\Orders\Events\OrderSavedEvent;
+use GetCandy\Api\Core\Shipping\Models\ShippingPrice;
+use GetCandy\Api\Core\Pricing\PriceCalculatorInterface;
+use GetCandy\Api\Core\Settings\Services\SettingService;
+use GetCandy\Api\Core\Orders\Interfaces\OrderFactoryInterface;
+use GetCandy\Api\Core\Taxes\Interfaces\TaxCalculatorInterface;
+use GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface;
+use GetCandy\Api\Core\Orders\Exceptions\InsufficientStockException;
+use GetCandy\Api\Core\Orders\Exceptions\BasketHasPlacedOrderException;
+use GetCandy\Api\Core\Currencies\Interfaces\CurrencyConverterInterface;
 
 class OrderFactory implements OrderFactoryInterface
 {
@@ -203,12 +205,30 @@ class OrderFactory implements OrderFactoryInterface
      *
      * @return \GetCandy\Api\Core\Orders\Models\Order
      */
-    public function resolve()
+    public function resolve($extendExpiry = false)
     {
+        $config = config('getcandy.orders.pending_orders', [
+            'timeout' => 30,
+            'timeout_auto_extend' => false
+        ]);
+
+        $expiry = now()->addMinutes($config['timeout']);
+
+        $shouldExtend = $extendExpiry && $config['timeout_auto_extend'];
+
         if (! $this->order) {
             $order = $this->getActiveOrder();
         } else {
             $order = $this->order;
+            $order->expires_at = $expiry;
+        }
+
+        if (!$order->expires_at) {
+            $shouldExtend = true;
+        }
+
+        if ($shouldExtend) {
+            $order->expires_at = $expiry;
         }
 
         if (! $this->basket) {
@@ -263,10 +283,22 @@ class OrderFactory implements OrderFactoryInterface
             $line->delete();
         });
 
+        $outOfStockItems = [];
+
         foreach ($this->basket->lines as $basketLine) {
+            $hasStock = CheckStock::run([
+                'variant_id' => $basketLine->variant->encoded_id,
+                'quantity' => $basketLine->quantity,
+                'order_id' => $order->encoded_id,
+            ]);
+            if (!$hasStock) {
+                $outOfStockItems[] = $basketLine;
+                continue;
+            }
             $line = $order->basketLines->first(function ($line) use ($basketLine) {
                 return $basketLine->variant->sku == $line->sku;
             });
+
             if (! $line) {
                 $line = new OrderLine;
             }
@@ -287,6 +319,10 @@ class OrderFactory implements OrderFactoryInterface
             ]);
 
             $line->save();
+        }
+
+        if (count($outOfStockItems)) {
+            throw new InsufficientStockException($outOfStockItems);
         }
 
         return $order;

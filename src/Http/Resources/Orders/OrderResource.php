@@ -38,9 +38,11 @@ class OrderResource extends AbstractResource
             'billing_details' => $this->billing_details,
             'shipping_details' => $this->shipping_details,
             'status' => $this->status,
+            'order_status' => config("getcandy.orders.statuses.options.{$this->status}", null),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'placed_at' => $this->placed_at,
+            'expires_at' => $this->expires_at,
             'notes' => $this->notes,
             'meta' => $this->meta,
         ];

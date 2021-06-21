@@ -40,6 +40,7 @@ class ProductVariant extends BaseModel
         'min_qty',
         'max_qty',
         'min_batch',
+        'tax_id',
     ];
 
     protected $pricing;

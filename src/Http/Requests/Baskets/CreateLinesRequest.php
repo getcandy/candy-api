@@ -32,13 +32,12 @@ class CreateLinesRequest extends FormRequest
         $variants = GetCandy::productVariants()->getByHashedIds(
             collect($this->variants)->pluck('id')->toArray()
         );
-
         foreach ($this->variants ?? [] as $i => $v) {
             $variant = $variants->first(function ($variant) use ($v) {
                 return $variant->encodedId() === $v['id'] ?? null;
             });
             if ($variant) {
-                $rules["variants.{$i}.quantity"] = 'required|numeric|min:1|min_quantity:'.$variant->min_qty.'|min_batch:'.$variant->min_batch.'|in_stock:'.$v['id'] ?? '0';
+                $rules["variants.{$i}.quantity"] = 'required|numeric|min:1|min_quantity:'.$variant->min_qty.'|min_batch:'.$variant->min_batch.'|in_stock:'.$v['id'] ?? '0,'.$this->basket_id;
             }
             $rules["variants.{$i}.id"] = 'required|hashid_is_valid:product_variants';
         }

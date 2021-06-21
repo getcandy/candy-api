@@ -37,10 +37,14 @@ class DraftCustomerGroups extends AbstractAction
     public function handle()
     {
         $customerGroups = $this->parent->customerGroups->mapWithKeys(function ($group) {
-            return [$group->id => [
-                'purchasable' => $group->pivot->purchasable,
+            $groupData = [
                 'visible' => $group->pivot->visible,
-            ]];
+            ];
+            if (isset($group->pivot->toArray()['purchasable'])) {
+                $groupData['purchasable'] = $group->pivot->purchasable;
+            }
+
+            return [$group->id => $groupData];
         })->toArray();
 
         $this->draft->customerGroups()->sync($customerGroups);

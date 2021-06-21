@@ -37,7 +37,7 @@ class RecycleBinService implements RecycleBinServiceInterface
                         ->orWhere('sku', 'LIKE', "%{$term}%");
                 });
             }
-        });
+        })->orderBy('created_at', 'desc');
 
         if (! $paginated) {
             return $query->get();

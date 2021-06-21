@@ -8,6 +8,7 @@ use GetCandy\Api\Core\Orders\Services\OrderService;
 use GetCandy\Api\Core\Products\Services\ProductService;
 use GetCandy\Api\Http\Controllers\BaseController;
 use GetCandy\Api\Http\Resources\ActivityLog\ActivityCollection;
+use GetCandy\Api\Http\Resources\ActivityLog\ActivityResource;
 use Illuminate\Http\Request;
 
 class ActivityLogController extends BaseController
@@ -55,10 +56,12 @@ class ActivityLogController extends BaseController
 
         $model = $service->getByHashedId($request->id);
 
-        $factory->against($model)
+        $log = $factory->against($model)
             ->as($request->user())
             ->with($request->properties)
             ->action($request->action ?: 'default')
             ->log($request->log ?: 'system');
+
+        return new ActivityResource($log);
     }
 }

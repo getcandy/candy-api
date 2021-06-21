@@ -105,33 +105,32 @@ class GetOrderAveragesReport extends AbstractAction
 
                 if ($group->default) {
                     $guestOrders = $this->getInitialQuery()->whereNull('user_id')->select(
-                        DB::RAW('ROUND(AVG(order_total), 0) as order_total'),
-                        DB::RAW('ROUND(AVG(delivery_total), 0) as delivery_total'),
-                        DB::RAW('ROUND(AVG(discount_total), 0) as discount_total'),
-                        DB::RAW('ROUND(AVG(sub_total), 0) as sub_total'),
-                        DB::RAW('ROUND(AVG(tax_total), 0) as tax_total'),
+                        DB::RAW('SUM(order_total) as order_total'),
+                        DB::RAW('SUM(sub_total) as sub_total'),
+                        DB::RAW('SUM(delivery_total) as delivery_total'),
+                        DB::RAW('SUM(tax_total) as tax_total'),
+                        DB::RAW('COUNT(*) as order_count'),
                         DB::RAW("DATE_FORMAT(placed_at, '%Y%m') as date")
                     )->groupBy(
                         DB::RAW("DATE_FORMAT(placed_at, '%Y%m')")
                     )->orderBy(DB::RAW("DATE_FORMAT(placed_at, '%Y-%m')"), 'desc')->get();
                 }
 
-                $result = $this->getInitialQuery()->join('users', 'users.id', '=', 'orders.user_id')
-                    ->join('customers', 'customers.id', '=', 'users.customer_id')
-                    ->join('customer_customer_group', function ($join) use ($group) {
-                        $join->on('customer_customer_group.customer_id', '=', 'customers.id')
-                            ->where('customer_customer_group.customer_group_id', '=', $group->id);
-                    })
-                    ->select(
-                        DB::RAW('ROUND(AVG(order_total), 0) as order_total'),
-                        DB::RAW('ROUND(AVG(delivery_total), 0) as delivery_total'),
-                        DB::RAW('ROUND(AVG(discount_total), 0) as discount_total'),
-                        DB::RAW('ROUND(AVG(sub_total), 0) as sub_total'),
-                        DB::RAW('ROUND(AVG(tax_total), 0) as tax_total'),
+                $result = $this->getInitialQuery()->whereHas('user', function ($query) use ($group) {
+                    $query->whereHas('customer', function ($queryTwo) use ($group) {
+                        $queryTwo->whereHas('customerGroups', function ($queryThree) use ($group) {
+                            $queryThree->where('customer_group_id', '=', $group->id);
+                        });
+                    });
+                })->select(
+                        DB::RAW('SUM(order_total) as order_total'),
+                        DB::RAW('SUM(sub_total) as sub_total'),
+                        DB::RAW('SUM(delivery_total) as delivery_total'),
+                        DB::RAW('SUM(tax_total) as tax_total'),
+                        DB::RAW('COUNT(*) as order_count'),
                         DB::RAW("DATE_FORMAT(placed_at, '%Y%m') as date")
                     )->groupBy(
-                        DB::RAW("DATE_FORMAT(placed_at, '%Y%m')"),
-                        'customer_customer_group.customer_group_id'
+                        DB::RAW("DATE_FORMAT(placed_at, '%Y%m')")
                     )->orderBy(DB::RAW("DATE_FORMAT(placed_at, '%Y-%m')"), 'desc')->get();
 
                 $months = collect();
@@ -142,6 +141,7 @@ class GetOrderAveragesReport extends AbstractAction
                     });
                     if (! $record) {
                         $record = (object) [
+                            'order_count' => 0,
                             'order_total' => 0,
                             'delivery_total' => 0,
                             'discount_total' => 0,
@@ -159,27 +159,35 @@ class GetOrderAveragesReport extends AbstractAction
                         'handle' => $group->handle,
                         'default' => $group->default,
                         'data' => $months->map(function ($order) use ($guestOrders) {
-                            $data = [
-                                'date' => $order->date,
-                                'sub_total' => (int) $order->sub_total,
-                                'delivery_total' => (int) $order->delivery_total,
-                                'tax_total' => (int) $order->tax_total,
-                                'order_total' => (int) $order->order_total,
-                                'discount_total' => (int) $order->discount_total,
-                            ];
+                            $subTotal = $order->sub_total;
+                            $orderCount = $order->order_count;
+                            $deliveryTotal = $order->delivery_total;
+                            $discountTotal = $order->discount_total;
+                            $orderTotal = $order->order_total;
+                            $taxTotal = $order->tax_total;
 
                             if ($guestOrders) {
                                 $period = $guestOrders->first(function ($orders) use ($order) {
                                     return $order->date == $orders->date;
                                 });
                                 if ($period) {
-                                    $data['sub_total'] += $period->sub_total;
-                                    $data['delivery_total'] += $period->delivery_total;
-                                    $data['tax_total'] += $period->tax_total;
-                                    $data['order_total'] += $period->order_total;
-                                    $data['discount_total'] += $period->discount_total;
+                                    $subTotal += $period->sub_total;
+                                    $deliveryTotal += $period->delivery_total;
+                                    $discountTotal += $period->discount_total;
+                                    $taxTotal += $period->tax_total;
+                                    $orderTotal += $period->order_total;
+                                    $orderCount += $period->order_count;
                                 }
                             }
+
+                            $data = [
+                                'date' => $order->date,
+                                'sub_total' => $subTotal ? (int) round($subTotal / $orderCount, 0) : 0,
+                                'delivery_total' => $deliveryTotal ? (int) round($deliveryTotal / $orderCount, 0) : 0,
+                                'tax_total' => $taxTotal ? (int) round($taxTotal / $orderCount, 0) : 0,
+                                'order_total' => $orderTotal ? (int) round($orderTotal / $orderCount, 0) : 0,
+                                'discount_total' => $discountTotal ? (int) round($discountTotal / $orderCount, 0) : 0,
+                            ];
 
                             return $data;
                         }),
@@ -191,7 +199,7 @@ class GetOrderAveragesReport extends AbstractAction
 
     protected function getInitialQuery()
     {
-        return DB::table('orders')->whereNotNull('placed_at')
+        return \GetCandy\Api\Core\Orders\Models\Order::withoutGlobalScopes()->whereNotNull('placed_at')
         ->whereBetween('placed_at', [
             $this->from,
             $this->to,

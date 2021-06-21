@@ -13,20 +13,19 @@ class SettingsRunnerTest extends TestCase
 {
     protected $withSeedData = false;
 
-    // public function test_install_can_run()
-    // {
-    //     $runner = app()->make(SettingsRunner::class);
+    public function test_install_can_run()
+    {
+        $runner = app()->make(SettingsRunner::class);
 
-    //     $this->assertEquals(0, DB::table('settings')->count());
+        $this->assertEquals(1, DB::table('settings')->count());
 
-    //     $runner->run();
+        $runner->run();
 
-    //     $settings = ['products', 'categories', 'orders', 'users'];
-
-    //     foreach ($settings as $setting) {
-    //         $this->assertDatabaseHas('settings', [
-    //             'handle' => $setting,
-    //         ]);
-    //     }
-    // }
+        $settings = ['products', 'categories', 'orders', 'users'];
+        foreach ($settings as $setting) {
+            $this->assertDatabaseHas('settings', [
+                'handle' => $setting,
+            ]);
+        }
+    }
 }

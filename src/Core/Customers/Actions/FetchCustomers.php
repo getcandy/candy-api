@@ -47,9 +47,12 @@ class FetchCustomers extends AbstractAction
 
         if ($this->keywords) {
             $query->where(function ($query) {
-                $query->where('firstname', 'LIKE', "%{$this->keywords}%")
-                    ->orWhere('lastname', 'LIKE', "%{$this->keywords}%");
-            })->orWhere('company_name', 'LIKE', "%{$this->keywords}%");
+                $query->orWhere('firstname', 'LIKE', "%{$this->keywords}%")
+                    ->orWhere('lastname', 'LIKE', "%{$this->keywords}%")->orWhere('company_name', 'LIKE', "%{$this->keywords}%")
+                    ->orWhereHas('users', function ($query) {
+                        $query->where('email', 'LIKE', "%{$this->keywords}%");
+                    });
+            });
         }
 
         if (! $this->paginate) {

@@ -43,11 +43,8 @@ class DiscountCriteriaItem extends BaseModel
     public function saveEligibles($type, array $ids)
     {
         $relation = camel_case(str_plural($type));
-        $userModel = GetCandy::getUserModel();
         if (method_exists($this, $relation)) {
-            $this->{$relation}()->sync(
-                (new $userModel)->decodeIds($ids)
-            );
+            $this->{$relation}()->sync($ids);
         }
     }
 

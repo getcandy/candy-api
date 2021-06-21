@@ -85,7 +85,7 @@ class OrderLineService extends BaseService
 
         event(new OrderSavedEvent($order));
 
-        return $order->fresh();
+        return $order->fresh()->load('lines');
     }
 
     /**

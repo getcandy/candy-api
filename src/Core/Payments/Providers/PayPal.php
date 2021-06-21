@@ -2,12 +2,16 @@
 
 namespace GetCandy\Api\Core\Payments\Providers;
 
-use GetCandy\Api\Core\Payments\Models\Transaction;
-use GetCandy\Api\Core\Payments\PaymentResponse;
+use PayPal\Api\Amount;
+use PayPal\Api\Refund;
+use PayPal\Api\Capture;
 use PayPal\Api\Payment;
-use PayPal\Auth\OAuthTokenCredential;
-use PayPal\Exception\PayPalConnectionException;
 use PayPal\Rest\ApiContext;
+use PayPal\Api\RefundRequest;
+use PayPal\Auth\OAuthTokenCredential;
+use GetCandy\Api\Core\Payments\PaymentResponse;
+use PayPal\Exception\PayPalConnectionException;
+use GetCandy\Api\Core\Payments\Models\Transaction;
 
 class PayPal extends AbstractProvider
 {
@@ -135,6 +139,58 @@ class PayPal extends AbstractProvider
 
     public function refund($token, $amount, $description)
     {
+        try {
+            $paypalAmount = new Amount;
+            $paypalAmount->setCurrency("GBP")
+                ->setTotal($amount / 100);
+
+            $refundRequest = new RefundRequest;
+            $refundRequest->setAmount($paypalAmount);
+
+            // ### Retrieve Capture paypalAmountdetails
+            $capture = Capture::get($token, $this->context);
+
+            // ### Refund the Capture
+            $captureRefund = $capture->refundCapturedPayment($refundRequest, $this->context);
+
+            $transaction = new Transaction;
+            $transaction->success = true;
+            $transaction->refund = true;
+            $transaction->order()->associate($this->order);
+            $transaction->merchant = 'N/A';
+            $transaction->provider = 'PayPal';
+            $transaction->driver = 'paypal';
+            $transaction->amount = -abs($captureRefund->amount->total * 100);
+            $transaction->notes = null;
+            $transaction->status = $captureRefund->state;
+            $transaction->card_type = '-';
+            $transaction->last_four = '-';
+            $transaction->transaction_id = $captureRefund->capture_id;
+            $transaction->save();
+
+            return $transaction;
+            
+        } catch (PayPalConnectionException $e) {
+            $errors = json_decode($e->getData());
+            $response = new PaymentResponse(false, 'Refund Failed', json_decode($e->getData(), true));
+
+            $transaction = new Transaction;
+            $transaction->success = false;
+            $transaction->refund = true;
+            $transaction->order()->associate($this->order);
+            $transaction->merchant = 'N/A';
+            $transaction->provider = 'PayPal';
+            $transaction->driver = 'paypal';
+            $transaction->amount = $amount;
+            $transaction->notes = $errors->message;
+            $transaction->status = $errors->name;
+            $transaction->card_type = '-';
+            $transaction->last_four = '-';
+            $transaction->transaction_id = $token;
+            $transaction->save();
+
+            return $transaction;
+        }
     }
 
     public function getClientToken()
