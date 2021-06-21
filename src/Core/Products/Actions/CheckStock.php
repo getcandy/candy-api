@@ -2,12 +2,10 @@
 
 namespace GetCandy\Api\Core\Products\Actions;
 
-use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Baskets\Models\Basket;
-use GetCandy\Api\Core\Scaffold\AbstractAction;
-use GetCandy\Api\Core\Products\Actions\FetchStock;
-use GetCandy\Api\Core\Products\Models\ProductFamily;
+use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Products\Models\ProductVariant;
+use GetCandy\Api\Core\Scaffold\AbstractAction;
 
 class CheckStock extends AbstractAction
 {
@@ -33,7 +31,7 @@ class CheckStock extends AbstractAction
             'sku' => 'required_without:variant_id',
             'basket_id' => 'sometimes|hashid_is_valid:baskets',
             'order_id' => 'sometimes|hashid_is_valid:orders',
-            'qty' => 'numeric|min:1'
+            'qty' => 'numeric|min:1',
         ];
     }
 
@@ -56,8 +54,7 @@ class CheckStock extends AbstractAction
             $variant = ProductVariant::find($realId);
         }
 
-
-        if (!$variant) {
+        if (! $variant) {
             return false;
         }
 
@@ -97,6 +94,7 @@ class CheckStock extends AbstractAction
         if ($backorder == 'expected') {
             return ($variant->incoming + $stock) >= $this->quantity;
         }
+
         return $this->quantity <= $stock;
     }
 }

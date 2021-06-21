@@ -2,7 +2,6 @@
 
 namespace GetCandy\Api\Core\Baskets\Validators;
 
-use GetCandy;
 use GetCandy\Api\Core\Products\Actions\CheckStock;
 use GetCandy\Api\Core\Products\Actions\FetchStock;
 
@@ -22,7 +21,7 @@ class BasketValidator
         $validator->addReplacer('in_stock', function ($message, $attribute, $rule, $parameters) use ($variantId) {
             return trans('getcandy::validation.in_stock', [
                 'stock' => FetchStock::run([
-                    'variant_id' => $variantId
+                    'variant_id' => $variantId,
                 ]),
             ]);
         });
@@ -30,7 +29,7 @@ class BasketValidator
         return CheckStock::run([
             'basket_id' => $parameters[1] ?? null,
             'quantity' => $value,
-            'variant_id' => $variantId
+            'variant_id' => $variantId,
         ]);
     }
 
