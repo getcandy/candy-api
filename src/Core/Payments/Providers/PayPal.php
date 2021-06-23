@@ -2,16 +2,16 @@
 
 namespace GetCandy\Api\Core\Payments\Providers;
 
+use GetCandy\Api\Core\Payments\Models\Transaction;
+use GetCandy\Api\Core\Payments\PaymentResponse;
 use PayPal\Api\Amount;
-use PayPal\Api\Refund;
 use PayPal\Api\Capture;
 use PayPal\Api\Payment;
-use PayPal\Rest\ApiContext;
+use PayPal\Api\Refund;
 use PayPal\Api\RefundRequest;
 use PayPal\Auth\OAuthTokenCredential;
-use GetCandy\Api\Core\Payments\PaymentResponse;
 use PayPal\Exception\PayPalConnectionException;
-use GetCandy\Api\Core\Payments\Models\Transaction;
+use PayPal\Rest\ApiContext;
 
 class PayPal extends AbstractProvider
 {
@@ -141,7 +141,7 @@ class PayPal extends AbstractProvider
     {
         try {
             $paypalAmount = new Amount;
-            $paypalAmount->setCurrency("GBP")
+            $paypalAmount->setCurrency('GBP')
                 ->setTotal($amount / 100);
 
             $refundRequest = new RefundRequest;
@@ -169,7 +169,6 @@ class PayPal extends AbstractProvider
             $transaction->save();
 
             return $transaction;
-            
         } catch (PayPalConnectionException $e) {
             $errors = json_decode($e->getData());
             $response = new PaymentResponse(false, 'Refund Failed', json_decode($e->getData(), true));
