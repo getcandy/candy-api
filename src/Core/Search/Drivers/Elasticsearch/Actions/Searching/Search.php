@@ -84,6 +84,7 @@ class Search extends Action
         } else {
             $this->filters = $this->filters ? collect(explode(',', $this->filters))->mapWithKeys(function ($filter) {
                 [$label, $value] = explode(':', $filter);
+
                 return [$label => $value];
             })->toArray() : [];
         }
