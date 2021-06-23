@@ -42,14 +42,16 @@ class CreateProductFamily extends AbstractAction
     {
         $productFamily = ProductFamily::create($this->validated());
 
-        $attributes = Attribute::system()->get()->map(function ($attribute) {
-            return $attribute->encoded_id;
-        })->merge($this->attribute_ids ?? []);
+        if (is_array($this->attribute_ids)) {
+            $attributes = Attribute::system()->get()->map(function ($attribute) {
+                return $attribute->encoded_id;
+            })->merge($this->attribute_ids ?? []);
 
-        AttachModelToAttributes::run([
-            'model' => $productFamily,
-            'attribute_ids' => $attributes->toArray(),
-        ]);
+            AttachModelToAttributes::run([
+                'model' => $productFamily,
+                'attribute_ids' => $attributes->toArray(),
+            ]);
+        }
 
         return $productFamily->load($this->resolveEagerRelations());
     }

@@ -74,11 +74,20 @@ class Search extends Action
             $this->set('index', "{$prefix}_{$index}_{$language}");
         }
 
-        $this->filters = $this->filters ? collect(explode(',', $this->filters))->mapWithKeys(function ($filter) {
-            [$label, $value] = explode(':', $filter);
+        // Handle request filters
+        if (! $this->filters) {
+            // Get our filterable attributes.
+            $filterable = \GetCandy::attributes()->getFilterable()->pluck('handle')->toArray();
+            $filterable[] = 'price';
 
-            return [$label => $value];
-        })->toArray() : [];
+            $this->filters = $this->only($filterable);
+        } else {
+            $this->filters = $this->filters ? collect(explode(',', $this->filters))->mapWithKeys(function ($filter) {
+                [$label, $value] = explode(':', $filter);
+
+                return [$label => $value];
+            })->toArray() : [];
+        }
 
         $this->aggregates = $this->aggregates ?: [];
         $this->language = $this->language ?: app()->getLocale();
