@@ -61,6 +61,7 @@ class ProductDrafter extends BaseDrafter implements DrafterInterface
             });
 
             return $draft->refresh()->load([
+                'assets',
                 'variants.publishedParent',
                 'categories',
                 'routes.publishedParent',
