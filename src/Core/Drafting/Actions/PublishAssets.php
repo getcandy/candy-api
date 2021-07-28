@@ -37,13 +37,14 @@ class PublishAssets extends AbstractAction
     public function handle()
     {
         // Detach any assets.
-        $this->parent->assets()->detach();
+        $this->parent->assets()->wherePivot('assetable_type', '=', get_class($this->parent))->detach();
 
         $this->draft->assets->each(function ($asset) {
             $this->parent->assets()->attach($asset->id, $asset->pivot->only(['position', 'primary', 'assetable_type']));
         });
+
         // Clean up on Aisle 4
-        $this->draft->assets()->detach();
+        $this->draft->assets()->wherePivot('assetable_type', '=', get_class($this->draft))->detach();
 
         return $this->parent;
     }
