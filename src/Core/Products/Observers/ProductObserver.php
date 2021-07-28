@@ -32,7 +32,7 @@ class ProductObserver
         if ($product->isForceDeleting()) {
             $product->channels()->detach();
             $product->collections()->detach();
-            $product->assets()->detach();
+            $product->assets()->wherePivot('assetable_type', '=', get_class($product))->detach();
             $product->variants()->forceDelete();
             $product->categories()->detach();
             $product->routes()->forceDelete();
