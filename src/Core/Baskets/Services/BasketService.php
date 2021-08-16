@@ -14,7 +14,6 @@ use GetCandy\Api\Core\Discounts\Models\Discount;
 use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface;
 use GetCandy\Api\Core\Scaffold\BaseService;
-use GetCandy\Api\Core\Users\Actions\FetchUser;
 
 class BasketService extends BaseService
 {
@@ -159,9 +158,7 @@ class BasketService extends BaseService
     public function addUser($basketId, $userId)
     {
         $basket = $this->getByHashedId($basketId);
-        $user = FetchUser::run([
-            'encoded_id' => $userId,
-        ]);
+        $user = GetCandy::users()->getByHashedId($userId);
         $basket->user()->associate($user);
         $basket->save();
 
