@@ -9,6 +9,7 @@ use GetCandy\Api\Core\Associations\Services\AssociationGroupService;
 use GetCandy\Api\Core\Attributes\Services\AttributeGroupService;
 use GetCandy\Api\Core\Attributes\Services\AttributeService;
 use GetCandy\Api\Core\Auth\Services\RoleService;
+use GetCandy\Api\Core\Auth\Services\UserService;
 use GetCandy\Api\Core\Baskets\Services\BasketLineService;
 use GetCandy\Api\Core\Baskets\Services\BasketService;
 use GetCandy\Api\Core\Baskets\Services\SavedBasketService;
@@ -180,6 +181,11 @@ class Factory
      */
     protected $transforms;
 
+    /**
+     * @var \GetCandy\Api\Core\Auth\Services\UserService
+     */
+    protected $users;
+
     public function __construct(
         AssetService $assets,
         AssetSourceService $assetSources,
@@ -210,6 +216,7 @@ class Factory
         ShippingMethodService $shippingMethods,
         ShippingZoneService $shippingZones,
         ShippingPriceService $shippingPrices,
+        UserService $users,
         TagService $tags,
         TaxService $taxes
     ) {
@@ -244,6 +251,7 @@ class Factory
         $this->tags = $tags;
         $this->taxes = $taxes;
         $this->transforms = $transforms;
+        $this->users = $users;
     }
 
     public function __call($name, $arguments)
