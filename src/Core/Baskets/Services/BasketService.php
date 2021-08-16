@@ -2,18 +2,19 @@
 
 namespace GetCandy\Api\Core\Baskets\Services;
 
-use Carbon\Carbon;
 use GetCandy;
+use Carbon\Carbon;
 use GetCandy\Api\Core\Auth\Models\User;
+use GetCandy\Api\Core\Discounts\Factory;
+use GetCandy\Api\Core\Orders\Models\Order;
+use GetCandy\Api\Core\Scaffold\BaseService;
+use GetCandy\Api\Core\Baskets\Models\Basket;
+use GetCandy\Api\Core\Users\Actions\FetchUser;
+use GetCandy\Api\Core\Discounts\Models\Discount;
+use GetCandy\Api\Core\Baskets\Models\SavedBasket;
 use GetCandy\Api\Core\Baskets\Events\BasketStoredEvent;
 use GetCandy\Api\Core\Baskets\Interfaces\BasketFactoryInterface;
-use GetCandy\Api\Core\Baskets\Models\Basket;
-use GetCandy\Api\Core\Baskets\Models\SavedBasket;
-use GetCandy\Api\Core\Discounts\Factory;
-use GetCandy\Api\Core\Discounts\Models\Discount;
-use GetCandy\Api\Core\Orders\Models\Order;
 use GetCandy\Api\Core\Products\Interfaces\ProductVariantInterface;
-use GetCandy\Api\Core\Scaffold\BaseService;
 
 class BasketService extends BaseService
 {
@@ -158,7 +159,9 @@ class BasketService extends BaseService
     public function addUser($basketId, $userId)
     {
         $basket = $this->getByHashedId($basketId);
-        $user = GetCandy::users()->getByHashedId($userId);
+        $user = FetchUser::run([
+            'encoded_id' => $userId,
+        ]);
         $basket->user()->associate($user);
         $basket->save();
 
