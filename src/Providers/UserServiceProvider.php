@@ -17,6 +17,5 @@ class UserServiceProvider extends ServiceProvider
         $this->app->bind('getcandy.users', function ($app) {
             return $app->make(UserService::class);
         });
-
     }
 }
