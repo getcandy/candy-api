@@ -41,6 +41,16 @@ class ProductVariant extends BaseModel
         'max_qty',
         'min_batch',
         'tax_id',
+        'weight_value',
+        'weight_unit',
+        'height_value',
+        'height_unit',
+        'width_value',
+        'width_unit',
+        'depth_value',
+        'depth_unit',
+        'volume_value',
+        'volume_unit',
     ];
 
     protected $pricing;
