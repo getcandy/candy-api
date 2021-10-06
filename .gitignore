@@ -21,3 +21,4 @@ public/images/vendor/jquery.fancytree/dist/skin-win8/vline-rtl.gif
 composer.lock
 PHPCompatibility/
 .phpunit.result.cache
+.php-cs-fixer.cache
