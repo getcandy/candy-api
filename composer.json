@@ -2,6 +2,7 @@
     "name": "getcandy/candy-api",
     "description": "API driven E-commerce solution, written in Laravel",
     "keywords": ["ecommerce", "laravel", "getcandy"],
+    "homepage": "https://github.com/getcandy/candy-api",
     "license": "MIT",
     "type": "project",
     "require": {
@@ -50,6 +51,11 @@
             "Seeds\\": "database/seeds/"
         }
     },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "extra": {
         "laravel": {
             "providers": [
