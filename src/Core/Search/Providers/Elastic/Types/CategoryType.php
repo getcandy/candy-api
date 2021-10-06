@@ -97,6 +97,7 @@ class CategoryType extends BaseType
      * Returns the Index document ready to be added.
      *
      * @param  \GetCandy\Api\Core\Categories\Models\Category  $category
+     *
      * @return mixed
      */
     public function getIndexDocument(Category $category)

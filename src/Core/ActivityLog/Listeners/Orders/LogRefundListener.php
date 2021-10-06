@@ -32,6 +32,7 @@ class LogRefundListener
      * Handle the event.
      *
      * @param  \GetCandy\Api\Core\Orders\Events\OrderRefundEvent  $event
+     *
      * @return void
      */
     public function handle(OrderRefundEvent $event)

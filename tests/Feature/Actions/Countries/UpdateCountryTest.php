@@ -15,7 +15,7 @@ class UpdateCountryTest extends FeatureCase
     {
         $user = $this->admin();
 
-        (new CountryRunner)->run();
+        (new CountryRunner())->run();
 
         $country = Country::first();
 
@@ -46,7 +46,7 @@ class UpdateCountryTest extends FeatureCase
     {
         $user = $this->admin();
 
-        (new CountryRunner)->run();
+        (new CountryRunner())->run();
 
         $country = Country::first();
 

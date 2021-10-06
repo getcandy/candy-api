@@ -21,7 +21,7 @@ class AttachUserToCustomerTest extends TestCase
 
         $this->assertNull($userToAttach->customer_id);
 
-        (new AttachUserToCustomer)->actingAs($user)->run([
+        (new AttachUserToCustomer())->actingAs($user)->run([
             'encoded_id' => $customer->encoded_id,
             'user_id' => $userToAttach->encoded_id,
         ]);

@@ -33,7 +33,7 @@ class PublishProductVariantsTest extends TestCase
 
         $this->assertCount(0, $parent->variants);
 
-        (new PublishProductVariants)->actingAs($user)->run([
+        (new PublishProductVariants())->actingAs($user)->run([
             'parent' => $parent,
             'draft' => $draft,
         ]);

@@ -43,7 +43,7 @@ class AssetController extends BaseController
         return response()->json([
             'path' => $path,
             'filename' => $file->getClientOriginalName(),
-            'url'=> Storage::disk('cdn')->url($path),
+            'url' => Storage::disk('cdn')->url($path),
             'thumbnail' => $thumbnail ?? null,
             'thumbnail_url' => ! empty($thumbnail) ? \Storage::disk('cdn')->url($thumbnail) : null,
         ]);

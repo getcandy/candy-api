@@ -34,6 +34,6 @@ class FetchCategoryMapping extends Action
      */
     public function handle()
     {
-        return (new CategoryIndexable)->getMapping();
+        return (new CategoryIndexable())->getMapping();
     }
 }

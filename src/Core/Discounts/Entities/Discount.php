@@ -27,6 +27,7 @@ class Discount
 
     /**
      * @param  \GetCandy\Api\Core\Discounts\RewardSet  $reward
+     *
      * @return $this
      */
     public function setReward(RewardSet $reward)
@@ -38,6 +39,7 @@ class Discount
 
     /**
      * @param  \GetCandy\Api\Core\Discounts\CriteriaSet  $criteria
+     *
      * @return $this
      */
     public function addCriteria(CriteriaSet $criteria)

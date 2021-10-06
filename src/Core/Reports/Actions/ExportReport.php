@@ -26,7 +26,7 @@ class ExportReport extends AbstractAction
             'paginate' => false,
         ]);
 
-        $report = (new $this->report)->actingAs($this->user());
+        $report = (new $this->report())->actingAs($this->user());
 
         if (method_exists($this->report, 'getExportData')) {
             $result = $report->getExportData($args);
@@ -52,7 +52,8 @@ class ExportReport extends AbstractAction
         }
 
         $url = URL::signedRoute(
-            'export.download', ['id' =>  $this->export->encoded_id]
+            'export.download',
+            ['id' => $this->export->encoded_id]
         );
 
         Mail::to($this->user()->email)->queue(

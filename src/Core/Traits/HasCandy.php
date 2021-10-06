@@ -14,9 +14,9 @@ use Spatie\Permission\Traits\HasRoles;
 
 trait HasCandy
 {
-    use Hashids,
-        HasRoles,
-        HasAddresses;
+    use Hashids;
+    use HasRoles;
+    use HasAddresses;
 
     /**
      * The Hashid connection name for enconding the id.

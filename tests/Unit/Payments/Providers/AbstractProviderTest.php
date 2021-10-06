@@ -14,7 +14,7 @@ class AbstractProviderTest extends TestCase
 {
     public function test_can_have_parameters_set()
     {
-        $provider = new TestPaymentProvider;
+        $provider = new TestPaymentProvider();
 
         // Lets get an order...
         $factory = $this->app->make(OrderFactory::class);

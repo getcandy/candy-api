@@ -45,6 +45,7 @@ class PaymentResponse
      * Set the transaction.
      *
      * @param  \GetCandy\Api\Core\Payments\Models\Transaction  $transaction
+     *
      * @return $this
      */
     public function transaction($transaction)

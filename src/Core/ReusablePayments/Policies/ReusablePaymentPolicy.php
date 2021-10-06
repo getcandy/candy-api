@@ -11,6 +11,7 @@ class ReusablePaymentPolicy
      * Determine if the user can create a reusable payment.
      *
      * @param User $user
+     *
      * @return bool
      */
     public function create(User $user)
@@ -23,6 +24,7 @@ class ReusablePaymentPolicy
      *
      * @param User $user
      * @param ReusablePayment $reusablePayment
+     *
      * @return bool
      */
     public function update(User $user, ReusablePayment $reusablePayment)
@@ -35,6 +37,7 @@ class ReusablePaymentPolicy
      *
      * @param User $user
      * @param ReusablePayment $reusablePayment
+     *
      * @return bool
      */
     public function view(User $user, ReusablePayment $reusablePayment)
@@ -47,6 +50,7 @@ class ReusablePaymentPolicy
      *
      * @param User $user
      * @param ReusablePayment $reusablePayment
+     *
      * @return bool
      */
     public function delete(User $user, ReusablePayment $reusablePayment)

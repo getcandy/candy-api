@@ -44,7 +44,7 @@ class FetchProduct extends AbstractAction
     public function handle()
     {
         if ($this->encoded_id && ! $this->sku) {
-            $this->id = (new Product)->decodeId($this->encoded_id);
+            $this->id = (new Product())->decodeId($this->encoded_id);
         }
 
         $query = Product::query()

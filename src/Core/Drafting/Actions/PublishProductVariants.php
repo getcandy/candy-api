@@ -49,12 +49,12 @@ class PublishProductVariants extends AbstractAction
                 $modelData['options'] = $incoming->getAttributes()['options'];
                 $parent->update($modelData);
 
-                (new PublishProductVariantCustomerPricing)->actingAs($this->user())->run([
+                (new PublishProductVariantCustomerPricing())->actingAs($this->user())->run([
                     'draft' => $incoming,
                     'parent' => $parent,
                 ]);
 
-                (new PublishProductVariantTiers)->actingAs($this->user())->run([
+                (new PublishProductVariantTiers())->actingAs($this->user())->run([
                     'draft' => $incoming,
                     'parent' => $parent,
                 ]);

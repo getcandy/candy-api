@@ -34,11 +34,11 @@ class VersionAssetsTest extends TestCase
             }
         });
 
-        $version = (new CreateVersion)->actingAs($user)->run([
+        $version = (new CreateVersion())->actingAs($user)->run([
             'model' => $product,
         ]);
 
-        (new VersionAssets)->actingAs($user)->run([
+        (new VersionAssets())->actingAs($user)->run([
             'version' => $version,
             'model' => $product,
         ]);

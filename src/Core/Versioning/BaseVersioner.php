@@ -34,6 +34,7 @@ abstract class BaseVersioner
         foreach ($actions as $action) {
             if (! class_exists($action)) {
                 Log::error("Tried to call action ${action} but it doesn't exist");
+
                 continue;
             }
             call_user_func("{$action}::run", $params);

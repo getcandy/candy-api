@@ -8,7 +8,9 @@ use Illuminate\Queue\SerializesModels;
 
 class IndexingCompleteEvent
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable;
+    use InteractsWithSockets;
+    use SerializesModels;
 
     public $indexes;
 
@@ -16,6 +18,7 @@ class IndexingCompleteEvent
      * Create a new event instance.
      *
      * @param  \App\Order  $order
+     *
      * @return void
      */
     public function __construct($indexes, $type)

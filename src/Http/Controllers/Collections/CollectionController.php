@@ -35,6 +35,7 @@ class CollectionController extends BaseController
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \GetCandy\Api\Core\Collections\Criteria\CollectionCriteria  $criteria
+     *
      * @return \GetCandy\Api\Http\Resources\Collections\CollectionCollection
      */
     public function index(Request $request, CollectionCriteria $criteria)
@@ -52,11 +53,12 @@ class CollectionController extends BaseController
      * @param  string  $id
      * @param  \Illuminate\Http\Request  $request
      * @param  \GetCandy\Api\Core\Collections\Criteria\CollectionCriteria  $criteria
+     *
      * @return array|\GetCandy\Api\Http\Resources\Collections\CollectionResource
      */
     public function show($id, Request $request, CollectionCriteria $criteria)
     {
-        $id = (new Collection)->decodeId($id);
+        $id = (new Collection())->decodeId($id);
 
         $includes = $request->include ?: [];
 
@@ -98,6 +100,7 @@ class CollectionController extends BaseController
      * Handles the request to create a new collection.
      *
      * @param  \GetCandy\Api\Http\Requests\Collections\CreateRequest  $request
+     *
      * @return \GetCandy\Api\Http\Resources\Collections\CollectionResource
      */
     public function store(CreateRequest $request)
@@ -112,6 +115,7 @@ class CollectionController extends BaseController
      *
      * @param  string  $id
      * @param  \GetCandy\Api\Http\Requests\Collections\UpdateRequest  $request
+     *
      * @return array|\GetCandy\Api\Http\Resources\Collections\CollectionResource
      */
     public function update($id, UpdateRequest $request)
@@ -143,6 +147,7 @@ class CollectionController extends BaseController
      *
      * @param  string  $id
      * @param  \GetCandy\Api\Http\Requests\Collections\DeleteRequest  $request
+     *
      * @return array|\Illuminate\Http\Response
      */
     public function destroy($id, DeleteRequest $request)

@@ -9,7 +9,7 @@ class ProductFamilyCriteria extends AbstractCriteria
 {
     public function getBuilder()
     {
-        $family = new ProductFamily;
+        $family = new ProductFamily();
         $builder = $family->with($this->includes ?: []);
         if ($this->id) {
             $builder->where('id', '=', $family->decodeId($this->id));

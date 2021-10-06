@@ -12,6 +12,7 @@ class AddressPolicy
      * Determine if the user can create an address.
      *
      * @param  \App\User  $user
+     *
      * @return bool
      */
     public function create(?User $user)

@@ -23,6 +23,7 @@ class AttributeGroupService extends BaseService
      *
      * @param  array  $data
      * @param  null|array|string  $includes
+     *
      * @return \GetCandy\Api\Core\Attributes\Models\AttributeGroup
      */
     public function create(array $data, $includes = null)
@@ -56,9 +57,10 @@ class AttributeGroupService extends BaseService
      *
      * @param  string  $id
      * @param  null|array|string  $includes
-     * @return \GetCandy\Api\Core\Attributes\Models\AttributeGroup
      *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+     *
+     * @return \GetCandy\Api\Core\Attributes\Models\AttributeGroup
      */
     public function getByHashedId($id, $includes = null)
     {
@@ -78,10 +80,11 @@ class AttributeGroupService extends BaseService
      *
      * @param  string  $id
      * @param  array  $data
-     * @return \GetCandy\Api\Core\Attributes\Models\AttributeGroup
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @throws \GetCandy\Api\Exceptions\MinimumRecordRequiredException
+     *
+     * @return \GetCandy\Api\Core\Attributes\Models\AttributeGroup
      */
     public function update($hashedId, array $data)
     {
@@ -104,10 +107,11 @@ class AttributeGroupService extends BaseService
      * Updates the positions of attribute groups.
      *
      * @param  array  $data
-     * @return bool
      *
      * @throws \Symfony\Component\HttpKernel\Exception\HttpException
      * @throws \GetCandy\Api\Exceptions\DuplicateValueException
+     *
+     * @return bool
      */
     public function updateGroupPositions(array $data)
     {
@@ -142,10 +146,11 @@ class AttributeGroupService extends BaseService
      * @param  string  $id
      * @param  string  $adopterId
      * @param  bool  $deleteAttributes
-     * @return bool
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @throws \Symfony\Component\HttpKernel\Exception\HttpException
+     *
+     * @return bool
      */
     public function delete($id, $adopterId = null, $deleteAttributes = false)
     {

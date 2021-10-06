@@ -33,7 +33,7 @@ class OrderProcessingFactoryTest extends TestCase
     public function test_can_be_processed()
     {
         // First swap out the PaymentContract instance for our stub.
-        $this->app->instance(PaymentContract::class, new TestPaymentManager);
+        $this->app->instance(PaymentContract::class, new TestPaymentManager());
 
         $orders = $this->app->make(OrderFactory::class);
         $factory = $this->app->make(OrderProcessingFactory::class);

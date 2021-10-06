@@ -58,6 +58,7 @@ class ProductFactory implements ProductInterface
      * Process a collection of products.
      *
      * @param  \Illuminate\Support\Collection  $products
+     *
      * @return \Illuminate\Support\Collection
      */
     public function collection(Collection $products)

@@ -89,6 +89,7 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
      * Set the value for nonce.
      *
      * @param  string  $nonce
+     *
      * @return $this
      */
     public function nonce($nonce)
@@ -109,6 +110,7 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
      * Bulk set the value for payload.
      *
      * @param array $payload
+     *
      * @return self
      */
     public function payload(array $payload)
@@ -122,6 +124,7 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
      * Set the value for provider.
      *
      * @param  null|\GetCandy\Api\Core\Payments\Models\PaymentType  $provider
+     *
      * @return $this
      */
     public function provider(PaymentType $provider = null)
@@ -135,6 +138,7 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
      * Set a value to the payload.
      *
      * @param  string  $reference
+     *
      * @return $this
      */
     public function set($key, $value)
@@ -148,6 +152,7 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
      * Set the value for type.
      *
      * @param  null|string  $type
+     *
      * @return $this
      */
     public function type($type = null)
@@ -161,6 +166,7 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
      * Set the value for notes.
      *
      * @param  null|string $notes
+     *
      * @return $this
      */
     public function notes($notes = null)
@@ -181,6 +187,7 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
      * Set the value of order.
      *
      * @param  \GetCandy\Api\Core\Orders\Models\Order  $order
+     *
      * @return $this
      */
     public function order($order)
@@ -193,7 +200,7 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
     public function resolve()
     {
         if ($this->order->placed_at) {
-            throw new OrderAlreadyProcessedException;
+            throw new OrderAlreadyProcessedException();
         }
 
         $driver = $this->manager->with(
@@ -201,7 +208,7 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
         );
 
         if (! $driver->validate($this->nonce)) {
-            throw new InvalidPaymentTokenException;
+            throw new InvalidPaymentTokenException();
         }
 
         $this->order->notes = $this->notes;
@@ -229,6 +236,7 @@ class OrderProcessingFactory implements OrderProcessingFactoryInterface
      * Handle the response from the payment driver.
      *
      * @param  \GetCandy\Api\Core\Payments\PaymentResponse  $response
+     *
      * @return \GetCandy\Api\Core\Orders\Models\Order
      */
     protected function processResponse(PaymentResponse $response)

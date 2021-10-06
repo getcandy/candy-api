@@ -12,6 +12,7 @@ class CollectionProductController extends BaseController
     /**
      * @param  string  $collection
      * @param  \GetCandy\Api\Http\Requests\Collections\Products\UpdateRequest  $request
+     *
      * @return array
      */
     public function store($collection, UpdateRequest $request)

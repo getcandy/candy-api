@@ -15,7 +15,7 @@ class SavedBasketService extends BaseService
 
     public function __construct()
     {
-        $this->model = new SavedBasket;
+        $this->model = new SavedBasket();
     }
 
     /**
@@ -23,6 +23,7 @@ class SavedBasketService extends BaseService
      *
      * @param  string  $hashedId
      * @param  array  $data
+     *
      * @return \GetCandy\Api\Core\Baskets\Models\SavedBasket
      */
     public function update($hashedId, array $data)

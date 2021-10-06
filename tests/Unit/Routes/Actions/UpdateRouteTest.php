@@ -22,7 +22,7 @@ class UpdateRouteTest extends TestCase
 
         $route = factory(Route::class)->create();
 
-        $route = (new UpdateRoute)->actingAs($user)->run([
+        $route = (new UpdateRoute())->actingAs($user)->run([
             'encoded_id' => $route->encoded_id,
             'slug' => 'foo-bar',
             'language_id' => $language->encoded_id,

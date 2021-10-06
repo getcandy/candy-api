@@ -17,11 +17,12 @@ class AssetTransformService extends BaseService
 {
     public function __construct()
     {
-        $this->model = new Transform;
+        $this->model = new Transform();
     }
 
     /**
      * @param  string  $handle
+     *
      * @return null|\Illuminate\Database\Eloquent\Model
      */
     public function getByHandle($handle)
@@ -31,6 +32,7 @@ class AssetTransformService extends BaseService
 
     /**
      * @param  array  $handles
+     *
      * @return \Illuminate\Database\Eloquent\Collection|static[]
      */
     public function getByHandles(array $handles)
@@ -41,6 +43,7 @@ class AssetTransformService extends BaseService
     /**
      * @param  \GetCandy\Api\Core\Assets\Models\Transform  $transformer
      * @param  \GetCandy\Api\Core\Assets\Models\Asset  $asset
+     *
      * @return bool
      */
     protected function process($transformer, $asset)
@@ -72,15 +75,18 @@ class AssetTransformService extends BaseService
                     $c->upsize();
                 });
                 $image = $background->insert($image, 'center');
+
                 break;
             case 'fit-crop':
                 $image->resize($width, $height, function ($constraint) {
                     $constraint->aspectRatio();
                 });
                 $image->crop($width, $height);
+
                 break;
             case 'stretch':
                 dd('Do the stretch');
+
                 break;
             default:
                 $image->crop($width, $height);
@@ -89,7 +95,7 @@ class AssetTransformService extends BaseService
         // Determine where to put this puppy...
         $thumbPath = $path.'/'.str_plural($transformer->handle);
 
-        $assetTransform = new AssetTransform;
+        $assetTransform = new AssetTransform();
         $assetTransform->asset()->associate($asset);
         $assetTransform->transform()->associate($transformer);
 
@@ -117,6 +123,7 @@ class AssetTransformService extends BaseService
     /**
      * @param  mixed  $ref
      * @param  \GetCandy\Api\Core\Assets\Models\Asset  $asset
+     *
      * @return void
      */
     public function transform($ref, Asset $asset)
@@ -140,6 +147,7 @@ class AssetTransformService extends BaseService
      * Get the image.
      *
      * @param  \GetCandy\Api\Core\Assets\Models\Asset  $asset
+     *
      * @return bool|\Intervention\Image\Image
      */
     protected function getImage($asset)

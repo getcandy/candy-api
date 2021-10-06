@@ -55,6 +55,7 @@ class GetCandyInstaller
      * Sets the command instance for running the installer.
      *
      * @param  \Illuminate\Console\Command  $command
+     *
      * @return $this
      */
     public function onCommand(Command $command)

@@ -10,8 +10,8 @@ use GetCandy\Api\Core\Traits\HasChannels;
 
 class ShippingMethod extends BaseModel
 {
-    use HasAttributes,
-        HasChannels;
+    use HasAttributes;
+    use HasChannels;
 
     /**
      * The Hashid connection name for enconding the id.
@@ -28,7 +28,7 @@ class ShippingMethod extends BaseModel
     protected static function boot()
     {
         parent::boot();
-        static::addGlobalScope(new ChannelScope);
+        static::addGlobalScope(new ChannelScope());
     }
 
     /**

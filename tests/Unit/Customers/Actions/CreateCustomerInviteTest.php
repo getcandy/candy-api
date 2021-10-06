@@ -17,7 +17,7 @@ class CreateCustomerInviteTest extends TestCase
         $customer = factory(Customer::class)->create();
         $user = factory(User::class)->create(['customer_id' => $customer->id]);
 
-        $invite = (new CreateCustomerInvite)
+        $invite = (new CreateCustomerInvite())
             ->actingAs($user)->run([
                 'encoded_id' => $customer->encoded_id,
                 'email' => 'test@email.com',

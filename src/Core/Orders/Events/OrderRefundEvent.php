@@ -26,6 +26,7 @@ class OrderRefundEvent
      *
      * @param  \GetCandy\Api\Core\Orders\Models\Order  $order
      * @param  \GetCandy\Api\Core\Payments\Models\Transaction  $transaction
+     *
      * @return void
      */
     public function __construct(Order $order, Transaction $transaction)

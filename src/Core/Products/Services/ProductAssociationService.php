@@ -16,8 +16,8 @@ class ProductAssociationService extends BaseService
 
     public function __construct()
     {
-        $this->model = new Product;
-        $this->associations = new ProductAssociation;
+        $this->model = new Product();
+        $this->associations = new ProductAssociation();
     }
 
     /**
@@ -25,6 +25,7 @@ class ProductAssociationService extends BaseService
      *
      * @param  string  $product
      * @param  array  $data
+     *
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function store($product, $data)
@@ -36,7 +37,7 @@ class ProductAssociationService extends BaseService
         foreach ($data['relations'] as $index => $relation) {
             $relation['association'] = $this->getByHashedId($relation['association_id']);
             $relation['type'] = GetCandy::associationGroups()->getByHashedId($relation['type']);
-            $assoc = new ProductAssociation;
+            $assoc = new ProductAssociation();
             $assoc->group()->associate($relation['type']);
             $assoc->association()->associate($relation['association']);
             $assoc->parent()->associate($product);
@@ -51,6 +52,7 @@ class ProductAssociationService extends BaseService
      *
      * @param  string  $product
      * @param  array|string  $association
+     *
      * @return bool
      */
     public function destroy($product, $association)

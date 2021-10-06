@@ -38,6 +38,7 @@ class SearchController extends BaseController
      *
      * @param  \GetCandy\Api\Http\Requests\Search\SearchRequest  $request
      * @param  \GetCandy\Api\Core\Search\SearchContract  $search
+     *
      * @return array|\Illuminate\Http\Response
      */
     public function search(SearchRequest $request, SearchContract $search)
@@ -129,9 +130,10 @@ class SearchController extends BaseController
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \GetCandy\Api\Core\Search\SearchContract  $client
-     * @return \Illuminate\Http\JsonResponse
      *
      * @throws \Illuminate\Validation\ValidationException
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function sku(Request $request, SearchContract $client)
     {

@@ -10,7 +10,9 @@ use Illuminate\Queue\SerializesModels;
 
 class ProductViewedEvent
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable;
+    use InteractsWithSockets;
+    use SerializesModels;
 
     /**
      * @var \GetCandy\Api\Core\Products\Models\Product
@@ -21,6 +23,7 @@ class ProductViewedEvent
      * Create a new event instance.
      *
      * @param  \GetCandy\Api\Core\Products\Models\Product  $product
+     *
      * @return void
      */
     public function __construct(Product $product)

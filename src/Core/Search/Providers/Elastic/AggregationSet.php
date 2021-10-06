@@ -18,6 +18,7 @@ class AggregationSet
      * Add a filter to the chain.
      *
      * @param  string  $type
+     *
      * @return $this
      */
     public function add($type)
@@ -40,6 +41,7 @@ class AggregationSet
      * Find the filter class.
      *
      * @param  string  $type
+     *
      * @return mixed
      */
     private function findAggregation($type)

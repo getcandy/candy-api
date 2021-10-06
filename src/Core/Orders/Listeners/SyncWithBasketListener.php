@@ -22,6 +22,7 @@ class SyncWithBasketListener
      * Handle the event.
      *
      * @param  \GetCandy\Api\Core\Baskets\Events\BasketStoredEvent  $event
+     *
      * @return void
      */
     public function handle(BasketStoredEvent $event)

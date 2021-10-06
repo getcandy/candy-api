@@ -16,6 +16,7 @@ class ProductCustomerGroupController extends BaseController
      * @param  string  $product
      * @param  \GetCandy\Api\Http\Requests\Products\UpdateCustomerGroupsRequest  $request
      * @param  \GetCandy\Api\Core\Products\Services\ProductCustomerGroupService  $service
+     *
      * @return \GetCandy\Api\Http\Resources\Products\ProductResource
      */
     public function store($product, UpdateCustomerGroupsRequest $request, ProductCustomerGroupService $service)
@@ -30,6 +31,7 @@ class ProductCustomerGroupController extends BaseController
      *
      * @param  string  $product
      * @param  mixed $request (?)
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($product, DeleteRequest $request)

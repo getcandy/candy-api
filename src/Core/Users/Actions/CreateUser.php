@@ -69,7 +69,7 @@ class CreateUser extends Action
     {
         $userModel = GetCandy::getUserModel();
 
-        $user = (new $userModel);
+        $user = (new $userModel());
         $user->name = $this->firstname.' '.$this->lastname;
         $user->email = $this->email;
         $user->password = bcrypt($this->password);
@@ -111,6 +111,7 @@ class CreateUser extends Action
      *
      * @param $result
      * @param \Illuminate\Http\Request  $request
+     *
      * @return \GetCandy\Api\Core\Users\Resources\UserResource
      */
     public function response($result, $request)

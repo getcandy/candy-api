@@ -42,6 +42,7 @@ class ProductController extends BaseController
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \GetCandy\Api\Core\Products\ProductCriteria  $criteria
+     *
      * @return \GetCandy\Api\Http\Resources\Products\ProductCollection
      */
     public function index(Request $request, ProductCriteria $criteria)
@@ -67,6 +68,7 @@ class ProductController extends BaseController
      *
      * @param  string  $idOrSku
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return array|\GetCandy\Api\Http\Resources\Products\ProductResource
      */
     public function show($idOrSku, Request $request)
@@ -140,6 +142,7 @@ class ProductController extends BaseController
      * Handles the request to create a new product.
      *
      * @param  \GetCandy\Api\Http\Requests\Products\CreateRequest  $request
+     *
      * @return array
      */
     public function store(CreateRequest $request)
@@ -158,6 +161,7 @@ class ProductController extends BaseController
      *
      * @param  string  $id
      * @param  \GetCandy\Api\Http\Requests\Products\UpdateRequest  $request
+     *
      * @return array|\Illuminate\Http\Response
      */
     public function update($id, UpdateRequest $request)
@@ -186,7 +190,7 @@ class ProductController extends BaseController
                 'assets',
                 'customerGroups',
                 'channels',
-            ])->findOrFail((new Product)->decodeId($product));
+            ])->findOrFail((new Product())->decodeId($product));
         } catch (NotFoundHttpException $e) {
             return $this->errorNotFound();
         }
@@ -200,6 +204,7 @@ class ProductController extends BaseController
      *
      * @param  string  $id
      * @param  \GetCandy\Api\Http\Requests\Products\DeleteRequest  $request
+     *
      * @return array|\Illuminate\Http\Response
      */
     public function destroy($id, DeleteRequest $request)

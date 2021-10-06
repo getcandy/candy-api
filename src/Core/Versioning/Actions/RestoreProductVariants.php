@@ -70,9 +70,11 @@ class RestoreProductVariants extends AbstractAction
                 switch ($type) {
                     case ProductPricingTier::class:
                         $action = RestoreProductVariantTiers::class;
+
                         break;
                     case ProductCustomerPrice::class:
                         $action = RestoreProductVariantCustomerPricing::class;
+
                         break;
                 }
                 if (! $action) {
@@ -80,7 +82,7 @@ class RestoreProductVariants extends AbstractAction
 
                     return;
                 }
-                (new $action)->run([
+                (new $action())->run([
                     'versions' => $versions,
                     'draft' => $variant,
                 ]);

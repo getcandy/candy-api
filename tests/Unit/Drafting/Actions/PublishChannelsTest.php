@@ -32,7 +32,7 @@ class PublishChannelsTest extends TestCase
         $this->assertCount(2, $draft->channels);
         $this->assertCount(0, $parent->channels);
 
-        (new PublishChannels)->actingAs($user)->run([
+        (new PublishChannels())->actingAs($user)->run([
             'parent' => $parent,
             'draft' => $draft,
         ]);

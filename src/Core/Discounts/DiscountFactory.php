@@ -46,6 +46,7 @@ class DiscountFactory implements DiscountInterface
      * Set the basket.
      *
      * @param  \GetCandy\Api\Core\Baskets\Models\Basket  $basket
+     *
      * @return $this
      */
     public function setBasket(Basket $basket)
@@ -59,6 +60,7 @@ class DiscountFactory implements DiscountInterface
      * Set the user.
      *
      * @param  null|\Illuminate\Database\Eloquent\Model  $user
+     *
      * @return $this
      */
     public function setUser(Model $user = null)
@@ -94,6 +96,7 @@ class DiscountFactory implements DiscountInterface
      * @param  \GetCandy\Api\Core\Discounts\Discount  $discount
      * @param  null|\Illuminate\Database\Eloquent\Model  $user
      * @param  null|\GetCandy\Api\Core\Baskets\Models\Basket  $basket
+     *
      * @return bool
      */
     public function checkCriteria($discount, $user = null, $basket = null)

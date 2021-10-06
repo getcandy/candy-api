@@ -42,9 +42,9 @@ class FetchUserAction extends Action
     {
         $userModel = config('auth.providers.users.model', User::class);
         if ($this->encoded_id) {
-            $this->id = (new $userModel)->decodeId($this->encoded_id);
+            $this->id = (new $userModel())->decodeId($this->encoded_id);
         }
 
-        return (new $userModel)->findOrFail($this->id);
+        return (new $userModel())->findOrFail($this->id);
     }
 }

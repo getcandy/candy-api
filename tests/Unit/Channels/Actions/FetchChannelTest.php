@@ -16,7 +16,7 @@ class FetchChannelTest extends FeatureCase
         $user = $this->admin();
         $channel = factory(Channel::class)->create();
 
-        $record = (new FetchChannel)->actingAs($user)->run([
+        $record = (new FetchChannel())->actingAs($user)->run([
             'id' => $channel->id,
         ]);
 
@@ -28,7 +28,7 @@ class FetchChannelTest extends FeatureCase
         $user = $this->admin();
         $channel = factory(Channel::class)->create();
 
-        $record = (new FetchChannel)->actingAs($user)->run([
+        $record = (new FetchChannel())->actingAs($user)->run([
             'handle' => $channel->handle,
         ]);
 

@@ -20,6 +20,7 @@ class UpdateMappingsListener implements ShouldQueue
      * Handle the event.
      *
      * @param  \GetCandy\Api\Core\Attributes\Events\AttributeSavedEvent  $event
+     *
      * @return void
      */
     public function handle(AttributeSavedEvent $event)

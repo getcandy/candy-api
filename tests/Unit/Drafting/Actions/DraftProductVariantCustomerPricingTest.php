@@ -27,7 +27,7 @@ class DraftProductVariantCustomerPricingTest extends TestCase
             'product_id' => $product->id,
         ]);
 
-        $pricing = new ProductCustomerPrice;
+        $pricing = new ProductCustomerPrice();
         $pricing->product_variant_id = $variant->id;
         $pricing->customer_group_id = $customerGroup->id;
         $pricing->tax_id = $tax->id;
@@ -44,7 +44,7 @@ class DraftProductVariantCustomerPricingTest extends TestCase
         $this->assertCount(1, $variant->customerPricing);
         $this->assertCount(0, $draft->customerPricing);
 
-        (new DraftProductVariantCustomerPricing)->actingAs($user)->run([
+        (new DraftProductVariantCustomerPricing())->actingAs($user)->run([
             'parent' => $variant,
             'draft' => $draft,
         ]);

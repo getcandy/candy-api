@@ -65,6 +65,7 @@ class Document
      *
      * @param  string  $key
      * @param  string  $value
+     *
      * @return $this
      */
     public function add($key, $value)

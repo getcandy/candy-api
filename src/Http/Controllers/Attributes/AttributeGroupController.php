@@ -22,6 +22,7 @@ class AttributeGroupController extends BaseController
      * Returns a listing of attribute groups.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return \GetCandy\Api\Http\Resources\Attributes\AttributeGroupCollection
      */
     public function index(Request $request)
@@ -41,11 +42,13 @@ class AttributeGroupController extends BaseController
      *
      * @param  string  $id
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return \GetCandy\Api\Http\Resources\Attributes\AttributeGroupResource
      */
     public function show($id, Request $request)
     {
         $includes = $request->include ? explode(',', $request->include) : null;
+
         try {
             $attributeGroup = GetCandy::attributeGroups()->getByHashedId($id, $includes);
         } catch (ModelNotFoundException $e) {
@@ -59,6 +62,7 @@ class AttributeGroupController extends BaseController
      * Handles the request to create a new attribute group.
      *
      * @param  \GetCandy\Api\Http\Requests\AttributeGroups\CreateRequest  $request
+     *
      * @return \GetCandy\Api\Http\Resources\Attributes\AttributeGroupResource
      */
     public function store(CreateRequest $request)
@@ -74,6 +78,7 @@ class AttributeGroupController extends BaseController
      *
      * @param  string  $id
      * @param  \GetCandy\Api\Http\Requests\AttributeGroups\UpdateRequest  $request
+     *
      * @return array|\GetCandy\Api\Http\Resources\Attributes\AttributeGroupResource
      */
     public function update($id, UpdateRequest $request)
@@ -107,6 +112,7 @@ class AttributeGroupController extends BaseController
      *
      * @param  string  $id
      * @param  \GetCandy\Api\Http\Requests\AttributeGroups\DeleteRequest  $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($id, Request $request)

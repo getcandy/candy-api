@@ -36,7 +36,7 @@ class DeleteRoute extends AbstractAction
      */
     public function handle()
     {
-        $route = (new FetchRoute)->actingAs(
+        $route = (new FetchRoute())->actingAs(
             $this->user()
         )->run([
             'encoded_id' => $this->encoded_id,

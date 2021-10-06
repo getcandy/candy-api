@@ -128,8 +128,8 @@ class Braintree extends AbstractProvider
                 'firstName' => $billing['firstname'],
                 'lastName' => $billing['lastname'],
                 'locality' => $billing['city'],
-                'region' =>   $billing['county'] ?: $billing['state'],
-                'postalCode' =>   $billing['zip'],
+                'region' => $billing['county'] ?: $billing['state'],
+                'postalCode' => $billing['zip'],
                 'streetAddress' => $billing['address'],
             ],
             'shipping' => [
@@ -137,7 +137,7 @@ class Braintree extends AbstractProvider
                 'lastName' => $shipping['lastname'],
                 'locality' => $shipping['city'],
                 'region' => $shipping['county'] ?: $shipping['state'],
-                'postalCode' =>   $shipping['zip'],
+                'postalCode' => $shipping['zip'],
                 'streetAddress' => $shipping['address'],
             ],
             'options' => [
@@ -216,11 +216,12 @@ class Braintree extends AbstractProvider
      * Create a failed transaction.
      *
      * @param  array  $result
+     *
      * @return \GetCandy\Api\Core\Payments\Models\Transaction
      */
     protected function createFailedTransaction($result)
     {
-        $transaction = new Transaction;
+        $transaction = new Transaction();
         $transaction->success = false;
         $transaction->order()->associate($this->order);
         $transaction->merchant = $result->transaction->merchantAccountId;
@@ -242,7 +243,7 @@ class Braintree extends AbstractProvider
 
     protected function createSuccessTransaction($result)
     {
-        $transaction = new Transaction;
+        $transaction = new Transaction();
         $transaction->success = true;
         $transaction->order()->associate($this->order);
         $transaction->merchant = $result->transaction->merchantAccountId;
@@ -303,7 +304,7 @@ class Braintree extends AbstractProvider
 
         $responseT = $result->transaction;
 
-        $transaction = new Transaction;
+        $transaction = new Transaction();
         $transaction->success = $result->success;
         $transaction->order()->associate($this->order);
         $transaction->merchant = $responseT ? $responseT->merchantAccountId : 'Unknown';

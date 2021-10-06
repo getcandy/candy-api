@@ -12,6 +12,7 @@ class OrderScope extends AbstractScope
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $builder
      * @param  \Illuminate\Database\Eloquent\Model  $model
+     *
      * @return void
      */
     public function apply(Builder $builder, Model $model)

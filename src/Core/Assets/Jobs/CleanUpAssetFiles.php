@@ -11,7 +11,10 @@ use Storage;
 
 class CleanUpAssetFiles implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * @var \Illuminate\Support\Collection
@@ -22,6 +25,7 @@ class CleanUpAssetFiles implements ShouldQueue
      * Create a new job instance.
      *
      * @param  \GetCandy\Api\Core\Assets\Models\Asset[]  $assets
+     *
      * @return void
      */
     public function __construct($assets)

@@ -40,7 +40,7 @@ class Elastic implements SearchContract
 
     public function parseAggregations(array $aggregations)
     {
-        return (new AggregationResolver)->resolve(
+        return (new AggregationResolver())->resolve(
             $aggregations
         );
     }

@@ -41,14 +41,14 @@ class FetchUser extends AbstractAction
     {
         $userModel = GetCandy::getUserModel();
         if ($this->encoded_id) {
-            $this->id = (new $userModel)->decodeId($this->encoded_id);
+            $this->id = (new $userModel())->decodeId($this->encoded_id);
         }
 
         if ($this->email) {
-            return (new $userModel)->where('email', '=', $this->email)->firstOrFail();
+            return (new $userModel())->where('email', '=', $this->email)->firstOrFail();
         }
 
-        return (new $userModel)->with($this->resolveEagerRelations())->findOrFail($this->id);
+        return (new $userModel())->with($this->resolveEagerRelations())->findOrFail($this->id);
     }
 
     /**
@@ -56,6 +56,7 @@ class FetchUser extends AbstractAction
      *
      * @param $result
      * @param \Illuminate\Http\Request  $request
+     *
      * @return \GetCandy\Api\Core\Users\Resources\UserResource
      */
     public function response($result, $request)

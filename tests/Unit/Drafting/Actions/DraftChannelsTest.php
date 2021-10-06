@@ -32,7 +32,7 @@ class DraftChannelsTest extends TestCase
         $this->assertCount(2, $product->channels);
         $this->assertCount(0, $draft->channels);
 
-        (new DraftChannels)->actingAs($user)->run([
+        (new DraftChannels())->actingAs($user)->run([
             'parent' => $product,
             'draft' => $draft,
         ]);

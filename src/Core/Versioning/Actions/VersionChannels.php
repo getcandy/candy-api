@@ -37,7 +37,7 @@ class VersionChannels extends AbstractAction
     public function handle()
     {
         foreach ($this->model->channels as $channel) {
-            (new CreateVersion)->actingAs($this->user())->run([
+            (new CreateVersion())->actingAs($this->user())->run([
                 'model' => $channel,
                 'model_data' => $channel->pivot->only('published_at'),
                 'relation' => $this->version,

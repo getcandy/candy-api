@@ -37,7 +37,7 @@ class VersionRoutes extends AbstractAction
     public function handle()
     {
         foreach ($this->model->routes as $route) {
-            (new CreateVersion)->actingAs($this->user())->run([
+            (new CreateVersion())->actingAs($this->user())->run([
                 'model' => $route,
                 'relation' => $this->version,
             ]);

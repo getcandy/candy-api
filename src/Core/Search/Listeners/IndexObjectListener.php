@@ -11,6 +11,7 @@ class IndexObjectListener
      * Handle the event.
      *
      * @param  \GetCandy\Api\Core\Search\Events\IndexableSavedEvent  $event
+     *
      * @return void
      */
     public function handle(IndexableSavedEvent $event)

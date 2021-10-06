@@ -12,6 +12,7 @@ class SearchManager extends Manager implements SearchManagerContract
      * Get a driver instance.
      *
      * @param  string  $driver
+     *
      * @return mixed
      */
     public function with($driver)
@@ -35,6 +36,7 @@ class SearchManager extends Manager implements SearchManagerContract
      * Build a layout provider instance.
      *
      * @param  string  $provider
+     *
      * @return \GetCandy\Api\Core\Payments\Providers\AbstractProvider
      */
     public function buildProvider($provider)
@@ -45,9 +47,9 @@ class SearchManager extends Manager implements SearchManagerContract
     /**
      * Get the default driver name.
      *
-     * @return string
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return string
      */
     public function getDefaultDriver()
     {

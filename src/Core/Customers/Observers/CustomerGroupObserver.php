@@ -10,6 +10,7 @@ class CustomerGroupObserver
      * Handle the Channel "updated" event.
      *
      * @param  \GetCandy\Api\Core\Customers\Models\CustomerGroup  $channel
+     *
      * @return void
      */
     public function updated(CustomerGroup $customerGroup)
@@ -23,6 +24,7 @@ class CustomerGroupObserver
      * Handle the Channel "created" event.
      *
      * @param  \GetCandy\Api\Core\Customers\Models\CustomerGroup  $channel
+     *
      * @return void
      */
     public function created(CustomerGroup $customerGroup)

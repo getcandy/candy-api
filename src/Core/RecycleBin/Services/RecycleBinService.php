@@ -18,6 +18,7 @@ class RecycleBinService implements RecycleBinServiceInterface
      * @param  int  $perPage
      * @param  mixed  $terms
      * @param  array  $includes
+     *
      * @return \Illuminate\Pagination\LengthAwarePaginator
      */
     public function getItems($paginated = true, $perPage = 25, $term = null, $includes = [])

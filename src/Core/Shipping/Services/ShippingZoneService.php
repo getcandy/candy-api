@@ -19,11 +19,12 @@ class ShippingZoneService extends BaseService
      * Create a shipping method.
      *
      * @param  array  $data
+     *
      * @return \GetCandy\Api\Core\Shipping\Models\ShippingZone
      */
     public function create(array $data)
     {
-        $shipping = new ShippingZone;
+        $shipping = new ShippingZone();
         $shipping->fill($data);
         $shipping->save();
 
@@ -41,9 +42,10 @@ class ShippingZoneService extends BaseService
      *
      * @param  string  $id
      * @param  array|null  $includes
-     * @return \GetCandy\Api\Core\Shipping\Models\ShippingZone
      *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+     *
+     * @return \GetCandy\Api\Core\Shipping\Models\ShippingZone
      */
     public function getByHashedId($id, $includes = null)
     {
@@ -63,6 +65,7 @@ class ShippingZoneService extends BaseService
      *
      * @param  string  $id
      * @param  array  $data
+     *
      * @return \GetCandy\Api\Core\Shipping\Models\ShippingZone
      */
     public function update($id, array $data)

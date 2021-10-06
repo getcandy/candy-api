@@ -15,6 +15,7 @@ class PriceCalculatorService
         if (isset($this->pricing[$property])) {
             return $this->pricing[$property];
         }
+
         throw new InvalidArgumentException("Method or Property {$property} doesn't exist");
     }
 

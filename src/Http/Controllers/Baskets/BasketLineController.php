@@ -36,6 +36,7 @@ class BasketLineController extends BaseController
      * Store one or more new basket lines, and associate them with a basket ID.
      *
      * @param  \GetCandy\Api\Http\Requests\Baskets\CreateLinesRequest  $request
+     *
      * @return array|\GetCandy\Api\Http\Resources\Baskets\BasketResource
      */
     public function store(CreateLinesRequest $request)
@@ -54,6 +55,7 @@ class BasketLineController extends BaseController
      *
      * @param  string  $id
      * @param  \GetCandy\Api\Http\Requests\Baskets\UpdateLineRequest  $request
+     *
      * @return \GetCandy\Api\Http\Resources\Baskets\BasketResource
      */
     public function update(string $id, UpdateLineRequest $request)
@@ -68,6 +70,7 @@ class BasketLineController extends BaseController
      *
      * @param  string  $id
      * @param  \GetCandy\Api\Http\Requests\Baskets\ChangeQuantityRequest  $request
+     *
      * @return \GetCandy\Api\Http\Resources\Baskets\BasketResource
      */
     public function addQuantity(string $id, ChangeQuantityRequest $request)
@@ -84,6 +87,7 @@ class BasketLineController extends BaseController
      *
      * @param  string  $id
      * @param  \GetCandy\Api\Http\Requests\Baskets\ChangeQuantityRequest  $request
+     *
      * @return \GetCandy\Api\Http\Resources\Baskets\BasketResource
      */
     public function removeQuantity(string $id, ChangeQuantityRequest $request)
@@ -99,6 +103,7 @@ class BasketLineController extends BaseController
      * Handle the request to delete a basket.
      *
      * @param  \GetCandy\Api\Http\Requests\Baskets\DeleteLinesRequest  $request
+     *
      * @return \GetCandy\Api\Http\Resources\Baskets\BasketResource
      */
     public function destroy(DeleteLinesRequest $request)
@@ -111,7 +116,7 @@ class BasketLineController extends BaseController
     public function destroyLine($id, Request $request)
     {
         // TODO: Move this to an action.
-        $realId = (new BasketLine)->decodeId($id);
+        $realId = (new BasketLine())->decodeId($id);
         BasketLine::destroy($realId);
 
         return $this->respondWithNoContent();

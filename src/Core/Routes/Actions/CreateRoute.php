@@ -45,7 +45,7 @@ class CreateRoute extends AbstractAction
                 'required',
                 'string',
                 function () {
-                    return (new $this->element_type)->decodeId($this->element_id);
+                    return (new $this->element_type())->decodeId($this->element_id);
                 },
             ],
             'language_id' => 'required|string|hashid_is_valid:'.Language::class,
@@ -61,8 +61,8 @@ class CreateRoute extends AbstractAction
      */
     public function handle()
     {
-        $elementId = (new $this->element_type)->decodeId($this->element_id);
-        $languageId = (new Language)->decodeId($this->language_id);
+        $elementId = (new $this->element_type())->decodeId($this->element_id);
+        $languageId = (new Language())->decodeId($this->language_id);
 
         $route = Route::create([
             'element_id' => $elementId,

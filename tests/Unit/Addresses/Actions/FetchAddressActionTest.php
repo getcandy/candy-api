@@ -22,13 +22,13 @@ class FetchAddressActionTest extends TestCase
 
         $address = $user->addresses->first();
 
-        $result = (new FetchAddressAction)->actingAs($user)->run([
+        $result = (new FetchAddressAction())->actingAs($user)->run([
             'encoded_id' => $address->encoded_id,
         ]);
 
         $this->assertEquals($address->id, $result->id);
 
-        $result = (new FetchAddressAction)->actingAs($user)->run([
+        $result = (new FetchAddressAction())->actingAs($user)->run([
             'id' => $address->id,
         ]);
 
@@ -48,7 +48,7 @@ class FetchAddressActionTest extends TestCase
 
         $this->expectException(\Illuminate\Auth\Access\AuthorizationException::class);
 
-        $result = (new FetchAddressAction)->actingAs($userB)->run([
+        $result = (new FetchAddressAction())->actingAs($userB)->run([
             'encoded_id' => $address->encoded_id,
         ]);
     }

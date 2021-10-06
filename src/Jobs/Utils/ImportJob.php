@@ -13,7 +13,10 @@ use Illuminate\Queue\SerializesModels;
 
 class ImportJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * @var \GetCandy\Api\Core\Utils\Import\Models\Import
@@ -24,6 +27,7 @@ class ImportJob implements ShouldQueue
      * Create a new job instance.
      *
      * @param  \GetCandy\Api\Core\Utils\Import\Models\Import  $import
+     *
      * @return void
      */
     public function __construct(Import $import)
@@ -35,6 +39,7 @@ class ImportJob implements ShouldQueue
      * Execute the job.
      *
      * @param  \GetCandy\Api\Core\Utils\Import\ImportManagerContract $importer
+     *
      * @return void
      */
     public function handle(ImportManagerContract $importer)

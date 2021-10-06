@@ -22,6 +22,7 @@ class BasketDiscountFactory implements BasketDiscountFactoryInterface
      * Add a discount to the pool.
      *
      * @param  string  $discount
+     *
      * @return $this
      */
     public function add($discount)

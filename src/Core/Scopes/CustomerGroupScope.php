@@ -12,6 +12,7 @@ class CustomerGroupScope extends AbstractScope
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $builder
      * @param  \Illuminate\Database\Eloquent\Model  $model
+     *
      * @return void
      */
     public function apply(Builder $builder, Model $model)
@@ -37,6 +38,7 @@ class CustomerGroupScope extends AbstractScope
      * Extend the query builder with the needed functions.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $builder
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function extend(Builder $builder)

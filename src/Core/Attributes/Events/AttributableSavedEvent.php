@@ -15,6 +15,7 @@ class AttributableSavedEvent
      * Create a new event instance.
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
+     *
      * @return void
      */
     public function __construct(Model $model)

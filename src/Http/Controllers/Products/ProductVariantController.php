@@ -21,6 +21,7 @@ class ProductVariantController extends BaseController
      * Handles the request to show all product variants.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return \GetCandy\Api\Http\Resources\Products\ProductVariantCollection
      */
     public function index(Request $request)
@@ -34,6 +35,7 @@ class ProductVariantController extends BaseController
      * Handles the request to show a product variant based on hashed ID.
      *
      * @param  string  $id
+     *
      * @return array|\GetCandy\Api\Http\Resources\Products\ProductVariantResource
      */
     public function show($id)
@@ -52,6 +54,7 @@ class ProductVariantController extends BaseController
      *
      * @param  string  $product
      * @param  \GetCandy\Api\Http\Requests\ProductVariants\CreateRequest  $request
+     *
      * @return array|\GetCandy\Api\Http\Resources\Products\ProductResource
      */
     public function store($product, CreateRequest $request)
@@ -72,6 +75,7 @@ class ProductVariantController extends BaseController
      *
      * @param  string  $id
      * @param  \GetCandy\Api\Http\Requests\ProductVariants\UpdateRequest  $request
+     *
      * @return array|\GetCandy\Api\Http\Resources\Products\ProductVariantResource
      */
     public function update($id, UpdateRequest $request)
@@ -94,6 +98,7 @@ class ProductVariantController extends BaseController
      *
      * @param  string  $id
      * @param  \GetCandy\Api\Http\Requests\ProductVariants\DeleteRequest  $request
+     *
      * @return array|\Illuminate\Http\Response
      */
     public function destroy($id, DeleteRequest $request)

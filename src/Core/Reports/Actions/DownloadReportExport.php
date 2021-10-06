@@ -20,7 +20,7 @@ class DownloadReportExport extends AbstractAction
 
     public function handle($id)
     {
-        $realId = (new ReportExport)->decodeId($id);
+        $realId = (new ReportExport())->decodeId($id);
         $export = ReportExport::findOrFail($realId);
 
         try {

@@ -13,6 +13,7 @@ class ChannelScope extends AbstractScope
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $builder
      * @param  \Illuminate\Database\Eloquent\Model  $model
+     *
      * @return void
      */
     public function apply(Builder $builder, Model $model)
@@ -44,6 +45,7 @@ class ChannelScope extends AbstractScope
      * Extend the query builder with the needed functions.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $builder
+     *
      * @return void
      */
     public function extend(Builder $builder)

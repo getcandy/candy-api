@@ -33,11 +33,11 @@ class VersionProductVariantTiersTest extends TestCase
 
         $variant->tiers()->createMany($tiers);
 
-        $version = (new CreateVersion)->actingAs($user)->run([
+        $version = (new CreateVersion())->actingAs($user)->run([
             'model' => $variant,
         ]);
 
-        (new VersionProductVariantTiers)->actingAs($user)->run([
+        (new VersionProductVariantTiers())->actingAs($user)->run([
             'version' => $version,
             'variant' => $variant,
         ]);

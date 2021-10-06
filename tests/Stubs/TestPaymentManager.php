@@ -6,7 +6,7 @@ class TestPaymentManager extends AbstractPaymentManager
 {
     public function driver($driver = null)
     {
-        return new TestPaymentDriver;
+        return new TestPaymentDriver();
     }
 
     public function with($driver)

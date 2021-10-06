@@ -46,6 +46,7 @@ abstract class BaseModel extends Model
      * Scope a query to only include enabled.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeEnabled($query)
@@ -57,6 +58,7 @@ abstract class BaseModel extends Model
      * Scope a query to only include the default record.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeDefault($query)
@@ -73,6 +75,7 @@ abstract class BaseModel extends Model
      * Determine if the given relationship (method) exists.
      *
      * @param  string  $key
+     *
      * @return bool
      */
     public function hasRelation($key)

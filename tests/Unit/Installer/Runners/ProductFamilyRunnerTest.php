@@ -20,7 +20,7 @@ class ProductFamilyRunnerTest extends TestCase
             $mock->makePartial();
             $mock->shouldReceive('getChannelHandle')->andReturn('webstore');
 
-            $attribute = new \stdClass;
+            $attribute = new \stdClass();
             $attribute->id = 1;
             $mock->shouldReceive('getAttributes')->andReturn(collect([$attribute]));
         });

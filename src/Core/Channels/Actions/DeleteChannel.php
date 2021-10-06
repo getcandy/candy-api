@@ -51,7 +51,7 @@ class DeleteChannel extends AbstractAction
     {
         if ($this->channel->default) {
             if (! $this->runningAs('controller')) {
-                throw new DefaultRecordRequiredException;
+                throw new DefaultRecordRequiredException();
             }
 
             return false;

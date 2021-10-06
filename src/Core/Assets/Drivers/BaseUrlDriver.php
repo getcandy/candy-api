@@ -46,6 +46,7 @@ abstract class BaseUrlDriver
     /**
      * @param  array  $data
      * @param  \Illuminate\Database\Eloquent\Model  $model
+     *
      * @return \GetCandy\Api\Core\Assets\Models\Asset
      */
     public function process(array $data, Model $model = null)
@@ -76,6 +77,7 @@ abstract class BaseUrlDriver
      *
      * @param  array  $data
      * @param  \Illuminate\Database\Eloquent\Model  $model
+     *
      * @return \GetCandy\Api\Core\Assets\Models\Asset
      */
     protected function prepare()
@@ -117,6 +119,7 @@ abstract class BaseUrlDriver
      * Gets an image from a given url.
      *
      * @param  string  $url
+     *
      * @return null|Intervention\Image\Image
      */
     public function getImageFromUrl($url)
@@ -134,11 +137,13 @@ abstract class BaseUrlDriver
      * Get the OEM data.
      *
      * @param  array  $params
+     *
      * @return mixed
      */
     protected function getOemData($params = [])
     {
         $client = new Client();
+
         try {
             $response = $client->request('GET', $this->oemUrl, [
                 'query' => $params,

@@ -23,17 +23,17 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class Product extends BaseModel
 {
-    use Assetable,
-        HasCustomerGroups,
-        HasAttributes,
-        HasChannels,
-        HasRoutes,
-        Indexable,
-        HasShippingExclusions,
-        Draftable,
-        LogsActivity,
-        Versionable,
-        Recyclable;
+    use Assetable;
+    use HasCustomerGroups;
+    use HasAttributes;
+    use HasChannels;
+    use HasRoutes;
+    use Indexable;
+    use HasShippingExclusions;
+    use Draftable;
+    use LogsActivity;
+    use Versionable;
+    use Recyclable;
 
     /**
      * @var string
@@ -113,7 +113,9 @@ class Product extends BaseModel
      *         ]
      *     ]
      * ].
+     *
      * @param  array  $value
+     *
      * @return void
      */
     public function setOptionDataAttribute($value)

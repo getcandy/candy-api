@@ -14,7 +14,7 @@ class FetchUserTest extends FeatureCase
     {
         $user = $this->admin();
 
-        $currentUser = (new FetchUser)->actingAs($user)->run([
+        $currentUser = (new FetchUser())->actingAs($user)->run([
             'email' => $user->email,
         ]);
 

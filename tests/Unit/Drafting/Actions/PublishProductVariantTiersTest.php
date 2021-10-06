@@ -42,7 +42,7 @@ class PublishProductVariantTiersTest extends TestCase
         $this->assertCount(count($tiers), $draft->tiers);
         $this->assertCount(0, $parent->tiers);
 
-        (new PublishProductVariantTiers)->actingAs($user)->run([
+        (new PublishProductVariantTiers())->actingAs($user)->run([
             'parent' => $parent,
             'draft' => $draft,
         ]);

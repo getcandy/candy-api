@@ -19,7 +19,7 @@ class UpdateUser extends Action
     {
         $userModel = GetCandy::getUserModel();
 
-        $this->userToUpdate = (new $userModel)->findOrFail((new $userModel)->decodeId($this->encoded_id));
+        $this->userToUpdate = (new $userModel())->findOrFail((new $userModel())->decodeId($this->encoded_id));
 
         return $this->user() && (
             $this->user()->hasRole('admin') || $this->userToUpdate->id === $this->user()->id
@@ -64,6 +64,7 @@ class UpdateUser extends Action
      *
      * @param $result
      * @param \Illuminate\Http\Request  $request
+     *
      * @return \GetCandy\Api\Core\Users\Resources\UserResource
      */
     public function response($result, $request)

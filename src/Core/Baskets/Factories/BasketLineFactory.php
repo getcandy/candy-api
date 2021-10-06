@@ -53,6 +53,7 @@ class BasketLineFactory implements BasketLineInterface
      * Add lines to the instance.
      *
      * @param  \Illuminate\Support\Collection  $lines
+     *
      * @return $this
      */
     public function add($lines)
@@ -66,6 +67,7 @@ class BasketLineFactory implements BasketLineInterface
      * Initialise the factory.
      *
      * @param  \GetCandy\Api\Core\Baskets\Models\BasketLine  $line
+     *
      * @return $this
      */
     public function init(BasketLine $line)
@@ -79,6 +81,7 @@ class BasketLineFactory implements BasketLineInterface
      * Add a discount to the instance.
      *
      * @param  string  $coupon
+     *
      * @return $this
      */
     public function discount($coupon)

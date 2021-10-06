@@ -18,6 +18,7 @@ class CurrencyService extends BaseService implements CurrencyServiceInterface
      * Creates a resource from the given data.
      *
      * @param  array  $data
+     *
      * @return \GetCandy\Api\Core\Currencies\Models\Currency
      */
     public function create($data)
@@ -55,10 +56,11 @@ class CurrencyService extends BaseService implements CurrencyServiceInterface
      *
      * @param  string  $id
      * @param  array  $data
-     * @return \GetCandy\Api\Core\Currencies\Models\Currency
      *
      * @throws \Exception
      * @throws \GetCandy\Api\Exceptions\MinimumRecordRequiredException
+     *
+     * @return \GetCandy\Api\Core\Currencies\Models\Currency
      */
     public function update($id, array $data)
     {
@@ -100,10 +102,11 @@ class CurrencyService extends BaseService implements CurrencyServiceInterface
      * Deletes a resource by its given hashed ID.
      *
      * @param  string  $id
-     * @return bool
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @throws \GetCandy\Api\Exceptions\MinimumRecordRequiredException
+     *
+     * @return bool
      */
     public function delete($id)
     {

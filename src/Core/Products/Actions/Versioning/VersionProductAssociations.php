@@ -38,7 +38,7 @@ class VersionProductAssociations extends AbstractAction
     public function handle()
     {
         foreach ($this->model->associations as $assoc) {
-            (new CreateVersion)->actingAs($this->user())->run([
+            (new CreateVersion())->actingAs($this->user())->run([
                 'model' => $assoc,
                 'relation' => $this->version,
             ]);

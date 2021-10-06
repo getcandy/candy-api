@@ -87,7 +87,7 @@ class CreateAddressAction extends Action
             $model = get_class($customer);
         }
 
-        $address = new Address;
+        $address = new Address();
         $attributes = array_merge(
             Arr::except($this->validated(), ['user_id', 'customer_id', 'country_id']),
             [

@@ -33,7 +33,7 @@ class DraftProductVariantsTest extends TestCase
         $this->assertCount(1, $product->variants);
         $this->assertCount(0, $draft->variants);
 
-        (new DraftProductVariants)->actingAs($user)->run([
+        (new DraftProductVariants())->actingAs($user)->run([
             'parent' => $product,
             'draft' => $draft,
         ]);

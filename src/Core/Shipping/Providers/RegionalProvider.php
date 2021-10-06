@@ -10,6 +10,7 @@ class RegionalProvider extends AbstractProvider
      * Calculates the shipping prices available.
      *
      * @param  \GetCandy\Api\Core\Orders\Models\Order  $order
+     *
      * @return \GetCandy\Api\Core\Shipping\Models\ShippingPrice|null
      */
     public function calculate($order)
@@ -62,6 +63,7 @@ class RegionalProvider extends AbstractProvider
      * Gets the postcode which should be used to check prices.
      *
      * @param  \GetCandy\Api\Core\Orders\Models\Order  $order
+     *
      * @return string
      */
     protected function getPostcodeToCheck($order)

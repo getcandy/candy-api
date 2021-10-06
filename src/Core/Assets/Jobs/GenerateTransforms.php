@@ -11,7 +11,10 @@ use Illuminate\Queue\SerializesModels;
 
 class GenerateTransforms implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * @var \Illuminate\Support\Collection
@@ -28,6 +31,7 @@ class GenerateTransforms implements ShouldQueue
      *
      * @param  \GetCandy\Api\Core\Assets\Models\Asset[]  $assets
      * @param  null|array  $settings
+     *
      * @return void
      */
     public function __construct($assets, $settings = null)

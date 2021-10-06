@@ -9,7 +9,7 @@ class SettingService extends BaseService
 {
     public function __construct()
     {
-        $this->model = new Setting;
+        $this->model = new Setting();
     }
 
     public function get($handle)

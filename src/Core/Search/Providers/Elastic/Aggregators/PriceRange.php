@@ -13,12 +13,13 @@ class PriceRange extends AbstractAggregator
      * @param  null|\Elastica\Search  $search
      * @param  null|\Elastica\Query  $query
      * @param  mixed  $postFilter
+     *
      * @return \Elastica\Query
      */
     public function getPre(Search $search = null, $query = null, $postFilter = null)
     {
         // Add max price aggregator
-        $max = new MaxPrice;
+        $max = new MaxPrice();
 
         $boolQuery = $query->getQuery();
 

@@ -28,9 +28,10 @@ class CollectionService extends BaseService
      *
      * @param  string  $id
      * @param  bool  $withDrafted
-     * @return \GetCandy\Api\Core\Collections\Models\Collection
      *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+     *
+     * @return \GetCandy\Api\Core\Collections\Models\Collection
      */
     public function getByHashedId($id, $withDrafted = false)
     {
@@ -59,6 +60,7 @@ class CollectionService extends BaseService
      * Creates a resource from the given data.
      *
      * @param  array  $data
+     *
      * @return \GetCandy\Api\Core\Collections\Models\Collection
      */
     public function create(array $data)
@@ -80,9 +82,10 @@ class CollectionService extends BaseService
      * Deletes a resource by its given hashed ID.
      *
      * @param  string  $id
-     * @return bool|null
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return bool|null
      */
     public function delete($id)
     {
@@ -101,6 +104,7 @@ class CollectionService extends BaseService
      * @param  string  $searchTerm
      * @param  int  $length
      * @param  null|int  $page
+     *
      * @return \Illuminate\Pagination\LengthAwarePaginator
      */
     public function getPaginatedData($searchTerm = null, $length = 50, $page = null)
@@ -109,7 +113,7 @@ class CollectionService extends BaseService
             $type = get_class($this->model) == Product::class ? 'products' : 'categories';
             // set type
             $search = Search::run([
-                'params' =>[
+                'params' => [
                     'type' => $type,
                     'term' => 'test',
                 ],
@@ -140,6 +144,7 @@ class CollectionService extends BaseService
      *
      * @param  string  $collectionId
      * @param  array  $products
+     *
      * @return \GetCandy\Api\Core\Collections\Models\Collection
      */
     public function syncProducts($collectionId, $products = [])

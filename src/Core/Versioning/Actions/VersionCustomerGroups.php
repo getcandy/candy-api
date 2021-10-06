@@ -37,7 +37,7 @@ class VersionCustomerGroups extends AbstractAction
     public function handle()
     {
         foreach ($this->model->customerGroups as $group) {
-            (new CreateVersion)->actingAs($this->user())->run([
+            (new CreateVersion())->actingAs($this->user())->run([
                 'model' => $group,
                 'model_data' => $group->pivot->only(['purchasable', 'visible']),
                 'relation' => $this->version,

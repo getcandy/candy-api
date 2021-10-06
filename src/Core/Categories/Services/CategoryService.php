@@ -38,9 +38,10 @@ class CategoryService extends BaseService
      * Returns model by a given hashed id.
      *
      * @param  string  $id
-     * @return \GetCandy\Api\Core\Categories\Models\Category
      *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+     *
+     * @return \GetCandy\Api\Core\Categories\Models\Category
      */
     public function getByHashedId($id)
     {
@@ -230,6 +231,7 @@ class CategoryService extends BaseService
      *
      * @param  string  $categoryId
      * @param  string  $layoutId
+     *
      * @return \GetCandy\Api\Core\Categories\Models\Category
      */
     public function updateLayout($categoryId, $layoutId)
@@ -255,12 +257,15 @@ class CategoryService extends BaseService
         switch ($action) {
             case 'before':
                 $response = $movedNode->insertBeforeNode($node);
+
                 break;
             case 'after':
                 $response = $movedNode->insertAfterNode($node);
+
                 break;
             case 'over':
                 $response = $node->prependNode($movedNode);
+
                 break;
         }
 
@@ -302,9 +307,10 @@ class CategoryService extends BaseService
      * Deletes a resource by its given hashed ID.
      *
      * @param  string  $id
-     * @return bool
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return bool
      */
     public function delete($id)
     {

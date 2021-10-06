@@ -25,11 +25,12 @@ class DiscountService extends BaseService
      * Create a discount.
      *
      * @param  array  $data
+     *
      * @return \GetCandy\Api\Core\Discounts\Models\Discount
      */
     public function create(array $data)
     {
-        $discount = new Discount;
+        $discount = new Discount();
         $discount->attribute_data = $data;
 
         if (! empty($data['start_at'])) {
@@ -68,6 +69,7 @@ class DiscountService extends BaseService
      *
      * @param  string  $id
      * @param  array  $data
+     *
      * @return \GetCandy\Api\Core\Discounts\Models\Discount
      */
     public function update($id, array $data)
@@ -107,6 +109,7 @@ class DiscountService extends BaseService
      *
      * @param  \GetCandy\Api\Core\Discounts\Models\Discount  $discount
      * @param  array  $sets
+     *
      * @return \GetCandy\Api\Core\Discounts\Models\Discount
      */
     public function syncSets($discount, array $sets)
@@ -115,7 +118,7 @@ class DiscountService extends BaseService
 
         foreach ($sets as $set) {
             if (! empty($set['id'])) {
-                $id = (new DiscountCriteriaSet)->decodeId($set['id']);
+                $id = (new DiscountCriteriaSet())->decodeId($set['id']);
                 $setModel = DiscountCriteriaSet::find($id);
             } else {
                 $setModel = $discount->sets()->create([
@@ -134,7 +137,7 @@ class DiscountService extends BaseService
 
             foreach ($set['items'] as $item) {
                 if (! empty($item['id'])) {
-                    $modelId = (new DiscountCriteriaItem)->decodeId($item['id']);
+                    $modelId = (new DiscountCriteriaItem())->decodeId($item['id']);
                     $model = DiscountCriteriaItem::find($modelId);
                     $model->fill($item);
                     $model->save();
@@ -145,11 +148,13 @@ class DiscountService extends BaseService
                 if (! empty($item['eligibles'])) {
                     switch ($item['type']) {
                         case 'product':
-                            $realIds = (new Product)->decodeIds($item['eligibles']);
+                            $realIds = (new Product())->decodeIds($item['eligibles']);
+
                         break;
                         default:
                             $userModel = GetCandy::getUserModel();
-                            $realIds = (new $userModel)->decodeIds($item['eligibles']);
+                            $realIds = (new $userModel())->decodeIds($item['eligibles']);
+
                         break;
                     }
                     $model->saveEligibles($item['type'], $realIds);
@@ -185,6 +190,7 @@ class DiscountService extends BaseService
      *
      * @param  \GetCandy\Api\Core\Discounts\Models\Discount  $discount
      * @param  array  $rewards
+     *
      * @return \GetCandy\Api\Core\Discounts\Models\Discount
      */
     public function syncRewards($discount, array $rewards)
@@ -193,7 +199,7 @@ class DiscountService extends BaseService
             $model = $discount->rewards()->create($reward);
             if (! empty($reward['products'])) {
                 foreach ($reward['products'] as $productReward) {
-                    $productReward['product_id'] = (new Product)->decodeId($productReward['product_id']);
+                    $productReward['product_id'] = (new Product())->decodeId($productReward['product_id']);
                     $model->products()->create($productReward);
                 }
             }
@@ -217,9 +223,10 @@ class DiscountService extends BaseService
      *
      * @param  string  $id
      * @param  array  $relations
-     * @return \GetCandy\Api\Core\Discounts\Models\Discount
      *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+     *
+     * @return \GetCandy\Api\Core\Discounts\Models\Discount
      */
     public function getByHashedId($id, $relations = null)
     {
@@ -248,7 +255,7 @@ class DiscountService extends BaseService
             $factory->setModel($discount);
             $factory->stop = $discount->stop_rules;
 
-            $rewardSet = new RewardSet;
+            $rewardSet = new RewardSet();
 
             foreach ($discount->rewards as $reward) {
                 $rewardSet->add([
@@ -260,7 +267,7 @@ class DiscountService extends BaseService
             $factory->setReward($rewardSet);
 
             foreach ($discount->sets as $set) {
-                $criteriaSet = new \GetCandy\Api\Core\Discounts\CriteriaSet;
+                $criteriaSet = new \GetCandy\Api\Core\Discounts\CriteriaSet();
                 $criteriaSet->scope = $set['scope'];
                 $criteriaSet->outcome = $set['outcome'];
                 foreach ($set->items as $item) {
@@ -279,7 +286,7 @@ class DiscountService extends BaseService
         $factory->setModel($discount);
         $factory->stop = $discount->stop_rules;
 
-        $rewardSet = new RewardSet;
+        $rewardSet = new RewardSet();
 
         foreach ($discount->rewards as $reward) {
             $rewardSet->add([
@@ -291,7 +298,7 @@ class DiscountService extends BaseService
         $factory->setReward($rewardSet);
 
         foreach ($discount->sets as $set) {
-            $criteriaSet = new \GetCandy\Api\Core\Discounts\CriteriaSet;
+            $criteriaSet = new \GetCandy\Api\Core\Discounts\CriteriaSet();
             $criteriaSet->scope = $set['scope'];
             $criteriaSet->outcome = $set['outcome'];
             foreach ($set->items as $item) {

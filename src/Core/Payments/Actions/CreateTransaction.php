@@ -46,7 +46,7 @@ class CreateTransaction extends Action
 
     public function afterValidator($validator)
     {
-        $orderId = (new Order)->decodeId($this->order_id);
+        $orderId = (new Order())->decodeId($this->order_id);
         $order = Order::withoutGlobalScopes()->with('transactions')->find($orderId);
 
         if (! $this->order_id || ! $order) {
@@ -68,9 +68,9 @@ class CreateTransaction extends Action
      */
     public function handle()
     {
-        $orderId = (new Order)->decodeId($this->order_id);
+        $orderId = (new Order())->decodeId($this->order_id);
 
-        $transaction = new Transaction;
+        $transaction = new Transaction();
         $transaction->fill(
             $this->except(['order_id'])
         );

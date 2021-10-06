@@ -56,6 +56,7 @@ class BasketFactory implements BasketFactoryInterface
      * Initialise with the basket.
      *
      * @param  \GetCandy\Api\Core\Baskets\Models\Basket  $basket
+     *
      * @return $this
      */
     public function init(Basket $basket)
@@ -83,6 +84,7 @@ class BasketFactory implements BasketFactoryInterface
      * Whether the basket has been changed.
      *
      * @param  bool  $bool
+     *
      * @return $this
      */
     public function changed($bool)

@@ -9,7 +9,9 @@ use Illuminate\Queue\SerializesModels;
 
 class PaymentFailedEvent
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable;
+    use InteractsWithSockets;
+    use SerializesModels;
 
     public $errors;
 

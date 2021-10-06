@@ -10,7 +10,8 @@ use GetCandy\Api\Core\Traits\HasMeta;
 
 class Basket extends BaseModel
 {
-    use HasCompletion, HasMeta;
+    use HasCompletion;
+    use HasMeta;
 
     /**
      * The Hashid connection name for enconding the id.

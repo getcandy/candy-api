@@ -9,7 +9,7 @@ trait HasCustomerGroups
 {
     public static function bootHasCustomerGroups()
     {
-        static::addGlobalScope(new CustomerGroupScope);
+        static::addGlobalScope(new CustomerGroupScope());
     }
 
     public function customerGroups()

@@ -11,7 +11,10 @@ use Illuminate\Queue\SerializesModels;
 
 class SyncAttributeDataJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * An array of attributes hashed ids.
@@ -30,6 +33,7 @@ class SyncAttributeDataJob implements ShouldQueue
      *
      * @param  array  $ids
      * @param  string|null  $type
+     *
      * @return void
      */
     public function __construct(array $ids, $type = null)

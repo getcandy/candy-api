@@ -29,6 +29,7 @@ class ProductVariantService extends BaseService
      *
      * @param  string  $id
      * @param  array  $data
+     *
      * @return \GetCandy\Api\Core\Products\Models\Product
      */
     public function create($id, array $data)
@@ -130,6 +131,7 @@ class ProductVariantService extends BaseService
      * Checks whether a variant exists by its SKU.
      *
      * @param  string  $sku
+     *
      * @return bool
      */
     public function existsBySku($sku)
@@ -149,9 +151,10 @@ class ProductVariantService extends BaseService
      *
      * @param  string  $hashedId
      * @param  array  $data
-     * @return \GetCandy\Api\Core\Products\Models\ProductVariant
      *
      * @throws \Exception
+     *
+     * @return \GetCandy\Api\Core\Products\Models\ProductVariant
      */
     public function update($hashedId, array $data)
     {
@@ -163,7 +166,7 @@ class ProductVariantService extends BaseService
         $variants = $variant->product->variants;
 
         if (! empty($data['asset_id'])) {
-            $data['asset_id'] = (new Asset)->decodeId($data['asset_id']);
+            $data['asset_id'] = (new Asset())->decodeId($data['asset_id']);
         }
 
         $variant->fill($data);
@@ -240,6 +243,7 @@ class ProductVariantService extends BaseService
      *
      * @param  \GetCandy\Api\Core\Products\Models\ProductVariant  $variant
      * @param  array  $prices
+     *
      * @return void
      */
     protected function setGroupPricing($variant, $prices = [])
@@ -289,6 +293,7 @@ class ProductVariantService extends BaseService
      *
      * @param  array  $options
      * @param  array  $newOptions
+     *
      * @return array
      */
     protected function mapOptions($options, $newOptions)
@@ -311,9 +316,10 @@ class ProductVariantService extends BaseService
      * Deletes a resource by its given hashed ID.
      *
      * @param  string  $hashedId
-     * @return bool
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return bool
      */
     public function delete($hashedId)
     {
@@ -340,6 +346,7 @@ class ProductVariantService extends BaseService
      *
      * @param  \GetCandy\Api\Core\Products\Models\ProductVariant  $variant
      * @param  array  $data
+     *
      * @return void
      */
     protected function setMeasurements($variant, $data)
@@ -360,6 +367,7 @@ class ProductVariantService extends BaseService
      *
      * @param  string  $variantId
      * @param  int  $inventory
+     *
      * @return \GetCandy\Api\Core\Products\Models\ProductVariant
      */
     public function updateInventory($variantId, $inventory)

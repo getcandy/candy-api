@@ -100,7 +100,8 @@ class ApiServiceProvider extends ServiceProvider
         ], 'config');
 
         $this->mergeConfigFrom(
-            __DIR__.'/../../config/services.php', 'services'
+            __DIR__.'/../../config/services.php',
+            'services'
         );
     }
 
@@ -166,7 +167,7 @@ class ApiServiceProvider extends ServiceProvider
         $mediaDrivers = config('assets.upload_drivers', []);
 
         $this->app->singleton(GetCandy::class, function ($app) {
-            return new GetCandy;
+            return new GetCandy();
         });
 
         foreach ($mediaDrivers as $name => $driver) {

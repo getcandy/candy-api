@@ -24,7 +24,7 @@ class AttachCustomerToGroups extends AbstractAction
      */
     public function authorize()
     {
-        $this->customer = (new FetchCustomer)
+        $this->customer = (new FetchCustomer())
             ->actingAs($this->user())
             ->run([
                 'encoded_id' => $this->customer_id,

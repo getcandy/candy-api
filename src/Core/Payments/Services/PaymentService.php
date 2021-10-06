@@ -28,7 +28,7 @@ class PaymentService extends BaseService
 
     public function __construct(PaymentContract $manager)
     {
-        $this->model = new Transaction;
+        $this->model = new Transaction();
         $this->manager = $manager;
     }
 
@@ -61,6 +61,7 @@ class PaymentService extends BaseService
      * Set the provider.
      *
      * @param  string  $provider
+     *
      * @return mixed
      */
     public function setProvider($provider)
@@ -77,14 +78,15 @@ class PaymentService extends BaseService
      * @param  string|null  $token
      * @param  string|null  $type
      * @param  array  $data
-     * @return mixed
      *
      * @throws \GetCandy\Api\Core\Orders\Exceptions\OrderAlreadyProcessedException
+     *
+     * @return mixed
      */
     public function charge(Order $order, $token = null, $type = null, $data = [])
     {
         if ($order->placed_at) {
-            throw new OrderAlreadyProcessedException;
+            throw new OrderAlreadyProcessedException();
         }
 
         if ($type) {
@@ -101,16 +103,17 @@ class PaymentService extends BaseService
      * @param  string  $token
      * @param  mixed  $type
      * @param  array  $fields
-     * @return mixed
      *
      * @throws \GetCandy\Api\Core\Orders\Exceptions\OrderAlreadyProcessedException
      * @throws \GetCandy\Api\Core\Payments\Exceptions\InvalidPaymentTokenException
      * @throws \GetCandy\Api\Core\Payments\Exceptions\ThreeDSecureRequiredException
+     *
+     * @return mixed
      */
     public function process($order, $token, $type = null, $fields = [])
     {
         if ($order->placed_at) {
-            throw new OrderAlreadyProcessedException;
+            throw new OrderAlreadyProcessedException();
         }
 
         $manager = $this->manager->with(
@@ -118,7 +121,7 @@ class PaymentService extends BaseService
         );
 
         if (! $manager->validate($token)) {
-            throw new InvalidPaymentTokenException;
+            throw new InvalidPaymentTokenException();
         }
 
         $response = $manager
@@ -140,6 +143,7 @@ class PaymentService extends BaseService
      * @param  string  $id
      * @param  int  $amount
      * @param  string|null $notes
+     *
      * @return mixed
      */
     public function refund($id, int $amount, $notes = null)
@@ -150,7 +154,7 @@ class PaymentService extends BaseService
         $refunds = $transaction->order->transactions()->whereRefund(true)->sum('amount');
 
         if ($amount > ($transaction->amount - $refunds)) {
-            throw new TransactionAmountException;
+            throw new TransactionAmountException();
         }
 
         $manager = $this->manager->with(
@@ -181,6 +185,7 @@ class PaymentService extends BaseService
      * @param  string  $transactionId - The transaction ID from the provider
      * @param  string  $paRes - The encoded response from the 3DSecure form
      * @param  mixed  $type
+     *
      * @return \GetCandy\Api\Core\Payments\Models\Transaction
      */
     public function validateThreeD($order, $transactionId, $paRes, $type = null)
@@ -199,11 +204,12 @@ class PaymentService extends BaseService
      * Creates a transaction.
      *
      * @param  array  $data
+     *
      * @return \GetCandy\Api\Core\Payments\Models\Transaction
      */
     protected function createTransaction(array $data)
     {
-        $transaction = new Transaction;
+        $transaction = new Transaction();
         $transaction->success = $data['success'];
         $transaction->status = $data['status'];
         $transaction->amount = $data['amount'];
@@ -220,6 +226,7 @@ class PaymentService extends BaseService
      * Voids a transaction.
      *
      * @param  string  $transactionId
+     *
      * @return \GetCandy\Api\Core\Payments\Models\Transaction
      */
     public function void($transactionId)

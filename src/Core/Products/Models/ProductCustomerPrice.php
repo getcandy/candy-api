@@ -30,7 +30,7 @@ class ProductCustomerPrice extends BaseModel
     protected static function boot()
     {
         parent::boot();
-        static::addGlobalScope(new ProductPricingScope);
+        static::addGlobalScope(new ProductPricingScope());
     }
 
     /**

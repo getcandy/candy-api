@@ -22,6 +22,7 @@ class AddDiscountToProductListener
      * Handle the event.
      *
      * @param  \GetCandy\Api\Core\Products\Events\ProductViewedEvent  $event
+     *
      * @return void
      */
     public function handle(ProductViewedEvent $event)

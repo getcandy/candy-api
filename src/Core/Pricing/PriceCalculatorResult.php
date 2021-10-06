@@ -28,6 +28,7 @@ class PriceCalculatorResult implements PriceCalculatorInterface
         if (property_exists($this, $prop)) {
             return $this->{$prop};
         }
+
         throw new \InvalidArgumentException("Method or Property {$property} doesn't exist");
     }
 }

@@ -34,7 +34,7 @@ class PriceFilter extends AbstractFilter
      */
     public function getQuery()
     {
-        $filter = new BoolQuery;
+        $filter = new BoolQuery();
 
         foreach ($this->points as $point) {
             $args = [];

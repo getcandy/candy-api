@@ -15,6 +15,7 @@ class ProductAssociationController extends BaseController
      *
      * @param  string  $product
      * @param  \GetCandy\Api\Http\Requests\Products\Associations\CreateRequest  $request
+     *
      * @return \GetCandy\Api\Http\Resources\Products\ProductAssociationCollection
      */
     public function store($product, CreateRequest $request)
@@ -29,6 +30,7 @@ class ProductAssociationController extends BaseController
      *
      * @param  string  $product
      * @param  \GetCandy\Api\Http\Requests\Products\Associations\DeleteRequest  $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($product, DeleteRequest $request)

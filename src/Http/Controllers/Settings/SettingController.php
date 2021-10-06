@@ -20,6 +20,7 @@ class SettingController extends BaseController
      * Handles the request to show a setting based on it's hashed ID.
      *
      * @param  string  $handle
+     *
      * @return array|\GetCandy\Api\Http\Resources\Settings\SettingResource
      */
     public function show($handle)

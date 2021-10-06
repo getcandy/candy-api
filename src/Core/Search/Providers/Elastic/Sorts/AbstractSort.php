@@ -54,6 +54,7 @@ abstract class AbstractSort
      * Set the user on the sort.
      *
      * @param  \Illuminate\Foundation\Auth\User  $user
+     *
      * @return $this
      */
     public function user(Model $user)
@@ -67,6 +68,7 @@ abstract class AbstractSort
      * Set the field value.
      *
      * @param  string  $field
+     *
      * @return $this
      */
     public function setField($field)
@@ -80,6 +82,7 @@ abstract class AbstractSort
      * Set the sort direction.
      *
      * @param  string  $dir
+     *
      * @return $this
      */
     public function setDir($dir)
@@ -93,6 +96,7 @@ abstract class AbstractSort
      * Set the mode.
      *
      * @param  string  $mode
+     *
      * @return $this
      */
     public function setMode($mode)

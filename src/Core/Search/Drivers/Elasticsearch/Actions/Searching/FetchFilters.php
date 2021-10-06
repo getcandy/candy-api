@@ -40,27 +40,27 @@ class FetchFilters extends Action
     /**
      * Execute the action and return a result.
      *
-     * @return \Illuminate\Support\Collection
-     *
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     *
+     * @return \Illuminate\Support\Collection
      */
     public function handle()
     {
         $currentChannel = FetchCurrentChannel::run();
 
         $applied = collect([
-            (new CustomerGroupFilter)->process($this->user()),
+            (new CustomerGroupFilter())->process($this->user()),
         ]);
 
         if (! empty($this->category)) {
             $applied->push(
-                (new CategoryFilter)->process($this->category)
+                (new CategoryFilter())->process($this->category)
             );
         }
 
         if (! GetCandy::isHubRequest()) {
             $applied->push(
-                (new ChannelFilter)->process($currentChannel)
+                (new ChannelFilter())->process($currentChannel)
             );
         }
         foreach ($this->filters ?? [] as $filter => $value) {
@@ -78,9 +78,9 @@ class FetchFilters extends Action
      *
      * @param string $type Filter type
      *
-     * @return mixed
-     *
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     *
+     * @return mixed
      */
     protected function findFilter($type)
     {

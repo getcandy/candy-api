@@ -26,10 +26,11 @@ class PageService extends BaseService
      * @param  string|\GetCandy\Api\Core\Channels\Models\Channel  $channel
      * @param  string  $type
      * @param  null|\Illuminate\Database\Eloquent\Model  $relation
-     * @return \GetCandy\Api\Core\Pages\Models\Page
      *
      * @throws \GetCandy\Exceptions\InvalidLanguageException
      * @throws \Symfony\Component\HttpKernel\Exception\HttpException
+     *
+     * @return \GetCandy\Api\Core\Pages\Models\Page
      */
     public function create(array $data, $languageCode, $layout, $channel, $type = null, Model $relation = null)
     {
@@ -101,9 +102,10 @@ class PageService extends BaseService
      * @param  string  $channel
      * @param  string  $lang
      * @param  null|string  $slug
-     * @return \GetCandy\Api\Core\Pages\Models\Page
      *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+     *
+     * @return \GetCandy\Api\Core\Pages\Models\Page
      */
     public function findPage($channel, $lang, $slug = null)
     {
@@ -140,6 +142,7 @@ class PageService extends BaseService
      * Gets a unique slug for a page.
      *
      * @param  string  $slug
+     *
      * @return string
      */
     protected function getUniqueSlug($slug)

@@ -11,6 +11,7 @@ class ImportManager extends Manager implements ImportManagerContract
      * Get a driver instance.
      *
      * @param  string  $driver
+     *
      * @return mixed
      */
     public function with($driver)
@@ -34,6 +35,7 @@ class ImportManager extends Manager implements ImportManagerContract
      * Build a layout provider instance.
      *
      * @param  string  $provider
+     *
      * @return mixed
      */
     public function buildProvider($provider)

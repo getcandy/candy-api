@@ -22,12 +22,13 @@ class AttributeController extends BaseController
      * Returns a listing of attributes.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return \GetCandy\Api\Http\Resources\Attributes\AttributeCollection
      */
     public function index(Request $request)
     {
         // $attributes = GetCandy::attributes()->getPaginatedData($request->per_page);
-        $attributes = new Attribute;
+        $attributes = new Attribute();
 
         if ($request->handle) {
             $attributes = $attributes->handle($request->handle);
@@ -49,11 +50,13 @@ class AttributeController extends BaseController
      *
      * @param  string  $id
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return \GetCandy\Api\Http\Resources\Attributes\AttributeResource
      */
     public function show($id, Request $request)
     {
         $includes = $request->include ? explode(',', $request->include) : null;
+
         try {
             $attribute = GetCandy::attributes()->getByHashedId($id, $includes);
         } catch (ModelNotFoundException $e) {
@@ -67,6 +70,7 @@ class AttributeController extends BaseController
      * Handles the request to create a new attribute.
      *
      * @param  \GetCandy\Api\Http\Requests\Attributes\CreateRequest  $request
+     *
      * @return \GetCandy\Api\Http\Resources\Attributes\AttributeResource
      */
     public function store(CreateRequest $request)
@@ -94,6 +98,7 @@ class AttributeController extends BaseController
      *
      * @param  string  $id
      * @param  \GetCandy\Api\Http\Requests\Attributes\UpdateRequest  $request
+     *
      * @return array|\GetCandy\Api\Http\Resources\Attributes\AttributeResource
      */
     public function update($id, UpdateRequest $request)
@@ -114,6 +119,7 @@ class AttributeController extends BaseController
      *
      * @param  string  $id
      * @param  \GetCandy\Api\Http\Requests\Attributes\DeleteRequest  $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($id, DeleteRequest $request)

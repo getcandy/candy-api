@@ -60,9 +60,10 @@ trait InteractsWithIndex
      * Get the type for a model.
      *
      * @param  string|\Illuminate\Database\Eloquent\Model  $model
-     * @return \GetCandy\Api\Core\Search\Providers\Elastic\Types
      *
      * @throws \Symfony\Component\HttpKernel\Exception\HttpException
+     *
+     * @return \GetCandy\Api\Core\Search\Providers\Elastic\Types
      */
     public function getType($model)
     {
@@ -73,13 +74,14 @@ trait InteractsWithIndex
             abort(400, "No type available for {$model}");
         }
 
-        return new $this->types[$model];
+        return new $this->types[$model]();
     }
 
     /**
      * Checks whether an indexer exists.
      *
      * @param  string|\Illuminate\Database\Eloquent\Model  $model
+     *
      * @return bool
      */
     public function hasType($model)
@@ -95,6 +97,7 @@ trait InteractsWithIndex
      * Determines if the index exists in elastic.
      *
      * @param  string  $name
+     *
      * @return bool
      */
     public function hasIndex($name)
@@ -108,6 +111,7 @@ trait InteractsWithIndex
      * Get the suffix of the current index.
      *
      * @param  string  $name
+     *
      * @return string
      */
     protected function getCurrentIndexSuffix($name)
@@ -117,7 +121,9 @@ trait InteractsWithIndex
 
     /**
      * Updates the mappings for the model.
+     *
      * @param  \Elastica\Index  $index
+     *
      * @return void
      */
     public function updateMappings($index)
@@ -135,6 +141,7 @@ trait InteractsWithIndex
      * Get the next suffix.
      *
      * @param  string  $name
+     *
      * @return string
      */
     protected function getNextIndexSuffix($name)

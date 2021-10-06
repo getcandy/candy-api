@@ -28,6 +28,7 @@ class YouTube extends BaseUrlDriver
      * Get the video unique id.
      *
      * @param  string  $url
+     *
      * @return string
      */
     public function getUniqueId($url)
@@ -39,6 +40,7 @@ class YouTube extends BaseUrlDriver
      * Get the video info.
      *
      * @param  string  $url
+     *
      * @return array
      */
     public function getInfo($url)

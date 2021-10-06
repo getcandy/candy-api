@@ -12,7 +12,8 @@ use Spatie\Activitylog\Traits\LogsActivity;
 
 class Order extends BaseModel
 {
-    use LogsActivity, HasMeta;
+    use LogsActivity;
+    use HasMeta;
 
     protected static $recordEvents = ['created'];
 
@@ -51,7 +52,7 @@ class Order extends BaseModel
 
     public static function bootHasCustomerGroups()
     {
-        static::addGlobalScope(new CustomerGroupScope);
+        static::addGlobalScope(new CustomerGroupScope());
     }
 
     /**
@@ -62,13 +63,14 @@ class Order extends BaseModel
     protected static function boot()
     {
         parent::boot();
-        static::addGlobalScope(new OrderScope);
+        static::addGlobalScope(new OrderScope());
     }
 
     /**
      * Define the placed scope.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $qb
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopePlaced($qb)
@@ -81,6 +83,7 @@ class Order extends BaseModel
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $qb
      * @param  string  $zone
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeZone($qb, $zone)
@@ -100,6 +103,7 @@ class Order extends BaseModel
      * @param  \Illuminate\Database\Eloquent\Builder  $qb
      * @param  string  $from
      * @param  null|string  $to
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeRange($qb, $from, $to = null)
@@ -119,6 +123,7 @@ class Order extends BaseModel
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $qb
      * @param  string  $type
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeType($qb, $type)
@@ -140,6 +145,7 @@ class Order extends BaseModel
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $qb
      * @param  string  $status
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeStatus($qb, $status)
@@ -156,6 +162,7 @@ class Order extends BaseModel
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $qb
      * @param  string  $keywords
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeSearch($qb, $keywords)
@@ -230,6 +237,7 @@ class Order extends BaseModel
      * Gets the details, mainly for contact info.
      *
      * @param  string  $type
+     *
      * @return array
      */
     public function getDetails($type)

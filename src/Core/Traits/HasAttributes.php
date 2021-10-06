@@ -87,6 +87,7 @@ trait HasAttributes
      * Prepares the attribute data for saving to the database.
      *
      * @param  array  $data
+     *
      * @return array
      */
     public function parseAttributeData(array $data)

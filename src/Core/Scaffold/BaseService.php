@@ -30,9 +30,10 @@ abstract class BaseService
      * Returns model by a given hashed id.
      *
      * @param  string  $id
-     * @return \Illuminate\Database\Eloquent\Model
      *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+     *
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function getByHashedId($id)
     {
@@ -45,6 +46,7 @@ abstract class BaseService
      * Get a collection of models from given Hashed IDs.
      *
      * @param  array  $ids
+     *
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getByHashedIds(array $ids)
@@ -76,6 +78,7 @@ abstract class BaseService
      * Gets the decoded id for the model.
      *
      * @param  string  $hash
+     *
      * @return int
      */
     public function getDecodedId($hash)
@@ -127,6 +130,7 @@ abstract class BaseService
      * Get a record by it's handle.
      *
      * @param  string  $handle
+     *
      * @return \Illuminate\Database\Eloquent\Model
      */
     public function getByHandle($handle)
@@ -140,6 +144,7 @@ abstract class BaseService
      * @param  int  $length
      * @param  int|null  $page
      * @param  array|string|null  $relations
+     *
      * @return \Illuminate\Pagination\LengthAwarePaginator
      */
     public function getPaginatedData($length = 50, $page = null, $relations = null)
@@ -167,6 +172,7 @@ abstract class BaseService
      * Sets the passed model as the new default.
      *
      * @param  \Illuminate\Database\Eloquent\Model  &$model
+     *
      * @return void
      */
     protected function setNewDefault(&$model)
@@ -182,6 +188,7 @@ abstract class BaseService
      * Determines whether a record exists by a given code.
      *
      * @param  string  $code
+     *
      * @return bool
      */
     public function existsByCode($code)
@@ -193,6 +200,7 @@ abstract class BaseService
      * Checks whether a record exists with the given hashed id.
      *
      * @param  string  $hashedId
+     *
      * @return bool
      */
     public function existsByHashedId($hashedId)
@@ -227,9 +235,10 @@ abstract class BaseService
      *
      * @param  string  $model
      * @param  array  $data
-     * @return \Illuminate\Database\Eloquent\Model
      *
      * @throws Illuminate\Database\Eloquent\ModelNotFoundException
+     *
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function updateAttributes($id, array $data)
     {
@@ -248,6 +257,7 @@ abstract class BaseService
      * Validates the integrity of the attribute data.
      *
      * @param  array  $data
+     *
      * @return bool
      */
     public function validateAttributeData(array $data)
@@ -266,6 +276,7 @@ abstract class BaseService
      *
      * @param  array|null  $structure
      * @param  array|null  $data
+     *
      * @return bool
      */
     protected function validateStructure(array $structure = null, $data = null)
@@ -358,6 +369,7 @@ abstract class BaseService
      * Gets the mapping for the channel data.
      *
      * @param  array  $data
+     *
      * @return array
      */
     protected function getChannelMapping($data)
@@ -379,6 +391,7 @@ abstract class BaseService
      * Maps customer group data for a model.
      *
      * @param  array  $groups
+     *
      * @return array
      */
     protected function mapCustomerGroupData($groups)
@@ -402,6 +415,7 @@ abstract class BaseService
      *
      * @param  string  $hashedId
      * @param  array  $data
+     *
      * @return \Illuminate\Database\Eloquent\Model
      */
     public function update($hashedId, array $data)
@@ -432,6 +446,7 @@ abstract class BaseService
      *
      * @param  string  $hashedId
      * @param  array  $data
+     *
      * @return \GetCandy\Api\Core\Routes\Models\Route
      */
     public function createUrl($hashedId, array $data)
@@ -473,6 +488,7 @@ abstract class BaseService
      * Sets the channel mapping.
      *
      * @param  array  $channels
+     *
      * @return array
      */
     protected function setChannelMapping($channels = [])

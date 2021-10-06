@@ -37,7 +37,7 @@ class VersionCollections extends AbstractAction
     public function handle()
     {
         foreach ($this->model->collections as $collection) {
-            (new CreateVersion)->actingAs($this->user())->run([
+            (new CreateVersion())->actingAs($this->user())->run([
                 'model' => $collection,
                 'relation' => $this->version,
             ]);

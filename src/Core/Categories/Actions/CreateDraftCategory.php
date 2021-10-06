@@ -39,11 +39,11 @@ class CreateDraftCategory extends AbstractAction
      */
     public function handle($category)
     {
-        $realId = (new Category)->decodeId($category);
+        $realId = (new Category())->decodeId($category);
         $category = Category::find($realId);
 
         if (! $category) {
-            return null;
+            return;
         }
 
         $draft = Drafting::with('categories')->firstOrCreate($category);

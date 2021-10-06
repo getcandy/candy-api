@@ -20,7 +20,7 @@ class CreateRouteTest extends TestCase
         $product = factory(Product::class)->create();
         $language = factory(Language::class)->create();
 
-        $route = (new CreateRoute)->actingAs($user)->run([
+        $route = (new CreateRoute())->actingAs($user)->run([
             'slug' => 'foo-bar',
             'element_id' => $product->encoded_id,
             'element_type' => get_class($product),
@@ -39,7 +39,7 @@ class CreateRouteTest extends TestCase
         $product = factory(Product::class)->create();
         $language = factory(Language::class)->create();
 
-        (new CreateRoute)->actingAs($user)->run([
+        (new CreateRoute())->actingAs($user)->run([
             'slug' => 'foo-bar',
             'element_id' => $product->encoded_id,
             'element_type' => get_class($product),
@@ -50,7 +50,7 @@ class CreateRouteTest extends TestCase
 
         $this->expectException(ValidationException::class);
 
-        (new CreateRoute)->actingAs($user)->run([
+        (new CreateRoute())->actingAs($user)->run([
             'slug' => 'foo-bar',
             'element_id' => $product->encoded_id,
             'element_type' => get_class($product),

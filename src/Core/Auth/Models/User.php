@@ -16,9 +16,9 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use Notifiable,
-        Hashids,
-        HasRoles;
+    use Notifiable;
+    use Hashids;
+    use HasRoles;
 
     /**
      * The Hashid connection name for enconding the id.
@@ -68,6 +68,7 @@ class User extends Authenticatable
 
     /**
      * @param  \Illuminate\Database\Eloquent\Builder  $qb
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeDefault($qb)

@@ -47,7 +47,7 @@ class FetchUsers extends Action
 
         $sorting = $this->sort ? explode(':', $this->sort) : null;
 
-        $query = (new $userModel)->select('users.*')->with(['customer'])->leftJoin('customers', 'customers.id', '=', 'users.customer_id');
+        $query = (new $userModel())->select('users.*')->with(['customer'])->leftJoin('customers', 'customers.id', '=', 'users.customer_id');
         if ($this->keywords) {
             $keywords = explode(' ', $this->keywords);
             foreach ($keywords as $keyword) {
@@ -83,6 +83,7 @@ class FetchUsers extends Action
      *
      * @param $result
      * @param \Illuminate\Http\Request  $request
+     *
      * @return \GetCandy\Api\Core\Users\Resources\UserCollection
      */
     public function response($result, $request)

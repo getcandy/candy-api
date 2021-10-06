@@ -45,6 +45,7 @@ class PublishProductVariantCustomerPricing extends AbstractAction
                     collect($incoming->toArray())->except(['id', 'product_variant_id'])->toArray()
                 );
                 $incoming->forceDelete();
+
                 continue;
             }
             $incoming->update([

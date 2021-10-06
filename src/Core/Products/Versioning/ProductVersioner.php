@@ -88,18 +88,23 @@ class ProductVersioner extends BaseVersioner
                 switch ($type) {
                     case Channel::class:
                         $action = RestoreChannels::class;
+
                         break;
                     case ProductVariant::class:
                         $action = RestoreProductVariants::class;
+
                         break;
                     case CustomerGroup::class:
                         $action = RestoreCustomerGroups::class;
+
                         break;
                     case Route::class:
                         $action = RestoreRoutes::class;
+
                         break;
                     case Asset::class:
                         $action = RestoreAssets::class;
+
                         break;
                 }
                 if (! $action) {
@@ -107,7 +112,7 @@ class ProductVersioner extends BaseVersioner
 
                     return;
                 }
-                (new $action)->run([
+                (new $action())->run([
                     'versions' => $versions,
                     'draft' => $draft,
                 ]);

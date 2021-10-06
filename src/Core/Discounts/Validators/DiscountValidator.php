@@ -63,7 +63,7 @@ class DiscountValidator
 
         $factory = GetCandy::discounts()->getFactory($discount);
 
-        $check = (new Factory)->checkCriteria(
+        $check = (new Factory())->checkCriteria(
             $factory,
             $basket->user,
             $basket

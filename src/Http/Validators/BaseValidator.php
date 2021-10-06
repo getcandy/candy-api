@@ -13,6 +13,7 @@ class BaseValidator
      * @param  string  $value
      * @param  array  $parameters
      * @param  \Illuminate\Contracts\Validation\Validator  $validator
+     *
      * @return bool
      */
     public function enabled($attribute, $value, $parameters, $validator)

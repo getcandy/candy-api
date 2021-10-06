@@ -54,8 +54,8 @@ class FetchProductFamilies extends AbstractAction
         }
 
         return $query->withCount(
-                $this->resolveRelationCounts()
-            )->paginate($this->per_page ?? 50);
+            $this->resolveRelationCounts()
+        )->paginate($this->per_page ?? 50);
     }
 
     /**

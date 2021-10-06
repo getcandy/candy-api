@@ -14,13 +14,13 @@ use NeonDigital\Versioning\Versionable;
 
 class Collection extends BaseModel
 {
-    use Assetable,
-        HasAttributes,
-        HasChannels,
-        HasRoutes,
-        HasCustomerGroups,
-        Draftable,
-        Versionable;
+    use Assetable;
+    use HasAttributes;
+    use HasChannels;
+    use HasRoutes;
+    use HasCustomerGroups;
+    use Draftable;
+    use Versionable;
 
     /**
      * The Hashid connection name for enconding the id.

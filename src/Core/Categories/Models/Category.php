@@ -18,15 +18,15 @@ use NeonDigital\Versioning\Versionable;
 
 class Category extends BaseModel
 {
-    use NodeTrait,
-        HasAttributes,
-        HasLayouts,
-        Assetable,
-        HasChannels,
-        HasRoutes,
-        HasCustomerGroups,
-        Draftable,
-        Versionable;
+    use NodeTrait;
+    use HasAttributes;
+    use HasLayouts;
+    use Assetable;
+    use HasChannels;
+    use HasRoutes;
+    use HasCustomerGroups;
+    use Draftable;
+    use Versionable;
 
     /**
      * The Hashid connection name for enconding the id.
@@ -88,6 +88,7 @@ class Category extends BaseModel
 
     /**
      * @param  null|string $table
+     *
      * @return \GetCandy\Api\Core\Categories\QueryBuilder
      */
     public function newUnscopedQuery($table = null)
@@ -100,9 +101,10 @@ class Category extends BaseModel
      * Behind the scenes node is appended to found parent node.
      *
      * @param  int  $value
-     * @return void
      *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+     *
+     * @return void
      */
     public function setParentIdAttribute($value)
     {
@@ -119,9 +121,11 @@ class Category extends BaseModel
 
     /**
      * Get a new base query that includes deleted nodes.
+     *
      * @since 1.1
      *
      * @param  null|string $table
+     *
      * @return \GetCandy\Api\Core\Categories\QueryBuilder
      */
     public function newNestedSetQuery($table = null)
@@ -191,6 +195,7 @@ class Category extends BaseModel
     /**
      * We use our own QueryBuilder here as withDepth was causing
      * a serious query issue when looking through category channels.
+     *
      * @since 2.0
      *
      * @return \GetCandy\Api\Core\Categories\QueryBuilder

@@ -23,7 +23,7 @@ class CollectionVersioner extends AbstractVersioner implements VersionerInterfac
         }
 
         // Base model
-        $version = new Version;
+        $version = new Version();
         $version->user_id = $userId;
         $version->versionable_type = get_class($category);
         $version->versionable_id = $originatorId ?: $category->id;

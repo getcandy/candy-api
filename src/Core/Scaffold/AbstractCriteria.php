@@ -86,6 +86,7 @@ abstract class AbstractCriteria
      * Set the includes to eager load.
      *
      * @param  array|string  $arrayOrString
+     *
      * @return $this
      */
     public function include($arrayOrString = [])
@@ -126,9 +127,9 @@ abstract class AbstractCriteria
     /**
      * Get the first result from the query.
      *
-     * @return \Illuminate\Database\Eloquent\Model
-     *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+     *
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function firstOrFail()
     {

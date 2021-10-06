@@ -65,6 +65,7 @@ class GetCandy
      * Sets whether it's a Hub request or not.
      *
      * @param  bool  $bool
+     *
      * @return $this
      */
     public function setIsHubRequest($bool)

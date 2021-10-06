@@ -33,6 +33,7 @@ abstract class AbstractProvider
      * Set the order.
      *
      * @param  \GetCandy\Api\Core\Orders\Models\Order  $order
+     *
      * @return $this
      */
     public function order(Order $order)
@@ -46,6 +47,7 @@ abstract class AbstractProvider
      * Set additional fields.
      *
      * @param  array  $fields
+     *
      * @return $this
      */
     public function fields(array $fields)
@@ -59,6 +61,7 @@ abstract class AbstractProvider
      * Set the payment token.
      *
      * @param  string  $token
+     *
      * @return $this
      */
     public function token($token)
@@ -72,6 +75,7 @@ abstract class AbstractProvider
      * Validate the payment token.
      *
      * @param  string  $token
+     *
      * @return void
      */
     abstract public function validate($token);
@@ -96,6 +100,7 @@ abstract class AbstractProvider
      * @param  string  $token
      * @param  mixed  $amount
      * @param  mixed  $description
+     *
      * @return void
      */
     abstract public function refund($token, $amount, $description);

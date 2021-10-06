@@ -33,7 +33,7 @@ class ProductIndexable extends AbstractIndexable
                     ],
                 ],
             ],
-            'created_at'  => [
+            'created_at' => [
                 'type' => 'date',
             ],
             'departments' => [

@@ -110,7 +110,7 @@ class GetCustomerSpendingReport extends AbstractAction
                 $userModel = GetCandy::getUserModel();
 
                 return array_merge($row->toArray(), [
-                    'user_id' => $row->user_id ? (new $userModel)->encode($row->user_id) : null,
+                    'user_id' => $row->user_id ? (new $userModel())->encode($row->user_id) : null,
                 ]);
             });
             $result->setCollection($items);

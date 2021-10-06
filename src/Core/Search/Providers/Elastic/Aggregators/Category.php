@@ -34,6 +34,7 @@ class Category extends AbstractAggregator
      * Set the filter on the aggregation.
      *
      * @param  mixed  $filter
+     *
      * @return $this
      */
     public function addFilter($filter = null)
@@ -108,6 +109,7 @@ class Category extends AbstractAggregator
      * Get the post filter.
      *
      * @param  array  $value
+     *
      * @return void
      */
     public function getPost($value)
@@ -123,7 +125,7 @@ class Category extends AbstractAggregator
         $postBool = new BoolQuery();
 
         foreach ($value as $category) {
-            $term = new Term;
+            $term = new Term();
             $term->setTerm('departments.id', $category);
             $postBool->addShould($term);
         }

@@ -26,6 +26,7 @@ class OrderLineController extends BaseController
      *
      * @param  string  $orderId
      * @param  \GetCandy\Api\Http\Requests\Orders\Lines\CreateRequest  $request
+     *
      * @return \GetCandy\Api\Http\Resources\Orders\OrderResource
      */
     public function store($orderId, CreateRequest $request)
@@ -44,6 +45,7 @@ class OrderLineController extends BaseController
      *
      * @param  string  $lineId
      * @param  \GetCandy\Api\Http\Requests\Orders\Lines\DeleteRequest  $request
+     *
      * @return array
      */
     public function destroy($lineId, DeleteRequest $request)

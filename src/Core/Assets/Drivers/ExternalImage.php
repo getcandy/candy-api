@@ -31,6 +31,7 @@ class ExternalImage extends BaseUrlDriver
      *
      * @param  array $data
      * @param  \Illuminate\Database\Eloquent\Model $model
+     *
      * @return \GetCandy\Api\Core\Assets\Models\Asset
      */
     public function process(array $data, Model $model)
@@ -112,6 +113,7 @@ class ExternalImage extends BaseUrlDriver
      * Get the asset info.
      *
      * @param  string  $url
+     *
      * @return array
      */
     public function getInfo($url)

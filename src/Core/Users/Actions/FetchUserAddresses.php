@@ -58,6 +58,7 @@ class FetchUserAddresses extends Action
      *
      * @param $result
      * @param \Illuminate\Http\Request  $request
+     *
      * @return \GetCandy\Api\Core\Users\Resources\UserResource
      */
     public function response($result, $request)

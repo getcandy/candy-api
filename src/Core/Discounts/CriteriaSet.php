@@ -18,7 +18,7 @@ class CriteriaSet
             return $this;
         }
 
-        $criteria = new $classname;
+        $criteria = new $classname();
 
         if ($set->users->count()) {
             $value = $set->users;

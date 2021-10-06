@@ -55,7 +55,7 @@ class CandySearchIndexCommand extends Command
 
         foreach ($this->indexables as $indexable) {
             $this->info('Indexing '.$indexable);
-            $model = new $indexable;
+            $model = new $indexable();
             if ($this->option('queue')) {
                 ReindexSearchJob::dispatch($indexable);
             } else {

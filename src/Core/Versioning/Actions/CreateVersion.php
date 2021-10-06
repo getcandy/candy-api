@@ -39,7 +39,7 @@ class CreateVersion extends AbstractAction
      */
     public function handle()
     {
-        $version = new Version;
+        $version = new Version();
         $version->user_id = $this->user()->id;
         $version->versionable_type = get_class($this->model);
         $version->versionable_id = $this->originator->id ?? $this->model->id;

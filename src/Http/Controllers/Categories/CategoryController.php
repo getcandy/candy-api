@@ -63,7 +63,7 @@ class CategoryController extends BaseController
 
     public function show($id, Request $request)
     {
-        $id = (new Category)->decodeId($id);
+        $id = (new Category())->decodeId($id);
 
         if (! $id) {
             return $this->errorNotFound();
@@ -102,6 +102,7 @@ class CategoryController extends BaseController
      * Create new category from basic information.
      *
      * @param  \GetCandy\Api\Http\Requests\Categories\CreateRequest  $request
+     *
      * @return array|\Illuminate\Http\JsonResponse
      */
     public function store(CreateRequest $request)
@@ -129,6 +130,7 @@ class CategoryController extends BaseController
      * Handles the request to reorder the categories.
      *
      * @param  \GetCandy\Api\Http\Requests\Categories\ReorderRequest  $request
+     *
      * @return array|\Illuminate\Http\JsonResponse
      */
     public function reorder(ReorderRequest $request)
@@ -156,6 +158,7 @@ class CategoryController extends BaseController
      *
      * @param  string  $id
      * @param  \GetCandy\Api\Http\Requests\Categories\UpdateRequest  $request
+     *
      * @return array
      */
     public function update($id, UpdateRequest $request)
@@ -228,6 +231,7 @@ class CategoryController extends BaseController
      *
      * @param  string  $id
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return array|\Illuminate\Http\Response
      */
     public function destroy($id, Request $request)

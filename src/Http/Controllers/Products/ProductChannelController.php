@@ -16,6 +16,7 @@ class ProductChannelController extends BaseController
      * @param  string  $product
      * @param  \GetCandy\Api\Http\Requests\Products\UpdateChannelRequest  $request
      * @param  \GetCandy\Api\Core\Products\Services\ProductChannelService  $service
+     *
      * @return \GetCandy\Api\Http\Resources\Products\ProductResource
      */
     public function store($product, UpdateChannelRequest $request, ProductChannelService $service)
@@ -30,6 +31,7 @@ class ProductChannelController extends BaseController
      *
      * @param  string  $product
      * @param  mixed  $request (?)
+     *
      * @return void
      */
     public function destroy($product, DeleteRequest $request)

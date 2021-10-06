@@ -12,7 +12,9 @@ use NeonDigital\Drafting\Draftable;
 
 class ProductVariant extends BaseModel
 {
-    use HasAttributes, Lockable, Draftable;
+    use HasAttributes;
+    use Lockable;
+    use Draftable;
 
     /**
      * The Hashid connection name for enconding the id.

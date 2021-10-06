@@ -45,7 +45,7 @@ class FetchRoute extends AbstractAction
     public function handle()
     {
         if ($this->encoded_id) {
-            $this->id = (new Route)->decodeId($this->encoded_id);
+            $this->id = (new Route())->decodeId($this->encoded_id);
         }
 
         if (! $this->id) {
@@ -69,7 +69,7 @@ class FetchRoute extends AbstractAction
             }
         }
 
-        return null;
+
     }
 
     /**

@@ -26,11 +26,11 @@ class VersionRoutesTest extends TestCase
 
         $this->assertCount(2, $product->routes);
 
-        $version = (new CreateVersion)->actingAs($user)->run([
+        $version = (new CreateVersion())->actingAs($user)->run([
             'model' => $product,
         ]);
 
-        (new VersionRoutes)->actingAs($user)->run([
+        (new VersionRoutes())->actingAs($user)->run([
             'version' => $version,
             'model' => $product,
         ]);

@@ -15,6 +15,7 @@ class ShippingCalculator extends Manager
      * Get a driver instance.
      *
      * @param  string  $driver
+     *
      * @return mixed
      */
     public function with($method)

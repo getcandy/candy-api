@@ -36,6 +36,6 @@ class DecodeId extends Action
      */
     public function handle()
     {
-        return (new $this->model)->decodeId($this->encoded_id);
+        return (new $this->model())->decodeId($this->encoded_id);
     }
 }

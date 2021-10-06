@@ -31,7 +31,7 @@ class DraftRoutesTest extends TestCase
         $this->assertCount(2, $product->routes);
         $this->assertCount(0, $draft->routes);
 
-        (new DraftRoutes)->actingAs($user)->run([
+        (new DraftRoutes())->actingAs($user)->run([
             'parent' => $product,
             'draft' => $draft,
         ]);

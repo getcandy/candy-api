@@ -41,7 +41,7 @@ class DraftAssetsTest extends TestCase
         $this->assertCount(2, $product->assets);
         $this->assertCount(0, $draft->assets);
 
-        (new DraftAssets)->actingAs($user)->run([
+        (new DraftAssets())->actingAs($user)->run([
             'parent' => $product,
             'draft' => $draft,
         ]);

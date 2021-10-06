@@ -18,6 +18,7 @@ class ChannelFactory implements ChannelFactoryInterface
      * Set the value for channel.
      *
      * @param  null|string|\GetCandy\Api\Core\Channels\Models\Channel  $channel
+     *
      * @return void
      */
     public function set($channel = null)
@@ -32,6 +33,7 @@ class ChannelFactory implements ChannelFactoryInterface
      * Set the value for channel.
      *
      * @param  string|\GetCandy\Api\Core\Channels\Models\Channel  $channel
+     *
      * @return $this
      */
     public function setChannel($channel)

@@ -15,6 +15,7 @@ class OrderBeforeSavedEvent
      * Create a new event instance.
      *
      * @param  \GetCandy\Api\Core\Orders\Models\Order  $order
+     *
      * @return void
      */
     public function __construct(Order $order)

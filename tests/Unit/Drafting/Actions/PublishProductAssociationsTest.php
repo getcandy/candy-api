@@ -26,7 +26,7 @@ class PublishProductAssociationsTest extends TestCase
         $group = factory(AssociationGroup::class)->create();
 
         factory(Product::class, 15)->create()->each(function ($p) use ($group, $draft) {
-            $assoc = new ProductAssociation;
+            $assoc = new ProductAssociation();
             $assoc->group()->associate($group);
             $assoc->association()->associate($p);
             $assoc->parent()->associate($draft);
@@ -36,7 +36,7 @@ class PublishProductAssociationsTest extends TestCase
         $this->assertCount(15, $draft->associations);
         $this->assertCount(0, $parent->associations);
 
-        (new PublishProductAssociations)->actingAs($user)->run([
+        (new PublishProductAssociations())->actingAs($user)->run([
             'parent' => $parent,
             'draft' => $draft,
         ]);

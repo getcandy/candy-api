@@ -19,7 +19,7 @@ class ProductVariantVersioner extends AbstractVersioner implements VersionerInte
         $data = $version->model_data;
         $data['options'] = json_decode($data['options']);
         unset($data['id']);
-        $variant = new ProductVariant;
+        $variant = new ProductVariant();
         $variant->forceFill($data);
         $variant->asset_id = null;
 

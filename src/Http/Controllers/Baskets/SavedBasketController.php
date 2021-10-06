@@ -14,6 +14,7 @@ class SavedBasketController extends BaseController
      *
      * @param  string  $id
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return array
      */
     public function update($id, Request $request)

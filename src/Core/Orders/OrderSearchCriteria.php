@@ -95,6 +95,7 @@ class OrderSearchCriteria
      *
      * @param  string  $key
      * @param  mixed  $value
+     *
      * @return $this
      */
     public function set($key, $value)
@@ -110,6 +111,7 @@ class OrderSearchCriteria
      * Fill the criteria.
      *
      * @param  array  $values
+     *
      * @return $this
      */
     public function fill($values = [])

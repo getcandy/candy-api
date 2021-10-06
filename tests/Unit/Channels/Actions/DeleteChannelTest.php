@@ -22,7 +22,7 @@ class DeleteChannelTest extends FeatureCase
 
         $this->expectException(DefaultRecordRequiredException::class);
 
-        (new DeleteChannel)->actingAs($user)->run([
+        (new DeleteChannel())->actingAs($user)->run([
             'encoded_id' => $channel->encoded_id,
         ]);
     }

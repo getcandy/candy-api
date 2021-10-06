@@ -39,15 +39,15 @@ class VersionProductVariants extends AbstractAction
     {
         // Create our base version.
         foreach ($this->product->variants as $variant) {
-            $variantVersion = (new CreateVersion)->actingAs($this->user())->run([
+            $variantVersion = (new CreateVersion())->actingAs($this->user())->run([
                 'model' => $variant,
                 'relation' => $this->version,
             ]);
-            (new VersionProductVariantTiers)->actingAs($this->user())->run([
+            (new VersionProductVariantTiers())->actingAs($this->user())->run([
                 'version' => $variantVersion,
                 'variant' => $variant,
             ]);
-            (new VersionProductVariantCustomerPricing)->actingAs($this->user())->run([
+            (new VersionProductVariantCustomerPricing())->actingAs($this->user())->run([
                 'version' => $variantVersion,
                 'variant' => $variant,
             ]);

@@ -8,6 +8,6 @@ trait HasCompletion
 {
     public static function bootHasCompletion()
     {
-        static::addGlobalScope(new CompletedScope);
+        static::addGlobalScope(new CompletedScope());
     }
 }

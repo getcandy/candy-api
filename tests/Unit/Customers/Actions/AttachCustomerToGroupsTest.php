@@ -24,7 +24,7 @@ class AttachCustomerToGroupsTest extends TestCase
             return $group->encoded_id;
         });
 
-        (new AttachCustomerToGroups)->actingAs($user)->run([
+        (new AttachCustomerToGroups())->actingAs($user)->run([
             'customer_group_ids' => $customerGroups->toArray(),
             'customer_id' => $customer->encoded_id,
         ]);
@@ -44,12 +44,12 @@ class AttachCustomerToGroupsTest extends TestCase
             return $group->encoded_id;
         });
 
-        (new AttachCustomerToGroups)->actingAs($user)->run([
+        (new AttachCustomerToGroups())->actingAs($user)->run([
             'customer_group_ids' => $customerGroups->toArray(),
             'customer_id' => $customer->encoded_id,
         ]);
 
-        (new AttachCustomerToGroups)->actingAs($user)->run([
+        (new AttachCustomerToGroups())->actingAs($user)->run([
             'customer_group_ids' => $customerGroups->toArray(),
             'customer_id' => $customer->encoded_id,
         ]);

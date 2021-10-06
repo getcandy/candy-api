@@ -100,7 +100,8 @@ class GetProductBestSellers extends AbstractAction
             ->whereIsShipping(0)
             ->groupBy('sku')
             ->orderBy(
-                DB::RAW('SUM(quantity)'), 'desc'
+                DB::RAW('SUM(quantity)'),
+                'desc'
             );
 
         if ($this->term) {

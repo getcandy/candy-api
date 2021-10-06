@@ -27,6 +27,7 @@ class RouteController extends BaseController
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \GetCandy\Api\Core\Routes\RouteCriteria  $routes
+     *
      * @return array|\GetCandy\Api\Http\Resources\Routes\RouteResource
      */
     public function show(Request $request, RouteCriteria $routes)
@@ -45,6 +46,7 @@ class RouteController extends BaseController
      *
      * @param  string  $id
      * @param  \GetCandy\Api\Http\Requests\Routes\UpdateRequest  $request
+     *
      * @return array
      */
     public function update($id, UpdateRequest $request)

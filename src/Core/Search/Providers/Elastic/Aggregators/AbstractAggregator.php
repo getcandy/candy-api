@@ -25,6 +25,7 @@ abstract class AbstractAggregator
      * Set the filter on the aggregation.
      *
      * @param  mixed  $filter
+     *
      * @return $this
      */
     public function addFilter($filter = null)

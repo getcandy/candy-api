@@ -31,7 +31,7 @@ class OrderLineService extends BaseService
         PriceCalculatorInterface $calculator
     ) {
         $this->orders = $orders;
-        $this->model = new OrderLine;
+        $this->model = new OrderLine();
         $this->variants = $variants;
         $this->calculator = $calculator;
     }
@@ -42,6 +42,7 @@ class OrderLineService extends BaseService
      * @param  string  $orderId
      * @param  array  $data
      * @param  bool  $manual
+     *
      * @return \GetCandy\Api\Core\Orders\Models\Order
      */
     public function store($orderId, $data = [], $manual = true)
@@ -92,6 +93,7 @@ class OrderLineService extends BaseService
      * Delete an order line.
      *
      * @param  string  $lineId
+     *
      * @return \GetCandy\Api\Core\Orders\Models\Order
      */
     public function delete($lineId)

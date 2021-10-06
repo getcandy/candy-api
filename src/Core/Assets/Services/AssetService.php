@@ -15,13 +15,14 @@ class AssetService extends BaseService
 {
     public function __construct()
     {
-        $this->model = new Asset;
+        $this->model = new Asset();
     }
 
     /**
      * Gets the driver for the upload.
      *
      * @param  string  $mimeType
+     *
      * @return mixed
      */
     public function getDriver($mimeType)
@@ -37,6 +38,7 @@ class AssetService extends BaseService
      * @param  array  $data
      * @param  null|\Illuminate\Database\Eloquent\Model  $model
      * @param  int  $position
+     *
      * @return \GetCandy\Api\Core\Assets\Models\Asset
      */
     public function upload($data, Model $model = null, $position = 0)
@@ -69,6 +71,7 @@ class AssetService extends BaseService
      * Update all the assets.
      *
      * @param  array  $assets
+     *
      * @return bool
      */
     public function updateAll($assets)
@@ -90,6 +93,7 @@ class AssetService extends BaseService
      *
      * @param  string  $id
      * @param  array  $data
+     *
      * @return \GetCandy\Api\Core\Assets\Models\Asset
      */
     public function update($id, array $data)
@@ -106,6 +110,7 @@ class AssetService extends BaseService
      *
      * @param  \Illuminate\Database\Eloquent\Model  $assetable
      * @param  array  $params
+     *
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getAssets(Model $assetable, $params = [])
@@ -128,6 +133,7 @@ class AssetService extends BaseService
      * @param  string  $assetId
      * @param  mixed  $ownerId
      * @param  mixed  $ownerType
+     *
      * @return bool
      */
     public function detach($assetId, $ownerId, $ownerType)
@@ -137,11 +143,11 @@ class AssetService extends BaseService
         } elseif ($ownerType == 'category') {
             $ownerType = Category::class;
         }
-        $ownerId = (new $ownerType)->decodeId($ownerId);
+        $ownerId = (new $ownerType())->decodeId($ownerId);
 
-        $ownerModel = (new $ownerType)->withoutGlobalScopes()->find($ownerId);
+        $ownerModel = (new $ownerType())->withoutGlobalScopes()->find($ownerId);
 
-        $assetId = (new Asset)->decodeId($assetId);
+        $assetId = (new Asset())->decodeId($assetId);
         $ownerModel->assets()->detach($assetId);
 
         return true;
@@ -151,6 +157,7 @@ class AssetService extends BaseService
      * Delete an asset.
      *
      * @param  string  $id
+     *
      * @return bool
      */
     public function delete($id)

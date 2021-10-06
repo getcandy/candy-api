@@ -59,6 +59,7 @@ class Product extends AbstractImporter
      * Get the variant by the SKU.
      *
      * @param  string  $sku
+     *
      * @return \GetCandy\Api\Core\Products\Models\ProductVariant
      */
     protected function getBySku($sku)

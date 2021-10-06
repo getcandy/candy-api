@@ -11,7 +11,10 @@ use Illuminate\Queue\SerializesModels;
 
 class ReindexSearchJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     protected $model;
 
@@ -36,10 +39,11 @@ class ReindexSearchJob implements ShouldQueue
      * Execute the job.
      *
      * @param  \GetCandy\Api\Core\Search\SearchContract  $search
+     *
      * @return void
      */
     public function handle(SearchContract $search)
     {
-        $search->indexer()->reindex(new $this->model);
+        $search->indexer()->reindex(new $this->model());
     }
 }

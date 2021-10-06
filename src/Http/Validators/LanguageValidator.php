@@ -13,6 +13,7 @@ class LanguageValidator
      * @param  string  $value
      * @param  array  $parameters
      * @param  \Illuminate\Contracts\Validation\Validator  $validator
+     *
      * @return bool
      */
     public function validate($attribute, $value, $parameters, $validator)

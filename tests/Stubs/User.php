@@ -8,7 +8,8 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use Notifiable, HasCandy;
+    use Notifiable;
+    use HasCandy;
 
     /**
      * The attributes that are mass assignable.
@@ -32,6 +33,7 @@ class User extends Authenticatable
      * Create token.
      *
      * @param $string
+     *
      * @return string
      */
     public function createToken($string)

@@ -26,7 +26,9 @@ class Shipping extends AbstractProvider
             DB::RAW("DATE_FORMAT(placed_at, '{$format}') as raw_format"),
             DB::RAW('COUNT(*) as count'),
         ])->where(
-            'is_shipping', '=', true
+            'is_shipping',
+            '=',
+            true
         )->join('orders', 'orders.id', '=', 'order_lines.order_id')
         ->whereNotNull('placed_at')
         ->whereBetween('placed_at', [

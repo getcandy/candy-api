@@ -17,7 +17,7 @@ class CreateVersionTest extends TestCase
 
         $model = factory(Product::class)->create();
 
-        $version = (new CreateVersion)->actingAs($user)->run([
+        $version = (new CreateVersion())->actingAs($user)->run([
             'model' => $model,
         ]);
 

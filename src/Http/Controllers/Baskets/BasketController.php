@@ -43,6 +43,7 @@ class BasketController extends BaseController
      * Returns a listing of baskets.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return \GetCandy\Api\Http\Resources\Baskets\BasketCollection
      */
     public function index(Request $request)
@@ -56,6 +57,7 @@ class BasketController extends BaseController
      * Handles the request to show a basket based on it's hashed ID.
      *
      * @param  string  $id
+     *
      * @return array|\GetCandy\Api\Http\Resources\Baskets\BasketResource
      */
     public function show($id)
@@ -74,6 +76,7 @@ class BasketController extends BaseController
      *
      * @param  string  $id
      * @param  \GetCandy\Api\Http\Requests\Baskets\AddMetaRequest  $request
+     *
      * @return array|\GetCandy\Api\Http\Resources\Baskets\BasketResource
      */
     public function addMeta($id, AddMetaRequest $request)
@@ -95,6 +98,7 @@ class BasketController extends BaseController
      * @param  string  $basketId
      * @param  \GetCandy\Api\Http\Requests\Baskets\AddDiscountRequest  $request
      * @param  \GetCandy\Api\Core\Discounts\Services\DiscountService  $discounts
+     *
      * @return \GetCandy\Api\Http\Resources\Baskets\BasketResource
      */
     public function addDiscount($basketId, AddDiscountRequest $request, DiscountService $discounts)
@@ -128,6 +132,7 @@ class BasketController extends BaseController
      * Store either a new or existing basket.
      *
      * @param  \GetCandy\Api\Http\Requests\Baskets\CreateRequest  $request
+     *
      * @return \GetCandy\Api\Http\Resources\Baskets\BasketResource
      */
     public function store(CreateRequest $request)
@@ -146,6 +151,7 @@ class BasketController extends BaseController
      *
      * @param  string  $id
      * @param  \GetCandy\Api\Http\Requests\Baskets\SaveRequest  $request
+     *
      * @return \GetCandy\Api\Http\Resources\Baskets\BasketResource
      */
     public function save($id, SaveRequest $request)
@@ -159,6 +165,7 @@ class BasketController extends BaseController
      * Handle the request to get a user's saved baskets.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return \GetCandy\Api\Http\Resources\Baskets\SavedBasketCollection
      */
     public function saved(Request $request)
@@ -173,6 +180,7 @@ class BasketController extends BaseController
      *
      * @param  string  $id
      * @param  \GetCandy\Api\Http\Requests\Baskets\DeleteRequest  $request
+     *
      * @return array
      */
     public function destroy($id, DeleteRequest $request)
@@ -187,6 +195,7 @@ class BasketController extends BaseController
      *
      * @param  string  $basketId
      * @param  \GetCandy\Api\Http\Requests\Baskets\PutUserRequest  $request
+     *
      * @return array|\GetCandy\Api\Http\Resources\Baskets\BasketResource
      *
      * @deprecated 0.2.39
@@ -209,6 +218,7 @@ class BasketController extends BaseController
      *
      * @param  string  $basketId
      * @param  \GetCandy\Api\Http\Requests\Baskets\ClaimBasketRequest  $request
+     *
      * @return array|\GetCandy\Api\Http\Resources\Baskets\BasketResource
      */
     public function claim($basketId, ClaimBasketRequest $request)
@@ -237,6 +247,7 @@ class BasketController extends BaseController
      * Gets the basket for the current user.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return \GetCandy\Api\Http\Resources\Baskets\BasketResource
      */
     public function current(Request $request)
@@ -253,6 +264,7 @@ class BasketController extends BaseController
      * Handle the request to resolve a users basket.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return \GetCandy\Api\Http\Resources\Baskets\BasketResource
      */
     public function resolve(Request $request)

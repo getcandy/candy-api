@@ -35,6 +35,7 @@ class BasketLineService extends BaseService
 
     /**
      * @param  null|string  $includes
+     *
      * @return void
      */
     public function setIncludes(?string $includes)
@@ -45,6 +46,7 @@ class BasketLineService extends BaseService
     /**
      * @param  string  $id
      * @param  string  $variant
+     *
      * @return bool
      */
     public function variantExists($id, $variant)
@@ -61,6 +63,7 @@ class BasketLineService extends BaseService
     /**
      * @param  string  $id
      * @param  int  $quantity
+     *
      * @return \GetCandy\Api\Core\Baskets\Models\Basket
      */
     public function setQuantity(string $id, int $quantity)
@@ -80,6 +83,7 @@ class BasketLineService extends BaseService
     /**
      * @param  string  $id
      * @param  int  $quantity
+     *
      * @return \GetCandy\Api\Core\Baskets\Models\Basket
      */
     public function changeQuantity(string $id, int $quantity)
@@ -98,6 +102,7 @@ class BasketLineService extends BaseService
 
     /**
      * @param  array  $lines
+     *
      * @return \GetCandy\Api\Core\Baskets\Models\Basket
      */
     public function destroy(array $lines)
@@ -124,6 +129,7 @@ class BasketLineService extends BaseService
     /**
      * @param  \GetCandy\Api\Core\Baskets\Models\BasketLine  $basketLine
      * @param  int  $quantity
+     *
      * @return bool
      */
     protected function saveQuantity(BasketLine $basketLine, int $quantity)

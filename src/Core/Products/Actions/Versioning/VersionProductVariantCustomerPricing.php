@@ -38,7 +38,7 @@ class VersionProductVariantCustomerPricing extends AbstractAction
     public function handle()
     {
         foreach ($this->variant->customerPricing as $pricing) {
-            (new CreateVersion)->actingAs($this->user())->run([
+            (new CreateVersion())->actingAs($this->user())->run([
                 'model' => $pricing,
                 'relation' => $this->version,
             ]);

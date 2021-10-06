@@ -55,7 +55,7 @@ class VersionAssets extends AbstractAction
                 // Hey, it exists, so don't worry.
             }
 
-            (new CreateVersion)->actingAs($this->user())->run([
+            (new CreateVersion())->actingAs($this->user())->run([
                 'model' => $asset,
                 'model_data' => array_merge([
                     'version_location' => $target,

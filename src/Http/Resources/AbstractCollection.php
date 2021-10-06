@@ -15,6 +15,7 @@ abstract class AbstractCollection extends ResourceCollection
      *
      * @param  mixed  $resource
      * @param  array  $only
+     *
      * @return void
      */
     public function __construct($resource, $only = [])
@@ -28,6 +29,7 @@ abstract class AbstractCollection extends ResourceCollection
      * Transform the resource collection into an array.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return array
      */
     public function toArray($request)
@@ -52,6 +54,7 @@ abstract class AbstractCollection extends ResourceCollection
      * Map the given collection resource into its individual resources.
      *
      * @param  mixed  $resource
+     *
      * @return mixed
      */
     protected function collectResource($resource)

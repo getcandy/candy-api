@@ -22,6 +22,7 @@ class ProductFamilyController extends BaseController
      * Handles the request to show all product families.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return \GetCandy\Api\Http\Resources\Products\ProductFamilyCollection
      */
     public function index(Request $request)
@@ -42,6 +43,7 @@ class ProductFamilyController extends BaseController
      * @param  string  $id
      * @param  \Illuminate\Http\Request  $request
      * @param  \GetCandy\Api\Core\Products\Criteria\ProductFamilyCriteria  $criteria
+     *
      * @return array|\GetCandy\Api\Http\Resources\Products\ProductFamilyResource
      */
     public function show($id, Request $request, ProductFamilyCriteria $criteria)
@@ -59,6 +61,7 @@ class ProductFamilyController extends BaseController
      * Handles the request to create a new product family.
      *
      * @param  \GetCandy\Api\Http\Requests\ProductFamilies\CreateRequest  $request
+     *
      * @return array
      */
     public function store(CreateRequest $request)
@@ -77,6 +80,7 @@ class ProductFamilyController extends BaseController
      *
      * @param  string  $id
      * @param  \GetCandy\Api\Http\Requests\ProductFamilies\UpdateRequest  $request
+     *
      * @return array
      */
     public function update($id, UpdateRequest $request)
@@ -99,6 +103,7 @@ class ProductFamilyController extends BaseController
      *
      * @param  string  $id
      * @param  \GetCandy\Api\Http\Requests\ProductFamilies\DeleteRequest  $request
+     *
      * @return array|\Illuminate\Http\Response
      */
     public function destroy($id, DeleteRequest $request)

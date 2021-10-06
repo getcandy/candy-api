@@ -28,6 +28,7 @@ class ActivityLogController extends BaseController
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \GetCandy\Api\Core\ActivityLog\Interfaces\ActivityLogCriteriaInterface  $criteria
+     *
      * @return \GetCandy\Api\Http\Resources\ActivityLog\ActivityCollection
      */
     public function index(Request $request, ActivityLogCriteriaInterface $criteria)
@@ -48,6 +49,7 @@ class ActivityLogController extends BaseController
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \GetCandy\Api\Core\ActivityLog\Interfaces\ActivityLogFactoryInterface  $factory
+     *
      * @return void
      */
     public function store(Request $request, ActivityLogFactoryInterface $factory)

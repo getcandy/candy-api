@@ -16,7 +16,7 @@ class FetchReusablePaymentTest extends FeatureCase
         $user = $this->admin();
         $reusablePayment = factory(ReusablePayment::class)->create(['user_id' => $user->id]);
 
-        $record = (new FetchReusablePayment)->actingAs($user)->run([
+        $record = (new FetchReusablePayment())->actingAs($user)->run([
             'id' => $reusablePayment->id,
         ]);
 
@@ -28,7 +28,7 @@ class FetchReusablePaymentTest extends FeatureCase
         $user = $this->admin();
         $reusablePayment = factory(ReusablePayment::class)->create(['user_id' => $user->id]);
 
-        $record = (new FetchReusablePayment)->actingAs($user)->run([
+        $record = (new FetchReusablePayment())->actingAs($user)->run([
             'encoded_id' => $reusablePayment->encoded_id,
         ]);
 

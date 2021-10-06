@@ -34,6 +34,7 @@ abstract class BaseDrafter
         foreach ($actions as $action) {
             if (! class_exists($action)) {
                 Log::error("Tried to call action ${action} but it doesn't exist");
+
                 continue;
             }
             call_user_func("{$action}::run", $params);
@@ -45,6 +46,7 @@ abstract class BaseDrafter
      *
      * @param  \Illuminate\Database\Eloquent\Model  $old
      * @param  \Illuminate\Database\Eloquent\Model  $new
+     *
      * @return void
      */
     protected function processAssets($old, &$new)
@@ -65,6 +67,7 @@ abstract class BaseDrafter
      *
      * @param  \Illuminate\Database\Eloquent\Model  $old
      * @param  \Illuminate\Database\Eloquent\Model  $new
+     *
      * @return void
      */
     protected function processCustomerGroups($old, &$new)
@@ -91,6 +94,7 @@ abstract class BaseDrafter
      *
      * @param  \Illuminate\Database\Eloquent\Model  $old
      * @param  \Illuminate\Database\Eloquent\Model  $new
+     *
      * @return void
      */
     protected function processChannels($old, &$new)

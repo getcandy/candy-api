@@ -22,6 +22,7 @@ trait ReturnsJsonResponses
      * Sets the status code for the getcandy::response.
      *
      * @param  int  $statusCode
+     *
      * @return $this
      */
     public function setStatusCode($statusCode)
@@ -35,6 +36,7 @@ trait ReturnsJsonResponses
      * Generates a Response with a 403 HTTP header and a given message.
      *
      * @param  string|null  $message
+     *
      * @return array
      */
     public function errorForbidden($message = null)
@@ -46,6 +48,7 @@ trait ReturnsJsonResponses
      * Generates a response with a 410 HTTP header and a given message.
      *
      * @param  string|null  $message
+     *
      * @return array
      */
     public function errorExpired($message = null)
@@ -57,6 +60,7 @@ trait ReturnsJsonResponses
      * Generates a Response with a 500 HTTP header and a given message.
      *
      * @param  string|null  $message
+     *
      * @return array
      */
     public function errorInternalError($message = null)
@@ -68,6 +72,7 @@ trait ReturnsJsonResponses
      * Generates a Response with a 401 HTTP header and a given message.
      *
      * @param  string|null  $message
+     *
      * @return array
      */
     public function errorUnauthorized($message = null)
@@ -81,6 +86,7 @@ trait ReturnsJsonResponses
      * Generates a Response with a 400 HTTP header and a given message.
      *
      * @param  string|null  $message
+     *
      * @return array
      */
     public function errorWrongArgs($message = null)
@@ -94,6 +100,7 @@ trait ReturnsJsonResponses
      * Generates a Response with a 404 HTTP header and a given message.
      *
      * @param  string|null  $message
+     *
      * @return array
      */
     public function errorNotFound($message = null)
@@ -132,6 +139,7 @@ trait ReturnsJsonResponses
      * Returns an error getcandy::response.
      *
      * @param  string|null  $message
+     *
      * @return array
      */
     protected function respondWithError($message = null)
@@ -153,6 +161,7 @@ trait ReturnsJsonResponses
      *
      * @param  array  $array - The array of data
      * @param  array  $headers - Any headers to attach to the response
+     *
      * @return array
      */
     protected function respondWithArray(array $array, array $headers = [])

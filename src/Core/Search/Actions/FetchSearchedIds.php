@@ -40,7 +40,7 @@ class FetchSearchedIds extends AbstractAction
      */
     public function handle()
     {
-        $model = new $this->model;
+        $model = new $this->model();
         $parsedIds = $this->delegateTo(DecodeIds::class);
         $placeholders = implode(',', array_fill(0, count($parsedIds), '?')); // string for the query
 

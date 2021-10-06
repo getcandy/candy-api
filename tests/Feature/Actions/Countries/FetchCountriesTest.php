@@ -15,7 +15,7 @@ class FetchCountriesTest extends FeatureCase
     {
         $user = $this->admin();
 
-        (new CountryRunner)->run();
+        (new CountryRunner())->run();
 
         $response = $this->actingAs($user)->json('GET', 'countries');
 
@@ -28,7 +28,7 @@ class FetchCountriesTest extends FeatureCase
     {
         $user = $this->admin();
 
-        (new CountryRunner)->run();
+        (new CountryRunner())->run();
 
         $response = $this->actingAs($user)->json('GET', 'countries', [
             'per_page' => 5,
@@ -43,7 +43,7 @@ class FetchCountriesTest extends FeatureCase
     {
         $user = $this->admin();
 
-        (new CountryRunner)->run();
+        (new CountryRunner())->run();
 
         $response = $this->actingAs($user)->json('GET', 'countries', [
             'paginate' => false,

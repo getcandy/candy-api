@@ -14,7 +14,7 @@ class CollectionCriteria extends AbstractCriteria
      */
     public function getBuilder()
     {
-        $collection = new Collection;
+        $collection = new Collection();
 
         $builder = $collection->with($this->includes ?: []);
 

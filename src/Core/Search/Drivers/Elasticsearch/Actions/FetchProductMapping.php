@@ -34,6 +34,6 @@ class FetchProductMapping extends Action
      */
     public function handle()
     {
-        return (new ProductIndexable)->getMapping();
+        return (new ProductIndexable())->getMapping();
     }
 }

@@ -123,13 +123,13 @@ class GetOrderAveragesReport extends AbstractAction
                         });
                     });
                 })->select(
-                        DB::RAW('SUM(order_total) as order_total'),
-                        DB::RAW('SUM(sub_total) as sub_total'),
-                        DB::RAW('SUM(delivery_total) as delivery_total'),
-                        DB::RAW('SUM(tax_total) as tax_total'),
-                        DB::RAW('COUNT(*) as order_count'),
-                        DB::RAW("DATE_FORMAT(placed_at, '%Y%m') as date")
-                    )->groupBy(
+                    DB::RAW('SUM(order_total) as order_total'),
+                    DB::RAW('SUM(sub_total) as sub_total'),
+                    DB::RAW('SUM(delivery_total) as delivery_total'),
+                    DB::RAW('SUM(tax_total) as tax_total'),
+                    DB::RAW('COUNT(*) as order_count'),
+                    DB::RAW("DATE_FORMAT(placed_at, '%Y%m') as date")
+                )->groupBy(
                         DB::RAW("DATE_FORMAT(placed_at, '%Y%m')")
                     )->orderBy(DB::RAW("DATE_FORMAT(placed_at, '%Y-%m')"), 'desc')->get();
 

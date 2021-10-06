@@ -13,6 +13,7 @@ class CategoriesValidator
      * @param  string  $value
      * @param  array  $key
      * @param  \Illuminate\Contracts\Validation\Validator  $validator
+     *
      * @return bool
      */
     public function uniqueCategoryAttributeData($attribute, $value, $key, $validator)

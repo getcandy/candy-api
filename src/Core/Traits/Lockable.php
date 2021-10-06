@@ -20,7 +20,7 @@ trait Lockable
      */
     public static function bootLockable()
     {
-        static::observe(new LockedObserver);
+        static::observe(new LockedObserver());
     }
 
     /**

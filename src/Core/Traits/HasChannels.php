@@ -16,7 +16,7 @@ trait HasChannels
      */
     public static function bootHasChannels()
     {
-        static::addGlobalScope(new ChannelScope);
+        static::addGlobalScope(new ChannelScope());
     }
 
     public function scopeChannel($query, $channel = null)

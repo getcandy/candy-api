@@ -20,6 +20,7 @@ class ShippingPriceService extends BaseService
      *
      * @param  string  $shippingMethodId
      * @param  array  $data
+     *
      * @return \GetCandy\Api\Core\Shipping\Models\ShippingPrice
      */
     public function create($shippingMethodId, array $data)
@@ -27,7 +28,7 @@ class ShippingPriceService extends BaseService
         $method = GetCandy::shippingMethods()->getByHashedId($shippingMethodId);
         $currency = GetCandy::currencies()->getByHashedId($data['currency_id']);
         $zone = GetCandy::shippingZones()->getByHashedId($data['zone_id']);
-        $price = new ShippingPrice;
+        $price = new ShippingPrice();
         $price->fill($data);
         $price->method()->associate($method);
         $price->currency()->associate($currency);
@@ -47,6 +48,7 @@ class ShippingPriceService extends BaseService
      *
      * @param  string  $id
      * @param  array  $data
+     *
      * @return \GetCandy\Api\Core\Shipping\Models\ShippingPrice
      */
     public function update($id, array $data)
@@ -72,6 +74,7 @@ class ShippingPriceService extends BaseService
      * Maps customer group data for a model.
      *
      * @param  array  $groups
+     *
      * @return array
      */
     protected function mapCustomerGroupData($groups)
@@ -93,6 +96,7 @@ class ShippingPriceService extends BaseService
      * Delete a price.
      *
      * @param  string  $id
+     *
      * @return bool
      */
     public function delete($id)
@@ -110,6 +114,7 @@ class ShippingPriceService extends BaseService
      * @param  int  $amount
      * @param  string  $zip
      * @param  int  $limit
+     *
      * @return \Illuminate\Database\Eloquent\Model
      */
     public function estimate($amount, $zip, $limit = 1)
@@ -133,6 +138,7 @@ class ShippingPriceService extends BaseService
      * Get a region from a zip code.
      *
      * @param  string  $zip
+     *
      * @return \GetCandy\Api\Core\Shipping\Models\ShippingRegion
      */
     public function getRegionFromZip($zip)

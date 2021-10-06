@@ -28,11 +28,11 @@ class VersionCustomerGroupsTest extends TestCase
 
         $this->assertCount(2, $product->customerGroups);
 
-        $version = (new CreateVersion)->actingAs($user)->run([
+        $version = (new CreateVersion())->actingAs($user)->run([
             'model' => $product,
         ]);
 
-        (new VersionCustomerGroups)->actingAs($user)->run([
+        (new VersionCustomerGroups())->actingAs($user)->run([
             'version' => $version,
             'model' => $product,
         ]);

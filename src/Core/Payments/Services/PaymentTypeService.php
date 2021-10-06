@@ -9,6 +9,6 @@ class PaymentTypeService extends BaseService
 {
     public function __construct()
     {
-        $this->model = new PaymentType;
+        $this->model = new PaymentType();
     }
 }

@@ -106,7 +106,7 @@ class ShippingMethodServiceTest extends TestCase
     {
         $groups = CustomerGroup::all();
         foreach ($zones as $zone) {
-            $price = new ShippingPrice;
+            $price = new ShippingPrice();
             $price->rate = 0;
             $price->min_basket = 0;
             $price->currency_id = 1;
@@ -122,7 +122,7 @@ class ShippingMethodServiceTest extends TestCase
                 ]);
             }
 
-            $price = new ShippingPrice;
+            $price = new ShippingPrice();
             $price->rate = 795;
             $price->min_basket = 2500;
             $price->currency_id = 1;
@@ -162,6 +162,7 @@ class ShippingMethodServiceTest extends TestCase
      * Creates a shipping method with a suffix in the name.
      *
      * @param string $suffix
+     *
      * @return array
      */
     private function createMethod($suffix)

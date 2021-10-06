@@ -25,6 +25,7 @@ class CategoryObserver
      * Handle the User "deleted" event.
      *
      * @param  \GetCandy\Api\Core\Categories\Models\Category $category
+     *
      * @return void
      */
     public function deleted(Category $category)

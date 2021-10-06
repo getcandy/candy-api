@@ -235,6 +235,7 @@ class SagePayTest extends TestCase
      * Returns a mocked successful charge response.
      *
      * @param int $amount
+     *
      * @return Response
      */
     protected function getSuccessfulChargeResponse($amount = 10, $extra = [])

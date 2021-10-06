@@ -9,7 +9,7 @@ class CountryService extends BaseService
 {
     public function __construct()
     {
-        $this->model = new Country;
+        $this->model = new Country();
     }
 
     /**
@@ -32,6 +32,7 @@ class CountryService extends BaseService
      * Get a country by its name.
      *
      * @param  string  $name
+     *
      * @return \GetCandy\Api\Core\Countries\Models\Country
      */
     public function getByName($name)

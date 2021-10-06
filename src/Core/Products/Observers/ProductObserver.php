@@ -25,6 +25,7 @@ class ProductObserver
      * Handle the User "deleted" event.
      *
      * @param  \GetCandy\Api\Core\Products\Models\Product  $product
+     *
      * @return void
      */
     public function deleted(Product $product)

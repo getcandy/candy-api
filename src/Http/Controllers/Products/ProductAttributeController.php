@@ -15,6 +15,7 @@ class ProductAttributeController extends BaseController
      *
      * @param  string  $product
      * @param  \GetCandy\Api\Http\Requests\Products\UpdateAttributesRequest  $request
+     *
      * @return array|\GetCandy\Api\Http\Resources\Products\ProductResource
      */
     public function update($product, UpdateAttributesRequest $request)

@@ -18,6 +18,7 @@ class ShippingMethodController extends BaseController
      *
      * @param  string  $id
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return array|\GetCandy\Api\Http\Resources\Shipping\ShippingMethodResource
      */
     public function show($id, Request $request)
@@ -35,6 +36,7 @@ class ShippingMethodController extends BaseController
      * Handles the request to create a new shipping method.
      *
      * @param  \GetCandy\Api\Http\Requests\Shipping\CreateRequest  $request
+     *
      * @return array
      */
     public function store(CreateRequest $request)

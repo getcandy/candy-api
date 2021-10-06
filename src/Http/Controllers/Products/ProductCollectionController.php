@@ -12,6 +12,7 @@ class ProductCollectionController extends BaseController
     /**
      * @param  string  $product
      * @param  \GetCandy\Api\Http\Requests\Products\UpdateCollectionsRequest  $request
+     *
      * @return array
      */
     public function update($product, UpdateCollectionsRequest $request)
@@ -32,6 +33,7 @@ class ProductCollectionController extends BaseController
      *
      * @param  string  $productId
      * @param  string  $collectionId
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($productId, $collectionId)

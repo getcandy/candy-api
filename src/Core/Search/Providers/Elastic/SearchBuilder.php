@@ -129,6 +129,7 @@ class SearchBuilder
      * Sets the search index.
      *
      * @param  string  $index
+     *
      * @return $this
      */
     public function setIndex($index)
@@ -142,6 +143,7 @@ class SearchBuilder
      * Set the language.
      *
      * @param $lang
+     *
      * @return SearchBuilder
      */
     public function setLang($lang)
@@ -155,6 +157,7 @@ class SearchBuilder
      * Set the search term.
      *
      * @param  string  $term
+     *
      * @return $this
      */
     public function setTerm($term)
@@ -169,6 +172,7 @@ class SearchBuilder
      *
      * @param  mixed  $filter
      * @param  bool  $post - Whether this is a post filter
+     *
      * @return $this
      */
     public function addFilter($filter, $post = true)
@@ -186,6 +190,7 @@ class SearchBuilder
      * Set the channel to search on.
      *
      * @param  string  $channel
+     *
      * @return $this
      */
     public function setChannel($channel)
@@ -199,6 +204,7 @@ class SearchBuilder
      * Set the function score.
      *
      * @param  mixed  $score
+     *
      * @return $this
      */
     public function scoring($score)
@@ -212,6 +218,7 @@ class SearchBuilder
      * Set the search limit.
      *
      * @param  int  $limit
+     *
      * @return $this
      */
     public function setLimit($limit)
@@ -225,6 +232,7 @@ class SearchBuilder
      * Set the search offset.
      *
      * @param  int  $offset
+     *
      * @return $this
      */
     public function setOffset($offset)
@@ -248,6 +256,7 @@ class SearchBuilder
      * Set the user.
      *
      * @param  mixed  $user
+     *
      * @return $this
      */
     public function setUser($user)
@@ -264,7 +273,7 @@ class SearchBuilder
      */
     public function useCustomerFilters()
     {
-        $filter = new CustomerGroupFilter;
+        $filter = new CustomerGroupFilter();
         $filter->process($this->user);
         $this->addFilter($filter, false);
 
@@ -275,6 +284,7 @@ class SearchBuilder
      * Set the type.
      *
      * @param  string  $type
+     *
      * @return $this
      */
     public function setType($type)
@@ -282,9 +292,11 @@ class SearchBuilder
         switch ($type) {
             case 'product':
                 $this->type = $this->getType(Product::class);
+
                 break;
             case 'category':
                 $this->type = $this->getType(Category::class);
+
                 break;
             default:
                 // code...
@@ -301,6 +313,7 @@ class SearchBuilder
      *
      * @param  mixed  $type
      * @param  mixed  $payload
+     *
      * @return $this
      */
     public function addSort($type, $payload)
@@ -377,6 +390,7 @@ class SearchBuilder
      * Set the sorting on the search.
      *
      * @param  array|null  $sortables
+     *
      * @return $this
      */
     public function setSorting($sortables = null)
@@ -436,6 +450,7 @@ class SearchBuilder
      * Add an aggregation to the builder.
      *
      * @param  \GetCandy\Api\Core\Search\Providers\Elastic\Aggregators\AbstractAggregator  $aggregation
+     *
      * @return $this
      */
     public function addAggregation($aggregation)
@@ -488,6 +503,7 @@ class SearchBuilder
      * Get the search query.
      *
      * @param  mixed  $rank
+     *
      * @return \Elastica\Query
      */
     public function getQuery($rank)
@@ -496,7 +512,7 @@ class SearchBuilder
         $query->setParam('size', $this->limit);
         $query->setParam('from', $this->offset);
 
-        $boolQuery = new BoolQuery;
+        $boolQuery = new BoolQuery();
 
         if ($this->term) {
             $boolQuery->addMust(
@@ -512,7 +528,7 @@ class SearchBuilder
         );
 
         // Set filters as post filters
-        $postFilter = new BoolQuery;
+        $postFilter = new BoolQuery();
 
         $preFilters = $this->filters->filter(function ($filter) {
             return in_array($filter['handle'], $this->topFilters);
@@ -613,7 +629,7 @@ class SearchBuilder
         $phrase->addCandidateGenerator($generator);
 
         $phrase->setHighlight('<strong>', '</strong>');
-        $suggest = new Suggest;
+        $suggest = new Suggest();
         $suggest->addSuggestion($phrase);
 
         return $suggest;

@@ -10,7 +10,9 @@ use Illuminate\Queue\SerializesModels;
 
 class CategoryStoredEvent
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable;
+    use InteractsWithSockets;
+    use SerializesModels;
 
     /**
      * @var \GetCandy\Api\Core\Categories\Models\Category
@@ -21,6 +23,7 @@ class CategoryStoredEvent
      * Create a new event instance.
      *
      * @param  \GetCandy\Api\Core\Categories\Models\Category  $category
+     *
      * @return void
      */
     public function __construct(Category $category)

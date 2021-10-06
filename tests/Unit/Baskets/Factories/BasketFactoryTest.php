@@ -25,7 +25,7 @@ class BasketFactoryTest extends TestCase
         $current = $this->app->make(BasketFactoryInterface::class);
 
         $this->assertInstanceOf(BasketFactory::class, $current);
-        $this->app->instance(BasketFactoryInterface::class, new \stdClass);
+        $this->app->instance(BasketFactoryInterface::class, new \stdClass());
         $swapped = $this->app->make(BasketFactoryInterface::class);
 
         $this->assertInstanceOf(\stdClass::class, $swapped);

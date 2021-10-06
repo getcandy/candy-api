@@ -40,7 +40,7 @@ class CustomerGroup implements DiscountCriteriaContract
     {
         return collect(
             DecodeIds::run([
-                'model' => CustomerGroup::class,
+                'model' => self::class,
                 'encoded_ids' => $this->criteria['value'],
             ])
         );

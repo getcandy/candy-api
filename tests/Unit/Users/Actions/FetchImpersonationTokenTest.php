@@ -17,7 +17,7 @@ class FetchImpersonationTokenTest extends FeatureCase
 
         $user = factory(User::class)->create();
 
-        $result = (new FetchImpersonationToken)->actingAs($admin)->run([
+        $result = (new FetchImpersonationToken())->actingAs($admin)->run([
             'encoded_id' => $user->encoded_id,
         ]);
 

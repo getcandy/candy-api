@@ -38,6 +38,7 @@ class Elasticsearch extends AbstractSearchDriver
                     'uuid' => $this->reference,
                     'final' => $final,
                 ]);
+
                 break;
             case Category::class:
                 IndexCategories::run([
@@ -45,6 +46,7 @@ class Elasticsearch extends AbstractSearchDriver
                     'uuid' => $this->reference,
                     'final' => $final,
                 ]);
+
                 break;
             default:
             break;
@@ -99,7 +101,7 @@ class Elasticsearch extends AbstractSearchDriver
     public function search($data)
     {
         if ($data instanceof Request) {
-            return (new Search)->runAsController($data);
+            return (new Search())->runAsController($data);
         }
 
         return Search::run([

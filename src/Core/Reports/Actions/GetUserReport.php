@@ -47,9 +47,9 @@ class GetUserReport extends AbstractAction
         $this->set('to', Carbon::parse($this->to));
         $userModel = GetCandy::getUserModel();
 
-        $userId = (new $userModel)->decodeId($userId);
+        $userId = (new $userModel())->decodeId($userId);
 
-        $this->user = (new $userModel)->find($userId);
+        $this->user = (new $userModel())->find($userId);
         $period = CarbonPeriod::create($this->from, '1 month', $this->to);
 
         // Top products ordered over time period

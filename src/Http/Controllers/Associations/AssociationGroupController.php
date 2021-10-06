@@ -13,6 +13,7 @@ class AssociationGroupController extends BaseController
      * Returns a listing of association groups.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return \GetCandy\Api\Http\Resources\Associations\AssociationGroupCollection
      */
     public function index(Request $request)

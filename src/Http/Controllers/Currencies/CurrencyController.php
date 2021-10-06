@@ -20,6 +20,7 @@ class CurrencyController extends BaseController
      * Returns a listing of currencies.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return array
      */
     public function index(Request $request)
@@ -33,6 +34,7 @@ class CurrencyController extends BaseController
      * Handles the request to show a currency based on it's hashed ID.
      *
      * @param  string  $code
+     *
      * @return array
      */
     public function show($code)
@@ -50,6 +52,7 @@ class CurrencyController extends BaseController
      * Handles the request to create a new currency.
      *
      * @param  \GetCandy\Api\Http\Requests\Currencies\CreateRequest  $request
+     *
      * @return array
      */
     public function store(CreateRequest $request)
@@ -77,6 +80,7 @@ class CurrencyController extends BaseController
      *
      * @param  string  $id
      * @param  \GetCandy\Api\Http\Requests\Currencies\DeleteRequest  $request
+     *
      * @return array|\Illuminate\Http\Response
      */
     public function destroy($id, DeleteRequest $request)

@@ -51,7 +51,7 @@ class TestPaymentDriver
     public function charge()
     {
         if ($this->token == 'threed') {
-            return new ThreeDSecureResponse;
+            return new ThreeDSecureResponse();
         }
         $transaction = Transaction::forceCreate([
             'order_id' => $this->order->id,

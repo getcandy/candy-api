@@ -35,6 +35,7 @@ class PaymentController extends BaseController
      *
      * @param  string  $id
      * @param  \GetCandy\Api\Http\Requests\Payments\RefundRequest  $request
+     *
      * @return array|\GetCandy\Api\Http\Resources\Transactions\TransactionResource
      */
     public function refund($id, RefundRequest $request)
@@ -65,6 +66,7 @@ class PaymentController extends BaseController
      *
      * @param  string  $id
      * @param  \GetCandy\Api\Http\Requests\Payments\VoidRequest  $request
+     *
      * @return array|\GetCandy\Api\Http\Resources\Transactions\TransactionResource
      */
     public function void($id, VoidRequest $request)
@@ -86,6 +88,7 @@ class PaymentController extends BaseController
      * Handles the request to validate a 3DSecure Transaction.
      *
      * @param  \GetCandy\Api\Http\Requests\Payments\ValidateThreeDRequest  $request
+     *
      * @return array|\GetCandy\Api\Http\Resources\Orders\OrderResource
      */
     public function validateThreeD(ValidateThreeDRequest $request)

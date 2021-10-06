@@ -16,6 +16,7 @@ class TagController extends BaseController
      * Returns a listing of tags.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return \GetCandy\Api\Http\Resources\Tags\TagCollection
      */
     public function index(Request $request)
@@ -29,6 +30,7 @@ class TagController extends BaseController
      * Handles the request to show a tag based on it's hashed ID.
      *
      * @param  string  $id
+     *
      * @return array
      */
     public function show($id)
@@ -46,6 +48,7 @@ class TagController extends BaseController
      * Handles the request to create a new tag.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return array
      */
     public function store(Request $request)
@@ -60,6 +63,7 @@ class TagController extends BaseController
      *
      * @param  string  $id
      * @param  mixed  $request (?)
+     *
      * @return array
      */
     public function update($id, UpdateRequest $request)
@@ -80,6 +84,7 @@ class TagController extends BaseController
      *
      * @param  string  $id
      * @param  mixed  $request (?)
+     *
      * @return array|\Illuminate\Http\Response
      */
     public function destroy($id, DeleteRequest $request)

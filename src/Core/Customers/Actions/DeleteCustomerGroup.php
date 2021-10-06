@@ -49,7 +49,7 @@ class DeleteCustomerGroup extends AbstractAction
     {
         if ($this->customerGroup->default) {
             if (! $this->runningAs('controller')) {
-                throw new DefaultRecordRequiredException;
+                throw new DefaultRecordRequiredException();
             }
 
             return false;

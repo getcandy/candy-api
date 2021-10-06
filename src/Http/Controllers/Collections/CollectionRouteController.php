@@ -11,6 +11,7 @@ class CollectionRouteController extends BaseController
     /**
      * @param  string  $collection
      * @param  \GetCandy\Api\Http\Requests\Collections\Routes\CreateRequest  $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store($collection, CreateRequest $request)

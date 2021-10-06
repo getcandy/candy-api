@@ -38,9 +38,9 @@ class MapAggregations extends Action
     /**
      * Execute the action and return a result.
      *
-     * @return array|null
-     *
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     *
+     * @return array|null
      */
     public function handle()
     {
@@ -122,7 +122,7 @@ class MapAggregations extends Action
                 }
             }
 
-            return [$key =>  array_merge($extra, $data)];
+            return [$key => array_merge($extra, $data)];
         })->sortBy(function ($agg) {
             return ! empty($agg['attribute']) ? $agg['attribute']->position : 0;
         });

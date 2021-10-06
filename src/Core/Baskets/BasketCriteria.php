@@ -15,7 +15,7 @@ class BasketCriteria extends AbstractCriteria implements BasketCriteriaInterface
      */
     public function getBuilder()
     {
-        $basket = new Basket;
+        $basket = new Basket();
         $builder = $basket->with($this->includes ?: []);
         if ($this->id) {
             $builder->where('id', '=', $basket->decodeId($this->id));

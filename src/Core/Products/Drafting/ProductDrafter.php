@@ -75,6 +75,7 @@ class ProductDrafter extends BaseDrafter implements DrafterInterface
      * Duplicate a product.
      *
      * @param  \Illuminate\Database\Eloquent\Model  $product
+     *
      * @return \Illuminate\Database\Eloquent\Model
      */
     public function firstOrCreate(Model $parent)

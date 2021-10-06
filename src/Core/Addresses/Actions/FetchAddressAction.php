@@ -22,7 +22,7 @@ class FetchAddressAction extends Action
     public function authorize()
     {
         if ($this->encoded_id) {
-            $this->id = (new Address)->decodeId($this->encoded_id);
+            $this->id = (new Address())->decodeId($this->encoded_id);
         }
         $this->address = Address::findOrFail($this->id);
 

@@ -34,6 +34,7 @@ class Factory
      * @param  null|\Illuminate\Database\Eloquent\Model  $user
      * @param  null|\GetCandy\Api\Core\Baskets\Models\Basket  $basket
      * @param  null|\GetCandy\Api\Core\Products\Models\Product  $product
+     *
      * @return bool
      */
     public function checkCriteria($discount, $user = null, $basket = null, $product = null)
@@ -107,12 +108,15 @@ class Factory
                             switch ($reward['type']) {
                                 case 'percentage':
                                     $percentage += $reward['value'];
+
                                     break;
                                 case 'fixed_amount':
                                     $fixedAmount = $reward['value'];
+
                                     break;
                                 case 'free_shipping':
                                     $freeshipping = true;
+
                                     break;
                                 default:
                                     // Do nothing
@@ -160,12 +164,15 @@ class Factory
                     switch ($reward['type']) {
                         case 'percentage_amount':
                             $variant->price = $this->applyPercentage($variant->price, $reward['value']);
+
                             break;
                         case 'fixed_amount':
                             $variant->price = $this->applyFixedAmount($variant->price, $reward['value']);
+
                             break;
                         case 'to_fixed_price':
                             $variant->price = $this->applyToFixedAmount($variant->price, $reward['value']);
+
                             break;
                         default:
                             //

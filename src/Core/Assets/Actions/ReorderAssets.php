@@ -48,17 +48,19 @@ class ReorderAssets extends AbstractAction
     {
         switch ($this->assetable_type) {
             case 'category':
-                $realId = (new Category)->decodeId($this->assetable_id);
+                $realId = (new Category())->decodeId($this->assetable_id);
                 $model = Category::withDrafted()->find($realId);
+
                 break;
             default:
-                $realId = (new Product)->decodeId($this->assetable_id);
+                $realId = (new Product())->decodeId($this->assetable_id);
                 $model = Product::withDrafted()->find($realId);
+
             break;
         }
 
         $assets = collect($this->assets)->mapWithKeys(function ($asset) {
-            $assetId = (new Asset)->decodeId($asset['id']);
+            $assetId = (new Asset())->decodeId($asset['id']);
             unset($asset['id']);
 
             return [

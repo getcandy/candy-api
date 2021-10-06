@@ -50,6 +50,7 @@ class CreateReusablePayment extends Action
      *
      * @param \GetCandy\Api\Core\ReusablePayments\Models\ReusablePayment  $result
      * @param \Illuminate\Http\Request  $request
+     *
      * @return \GetCandy\Api\Core\ReusablePayments\Resources\ReusablePaymentResource
      */
     public function response($result, $request)

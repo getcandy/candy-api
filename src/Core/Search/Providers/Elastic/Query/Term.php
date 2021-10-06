@@ -40,7 +40,7 @@ class Term
 
     public function getQuery()
     {
-        $disMaxQuery = new DisMax;
+        $disMaxQuery = new DisMax();
         $disMaxQuery->setBoost(1.5);
         $disMaxQuery->setTieBreaker(1);
 
@@ -53,7 +53,7 @@ class Term
                 if ($prev && is_string($fields)) {
                     $fields = $prev;
                 }
-                $multiMatchQuery = new MultiMatch;
+                $multiMatchQuery = new MultiMatch();
                 $multiMatchQuery->setType($type);
                 $multiMatchQuery->setQuery($this->text);
                 $multiMatchQuery->setOperator('and');

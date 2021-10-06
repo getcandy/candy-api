@@ -33,9 +33,9 @@ class FetchAggregations extends Action
     /**
      * Execute the action and return a result.
      *
-     * @return array|null
-     *
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     *
+     * @return array|null
      */
     public function handle()
     {

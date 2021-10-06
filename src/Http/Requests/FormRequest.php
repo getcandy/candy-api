@@ -14,9 +14,10 @@ abstract class FormRequest extends IlluminateFormRequest
      * Handle a failed validation attempt.
      *
      * @param  \Illuminate\Contracts\Validation\Validator  $validator
-     * @return void
      *
      * @throws \GetCandy\Api\Exceptions\ValidationException
+     *
+     * @return void
      */
     protected function failedValidation(Validator $validator)
     {
@@ -29,6 +30,7 @@ abstract class FormRequest extends IlluminateFormRequest
      * Get the proper failed validation response for the request.
      *
      * @param  array  $errors
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function response(array $errors)
@@ -39,9 +41,9 @@ abstract class FormRequest extends IlluminateFormRequest
     /**
      * Handle a failed authorization attempt.
      *
-     * @return void
-     *
      * @throws \GetCandy\Api\Exceptions\AuthorizationException
+     *
+     * @return void
      */
     protected function failedAuthorization()
     {

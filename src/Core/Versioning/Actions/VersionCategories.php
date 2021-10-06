@@ -37,7 +37,7 @@ class VersionCategories extends AbstractAction
     public function handle()
     {
         foreach ($this->model->categories as $category) {
-            (new CreateVersion)->actingAs($this->user())->run([
+            (new CreateVersion())->actingAs($this->user())->run([
                 'model' => $category,
                 'model_data' => $category->pivot->only(['position']),
                 'relation' => $this->version,

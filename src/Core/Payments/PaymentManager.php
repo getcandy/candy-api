@@ -15,6 +15,7 @@ class PaymentManager extends Manager implements PaymentContract
      * Get a driver instance.
      *
      * @param  string  $driver
+     *
      * @return mixed
      */
     public function with($driver)
@@ -86,6 +87,7 @@ class PaymentManager extends Manager implements PaymentContract
      * Build a layout provider instance.
      *
      * @param  string  $provider
+     *
      * @return \GetCandy\Api\Core\Payments\Providers\AbstractProvider
      */
     public function buildProvider($provider)
@@ -96,9 +98,9 @@ class PaymentManager extends Manager implements PaymentContract
     /**
      * Get the default driver name.
      *
-     * @return string
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return string
      */
     public function getDefaultDriver()
     {

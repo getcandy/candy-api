@@ -42,10 +42,10 @@ class FetchImpersonationToken extends Action
     {
         $userModel = GetCandy::getUserModel();
         if ($this->encoded_id) {
-            $this->id = (new $userModel)->decodeId($this->encoded_id);
+            $this->id = (new $userModel())->decodeId($this->encoded_id);
         }
 
-        $user = (new $userModel)->findOrFail($this->id);
+        $user = (new $userModel())->findOrFail($this->id);
 
         return $user->createToken(str_random(25));
     }

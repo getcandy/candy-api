@@ -37,7 +37,7 @@ class CategoryCriteria extends AbstractCriteria
      */
     public function getBuilder()
     {
-        $category = new Category;
+        $category = new Category();
 
         $includes = $this->includes ?: [];
 

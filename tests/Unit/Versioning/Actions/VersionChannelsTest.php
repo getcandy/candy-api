@@ -27,11 +27,11 @@ class VersionChannelsTest extends TestCase
 
         $this->assertCount(2, $product->channels);
 
-        $version = (new CreateVersion)->actingAs($user)->run([
+        $version = (new CreateVersion())->actingAs($user)->run([
             'model' => $product,
         ]);
 
-        (new VersionChannels)->actingAs($user)->run([
+        (new VersionChannels())->actingAs($user)->run([
             'version' => $version,
             'model' => $product,
         ]);

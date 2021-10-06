@@ -41,7 +41,7 @@ class PublishAssetsTest extends TestCase
         $this->assertCount(2, $draft->assets);
         $this->assertCount(0, $parent->assets);
 
-        (new PublishAssets)->actingAs($user)->run([
+        (new PublishAssets())->actingAs($user)->run([
             'parent' => $parent,
             'draft' => $draft,
         ]);

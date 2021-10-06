@@ -66,6 +66,7 @@ class ProductVariantFactory extends AbstractFactory implements ProductVariantInt
      * @param  int  $qty
      * @param  int  $factor
      * @param  null|\Illuminate\Foundation\Auth\User  $user
+     *
      * @return \Illuminate\Support\Collection
      */
     public function getTieredPrice($qty = 1, $factor = 1, $user = null)
@@ -97,6 +98,7 @@ class ProductVariantFactory extends AbstractFactory implements ProductVariantInt
      *
      * @param  int  $qty
      * @param  null|\Illuminate\Foundation\Auth\User  $user
+     *
      * @return \Illuminate\Support\Collection
      */
     public function getVariantPrice($qty = 1, $user = null)

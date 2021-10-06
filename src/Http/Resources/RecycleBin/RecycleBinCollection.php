@@ -12,6 +12,7 @@ class RecycleBinCollection extends ResourceCollection
      * Get additional data that should be returned with the resource array.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return array
      */
     public function toArray($request)

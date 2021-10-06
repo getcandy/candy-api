@@ -22,7 +22,7 @@ class FetchReusablePayment extends Action
     public function authorize()
     {
         if ($this->encoded_id) {
-            $this->id = (new ReusablePayment)->decodeId($this->encoded_id);
+            $this->id = (new ReusablePayment())->decodeId($this->encoded_id);
         }
 
         $this->reusablePayment = ReusablePayment::findOrFail($this->id);

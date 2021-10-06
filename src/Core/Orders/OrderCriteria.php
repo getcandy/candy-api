@@ -123,6 +123,7 @@ class OrderCriteria extends AbstractCriteria implements OrderCriteriaInterface
      *
      * @param  string  $key
      * @param  mixed  $value
+     *
      * @return $this
      */
     public function set($key, $value)
@@ -138,6 +139,7 @@ class OrderCriteria extends AbstractCriteria implements OrderCriteriaInterface
      * Fill the criteria.
      *
      * @param  array  $values
+     *
      * @return $this
      */
     public function fill($values = [])
@@ -172,7 +174,7 @@ class OrderCriteria extends AbstractCriteria implements OrderCriteriaInterface
 
     public function getBuilder()
     {
-        $order = new Order;
+        $order = new Order();
         $builder = $order->with($this->includes ?: []);
 
         foreach ($this->without_scopes as $scope) {
@@ -195,7 +197,7 @@ class OrderCriteria extends AbstractCriteria implements OrderCriteriaInterface
      */
     public function get()
     {
-        $order = new Order;
+        $order = new Order();
         $query = Order::status($this->status)
             ->with($this->includes)
             ->type($this->type)

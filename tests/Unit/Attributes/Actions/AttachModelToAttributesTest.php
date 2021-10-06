@@ -24,7 +24,7 @@ class AttachModelToAttributesTest extends TestCase
 
         $this->assertCount(0, $productFamily->attributes);
 
-        (new AttachModelToAttributes)->actingAs($this->admin())->run([
+        (new AttachModelToAttributes())->actingAs($this->admin())->run([
             'model' => $productFamily,
             'attribute_ids' => $attributeGroup->attributes->map(function ($att) {
                 return $att->encoded_id;

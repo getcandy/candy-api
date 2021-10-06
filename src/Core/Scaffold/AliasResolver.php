@@ -17,7 +17,7 @@ class AliasResolver
     public static function addAliases($key, $value)
     {
         if (isset(self::$aliases[$key])) {
-            throw new InvalidArgumentException;
+            throw new InvalidArgumentException();
         }
         self::$aliases[$key] = $value;
     }

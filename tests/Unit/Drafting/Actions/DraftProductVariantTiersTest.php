@@ -42,7 +42,7 @@ class DraftProductVariantTiersTest extends TestCase
         $this->assertCount(count($tiers), $variant->tiers);
         $this->assertCount(0, $draft->tiers);
 
-        (new DraftProductVariantTiers)->actingAs($user)->run([
+        (new DraftProductVariantTiers())->actingAs($user)->run([
             'parent' => $variant,
             'draft' => $draft,
         ]);

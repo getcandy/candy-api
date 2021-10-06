@@ -50,6 +50,7 @@ class Attribute extends BaseModel
      * Sets the name attribute to a json string.
      *
      * @param  array  $value
+     *
      * @return void
      */
     public function setLookupsAttribute($value)

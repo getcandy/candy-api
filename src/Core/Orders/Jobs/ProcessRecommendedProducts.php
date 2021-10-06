@@ -13,7 +13,10 @@ use Illuminate\Queue\SerializesModels;
 
 class ProcessRecommendedProducts implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     protected $order;
 
@@ -21,6 +24,7 @@ class ProcessRecommendedProducts implements ShouldQueue
      * Create a new job instance.
      *
      * @param  \GetCandy\Api\Core\Orders\Models\Order  $podcast
+     *
      * @return void
      */
     public function __construct(Order $order)

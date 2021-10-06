@@ -17,6 +17,7 @@ class SavedSearch extends BaseModel
      * Sets the payload attribute.
      *
      * @param  array  $val
+     *
      * @return void
      */
     public function setPayloadAttribute($val)
@@ -28,6 +29,7 @@ class SavedSearch extends BaseModel
      * Mutator for payload attribute.
      *
      * @param  array  $val
+     *
      * @return void
      */
     public function getPayLoadAttribute($val)

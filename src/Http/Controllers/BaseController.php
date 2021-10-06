@@ -10,12 +10,16 @@ use Illuminate\Routing\Controller;
 
 class BaseController extends Controller
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests, ReturnsJsonResponses;
+    use AuthorizesRequests;
+    use DispatchesJobs;
+    use ValidatesRequests;
+    use ReturnsJsonResponses;
 
     /**
      * Parses included fields into an array.
      *
      * @param  mixed  $request
+     *
      * @return string[]
      */
     protected function parseIncludedFields($request)

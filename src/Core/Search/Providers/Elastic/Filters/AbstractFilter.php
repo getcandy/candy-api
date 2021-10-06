@@ -27,6 +27,7 @@ abstract class AbstractFilter
      * Process the payload.
      *
      * @param  mixed  $payload
+     *
      * @return self
      */
     abstract public function process($payload, $type = null);

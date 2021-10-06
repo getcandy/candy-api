@@ -14,7 +14,7 @@ class CreateReusablePaymentTest extends FeatureCase
     {
         $user = $this->admin();
 
-        (new CreateReusablePayment)->actingAs($user)->run([
+        (new CreateReusablePayment())->actingAs($user)->run([
             'user_id' => $user->id,
             'type' => 'visa',
             'provider' => 'sagepay',
@@ -35,6 +35,6 @@ class CreateReusablePaymentTest extends FeatureCase
 
         $this->expectException('\Illuminate\Validation\ValidationException');
 
-        (new CreateReusablePayment)->actingAs($user)->run([]);
+        (new CreateReusablePayment())->actingAs($user)->run([]);
     }
 }

@@ -20,6 +20,7 @@ class TaxController extends BaseController
      * Returns a listing of taxes.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return \GetCandy\Api\Http\Resources\Taxes\TaxCollection
      */
     public function index(Request $request)
@@ -33,6 +34,7 @@ class TaxController extends BaseController
      * Handles the request to show a tax based on it's hashed ID.
      *
      * @param  string  $id
+     *
      * @return array
      */
     public function show($id)
@@ -50,6 +52,7 @@ class TaxController extends BaseController
      * Handles the request to create a new tax.
      *
      * @param  \GetCandy\Api\Http\Requests\Taxes\CreateRequest  $request
+     *
      * @return \GetCandy\Api\Http\Resources\Taxes\TaxResource
      */
     public function store(CreateRequest $request)
@@ -64,6 +67,7 @@ class TaxController extends BaseController
      *
      * @param  string  $id
      * @param  \GetCandy\Api\Http\Requests\Taxes\UpdateRequest  $request
+     *
      * @return \GetCandy\Api\Http\Resources\Taxes\TaxResource
      */
     public function update($id, UpdateRequest $request)
@@ -84,6 +88,7 @@ class TaxController extends BaseController
      *
      * @param  string  $id
      * @param  \GetCandy\Api\Http\Requests\Taxes\DeleteRequest  $request
+     *
      * @return array|\Illuminate\Http\Response
      */
     public function destroy($id, DeleteRequest $request)

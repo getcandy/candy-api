@@ -11,6 +11,7 @@ class ProductRedirectController extends BaseController
     /**
      * @param  string  $product
      * @param  \GetCandy\Api\Http\Requests\Products\CreateUrlRequest  $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store($product, CreateUrlRequest $request)

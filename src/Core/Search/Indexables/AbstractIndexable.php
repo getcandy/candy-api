@@ -58,6 +58,7 @@ abstract class AbstractIndexable
      * Gets a collection of indexables, based on a model.
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
+     *
      * @return mixed
      */
     public function getDocuments()
@@ -142,6 +143,7 @@ abstract class AbstractIndexable
      * Gets the attribute mapping for a model to be indexed.
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
+     *
      * @return array
      */
     public function attributeMapping()
@@ -181,6 +183,7 @@ abstract class AbstractIndexable
      * Gets any attributes which are marked as searchable.
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
+     *
      * @return \Illuminate\Database\Eloquent\Collection
      */
     protected function getIndexableAttributes(Model $model)
@@ -194,6 +197,7 @@ abstract class AbstractIndexable
      * Gets an indexable object.
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
+     *
      * @return \GetCandy\Api\Core\Search\Indexable
      */
     protected function getIndexable()
@@ -210,6 +214,7 @@ abstract class AbstractIndexable
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @param  string  $lang
+     *
      * @return \Illuminate\Database\Eloquent\Collection
      */
     protected function getCategories(Model $model, $lang = 'en')
@@ -357,6 +362,7 @@ abstract class AbstractIndexable
      *
      * @param  string  $key
      * @param  string  $value
+     *
      * @return $this
      */
     public function add($key, $value)

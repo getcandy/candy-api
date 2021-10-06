@@ -16,6 +16,7 @@ class LayoutService extends BaseService
      * Create a new layout.
      *
      * @param  array  $data
+     *
      * @return \GetCandy\Api\Core\Layouts\Models\Layout
      */
     public function create(array $data)
@@ -34,6 +35,7 @@ class LayoutService extends BaseService
      *
      * @param  string  $id
      * @param  array  $data
+     *
      * @return \GetCandy\Api\Core\Layouts\Models\Layout
      */
     public function update($id, array $data)

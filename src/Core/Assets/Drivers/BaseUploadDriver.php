@@ -18,6 +18,7 @@ abstract class BaseUploadDriver
      * Get the video unique id.
      *
      * @param  string  $url
+     *
      * @return string
      */
     public function getUniqueId($url)
@@ -28,6 +29,7 @@ abstract class BaseUploadDriver
     /**
      * @param  array  $data
      * @param  mixed  $source
+     *
      * @return \GetCandy\Api\Core\Assets\Models\Asset
      */
     public function prepare(array $data, $source)
@@ -81,6 +83,7 @@ abstract class BaseUploadDriver
     /**
      * @param  array  $data
      * @param  \Illuminate\Database\Eloquent\Model  $model
+     *
      * @return \GetCandy\Api\Core\Assets\Models\Asset
      */
     public function process(array $data, $model)

@@ -27,7 +27,7 @@ class FetchChannel extends AbstractAction
     public function authorize()
     {
         if ($this->encoded_id && ! $this->handle) {
-            $this->id = (new Channel)->decodeId($this->encoded_id);
+            $this->id = (new Channel())->decodeId($this->encoded_id);
         }
 
         return true;
@@ -63,8 +63,9 @@ class FetchChannel extends AbstractAction
             return $query->findOrFail($this->id);
         } catch (ModelNotFoundException $e) {
             if ($this->runningAs('controller')) {
-                return null;
+                return;
             }
+
             throw $e;
         }
     }

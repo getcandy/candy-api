@@ -24,6 +24,7 @@ class AttributeService extends BaseService
      * Creates a resource from the given data.
      *
      * @param  array  $data
+     *
      * @return \GetCandy\Api\Core\Attributes\Models\Attribute
      */
     public function create(array $data)
@@ -81,10 +82,11 @@ class AttributeService extends BaseService
      * Updates the positions of attributes.
      *
      * @param  array  $data
-     * @return bool
      *
      * @throws \Symfony\Component\HttpKernel\Exception\HttpException
      * @throws \GetCandy\Api\Exceptions\DuplicateValueException
+     *
+     * @return bool
      */
     public function updateAttributePositions(array $data)
     {
@@ -97,7 +99,7 @@ class AttributeService extends BaseService
         $parsedAttributes = [];
 
         foreach ($data['attributes'] as $attributeId => $position) {
-            $decodedId = (new Attribute)->decodeId($attributeId);
+            $decodedId = (new Attribute())->decodeId($attributeId);
             if (! $decodedId) {
                 abort(422, trans('validation.attributes.groups.invalid_id', ['id' => $attributeId]));
             }
@@ -119,9 +121,10 @@ class AttributeService extends BaseService
      *
      * @param  string  $hashedId
      * @param  array  $data
-     * @return \GetCandy\Api\Core\Attributes\Models\Attribute
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return \GetCandy\Api\Core\Attributes\Models\Attribute
      */
     public function update($hashedId, array $data)
     {
@@ -148,9 +151,10 @@ class AttributeService extends BaseService
      * Deletes a resource by its given hashed ID.
      *
      * @param  string  $id
-     * @return bool
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     *
+     * @return bool
      */
     public function delete($id)
     {
@@ -180,6 +184,7 @@ class AttributeService extends BaseService
      * Returns attributes for a group.
      *
      * @param  string  $groupId
+     *
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function getAttributesForGroup($groupId)
@@ -210,6 +215,7 @@ class AttributeService extends BaseService
      * Gets the last attribute for a group.
      *
      * @param  string  $groupId
+     *
      * @return null|\GetCandy\Api\Core\Attributes\Models\Attribute
      */
     public function getLastItem($groupId)
@@ -223,6 +229,7 @@ class AttributeService extends BaseService
      * @param  string  $value
      * @param  string  $groupId
      * @param  null|string  $attributeId
+     *
      * @return bool
      */
     public function nameExistsInGroup($value, $groupId, $attributeId = null)

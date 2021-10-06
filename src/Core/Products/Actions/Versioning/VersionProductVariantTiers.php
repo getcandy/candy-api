@@ -38,7 +38,7 @@ class VersionProductVariantTiers extends AbstractAction
     public function handle()
     {
         foreach ($this->variant->tiers as $tier) {
-            (new CreateVersion)->actingAs($this->user())->run([
+            (new CreateVersion())->actingAs($this->user())->run([
                 'model' => $tier,
                 'relation' => $this->version,
             ]);

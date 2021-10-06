@@ -11,7 +11,7 @@ class UserService extends BaseService
     public function __construct()
     {
         $modelClass = GetCandy::getUserModel();
-        $this->model = new $modelClass;
+        $this->model = new $modelClass();
     }
 
     public function getCustomerGroups($user = null)
@@ -31,6 +31,7 @@ class UserService extends BaseService
      * @param  null|int  $page
      * @param  null|string $keywords
      * @param  array  $ids
+     *
      * @return \Illuminate\Pagination\LengthAwarePaginator
      */
     public function getPaginatedData($length = 50, $page = null, $keywords = null, $ids = [])
@@ -124,6 +125,7 @@ class UserService extends BaseService
      * Creates a user token.
      *
      * @param  string  $userId
+     *
      * @return PersonalAccessTokenResult
      */
     public function getImpersonationToken($userId)

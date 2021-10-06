@@ -39,6 +39,7 @@ class CategoryFilter extends AbstractFilter
      * Add a category into the mix.
      *
      * @param  string  $category
+     *
      * @return $this
      */
     protected function add($category)
@@ -55,13 +56,13 @@ class CategoryFilter extends AbstractFilter
      */
     public function getQuery()
     {
-        $filter = new BoolQuery;
+        $filter = new BoolQuery();
 
         foreach ($this->categories as $value) {
             $cat = new Nested();
             $cat->setPath('departments');
 
-            $term = new Term;
+            $term = new Term();
             $term->setTerm('departments.id', $value);
 
             $cat->setQuery($term);

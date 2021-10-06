@@ -144,7 +144,7 @@ class SagePay extends AbstractProvider
 
         // If it's 3DSecured then we return the relevant response
         if ($content['status'] == '3DAuth') {
-            return (new ThreeDSecureResponse)
+            return (new ThreeDSecureResponse())
                 ->setStatus($content['statusCode'])
                 ->setTransactionId($content['transactionId'])
                 ->setPaRequest($content['paReq'])
@@ -178,7 +178,7 @@ class SagePay extends AbstractProvider
         $exists = ReusablePayment::where('last_four', '=', $details['lastFourDigits'])
                     ->where('user_id', '=', $userId)->delete();
 
-        $payment = new ReusablePayment;
+        $payment = new ReusablePayment();
         $payment->type = strtolower($details['cardType']);
         $payment->provider = 'sagepay';
         $payment->last_four = $details['lastFourDigits'];
@@ -265,7 +265,7 @@ class SagePay extends AbstractProvider
 
     protected function getBaseTransaction($content)
     {
-        $transaction = new Transaction;
+        $transaction = new Transaction();
         $transaction->order()->associate($this->order);
         $transaction->merchant = $this->getVendor();
         $transaction->provider = 'SagePay';
@@ -293,7 +293,7 @@ class SagePay extends AbstractProvider
 
     protected function createSuccessTransaction($content)
     {
-        $transaction = new Transaction;
+        $transaction = new Transaction();
         $transaction->success = true;
         $transaction->order()->associate($this->order);
         $transaction->merchant = $this->getVendor();
@@ -317,6 +317,7 @@ class SagePay extends AbstractProvider
      * Create a failed transaction.
      *
      * @param  array  $errors
+     *
      * @return \GetCandy\Api\Core\Payments\Models\Transaction
      */
     protected function createFailedTransaction($errors, $amount = null, $notes = null)
@@ -326,7 +327,7 @@ class SagePay extends AbstractProvider
          */
         event(new PaymentFailedEvent($errors));
 
-        $transaction = new Transaction;
+        $transaction = new Transaction();
         $transaction->success = false;
         $transaction->order()->associate($this->order);
         $transaction->merchant = $this->getVendor();

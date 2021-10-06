@@ -60,6 +60,7 @@ class CollectionDrafter extends BaseDrafter implements DrafterInterface
      * Duplicate a product.
      *
      * @param  \Illuminate\Database\Eloquent\Model  $collection
+     *
      * @return \Illuminate\Database\Eloquent\Model
      */
     public function firstOrCreate(Model $collection)

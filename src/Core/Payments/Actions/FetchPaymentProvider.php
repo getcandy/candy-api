@@ -44,7 +44,7 @@ class FetchPaymentProvider extends Action
         try {
             $provider = $payments->with($handle)->order($order);
         } catch (\InvalidArgumentException $e) {
-            return null;
+            return;
         }
 
         return $provider;

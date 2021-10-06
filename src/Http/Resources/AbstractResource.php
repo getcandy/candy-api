@@ -33,6 +33,7 @@ abstract class AbstractResource extends JsonResource
      * Set the singular item.
      *
      * @param  mixed  $resource
+     *
      * @return $this
      */
     public function item($resource)
@@ -46,6 +47,7 @@ abstract class AbstractResource extends JsonResource
      * Set the only fields we want to return.
      *
      * @param  array  $fields
+     *
      * @return $this
      */
     public function only($fields = [])
@@ -64,6 +66,7 @@ abstract class AbstractResource extends JsonResource
      * Set the channel we want to use.
      *
      * @param  string  $channel
+     *
      * @return $this
      */
     public function channel($channel)
@@ -77,6 +80,7 @@ abstract class AbstractResource extends JsonResource
      * Set the language to use.
      *
      * @param  string  $language
+     *
      * @return $this
      */
     public function language($language)
@@ -91,6 +95,7 @@ abstract class AbstractResource extends JsonResource
      *
      * @param  mixed  $resource
      * @param  array  $only
+     *
      * @return void
      */
     public function __construct($resource, $only = [])
@@ -200,6 +205,7 @@ abstract class AbstractResource extends JsonResource
      * Map the attributes.
      *
      * @param  array  $data
+     *
      * @return array
      */
     protected function map($data)
@@ -226,6 +232,7 @@ abstract class AbstractResource extends JsonResource
      * Create new anonymous resource collection.
      *
      * @param  mixed  $resource
+     *
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function respondWithCollection()

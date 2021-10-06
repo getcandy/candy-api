@@ -8,8 +8,8 @@ use GetCandy\Api\Core\Traits\HasChannels;
 
 class Discount extends BaseModel
 {
-    use HasAttributes,
-        HasChannels;
+    use HasAttributes;
+    use HasChannels;
 
     /**
      * The Hashid connection name for enconding the id.

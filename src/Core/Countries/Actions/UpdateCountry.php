@@ -41,7 +41,7 @@ class UpdateCountry extends Action
     public function handle()
     {
         if ($this->encoded_id) {
-            $this->id = (new Country)->decodeId($this->encoded_id);
+            $this->id = (new Country())->decodeId($this->encoded_id);
         }
 
         $country = Country::findOrFail($this->id);

@@ -13,6 +13,7 @@ class HashidValidator
      * @param  string  $value
      * @param  array  $parameters
      * @param  \Illuminate\Contracts\Validation\Validator  $validator
+     *
      * @return bool
      */
     public function validForModel($attribute, $value, $parameters, $validator)
@@ -26,7 +27,7 @@ class HashidValidator
         // Have we passed the class reference through.
 
         if (class_exists($method)) {
-            $result = (bool) (new $method)->decodeId($value);
+            $result = (bool) (new $method())->decodeId($value);
         } else {
             $result = GetCandy::{camel_case($method)}()->existsByHashedId($value);
         }

@@ -47,6 +47,7 @@ abstract class AbstractScope implements Scope
      * Resolves the scope if criteria is met.
      *
      * @param  \Closure  $callback
+     *
      * @return void
      */
     protected function resolve(\Closure $callback)

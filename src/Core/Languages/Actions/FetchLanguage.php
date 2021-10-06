@@ -27,7 +27,7 @@ class FetchLanguage extends AbstractAction
     public function authorize()
     {
         if ($this->encoded_id && ! $this->handle) {
-            $this->id = (new Language)->decodeId($this->encoded_id);
+            $this->id = (new Language())->decodeId($this->encoded_id);
         }
 
         try {

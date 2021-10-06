@@ -47,10 +47,10 @@ class FetchCustomerInvite extends AbstractAction
     public function handle()
     {
         if ($this->encoded_id) {
-            return CustomerInvite::find((new CustomerInvite)->decodeId($this->encoded_id));
+            return CustomerInvite::find((new CustomerInvite())->decodeId($this->encoded_id));
         }
 
-        return CustomerInvite::where('customer_id', (new Customer)->decodeId($this->customer_id))
+        return CustomerInvite::where('customer_id', (new Customer())->decodeId($this->customer_id))
             ->where('email', $this->email)
             ->first();
     }

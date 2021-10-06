@@ -54,7 +54,7 @@ class SetSuggestion extends Action
         $phrase->addCandidateGenerator($generator);
 
         $phrase->setHighlight('<strong>', '</strong>');
-        $suggest = new Suggest;
+        $suggest = new Suggest();
         $suggest->addSuggestion($phrase);
 
         $this->query->setSuggest($suggest);

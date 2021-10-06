@@ -43,6 +43,7 @@ class DiscountController extends BaseController
      *
      * @param  string  $id
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return array|\GetCandy\Api\Http\Resources\Discounts\DiscountResource
      */
     public function show($id, Request $request)

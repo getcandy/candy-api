@@ -10,6 +10,7 @@ class LanguageObserver
      * Handle the Language "updated" event.
      *
      * @param  \GetCandy\Api\Core\Languages\Models\Language  $language
+     *
      * @return void
      */
     public function updated(Language $language)
@@ -23,6 +24,7 @@ class LanguageObserver
      * Handle the Channel "created" event.
      *
      * @param  \GetCandy\Api\Core\Languages\Models\Language  $language
+     *
      * @return void
      */
     public function created(Language $language)

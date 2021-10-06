@@ -30,7 +30,7 @@ class DraftCategoriesTest extends TestCase
         $this->assertCount(2, $product->categories);
         $this->assertCount(0, $draft->categories);
 
-        (new DraftCategories)->actingAs($user)->run([
+        (new DraftCategories())->actingAs($user)->run([
             'parent' => $product,
             'draft' => $draft,
         ]);

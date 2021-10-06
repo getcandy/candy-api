@@ -23,18 +23,18 @@ class VersionProductAssociationsTest extends TestCase
         $group = factory(AssociationGroup::class)->create();
 
         factory(Product::class, 15)->create()->each(function ($p) use ($group, $product) {
-            $assoc = new ProductAssociation;
+            $assoc = new ProductAssociation();
             $assoc->group()->associate($group);
             $assoc->association()->associate($p);
             $assoc->parent()->associate($product);
             $assoc->save();
         });
 
-        $version = (new CreateVersion)->actingAs($user)->run([
+        $version = (new CreateVersion())->actingAs($user)->run([
             'model' => $product,
         ]);
 
-        (new VersionProductAssociations)->actingAs($user)->run([
+        (new VersionProductAssociations())->actingAs($user)->run([
             'version' => $version,
             'model' => $product,
         ]);

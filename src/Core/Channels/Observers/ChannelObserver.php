@@ -10,6 +10,7 @@ class ChannelObserver
      * Handle the Channel "updated" event.
      *
      * @param  \GetCandy\Api\Core\Channels\Models\Channel  $channel
+     *
      * @return void
      */
     public function updated(Channel $channel)

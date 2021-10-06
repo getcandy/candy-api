@@ -62,11 +62,13 @@ class PayPal extends AbstractProvider
      * Checks whether the token is valid.
      *
      * @param  string  $token
+     *
      * @return bool
      */
     public function validate($token)
     {
-        $sale = new Payment;
+        $sale = new Payment();
+
         try {
             $this->details = $sale->get($token, $this->context);
         } catch (PayPalConnectionException $e) {
@@ -110,7 +112,7 @@ class PayPal extends AbstractProvider
         $transactions = collect();
 
         foreach ($this->details->getTransactions() as $transaction) {
-            $candyTrans = new Transaction;
+            $candyTrans = new Transaction();
 
             $resources = $transaction->getRelatedResources();
 
@@ -140,11 +142,11 @@ class PayPal extends AbstractProvider
     public function refund($token, $amount, $description)
     {
         try {
-            $paypalAmount = new Amount;
+            $paypalAmount = new Amount();
             $paypalAmount->setCurrency('GBP')
                 ->setTotal($amount / 100);
 
-            $refundRequest = new RefundRequest;
+            $refundRequest = new RefundRequest();
             $refundRequest->setAmount($paypalAmount);
 
             // ### Retrieve Capture paypalAmountdetails
@@ -153,7 +155,7 @@ class PayPal extends AbstractProvider
             // ### Refund the Capture
             $captureRefund = $capture->refundCapturedPayment($refundRequest, $this->context);
 
-            $transaction = new Transaction;
+            $transaction = new Transaction();
             $transaction->success = true;
             $transaction->refund = true;
             $transaction->order()->associate($this->order);
@@ -173,7 +175,7 @@ class PayPal extends AbstractProvider
             $errors = json_decode($e->getData());
             $response = new PaymentResponse(false, 'Refund Failed', json_decode($e->getData(), true));
 
-            $transaction = new Transaction;
+            $transaction = new Transaction();
             $transaction->success = false;
             $transaction->refund = true;
             $transaction->order()->associate($this->order);

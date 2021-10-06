@@ -27,7 +27,7 @@ class FetchCustomerGroup extends AbstractAction
     public function authorize()
     {
         if ($this->encoded_id && ! $this->handle) {
-            $this->id = (new CustomerGroup)->decodeId($this->encoded_id);
+            $this->id = (new CustomerGroup())->decodeId($this->encoded_id);
         }
 
         try {

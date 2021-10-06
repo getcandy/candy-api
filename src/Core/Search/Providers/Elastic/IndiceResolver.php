@@ -21,6 +21,7 @@ class IndiceResolver
      * Get the document type.
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
+     *
      * @return \GetCandy\Api\Core\Search\Providers\Elastic\Types
      */
     public function getType($model)
@@ -32,12 +33,14 @@ class IndiceResolver
             abort(400, "No type available for {$model}");
         }
 
-        return new $this->types[$model];
+        return new $this->types[$model]();
     }
 
     /**
      * Checks whether an indexer exists.
+     *
      * @param  string|\Illuminate\Database\Eloquent\Model  $model
+     *
      * @return bool
      */
     public function hasType($model)

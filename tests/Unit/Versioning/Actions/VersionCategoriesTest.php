@@ -25,11 +25,11 @@ class VersionCategoriesTest extends TestCase
 
         $this->assertCount(2, $product->categories);
 
-        $version = (new CreateVersion)->actingAs($user)->run([
+        $version = (new CreateVersion())->actingAs($user)->run([
             'model' => $product,
         ]);
 
-        (new VersionCategories)->actingAs($user)->run([
+        (new VersionCategories())->actingAs($user)->run([
             'version' => $version,
             'model' => $product,
         ]);

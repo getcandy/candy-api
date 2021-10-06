@@ -9,6 +9,6 @@ class AssociationGroupService extends BaseService
 {
     public function __construct()
     {
-        $this->model = new AssociationGroup;
+        $this->model = new AssociationGroup();
     }
 }

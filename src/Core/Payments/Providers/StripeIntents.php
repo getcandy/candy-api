@@ -99,7 +99,7 @@ class StripeIntents extends AbstractProvider
         $paymentMethod = $this->getClient()->paymentMethods->retrieve($paymentIntent->payment_method);
         $threedchecks = $paymentMethod->card->checks;
 
-        $transaction = new Transaction;
+        $transaction = new Transaction();
         $transaction->amount = $paymentIntent->amount;
         $transaction->order_id = $this->order->id;
         $transaction->transaction_id = $paymentIntent->id;

@@ -33,7 +33,7 @@ class DraftCustomerGroupsTest extends TestCase
         $this->assertCount(2, $product->customerGroups);
         $this->assertCount(0, $draft->customerGroups);
 
-        (new DraftCustomerGroups)->actingAs($user)->run([
+        (new DraftCustomerGroups())->actingAs($user)->run([
             'parent' => $product,
             'draft' => $draft,
         ]);

@@ -34,6 +34,7 @@ abstract class AbstractProvider
      *
      * @param  \DateTime  $from
      * @param  \DateTime  $to
+     *
      * @return $this
      */
     public function between(DateTime $from, DateTime $to)
@@ -55,6 +56,7 @@ abstract class AbstractProvider
      * Set the mode value.
      *
      * @param  string  $mode
+     *
      * @return $this
      */
     public function mode($mode)
@@ -88,6 +90,7 @@ abstract class AbstractProvider
      *
      * @param  \DateTime  $from
      * @param  \DateTime  $to
+     *
      * @return \Illuminate\Database\Query\Builder
      */
     protected function getOrderQuery(DateTime $from = null, DateTime $to = null)
@@ -104,6 +107,7 @@ abstract class AbstractProvider
      *
      * @param  \DateTime  $from
      * @param  \DateTime  $to
+     *
      * @return \Illuminate\Database\Query\Builder
      */
     protected function getOrderLineQuery(DateTime $from = null, DateTime $to = null)

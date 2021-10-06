@@ -21,7 +21,7 @@ class DeleteCustomerGroupTest extends FeatureCase
 
         $this->expectException(DefaultRecordRequiredException::class);
 
-        (new DeleteCustomerGroup)->actingAs($user)->run([
+        (new DeleteCustomerGroup())->actingAs($user)->run([
             'encoded_id' => $customerGroup->encoded_id,
         ]);
     }

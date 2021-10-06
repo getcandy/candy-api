@@ -48,7 +48,7 @@ class Search extends Action
             'index' => 'nullable|string',
             'limit' => 'nullable|numeric',
             'offset' => 'nullable|numeric',
-            'page'   => 'nullable|numeric',
+            'page' => 'nullable|numeric',
             'search_type' => 'nullable|string',
             'filters' => 'nullable',
             'aggregate' => 'nullable|array',
@@ -110,7 +110,7 @@ class Search extends Action
         $query->setParam('size', $limit);
         $query->setParam('from', $offset);
 
-        $boolQuery = new BoolQuery;
+        $boolQuery = new BoolQuery();
 
         if ($term) {
             $boolQuery->addMust($term);
@@ -126,7 +126,7 @@ class Search extends Action
         $query = SetExcludedFields::run(['query' => $query]);
 
         // Set filters as post filters
-        $postFilter = new BoolQuery;
+        $postFilter = new BoolQuery();
 
         $preFilters = $filters->filter(function ($filter) {
             return in_array($filter->handle, $this->topFilters);
@@ -135,8 +135,8 @@ class Search extends Action
         $preFilters->each(function ($filter) use ($boolQuery) {
             // dump($filter->getQuery());
             $boolQuery->addFilter(
-                 $filter->getQuery()
-             );
+                $filter->getQuery()
+            );
         });
 
         $postFilters = $filters->filter(function ($filter) {
@@ -162,8 +162,8 @@ class Search extends Action
         foreach ($aggregations as $aggregation) {
             if (method_exists($aggregation, 'get')) {
                 $query->addAggregation(
-                     $aggregation->addFilters($postFilters)->get($postFilters)
-                 );
+                    $aggregation->addFilters($postFilters)->get($postFilters)
+                );
                 // $globalAggregation->addAggregation(
                      // $agg->addFilters($postFilters)->get($postFilters)
                  // );

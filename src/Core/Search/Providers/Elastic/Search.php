@@ -54,6 +54,7 @@ class Search implements ClientContract
      * Set the user on the search.
      *
      * @param  null|\Illuminate\Foundation\Auth\User  $user
+     *
      * @return $this
      */
     public function user($user = null)
@@ -67,6 +68,7 @@ class Search implements ClientContract
      * Set the keywords on the builder.
      *
      * @param  string  $keywords
+     *
      * @return $this
      */
     public function keywords($keywords = null)
@@ -82,6 +84,7 @@ class Search implements ClientContract
      * Set the sorting on the builder.
      *
      * @param  array  $sorts
+     *
      * @return $this
      */
     public function sorting($sorts)
@@ -97,6 +100,7 @@ class Search implements ClientContract
      *
      * @param  int  $page
      * @param  int  $perPage
+     *
      * @return $this
      */
     public function pagination($page = 1, $perPage = 30)
@@ -111,6 +115,7 @@ class Search implements ClientContract
      * Set the channel to filter on.
      *
      * @param  string|null  $channel
+     *
      * @return $this
      */
     public function on($channel = null)
@@ -124,6 +129,7 @@ class Search implements ClientContract
      * Set the index.
      *
      * @param  string  $type
+     *
      * @return $this
      */
     public function against($type)
@@ -137,6 +143,7 @@ class Search implements ClientContract
      * Set the categories.
      *
      * @param  array  $categories
+     *
      * @return $this
      */
     public function categories($categories = [])
@@ -155,6 +162,7 @@ class Search implements ClientContract
      * Set the filters on the search.
      *
      * @param  array  $filters
+     *
      * @return $this
      */
     public function filters($filters = [])
@@ -173,6 +181,7 @@ class Search implements ClientContract
      * Set the search language.
      *
      * @param  string  $lang
+     *
      * @return $this
      */
     public function language($lang = 'en')
@@ -186,13 +195,14 @@ class Search implements ClientContract
      * Set the suggestions.
      *
      * @param  string  $keywords
+     *
      * @return \Elastica\ResultSet
      */
     public function suggest($keywords)
     {
         $search = $this->builder->getSearch();
 
-        $suggest = new \Elastica\Suggest;
+        $suggest = new \Elastica\Suggest();
         $term = new \Elastica\Suggest\Completion('suggest', 'name.suggest');
         $term->setText($keywords);
         $suggest->addSuggestion($term);
@@ -205,6 +215,7 @@ class Search implements ClientContract
      *
      * @param  string  $sku
      * @param  int  $limit
+     *
      * @return \Illuminate\Support\Collection
      */
     public function searchSkus($sku, $limit = 10)
@@ -212,7 +223,7 @@ class Search implements ClientContract
         $sku = strtolower($sku);
         $search = $this->builder->getSearch();
 
-        $query = new Query;
+        $query = new Query();
         $wildcard = new Wildcard('sku.lowercase', "*{$sku}*");
         $query->setQuery($wildcard);
         $query->setParam('size', $limit);
@@ -248,6 +259,7 @@ class Search implements ClientContract
      * Searches the index.
      *
      * @param  bool  $rank
+     *
      * @return \Elastica\ResultSet
      */
     public function search($rank = true)
@@ -283,6 +295,7 @@ class Search implements ClientContract
      * Find the filter class.
      *
      * @param  string  $type
+     *
      * @return mixed
      */
     private function findFilter($type)
@@ -306,6 +319,7 @@ class Search implements ClientContract
      * Find a matching attribute based on filter type.
      *
      * @param  string  $type
+     *
      * @return mixed
      */
     protected function getAttribute($type)

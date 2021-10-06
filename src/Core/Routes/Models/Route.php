@@ -9,8 +9,8 @@ use NeonDigital\Drafting\Draftable;
 
 class Route extends BaseModel
 {
-    use SoftDeletes,
-        Draftable;
+    use SoftDeletes;
+    use Draftable;
 
     /**
      * The Hashid connection name for enconding the id.

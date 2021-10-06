@@ -35,6 +35,7 @@ class DiscountCriteriaSet extends BaseModel
      *
      * @param  \Illuminate\Database\Eloquent\Model  $user
      * @param  \GetCandy\Api\Core\Baskets\Models\Basket  $basket
+     *
      * @return bool
      */
     public function process($user, $basket)

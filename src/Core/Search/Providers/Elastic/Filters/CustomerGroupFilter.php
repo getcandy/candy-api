@@ -27,12 +27,12 @@ class CustomerGroupFilter extends AbstractFilter
 
     public function getQuery()
     {
-        $filter = new BoolQuery;
+        $filter = new BoolQuery();
 
         foreach ($this->getCustomerGroups() as $model) {
-            $nested = new Nested;
+            $nested = new Nested();
             $nested->setPath('customer_groups');
-            $term = new Term;
+            $term = new Term();
             $term->setTerm('customer_groups.id', $model->encodedId());
 
             $nested->setQuery($term);

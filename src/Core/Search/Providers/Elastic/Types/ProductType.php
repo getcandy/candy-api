@@ -47,7 +47,7 @@ class ProductType extends BaseType
                 ],
             ],
         ],
-        'created_at'  => [
+        'created_at' => [
             'type' => 'date',
         ],
         'departments' => [
@@ -168,6 +168,7 @@ class ProductType extends BaseType
      * Returns the Index document ready to be added.
      *
      * @param  \GetCandy\Api\Core\Products\Models\Product  $product
+     *
      * @return mixed
      */
     public function getIndexDocument(Product $product)

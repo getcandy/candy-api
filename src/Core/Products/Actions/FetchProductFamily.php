@@ -43,7 +43,7 @@ class FetchProductFamily extends AbstractAction
     public function handle()
     {
         if ($this->encoded_id && ! $this->handle) {
-            $this->id = (new ProductFamily)->decodeId($this->encoded_id);
+            $this->id = (new ProductFamily())->decodeId($this->encoded_id);
         }
 
         try {
@@ -55,7 +55,7 @@ class FetchProductFamily extends AbstractAction
                 throw $e;
             }
 
-            return null;
+            return;
         }
     }
 

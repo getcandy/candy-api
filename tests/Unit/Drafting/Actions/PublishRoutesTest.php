@@ -31,7 +31,7 @@ class PublishRoutesTest extends TestCase
         $this->assertCount(2, $draft->routes);
         $this->assertCount(0, $parent->routes);
 
-        (new PublishRoutes)->actingAs($user)->run([
+        (new PublishRoutes())->actingAs($user)->run([
             'parent' => $parent,
             'draft' => $draft,
         ]);

@@ -10,7 +10,9 @@ use Illuminate\Queue\SerializesModels;
 
 class ProductCreatedEvent
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable;
+    use InteractsWithSockets;
+    use SerializesModels;
 
     /**
      * @var \GetCandy\Api\Core\Products\Models\Product

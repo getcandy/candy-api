@@ -33,7 +33,7 @@ class PublishCustomerGroupsTest extends TestCase
         $this->assertCount(2, $draft->customerGroups);
         $this->assertCount(0, $parent->customerGroups);
 
-        (new PublishCustomerGroups)->actingAs($user)->run([
+        (new PublishCustomerGroups())->actingAs($user)->run([
             'parent' => $parent,
             'draft' => $draft,
         ]);

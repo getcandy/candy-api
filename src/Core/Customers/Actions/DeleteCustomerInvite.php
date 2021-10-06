@@ -36,6 +36,6 @@ class DeleteCustomerInvite extends AbstractAction
      */
     public function handle()
     {
-        return CustomerInvite::find((new CustomerInvite)->decodeId($this->encoded_id))->delete();
+        return CustomerInvite::find((new CustomerInvite())->decodeId($this->encoded_id))->delete();
     }
 }

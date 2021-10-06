@@ -19,7 +19,7 @@ class UserRunner extends AbstractRunner implements InstallRunnerContract
         if (! DB::table('users')->count()) {
             $user = $this->setUpUser($model);
         } else {
-            $user = (new $model)->first();
+            $user = (new $model())->first();
         }
 
         $user->assignRole('admin');
@@ -29,6 +29,7 @@ class UserRunner extends AbstractRunner implements InstallRunnerContract
      * Set up the user based on a model reference.
      *
      * @param  string  $model
+     *
      * @return \Illuminate\Database\Eloquent\Model
      */
     protected function setUpUser($model)
@@ -55,7 +56,7 @@ class UserRunner extends AbstractRunner implements InstallRunnerContract
         $this->command->info('Just creating your account now');
 
         // Get our auth user model..
-        $user = new $model;
+        $user = new $model();
 
         $user->fill([
             'password' => bcrypt($password),

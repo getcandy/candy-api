@@ -38,6 +38,7 @@ class Indexer
      * Reindex a model.
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
+     *
      * @return void
      */
     public function reindex($model, $batchSize = 1000)
@@ -54,7 +55,7 @@ class Indexer
 
         $suffix = microtime(true);
 
-        $model = new $model;
+        $model = new $model();
 
         $aliases = [];
 
@@ -123,6 +124,7 @@ class Indexer
 
                 if (! $time) {
                     $indice->delete();
+
                     continue;
                 }
 
@@ -136,6 +138,7 @@ class Indexer
     protected function getIndiceTime($name)
     {
         $fragments = explode('_', $name);
+
         try {
             return Carbon::createFromTimestampMs(end($fragments));
         } catch (\ErrorException $e) {
@@ -147,6 +150,7 @@ class Indexer
      *
      * @param  \Elastica\Index  $index
      * @param  mixed  $type
+     *
      * @return void
      */
     public function updateMappings($index, $type)
@@ -164,6 +168,7 @@ class Indexer
      * Gets a timestamped index.
      *
      * @param  mixed  $type
+     *
      * @return string
      */
     protected function getIndexName($type)
@@ -177,6 +182,7 @@ class Indexer
      * Index a single object.
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
+     *
      * @return bool
      */
     public function indexObject(Model $model)
@@ -326,6 +332,7 @@ class Indexer
      *
      * @param  string  $suffix
      * @param  array  $aliases
+     *
      * @return void
      */
     private function cleanup($suffix, $aliases)
@@ -347,6 +354,7 @@ class Indexer
      *
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @param  string|null  $suffix
+     *
      * @return bool
      */
     protected function addToIndex(Model $model, $suffix = null)

@@ -28,7 +28,7 @@ class RouteCriteria extends AbstractCriteria
      */
     public function getBuilder()
     {
-        $route = new Route;
+        $route = new Route();
         $builder = $route->with($this->includes ?: []);
 
         if ($this->path) {

@@ -29,7 +29,7 @@ class VersionProductVariantCustomerPricingTest extends TestCase
         ]);
 
         for ($i = 0; $i < 2; $i++) {
-            $pricing = new ProductCustomerPrice;
+            $pricing = new ProductCustomerPrice();
             $pricing->product_variant_id = $variant->id;
             $pricing->customer_group_id = $customerGroup->id;
             $pricing->tax_id = $tax->id;
@@ -37,11 +37,11 @@ class VersionProductVariantCustomerPricingTest extends TestCase
             $pricing->save();
         }
 
-        $version = (new CreateVersion)->actingAs($user)->run([
+        $version = (new CreateVersion())->actingAs($user)->run([
             'model' => $variant,
         ]);
 
-        (new VersionProductVariantCustomerPricing)->actingAs($user)->run([
+        (new VersionProductVariantCustomerPricing())->actingAs($user)->run([
             'version' => $version,
             'variant' => $variant,
         ]);

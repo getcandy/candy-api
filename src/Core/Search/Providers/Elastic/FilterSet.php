@@ -20,6 +20,7 @@ class FilterSet
      *
      * @param  mixed  $type
      * @param  mixed  $payload
+     *
      * @return $this
      */
     public function add($type, $payload = null)
@@ -37,6 +38,7 @@ class FilterSet
      * Add many filters to the search.
      *
      * @param  array  $filters
+     *
      * @return $this
      */
     public function addMany(array $filters)
@@ -70,6 +72,7 @@ class FilterSet
      * Get a filter from the chain.
      *
      * @param  string  $handle
+     *
      * @return mixed
      */
     public function getFilter($handle)
@@ -81,6 +84,7 @@ class FilterSet
      * Find a matching attribute based on filter type.
      *
      * @param  string  $type
+     *
      * @return mixed
      */
     protected function getAttribute($type)
@@ -92,6 +96,7 @@ class FilterSet
      * Find the filter class.
      *
      * @param  string  $type
+     *
      * @return mixed
      */
     private function findFilter($type)

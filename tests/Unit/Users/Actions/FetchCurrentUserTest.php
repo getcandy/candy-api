@@ -14,7 +14,7 @@ class FetchCurrentUserTest extends FeatureCase
     {
         $user = $this->admin();
 
-        $currentUser = (new FetchCurrentUser)->actingAs($user)->run();
+        $currentUser = (new FetchCurrentUser())->actingAs($user)->run();
 
         $this->assertEquals($user->id, $currentUser->id);
     }

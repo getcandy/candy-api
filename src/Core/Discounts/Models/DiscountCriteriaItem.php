@@ -35,7 +35,7 @@ class DiscountCriteriaItem extends BaseModel
         $typeModel = GetCandy::getUserModel();
 
         if (method_exists($this, $relation)) {
-            $realId = (new $typeModel)->decodeId($id);
+            $realId = (new $typeModel())->decodeId($id);
             $this->{$relation}()->sync($realId);
         }
     }
@@ -61,6 +61,7 @@ class DiscountCriteriaItem extends BaseModel
      * Checks whether a product is eligible.
      *
      * @param  \GetCandy\Api\Core\Baskets\Models\Basket  $basket
+     *
      * @return bool
      */
     protected function checkWithProduct($basket)

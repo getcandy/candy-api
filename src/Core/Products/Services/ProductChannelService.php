@@ -9,7 +9,7 @@ class ProductChannelService extends BaseService
 {
     public function __construct()
     {
-        $this->model = new Product;
+        $this->model = new Product();
     }
 
     /**
@@ -17,6 +17,7 @@ class ProductChannelService extends BaseService
      *
      * @param  string  $product
      * @param  array  $data
+     *
      * @return \GetCandy\Api\Core\Products\Models\Product
      */
     public function store($product, $channels)
@@ -34,6 +35,7 @@ class ProductChannelService extends BaseService
      * Destroys product customer groups.
      *
      * @param  string  $product
+     *
      * @return \GetCandy\Api\Core\Products\Models\Product
      */
     public function destroy($product)
