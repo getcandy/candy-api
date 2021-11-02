@@ -24,6 +24,7 @@ class ProductResource extends AbstractResource
             'id' => $this->encoded_id,
             'drafted_at' => $this->drafted_at,
             'option_data' => $this->parseOptionData($this->option_data),
+            'position' => $this->when(($this->pivot && $this->pivot->position), $this->pivot->position ?? 0),
             'variants_count' => $this->variants_count,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
