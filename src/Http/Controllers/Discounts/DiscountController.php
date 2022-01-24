@@ -33,6 +33,15 @@ class DiscountController extends BaseController
 
     public function update($id, UpdateRequest $request)
     {
+        $rules = [];
+
+        if (!empty($request->sets)) {
+            $rules['sets'] = 'array';
+            $rules['sets.*.items.*.value'] = 'required';
+        }
+
+        $this->validate($request, $rules);
+
         return new DiscountResource(
             GetCandy::discounts()->update($id, $request->all())
         );
