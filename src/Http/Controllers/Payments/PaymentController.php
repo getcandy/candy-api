@@ -95,7 +95,8 @@ class PaymentController extends BaseController
             $response = GetCandy::orders()->processThreeDSecure(
                 $order,
                 $request->transaction,
-                $request->paRes
+                $request->paRes,
+                $request->cres
             );
         } catch (ModelNotFoundException $e) {
             return $this->errorNotFound();

@@ -14,6 +14,7 @@ use GetCandy\Api\Core\Payments\ThreeDSecureResponse;
 use GetCandy\Api\Core\ReusablePayments\Models\ReusablePayment;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
+use Illuminate\Support\Facades\Request;
 use Log;
 
 class SagePay extends AbstractProvider
@@ -76,7 +77,15 @@ class SagePay extends AbstractProvider
 
     public function charge()
     {
+        $threedSecure = 'UseMSPSetting';
+
+        if (! empty($this->fields['save'])) {
+            $threedSecure = 'Force';
+        }
+
         $country = $this->order->billing_country;
+
+
 
         // Sage pay requires the country iso code, so we should find that to use.
         // $countryModel = GetCandy::countries()->getByName($country);
@@ -98,10 +107,26 @@ class SagePay extends AbstractProvider
                 'amount' => $this->order->order_total,
                 'currency' => $this->order->currency,
                 'description' => 'Website Transaction',
-                'apply3DSecure' => 'UseMSPSetting',
+                'apply3DSecure' => $threedSecure,
                 'customerFirstName' => $this->order->billing_firstname,
                 'customerLastName' => $this->order->billing_lastname,
                 'vendorTxCode' => str_random(40),
+                'strongCustomerAuthentication' => [
+                    'customerMobilePhone' => $this->order->billing_phone,
+                    'transType' => 'GoodsAndServicePurchase',
+                    'browserLanguage' => $this->fields['browserLanguage'] ?? null,
+                    'challengeWindowSize' => $this->fields['challengeWindowSize'] ?? null,
+                    'browserIP' => Request::ip(),
+                    'notificationURL' => url('checkout/3d-secure-callback'),
+                    'browserAcceptHeader' => Request::header('Accept'),
+                    'browserJavascriptEnabled' => true,
+                    'browserUserAgent' => $this->fields['browserUserAgent'] ?? null,
+                    'browserJavaEnabled' => (bool) $this->fields['browserJavaEnabled'] ?? null,
+                    'browserColorDepth' => $this->fields['browserColorDepth'] ?? null,
+                    'browserScreenHeight' => $this->fields['browserScreenHeight'] ?? null,
+                    'browserScreenWidth' => $this->fields['browserScreenWidth'] ?? null,
+                    'browserTZ' => $this->fields['browserTZ'] ?? null,
+                ],
                 'billingAddress' => [
                     'address1' => $this->order->billing_address,
                     'city' => $this->order->billing_city,
@@ -109,17 +134,30 @@ class SagePay extends AbstractProvider
                     'country' => 'GB',
                 ],
                 'entryMethod' => 'Ecommerce',
+
             ];
 
             if (! empty($this->fields['save'])) {
+                $payload['credentialType'] = [
+                    'cofUsage' => 'First',
+                    'initiatedType' => 'CIT',
+                    'mitType' => 'Unscheduled',
+                ];
                 $payload['paymentMethod']['card']['save'] = true;
             }
 
             if (! empty($this->fields['reusable'])) {
+                $reusedCard = ReusablePayment::whereToken($this->token)->first();
+                $payload['credentialType'] = [
+                    'cofUsage' => 'Subsequent',
+                    'initiatedType' => 'CIT',
+                    'mitType' => 'Unscheduled',
+                ];
+                $payload['strongCustomerAuthentication']['threeDSRequestorPriorAuthenticationInfo']['threeDSReqPriorRef'] = $reusedCard->auth_code;
                 $payload['paymentMethod']['card']['reusable'] = true;
             }
 
-            // \Log::info(json_encode($payload));
+
             $response = $this->http->post($this->host.'transactions', [
                 'headers' => [
                     'Authorization' => 'Basic '.$this->getCredentials(),
@@ -147,7 +185,10 @@ class SagePay extends AbstractProvider
             return (new ThreeDSecureResponse)
                 ->setStatus($content['statusCode'])
                 ->setTransactionId($content['transactionId'])
-                ->setPaRequest($content['paReq'])
+                ->setCRequest($content['cReq'] ?? null)
+                ->setAcsTransId($content['acsTransId'] ?? null)
+                ->setDsTranId($content['dsTransId'] ?? null)
+                ->setPaRequest($content['paReq'] ?? null)
                 ->setRedirect($content['acsUrl']);
         } elseif ($content['status'] != 'Ok') {
             $response = new PaymentResponse(false, $content['statusDetail'] ?? 'Rejected', $content);
@@ -159,8 +200,8 @@ class SagePay extends AbstractProvider
 
         $response = new PaymentResponse(true, 'Payment Received');
 
-        if (! empty($content['paymentMethod']['card']['reusable'])) {
-            $this->saveCard($content['paymentMethod']['card']);
+        if (! empty($content['paymentMethod']['card']['save'])) {
+            $this->saveCard($content['paymentMethod']['card'], $content['acsTransId'] ?? null);
         }
 
         $response->transaction(
@@ -170,7 +211,7 @@ class SagePay extends AbstractProvider
         return $response;
     }
 
-    protected function saveCard($details)
+    protected function saveCard($details, $acsTransId)
     {
         $identifier = $details['cardIdentifier'];
         $userId = $this->order->user_id;
@@ -184,20 +225,33 @@ class SagePay extends AbstractProvider
         $payment->last_four = $details['lastFourDigits'];
         $payment->expires_at = \Carbon\Carbon::createFromFormat('my', $details['expiryDate'])->endOfMonth();
         $payment->token = $details['cardIdentifier'];
+        $payment->auth_code = $acsTransId;
         $payment->user_id = $this->order->user_id;
         $payment->save();
     }
 
-    public function processThreeD($transaction, $paRes)
+    public function processThreeD($transaction, $paRes = null, $cres = null)
     {
+        $path = $cres ? '3d-secure-challenge' : '3d-secure';
+
+        $payload = [];
+
+        if ($paRes) {
+            $payload['paRes'] = $paRes;
+        }
+
+        if ($cres) {
+            $payload['cRes'] = $cres;
+        }
+
         try {
-            $response = $this->http->post($this->host.'transactions/'.$transaction.'/3d-secure', [
+            $response = $this->http->post($this->host.'transactions/'.$transaction.'/'.$path, [
                 'headers' => [
                     'Authorization' => 'Basic '.$this->getCredentials(),
                     'Content-Type' => 'application/json',
                     'Cache-Control' => 'no-cache',
                 ],
-                'json' => ['paRes' => $paRes],
+                'json' => $payload,
             ]);
 
             $content = json_decode($response->getBody()->getContents(), true);
@@ -220,7 +274,7 @@ class SagePay extends AbstractProvider
         }
 
         if (! empty($transaction['paymentMethod']['card']['reusable'])) {
-            $this->saveCard($transaction['paymentMethod']['card']);
+            $this->saveCard($transaction['paymentMethod']['card'], $content['acsTransId']);
         }
 
         return $this->createSuccessTransaction($transaction);

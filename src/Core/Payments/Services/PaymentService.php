@@ -183,14 +183,14 @@ class PaymentService extends BaseService
      * @param  mixed  $type
      * @return \GetCandy\Api\Core\Payments\Models\Transaction
      */
-    public function validateThreeD($order, $transactionId, $paRes, $type = null)
+    public function validateThreeD($order, $transactionId, $paRes, $cres = null, $type = null)
     {
         $manager = $this->manager->with(
             $type ? $type->driver : null
         );
 
         $transaction = $manager->order($order)
-            ->processThreeD($transactionId, $paRes);
+            ->processThreeD($transactionId, $paRes, $cres);
 
         return $transaction;
     }

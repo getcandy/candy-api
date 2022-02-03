@@ -24,7 +24,8 @@ class ValidateThreeDRequest extends FormRequest
     public function rules()
     {
         return [
-            'paRes' => 'required',
+            'paRes' => 'required_without:cres',
+            'cres' => 'required_without:paRes',
             'transaction' => 'required',
             'order_id' => 'required|hashid_is_valid:orders',
         ];

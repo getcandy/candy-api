@@ -12,6 +12,12 @@ class ThreeDSecureResponse
 
     protected $paRequest;
 
+    protected $cRequest;
+
+    protected $dsTranId;
+
+    protected $acsTransId;
+
     public function setStatus($status)
     {
         $this->status = $status;
@@ -22,6 +28,20 @@ class ThreeDSecureResponse
     public function setTransactionId($transactionId)
     {
         $this->transactionId = $transactionId;
+
+        return $this;
+    }
+
+    public function setDsTranId($dsTranId)
+    {
+        $this->dsTranId = $dsTranId;
+
+        return $this;
+    }
+
+    public function setAcsTransId($acsTransId)
+    {
+        $this->acsTransId = $acsTransId;
 
         return $this;
     }
@@ -40,6 +60,13 @@ class ThreeDSecureResponse
         return $this;
     }
 
+    public function setCRequest($cRequest)
+    {
+        $this->cRequest = $cRequest;
+
+        return $this;
+    }
+
     public function params()
     {
         return [
@@ -48,6 +75,9 @@ class ThreeDSecureResponse
             'transactionId' => $this->transactionId,
             'acsUrl' => $this->redirect,
             'paRequest' => $this->paRequest,
+            'cRequest' => $this->cRequest,
+            'acsTransId' => $this->acsTransId,
+            'dsTranId' => $this->dsTranId,
         ];
     }
 }
