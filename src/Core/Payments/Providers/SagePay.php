@@ -121,7 +121,7 @@ class SagePay extends AbstractProvider
                     'browserAcceptHeader' => Request::header('Accept'),
                     'browserJavascriptEnabled' => true,
                     'browserUserAgent' => $this->fields['browserUserAgent'] ?? null,
-                    'browserJavaEnabled' => (bool) $this->fields['browserJavaEnabled'] ?? null,
+                    'browserJavaEnabled' => (bool) ($this->fields['browserJavaEnabled'] ?? null),
                     'browserColorDepth' => $this->fields['browserColorDepth'] ?? null,
                     'browserScreenHeight' => $this->fields['browserScreenHeight'] ?? null,
                     'browserScreenWidth' => $this->fields['browserScreenWidth'] ?? null,
