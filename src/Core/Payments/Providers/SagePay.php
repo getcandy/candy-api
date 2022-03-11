@@ -153,7 +153,9 @@ class SagePay extends AbstractProvider
                     'initiatedType' => 'CIT',
                     'mitType' => 'Unscheduled',
                 ];
-                $payload['strongCustomerAuthentication']['threeDSRequestorPriorAuthenticationInfo']['threeDSReqPriorRef'] = $reusedCard->auth_code;
+                if ($reusedCard->auth_code) {
+                    $payload['strongCustomerAuthentication']['threeDSRequestorPriorAuthenticationInfo']['threeDSReqPriorRef'] = $reusedCard->auth_code;
+                }
                 $payload['paymentMethod']['card']['reusable'] = true;
             }
 
@@ -211,7 +213,7 @@ class SagePay extends AbstractProvider
         return $response;
     }
 
-    protected function saveCard($details, $acsTransId)
+    protected function saveCard($details, $acsTransId = null)
     {
         $identifier = $details['cardIdentifier'];
         $userId = $this->order->user_id;
@@ -274,7 +276,7 @@ class SagePay extends AbstractProvider
         }
 
         if (! empty($transaction['paymentMethod']['card']['reusable'])) {
-            $this->saveCard($transaction['paymentMethod']['card'], $content['acsTransId']);
+            $this->saveCard($transaction['paymentMethod']['card'], $content['acsTransId'] ?? null);
         }
 
         return $this->createSuccessTransaction($transaction);
