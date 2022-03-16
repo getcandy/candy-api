@@ -76,8 +76,8 @@ class CheckStock extends AbstractAction
         if ($this->basket_id) {
             $realBasketId = (new Basket)->decodeId($this->basket_id);
             $basket = Basket::find($realBasketId);
-            if ($basket && $basket->order) {
-                $this->set('order_id', $basket->order->encoded_id);
+            if ($basket && $basket->activeOrder) {
+                $this->set('order_id', $basket->activeOrder->encoded_id);
             }
         }
 
