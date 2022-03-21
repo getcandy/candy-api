@@ -107,7 +107,7 @@ class ShippingMethodService extends BaseService
         $zones = app('api')->shippingZones()->getByCountryName($order->shipping_details['country']);
 
         $basket = $order->basket;
-        $calculator = new ShippingCalculator(app());
+        $calculator = app('shipping_calculator');
 
         $options = [];
 
