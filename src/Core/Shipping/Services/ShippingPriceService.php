@@ -122,8 +122,8 @@ class ShippingPriceService extends BaseService
 
         // Get the shipping zone regional prices.
         return $region->zone->prices()->whereHas('method', function ($q) {
-            return $q->whereType('regional');
-        })->get()->groupBy('shipping_method_id')->sortByDesc('min_basket')->first();
+            return $q->whereIn('type', ['regional', 'oversized']);
+        })->get();
     }
 
     /**
