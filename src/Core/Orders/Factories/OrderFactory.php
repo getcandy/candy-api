@@ -557,6 +557,12 @@ class OrderFactory implements OrderFactoryInterface
 
                                 $tax = $this->tax->amount($taxable);
 
+                                // Does this product already exist on the order
+                                $order->lines()
+                                    ->whereSku($variant->sku)
+                                    ->where('discount_total', '!=', 0)
+                                    ->delete();
+
                                 $order->lines()->create([
                                     'product_variant_id' => $variant->id,
                                     'sku' => $variant->sku,
