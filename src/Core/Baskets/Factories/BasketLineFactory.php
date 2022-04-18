@@ -109,9 +109,16 @@ class BasketLineFactory implements BasketLineInterface
 
             foreach ($this->discounts->get() as $discount) {
                 foreach ($discount->rewards as $reward) {
-                    $method = 'apply'.ucfirst($reward->type);
-                    if (method_exists($this, $method)) {
-                        $line = $this->{$method}($line, $reward);
+                    switch ($reward['type']) {
+                        case 'percentage_amount':
+                            $line = $this->applyPercentage($line, $reward);
+                            break;
+                        case 'fixed_amount':
+                            $line = $this->applyFixedAmount($line, $reward);
+                            break;
+                        case 'to_fixed_price':
+                            $line = $this->applyToFixedAmount($line, $reward);
+                            break;
                     }
                 }
             }

@@ -104,7 +104,7 @@ class BasketController extends BaseController
         $factory = $this->factory->init($basket);
         $factory->lines->discount($discount->set->discount);
 
-        $discount->uses ? $discount->increment('uses') : 1;
+        $discount->set->discount->increment('uses');
 
         if (! $basket->discount($request->coupon)) {
             $basket->discounts()->attach($discount->set->discount->id, ['coupon' => $request->coupon]);
