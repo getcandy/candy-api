@@ -129,6 +129,8 @@ class SagePay extends AbstractProvider
                 ],
                 'billingAddress' => [
                     'address1' => $this->order->billing_address,
+                    'address2' => $this->order->billing_address_two,
+                    'address3' => $this->order->billing_address_three,
                     'city' => $this->order->billing_city,
                     'postalCode' => $this->order->billing_zip,
                     'country' => 'GB',
