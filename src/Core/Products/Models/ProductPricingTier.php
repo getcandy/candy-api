@@ -46,7 +46,7 @@ class ProductPricingTier extends BaseModel
      */
     public function getTotalCostAttribute()
     {
-        return app()->getInstance()->make(PriceCalculatorInterface::class)->get($this->price, $this->variant->tax)->total_cost;
+        return app()->getInstance()->make(PriceCalculatorInterface::class)->get($this->price, 'default')->total_cost;
     }
 
     /**
@@ -56,7 +56,7 @@ class ProductPricingTier extends BaseModel
      */
     public function getTotalTaxAttribute()
     {
-        return app()->getInstance()->make(PriceCalculatorInterface::class)->get($this->price, $this->variant->tax)->total_tax;
+        return app()->getInstance()->make(PriceCalculatorInterface::class)->get($this->price, 'default')->total_tax;
     }
 
     /**
@@ -66,7 +66,7 @@ class ProductPricingTier extends BaseModel
      */
     public function getLimitTaxAttribute()
     {
-        return app()->getInstance()->make(PriceCalculatorInterface::class)->get($this->price * $this->lower_limit, $this->variant->tax)->total_tax;
+        return app()->getInstance()->make(PriceCalculatorInterface::class)->get($this->price * $this->lower_limit, 'default')->total_tax;
     }
 
     /**
