@@ -24,7 +24,7 @@ class CategoryResource extends AbstractResource
             'products_count' => (int) $this->products_count ?: 0,
             'children_count' => (int) $this->children_count ?: 0,
             'depth' => (int) $this->depth ?: 0,
-            'has_draft' => $this->draft()->exists(),
+            'has_draft' => !!$this->draft,
             'left_pos' => (int) $this->_lft,
             'sort' => $this->sort,
             'right_pos' => (int) $this->_rgt,

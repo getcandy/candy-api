@@ -9,7 +9,7 @@ class AssetTransformResource extends AbstractResource
 {
     public function payload()
     {
-        $this->load(['asset', 'transform']);
+        // $this->load(['asset', 'transform']);
 
         return [
             'id' => $this->encodedId(),
