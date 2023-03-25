@@ -1,4 +1,29 @@
 openapi: 3.0.0
+components:
+  parameters:
+    includeParam:
+      in: query
+      name: include
+      required: false
+      schema:
+        type: string
+      description: Which related resources to include in the response.
+    perPageParam:
+      in: query
+      name: per_page
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+      description: The number of resources to show per page on the response
+    pageParam:
+      in: query
+      name: page
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+      description: The current page when returning resources.
 info:
   title: GetCandy
   contact:
@@ -226,6 +251,8 @@ paths:
     $ref: './recycle-bin/paths/recycle-bin.yaml'
   '/recycle-bin/{itemId}':
     $ref: './recycle-bin/paths/recycle-bin.id.yaml'
+  '/recycle-bin/{itemId}/restore':
+    $ref: './recycle-bin/paths/recycle-bin.id.restore.yaml'
   '/reports/sales':
     $ref: './reports/paths/reports.sales.yaml'
   '/reports/customers/spending':
@@ -296,6 +323,76 @@ paths:
     $ref: './users/paths/users.current.yaml'
   '/versions/{modelId}/restore':
     $ref: './versions/paths/versions.id.restore.yaml'
+tags:
+  - name: Assets
+    description: |-
+      ### Available Includes
+      | Include | Description |
+      | ----- | --- |
+      | `transforms` | Any asset transforms, such as thumbnails |
+      | `tags` | Any associated tags |
+  - name: Categories
+    description: |-
+      ### Available Includes
+      | Include | Description |
+      | ----- | --- |
+      | `attributes` | The attributes related to the product |
+      | `assets` | The assets related to the category |
+      | `children` | Any child categories |
+      | `draft` | The draft resource for the category (if it exists) |
+      | `layout` | The associated layout resource |
+      | `publishedParent` | If this category is a draft, this will be the published (live) version |
+      | `assets` | Any assets related to the product |
+      | `routes` | The category's routes |
+      | `channels` | The channels related to the category |
+      | `primaryAsset` | Returns the primary asset if it exists |
+      | `versions` | The past versions of this category |
+      | `customerGroups` | The associated customer groups |
+  - name: Collections
+    description: |-
+      ### Available Includes
+      | Include | Description |
+      | ----- | --- |
+      | `attributes` | The attributes related to the collection |
+      | `assets` | The assets related to the collection |
+      | `routes` | The collection's routes |
+      | `layout` | The layout assigned to the collection |
+      | `channels` | The channels related to the collection |
+      | `assets` | The channels related to the collection |
+      | `customerGroups` | The associated customer groups |
+      | `products` | The products that belong to the collection |
+  - name: Routes
+    description: |-
+      ### Available Includes
+      | Include | Example | Description
+      | ----- | --- | --- |
+      | `element` | `element.variants` | The included element to return in the response. |
+      | `language` |  | The language related to the route |
+
+      When including `element` you will have access to all the available includes for that resource. For example if `element` was a Product, you would be able to also load `element.variants`
+  - name: Products
+    description: |-
+      ### Available Includes
+      | Include | Description |
+      | ----- | --- |
+      | `attributes` | The attributes related to the product |
+      | `assets` | The assets related to the product |
+      | `draft` | The draft resource for the product (if it exists) |
+      | `layout` | The associated layout resource |
+      | `publishedParent` | If this product is a draft, this will be the published (live) version |
+      | `assets` | Any assets related to the product |
+      | `family` | The ProductFamily this product belongs to |
+      | `routes` | The Product's routes |
+      | `channels` | The channels related to the product |
+      | `firstVariant` | The first variant associated in the database, uses the first variant ID to determine |
+      | `primaryAsset` | Returns the primary asset if it exists |
+      | `categories` | Categories associated to the product |
+      | `variants` | The product variants |
+      | `discounts` | Any discounts available for this product |
+      | `collections` | Any collections this product is associated to |
+      | `associations` | Any product associations e.g. Cross Sell / Up Sell |
+      | `versions` | The past versions of this product |
+      | `customerGroups` | The associated customer groups |
 x-tagGroups:
   - name: General
     tags:

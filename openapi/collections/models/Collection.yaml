@@ -1,18 +1,10 @@
 title: Collection
 type: object
-description: |-
-  ### Available includes
-
-  - routes
-  - layout
-  - channels
-  - assets
-  - attributes
-  - products
-  - customerGroups
+description:
 properties:
   id:
     type: string
+    example: v8l4pl01
   attribute_data:
     type: object
   routes:

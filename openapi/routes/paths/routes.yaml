@@ -9,6 +9,11 @@ get:
         application/json:
           schema:
             $ref: '../responses/RouteCollection.yaml'
+
+  parameters:
+  - $ref: '../../openapi.yaml#/components/parameters/perPageParam'
+  - $ref: '../../openapi.yaml#/components/parameters/pageParam'
+  - $ref: '../../openapi.yaml#/components/parameters/includeParam'
   operationId: get-routes
   description: Returns a paginated list of Routes
 post:

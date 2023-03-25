@@ -3,11 +3,18 @@ type: object
 properties:
   handle:
     type: string
+    example: "mobileapp"
   name:
     type: string
+    example: "Mobile App"
   url:
     type: string
     nullable: true
+    example: "mobileapp:Index"
   default:
     type: boolean
     nullable: true
+    default: false
+required:
+  - name
+  - handle

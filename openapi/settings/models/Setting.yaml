@@ -3,12 +3,21 @@ type: object
 properties:
   id:
     type: string
+    example: v8l4pl01
   name:
     type: string
+    example: Products
   handle:
     type: string
+    example: products
   content:
     type: object
+    example: {
+      "transforms": [
+        "large_thumbnail"
+      ],
+      "asset_source": "products"
+    }
 x-examples:
   products-example:
     id: v8l4pl01

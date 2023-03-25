@@ -3,13 +3,21 @@ type: object
 properties:
   id:
     type: string
+    example: 181398
   type:
     type: string
+    example: 'default'
   description:
     type: string
+    example: 'status-update'
   properties:
-    type: string
+    type: object
+    example: {
+      "previous": "payment-received",
+      "new": "refunded"
+    }
   created_at:
     type: string
+    example: '2020-03-24T10:11:12.000000Z'
   user:
     $ref: '../../users/responses/UserResponse.yaml'
