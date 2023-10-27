@@ -47,13 +47,6 @@ class CategoryDrafter extends BaseDrafter implements DrafterInterface
 
             $parent->products()->sync($draft->products()->groupBy('product_id')->pluck('product_id'), true);
 
-            /**
-             * Go through and assign any products that are for the draft to the parent.
-             */
-            $draft->products()->update([
-                'category_id' => $parent->id,
-            ]);
-
             // Fire off an event so plugins can update anything their side too.
             event(new ModelPublishedEvent($draft, $parent));
 
