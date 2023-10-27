@@ -9,6 +9,7 @@ use GetCandy\Api\Core\Products\Factories\ProductDuplicateFactory;
 use GetCandy\Api\Core\Products\Models\Product;
 use GetCandy\Api\Core\Products\ProductCriteria;
 use GetCandy\Api\Core\Products\Services\ProductService;
+use GetCandy\Api\Core\Search\Events\IndexableSavedEvent;
 use GetCandy\Api\Exceptions\InvalidLanguageException;
 use GetCandy\Api\Exceptions\MinimumRecordRequiredException;
 use GetCandy\Api\Http\Controllers\BaseController;
@@ -116,6 +117,8 @@ class ProductController extends BaseController
 
         $product = Drafting::with('products')->publish($product);
 
+        IndexableSavedEvent::dispatch($product->refresh());
+        
         return new ProductResource($product->load($this->parseIncludes($request->include)));
     }
 
