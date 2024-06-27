@@ -31,14 +31,14 @@ class StoreAddressRequest extends FormRequest
         }
 
         return [
-            'firstname' => 'required_without:address_id|max:20',
-            'lastname' => 'required_without:address_id|max:20',
+            'firstname' => 'required_without:address_id|max:255',
+            'lastname' => 'required_without:address_id|max:255',
             'address_id' => 'hashid_is_valid:addresses',
-            'address' => 'required_without:address_id|max:40',
-            'city' => 'required_without:address_id|max:40',
-            'county' => 'required_without_all:address_id,state|max:40',
-            'email' => 'email',
-            'state' => 'required_without_all:address_id,county|max:40',
+            'address' => 'required_without:address_id|max:255',
+            'city' => 'required_without:address_id|max:255',
+            'county' => 'required_without_all:address_id,state|max:255',
+            'email' => 'email|max:255',
+            'state' => 'required_without_all:address_id,county|max:255',
             'zip' => 'max:8',
             'country' => 'required_without:address_id',
         ];
