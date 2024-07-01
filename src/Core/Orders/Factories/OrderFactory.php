@@ -208,6 +208,8 @@ class OrderFactory implements OrderFactoryInterface
             $this->basket = $order->basket;
         }
 
+        DB::beginTransaction();
+
         if ($this->user) {
             $order->user()->associate($this->user);
             if ($order->wasRecentlyCreated) {
@@ -236,6 +238,8 @@ class OrderFactory implements OrderFactoryInterface
         if ($this->shipping) {
             $this->addShippingLine($order);
         }
+
+        DB::commit();
 
         event(new OrderSavedEvent($order, $this->basket));
 
