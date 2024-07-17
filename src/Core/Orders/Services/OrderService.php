@@ -432,7 +432,7 @@ class OrderService extends BaseService implements OrderServiceInterface
             $payload['phone'] = $data['phone'] ?? null;
             $data = $payload;
         } elseif ($user) {
-            app('api')->addresses()->addAddress($user, $data, $type);
+//            app('api')->addresses()->addAddress($user, $data, $type);
         }
 
         $this->setFields($order, $data, $type);
