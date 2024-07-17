@@ -208,6 +208,8 @@ class OrderFactory implements OrderFactoryInterface
             $this->basket = $order->basket;
         }
 
+        DB::beginTransaction();
+
         if ($this->user) {
             $order->user()->associate($this->user);
             if ($order->wasRecentlyCreated) {
@@ -236,6 +238,8 @@ class OrderFactory implements OrderFactoryInterface
         if ($this->shipping) {
             $this->addShippingLine($order);
         }
+
+        DB::commit();
 
         event(new OrderSavedEvent($order, $this->basket));
 
@@ -445,6 +449,8 @@ class OrderFactory implements OrderFactoryInterface
 
         $basket = $this->basket;
 
+        DB::beginTransaction();
+
         // Remove any shipping lines already on there.
         $existing = $order->lines()->where('is_shipping', '=', true)->first();
 
@@ -467,6 +473,8 @@ class OrderFactory implements OrderFactoryInterface
             'tax_rate' => $tax->percentage,
             'sku' => $this->shipping->method->attribute('sku') ?: $this->shipping->encodedId(),
         ]);
+
+        DB::commit();
 
         event(new OrderSavedEvent($order->refresh()));
 
