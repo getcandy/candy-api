@@ -452,11 +452,7 @@ class OrderFactory implements OrderFactoryInterface
         DB::beginTransaction();
 
         // Remove any shipping lines already on there.
-        $existing = $order->lines()->where('is_shipping', '=', true)->first();
-
-        if ($existing) {
-            $existing->delete();
-        }
+        $order->lines()->where('is_shipping', '=', true)->delete();
 
         // Does the basket have a free shipping discount?
         $discounts = $order->basket->discounts;
