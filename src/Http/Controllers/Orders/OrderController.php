@@ -140,6 +140,12 @@ class OrderController extends BaseController
             return $this->errorNotFound();
         }
 
+        $user = $request->user();
+
+        if (! $user || (! $user->hasRole('admin') && $order->user_id !== $user->id)) {
+            return $this->errorNotFound();
+        }
+
         return new OrderResource($order);
     }
 
